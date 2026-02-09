@@ -1,13 +1,18 @@
 // ==UserScript==
 // @name         Claude
 // @namespace    https://claude.ai/
-// @version      1.0.4
+// @version      1.0.5
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
 // @run-at       document-idle
+// @downloadURL  https://raw.githubusercontent.com/<USER>/tampermonkey-skripte/main/scripts/claude.user.js
+// @updateURL    https://raw.githubusercontent.com/<USER>/tampermonkey-skripte/main/scripts/claude.user.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -17,11 +22,34 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key lokal in Tampermonkey speichern
   // ============================================================
-  // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const GEMINI_KEY_STORAGE = "tm_claude_gemini_api_key";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
+
+  const gmGetValue = typeof GM_getValue === "function" ? GM_getValue : GM?.getValue?.bind(GM);
+  const gmSetValue = typeof GM_setValue === "function" ? GM_setValue : GM?.setValue?.bind(GM);
+  const gmMenu = typeof GM_registerMenuCommand === "function" ? GM_registerMenuCommand : GM?.registerMenuCommand?.bind(GM);
+
+  async function getStoredApiKey() {
+    if (!gmGetValue) return "";
+    const v = await Promise.resolve(gmGetValue(GEMINI_KEY_STORAGE, ""));
+    return String(v || "").trim();
+  }
+
+  async function setStoredApiKey(value) {
+    if (!gmSetValue) return false;
+    await Promise.resolve(gmSetValue(GEMINI_KEY_STORAGE, String(value || "").trim()));
+    return true;
+  }
+
+  async function promptForApiKey() {
+    const current = await getStoredApiKey();
+    const next = window.prompt("Bitte Gemini API-Key eingeben (lokal in Tampermonkey gespeichert):", current || "");
+    if (next === null) return null;
+    await setStoredApiKey(next);
+    return String(next || "").trim();
+  }
 
   // ============================================================
   // UI POSITION
@@ -118,6 +146,14 @@
     toast.textContent = msg;
     toast.style.display = "block";
     toastTimer = setTimeout(() => (toast.style.display = "none"), ms);
+  }
+
+  if (gmMenu) {
+    gmMenu("Claude: Gemini API-Key setzen", async () => {
+      const next = await promptForApiKey();
+      if (next === null) return;
+      showToast(next ? "API-Key gespeichert." : "API-Key gelöscht.");
+    });
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -687,8 +723,16 @@
     return "";
   }
 
-  function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+  async function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
+    let apiKey = await getStoredApiKey();
+    if (!apiKey) {
+      apiKey = await promptForApiKey();
+    }
+    if (!apiKey || apiKey.toLowerCase().includes("key hier") || apiKey.includes("PASTE_YOUR_KEY_HERE")) {
+      return Promise.reject("API-Key fehlt oder ungültig.");
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -747,9 +791,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
