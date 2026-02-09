@@ -1,18 +1,12 @@
 // ==UserScript==
 // @name         Notebook LM
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.0.6
+// @version      1.0.4
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
-// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
-// @updateURL    https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
-// @grant        GM_getValue
-// @grant        GM.getValue
-// @grant        GM_setValue
-// @grant        GM.setValue
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -25,7 +19,7 @@
   // 🔑 NUR HIER EINTRAGEN
   // ============================================================
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "";
+  const GEMINI_API_KEY = "hier".trim();
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
@@ -87,42 +81,6 @@
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const supportedSpeech = !!SpeechRecognition;
-  const GEMINI_API_KEY_STORAGE = "notebooklm.gemini_api_key";
-
-  async function getStoredApiKey() {
-    if (typeof GM !== "undefined" && typeof GM.getValue === "function") {
-      return String((await GM.getValue(GEMINI_API_KEY_STORAGE, "")) || "").trim();
-    }
-    if (typeof GM_getValue === "function") {
-      return String(GM_getValue(GEMINI_API_KEY_STORAGE, "") || "").trim();
-    }
-    return "";
-  }
-
-  async function setStoredApiKey(value) {
-    if (typeof GM !== "undefined" && typeof GM.setValue === "function") {
-      await GM.setValue(GEMINI_API_KEY_STORAGE, value);
-      return;
-    }
-    if (typeof GM_setValue === "function") {
-      GM_setValue(GEMINI_API_KEY_STORAGE, value);
-    }
-  }
-
-  async function ensureApiKey() {
-    if (GEMINI_API_KEY) return GEMINI_API_KEY;
-    const stored = await getStoredApiKey();
-    if (stored) return stored;
-
-    const entered = window.prompt("Bitte gib deinen Gemini API-Key ein (wird lokal in Tampermonkey gespeichert):");
-    const trimmed = String(entered || "").trim();
-    if (trimmed) {
-      await setStoredApiKey(trimmed);
-      return trimmed;
-    }
-    showToast("Kein API-Key gesetzt. Skript bleibt inaktiv, bis ein Key gespeichert wurde.");
-    return "";
-  }
 
   // ============================================================
   // Toast
@@ -541,12 +499,8 @@
     return "";
   }
 
-  async function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const apiKey = await ensureApiKey();
-    if (!apiKey || apiKey.includes("PASTE_YOUR_KEY_HERE") || apiKey.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -605,6 +559,9 @@
       throw err;
     });
 
+    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
+      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
+    }
     return attempt(0);
   }
 
