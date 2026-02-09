@@ -14,6 +14,8 @@
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
+// @updateURL    https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/chatgpt.user.js
+// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/chatgpt.user.js
 // ==/UserScript==
 
 (() => {
