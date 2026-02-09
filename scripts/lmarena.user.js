@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LM Arena
 // @namespace    https://arena.ai/
-// @version      1.0.5
+// @version      1.0.6
 // @description  Speech-to-Text + Gemini-Korrektur (DE) ohne stilles Fallback. Zeigt Output-Preview. Send-Button-Fix via React-Nudge.
 // @match        https://arena.ai/*
 // @match        https://web.arena.ai/*
@@ -575,6 +575,13 @@
               const m = j?.error?.message || j?.message;
               if (m) msg = m;
             } catch {}
+            if (
+              r.status === 400 &&
+              /api key not valid/i.test(msg)
+            ) {
+              resetStoredApiKey();
+              showToast("API-Key ungültig. Bitte erneut eingeben.");
+            }
             reject(`HTTP ${r.status}: ${msg}`);
             return;
           }
