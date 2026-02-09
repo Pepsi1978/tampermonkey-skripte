@@ -7,6 +7,8 @@
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -16,10 +18,10 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key Verwaltung (Tampermonkey Storage)
   // ============================================================
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const API_KEY_STORAGE_KEY = "gemini_api_key";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
@@ -110,6 +112,41 @@
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function normalizeApiKey(value) {
+    return String(value || "").trim();
+  }
+
+  function loadApiKey() {
+    if (typeof GM_getValue !== "function") return "";
+    return normalizeApiKey(GM_getValue(API_KEY_STORAGE_KEY, ""));
+  }
+
+  function saveApiKey(value) {
+    if (typeof GM_setValue !== "function") return;
+    GM_setValue(API_KEY_STORAGE_KEY, normalizeApiKey(value));
+  }
+
+  function ensureApiKey() {
+    let key = loadApiKey();
+    if (key) return key;
+
+    const input = window.prompt("Bitte Gemini API-Key eingeben (wird in Tampermonkey gespeichert):");
+    if (!input) {
+      showToast("API-Key fehlt. Bitte in Tampermonkey eingeben.");
+      return "";
+    }
+
+    key = normalizeApiKey(input);
+    if (!key) {
+      showToast("API-Key fehlt oder leer.");
+      return "";
+    }
+
+    saveApiKey(key);
+    showToast("API-Key gespeichert.");
+    return key;
+  }
 
   // ============================================================
   // Prompt Finder (Fallback)
@@ -500,7 +537,10 @@
   }
 
   function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+    const apiKey = ensureApiKey();
+    if (!apiKey) return Promise.reject("API-Key fehlt oder wurde nicht gesetzt.");
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -559,9 +599,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
@@ -1500,4 +1537,3 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   boot();
 })();
-
