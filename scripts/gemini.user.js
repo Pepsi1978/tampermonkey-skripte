@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Gemini
 // @namespace    https://gemini.google.com/
-// @version      1.0.5
-// @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
+// @version      1.0.6
+// @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Memory-Button (Diskette) links neben dem Mic. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
 // @match        https://gemini.google.com/app
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
@@ -25,6 +25,43 @@
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
   const API_KEY_STORAGE_KEY = "gemini_api_key";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
+
+  // ============================================================
+  // 💾 MEMORY PROMPT (mit Deduplizierung/Updates)
+  // ============================================================
+  const MEMORY_PROMPT = `
+Aufgabe: Lies den gesamten Chatverlauf und extrahiere nur neue, stabile Informationen über mich, die zukünftige Antworten deutlich verbessern.
+
+Wichtig: Nichts automatisch speichern – nur Vorschläge machen.
+
+Deduplizierung / Updates (sehr wichtig):
+- Prüfe zuerst alle bereits gespeicherten Erinnerungen über mich (Memory/Bio), damit du keine doppelten oder überschneidenden Punkte vorschlägst.
+- Wenn eine neue Information eine bestehende Erinnerung klar verbessert (präziser, vollständiger, aktueller), schlage eine Aktualisierung vor statt einen neuen Punkt zu erzeugen.
+- Wenn etwas bereits vollständig vorhanden ist, lasse es weg.
+
+Regeln:
+- Nur Dinge, die voraussichtlich mindestens 3 Monate gültig sind.
+- Maximal 12 Punkte.
+- Jeder Punkt: 1 einfacher Satz, ohne Fachwörter.
+- Keine Wiederholungen, keine Tagesform, keine Kleinigkeiten.
+
+Was du suchen sollst (Priorität):
+- Ziele & Prioritäten
+- Präferenzen (wie ich Antworten/Tools möchte)
+- Persönlichkeit & wiederkehrende Verhaltensmuster (nur wenn mehrfach erkennbar)
+- Wiederkehrende Arbeitsweise mit KI (wie ich iteriere/entscheide)
+- Langfristige Projekte
+
+Ausgabeformat:
+- Liste „Punkt 1 … Punkt N“
+- Pro Punkt zusätzlich in Klammern: „nützlich weil …“ und „sensibel: ja/nein“.
+- Optional (sehr empfehlenswert): „Beleg: im Chat mehrfach erwähnt“ (keine Zitate nötig)
+
+Nachdem ich dir die Punkte 1–N vorgeschlagen habe, nutzt du diesen Prompt:
+
+Ich wähle folgende Punkte zum dauerhaften Speichern aus: [hier nur die Nummern eintragen].
+Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätze. Starte jede neu gespeicherte dauerhafte Erinnerung mit : "Frank"... (Beispiel: Frank mag Kiefernwälder.)
+`.trim();
 
   // ============================================================
   // UI POSITION
@@ -241,6 +278,7 @@
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
+  let memBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
 
@@ -249,7 +287,7 @@
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === memBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
@@ -1107,6 +1145,30 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
   }
 
+  function setMemBtnState(state, msg = "") {
+    if (!memBtn) return;
+
+    if (state === "working") {
+      memBtn.textContent = "⏳";
+      memBtn.style.background = "#444";
+      memBtn.style.color = "white";
+      memBtn.title = msg || "Memory-Prompt wird eingefügt…";
+      return;
+    }
+    if (state === "error") {
+      memBtn.textContent = "⚠️";
+      memBtn.style.background = "#8b0000";
+      memBtn.style.color = "white";
+      memBtn.title = msg || "Fehler";
+      return;
+    }
+
+    memBtn.textContent = "💾";
+    memBtn.style.background = "white";
+    memBtn.style.color = "black";
+    memBtn.title = "Memory-Prompt einfügen";
+  }
+
   function setPromptBtnState(state, msg = "") {
     if (!promptBtn) return;
 
@@ -1401,6 +1463,45 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   // ============================================================
+  // Memory Prompt Button
+  // ============================================================
+  async function runMemoryPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      setMemBtnState("error", "Eingabefeld nicht gefunden");
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 6500);
+      setTimeout(() => setMemBtnState("idle"), 2500);
+      return;
+    }
+
+    try {
+      setMemBtnState("working", "Memory-Prompt einfügen…");
+      const finalPrompt = MEMORY_PROMPT;
+
+      const preview = finalPrompt.replace(/\s+/g, " ").slice(0, CFG.previewChars);
+      showToast("💾 Memory-Prompt (Vorschau):\n" + preview + (finalPrompt.length > CFG.previewChars ? " …" : ""), 3500);
+
+      const target = getUserTargetEditable() || el;
+      const ok = await setViaPaste(target, finalPrompt);
+      if (!ok) {
+        setMemBtnState("error", "Eingabefeld hat Text nicht übernommen");
+        showToast("❌ Eingabefeld hat den Memory-Prompt nicht übernommen.", 6500);
+        setTimeout(() => setMemBtnState("idle"), 2500);
+        return;
+      }
+
+      setMemBtnState("idle");
+      showToast("✅ Memory-Prompt eingefügt.", 1800);
+    } catch (e) {
+      const msg = String(e || "Unbekannter Fehler");
+      console.warn("Memory-Button Fehler:", msg);
+      setMemBtnState("error", msg);
+      showToast("❌ Memory-Button Fehler:\n" + msg, 10000);
+      setTimeout(() => setMemBtnState("idle"), 2500);
+    }
+  }
+
+  // ============================================================
   // Prompt Builder (Frank)
   // ============================================================
   async function runPromptBuilder() {
@@ -1517,6 +1618,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     micBtn.addEventListener("click", toggleMic);
     document.body.appendChild(micBtn);
 
+    memBtn = document.createElement("button");
+    styleRoundButton(memBtn, 52, 0);
+    memBtn.textContent = "💾";
+    memBtn.title = "Memory-Prompt einfügen";
+    memBtn.addEventListener("click", runMemoryPrompt);
+    document.body.appendChild(memBtn);
+
     promptBtn = document.createElement("button");
     styleRoundButton(promptBtn, 0, 52);
     promptBtn.textContent = "✨";
@@ -1532,9 +1640,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     document.body.appendChild(promptBtn2);
 
     setMicState("idle");
+    setMemBtnState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + 💾 + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
   boot();
