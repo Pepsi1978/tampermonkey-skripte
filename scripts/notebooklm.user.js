@@ -1,12 +1,17 @@
 // ==UserScript==
 // @name         Notebook LM
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.0.4
-// @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
+// @version      1.0.6
+// @description  Speech-to-Text + Gemini-Korrektur (DE) auf NotebookLM. Mic-Button fest unten links. API-Key lokal per Tampermonkey-Menü. Mit Output-Preview + UI-Reinject.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
+// @downloadURL  https://raw.githubusercontent.com/<USER>/tampermonkey-skripte/main/scripts/notebooklm.user.js
+// @updateURL    https://raw.githubusercontent.com/<USER>/tampermonkey-skripte/main/scripts/notebooklm.user.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -16,16 +21,46 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key lokal in Tampermonkey speichern
   // ============================================================
-  // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const GEMINI_KEY_STORAGE = "tm_notebooklm_gemini_api_key";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
+
+  const gmGetValue = typeof GM_getValue === "function" ? GM_getValue : GM?.getValue?.bind(GM);
+  const gmSetValue = typeof GM_setValue === "function" ? GM_setValue : GM?.setValue?.bind(GM);
+  const gmMenu = typeof GM_registerMenuCommand === "function" ? GM_registerMenuCommand : GM?.registerMenuCommand?.bind(GM);
+
+  async function getStoredApiKey() {
+    if (!gmGetValue) return "";
+    const v = await Promise.resolve(gmGetValue(GEMINI_KEY_STORAGE, ""));
+    return String(v || "").trim();
+  }
+
+  async function setStoredApiKey(value) {
+    if (!gmSetValue) return false;
+    await Promise.resolve(gmSetValue(GEMINI_KEY_STORAGE, String(value || "").trim()));
+    return true;
+  }
+
+  async function promptForApiKey() {
+    const current = await getStoredApiKey();
+    const next = window.prompt("Bitte Gemini API-Key eingeben (lokal in Tampermonkey gespeichert):", current || "");
+    if (next === null) return null;
+    await setStoredApiKey(next);
+    return String(next || "").trim();
+  }
 
   // ============================================================
   // UI POSITION (BOTTOM LEFT)
   // ============================================================
   const UI_POS = { leftPx: 16, bottomPx: 16 };
+
+  // IDs, damit wir UI wiederfinden / neu injizieren können
+  const UI_IDS = {
+    mic: "tm_notebooklm_mic_btn",
+    prompt1: "tm_notebooklm_prompt_btn",
+    prompt2: "tm_notebooklm_prompt_btn2"
+  };
 
   const CFG = {
     speechLang: "de-DE",
@@ -64,7 +99,10 @@
     autoRestart: true,
     autoRestartBaseDelayMs: 250,
     autoRestartMaxDelayMs: 2000,
-    maxConsecutiveRestarts: 50 // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    maxConsecutiveRestarts: 50, // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+
+    // 🔧 UI-Reinject / SPA-Stabilität
+    uiWatchDebounceMs: 250
   };
 
   // ============================================================
@@ -107,6 +145,14 @@
     toast.textContent = msg;
     toast.style.display = "block";
     toastTimer = setTimeout(() => (toast.style.display = "none"), ms);
+  }
+
+  if (gmMenu) {
+    gmMenu("NotebookLM: Gemini API-Key setzen", async () => {
+      const next = await promptForApiKey();
+      if (next === null) return;
+      showToast(next ? "API-Key gespeichert." : "API-Key gelöscht.");
+    });
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -499,8 +545,13 @@
     return "";
   }
 
-  function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+  async function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
+    const apiKey = await getStoredApiKey();
+    if (!apiKey || apiKey.toLowerCase().includes("key hier")) {
+      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -559,9 +610,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
@@ -1489,7 +1537,26 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
       showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
     }
 
+    const existingMic = document.getElementById(UI_IDS.mic);
+    const existingP1 = document.getElementById(UI_IDS.prompt1);
+    const existingP2 = document.getElementById(UI_IDS.prompt2);
+
+    if (existingMic && existingP1 && existingP2) {
+      micBtn = existingMic;
+      promptBtn = existingP1;
+      promptBtn2 = existingP2;
+      setMicState("idle");
+      setPromptBtnState("idle");
+      setPromptBtn2State("idle");
+      return;
+    }
+
+    try { existingMic?.remove(); } catch {}
+    try { existingP1?.remove(); } catch {}
+    try { existingP2?.remove(); } catch {}
+
     micBtn = document.createElement("button");
+    micBtn.id = UI_IDS.mic;
     styleRoundButton(micBtn, 0, 0);
     micBtn.textContent = "🎙️";
     micBtn.title = "Spracheingabe (Start/Stop)";
@@ -1497,6 +1564,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     document.body.appendChild(micBtn);
 
     promptBtn = document.createElement("button");
+    promptBtn.id = UI_IDS.prompt1;
     styleRoundButton(promptBtn, 0, 52);
     promptBtn.textContent = "✨";
     promptBtn.title = "Prompt (für Frank) einbetten";
@@ -1504,6 +1572,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     document.body.appendChild(promptBtn);
 
     promptBtn2 = document.createElement("button");
+    promptBtn2.id = UI_IDS.prompt2;
     styleRoundButton(promptBtn2, 0, 104);
     promptBtn2.textContent = "🪄";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
@@ -1516,5 +1585,49 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     showToast("✅ Script aktiv. 🎙️ + ✨ + 🪄 unten links.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
+  function uiIsMissing() {
+    return (
+      !document.getElementById(UI_IDS.mic) ||
+      !document.getElementById(UI_IDS.prompt1) ||
+      !document.getElementById(UI_IDS.prompt2)
+    );
+  }
+
+  let uiWatchTimer = null;
+  function scheduleEnsureUI() {
+    clearTimeout(uiWatchTimer);
+    uiWatchTimer = setTimeout(() => {
+      if (!document.body) return;
+      if (uiIsMissing()) boot();
+    }, CFG.uiWatchDebounceMs || 250);
+  }
+
+  const mo = new MutationObserver(() => scheduleEnsureUI());
+  try {
+    mo.observe(document.documentElement, { childList: true, subtree: true });
+  } catch {}
+
+  (function hookHistory() {
+    const _push = history.pushState;
+    const _repl = history.replaceState;
+
+    history.pushState = function () {
+      const r = _push.apply(this, arguments);
+      scheduleEnsureUI();
+      return r;
+    };
+
+    history.replaceState = function () {
+      const r = _repl.apply(this, arguments);
+      scheduleEnsureUI();
+      return r;
+    };
+
+    window.addEventListener("popstate", scheduleEnsureUI, true);
+  })();
+
   boot();
+  setTimeout(scheduleEnsureUI, 500);
+  setTimeout(scheduleEnsureUI, 1500);
+  setTimeout(scheduleEnsureUI, 3000);
 })();
