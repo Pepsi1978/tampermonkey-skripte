@@ -151,13 +151,6 @@
     return key;
   }
 
-  function resetStoredApiKey() {
-    GEMINI_API_KEY = "";
-    if (typeof GM_setValue === "function") {
-      GM_setValue(API_KEY_STORAGE_KEY, "");
-    }
-  }
-
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   // ============================================================
