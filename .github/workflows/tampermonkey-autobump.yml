@@ -1,0 +1,63 @@
+name: Tampermonkey auto-bump @version
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Decide whether to bump
+        id: decide
+        run: |
+          set -e
+          MSG=$(git log -1 --pretty=%B)
+          if echo "$MSG" | grep -q '^chore: bump userscript version'; then
+            echo "bump=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if git diff --name-only HEAD~1 HEAD | grep -q '^scripts/chatgpt\.user\.js$'; then
+            echo "bump=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "bump=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump @version patch (x.y.z -> x.y.(z+1))
+        if: steps.decide.outputs.bump == 'true'
+        run: |
+          set -e
+          FILE="scripts/chatgpt.user.js"
+
+          CUR=$(grep -E '^\s*//\s*@version\s+' "$FILE" | head -n1 | awk '{print $3}')
+          if [ -z "$CUR" ]; then
+            echo "No @version line found in $FILE" >&2
+            exit 1
+          fi
+
+          IFS='.' read -r MA MI PA <<< "$CUR"
+          if [ -z "$MA" ] || [ -z "$MI" ] || [ -z "$PA" ]; then
+            echo "Version is not in x.y.z format: $CUR" >&2
+            exit 1
+          fi
+
+          NEW="${MA}.${MI}.$((PA+1))"
+          echo "Bumping version: $CUR -> $NEW"
+
+          perl -0777 -pe "s#(^\\s*//\\s*@version\\s+)\\Q$CUR\\E#\$1$NEW#m" -i "$FILE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$FILE"
+          git commit -m "chore: bump userscript version to $NEW"
+          git push
