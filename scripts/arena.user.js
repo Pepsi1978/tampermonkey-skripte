@@ -22,7 +22,7 @@
   // 🔑 NUR HIER EINTRAGEN
   // ============================================================
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "AIzaSyB6o7vOujrreVmIb0bY2k83BKJzToMH3KM".trim();
+  const GEMINI_API_KEY = "hier".trim();
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
