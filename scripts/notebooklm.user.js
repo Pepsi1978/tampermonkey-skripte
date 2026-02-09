@@ -1,12 +1,16 @@
 // ==UserScript==
 // @name         Notebook LM
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.0.4
+// @version      1.0.5
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
+// @updateURL    https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
+// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -19,7 +23,7 @@
   // 🔑 NUR HIER EINTRAGEN
   // ============================================================
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const GEMINI_API_KEY_STORAGE = "notebooklm.geminiApiKey";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
@@ -107,6 +111,22 @@
     toast.textContent = msg;
     toast.style.display = "block";
     toastTimer = setTimeout(() => (toast.style.display = "none"), ms);
+  }
+
+  function getGeminiApiKey() {
+    const storedKey = typeof GM_getValue === "function" ? GM_getValue(GEMINI_API_KEY_STORAGE, "") : "";
+    if (storedKey) return storedKey;
+
+    const input = window.prompt("Bitte Gemini API-Key einmalig eingeben:", "");
+    const trimmed = String(input || "").trim();
+    if (trimmed) {
+      if (typeof GM_setValue === "function") GM_setValue(GEMINI_API_KEY_STORAGE, trimmed);
+      showToast("✅ API-Key gespeichert.");
+      return trimmed;
+    }
+
+    showToast("⚠️ Kein API-Key vorhanden.");
+    return "";
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -500,7 +520,10 @@
   }
 
   function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+    const apiKey = getGeminiApiKey();
+    if (!apiKey) return Promise.reject("API-Key fehlt.");
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -559,9 +582,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
