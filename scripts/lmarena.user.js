@@ -1,13 +1,19 @@
 // ==UserScript==
 // @name         Arena
 // @namespace    https://arena.ai/
-// @version      1.0.4
+// @version      1.0.5
 // @description  Speech-to-Text + Gemini-Korrektur (DE) ohne stilles Fallback. Zeigt Output-Preview. Send-Button-Fix via React-Nudge.
 // @match        https://arena.ai/*
 // @match        https://web.arena.ai/*
 // @match        https://chat.lmsys.org/*
 // @match        https://arena.lmsys.org/*
+// @updateURL    https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/lmarena.user.js
+// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/lmarena.user.js
 // @run-at       document-idle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM.getValue
+// @grant        GM.setValue
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
 // @connect      generativelanguage.googleapis.com
@@ -19,11 +25,12 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key wird einmalig abgefragt und in Tampermonkey gespeichert
   // ============================================================
-  // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
+  const STORAGE_KEYS = {
+    geminiApiKey: "arena.geminiApiKey"
+  };
 
   // ============================================================
   // UI POSITION
@@ -502,8 +509,37 @@
     return "";
   }
 
-  function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+  async function resolveGeminiApiKey() {
+    let key = "";
+
+    if (typeof GM_getValue === "function") {
+      key = String(GM_getValue(STORAGE_KEYS.geminiApiKey, "") || "");
+    } else if (typeof GM !== "undefined" && typeof GM.getValue === "function") {
+      key = String((await GM.getValue(STORAGE_KEYS.geminiApiKey, "")) || "");
+    }
+
+    if (!key.trim()) {
+      const entered = window.prompt("Bitte gib deinen Gemini API-Key ein (wird lokal in Tampermonkey gespeichert):");
+      if (entered && entered.trim()) {
+        key = entered.trim();
+        if (typeof GM_setValue === "function") {
+          GM_setValue(STORAGE_KEYS.geminiApiKey, key);
+        } else if (typeof GM !== "undefined" && typeof GM.setValue === "function") {
+          await GM.setValue(STORAGE_KEYS.geminiApiKey, key);
+        }
+      }
+    }
+
+    return key.trim();
+  }
+
+  async function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
+    const apiKey = await resolveGeminiApiKey();
+    if (!apiKey) {
+      return Promise.reject("API-Key fehlt oder Eingabe abgebrochen.");
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -562,9 +598,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
