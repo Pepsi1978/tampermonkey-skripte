@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Notebook LM
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.0.5
+// @version      1.0.6
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
-// @downloadURL  https://raw.githubusercontent.com/toninasdev/tampermonkey-skripte/main/scripts/notebooklm.user.js
-// @updateURL    https://raw.githubusercontent.com/toninasdev/tampermonkey-skripte/main/scripts/notebooklm.user.js
+// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
+// @updateURL    https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/notebooklm.user.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
 // @grant        GM_getValue
