@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Translate
 // @namespace    https://translate.google.com/
-// @version      1.0.4
-// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview.
+// @version      1.0.5
+// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview. API-Key wird in Tampermonkey gespeichert.
 // @match        https://translate.google.com/*
 // @match        https://www.translate.google.com/*
 // @match        https://translate.google.de/*
@@ -10,6 +10,8 @@
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -19,11 +21,12 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key
   // ============================================================
   // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const GEMINI_API_KEY_DEFAULT = "hier".trim();
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
+  const API_KEY_STORAGE_KEY = "translateGeminiApiKey";
 
   // ============================================================
   // UI POSITION
@@ -101,6 +104,58 @@
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // ============================================================
+  // API-Key Storage (Tampermonkey)
+  // ============================================================
+  function readStoredApiKey() {
+    try {
+      if (typeof GM_getValue === "function") {
+        return String(GM_getValue(API_KEY_STORAGE_KEY, "") || "").trim();
+      }
+    } catch {}
+
+    try {
+      return String(localStorage.getItem(API_KEY_STORAGE_KEY) || "").trim();
+    } catch {}
+
+    return "";
+  }
+
+  function writeStoredApiKey(key) {
+    const cleanKey = String(key || "").trim();
+    try {
+      if (typeof GM_setValue === "function") {
+        GM_setValue(API_KEY_STORAGE_KEY, cleanKey);
+        return;
+      }
+    } catch {}
+
+    try {
+      localStorage.setItem(API_KEY_STORAGE_KEY, cleanKey);
+    } catch {}
+  }
+
+  function getEffectiveApiKey() {
+    return readStoredApiKey() || GEMINI_API_KEY_DEFAULT;
+  }
+
+  function requestApiKey() {
+    const existing = readStoredApiKey();
+    const input = prompt(
+      "Bitte Gemini API-Key eingeben (wird in Tampermonkey gespeichert):",
+      existing || ""
+    );
+    if (input === null) return "";
+    const cleaned = String(input || "").trim();
+    if (cleaned) {
+      writeStoredApiKey(cleaned);
+      showToast("✅ API-Key gespeichert.", 2600);
+      return cleaned;
+    }
+    showToast("⚠️ API-Key leer. Vorgang abgebrochen.", 3200);
+    return "";
+  }
 
   // ============================================================
   // Prompt Finder (Fallback) – wir nutzen weiterhin das zuletzt fokussierte Feld
@@ -489,7 +544,16 @@
   }
 
   function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+    let apiKey = getEffectiveApiKey();
+    if (!apiKey || apiKey.toLowerCase().includes("key hier") || apiKey.toLowerCase().includes("hier")) {
+      apiKey = requestApiKey();
+    }
+
+    if (!apiKey) {
+      return Promise.reject("API-Key fehlt oder Eingabe abgebrochen.");
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -548,9 +612,6 @@
       throw err;
     });
 
-    if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_KEY_HERE") || GEMINI_API_KEY.toLowerCase().includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
@@ -991,6 +1052,13 @@ ${text}
   function boot() {
     if (!supportedSpeech) {
       showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
+    }
+
+    if (!getEffectiveApiKey()) {
+      showToast("🔑 API-Key fehlt. Eingabe wird abgefragt…", 3200);
+      setTimeout(() => {
+        if (!getEffectiveApiKey()) requestApiKey();
+      }, 800);
     }
 
     micBtn = document.createElement("button");
