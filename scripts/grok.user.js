@@ -7,6 +7,10 @@
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM.getValue
+// @grant        GM.setValue
 // @connect      generativelanguage.googleapis.com
 // @connect      *.googleapis.com
 // @connect      googleapis.com
@@ -16,10 +20,10 @@
   "use strict";
 
   // ============================================================
-  // 🔑 NUR HIER EINTRAGEN
+  // 🔑 API-Key wird einmal abgefragt und in Tampermonkey gespeichert
   // ============================================================
-  // ⚠️ WICHTIG: API-Key NICHT öffentlich posten. Wenn der Key geleakt ist: rotieren.
-  const GEMINI_API_KEY = "hier".trim();
+  const GEMINI_KEY_STORAGE = "tm_grok_gemini_api_key";
+  let cachedGeminiKey = "";
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
@@ -118,6 +122,57 @@
       .trim();
   }
 
+    function isPlaceholderKey(key) {
+    const keyLower = String(key || "").trim().toLowerCase();
+    return (
+      !keyLower ||
+      keyLower === "hier" ||
+      keyLower.includes("paste_your_key_here") ||
+      keyLower.includes("your_api_key_here") ||
+      keyLower.includes("key hier")
+    );
+  }
+
+  function readStoredGeminiKey() {
+    if (typeof GM_getValue === "function") return GM_getValue(GEMINI_KEY_STORAGE, "");
+    if (typeof GM !== "undefined" && typeof GM.getValue === "function") return GM.getValue(GEMINI_KEY_STORAGE, "");
+    return "";
+  }
+
+  async function writeStoredGeminiKey(value) {
+    if (typeof GM_setValue === "function") {
+      GM_setValue(GEMINI_KEY_STORAGE, value);
+      return;
+    }
+    if (typeof GM !== "undefined" && typeof GM.setValue === "function") {
+      await GM.setValue(GEMINI_KEY_STORAGE, value);
+    }
+  }
+
+  async function getGeminiApiKey() {
+    let key = cachedGeminiKey || "";
+    if (!key) {
+      const stored = await readStoredGeminiKey();
+      key = String(stored || "").trim();
+    }
+
+    if (isPlaceholderKey(key)) {
+      const input = window.prompt(
+        "Bitte gib deinen Gemini API-Key ein.\nDer Key wird einmalig in Tampermonkey gespeichert."
+      );
+      if (!input) return "";
+      key = String(input || "").trim();
+      if (!isPlaceholderKey(key)) {
+        cachedGeminiKey = key;
+        await writeStoredGeminiKey(key);
+      }
+    } else {
+      cachedGeminiKey = key;
+    }
+
+    return key;
+  }
+  
   // Vergleich tolerant gegen unterschiedliche Absatz-Kodierung (<p> vs \n\n)
   function normalizeForCompare(s) {
     return cleanText(s)
@@ -588,8 +643,13 @@
     return "";
   }
 
-  function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+  async function geminiGenerate(userPrompt, { temperature = 0.05, maxOutputTokens = 2048 } = {}) {
+    const apiKey = await getGeminiApiKey();
+    if (isPlaceholderKey(apiKey)) {
+      return Promise.reject("API-Key fehlt oder ist ungültig.");
+    }
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const payload = {
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
@@ -648,11 +708,6 @@
       throw err;
     });
 
-    // Placeholder-Erkennung etwas robuster
-    const keyLower = String(GEMINI_API_KEY || "").trim().toLowerCase();
-    if (!GEMINI_API_KEY || keyLower === "hier" || keyLower.includes("paste_your_key_here") || keyLower.includes("your_api_key_here") || keyLower.includes("key hier")) {
-      return Promise.reject("API-Key fehlt oder Platzhalter nicht ersetzt.");
-    }
     return attempt(0);
   }
 
