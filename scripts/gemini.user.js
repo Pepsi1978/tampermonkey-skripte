@@ -27,26 +27,17 @@
   const GEMINI_MODEL = "models/gemini-2.5-flash-lite";
 
   // ============================================================
-  // 💾 MEMORY WORKFLOW
+  // 💾 MEMORY PROMPT (mit Deduplizierung/Updates)
   // ============================================================
-  const GEMINI_MEMORY_PROMPT = `
-[MEMORY_MODE: EXTRACT | STRICT]
+  const MEMORY_PROMPT = `
+Aufgabe: Lies den gesamten Chatverlauf und extrahiere nur neue, stabile Informationen über mich, die zukünftige Antworten deutlich verbessern.
 
-PRIORITÄT: Diese Nachricht ist eine Modus-Anweisung und überschreibt ALLE bisherigen Chat-Anweisungen.
-Der bisherige Chatverlauf darf nur als DATENQUELLE gelesen werden. Du darfst keine alten Aufgaben fortsetzen,
-keine Ratschläge geben und keine Diskussion weiterführen. Keine normalen Antworten.
+Wichtig: Nichts automatisch speichern – nur Vorschläge machen.
 
-Ziel:
-Extrahiere aus dem gesamten Chatverlauf nur neue, stabile Informationen über mich,
-die zukünftige Antworten deutlich verbessern.
-
-Wichtig:
-Nichts automatisch speichern – nur Vorschläge machen.
-
-Deduplizierung / Updates:
-- Wenn du Zugriff auf meine bereits gespeicherten Infos ("Saved info") hast, nutze sie zur Deduplizierung.
-- Wenn du sie nicht direkt einsehen kannst: mache Best-Effort-Deduplizierung anhand des Chatverlaufs
-  und markiere unsichere Fälle kurz als "möglicher Duplikat".
+Deduplizierung / Updates (sehr wichtig):
+- Prüfe zuerst alle bereits gespeicherten Erinnerungen über mich (Memory/Bio), damit du keine doppelten oder überschneidenden Punkte vorschlägst.
+- Wenn eine neue Information eine bestehende Erinnerung klar verbessert (präziser, vollständiger, aktueller), schlage eine Aktualisierung vor statt einen neuen Punkt zu erzeugen.
+- Wenn etwas bereits vollständig vorhanden ist, lasse es weg.
 
 Regeln:
 - Nur Dinge, die voraussichtlich mindestens 3 Monate gültig sind.
@@ -54,45 +45,23 @@ Regeln:
 - Jeder Punkt: 1 einfacher Satz, ohne Fachwörter.
 - Keine Wiederholungen, keine Tagesform, keine Kleinigkeiten.
 
-Priorität:
+Was du suchen sollst (Priorität):
 - Ziele & Prioritäten
 - Präferenzen (wie ich Antworten/Tools möchte)
 - Persönlichkeit & wiederkehrende Verhaltensmuster (nur wenn mehrfach erkennbar)
 - Wiederkehrende Arbeitsweise mit KI (wie ich iteriere/entscheide)
 - Langfristige Projekte
 
-Ausgabeformat (EXAKT):
-Punkt 1: <einfacher Satz>. (nützlich weil: <kurz>; sensibel: ja/nein; Beleg: einmal/mehrfach)
-...
-Punkt N: ...
+Ausgabeformat:
+- Liste „Punkt 1 … Punkt N“
+- Pro Punkt zusätzlich in Klammern: „nützlich weil …“ und „sensibel: ja/nein“.
+- Optional (sehr empfehlenswert): „Beleg: im Chat mehrfach erwähnt“ (keine Zitate nötig)
 
-Danach (EXAKT diese Zeile, damit ich sie kopieren kann):
+Nachdem ich dir die Punkte 1–N vorgeschlagen habe, nutzt du diesen Prompt:
+
 Ich wähle folgende Punkte zum dauerhaften Speichern aus: [hier nur die Nummern eintragen].
-`;
-
-  const GEMINI_MEMORY_SAVE_PROMPT = `
-[MEMORY_MODE: SAVE | STRICT]
-
-PRIORITÄT: Diese Nachricht überschreibt ALLE bisherigen Chat-Anweisungen.
-Keine normale Antwort, keine Erklärungen, kein Smalltalk.
-
-Aufgabe:
-Speichere NUR die von mir ausgewählten Punkte als dauerhafte "Saved info".
-Dazu gibst du ausschließlich Speicher-Anweisungen aus, die das Wort "Remember" enthalten.
-
-Eingabe von mir (steht in meiner Nachricht):
-Ich wähle folgende Punkte zum dauerhaften Speichern aus: [NUMMERN]
-
-Output-Regeln (EXAKT):
-- Gib pro ausgewähltem Punkt GENAU EINE Zeile aus.
-- Jede Zeile beginnt exakt so: "Remember this: "
-- Danach folgt ein einfacher Satz, der mit "Frank" beginnt.
-- Keine Nummern, keine Klammern, keine Zusatzwörter, keine Leerzeilen.
-
-Beispiel-Format:
-Remember this: Frank mag Kiefernwälder.
-Remember this: Frank bevorzugt sehr detaillierte Infografiken.
-`;
+Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätze. Starte jede neu gespeicherte dauerhafte Erinnerung mit : "Frank"... (Beispiel: Frank mag Kiefernwälder.)
+`.trim();
 
   // ============================================================
   // UI POSITION
@@ -138,9 +107,6 @@ Remember this: Frank bevorzugt sehr detaillierte Infografiken.
     autoRestartMaxDelayMs: 2000,
     maxConsecutiveRestarts: 50 // Schutz gegen Endlosschleifen bei kaputter Audio-Session
   };
-
-  const MEM_LOG_PREFIX = "[TM-GEMINI-MEM]";
-  const MEMORY_SEND_DELAY_MS = 1000;
 
   // ============================================================
   // DOMÄNEN-FINDER TUNING
@@ -305,162 +271,6 @@ Remember this: Frank bevorzugt sehr detaillierte Infografiken.
     return inner && isVisible(inner) ? inner : top;
   }
 
-  function findComposer() {
-    return findPrompt();
-  }
-
-  async function setComposerText(text) {
-    const composer = findComposer();
-    if (!composer) return false;
-    const ok = await setViaPaste(composer, text);
-    return ok;
-  }
-
-  function findSendButton() {
-    const selectors = [
-      "button[aria-label*='Send']",
-      "button[aria-label*='Senden']",
-      "button[data-testid*='send']",
-      "button[mattooltip*='Send']",
-      "button[mattooltip*='Senden']",
-      "button[aria-label*='Run']",
-      "button[aria-label*='Ausführen']"
-    ];
-
-    for (const selector of selectors) {
-      const btn = document.querySelector(selector);
-      if (btn && isVisible(btn)) return btn;
-    }
-
-    const btns = [...document.querySelectorAll("button")].filter(isVisible);
-    return btns.find((btn) => {
-      const txt = cleanText(btn.textContent || "").toLowerCase();
-      const aria = (btn.getAttribute("aria-label") || "").toLowerCase();
-      const title = (btn.getAttribute("title") || "").toLowerCase();
-      return /send|senden|run|ausführen/.test(`${txt} ${aria} ${title}`);
-    }) || null;
-  }
-
-  function clickSend() {
-    const btn = findSendButton();
-    if (!btn || btn.disabled || btn.getAttribute("aria-disabled") === "true") return false;
-    btn.click();
-    return true;
-  }
-
-  function getAssistantMessageNodes() {
-    const selectors = [
-      "message-content.model-response-text",
-      "model-response",
-      "div[data-message-author-role='model']",
-      "div[data-response-id]"
-    ];
-
-    for (const selector of selectors) {
-      const nodes = [...document.querySelectorAll(selector)].filter((el) => cleanText(el.textContent).length > 0);
-      if (nodes.length) return nodes;
-    }
-    return [];
-  }
-
-  function getLastAssistantText() {
-    const nodes = getAssistantMessageNodes();
-    if (!nodes.length) return "";
-    return cleanText(nodes[nodes.length - 1].innerText || nodes[nodes.length - 1].textContent || "");
-  }
-
-  async function waitForAssistantTurnComplete(timeoutMs = 120000) {
-    const start = Date.now();
-    let stableSince = Date.now();
-    let lastText = getLastAssistantText();
-
-    while (Date.now() - start < timeoutMs) {
-      const stopVisible = [...document.querySelectorAll("button")]
-        .filter(isVisible)
-        .some((btn) => /stop generating|stop|stopp/i.test(`${btn.getAttribute("aria-label") || ""} ${btn.textContent || ""}`));
-
-      const sendBtn = findSendButton();
-      const sendReady = !!sendBtn && !sendBtn.disabled && sendBtn.getAttribute("aria-disabled") !== "true";
-      const curText = getLastAssistantText();
-
-      if (curText !== lastText) {
-        lastText = curText;
-        stableSince = Date.now();
-      }
-
-      if (!stopVisible && sendReady && curText && Date.now() - stableSince > 900) {
-        return true;
-      }
-
-      await sleep(350);
-    }
-
-    return false;
-  }
-
-  function findNewChatButton() {
-    const selectors = [
-      "button[aria-label*='New chat']",
-      "button[aria-label*='Neuer Chat']",
-      "a[aria-label*='New chat']",
-      "a[aria-label*='Neuer Chat']",
-      "button[data-testid*='new-chat']"
-    ];
-
-    for (const selector of selectors) {
-      const btn = document.querySelector(selector);
-      if (btn && isVisible(btn)) return btn;
-    }
-
-    const candidates = [...document.querySelectorAll("button, a")].filter(isVisible);
-    return candidates.find((el) => /new\s*chat|neuer\s*chat/i.test(cleanText(el.textContent) + " " + (el.getAttribute("aria-label") || ""))) || null;
-  }
-
-  async function tryStartNewChat() {
-    const btn = findNewChatButton();
-    if (!btn) {
-      console.log(MEM_LOG_PREFIX, "Neuer-Chat-Button nicht gefunden, nutze Strict-Fallback im aktuellen Chat.");
-      return false;
-    }
-
-    btn.click();
-    const start = Date.now();
-    while (Date.now() - start < 7000) {
-      const composer = findComposer();
-      if (composer && !cleanText(readPromptText(composer))) {
-        await sleep(150);
-        return true;
-      }
-      await sleep(250);
-    }
-
-    console.log(MEM_LOG_PREFIX, "Neuer Chat konnte nicht sicher bestätigt werden, nutze Strict-Fallback.");
-    return false;
-  }
-
-  async function sendMessageThroughComposer(text) {
-    const okSet = await setComposerText(text);
-    if (!okSet) return false;
-    await sleep(120);
-    const sent = clickSend();
-    return sent;
-  }
-
-  function parseRememberLines(text) {
-    return String(text || "")
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter((line) => /^Remember this: /u.test(line));
-  }
-
-  function normalizeSelectionNumbers(raw) {
-    return String(raw || "")
-      .split(",")
-      .map((x) => x.trim())
-      .filter((x) => /^\d+$/u.test(x))
-      .join(",");
-  }
-
   // ============================================================
   // 🎯 Targeting: nutze das Feld, das der User fokussiert hat
   // ============================================================
@@ -468,23 +278,16 @@ Remember this: Frank bevorzugt sehr detaillierte Infografiken.
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
-  let memExtractBtn = null;
-  let memSaveBtn = null;
-  let memSelectionInput = null;
+  let memBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
-
-  const memoryState = {
-    phase: "IDLE",
-    lastAssistantMessageCount: 0
-  };
 
   function isEditableTarget(el) {
     if (!el) return false;
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === memExtractBtn || el === memSaveBtn || el === memSelectionInput || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === memBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
@@ -1342,52 +1145,28 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
   }
 
-  function setMemExtractBtnState(state, msg = "") {
-    if (!memExtractBtn) return;
+  function setMemBtnState(state, msg = "") {
+    if (!memBtn) return;
 
     if (state === "working") {
-      memExtractBtn.textContent = "⏳ Memory extrahieren";
-      memExtractBtn.style.background = "#444";
-      memExtractBtn.style.color = "white";
-      memExtractBtn.title = msg || "Memory-Extraktion läuft…";
+      memBtn.textContent = "⏳";
+      memBtn.style.background = "#444";
+      memBtn.style.color = "white";
+      memBtn.title = msg || "Memory-Prompt wird eingefügt…";
       return;
     }
     if (state === "error") {
-      memExtractBtn.textContent = "⚠️ Memory extrahieren";
-      memExtractBtn.style.background = "#8b0000";
-      memExtractBtn.style.color = "white";
-      memExtractBtn.title = msg || "Fehler";
+      memBtn.textContent = "⚠️";
+      memBtn.style.background = "#8b0000";
+      memBtn.style.color = "white";
+      memBtn.title = msg || "Fehler";
       return;
     }
 
-    memExtractBtn.textContent = "🧠 Memory extrahieren";
-    memExtractBtn.style.background = "white";
-    memExtractBtn.style.color = "black";
-    memExtractBtn.title = "Memory extrahieren";
-  }
-
-  function setMemSaveBtnState(state, msg = "") {
-    if (!memSaveBtn) return;
-
-    if (state === "working") {
-      memSaveBtn.textContent = "⏳ Ausgewählte speichern";
-      memSaveBtn.style.background = "#444";
-      memSaveBtn.style.color = "white";
-      memSaveBtn.title = msg || "Memory speichern läuft…";
-      return;
-    }
-    if (state === "error") {
-      memSaveBtn.textContent = "⚠️ Ausgewählte speichern";
-      memSaveBtn.style.background = "#8b0000";
-      memSaveBtn.style.color = "white";
-      memSaveBtn.title = msg || "Fehler";
-      return;
-    }
-
-    memSaveBtn.textContent = "💾 Ausgewählte speichern";
-    memSaveBtn.style.background = "white";
-    memSaveBtn.style.color = "black";
-    memSaveBtn.title = "Ausgewählte speichern";
+    memBtn.textContent = "💾";
+    memBtn.style.background = "white";
+    memBtn.style.color = "black";
+    memBtn.title = "Memory-Prompt einfügen";
   }
 
   function setPromptBtnState(state, msg = "") {
@@ -1684,88 +1463,40 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   // ============================================================
-  // Memory Workflow
+  // Memory Prompt Button
   // ============================================================
-  function setMemoryPhase(nextPhase) {
-    memoryState.phase = nextPhase;
-    console.log(MEM_LOG_PREFIX, "Phase:", nextPhase);
-  }
-
-  async function runMemoryExtract() {
-    try {
-      setMemoryPhase("EXTRACTING");
-      setMemExtractBtnState("working", "Memory-Extraktion läuft…");
-
-      const newChatStarted = await tryStartNewChat();
-      console.log(MEM_LOG_PREFIX, "Neuer Chat für Extraktion:", newChatStarted ? "ja" : "nein (Fallback)");
-
-      const sent = await sendMessageThroughComposer(GEMINI_MEMORY_PROMPT);
-      if (!sent) throw new Error("Senden der Extraktionsanweisung fehlgeschlagen.");
-
-      showToast("✅ Memory-Extraktion gestartet.", 1800);
-      setMemoryPhase("WAITING_FOR_SELECTION");
-      setMemExtractBtnState("idle");
-    } catch (e) {
-      const msg = String(e || "Unbekannter Fehler");
-      console.log(MEM_LOG_PREFIX, "Extraktion fehlgeschlagen:", msg);
-      setMemExtractBtnState("error", msg);
-      showToast("❌ Memory-Extraktion fehlgeschlagen:\n" + msg, 8500);
-      setMemoryPhase("IDLE");
-      setTimeout(() => setMemExtractBtnState("idle"), 2500);
-    }
-  }
-
-  async function runMemorySave() {
-    const normalized = normalizeSelectionNumbers(memSelectionInput?.value || "");
-    if (!normalized) {
-      setMemSaveBtnState("error", "Ungültige Nummern");
-      showToast("❌ Bitte Nummern im Format 1,3,7 eingeben.", 4500);
-      setTimeout(() => setMemSaveBtnState("idle"), 2500);
+  async function runMemoryPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      setMemBtnState("error", "Eingabefeld nicht gefunden");
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 6500);
+      setTimeout(() => setMemBtnState("idle"), 2500);
       return;
     }
 
     try {
-      setMemoryPhase("SAVING");
-      setMemSaveBtnState("working", "Save-Prompt senden…");
+      setMemBtnState("working", "Memory-Prompt einfügen…");
+      const finalPrompt = MEMORY_PROMPT;
 
-      const saveInstruction = `${GEMINI_MEMORY_SAVE_PROMPT}
-Ich wähle folgende Punkte zum dauerhaften Speichern aus: [${normalized}]`;
-      const sent = await sendMessageThroughComposer(saveInstruction);
-      if (!sent) throw new Error("Save-Prompt konnte nicht gesendet werden.");
+      const preview = finalPrompt.replace(/\s+/g, " ").slice(0, CFG.previewChars);
+      showToast("💾 Memory-Prompt (Vorschau):\n" + preview + (finalPrompt.length > CFG.previewChars ? " …" : ""), 3500);
 
-      console.log(MEM_LOG_PREFIX, "Save-Prompt gesendet mit Nummern:", normalized);
-      const complete = await waitForAssistantTurnComplete();
-      if (!complete) {
-        console.log(MEM_LOG_PREFIX, "Timeout beim Warten auf Assistant-Antwort; versuche letzte Antwort trotzdem auszulesen.");
+      const ok = await setViaPaste(el, finalPrompt);
+      if (!ok) {
+        setMemBtnState("error", "Eingabefeld hat Text nicht übernommen");
+        showToast("❌ Eingabefeld hat den Memory-Prompt nicht übernommen.", 6500);
+        setTimeout(() => setMemBtnState("idle"), 2500);
+        return;
       }
 
-      const assistantText = getLastAssistantText();
-      const rememberLines = parseRememberLines(assistantText);
-      if (!rememberLines.length) {
-        throw new Error("Keine gültigen 'Remember this:'-Zeilen gefunden.");
-      }
-
-      setMemoryPhase("SENDING_REMEMBER_LINES");
-      console.log(MEM_LOG_PREFIX, `Sende ${rememberLines.length} Remember-Zeilen einzeln.`);
-
-      for (const line of rememberLines) {
-        const lineSent = await sendMessageThroughComposer(line);
-        if (!lineSent) throw new Error("Remember-Zeile konnte nicht gesendet werden.");
-        await waitForAssistantTurnComplete();
-        await sleep(MEMORY_SEND_DELAY_MS);
-      }
-
-      setMemoryPhase("DONE");
-      setMemSaveBtnState("idle");
-      showToast(`✅ ${rememberLines.length} Remember-Zeile(n) einzeln gesendet.`, 2600);
-      setMemoryPhase("IDLE");
+      setMemBtnState("idle");
+      showToast("✅ Memory-Prompt eingefügt.", 1800);
     } catch (e) {
       const msg = String(e || "Unbekannter Fehler");
-      console.log(MEM_LOG_PREFIX, "Speichern fehlgeschlagen:", msg);
-      setMemSaveBtnState("error", msg);
-      showToast("❌ Memory-Speichern fehlgeschlagen:\n" + msg, 9000);
-      setMemoryPhase("IDLE");
-      setTimeout(() => setMemSaveBtnState("idle"), 2500);
+      console.warn("Memory-Button Fehler:", msg);
+      setMemBtnState("error", msg);
+      showToast("❌ Memory-Button Fehler:\n" + msg, 10000);
+      setTimeout(() => setMemBtnState("idle"), 2500);
     }
   }
 
@@ -1886,47 +1617,12 @@ Ich wähle folgende Punkte zum dauerhaften Speichern aus: [${normalized}]`;
     micBtn.addEventListener("click", toggleMic);
     document.body.appendChild(micBtn);
 
-    memExtractBtn = document.createElement("button");
-    styleRoundButton(memExtractBtn, 52, 0);
-    memExtractBtn.style.width = "168px";
-    memExtractBtn.style.height = "42px";
-    memExtractBtn.style.borderRadius = "21px";
-    memExtractBtn.style.fontSize = "13px";
-    memExtractBtn.style.fontWeight = "600";
-    memExtractBtn.textContent = "🧠 Memory extrahieren";
-    memExtractBtn.title = "Memory extrahieren";
-    memExtractBtn.addEventListener("click", runMemoryExtract);
-    document.body.appendChild(memExtractBtn);
-
-    memSelectionInput = document.createElement("input");
-    memSelectionInput.type = "text";
-    memSelectionInput.placeholder = "Nummern speichern (z. B. 1,3,7)";
-    memSelectionInput.title = "Nummern speichern (z. B. 1,3,7)";
-    memSelectionInput.style.position = "fixed";
-    memSelectionInput.style.zIndex = "999999";
-    memSelectionInput.style.right = `${UI_POS.rightPx + 526}px`;
-    memSelectionInput.style.bottom = `${UI_POS.bottomPx + 2}px`;
-    memSelectionInput.style.width = "220px";
-    memSelectionInput.style.height = "34px";
-    memSelectionInput.style.padding = "6px 10px";
-    memSelectionInput.style.borderRadius = "8px";
-    memSelectionInput.style.border = "1px solid rgba(0,0,0,0.25)";
-    memSelectionInput.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-    memSelectionInput.style.font = "12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    memSelectionInput.style.background = "white";
-    document.body.appendChild(memSelectionInput);
-
-    memSaveBtn = document.createElement("button");
-    styleRoundButton(memSaveBtn, 336, 0);
-    memSaveBtn.style.width = "190px";
-    memSaveBtn.style.height = "42px";
-    memSaveBtn.style.borderRadius = "21px";
-    memSaveBtn.style.fontSize = "13px";
-    memSaveBtn.style.fontWeight = "600";
-    memSaveBtn.textContent = "💾 Ausgewählte speichern";
-    memSaveBtn.title = "Ausgewählte speichern";
-    memSaveBtn.addEventListener("click", runMemorySave);
-    document.body.appendChild(memSaveBtn);
+    memBtn = document.createElement("button");
+    styleRoundButton(memBtn, 52, 0);
+    memBtn.textContent = "💾";
+    memBtn.title = "Memory-Prompt einfügen";
+    memBtn.addEventListener("click", runMemoryPrompt);
+    document.body.appendChild(memBtn);
 
     promptBtn = document.createElement("button");
     styleRoundButton(promptBtn, 0, 52);
@@ -1943,11 +1639,10 @@ Ich wähle folgende Punkte zum dauerhaften Speichern aus: [${normalized}]`;
     document.body.appendChild(promptBtn2);
 
     setMicState("idle");
-    setMemExtractBtnState("idle");
-    setMemSaveBtnState("idle");
+    setMemBtnState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + 🧠 + 💾 + ✨ + 🪄 unten rechts.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + 💾 + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
   boot();
