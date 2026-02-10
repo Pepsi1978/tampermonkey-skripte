@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Gemini v1.0.5 V.1.0.6
+// @name         Gemini V.1.0.6
 // @namespace    https://gemini.google.com/
 // @version      1.0.6
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
