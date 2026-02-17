@@ -290,6 +290,7 @@
 
   // UI Button
   let micBtn = null;
+  let clearBtn = null;
 
   function isEditableTarget(el) {
     if (!el) return false;
@@ -1128,6 +1129,23 @@ ${text}
     else stopListening();
   }
 
+
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
+  }
+
   // ============================================================
   // Boot
   // ============================================================
@@ -1150,8 +1168,16 @@ ${text}
     micBtn.addEventListener("click", toggleMic);
     document.body.appendChild(micBtn);
 
+    clearBtn = document.createElement("button");
+    styleRoundButton(clearBtn, 52, 0);
+    clearBtn.textContent = "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.addEventListener("click", runClearPrompt);
+    document.body.appendChild(clearBtn);
+
     setMicState("idle");
-    showToast("✅ Script aktiv. 🎙️ unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + ❌ unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
 
     // SPA/DOM-Rerender Schutz: falls Google das Element entfernt, hängen wir es wieder an
     const ensureUI = () => {

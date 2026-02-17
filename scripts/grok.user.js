@@ -90,6 +90,7 @@
     root: "tm-grok-ui-root",
     toast: "tm-grok-toast",
     mic: "tm-grok-mic",
+    clear: "tm-grok-clear",
     prompt: "tm-grok-prompt",
     prompt2: "tm-grok-prompt2"
   };
@@ -364,6 +365,7 @@
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
+  let clearBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
   let uiRoot = null;
@@ -373,7 +375,7 @@
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === clearBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
@@ -1733,6 +1735,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
 
     // Prompt (Frank)
+    const clearExisting = document.getElementById(UI_IDS.clear);
+    if (!clearExisting) {
+      clearBtn = document.createElement("button");
+      clearBtn.id = UI_IDS.clear;
+      styleRoundButton(clearBtn, 52, 0);
+      clearBtn.textContent = "❌";
+      clearBtn.style.color = "#c40000";
+      clearBtn.title = "Sprechblase leeren";
+      clearBtn.addEventListener("click", runClearPrompt);
+      uiRoot.appendChild(clearBtn);
+    } else {
+      clearBtn = clearExisting;
+      styleRoundButton(clearBtn, 52, 0);
+    }
+
+    // Prompt (Frank)
     const p1Existing = document.getElementById(UI_IDS.prompt);
     if (!p1Existing) {
       promptBtn = document.createElement("button");
@@ -1798,10 +1816,11 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // DOM watchdog: wenn Grok den DOM remounted und Buttons verschwinden → neu injizieren
     const mo = new MutationObserver(() => {
       const mic = document.getElementById(UI_IDS.mic);
+      const clear = document.getElementById(UI_IDS.clear);
       const p1 = document.getElementById(UI_IDS.prompt);
       const p2 = document.getElementById(UI_IDS.prompt2);
       const t = document.getElementById(UI_IDS.toast);
-      if (!mic || !p1 || !p2 || !t) scheduleEnsureUI();
+      if (!mic || !clear || !p1 || !p2 || !t) scheduleEnsureUI();
     });
     mo.observe(document.documentElement, { childList: true, subtree: true });
 
@@ -1809,6 +1828,23 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     ensureUI();
     setTimeout(ensureUI, 600);
     setTimeout(ensureUI, 1600);
+  }
+
+
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
   }
 
   // ============================================================
@@ -1820,7 +1856,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
 
     installSpaWatchdog();
-    showToast("✅ Script aktiv. 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
   boot();
