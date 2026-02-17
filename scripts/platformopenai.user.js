@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Plattform Open AI
+// @name         Plattform Open AI V.1.0.6
 // @namespace    https://www.platform.openai.com/
-// @version      1.0.5
+// @version      1.0.6
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://platform.openai.com/chat/*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/platformopenai.user.js
