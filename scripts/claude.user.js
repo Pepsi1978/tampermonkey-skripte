@@ -101,6 +101,7 @@
     autoRestartBaseDelayMs: 250,
     autoRestartMaxDelayMs: 2000,
     maxConsecutiveRestarts: 50, // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    recentFinalMemory: 8,
 
     // 🔧 UI-Reinject / SPA-Stabilität
     uiWatchDebounceMs: 250
@@ -178,6 +179,47 @@
 
   function cleanText(s) {
     return String(s || "").replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+  }
+
+
+  function normalizeForSpeechDedupe(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/[.,!?;:\-–—()\[\]{}"'„“”‚‘’`´]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function trimRepeatedPrefix(prev, current) {
+    const p = cleanText(prev);
+    const c = cleanText(current);
+    if (!c) return "";
+    if (!p) return c;
+
+    if (c === p) return "";
+    if (c.startsWith(p)) return cleanText(c.slice(p.length));
+
+    const pNorm = normalizeForSpeechDedupe(p);
+    const cNorm = normalizeForSpeechDedupe(c);
+    if (!pNorm || !cNorm) return c;
+
+    if (cNorm === pNorm) return "";
+    return c;
+  }
+
+  function appearsAlreadyInTail(baseText, snippet) {
+    const text = cleanText(baseText);
+    const snip = cleanText(snippet);
+    if (!text || !snip) return false;
+
+    const tailLen = Math.max((CFG.overlapMaxChars || 80) * 4, snip.length * 3, 240);
+    const tail = text.slice(-tailLen);
+
+    const tailNorm = normalizeForSpeechDedupe(tail);
+    const snippetNorm = normalizeForSpeechDedupe(snip);
+    if (!tailNorm || !snippetNorm) return false;
+
+    return tailNorm.includes(snippetNorm);
   }
 
   function isTextInput(el) {
@@ -1365,9 +1407,32 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
   let restartCount = 0;
   let restartTimer = null;
+  let lastFinalTranscript = "";
+  let recentFinalNorm = [];
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+  }
+
+  function resetSpeechDedupeState() {
+    lastFinalTranscript = "";
+    recentFinalNorm = [];
+  }
+
+  function rememberFinalNorm(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return;
+    recentFinalNorm.push(n);
+    const maxKeep = CFG.recentFinalMemory || 8;
+    if (recentFinalNorm.length > maxKeep) {
+      recentFinalNorm = recentFinalNorm.slice(-maxKeep);
+    }
+  }
+
+  function wasRecentlySeenFinal(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return false;
+    return recentFinalNorm.includes(n);
   }
 
   function scheduleAutoRestart(reason = "") {
@@ -1481,8 +1546,24 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          const t = cleanText(e.results[i][0].transcript);
-          if (t) insertText(target, t);
+          const raw = cleanText(e.results[i][0].transcript);
+          if (!raw) continue;
+
+          let t = trimRepeatedPrefix(lastFinalTranscript, raw);
+          if (!t && raw) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          const currentText = readPromptText(target);
+          if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          insertText(target, t);
+          rememberFinalNorm(t);
+          lastFinalTranscript = raw;
         }
       }
     };
@@ -1573,6 +1654,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     stopRequested = false;
     restartCount = 0;
     clearTimeout(restartTimer);
+    resetSpeechDedupeState();
 
     tryStartRecognition(false, "");
   }
