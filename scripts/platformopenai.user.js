@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Plattform Open AI V.1.0.7
+// @name         Platform OAI V.1.0.7
 // @namespace    https://www.platform.openai.com/
 // @version      1.0.7
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
