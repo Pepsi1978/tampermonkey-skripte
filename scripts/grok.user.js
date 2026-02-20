@@ -230,14 +230,19 @@
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
+
+  function hasContentEditableEnabled(el) {
+    const raw = el?.getAttribute?.("contenteditable");
+    if (raw == null) return false;
+    const ce = String(raw).toLowerCase();
+    return ce === "" || ce === "true" || ce === "plaintext-only";
+  }
+
   function isLikelyEditable(el) {
     if (!el) return false;
     if (isTextInput(el)) return true;
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
     return false;
   }
 
@@ -336,7 +341,10 @@
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
     ].filter(Boolean).find(isVisible);
 
     if (direct) return direct;
@@ -393,11 +401,7 @@
     }
 
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
 
     return false;
   }
@@ -406,10 +410,13 @@
     const path = typeof e.composedPath === "function" ? e.composedPath() : null;
     if (Array.isArray(path)) {
       for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
+        if (!node || node.nodeType !== 1) continue;
+        const resolved = resolveEditableTarget(node);
+        if (isEditableTarget(resolved) && isVisible(resolved)) return resolved;
       }
     }
-    const t = e.target;
+
+    const t = resolveEditableTarget(e.target);
     if (isEditableTarget(t) && isVisible(t)) return t;
     return null;
   }
