@@ -230,14 +230,19 @@
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
+
+  function hasContentEditableEnabled(el) {
+    const raw = el?.getAttribute?.("contenteditable");
+    if (raw == null) return false;
+    const ce = String(raw).toLowerCase();
+    return ce === "" || ce === "true" || ce === "plaintext-only";
+  }
+
   function isLikelyEditable(el) {
     if (!el) return false;
     if (isTextInput(el)) return true;
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
     return false;
   }
 
@@ -336,7 +341,10 @@
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
     ].filter(Boolean).find(isVisible);
 
     if (direct) return direct;
@@ -354,8 +362,8 @@
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
 
     const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    const resolved = resolveEditableTarget(top);
+    return resolved && isVisible(resolved) ? resolved : top;
   }
 
   // ============================================================
@@ -393,11 +401,7 @@
     }
 
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
 
     return false;
   }
@@ -406,23 +410,57 @@
     const path = typeof e.composedPath === "function" ? e.composedPath() : null;
     if (Array.isArray(path)) {
       for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
+        if (!node || node.nodeType !== 1) continue;
+        const resolved = resolveEditableTarget(node);
+        if (isEditableTarget(resolved) && isVisible(resolved)) return resolved;
       }
     }
-    const t = e.target;
+
+    const t = resolveEditableTarget(e.target);
     if (isEditableTarget(t) && isVisible(t)) return t;
     return null;
   }
 
+  function resolveEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return null;
+
+    if (isTextInput(el) || el.isContentEditable || hasContentEditableEnabled(el)) return el;
+
+    const innerCandidates = el.querySelectorAll?.(
+      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']"
+    ) || [];
+    for (const inner of innerCandidates) {
+      if (!inner || inner.nodeType !== 1) continue;
+      if (isTextInput(inner) || inner.isContentEditable || hasContentEditableEnabled(inner)) return inner;
+    }
+
+    let parent = el.parentElement;
+    let depth = 0;
+    while (parent && depth < 5) {
+      if (isTextInput(parent) || parent.isContentEditable || hasContentEditableEnabled(parent)) return parent;
+      parent = parent.parentElement;
+      depth++;
+    }
+
+    return null;
+  }
+
   function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+    const resolved = resolveEditableTarget(el);
+    if (isEditableTarget(resolved) && isVisible(resolved)) lastUserEditable = resolved;
   }
 
   function getUserTargetEditable() {
-    const active = document.activeElement;
+    const active = resolveEditableTarget(document.activeElement);
     if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+
+    const remembered = resolveEditableTarget(lastUserEditable);
+    if (isEditableTarget(remembered) && isVisible(remembered)) return remembered;
+
+    const fallback = resolveEditableTarget(findPrompt());
+    if (isEditableTarget(fallback) && isVisible(fallback)) return fallback;
+
+    return null;
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
@@ -557,9 +595,35 @@
     return ok;
   }
 
-  function replaceAllContentEditable(el, text) {
+  function selectWholeEditable(el) {
+    if (!el) return;
+
+    if (isTextInput(el)) {
+      const len = String(el.value || "").length;
+      try { el.focus(); } catch {}
+      try { el.setSelectionRange(0, len); } catch {}
+      return;
+    }
+
+    if (!isLikelyEditable(el)) return;
+
     try { el.focus(); } catch {}
-    try { document.execCommand("selectAll", false, null); } catch {}
+
+    try {
+      const selection = window.getSelection?.();
+      if (!selection) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } catch {}
+  }
+
+  function replaceAllContentEditable(el, text) {
+    el = resolveEditableTarget(el) || el;
+    try { el.focus(); } catch {}
+    selectWholeEditable(el);
+    try { document.execCommand("delete", false, null); } catch {}
     let ok = false;
 
     // insertText ist für contenteditable meist am zuverlässigsten für \n
@@ -577,10 +641,10 @@
 
   async function setViaPaste(el, text) {
     const target = String(text || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    el = resolveEditableTarget(el) || el;
     if (!el) return false;
 
-    el.focus();
-    try { document.execCommand("selectAll", false, null); } catch {}
+    selectWholeEditable(el);
 
     let pasted = false;
 
@@ -588,6 +652,7 @@
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(target);
+        selectWholeEditable(el);
         try { pasted = document.execCommand("paste"); } catch {}
       }
     } catch {}
@@ -595,14 +660,24 @@
     if (!pasted) {
       const okCopy = await copyToClipboardFallback(target);
       if (okCopy) {
+        selectWholeEditable(el);
         try { pasted = document.execCommand("paste"); } catch {}
       }
     }
 
     // 2) wenn Paste blockiert ist: Events anstoßen (ohne Format zu zerstören)
     if (!pasted) {
-      dispatchReactInput(el, "insertFromPaste", target);
-      pasted = true;
+      if (isTextInput(el)) {
+        const setter =
+          Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
+          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+        if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
+        else el.value = target;
+        dispatchReactInput(el, "insertFromPaste", target);
+        pasted = true;
+      } else {
+        pasted = replaceAllContentEditable(el, target);
+      }
     }
 
     await sleep(CFG.postPasteDelayMs);
