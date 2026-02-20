@@ -354,8 +354,8 @@
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
 
     const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    const resolved = resolveEditableTarget(top);
+    return resolved && isVisible(resolved) ? resolved : top;
   }
 
   // ============================================================
@@ -414,15 +414,50 @@
     return null;
   }
 
+  function resolveEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return null;
+
+    if (isTextInput(el) || el.isContentEditable) return el;
+
+    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
+    if (ce === "true" || ce === "") return el;
+
+    const inner = el.querySelector?.(
+      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [role='textbox']"
+    );
+    if (inner && (isTextInput(inner) || inner.isContentEditable || (inner.getAttribute?.("contenteditable") || "").toLowerCase() === "true")) {
+      return inner;
+    }
+
+    let parent = el.parentElement;
+    let depth = 0;
+    while (parent && depth < 5) {
+      if (isTextInput(parent) || parent.isContentEditable) return parent;
+      const parentCE = (parent.getAttribute?.("contenteditable") || "").toLowerCase();
+      if (parentCE === "true" || parentCE === "") return parent;
+      parent = parent.parentElement;
+      depth++;
+    }
+
+    return isEditableTarget(el) ? el : null;
+  }
+
   function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+    const resolved = resolveEditableTarget(el);
+    if (isEditableTarget(resolved) && isVisible(resolved)) lastUserEditable = resolved;
   }
 
   function getUserTargetEditable() {
-    const active = document.activeElement;
+    const active = resolveEditableTarget(document.activeElement);
     if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+
+    const remembered = resolveEditableTarget(lastUserEditable);
+    if (isEditableTarget(remembered) && isVisible(remembered)) return remembered;
+
+    const fallback = resolveEditableTarget(findPrompt());
+    if (isEditableTarget(fallback) && isVisible(fallback)) return fallback;
+
+    return null;
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
@@ -582,6 +617,7 @@
   }
 
   function replaceAllContentEditable(el, text) {
+    el = resolveEditableTarget(el) || el;
     try { el.focus(); } catch {}
     selectWholeEditable(el);
     try { document.execCommand("delete", false, null); } catch {}
@@ -602,6 +638,7 @@
 
   async function setViaPaste(el, text) {
     const target = String(text || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    el = resolveEditableTarget(el) || el;
     if (!el) return false;
 
     selectWholeEditable(el);
