@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Grok V.1.0.7
+// @name         Grok V.1.0.9
 // @namespace    https://grok.com/
-// @version      1.0.7
+// @version      1.0.9
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
@@ -424,25 +424,29 @@
   function resolveEditableTarget(el) {
     if (!el || el.nodeType !== 1) return null;
 
-    if (isTextInput(el) || el.isContentEditable || hasContentEditableEnabled(el)) return el;
+    if (isTextInput(el) || el.isContentEditable) return el;
 
-    const innerCandidates = el.querySelectorAll?.(
-      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']"
-    ) || [];
-    for (const inner of innerCandidates) {
-      if (!inner || inner.nodeType !== 1) continue;
-      if (isTextInput(inner) || inner.isContentEditable || hasContentEditableEnabled(inner)) return inner;
+    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
+    if (ce === "true" || ce === "") return el;
+
+    const inner = el.querySelector?.(
+      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [role='textbox']"
+    );
+    if (inner && (isTextInput(inner) || inner.isContentEditable || (inner.getAttribute?.("contenteditable") || "").toLowerCase() === "true")) {
+      return inner;
     }
 
     let parent = el.parentElement;
     let depth = 0;
     while (parent && depth < 5) {
-      if (isTextInput(parent) || parent.isContentEditable || hasContentEditableEnabled(parent)) return parent;
+      if (isTextInput(parent) || parent.isContentEditable) return parent;
+      const parentCE = (parent.getAttribute?.("contenteditable") || "").toLowerCase();
+      if (parentCE === "true" || parentCE === "") return parent;
       parent = parent.parentElement;
       depth++;
     }
 
-    return null;
+    return isEditableTarget(el) ? el : null;
   }
 
   function rememberEditable(el) {
