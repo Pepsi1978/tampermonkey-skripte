@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Mistral V.1.0.8
+// @name         Mistral V.1.0.9
 // @namespace    https://chat.mistral.ai/chat
 // @version      1.0.8
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
