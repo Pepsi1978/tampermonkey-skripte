@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Grok
+// @name         Grok V.1.1.1
 // @namespace    https://grok.com/
-// @version      1.0.5
+// @version      1.1.1
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
@@ -70,7 +70,8 @@
     autoRestart: true,
     autoRestartBaseDelayMs: 250,
     autoRestartMaxDelayMs: 2000,
-    maxConsecutiveRestarts: 50 // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    maxConsecutiveRestarts: 50, // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    recentFinalMemory: 8
   };
 
   // ============================================================
@@ -89,6 +90,7 @@
     root: "tm-grok-ui-root",
     toast: "tm-grok-toast",
     mic: "tm-grok-mic",
+    clear: "tm-grok-clear",
     prompt: "tm-grok-prompt",
     prompt2: "tm-grok-prompt2"
   };
@@ -122,6 +124,47 @@
       .replace(/\r\n/g, "\n")
       .replace(/\r/g, "\n")
       .trim();
+  }
+
+
+  function normalizeForSpeechDedupe(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/[.,!?;:\-–—()\[\]{}"'„“”‚‘’`´]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function trimRepeatedPrefix(prev, current) {
+    const p = cleanText(prev);
+    const c = cleanText(current);
+    if (!c) return "";
+    if (!p) return c;
+
+    if (c === p) return "";
+    if (c.startsWith(p)) return cleanText(c.slice(p.length));
+
+    const pNorm = normalizeForSpeechDedupe(p);
+    const cNorm = normalizeForSpeechDedupe(c);
+    if (!pNorm || !cNorm) return c;
+
+    if (cNorm === pNorm) return "";
+    return c;
+  }
+
+  function appearsAlreadyInTail(baseText, snippet) {
+    const text = cleanText(baseText);
+    const snip = cleanText(snippet);
+    if (!text || !snip) return false;
+
+    const tailLen = Math.max((CFG.overlapMaxChars || 80) * 4, snip.length * 3, 240);
+    const tail = text.slice(-tailLen);
+
+    const tailNorm = normalizeForSpeechDedupe(tail);
+    const snippetNorm = normalizeForSpeechDedupe(snip);
+    if (!tailNorm || !snippetNorm) return false;
+
+    return tailNorm.includes(snippetNorm);
   }
 
     function isPlaceholderKey(key) {
@@ -187,20 +230,31 @@
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
+
+  function hasContentEditableEnabled(el) {
+    const raw = el?.getAttribute?.("contenteditable");
+    if (raw == null) return false;
+    const ce = String(raw).toLowerCase();
+    return ce === "" || ce === "true" || ce === "plaintext-only";
+  }
+
+  function isRoleTextbox(el) {
+    return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
+  }
+
   function isLikelyEditable(el) {
     if (!el) return false;
     if (isTextInput(el)) return true;
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
+    if (isRoleTextbox(el)) return true;
     return false;
   }
 
   // WICHTIG: Für contenteditable innerText bevorzugen -> behält Zeilenumbrüche bei
   function readPromptText(el) {
     if (!el) return "";
+    el = resolveEditableTarget(el) || el;
     let v = "";
 
     if (isTextInput(el)) {
@@ -293,26 +347,34 @@
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
-    ].filter(Boolean).find(isVisible);
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
+    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
 
     if (direct) return direct;
 
+    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
+      ...document.querySelectorAll("[contenteditable='']"),
+      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
+      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].map(resolveEditableTarget).filter((el) => {
+      if (!el || seen.has(el)) return false;
+      seen.add(el);
+      return isVisible(el) && isEditableTarget(el);
+    });
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-
-    const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    return candidates[0] || null;
   }
 
   // ============================================================
@@ -322,38 +384,44 @@
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
+  let clearBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
   let uiRoot = null;
+
+  function isAriaReadonly(el) {
+    return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
+  }
 
   function isEditableTarget(el) {
     if (!el) return false;
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === clearBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
     if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       return true;
     }
 
     if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       const type = (el.type || "text").toLowerCase();
       const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
       return ok;
     }
 
     if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (hasContentEditableEnabled(el)) return true;
+    if (isRoleTextbox(el)) {
+      const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (inner) return isEditableTarget(inner);
+      return false;
+    }
 
     return false;
   }
@@ -362,23 +430,71 @@
     const path = typeof e.composedPath === "function" ? e.composedPath() : null;
     if (Array.isArray(path)) {
       for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
+        if (!node || node.nodeType !== 1) continue;
+        const resolved = resolveEditableTarget(node);
+        if (isEditableTarget(resolved) && isVisible(resolved)) return resolved;
       }
     }
-    const t = e.target;
+
+    const t = resolveEditableTarget(e.target);
     if (isEditableTarget(t) && isVisible(t)) return t;
     return null;
   }
 
+  function resolveEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return null;
+
+    // Erst ein inneres Feld suchen, um keine grossen Wrapper als Ziel zu verwenden.
+    const inner = el.querySelector?.(
+      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']"
+    );
+    if (inner && inner !== el) {
+      const resolvedInner = resolveEditableTarget(inner);
+      if (isEditableTarget(resolvedInner) && isVisible(resolvedInner)) return resolvedInner;
+    }
+
+    if (isTextInput(el) || el.isContentEditable) return el;
+
+    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
+    if (ce === "true" || ce === "" || ce === "plaintext-only") return el;
+
+    if (isRoleTextbox(el)) {
+      const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (nested) {
+        const resolvedNested = resolveEditableTarget(nested);
+        if (isEditableTarget(resolvedNested) && isVisible(resolvedNested)) return resolvedNested;
+      }
+    }
+
+    let parent = el.parentElement;
+    let depth = 0;
+    while (parent && depth < 5) {
+      if (isTextInput(parent) || parent.isContentEditable) return parent;
+      const parentCE = (parent.getAttribute?.("contenteditable") || "").toLowerCase();
+      if (parentCE === "true" || parentCE === "" || parentCE === "plaintext-only") return parent;
+      parent = parent.parentElement;
+      depth++;
+    }
+
+    return isEditableTarget(el) ? el : null;
+  }
+
   function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+    const resolved = resolveEditableTarget(el);
+    if (isEditableTarget(resolved) && isVisible(resolved)) lastUserEditable = resolved;
   }
 
   function getUserTargetEditable() {
-    const active = document.activeElement;
+    const active = resolveEditableTarget(document.activeElement);
     if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+
+    const remembered = resolveEditableTarget(lastUserEditable);
+    if (isEditableTarget(remembered) && isVisible(remembered)) return remembered;
+
+    const fallback = resolveEditableTarget(findPrompt());
+    if (isEditableTarget(fallback) && isVisible(fallback)) return fallback;
+
+    return null;
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
@@ -513,9 +629,35 @@
     return ok;
   }
 
-  function replaceAllContentEditable(el, text) {
+  function selectWholeEditable(el) {
+    if (!el) return;
+
+    if (isTextInput(el)) {
+      const len = String(el.value || "").length;
+      try { el.focus(); } catch {}
+      try { el.setSelectionRange(0, len); } catch {}
+      return;
+    }
+
+    if (!isLikelyEditable(el)) return;
+
     try { el.focus(); } catch {}
-    try { document.execCommand("selectAll", false, null); } catch {}
+
+    try {
+      const selection = window.getSelection?.();
+      if (!selection) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } catch {}
+  }
+
+  function replaceAllContentEditable(el, text) {
+    el = resolveEditableTarget(el) || el;
+    try { el.focus(); } catch {}
+    selectWholeEditable(el);
+    try { document.execCommand("delete", false, null); } catch {}
     let ok = false;
 
     // insertText ist für contenteditable meist am zuverlässigsten für \n
@@ -533,10 +675,26 @@
 
   async function setViaPaste(el, text) {
     const target = String(text || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    el = resolveEditableTarget(el) || el;
     if (!el) return false;
 
-    el.focus();
-    try { document.execCommand("selectAll", false, null); } catch {}
+    // Mobile/Edge: direkte Value-Setzung ist deutlich stabiler als Paste-Berechtigungen.
+    if (isTextInput(el)) {
+      const setter =
+        Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
+        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
+      else el.value = target;
+      try { el.focus(); } catch {}
+      try { el.setSelectionRange(target.length, target.length); } catch {}
+      dispatchReactInput(el, "insertReplacementText", target);
+      await sleep(CFG.postPasteDelayMs);
+      await reactNudge(el);
+      await sleep(40);
+      return normalizeForCompare(readPromptText(el)) === normalizeForCompare(target);
+    }
+
+    selectWholeEditable(el);
 
     let pasted = false;
 
@@ -544,6 +702,7 @@
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(target);
+        selectWholeEditable(el);
         try { pasted = document.execCommand("paste"); } catch {}
       }
     } catch {}
@@ -551,14 +710,24 @@
     if (!pasted) {
       const okCopy = await copyToClipboardFallback(target);
       if (okCopy) {
+        selectWholeEditable(el);
         try { pasted = document.execCommand("paste"); } catch {}
       }
     }
 
     // 2) wenn Paste blockiert ist: Events anstoßen (ohne Format zu zerstören)
     if (!pasted) {
-      dispatchReactInput(el, "insertFromPaste", target);
-      pasted = true;
+      if (isTextInput(el)) {
+        const setter =
+          Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
+          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+        if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
+        else el.value = target;
+        dispatchReactInput(el, "insertFromPaste", target);
+        pasted = true;
+      } else {
+        pasted = replaceAllContentEditable(el, target);
+      }
     }
 
     await sleep(CFG.postPasteDelayMs);
@@ -1296,9 +1465,32 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   let restartCount = 0;
   let restartTimer = null;
+  let lastFinalTranscript = "";
+  let recentFinalNorm = [];
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+  }
+
+  function resetSpeechDedupeState() {
+    lastFinalTranscript = "";
+    recentFinalNorm = [];
+  }
+
+  function rememberFinalNorm(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return;
+    recentFinalNorm.push(n);
+    const maxKeep = CFG.recentFinalMemory || 8;
+    if (recentFinalNorm.length > maxKeep) {
+      recentFinalNorm = recentFinalNorm.slice(-maxKeep);
+    }
+  }
+
+  function wasRecentlySeenFinal(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return false;
+    return recentFinalNorm.includes(n);
   }
 
   function scheduleAutoRestart(reason = "") {
@@ -1412,8 +1604,24 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          const t = cleanText(e.results[i][0].transcript);
-          if (t) insertText(target, t);
+          const raw = cleanText(e.results[i][0].transcript);
+          if (!raw) continue;
+
+          let t = trimRepeatedPrefix(lastFinalTranscript, raw);
+          if (!t && raw) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          const currentText = readPromptText(target);
+          if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          insertText(target, t);
+          rememberFinalNorm(t);
+          lastFinalTranscript = raw;
         }
       }
     };
@@ -1504,6 +1712,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     stopRequested = false;
     restartCount = 0;
     clearTimeout(restartTimer);
+    resetSpeechDedupeState();
 
     tryStartRecognition(false, "");
   }
@@ -1651,6 +1860,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
 
     // Prompt (Frank)
+    const clearExisting = document.getElementById(UI_IDS.clear);
+    if (!clearExisting) {
+      clearBtn = document.createElement("button");
+      clearBtn.id = UI_IDS.clear;
+      styleRoundButton(clearBtn, 52, 0);
+      clearBtn.textContent = "❌";
+      clearBtn.style.color = "#c40000";
+      clearBtn.title = "Sprechblase leeren";
+      clearBtn.addEventListener("click", runClearPrompt);
+      uiRoot.appendChild(clearBtn);
+    } else {
+      clearBtn = clearExisting;
+      styleRoundButton(clearBtn, 52, 0);
+    }
+
+    // Prompt (Frank)
     const p1Existing = document.getElementById(UI_IDS.prompt);
     if (!p1Existing) {
       promptBtn = document.createElement("button");
@@ -1716,10 +1941,11 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // DOM watchdog: wenn Grok den DOM remounted und Buttons verschwinden → neu injizieren
     const mo = new MutationObserver(() => {
       const mic = document.getElementById(UI_IDS.mic);
+      const clear = document.getElementById(UI_IDS.clear);
       const p1 = document.getElementById(UI_IDS.prompt);
       const p2 = document.getElementById(UI_IDS.prompt2);
       const t = document.getElementById(UI_IDS.toast);
-      if (!mic || !p1 || !p2 || !t) scheduleEnsureUI();
+      if (!mic || !clear || !p1 || !p2 || !t) scheduleEnsureUI();
     });
     mo.observe(document.documentElement, { childList: true, subtree: true });
 
@@ -1727,6 +1953,23 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     ensureUI();
     setTimeout(ensureUI, 600);
     setTimeout(ensureUI, 1600);
+  }
+
+
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
   }
 
   // ============================================================
@@ -1738,7 +1981,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
 
     installSpaWatchdog();
-    showToast("✅ Script aktiv. 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
   boot();

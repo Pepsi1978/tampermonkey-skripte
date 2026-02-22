@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Gemini
+// @name         Gemini V.1.1.3
 // @namespace    https://gemini.google.com/
-// @version      1.0.6
-// @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Memory-Button (Diskette) links neben dem Mic. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
-// @match        https://gemini.google.com/app
+// @version      1.1.3
+// @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
+// @match        https://gemini.google.com/app*
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
@@ -67,6 +67,8 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // UI POSITION
   // ============================================================
   const UI_POS = { rightPx: 16, bottomPx: 16 };
+  const UI_BUTTON_SIZE = 42;
+  const UI_MIN_EDGE_GAP = 4;
 
   const CFG = {
     speechLang: "de-DE",
@@ -105,7 +107,8 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     autoRestart: true,
     autoRestartBaseDelayMs: 250,
     autoRestartMaxDelayMs: 2000,
-    maxConsecutiveRestarts: 50 // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    maxConsecutiveRestarts: 50, // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    recentFinalMemory: 8
   };
 
   // ============================================================
@@ -140,7 +143,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   toast.style.color = "white";
   toast.style.display = "none";
   toast.style.whiteSpace = "pre-wrap";
-  document.body.appendChild(toast);
+  (document.body || document.documentElement).appendChild(toast);
 
   let toastTimer = null;
   function showToast(msg, ms = 5500) {
@@ -209,17 +212,66 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     return String(s || "").replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
   }
 
+
+  function normalizeForSpeechDedupe(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/[.,!?;:\-–—()\[\]{}"'„“”‚‘’`´]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function trimRepeatedPrefix(prev, current) {
+    const p = cleanText(prev);
+    const c = cleanText(current);
+    if (!c) return "";
+    if (!p) return c;
+
+    if (c === p) return "";
+    if (c.startsWith(p)) return cleanText(c.slice(p.length));
+
+    const pNorm = normalizeForSpeechDedupe(p);
+    const cNorm = normalizeForSpeechDedupe(c);
+    if (!pNorm || !cNorm) return c;
+
+    if (cNorm === pNorm) return "";
+    return c;
+  }
+
+  function appearsAlreadyInTail(baseText, snippet) {
+    const text = cleanText(baseText);
+    const snip = cleanText(snippet);
+    if (!text || !snip) return false;
+
+    const tailLen = Math.max((CFG.overlapMaxChars || 80) * 4, snip.length * 3, 240);
+    const tail = text.slice(-tailLen);
+
+    const tailNorm = normalizeForSpeechDedupe(tail);
+    const snippetNorm = normalizeForSpeechDedupe(snip);
+    if (!tailNorm || !snippetNorm) return false;
+
+    return tailNorm.includes(snippetNorm);
+  }
+
   function isTextInput(el) {
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
   function readPromptText(el) {
     if (!el) return "";
-    let v = "";
-    if (isTextInput(el)) v = el.value || "";
-    if (!v) v = el.textContent || "";
-    if (!v) v = el.innerText || "";
-    return cleanText(v);
+
+    el = resolveEditableTarget(el) || el;
+
+    if (isTextInput(el)) {
+      return cleanText(el.value || "");
+    }
+
+    // contenteditable bevorzugt ueber innerText lesen, damit Zeilenumbrueche erhalten bleiben.
+    if (isContentEditableLike(el) || isRoleTextbox(el)) {
+      return cleanText(el.innerText || el.textContent || "");
+    }
+
+    return cleanText(el.textContent || el.innerText || "");
   }
 
   function scoreCandidate(el) {
@@ -249,26 +301,35 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
-    ].filter(Boolean).find(isVisible);
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
+    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
 
     if (direct) return direct;
 
+    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
+      ...document.querySelectorAll("[contenteditable='']"),
+      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
+      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].map(resolveEditableTarget)
+      .filter((el) => {
+        if (!el || seen.has(el)) return false;
+        seen.add(el);
+        return isVisible(el) && isEditableTarget(el);
+      });
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-
-    const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    return candidates[0] || null;
   }
 
   // ============================================================
@@ -278,70 +339,134 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
+  let clearBtn = null;
   let memBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
+  let uiLayoutRaf = 0;
 
-  function isEditableTarget(el) {
-    if (!el) return false;
-    if (el === document.body || el === document.documentElement) return false;
+function isRoleTextbox(el) {
+  return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
+}
 
-    // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === memBtn || el === promptBtn || el === promptBtn2) return false;
+function hasContentEditableEnabled(el) {
+  const raw = el?.getAttribute?.("contenteditable");
+  if (raw == null) return false;
+  const ce = String(raw).toLowerCase();
+  return ce === "" || ce === "true" || ce === "plaintext-only";
+}
 
-    const tag = (el.tagName || "").toUpperCase();
-    const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
+function isContentEditableLike(el) {
+  if (!el) return false;
+  return !!el.isContentEditable || hasContentEditableEnabled(el);
+}
 
-    if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
-      return true;
-    }
+function isAriaReadonly(el) {
+  return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
+}
 
-    if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
-      const type = (el.type || "text").toLowerCase();
-      const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
-      return ok;
-    }
+function isEditableTarget(el) {
+  if (!el) return false;
+  if (el === document.body || el === document.documentElement) return false;
 
-    if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
+  // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
+  if ((typeof micBtn !== "undefined" && el === micBtn) || (typeof clearBtn !== "undefined" && el === clearBtn) || (typeof promptBtn !== "undefined" && el === promptBtn) || (typeof promptBtn2 !== "undefined" && el === promptBtn2) || (typeof memBtn !== "undefined" && el === memBtn)) return false;
 
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+  const tag = (el.tagName || "").toUpperCase();
+  const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
+  if (tag === "TEXTAREA") {
+    if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+    return true;
+  }
+
+  if (tag === "INPUT") {
+    if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+    const type = (el.type || "text").toLowerCase();
+    const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
+    return ok;
+  }
+
+  if (isContentEditableLike(el)) return true;
+
+  if (isRoleTextbox(el)) {
+    const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+    if (inner) return isEditableTarget(inner);
     return false;
   }
 
-  function pickEditableFromEvent(e) {
-    const path = typeof e.composedPath === "function" ? e.composedPath() : null;
-    if (Array.isArray(path)) {
-      for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
-      }
+  return false;
+}
+
+function resolveEditableTarget(el) {
+  if (!el || el.nodeType !== 1) return null;
+
+  // Erst ein moegliches inneres, praeziseres Feld suchen, damit kein grosser Wrapper erwischt wird.
+  const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']");
+  if (inner && inner !== el) {
+    const resolvedInner = resolveEditableTarget(inner);
+    if (resolvedInner && isEditableTarget(resolvedInner)) return resolvedInner;
+  }
+
+  if (isTextInput(el) || isContentEditableLike(el)) return el;
+
+  if (isRoleTextbox(el)) {
+    const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+    if (nested) {
+      const resolvedNested = resolveEditableTarget(nested);
+      if (resolvedNested && isEditableTarget(resolvedNested)) return resolvedNested;
     }
-    const t = e.target;
-    if (isEditableTarget(t) && isVisible(t)) return t;
-    return null;
   }
 
-  function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+  let parent = el.parentElement;
+  let depth = 0;
+  while (parent && depth < 5) {
+    if (isTextInput(parent) || isContentEditableLike(parent)) return parent;
+    parent = parent.parentElement;
+    depth += 1;
   }
 
-  function getUserTargetEditable() {
-    const active = document.activeElement;
-    if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+  return isEditableTarget(el) ? el : null;
+}
+
+function pickEditableFromEvent(e) {
+  const path = typeof e.composedPath === "function" ? e.composedPath() : null;
+  if (Array.isArray(path)) {
+    for (const node of path) {
+      if (!node || node.nodeType !== 1) continue;
+      const resolved = resolveEditableTarget(node);
+      if (resolved && isVisible(resolved) && isEditableTarget(resolved)) return resolved;
+    }
   }
 
-  // Fokus/Click-Tracking (auch Shadow DOM)
-  document.addEventListener("focusin", (e) => rememberEditable(pickEditableFromEvent(e) || document.activeElement), true);
-  document.addEventListener("pointerdown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("mousedown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+  const resolvedTarget = resolveEditableTarget(e.target);
+  if (resolvedTarget && isVisible(resolvedTarget) && isEditableTarget(resolvedTarget)) return resolvedTarget;
+  return null;
+}
+
+function rememberEditable(el) {
+  const resolved = resolveEditableTarget(el);
+  if (resolved && isVisible(resolved) && isEditableTarget(resolved)) lastUserEditable = resolved;
+}
+
+function getUserTargetEditable() {
+  const active = resolveEditableTarget(document.activeElement);
+  if (active && isVisible(active) && isEditableTarget(active)) return active;
+
+  const remembered = resolveEditableTarget(lastUserEditable);
+  if (remembered && isVisible(remembered) && isEditableTarget(remembered)) return remembered;
+
+  const fallback = resolveEditableTarget(findPrompt());
+  if (fallback && isVisible(fallback) && isEditableTarget(fallback)) return fallback;
+
+  return null;
+}
+
+// Fokus/Click-Tracking (auch Shadow DOM)
+document.addEventListener("focusin", (e) => rememberEditable(pickEditableFromEvent(e) || document.activeElement), true);
+document.addEventListener("pointerdown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+document.addEventListener("mousedown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent(e)), true);
 
   // ============================================================
   // React/Input Events
@@ -453,71 +578,143 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // ============================================================
   // PASTE-APPLY
   // ============================================================
-  async function copyToClipboardFallback(text) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.setAttribute("readonly", "true");
-    ta.style.position = "fixed";
-    ta.style.left = "-9999px";
-    ta.style.top = "-9999px";
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    let ok = false;
-    try { ok = document.execCommand("copy"); } catch {}
-    document.body.removeChild(ta);
-    return ok;
+async function copyToClipboardFallback(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "true");
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.style.top = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch {}
+  document.body.removeChild(ta);
+  return ok;
+}
+
+function normalizeForCompare(s) {
+  return String(s || "")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .replace(/\u00A0/g, " ")
+    .trim();
+}
+
+function setNativeValue(el, val) {
+  const v = String(val ?? "");
+  try {
+    if (el instanceof HTMLTextAreaElement) {
+      const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set;
+      if (setter) setter.call(el, v);
+      else el.value = v;
+      return;
+    }
+    if (el instanceof HTMLInputElement) {
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      if (setter) setter.call(el, v);
+      else el.value = v;
+      return;
+    }
+    el.value = v;
+  } catch {
+    try { el.value = v; } catch {}
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function moveCaretToEnd(el) {
+  try {
+    el.focus();
+    const sel = window.getSelection?.();
+    if (!sel) return;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } catch {}
+}
+
+function setContentEditablePreserveNewlines(el, text) {
+  if (!el) return;
+  const html = escapeHtml(String(text ?? "")).replace(/\n/g, "<br>");
+
+  try {
+    el.focus();
+    el.innerHTML = html;
+    moveCaretToEnd(el);
+  } catch {
+    try { el.textContent = text; } catch {}
   }
 
-  async function setViaPaste(el, text) {
-    const target = cleanText(text);
-    if (!el) return false;
+  dispatchReactInput(el, "insertReplacementText", String(text ?? ""));
+}
 
-    el.focus();
-    try { document.execCommand("selectAll", false, null); } catch {}
+async function setViaPaste(el, text) {
+  const target = String(text ?? "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  el = resolveEditableTarget(el) || el;
+  if (!el) return false;
 
-    let pasted = false;
+  try { el.focus(); } catch {}
 
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(target);
-        try { pasted = document.execCommand("paste"); } catch {}
-      }
-    } catch {}
+  if (isTextInput(el)) {
+    setNativeValue(el, target);
+    try { el.setSelectionRange(target.length, target.length); } catch {}
+    dispatchReactInput(el, "insertReplacementText", target);
+  } else {
+    setContentEditablePreserveNewlines(el, target);
+  }
 
-    if (!pasted) {
-      const okCopy = await copyToClipboardFallback(target);
-      if (okCopy) {
-        try { pasted = document.execCommand("paste"); } catch {}
-      }
+  await sleep(CFG.postPasteDelayMs);
+  await reactNudge(el);
+  await sleep(40);
+
+  const got = normalizeForCompare(readPromptText(el));
+  const want = normalizeForCompare(target);
+  if (got === want) return true;
+
+  // Browser/Editor duerfen Whitespace leicht normalisieren.
+  if (got.replace(/\s+/g, " ") === want.replace(/\s+/g, " ")) return true;
+
+  // Letzter Versuch ueber Clipboard-Weg (falls Editor nur Paste verarbeitet).
+  let pasted = false;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(target);
+      try { pasted = document.execCommand("paste"); } catch {}
     }
+  } catch {}
 
-    if (!pasted) {
-      dispatchReactInput(el, "insertFromPaste", target);
-      pasted = true;
+  if (!pasted) {
+    const okCopy = await copyToClipboardFallback(target);
+    if (okCopy) {
+      try { pasted = document.execCommand("paste"); } catch {}
     }
+  }
 
+  if (pasted) {
     await sleep(CFG.postPasteDelayMs);
-
-    if (cleanText(readPromptText(el)) !== target) {
-      if (isTextInput(el)) {
-        const setter =
-          Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
-          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
-        if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
-        else el.value = target;
-        dispatchReactInput(el, "insertReplacementText", target);
-      } else {
-        try { el.textContent = target; } catch {}
-        dispatchReactInput(el, "insertReplacementText", target);
-      }
-    }
-
     await reactNudge(el);
     await sleep(40);
-
-    return cleanText(readPromptText(el)) === target;
   }
+
+  const gotAfter = normalizeForCompare(readPromptText(el));
+  if (gotAfter === want) return true;
+  return gotAfter.replace(/\s+/g, " ") === want.replace(/\s+/g, " ");
+}
 
   function insertText(el, text) {
     if (!el || !text) return;
@@ -551,7 +748,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       document.execCommand("insertText", false, spacer + add);
       dispatchReactInput(el, "insertText", add);
     } catch {
-      try { el.textContent = combined; } catch {}
+      try { setContentEditablePreserveNewlines(el, combined); } catch {}
       dispatchReactInput(el, "insertReplacementText", combined);
     }
   }
@@ -1095,23 +1292,87 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // UI Buttons (BOTTOM RIGHT)
   // ============================================================
+  function listUiButtons() {
+    return [micBtn, memBtn, clearBtn, promptBtn, promptBtn2].filter(Boolean);
+  }
+
+  function applyButtonPosition(button) {
+    if (!button) return;
+
+    const rightOffsetPx = Number(button.dataset.uiRightOffset || 0);
+    const bottomOffsetPx = Number(button.dataset.uiBottomOffset || 0);
+
+    const rightPx = UI_POS.rightPx + rightOffsetPx;
+    const bottomPx = UI_POS.bottomPx + bottomOffsetPx;
+
+    const vv = window.visualViewport;
+    if (!vv || !Number.isFinite(vv.width) || !Number.isFinite(vv.height)) {
+      button.style.right = `calc(env(safe-area-inset-right, 0px) + ${rightPx}px)`;
+      button.style.bottom = `calc(env(safe-area-inset-bottom, 0px) + ${bottomPx}px)`;
+      button.style.left = "auto";
+      button.style.top = "auto";
+      return;
+    }
+
+    const rect = button.getBoundingClientRect();
+    const buttonW = rect.width || UI_BUTTON_SIZE;
+    const buttonH = rect.height || UI_BUTTON_SIZE;
+
+    const left = vv.offsetLeft + vv.width - buttonW - rightPx;
+    const top = vv.offsetTop + vv.height - buttonH - bottomPx;
+
+    button.style.left = `${Math.max(UI_MIN_EDGE_GAP, Math.round(left))}px`;
+    button.style.top = `${Math.max(UI_MIN_EDGE_GAP, Math.round(top))}px`;
+    button.style.right = "auto";
+    button.style.bottom = "auto";
+  }
+
+  function relayoutUiButtons() {
+    for (const btn of listUiButtons()) {
+      applyButtonPosition(btn);
+    }
+  }
+
+  function scheduleUiRelayout() {
+    if (uiLayoutRaf) cancelAnimationFrame(uiLayoutRaf);
+    uiLayoutRaf = requestAnimationFrame(() => {
+      uiLayoutRaf = 0;
+      relayoutUiButtons();
+    });
+  }
+
+  function bindUiRelayoutListeners() {
+    const onRelayout = () => scheduleUiRelayout();
+
+    window.addEventListener("resize", onRelayout, { passive: true });
+    window.addEventListener("orientationchange", onRelayout, { passive: true });
+
+    const vv = window.visualViewport;
+    if (vv) {
+      vv.addEventListener("resize", onRelayout, { passive: true });
+      vv.addEventListener("scroll", onRelayout, { passive: true });
+    }
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
     b.style.position = "fixed";
-    b.style.zIndex = "999999";
-    b.style.width = "42px";
-    b.style.height = "42px";
+    b.style.zIndex = "2147483647";
+    b.style.width = `${UI_BUTTON_SIZE}px`;
+    b.style.height = `${UI_BUTTON_SIZE}px`;
     b.style.borderRadius = "50%";
     b.style.cursor = "pointer";
+    b.style.touchAction = "manipulation";
     b.style.border = "1px solid rgba(0,0,0,0.2)";
     b.style.background = "white";
     b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
     b.style.fontSize = "18px";
-
-    b.style.right = `${UI_POS.rightPx + rightOffsetPx}px`;
-    b.style.bottom = `${UI_POS.bottomPx + bottomOffsetPx}px`;
     b.style.left = "auto";
     b.style.top = "auto";
+
+    b.dataset.uiRightOffset = String(rightOffsetPx);
+    b.dataset.uiBottomOffset = String(bottomOffsetPx);
+    applyButtonPosition(b);
   }
 
   function setMicState(state, msg = "") {
@@ -1233,9 +1494,32 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   let restartCount = 0;
   let restartTimer = null;
+  let lastFinalTranscript = "";
+  let recentFinalNorm = [];
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+  }
+
+  function resetSpeechDedupeState() {
+    lastFinalTranscript = "";
+    recentFinalNorm = [];
+  }
+
+  function rememberFinalNorm(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return;
+    recentFinalNorm.push(n);
+    const maxKeep = CFG.recentFinalMemory || 8;
+    if (recentFinalNorm.length > maxKeep) {
+      recentFinalNorm = recentFinalNorm.slice(-maxKeep);
+    }
+  }
+
+  function wasRecentlySeenFinal(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return false;
+    return recentFinalNorm.includes(n);
   }
 
   function scheduleAutoRestart(reason = "") {
@@ -1349,8 +1633,24 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          const t = cleanText(e.results[i][0].transcript);
-          if (t) insertText(target, t);
+          const raw = cleanText(e.results[i][0].transcript);
+          if (!raw) continue;
+
+          let t = trimRepeatedPrefix(lastFinalTranscript, raw);
+          if (!t && raw) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          const currentText = readPromptText(target);
+          if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          insertText(target, t);
+          rememberFinalNorm(t);
+          lastFinalTranscript = raw;
         }
       }
     };
@@ -1441,6 +1741,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     stopRequested = false;
     restartCount = 0;
     clearTimeout(restartTimer);
+    resetSpeechDedupeState();
 
     tryStartRecognition(false, "");
   }
@@ -1481,8 +1782,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       const preview = finalPrompt.replace(/\s+/g, " ").slice(0, CFG.previewChars);
       showToast("💾 Memory-Prompt (Vorschau):\n" + preview + (finalPrompt.length > CFG.previewChars ? " …" : ""), 3500);
 
-      const target = getUserTargetEditable() || el;
-      const ok = await setViaPaste(target, finalPrompt);
+      const ok = await setViaPaste(el, finalPrompt);
       if (!ok) {
         setMemBtnState("error", "Eingabefeld hat Text nicht übernommen");
         showToast("❌ Eingabefeld hat den Memory-Prompt nicht übernommen.", 6500);
@@ -1603,20 +1903,56 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
   }
 
+
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
+  }
+
   // ============================================================
   // Boot
   // ============================================================
   function boot() {
+    bindUiRelayoutListeners();
+
     if (!supportedSpeech) {
       showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
     }
+
+    const mountNode = document.body || document.documentElement;
 
     micBtn = document.createElement("button");
     styleRoundButton(micBtn, 0, 0);
     micBtn.textContent = "🎙️";
     micBtn.title = "Spracheingabe (Start/Stop)";
     micBtn.addEventListener("click", toggleMic);
-    document.body.appendChild(micBtn);
+    mountNode.appendChild(micBtn);
+
+    memBtn = document.createElement("button");
+    styleRoundButton(memBtn, 52, 0);
+    memBtn.textContent = "💾";
+    memBtn.title = "Memory-Prompt einfügen";
+    memBtn.addEventListener("click", runMemoryPrompt);
+    mountNode.appendChild(memBtn);
+
+    clearBtn = document.createElement("button");
+    styleRoundButton(clearBtn, 104, 0);
+    clearBtn.textContent = "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.addEventListener("click", runClearPrompt);
+    mountNode.appendChild(clearBtn);
 
     memBtn = document.createElement("button");
     styleRoundButton(memBtn, 52, 0);
@@ -1625,25 +1961,35 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     memBtn.addEventListener("click", runMemoryPrompt);
     document.body.appendChild(memBtn);
 
+    clearBtn = document.createElement("button");
+    styleRoundButton(clearBtn, 104, 0);
+    clearBtn.textContent = "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.addEventListener("click", runClearPrompt);
+    document.body.appendChild(clearBtn);
+
     promptBtn = document.createElement("button");
     styleRoundButton(promptBtn, 0, 52);
     promptBtn.textContent = "✨";
     promptBtn.title = "Prompt (für Frank) einbetten";
     promptBtn.addEventListener("click", runPromptBuilder);
-    document.body.appendChild(promptBtn);
+    mountNode.appendChild(promptBtn);
 
     promptBtn2 = document.createElement("button");
     styleRoundButton(promptBtn2, 0, 104);
     promptBtn2.textContent = "🪄";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
     promptBtn2.addEventListener("click", runPromptBuilderGeneral);
-    document.body.appendChild(promptBtn2);
+    mountNode.appendChild(promptBtn2);
+
+    scheduleUiRelayout();
 
     setMicState("idle");
     setMemBtnState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + 💾 + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + 💾 + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
   }
 
   boot();

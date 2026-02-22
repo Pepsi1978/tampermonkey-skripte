@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         ChatGPT
+// @name         ChatGPT V.1.1.1
 // @namespace    https://chatgpt.com/
-// @version      1.0.9
+// @version      1.1.1
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -97,6 +97,7 @@
     toast: "tm_chatgpt_toast",
     mic: "tm_chatgpt_btn_mic",
     mem: "tm_chatgpt_btn_mem",
+    clear: "tm_chatgpt_btn_clear",
     promptFrank: "tm_chatgpt_btn_prompt_frank",
     promptGeneral: "tm_chatgpt_btn_prompt_general"
   };
@@ -172,6 +173,11 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 
     // Overlap-Prevention beim Live-Diktat
     overlapMaxChars: 80,
+
+    // Zusätzliche Duplikat-Bremse für WebKit/Edge Android
+    recentFinalMemory: 8,
+    minRepeatSnippetChars: 12,
+    tailCompareChars: 260,
 
     // Lokale Vorfilter
     removeDisfluenciesLocally: true,
@@ -380,6 +386,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
   let memBtn = null;
+  let clearBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
 
@@ -388,7 +395,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === memBtn || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === memBtn || el === clearBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
@@ -621,6 +628,52 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     const ov = longestOverlapSuffixPrefix(curText, newText, CFG.overlapMaxChars || 80);
     if (!ov) return newText;
     return newText.slice(ov).trimStart();
+  }
+
+  function normalizeForSpeechDedupe(s) {
+    const base = String(s || "")
+      .toLowerCase()
+      .replace(/[\u2018\u2019']/g, "");
+
+    try {
+      return base.replace(/[^\p{L}\p{N}\s]+/gu, " ").replace(/\s+/g, " ").trim();
+    } catch {
+      return base.replace(/[^a-z0-9äöüß\s]+/gi, " ").replace(/\s+/g, " ").trim();
+    }
+  }
+
+  function trimRepeatedPrefix(prev, current) {
+    const p = cleanText(prev);
+    const c = cleanText(current);
+    if (!p || !c) return c;
+
+    const pLower = p.toLowerCase();
+    const cLower = c.toLowerCase();
+    if (cLower.startsWith(pLower)) {
+      return c.slice(p.length).trimStart();
+    }
+
+    const pNorm = normalizeForSpeechDedupe(p);
+    const cNorm = normalizeForSpeechDedupe(c);
+    if (pNorm && cNorm && cNorm.startsWith(pNorm) && c.length > p.length) {
+      return c.slice(p.length).trimStart();
+    }
+
+    return c;
+  }
+
+  function appearsAlreadyInTail(baseText, snippet) {
+    const minChars = CFG.minRepeatSnippetChars || 12;
+    if (!snippet || snippet.length < minChars) return false;
+
+    const tailLen = CFG.tailCompareChars || 260;
+    const tail = String(baseText || "").slice(-tailLen);
+
+    const tailNorm = normalizeForSpeechDedupe(tail);
+    const snippetNorm = normalizeForSpeechDedupe(snippet);
+    if (!tailNorm || !snippetNorm) return false;
+
+    return tailNorm.includes(snippetNorm);
   }
 
   // ============================================================
@@ -1426,9 +1479,32 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   let restartCount = 0;
   let restartTimer = null;
+  let lastFinalTranscript = "";
+  let recentFinalNorm = [];
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+  }
+
+  function resetSpeechDedupeState() {
+    lastFinalTranscript = "";
+    recentFinalNorm = [];
+  }
+
+  function rememberFinalNorm(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return;
+    recentFinalNorm.push(n);
+    const maxKeep = CFG.recentFinalMemory || 8;
+    if (recentFinalNorm.length > maxKeep) {
+      recentFinalNorm = recentFinalNorm.slice(-maxKeep);
+    }
+  }
+
+  function wasRecentlySeenFinal(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return false;
+    return recentFinalNorm.includes(n);
   }
 
   function scheduleAutoRestart(reason = "") {
@@ -1542,8 +1618,24 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          const t = cleanText(e.results[i][0].transcript);
-          if (t) insertText(target, t);
+          const raw = cleanText(e.results[i][0].transcript);
+          if (!raw) continue;
+
+          let t = trimRepeatedPrefix(lastFinalTranscript, raw);
+          if (!t && raw) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          const currentText = readPromptText(target);
+          if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          insertText(target, t);
+          rememberFinalNorm(t);
+          lastFinalTranscript = raw;
         }
       }
     };
@@ -1633,6 +1725,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     wantsRecording = true;
     stopRequested = false;
     restartCount = 0;
+    resetSpeechDedupeState();
     clearTimeout(restartTimer);
 
     tryStartRecognition(false, "");
@@ -1796,6 +1889,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
   }
 
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
+  }
+
   // ============================================================
   // ✅ UI Mount / Repair (Buttons verschwinden nicht mehr)
   // ============================================================
@@ -1830,6 +1939,15 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     memBtn.title = "Memory-Prompt einfügen";
     memBtn.onclick = runMemoryPrompt;
     if (!memBtn.isConnected) document.body.appendChild(memBtn);
+
+    clearBtn = getOrCreateButton(UI_IDS.clear);
+    styleRoundButton(clearBtn, 104, 0);
+    preventFocusSteal(clearBtn);
+    clearBtn.textContent = clearBtn.textContent || "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.onclick = runClearPrompt;
+    if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
     // Prompt-Builder (Frank) über Mic
     promptBtn = getOrCreateButton(UI_IDS.promptFrank);
@@ -1872,6 +1990,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         const missing =
           !document.getElementById(UI_IDS.mic) ||
           !document.getElementById(UI_IDS.mem) ||
+          !document.getElementById(UI_IDS.clear) ||
           !document.getElementById(UI_IDS.promptFrank) ||
           !document.getElementById(UI_IDS.promptGeneral);
 
@@ -1903,6 +2022,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       const missing =
         !document.getElementById(UI_IDS.mic) ||
         !document.getElementById(UI_IDS.mem) ||
+        !document.getElementById(UI_IDS.clear) ||
         !document.getElementById(UI_IDS.promptFrank) ||
         !document.getElementById(UI_IDS.promptGeneral);
       if (missing) scheduleEnsureUI();
@@ -1920,7 +2040,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     mountOrRepairUI();
     startUiWatchdog();
 
-    showToast("✅ Script aktiv. 💾 + 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button drücken.", 3200);
+    showToast("✅ Script aktiv. 💾 + ❌ + 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button drücken.", 3200);
   }
 
   setTimeout(boot, 350);

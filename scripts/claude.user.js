@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude
+// @name         Claude V.1.0.9
 // @namespace    https://claude.ai/
-// @version      1.0.7
+// @version      1.0.9
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -60,6 +60,7 @@
   const UI_IDS = {
     mic: "tm_claude_mic_btn",
     prompt1: "tm_claude_prompt_btn",
+    clear: "tm_claude_clear_btn",
     prompt2: "tm_claude_prompt_btn2"
   };
 
@@ -101,6 +102,7 @@
     autoRestartBaseDelayMs: 250,
     autoRestartMaxDelayMs: 2000,
     maxConsecutiveRestarts: 50, // Schutz gegen Endlosschleifen bei kaputter Audio-Session
+    recentFinalMemory: 8,
 
     // 🔧 UI-Reinject / SPA-Stabilität
     uiWatchDebounceMs: 250
@@ -180,28 +182,45 @@
     return String(s || "").replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
   }
 
-  function readEditorLikeText(root) {
-    if (!root) return "";
 
-    const clone = root.cloneNode(true);
-    try {
-      clone.querySelectorAll(
-        "button, nav, aside, header, footer, svg, img, canvas, [role='button'], [aria-hidden='true'], [contenteditable='false']"
-      ).forEach((n) => n.remove());
-    } catch {}
+  function normalizeForSpeechDedupe(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/[.,!?;:\-–—()\[\]{}"'„“”‚‘’`´]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
 
-    const blocks = Array.from(clone.querySelectorAll("p, li, pre, blockquote, h1, h2, h3, h4, h5, h6"));
-    if (blocks.length) {
-      const out = blocks
-        .map((node) => String(node.innerText || node.textContent || "").replace(/\u00A0/g, " ").trimEnd())
-        .join("\n")
-        .replace(/\n{3,}/g, "\n\n");
-      const cleaned = cleanText(out);
-      if (cleaned) return cleaned;
-    }
+  function trimRepeatedPrefix(prev, current) {
+    const p = cleanText(prev);
+    const c = cleanText(current);
+    if (!c) return "";
+    if (!p) return c;
 
-    const fallback = String(clone.innerText || clone.textContent || "").replace(/\u00A0/g, " ");
-    return cleanText(fallback);
+    if (c === p) return "";
+    if (c.startsWith(p)) return cleanText(c.slice(p.length));
+
+    const pNorm = normalizeForSpeechDedupe(p);
+    const cNorm = normalizeForSpeechDedupe(c);
+    if (!pNorm || !cNorm) return c;
+
+    if (cNorm === pNorm) return "";
+    return c;
+  }
+
+  function appearsAlreadyInTail(baseText, snippet) {
+    const text = cleanText(baseText);
+    const snip = cleanText(snippet);
+    if (!text || !snip) return false;
+
+    const tailLen = Math.max((CFG.overlapMaxChars || 80) * 4, snip.length * 3, 240);
+    const tail = text.slice(-tailLen);
+
+    const tailNorm = normalizeForSpeechDedupe(tail);
+    const snippetNorm = normalizeForSpeechDedupe(snip);
+    if (!tailNorm || !snippetNorm) return false;
+
+    return tailNorm.includes(snippetNorm);
   }
 
   function isTextInput(el) {
@@ -290,6 +309,7 @@
 
   // UI Buttons werden später initialisiert, hier schon deklariert:
   let micBtn = null;
+  let clearBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
 
@@ -298,7 +318,7 @@
     if (el === document.body || el === document.documentElement) return false;
 
     // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === promptBtn || el === promptBtn2) return false;
+    if (el === micBtn || el === clearBtn || el === promptBtn || el === promptBtn2) return false;
 
     const tag = (el.tagName || "").toUpperCase();
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
@@ -1395,9 +1415,32 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
   let restartCount = 0;
   let restartTimer = null;
+  let lastFinalTranscript = "";
+  let recentFinalNorm = [];
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+  }
+
+  function resetSpeechDedupeState() {
+    lastFinalTranscript = "";
+    recentFinalNorm = [];
+  }
+
+  function rememberFinalNorm(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return;
+    recentFinalNorm.push(n);
+    const maxKeep = CFG.recentFinalMemory || 8;
+    if (recentFinalNorm.length > maxKeep) {
+      recentFinalNorm = recentFinalNorm.slice(-maxKeep);
+    }
+  }
+
+  function wasRecentlySeenFinal(snippet) {
+    const n = normalizeForSpeechDedupe(snippet);
+    if (!n) return false;
+    return recentFinalNorm.includes(n);
   }
 
   function scheduleAutoRestart(reason = "") {
@@ -1511,8 +1554,24 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
       for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          const t = cleanText(e.results[i][0].transcript);
-          if (t) insertText(target, t);
+          const raw = cleanText(e.results[i][0].transcript);
+          if (!raw) continue;
+
+          let t = trimRepeatedPrefix(lastFinalTranscript, raw);
+          if (!t && raw) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          const currentText = readPromptText(target);
+          if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
+            lastFinalTranscript = raw;
+            continue;
+          }
+
+          insertText(target, t);
+          rememberFinalNorm(t);
+          lastFinalTranscript = raw;
         }
       }
     };
@@ -1603,6 +1662,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     stopRequested = false;
     restartCount = 0;
     clearTimeout(restartTimer);
+    resetSpeechDedupeState();
 
     tryStartRecognition(false, "");
   }
@@ -1726,6 +1786,23 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     }
   }
 
+
+  async function runClearPrompt() {
+    const el = getUserTargetEditable();
+    if (!el) {
+      showToast("❌ Eingabefeld nicht gefunden. Tipp: erst ins Ziel-Feld klicken.", 4500);
+      return;
+    }
+
+    const ok = await setViaPaste(el, "");
+    if (!ok) {
+      showToast("❌ Text konnte nicht gelöscht werden.", 4500);
+      return;
+    }
+
+    showToast("🧹 Sprechblase geleert.", 1600);
+  }
+
   // ============================================================
   // Boot + UI-Reinject (Claude SPA)
   // ============================================================
@@ -1736,15 +1813,18 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
     // Falls UI schon existiert (z.B. nach Reinjection), nur Referenzen setzen
     const existingMic = document.getElementById(UI_IDS.mic);
+    const existingClear = document.getElementById(UI_IDS.clear);
     const existingP1 = document.getElementById(UI_IDS.prompt1);
     const existingP2 = document.getElementById(UI_IDS.prompt2);
 
-    if (existingMic && existingP1 && existingP2) {
+    if (existingMic && existingClear && existingP1 && existingP2) {
       micBtn = existingMic;
+      clearBtn = existingClear;
       promptBtn = existingP1;
       promptBtn2 = existingP2;
 
       styleRoundButton(micBtn, 0, 0);
+      styleRoundButton(clearBtn, 52, 0);
       styleRoundButton(promptBtn, 0, 52);
       styleRoundButton(promptBtn2, 0, 104);
 
@@ -1756,6 +1836,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
     // Alte Reste entfernen (falls halb vorhanden)
     try { existingMic?.remove(); } catch {}
+    try { existingClear?.remove(); } catch {}
     try { existingP1?.remove(); } catch {}
     try { existingP2?.remove(); } catch {}
 
@@ -1766,6 +1847,15 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     micBtn.title = "Spracheingabe (Start/Stop)";
     micBtn.addEventListener("click", toggleMic);
     document.body.appendChild(micBtn);
+
+    clearBtn = document.createElement("button");
+    clearBtn.id = UI_IDS.clear;
+    styleRoundButton(clearBtn, 52, 0);
+    clearBtn.textContent = "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.addEventListener("click", runClearPrompt);
+    document.body.appendChild(clearBtn);
 
     promptBtn = document.createElement("button");
     promptBtn.id = UI_IDS.prompt1;
@@ -1786,12 +1876,13 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     setMicState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button.", 2800);
+    showToast("✅ Script aktiv. 🎙️ + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button.", 2800);
   }
 
   function uiIsMissing() {
     return (
       !document.getElementById(UI_IDS.mic) ||
+      !document.getElementById(UI_IDS.clear) ||
       !document.getElementById(UI_IDS.prompt1) ||
       !document.getElementById(UI_IDS.prompt2)
     );
