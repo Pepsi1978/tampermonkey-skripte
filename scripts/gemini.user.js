@@ -3,7 +3,7 @@
 // @namespace    https://gemini.google.com/
 // @version      1.1.2
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
-// @match        https://gemini.google.com/app
+// @match        https://gemini.google.com/app*
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
@@ -67,6 +67,8 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // UI POSITION
   // ============================================================
   const UI_POS = { rightPx: 16, bottomPx: 16 };
+  const UI_BUTTON_SIZE = 42;
+  const UI_MIN_EDGE_GAP = 4;
 
   const CFG = {
     speechLang: "de-DE",
@@ -141,7 +143,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   toast.style.color = "white";
   toast.style.display = "none";
   toast.style.whiteSpace = "pre-wrap";
-  document.body.appendChild(toast);
+  (document.body || document.documentElement).appendChild(toast);
 
   let toastTimer = null;
   function showToast(msg, ms = 5500) {
@@ -341,6 +343,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   let memBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
+  let uiLayoutRaf = 0;
 
 function isRoleTextbox(el) {
   return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
@@ -1289,23 +1292,87 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // UI Buttons (BOTTOM RIGHT)
   // ============================================================
+  function listUiButtons() {
+    return [micBtn, memBtn, clearBtn, promptBtn, promptBtn2].filter(Boolean);
+  }
+
+  function applyButtonPosition(button) {
+    if (!button) return;
+
+    const rightOffsetPx = Number(button.dataset.uiRightOffset || 0);
+    const bottomOffsetPx = Number(button.dataset.uiBottomOffset || 0);
+
+    const rightPx = UI_POS.rightPx + rightOffsetPx;
+    const bottomPx = UI_POS.bottomPx + bottomOffsetPx;
+
+    const vv = window.visualViewport;
+    if (!vv || !Number.isFinite(vv.width) || !Number.isFinite(vv.height)) {
+      button.style.right = `calc(env(safe-area-inset-right, 0px) + ${rightPx}px)`;
+      button.style.bottom = `calc(env(safe-area-inset-bottom, 0px) + ${bottomPx}px)`;
+      button.style.left = "auto";
+      button.style.top = "auto";
+      return;
+    }
+
+    const rect = button.getBoundingClientRect();
+    const buttonW = rect.width || UI_BUTTON_SIZE;
+    const buttonH = rect.height || UI_BUTTON_SIZE;
+
+    const left = vv.offsetLeft + vv.width - buttonW - rightPx;
+    const top = vv.offsetTop + vv.height - buttonH - bottomPx;
+
+    button.style.left = `${Math.max(UI_MIN_EDGE_GAP, Math.round(left))}px`;
+    button.style.top = `${Math.max(UI_MIN_EDGE_GAP, Math.round(top))}px`;
+    button.style.right = "auto";
+    button.style.bottom = "auto";
+  }
+
+  function relayoutUiButtons() {
+    for (const btn of listUiButtons()) {
+      applyButtonPosition(btn);
+    }
+  }
+
+  function scheduleUiRelayout() {
+    if (uiLayoutRaf) cancelAnimationFrame(uiLayoutRaf);
+    uiLayoutRaf = requestAnimationFrame(() => {
+      uiLayoutRaf = 0;
+      relayoutUiButtons();
+    });
+  }
+
+  function bindUiRelayoutListeners() {
+    const onRelayout = () => scheduleUiRelayout();
+
+    window.addEventListener("resize", onRelayout, { passive: true });
+    window.addEventListener("orientationchange", onRelayout, { passive: true });
+
+    const vv = window.visualViewport;
+    if (vv) {
+      vv.addEventListener("resize", onRelayout, { passive: true });
+      vv.addEventListener("scroll", onRelayout, { passive: true });
+    }
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
     b.style.position = "fixed";
-    b.style.zIndex = "999999";
-    b.style.width = "42px";
-    b.style.height = "42px";
+    b.style.zIndex = "2147483647";
+    b.style.width = `${UI_BUTTON_SIZE}px`;
+    b.style.height = `${UI_BUTTON_SIZE}px`;
     b.style.borderRadius = "50%";
     b.style.cursor = "pointer";
+    b.style.touchAction = "manipulation";
     b.style.border = "1px solid rgba(0,0,0,0.2)";
     b.style.background = "white";
     b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
     b.style.fontSize = "18px";
-
-    b.style.right = `${UI_POS.rightPx + rightOffsetPx}px`;
-    b.style.bottom = `${UI_POS.bottomPx + bottomOffsetPx}px`;
     b.style.left = "auto";
     b.style.top = "auto";
+
+    b.dataset.uiRightOffset = String(rightOffsetPx);
+    b.dataset.uiBottomOffset = String(bottomOffsetPx);
+    applyButtonPosition(b);
   }
 
   function setMicState(state, msg = "") {
@@ -1857,16 +1924,35 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // Boot
   // ============================================================
   function boot() {
+    bindUiRelayoutListeners();
+
     if (!supportedSpeech) {
       showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
     }
+
+    const mountNode = document.body || document.documentElement;
 
     micBtn = document.createElement("button");
     styleRoundButton(micBtn, 0, 0);
     micBtn.textContent = "🎙️";
     micBtn.title = "Spracheingabe (Start/Stop)";
     micBtn.addEventListener("click", toggleMic);
-    document.body.appendChild(micBtn);
+    mountNode.appendChild(micBtn);
+
+    memBtn = document.createElement("button");
+    styleRoundButton(memBtn, 52, 0);
+    memBtn.textContent = "💾";
+    memBtn.title = "Memory-Prompt einfügen";
+    memBtn.addEventListener("click", runMemoryPrompt);
+    mountNode.appendChild(memBtn);
+
+    clearBtn = document.createElement("button");
+    styleRoundButton(clearBtn, 104, 0);
+    clearBtn.textContent = "❌";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.addEventListener("click", runClearPrompt);
+    mountNode.appendChild(clearBtn);
 
     memBtn = document.createElement("button");
     styleRoundButton(memBtn, 52, 0);
@@ -1888,14 +1974,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     promptBtn.textContent = "✨";
     promptBtn.title = "Prompt (für Frank) einbetten";
     promptBtn.addEventListener("click", runPromptBuilder);
-    document.body.appendChild(promptBtn);
+    mountNode.appendChild(promptBtn);
 
     promptBtn2 = document.createElement("button");
     styleRoundButton(promptBtn2, 0, 104);
     promptBtn2.textContent = "🪄";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
     promptBtn2.addEventListener("click", runPromptBuilderGeneral);
-    document.body.appendChild(promptBtn2);
+    mountNode.appendChild(promptBtn2);
+
+    scheduleUiRelayout();
 
     setMicState("idle");
     setMemBtnState("idle");
