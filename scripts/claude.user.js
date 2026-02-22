@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude
 // @namespace    https://claude.ai/
-// @version      1.0.6
+// @version      1.0.7
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -180,6 +180,30 @@
     return String(s || "").replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
   }
 
+  function readEditorLikeText(root) {
+    if (!root) return "";
+
+    const clone = root.cloneNode(true);
+    try {
+      clone.querySelectorAll(
+        "button, nav, aside, header, footer, svg, img, canvas, [role='button'], [aria-hidden='true'], [contenteditable='false']"
+      ).forEach((n) => n.remove());
+    } catch {}
+
+    const blocks = Array.from(clone.querySelectorAll("p, li, pre, blockquote, h1, h2, h3, h4, h5, h6"));
+    if (blocks.length) {
+      const out = blocks
+        .map((node) => String(node.innerText || node.textContent || "").replace(/\u00A0/g, " ").trimEnd())
+        .join("\n")
+        .replace(/\n{3,}/g, "\n\n");
+      const cleaned = cleanText(out);
+      if (cleaned) return cleaned;
+    }
+
+    const fallback = String(clone.innerText || clone.textContent || "").replace(/\u00A0/g, " ");
+    return cleanText(fallback);
+  }
+
   function isTextInput(el) {
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
@@ -196,8 +220,14 @@
 
   function readPromptText(el) {
     if (!el) return "";
+    const pm = getProseMirrorRoot(el);
+    if (pm) {
+      const pmText = readEditorLikeText(pm);
+      if (pmText) return pmText;
+    }
     let v = "";
     if (isTextInput(el)) v = el.value || "";
+    if (!v && isContentEditableLike(el)) v = readEditorLikeText(el);
     // Für ProseMirror ist innerText oft der verlässlichste Weg, Newlines zu bekommen
     if (!v) v = el.innerText || "";
     if (!v) v = el.textContent || "";
@@ -633,8 +663,8 @@
       return gotC.length >= Math.min(20, targetCmp.length);
     }
 
-    // --- Standard-Feld: weiterhin Copy+Paste / execCommand (so wie du es willst) ---
-    try { document.execCommand("selectAll", false, null); } catch {}
+    // --- Standard-Feld: nur das Zielfeld markieren, nicht die ganze Seite ---
+    selectAllIn(targetEl);
 
     let pasted = false;
 
