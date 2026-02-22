@@ -239,8 +239,14 @@
 
   function readPromptText(el) {
     if (!el) return "";
+    const pm = getProseMirrorRoot(el);
+    if (pm) {
+      const pmText = readEditorLikeText(pm);
+      if (pmText) return pmText;
+    }
     let v = "";
     if (isTextInput(el)) v = el.value || "";
+    if (!v && isContentEditableLike(el)) v = readEditorLikeText(el);
     // Für ProseMirror ist innerText oft der verlässlichste Weg, Newlines zu bekommen
     if (!v) v = el.innerText || "";
     if (!v) v = el.textContent || "";
@@ -677,8 +683,8 @@
       return gotC.length >= Math.min(20, targetCmp.length);
     }
 
-    // --- Standard-Feld: weiterhin Copy+Paste / execCommand (so wie du es willst) ---
-    try { document.execCommand("selectAll", false, null); } catch {}
+    // --- Standard-Feld: nur das Zielfeld markieren, nicht die ganze Seite ---
+    selectAllIn(targetEl);
 
     let pasted = false;
 
