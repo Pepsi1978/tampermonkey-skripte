@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude V.1.1.0
+// @name         Claude V.1.0.7
 // @namespace    https://claude.ai/
-// @version      1.1.0
+// @version      1.0.8
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -239,14 +239,8 @@
 
   function readPromptText(el) {
     if (!el) return "";
-    const pm = getProseMirrorRoot(el);
-    if (pm) {
-      const pmText = readEditorLikeText(pm);
-      if (pmText) return pmText;
-    }
     let v = "";
     if (isTextInput(el)) v = el.value || "";
-    if (!v && isContentEditableLike(el)) v = readEditorLikeText(el);
     // Für ProseMirror ist innerText oft der verlässlichste Weg, Newlines zu bekommen
     if (!v) v = el.innerText || "";
     if (!v) v = el.textContent || "";
@@ -683,8 +677,8 @@
       return gotC.length >= Math.min(20, targetCmp.length);
     }
 
-    // --- Standard-Feld: nur das Zielfeld markieren, nicht die ganze Seite ---
-    selectAllIn(targetEl);
+    // --- Standard-Feld: weiterhin Copy+Paste / execCommand (so wie du es willst) ---
+    try { document.execCommand("selectAll", false, null); } catch {}
 
     let pasted = false;
 
