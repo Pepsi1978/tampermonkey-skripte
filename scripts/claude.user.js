@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude V.1.0.9
+// @name         Claude V.1.0.8
 // @namespace    https://claude.ai/
-// @version      1.0.9
+// @version      1.0.8
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -227,21 +227,18 @@
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
-  function isRoleTextbox(el) {
-    return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
-  }
-
   function isContentEditableLike(el) {
     if (!el) return false;
     if (el.isContentEditable) return true;
     const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "" || ce === "plaintext-only") return true;
+    if (ce === "true" || ce === "") return true;
+    const role = (el.getAttribute?.("role") || "").toLowerCase();
+    if (role === "textbox") return true;
     return false;
   }
 
   function readPromptText(el) {
     if (!el) return "";
-    el = resolveEditableTarget(el) || el;
     let v = "";
     if (isTextInput(el)) v = el.value || "";
     // Für ProseMirror ist innerText oft der verlässlichste Weg, Newlines zu bekommen
@@ -277,34 +274,26 @@
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']"),
-      document.querySelector("form [contenteditable='true']"),
-      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
-      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
-    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
+      document.querySelector("form textarea[data-testid='prompt-textarea']")
+    ].filter(Boolean).find(isVisible);
 
     if (direct) return direct;
 
-    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
-      ...document.querySelectorAll("[contenteditable='']"),
-      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
-      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].map(resolveEditableTarget).filter((el) => {
-      if (!el || seen.has(el)) return false;
-      seen.add(el);
-      return isVisible(el) && isEditableTarget(el);
-    });
+    ].filter(isVisible);
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-    return candidates[0] || null;
+
+    const top = candidates[0];
+    const inner = top.querySelector?.("[contenteditable='true']");
+    return inner && isVisible(inner) ? inner : top;
   }
 
   // ============================================================
@@ -318,10 +307,6 @@
   let promptBtn = null;
   let promptBtn2 = null;
 
-  function isAriaReadonly(el) {
-    return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
-  }
-
   function isEditableTarget(el) {
     if (!el) return false;
     if (el === document.body || el === document.documentElement) return false;
@@ -333,89 +318,48 @@
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
     if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+      if (el.readOnly || el.disabled || ariaDisabled) return false;
       return true;
     }
 
     if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+      if (el.readOnly || el.disabled || ariaDisabled) return false;
       const type = (el.type || "text").toLowerCase();
       const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
       return ok;
     }
 
-    if (isContentEditableLike(el)) return true;
+    if (el.isContentEditable) return true;
+    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
+    if (ce === "true" || ce === "") return true;
 
-    if (isRoleTextbox(el)) {
-      const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
-      if (inner) return isEditableTarget(inner);
-      return false;
-    }
+    const role = (el.getAttribute?.("role") || "").toLowerCase();
+    if (role === "textbox") return true;
 
     return false;
-  }
-
-  function resolveEditableTarget(el) {
-    if (!el || el.nodeType !== 1) return null;
-
-    // Erst ein moegliches inneres Feld aufloesen, damit keine grossen Wrapper genutzt werden.
-    const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']");
-    if (inner && inner !== el) {
-      const resolvedInner = resolveEditableTarget(inner);
-      if (resolvedInner && isEditableTarget(resolvedInner)) return resolvedInner;
-    }
-
-    if (isTextInput(el) || isContentEditableLike(el)) return el;
-
-    if (isRoleTextbox(el)) {
-      const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
-      if (nested) {
-        const resolvedNested = resolveEditableTarget(nested);
-        if (resolvedNested && isEditableTarget(resolvedNested)) return resolvedNested;
-      }
-    }
-
-    let parent = el.parentElement;
-    let depth = 0;
-    while (parent && depth < 5) {
-      if (isTextInput(parent) || isContentEditableLike(parent)) return parent;
-      parent = parent.parentElement;
-      depth += 1;
-    }
-
-    return isEditableTarget(el) ? el : null;
   }
 
   function pickEditableFromEvent(e) {
     const path = typeof e.composedPath === "function" ? e.composedPath() : null;
     if (Array.isArray(path)) {
       for (const node of path) {
-        if (!node || node.nodeType !== 1) continue;
-        const resolved = resolveEditableTarget(node);
-        if (resolved && isEditableTarget(resolved) && isVisible(resolved)) return resolved;
+        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
       }
     }
-    const t = resolveEditableTarget(e.target);
+    const t = e.target;
     if (isEditableTarget(t) && isVisible(t)) return t;
     return null;
   }
 
   function rememberEditable(el) {
-    const resolved = resolveEditableTarget(el);
-    if (isEditableTarget(resolved) && isVisible(resolved)) lastUserEditable = resolved;
+    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
   }
 
   function getUserTargetEditable() {
-    const active = resolveEditableTarget(document.activeElement);
+    const active = document.activeElement;
     if (isEditableTarget(active) && isVisible(active)) return active;
-
-    const remembered = resolveEditableTarget(lastUserEditable);
-    if (isEditableTarget(remembered) && isVisible(remembered)) return remembered;
-
-    const fallback = resolveEditableTarget(findPrompt());
-    if (isEditableTarget(fallback) && isVisible(fallback)) return fallback;
-
-    return null;
+    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
+    return findPrompt(); // Fallback
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
@@ -676,12 +620,12 @@
   }
 
   async function setViaPaste(el, text) {
+    if (!el) return false;
+
     const targetRaw = String(text ?? "")
       .replace(/[\u200B-\u200D\uFEFF]/g, "")
       .replace(/\r\n/g, "\n")
       .replace(/\r/g, "\n");
-    el = resolveEditableTarget(el) || el;
-    if (!el) return false;
 
     const targetCmp = normalizeForCompare(targetRaw);
 
@@ -690,21 +634,6 @@
     const targetEl = pm || el;
 
     targetEl.focus();
-
-    if (!pm && isTextInput(targetEl)) {
-      const setter =
-        Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
-        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
-      if (setter && (targetEl instanceof HTMLTextAreaElement || targetEl instanceof HTMLInputElement)) setter.call(targetEl, targetRaw);
-      else targetEl.value = targetRaw;
-      try { targetEl.setSelectionRange(targetRaw.length, targetRaw.length); } catch {}
-      dispatchReactInput(targetEl, "insertReplacementText", targetRaw);
-      await sleep(CFG.postPasteDelayMs);
-      await reactNudge(targetEl);
-      await sleep(40);
-      const gotFast = normalizeForCompare(readPromptText(targetEl));
-      if (gotFast === targetCmp || gotFast.replace(/\s+/g, " ") === targetCmp.replace(/\s+/g, " ")) return true;
-    }
 
     // --- 1) ProseMirror: versuche Paste-Event (am ähnlichsten zu echtem Einfügen) ---
     if (pm) {
@@ -748,8 +677,8 @@
       return gotC.length >= Math.min(20, targetCmp.length);
     }
 
-    // --- Standard-Feld: gezielt im Zielfeld markieren, nicht die ganze Seite ---
-    selectAllIn(targetEl);
+    // --- Standard-Feld: weiterhin Copy+Paste / execCommand (so wie du es willst) ---
+    try { document.execCommand("selectAll", false, null); } catch {}
 
     let pasted = false;
 
