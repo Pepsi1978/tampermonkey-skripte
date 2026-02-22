@@ -240,21 +240,24 @@
     return el && (el.tagName === "TEXTAREA" || el.tagName === "INPUT");
   }
 
+  function isRoleTextbox(el) {
+    return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
+  }
+
   function isContentEditableLike(el) {
     if (!el) return false;
     if (el.isContentEditable) return true;
     const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (ce === "true" || ce === "" || ce === "plaintext-only") return true;
     return false;
   }
 
   // WICHTIG: Bei contenteditable innerText bevorzugen, damit Zeilenumbrüche sichtbar bleiben
   function readPromptText(el) {
     if (!el) return "";
+    el = resolveEditableTarget(el) || el;
     if (isTextInput(el)) return cleanText(el.value || "");
-    if (isContentEditableLike(el)) return cleanText(el.innerText || "");
+    if (isContentEditableLike(el) || isRoleTextbox(el)) return cleanText(el.innerText || el.textContent || "");
     return cleanText(el.textContent || el.innerText || "");
   }
 
@@ -285,26 +288,34 @@
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
-    ].filter(Boolean).find(isVisible);
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
+    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
 
     if (direct) return direct;
 
+    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
+      ...document.querySelectorAll("[contenteditable='']"),
+      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
+      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].map(resolveEditableTarget).filter((el) => {
+      if (!el || seen.has(el)) return false;
+      seen.add(el);
+      return isVisible(el) && isEditableTarget(el);
+    });
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-
-    const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    return candidates[0] || null;
   }
 
   // ============================================================
@@ -318,6 +329,10 @@
   let promptBtn = null;
   let promptBtn2 = null;
 
+  function isAriaReadonly(el) {
+    return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
+  }
+
   function isEditableTarget(el) {
     if (!el) return false;
     if (el === document.body || el === document.documentElement) return false;
@@ -329,48 +344,89 @@
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
     if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       return true;
     }
 
     if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       const type = (el.type || "text").toLowerCase();
       const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
       return ok;
     }
 
-    if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
+    if (isContentEditableLike(el)) return true;
 
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+    if (isRoleTextbox(el)) {
+      const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (inner) return isEditableTarget(inner);
+      return false;
+    }
 
     return false;
+  }
+
+  function resolveEditableTarget(el) {
+    if (!el || el.nodeType !== 1) return null;
+
+    // Erst ein moegliches inneres Feld aufloesen, damit kein grosser Wrapper genutzt wird.
+    const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']");
+    if (inner && inner !== el) {
+      const resolvedInner = resolveEditableTarget(inner);
+      if (resolvedInner && isEditableTarget(resolvedInner)) return resolvedInner;
+    }
+
+    if (isTextInput(el) || isContentEditableLike(el)) return el;
+
+    if (isRoleTextbox(el)) {
+      const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (nested) {
+        const resolvedNested = resolveEditableTarget(nested);
+        if (resolvedNested && isEditableTarget(resolvedNested)) return resolvedNested;
+      }
+    }
+
+    let parent = el.parentElement;
+    let depth = 0;
+    while (parent && depth < 5) {
+      if (isTextInput(parent) || isContentEditableLike(parent)) return parent;
+      parent = parent.parentElement;
+      depth += 1;
+    }
+
+    return isEditableTarget(el) ? el : null;
   }
 
   function pickEditableFromEvent(e) {
     const path = typeof e.composedPath === "function" ? e.composedPath() : null;
     if (Array.isArray(path)) {
       for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
+        if (!node || node.nodeType !== 1) continue;
+        const resolved = resolveEditableTarget(node);
+        if (resolved && isEditableTarget(resolved) && isVisible(resolved)) return resolved;
       }
     }
-    const t = e.target;
+    const t = resolveEditableTarget(e.target);
     if (isEditableTarget(t) && isVisible(t)) return t;
     return null;
   }
 
   function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+    const resolved = resolveEditableTarget(el);
+    if (isEditableTarget(resolved) && isVisible(resolved)) lastUserEditable = resolved;
   }
 
   function getUserTargetEditable() {
-    const active = document.activeElement;
+    const active = resolveEditableTarget(document.activeElement);
     if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+
+    const remembered = resolveEditableTarget(lastUserEditable);
+    if (isEditableTarget(remembered) && isVisible(remembered)) return remembered;
+
+    const fallback = resolveEditableTarget(findPrompt());
+    if (isEditableTarget(fallback) && isVisible(fallback)) return fallback;
+
+    return null;
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
@@ -523,7 +579,6 @@
     if (isTextInput(el)) {
       try { el.select(); return; } catch {}
       try { el.setSelectionRange(0, (el.value || "").length); return; } catch {}
-      try { document.execCommand("selectAll", false, null); } catch {}
       return;
     }
 
@@ -536,7 +591,7 @@
       range.selectNodeContents(el);
       sel.addRange(range);
     } catch {
-      try { document.execCommand("selectAll", false, null); } catch {}
+      // kein globales selectAll als Fallback, damit keine Seitentexte mitmarkiert werden.
     }
   }
 
@@ -579,7 +634,26 @@
 
   async function setViaPaste(el, text) {
     const target = sanitizeForPaste(text);
+    el = resolveEditableTarget(el) || el;
     if (!el) return false;
+
+    // Mobile/Edge: direkte Value-Setzung zuerst, da Clipboard/Paste dort oft blockiert ist.
+    if (isTextInput(el)) {
+      const setter =
+        Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
+        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+
+      if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
+      else el.value = target;
+
+      try { el.focus(); } catch {}
+      try { el.setSelectionRange(target.length, target.length); } catch {}
+      dispatchReactInput(el, "insertReplacementText", target);
+      await sleep(CFG.postPasteDelayMs);
+      await reactNudge(el);
+      await sleep(40);
+      return equalTextStructureAware(readPromptText(el), target) || equalTextLoose(readPromptText(el), target);
+    }
 
     selectAllInside(el);
 
@@ -688,7 +762,9 @@
       document.execCommand("insertText", false, spacer + add);
       dispatchReactInput(el, "insertText", add);
     } catch {
-      try { el.textContent = combined; } catch {}
+      try { el.innerHTML = escapeHtml(combined).replace(/\n/g, "<br>"); } catch {
+        try { el.textContent = combined; } catch {}
+      }
       dispatchReactInput(el, "insertReplacementText", combined);
     }
   }
