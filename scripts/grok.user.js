@@ -238,17 +238,23 @@
     return ce === "" || ce === "true" || ce === "plaintext-only";
   }
 
+  function isRoleTextbox(el) {
+    return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
+  }
+
   function isLikelyEditable(el) {
     if (!el) return false;
     if (isTextInput(el)) return true;
     if (el.isContentEditable) return true;
     if (hasContentEditableEnabled(el)) return true;
+    if (isRoleTextbox(el)) return true;
     return false;
   }
 
   // WICHTIG: Für contenteditable innerText bevorzugen -> behält Zeilenumbrüche bei
   function readPromptText(el) {
     if (!el) return "";
+    el = resolveEditableTarget(el) || el;
     let v = "";
 
     if (isTextInput(el)) {
@@ -345,25 +351,30 @@
       document.querySelector("form [contenteditable='true']"),
       document.querySelector("[aria-label*='message' i][contenteditable='true']"),
       document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
-    ].filter(Boolean).find(isVisible);
+    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
 
     if (direct) return direct;
 
+    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
+      ...document.querySelectorAll("[contenteditable='']"),
+      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
+      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].map(resolveEditableTarget).filter((el) => {
+      if (!el || seen.has(el)) return false;
+      seen.add(el);
+      return isVisible(el) && isEditableTarget(el);
+    });
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-
-    const top = candidates[0];
-    const resolved = resolveEditableTarget(top);
-    return resolved && isVisible(resolved) ? resolved : top;
+    return candidates[0] || null;
   }
 
   // ============================================================
@@ -378,6 +389,10 @@
   let promptBtn2 = null;
   let uiRoot = null;
 
+  function isAriaReadonly(el) {
+    return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
+  }
+
   function isEditableTarget(el) {
     if (!el) return false;
     if (el === document.body || el === document.documentElement) return false;
@@ -389,12 +404,12 @@
     const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
     if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       return true;
     }
 
     if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
+      if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
       const type = (el.type || "text").toLowerCase();
       const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
       return ok;
@@ -402,6 +417,11 @@
 
     if (el.isContentEditable) return true;
     if (hasContentEditableEnabled(el)) return true;
+    if (isRoleTextbox(el)) {
+      const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (inner) return isEditableTarget(inner);
+      return false;
+    }
 
     return false;
   }
@@ -424,16 +444,26 @@
   function resolveEditableTarget(el) {
     if (!el || el.nodeType !== 1) return null;
 
+    // Erst ein inneres Feld suchen, um keine grossen Wrapper als Ziel zu verwenden.
+    const inner = el.querySelector?.(
+      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']"
+    );
+    if (inner && inner !== el) {
+      const resolvedInner = resolveEditableTarget(inner);
+      if (isEditableTarget(resolvedInner) && isVisible(resolvedInner)) return resolvedInner;
+    }
+
     if (isTextInput(el) || el.isContentEditable) return el;
 
     const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return el;
+    if (ce === "true" || ce === "" || ce === "plaintext-only") return el;
 
-    const inner = el.querySelector?.(
-      "textarea, input[type='text'], input:not([type]), [contenteditable='true'], [role='textbox']"
-    );
-    if (inner && (isTextInput(inner) || inner.isContentEditable || (inner.getAttribute?.("contenteditable") || "").toLowerCase() === "true")) {
-      return inner;
+    if (isRoleTextbox(el)) {
+      const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+      if (nested) {
+        const resolvedNested = resolveEditableTarget(nested);
+        if (isEditableTarget(resolvedNested) && isVisible(resolvedNested)) return resolvedNested;
+      }
     }
 
     let parent = el.parentElement;
@@ -441,7 +471,7 @@
     while (parent && depth < 5) {
       if (isTextInput(parent) || parent.isContentEditable) return parent;
       const parentCE = (parent.getAttribute?.("contenteditable") || "").toLowerCase();
-      if (parentCE === "true" || parentCE === "") return parent;
+      if (parentCE === "true" || parentCE === "" || parentCE === "plaintext-only") return parent;
       parent = parent.parentElement;
       depth++;
     }
@@ -647,6 +677,22 @@
     const target = String(text || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
     el = resolveEditableTarget(el) || el;
     if (!el) return false;
+
+    // Mobile/Edge: direkte Value-Setzung ist deutlich stabiler als Paste-Berechtigungen.
+    if (isTextInput(el)) {
+      const setter =
+        Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
+        Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
+      else el.value = target;
+      try { el.focus(); } catch {}
+      try { el.setSelectionRange(target.length, target.length); } catch {}
+      dispatchReactInput(el, "insertReplacementText", target);
+      await sleep(CFG.postPasteDelayMs);
+      await reactNudge(el);
+      await sleep(40);
+      return normalizeForCompare(readPromptText(el)) === normalizeForCompare(target);
+    }
 
     selectWholeEditable(el);
 

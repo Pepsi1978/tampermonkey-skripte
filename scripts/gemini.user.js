@@ -257,11 +257,19 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 
   function readPromptText(el) {
     if (!el) return "";
-    let v = "";
-    if (isTextInput(el)) v = el.value || "";
-    if (!v) v = el.textContent || "";
-    if (!v) v = el.innerText || "";
-    return cleanText(v);
+
+    el = resolveEditableTarget(el) || el;
+
+    if (isTextInput(el)) {
+      return cleanText(el.value || "");
+    }
+
+    // contenteditable bevorzugt ueber innerText lesen, damit Zeilenumbrueche erhalten bleiben.
+    if (isContentEditableLike(el) || isRoleTextbox(el)) {
+      return cleanText(el.innerText || el.textContent || "");
+    }
+
+    return cleanText(el.textContent || el.innerText || "");
   }
 
   function scoreCandidate(el) {
@@ -291,26 +299,35 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
-      document.querySelector("form textarea[data-testid='prompt-textarea']")
-    ].filter(Boolean).find(isVisible);
+      document.querySelector("form textarea[data-testid='prompt-textarea']"),
+      document.querySelector("form [contenteditable='true']"),
+      document.querySelector("[aria-label*='message' i][contenteditable='true']"),
+      document.querySelector("[aria-label*='nachricht' i][contenteditable='true']")
+    ].map(resolveEditableTarget).filter(Boolean).find((el) => isVisible(el) && isEditableTarget(el));
 
     if (direct) return direct;
 
+    const seen = new Set();
     const candidates = [
       ...document.querySelectorAll("textarea"),
       ...document.querySelectorAll("input[type='text']"),
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
+      ...document.querySelectorAll("[contenteditable='']"),
+      ...document.querySelectorAll("[contenteditable='plaintext-only']"),
+      ...document.querySelectorAll("[data-lexical-editor='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].map(resolveEditableTarget)
+      .filter((el) => {
+        if (!el || seen.has(el)) return false;
+        seen.add(el);
+        return isVisible(el) && isEditableTarget(el);
+      });
 
     if (!candidates.length) return null;
 
     candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
-
-    const top = candidates[0];
-    const inner = top.querySelector?.("[contenteditable='true']");
-    return inner && isVisible(inner) ? inner : top;
+    return candidates[0] || null;
   }
 
   // ============================================================
@@ -325,66 +342,128 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   let promptBtn = null;
   let promptBtn2 = null;
 
-  function isEditableTarget(el) {
-    if (!el) return false;
-    if (el === document.body || el === document.documentElement) return false;
+function isRoleTextbox(el) {
+  return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
+}
 
-    // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
-    if (el === micBtn || el === memBtn || el === clearBtn || el === promptBtn || el === promptBtn2) return false;
+function hasContentEditableEnabled(el) {
+  const raw = el?.getAttribute?.("contenteditable");
+  if (raw == null) return false;
+  const ce = String(raw).toLowerCase();
+  return ce === "" || ce === "true" || ce === "plaintext-only";
+}
 
-    const tag = (el.tagName || "").toUpperCase();
-    const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
+function isContentEditableLike(el) {
+  if (!el) return false;
+  return !!el.isContentEditable || hasContentEditableEnabled(el);
+}
 
-    if (tag === "TEXTAREA") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
-      return true;
-    }
+function isAriaReadonly(el) {
+  return (el?.getAttribute?.("aria-readonly") || "").toLowerCase() === "true";
+}
 
-    if (tag === "INPUT") {
-      if (el.readOnly || el.disabled || ariaDisabled) return false;
-      const type = (el.type || "text").toLowerCase();
-      const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
-      return ok;
-    }
+function isEditableTarget(el) {
+  if (!el) return false;
+  if (el === document.body || el === document.documentElement) return false;
 
-    if (el.isContentEditable) return true;
-    const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-    if (ce === "true" || ce === "") return true;
+  // niemals unsere eigenen UI-Buttons als Eingabefeld nehmen
+  if ((typeof micBtn !== "undefined" && el === micBtn) || (typeof clearBtn !== "undefined" && el === clearBtn) || (typeof promptBtn !== "undefined" && el === promptBtn) || (typeof promptBtn2 !== "undefined" && el === promptBtn2) || (typeof memBtn !== "undefined" && el === memBtn)) return false;
 
-    const role = (el.getAttribute?.("role") || "").toLowerCase();
-    if (role === "textbox") return true;
+  const tag = (el.tagName || "").toUpperCase();
+  const ariaDisabled = (el.getAttribute?.("aria-disabled") || "").toLowerCase() === "true";
 
+  if (tag === "TEXTAREA") {
+    if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+    return true;
+  }
+
+  if (tag === "INPUT") {
+    if (el.readOnly || el.disabled || ariaDisabled || isAriaReadonly(el)) return false;
+    const type = (el.type || "text").toLowerCase();
+    const ok = ["text", "search", "email", "url", "tel", "password"].includes(type);
+    return ok;
+  }
+
+  if (isContentEditableLike(el)) return true;
+
+  if (isRoleTextbox(el)) {
+    const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+    if (inner) return isEditableTarget(inner);
     return false;
   }
 
-  function pickEditableFromEvent(e) {
-    const path = typeof e.composedPath === "function" ? e.composedPath() : null;
-    if (Array.isArray(path)) {
-      for (const node of path) {
-        if (node && node.nodeType === 1 && isEditableTarget(node) && isVisible(node)) return node;
-      }
+  return false;
+}
+
+function resolveEditableTarget(el) {
+  if (!el || el.nodeType !== 1) return null;
+
+  // Erst ein moegliches inneres, praeziseres Feld suchen, damit kein grosser Wrapper erwischt wird.
+  const inner = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only'], [data-lexical-editor='true'], [role='textbox']");
+  if (inner && inner !== el) {
+    const resolvedInner = resolveEditableTarget(inner);
+    if (resolvedInner && isEditableTarget(resolvedInner)) return resolvedInner;
+  }
+
+  if (isTextInput(el) || isContentEditableLike(el)) return el;
+
+  if (isRoleTextbox(el)) {
+    const nested = el.querySelector?.("textarea, input[type='text'], input:not([type]), [contenteditable='true'], [contenteditable=''], [contenteditable='plaintext-only']");
+    if (nested) {
+      const resolvedNested = resolveEditableTarget(nested);
+      if (resolvedNested && isEditableTarget(resolvedNested)) return resolvedNested;
     }
-    const t = e.target;
-    if (isEditableTarget(t) && isVisible(t)) return t;
-    return null;
   }
 
-  function rememberEditable(el) {
-    if (isEditableTarget(el) && isVisible(el)) lastUserEditable = el;
+  let parent = el.parentElement;
+  let depth = 0;
+  while (parent && depth < 5) {
+    if (isTextInput(parent) || isContentEditableLike(parent)) return parent;
+    parent = parent.parentElement;
+    depth += 1;
   }
 
-  function getUserTargetEditable() {
-    const active = document.activeElement;
-    if (isEditableTarget(active) && isVisible(active)) return active;
-    if (isEditableTarget(lastUserEditable) && isVisible(lastUserEditable)) return lastUserEditable;
-    return findPrompt(); // Fallback
+  return isEditableTarget(el) ? el : null;
+}
+
+function pickEditableFromEvent(e) {
+  const path = typeof e.composedPath === "function" ? e.composedPath() : null;
+  if (Array.isArray(path)) {
+    for (const node of path) {
+      if (!node || node.nodeType !== 1) continue;
+      const resolved = resolveEditableTarget(node);
+      if (resolved && isVisible(resolved) && isEditableTarget(resolved)) return resolved;
+    }
   }
 
-  // Fokus/Click-Tracking (auch Shadow DOM)
-  document.addEventListener("focusin", (e) => rememberEditable(pickEditableFromEvent(e) || document.activeElement), true);
-  document.addEventListener("pointerdown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("mousedown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+  const resolvedTarget = resolveEditableTarget(e.target);
+  if (resolvedTarget && isVisible(resolvedTarget) && isEditableTarget(resolvedTarget)) return resolvedTarget;
+  return null;
+}
+
+function rememberEditable(el) {
+  const resolved = resolveEditableTarget(el);
+  if (resolved && isVisible(resolved) && isEditableTarget(resolved)) lastUserEditable = resolved;
+}
+
+function getUserTargetEditable() {
+  const active = resolveEditableTarget(document.activeElement);
+  if (active && isVisible(active) && isEditableTarget(active)) return active;
+
+  const remembered = resolveEditableTarget(lastUserEditable);
+  if (remembered && isVisible(remembered) && isEditableTarget(remembered)) return remembered;
+
+  const fallback = resolveEditableTarget(findPrompt());
+  if (fallback && isVisible(fallback) && isEditableTarget(fallback)) return fallback;
+
+  return null;
+}
+
+// Fokus/Click-Tracking (auch Shadow DOM)
+document.addEventListener("focusin", (e) => rememberEditable(pickEditableFromEvent(e) || document.activeElement), true);
+document.addEventListener("pointerdown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+document.addEventListener("mousedown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
+document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent(e)), true);
 
   // ============================================================
   // React/Input Events
@@ -496,71 +575,143 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // ============================================================
   // PASTE-APPLY
   // ============================================================
-  async function copyToClipboardFallback(text) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.setAttribute("readonly", "true");
-    ta.style.position = "fixed";
-    ta.style.left = "-9999px";
-    ta.style.top = "-9999px";
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    let ok = false;
-    try { ok = document.execCommand("copy"); } catch {}
-    document.body.removeChild(ta);
-    return ok;
+async function copyToClipboardFallback(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "true");
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.style.top = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch {}
+  document.body.removeChild(ta);
+  return ok;
+}
+
+function normalizeForCompare(s) {
+  return String(s || "")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .replace(/\u00A0/g, " ")
+    .trim();
+}
+
+function setNativeValue(el, val) {
+  const v = String(val ?? "");
+  try {
+    if (el instanceof HTMLTextAreaElement) {
+      const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set;
+      if (setter) setter.call(el, v);
+      else el.value = v;
+      return;
+    }
+    if (el instanceof HTMLInputElement) {
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+      if (setter) setter.call(el, v);
+      else el.value = v;
+      return;
+    }
+    el.value = v;
+  } catch {
+    try { el.value = v; } catch {}
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function moveCaretToEnd(el) {
+  try {
+    el.focus();
+    const sel = window.getSelection?.();
+    if (!sel) return;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } catch {}
+}
+
+function setContentEditablePreserveNewlines(el, text) {
+  if (!el) return;
+  const html = escapeHtml(String(text ?? "")).replace(/\n/g, "<br>");
+
+  try {
+    el.focus();
+    el.innerHTML = html;
+    moveCaretToEnd(el);
+  } catch {
+    try { el.textContent = text; } catch {}
   }
 
-  async function setViaPaste(el, text) {
-    const target = cleanText(text);
-    if (!el) return false;
+  dispatchReactInput(el, "insertReplacementText", String(text ?? ""));
+}
 
-    el.focus();
-    try { document.execCommand("selectAll", false, null); } catch {}
+async function setViaPaste(el, text) {
+  const target = String(text ?? "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  el = resolveEditableTarget(el) || el;
+  if (!el) return false;
 
-    let pasted = false;
+  try { el.focus(); } catch {}
 
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(target);
-        try { pasted = document.execCommand("paste"); } catch {}
-      }
-    } catch {}
+  if (isTextInput(el)) {
+    setNativeValue(el, target);
+    try { el.setSelectionRange(target.length, target.length); } catch {}
+    dispatchReactInput(el, "insertReplacementText", target);
+  } else {
+    setContentEditablePreserveNewlines(el, target);
+  }
 
-    if (!pasted) {
-      const okCopy = await copyToClipboardFallback(target);
-      if (okCopy) {
-        try { pasted = document.execCommand("paste"); } catch {}
-      }
+  await sleep(CFG.postPasteDelayMs);
+  await reactNudge(el);
+  await sleep(40);
+
+  const got = normalizeForCompare(readPromptText(el));
+  const want = normalizeForCompare(target);
+  if (got === want) return true;
+
+  // Browser/Editor duerfen Whitespace leicht normalisieren.
+  if (got.replace(/\s+/g, " ") === want.replace(/\s+/g, " ")) return true;
+
+  // Letzter Versuch ueber Clipboard-Weg (falls Editor nur Paste verarbeitet).
+  let pasted = false;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(target);
+      try { pasted = document.execCommand("paste"); } catch {}
     }
+  } catch {}
 
-    if (!pasted) {
-      dispatchReactInput(el, "insertFromPaste", target);
-      pasted = true;
+  if (!pasted) {
+    const okCopy = await copyToClipboardFallback(target);
+    if (okCopy) {
+      try { pasted = document.execCommand("paste"); } catch {}
     }
+  }
 
+  if (pasted) {
     await sleep(CFG.postPasteDelayMs);
-
-    if (cleanText(readPromptText(el)) !== target) {
-      if (isTextInput(el)) {
-        const setter =
-          Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set ||
-          Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
-        if (setter && (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) setter.call(el, target);
-        else el.value = target;
-        dispatchReactInput(el, "insertReplacementText", target);
-      } else {
-        try { el.textContent = target; } catch {}
-        dispatchReactInput(el, "insertReplacementText", target);
-      }
-    }
-
     await reactNudge(el);
     await sleep(40);
-
-    return cleanText(readPromptText(el)) === target;
   }
+
+  const gotAfter = normalizeForCompare(readPromptText(el));
+  if (gotAfter === want) return true;
+  return gotAfter.replace(/\s+/g, " ") === want.replace(/\s+/g, " ");
+}
 
   function insertText(el, text) {
     if (!el || !text) return;
@@ -594,7 +745,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       document.execCommand("insertText", false, spacer + add);
       dispatchReactInput(el, "insertText", add);
     } catch {
-      try { el.textContent = combined; } catch {}
+      try { setContentEditablePreserveNewlines(el, combined); } catch {}
       dispatchReactInput(el, "insertReplacementText", combined);
     }
   }
