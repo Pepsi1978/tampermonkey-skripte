@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Claude V.1.0.9
 // @namespace    https://claude.ai/
-// @version      1.0.9
-// @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze).
+// @version      1.0.10
+// @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze). Fix: strengere Prompt-Feld-Erkennung (kein Seitentext mehr).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
 // @run-at       document-idle
@@ -267,15 +267,55 @@
     return area * nearBottom * bonus;
   }
 
+  function isReasonableComposerSize(el) {
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    const vh = Math.max(1, window.innerHeight);
+    const vw = Math.max(1, window.innerWidth);
+
+    if (r.width < 120 || r.height < 24) return false;
+    if (r.height > vh * 0.55) return false;
+    if (r.width > vw * 0.99 && r.height > vh * 0.35) return false;
+    return true;
+  }
+
+  function isLikelyClaudePromptInput(el) {
+    if (!el) return false;
+
+    const id = (el.id || "").toLowerCase();
+    const dt = (el.getAttribute?.("data-testid") || "").toLowerCase();
+    const aria = (el.getAttribute?.("aria-label") || "").toLowerCase();
+    const placeholder = (el.getAttribute?.("placeholder") || "").toLowerCase();
+
+    if (id.includes("prompt-textarea") || dt.includes("prompt-textarea")) return true;
+    if (id.includes("prompt") || dt.includes("prompt")) return true;
+    if (aria.includes("send a message") || aria.includes("nachricht") || aria.includes("message") || aria.includes("prompt")) return true;
+    if (placeholder.includes("send a message") || placeholder.includes("nachricht") || placeholder.includes("message") || placeholder.includes("prompt")) return true;
+
+    if (el.classList?.contains("ProseMirror")) {
+      const form = el.closest?.("form");
+      if (form && form.querySelector("button[type='submit'], [aria-label*='Send'], [aria-label*='Senden']")) return true;
+    }
+
+    const form = el.closest?.("form");
+    if (form && form.querySelector("textarea, .ProseMirror, [contenteditable='true']")) {
+      const sendBtn = form.querySelector("button[type='submit'], [aria-label*='Send'], [aria-label*='Senden'], [data-testid*='send']");
+      if (sendBtn) return true;
+    }
+
+    return false;
+  }
+
   function findPrompt() {
     const direct = [
       document.querySelector("textarea#prompt-textarea"),
       document.querySelector("textarea[data-testid='prompt-textarea']"),
       document.querySelector("div#prompt-textarea[contenteditable='true']"),
       document.querySelector("div[data-testid='prompt-textarea'][contenteditable='true']"),
+      document.querySelector(".ProseMirror[contenteditable='true']"),
       document.querySelector("form textarea#prompt-textarea"),
       document.querySelector("form textarea[data-testid='prompt-textarea']")
-    ].filter(Boolean).find(isVisible);
+    ].filter(Boolean).find((el) => isVisible(el) && isReasonableComposerSize(el));
 
     if (direct) return direct;
 
@@ -285,7 +325,7 @@
       ...document.querySelectorAll("input:not([type])"),
       ...document.querySelectorAll("[contenteditable='true']"),
       ...document.querySelectorAll("[role='textbox']")
-    ].filter(isVisible);
+    ].filter((el) => isVisible(el) && isReasonableComposerSize(el) && isLikelyClaudePromptInput(el));
 
     if (!candidates.length) return null;
 
