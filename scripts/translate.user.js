@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Translate V.1.1.0
+// @name         Translate V.1.1.1
 // @namespace    https://translate.google.com/
-// @version      1.1.0
+// @version      1.1.1
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview. API-Key wird in Tampermonkey gespeichert.
 // @match        https://translate.google.com/*
 // @match        https://www.translate.google.com/*
