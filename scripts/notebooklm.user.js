@@ -18,6 +18,9 @@
 
 (() => {
   "use strict";
+    // ── CSS für Mikrofon-Button Animationen ──
+    (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}";(document.head||document.documentElement).appendChild(s)})();
+
 
   // ============================================================
   // 🔑 NUR HIER EINTRAGEN
@@ -86,6 +89,14 @@
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const supportedSpeech = !!SpeechRecognition;
+
+  // ── SVG-Icons für Mikrofon-Button (Stil: claude-code-spracheingabe) ──
+  const MIC_ICON = {
+    mic: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+    stop: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+    spinner: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
+    error: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+  };
 
   // ============================================================
   // Toast
@@ -1258,32 +1269,30 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
   function setMicState(state, msg = "") {
     if (!micBtn) return;
+    if (!micBtn.classList.contains("stt-mic-btn")) micBtn.classList.add("stt-mic-btn");
 
     if (state === "listening") {
-      micBtn.textContent = "⏹️";
-      micBtn.style.background = "#111";
-      micBtn.style.color = "white";
+      micBtn.innerHTML = MIC_ICON.stop;
+      micBtn.setAttribute("data-state", "listening");
       micBtn.title = "Spracheingabe läuft – klicken zum Stop";
       return;
     }
     if (state === "working") {
-      micBtn.textContent = "⏳";
-      micBtn.style.background = "#444";
-      micBtn.style.color = "white";
-      micBtn.title = msg || "Gemini bereinigt…";
+      micBtn.innerHTML = MIC_ICON.spinner;
+      micBtn.setAttribute("data-state", "working");
+      micBtn.title = msg || "Bereinigung läuft…";
       return;
     }
     if (state === "error") {
-      micBtn.textContent = "⚠️";
-      micBtn.style.background = "#8b0000";
-      micBtn.style.color = "white";
+      micBtn.innerHTML = MIC_ICON.error;
+      micBtn.setAttribute("data-state", "error");
       micBtn.title = msg || "Fehler";
       return;
     }
 
-    micBtn.textContent = "🎙️";
-    micBtn.style.background = "white";
-    micBtn.style.color = "black";
+    // idle
+    micBtn.innerHTML = MIC_ICON.mic;
+    micBtn.setAttribute("data-state", "idle");
     micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
   }
 
@@ -1762,7 +1771,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
     micBtn = document.createElement("button");
     styleRoundButton(micBtn, 0, 0);
-    micBtn.textContent = "🎙️";
+    micBtn.innerHTML = MIC_ICON.mic; micBtn.setAttribute("data-state", "idle"); micBtn.classList.add("stt-mic-btn");
     micBtn.title = "Spracheingabe (Start/Stop)";
     micBtn.addEventListener("click", toggleMic);
     document.body.appendChild(micBtn);
