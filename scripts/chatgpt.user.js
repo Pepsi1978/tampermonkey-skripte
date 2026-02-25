@@ -147,6 +147,9 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // ============================================================
   const UI_POS = { rightPx: 16, bottomPx: 16 };
   const UI_SHIFT_LEFT = "3mm"; // ✅ Buttons ~3mm nach links (mehr Abstand zur Scrollbar)
+  // Android/Edge Mobile-Erkennung (für angepasste Restart-Delays)
+  const isMobileAndroid = /Android/i.test(navigator.userAgent);
+
 
   const CFG = {
     speechLang: "de-DE",
@@ -188,8 +191,8 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 
     // 🔧 Speech Auto-Restart
     autoRestart: true,
-    autoRestartBaseDelayMs: 250,
-    autoRestartMaxDelayMs: 2000,
+    autoRestartBaseDelayMs: isMobileAndroid ? 800 : 250,
+    autoRestartMaxDelayMs: isMobileAndroid ? 4000 : 2000,
     maxConsecutiveRestarts: 50 // Schutz gegen Endlosschleifen bei kaputter Audio-Session
   };
 
@@ -1487,6 +1490,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let runTicket = 0;
 
   let restartCount = 0;
+  let restartAlreadyScheduled = false;
   let restartTimer = null;
   let lastFinalTranscript = "";
   let recentFinalNorm = [];
@@ -1524,19 +1528,27 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     if (restartCount >= (CFG.maxConsecutiveRestarts || 50)) {
       wantsRecording = false;
       setMicState("error", "Auto-Restart abgebrochen (zu viele Restarts)");
-      showToast("⚠️ SpeechRecognition startet zu oft neu (Audio/Browser-Problem). Aufnahme gestoppt.", 8000);
+      showToast("\u26a0\ufe0f Spracheingabe gestoppt (zu viele Neustarts).\nBitte erneut auf den Mikrofon-Button tippen.", 9000);
+      setTimeout(() => setMicState("idle"), 4000);
       return;
     }
 
     clearTimeout(restartTimer);
 
-    const base = CFG.autoRestartBaseDelayMs || 250;
-    const max = CFG.autoRestartMaxDelayMs || 2000;
+    // BUG-FIX Android/Edge: onerror("no-speech") + onend feuern BEIDE scheduleAutoRestart
+    // f\u00fcr dieselbe Session \u2192 restartCount w\u00fcrde doppelt erh\u00f6ht.
+    // Das Flag verhindert das Doppel-Increment.
+    if (!restartAlreadyScheduled) {
+      restartCount++;
+      restartAlreadyScheduled = true;
+    }
 
+    const base = CFG.autoRestartBaseDelayMs || 250;
+    const max  = CFG.autoRestartMaxDelayMs  || 2000;
     const delay = Math.min(max, base + restartCount * 120);
-    restartCount++;
 
     restartTimer = setTimeout(() => {
+      restartAlreadyScheduled = false;
       if (!wantsRecording || stopRequested) return;
       tryStartRecognition(true, reason);
     }, delay);
@@ -1708,9 +1720,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     const t = getUserTargetEditable();
     if (!t) {
-      showToast("⚠️ Kein fokussiertes Eingabefeld. Tipp: zuerst ins Ziel-Feld klicken.", 3500);
+      showToast("\u26a0\ufe0f Kein fokussiertes Eingabefeld. Tipp: zuerst ins Ziel-Feld tippen.", 3500);
     } else {
       rememberEditable(t);
+    }
+
+    // BUG-FIX Android/Edge: veraltete Dedup-Listen beim Neustart leeren.
+    // Verhindert, dass Phrasen aus vorigen Sessions f\u00e4lschlicherweise
+    // als Duplikat eingestuft und verschluckt werden.
+    if (isRestart) {
+      recentFinalNorm = [];
     }
 
     try {
@@ -1718,9 +1737,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       rec.start();
       setMicState("listening");
       if (!isRestart) {
-        showToast("🎙️ Aufnahme läuft… (Stop über ⏹️)", 1500);
+        showToast("\uD83C\uDF99\uFE0F Aufnahme l\u00e4uft\u2026 (Stop \u00fcber \u23F9\uFE0F)", 1500);
       } else {
-        if (reason && reason !== "onend") showToast("🎙️ Auto-Restart (" + reason + ") …", 1200);
+        if (reason && reason !== "onend") showToast("\uD83C\uDF99\uFE0F Auto-Restart (" + reason + ") \u2026", 1200);
       }
     } catch (e) {
       console.warn("rec.start failed:", e);
@@ -1734,6 +1753,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     wantsRecording = true;
     stopRequested = false;
     restartCount = 0;
+    restartAlreadyScheduled = false;
     resetSpeechDedupeState();
     clearTimeout(restartTimer);
 
