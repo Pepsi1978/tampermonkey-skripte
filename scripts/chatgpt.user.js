@@ -182,8 +182,8 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 
     // Zusätzliche Duplikat-Bremse für WebKit/Edge Android
     recentFinalMemory: 8,
-    minRepeatSnippetChars: 12,
-    tailCompareChars: 260,
+    minRepeatSnippetChars: isMobileAndroid ? 40 : 12,
+    tailCompareChars: isMobileAndroid ? 120 : 260,
 
     // Lokale Vorfilter
     removeDisfluenciesLocally: true,
@@ -677,10 +677,17 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   }
 
   function appearsAlreadyInTail(baseText, snippet) {
-    const minChars = CFG.minRepeatSnippetChars || 12;
+    // Android/Edge: Mindestl\u00e4nge 40 Zeichen (vs. 12 auf Desktop).
+    // Verhindert, dass kurze W\u00f6rter die Android als separate isFinal-
+    // Ergebnisse liefert, f\u00e4lschlich als Duplikat verschluckt werden.
+    const minChars = isMobileAndroid
+      ? Math.max(CFG.minRepeatSnippetChars || 12, 40)
+      : (CFG.minRepeatSnippetChars || 12);
     if (!snippet || snippet.length < minChars) return false;
 
-    const tailLen = CFG.tailCompareChars || 260;
+    const tailLen = isMobileAndroid
+      ? Math.min(CFG.tailCompareChars || 260, 120)
+      : (CFG.tailCompareChars || 260);
     const tail = String(baseText || "").slice(-tailLen);
 
     const tailNorm = normalizeForSpeechDedupe(tail);

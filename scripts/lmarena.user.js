@@ -189,6 +189,13 @@
     const snip = cleanText(snippet);
     if (!text || !snip) return false;
 
+    // Android/Edge: Mindestl\u00e4nge 40 Zeichen.
+    // Android splittet S\u00e4tze in mehrere isFinal-Ergebnisse – kurze W\u00f6rter
+    // wie "funktioniert" (12 Zeichen) landen als eigenst\u00e4ndiges Ergebnis
+    // und w\u00fcrden sonst f\u00e4lschlich als Duplikat eingestuft und verschluckt.
+    const minLen = isMobileAndroid ? 40 : 12;
+    if (snip.length < minLen) return false;
+
     const tailLen = Math.max((CFG.overlapMaxChars || 80) * 4, snip.length * 3, 240);
     const tail = text.slice(-tailLen);
 
