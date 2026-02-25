@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Notebook LM V.1.0.9
+// @name         Notebook LM V.1.1.0
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.0.9
+// @version      1.1.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
