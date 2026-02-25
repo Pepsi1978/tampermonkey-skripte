@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude Code - Spracheingabe mit Autokorrektur
+// @name         Claude Code - Spracheingabe mit Autokorrektur V.1.1.1
 // @namespace    claude-code-speech-input
-// @version      1.1.0
+// @version      1.1.1
 // @description  Spracheingabe mit automatischer Rechtschreib- und Grammatikkorrektur für Claude Code. Funktioniert auf Chrome (Windows/Mac) und Edge (Android).
 // @author       Assistant
 // @match        https://claude.ai/code
