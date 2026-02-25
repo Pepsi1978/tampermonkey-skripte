@@ -3,8 +3,8 @@
 // @namespace    https://aistudio.google.com/prompts/new_chat
 // @version      1.1.1
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Kein stilles Fallback. Mit Output-Preview.
-// @match        https://www.aistudio.google.com/prompts/new_chat
-// @match        https://aistudio.google.com/prompts/new_chat
+// @match        https://aistudio.google.com/*
+// @match        https://www.aistudio.google.com/*
 // @run-at       document-idle
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
@@ -1289,6 +1289,20 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // UI Buttons (BOTTOM RIGHT)
   // ============================================================
+  // ── Button IDs (Watchdog) ──
+  const UI_IDS = {
+    mic:           "tm-aistudio-mic",
+    clear:         "tm-aistudio-clear",
+    promptFrank:   "tm-aistudio-prompt",
+    promptGeneral: "tm-aistudio-prompt2",
+  };
+
+  function getOrCreateButton(id) {
+    let b = document.getElementById(id);
+    if (!b) { b = document.createElement("button"); b.id = id; }
+    return b;
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
     b.style.position = "fixed";
@@ -1818,44 +1832,103 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // Boot
   // ============================================================
-  function boot() {
-    if (!supportedSpeech) {
-      showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
-    }
+  function mountOrRepairUI() {
+    if (!document.body) return;
 
-    micBtn = document.createElement("button");
+    micBtn = getOrCreateButton(UI_IDS.mic);
     styleRoundButton(micBtn, 0, 0);
-    micBtn.innerHTML = MIC_ICON.mic; micBtn.setAttribute("data-state", "idle"); micBtn.classList.add("stt-mic-btn");
+    if (!micBtn.getAttribute("data-state")) {
+      micBtn.innerHTML = MIC_ICON.mic;
+      micBtn.setAttribute("data-state", "idle");
+      micBtn.classList.add("stt-mic-btn");
+    }
     micBtn.title = "Spracheingabe (Start/Stop)";
-    micBtn.addEventListener("click", toggleMic);
-    document.body.appendChild(micBtn);
+    micBtn.onclick = toggleMic;
+    micBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    micBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!micBtn.isConnected) document.body.appendChild(micBtn);
 
-    clearBtn = document.createElement("button");
+    clearBtn = getOrCreateButton(UI_IDS.clear);
     styleRoundButton(clearBtn, 52, 0);
-    clearBtn.textContent = "❌";
+    clearBtn.textContent = clearBtn.textContent || "\u274C";
     clearBtn.style.color = "#c40000";
     clearBtn.title = "Sprechblase leeren";
-    clearBtn.addEventListener("click", runClearPrompt);
-    document.body.appendChild(clearBtn);
+    clearBtn.onclick = runClearPrompt;
+    clearBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    clearBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
-    promptBtn = document.createElement("button");
+    promptBtn = getOrCreateButton(UI_IDS.promptFrank);
     styleRoundButton(promptBtn, 0, 52);
-    promptBtn.textContent = "✨";
-    promptBtn.title = "Prompt (für Frank) einbetten";
-    promptBtn.addEventListener("click", runPromptBuilder);
-    document.body.appendChild(promptBtn);
+    promptBtn.textContent = promptBtn.textContent || "\u2728";
+    promptBtn.title = "Prompt (f\u00fcr Frank) einbetten";
+    promptBtn.onclick = runPromptBuilder;
+    promptBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    promptBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!promptBtn.isConnected) document.body.appendChild(promptBtn);
 
-    promptBtn2 = document.createElement("button");
+    promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
     styleRoundButton(promptBtn2, 0, 104);
-    promptBtn2.textContent = "🪄";
+    promptBtn2.textContent = promptBtn2.textContent || "\uD83E\uDE84";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
-    promptBtn2.addEventListener("click", runPromptBuilderGeneral);
-    document.body.appendChild(promptBtn2);
+    promptBtn2.onclick = runPromptBuilderGeneral;
+    promptBtn2.addEventListener("pointerdown", e => e.preventDefault(), true);
+    promptBtn2.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!promptBtn2.isConnected) document.body.appendChild(promptBtn2);
 
     setMicState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+  }
+  // ── UI Watchdog: Buttons nach SPA-Navigation wiederherstellen ──
+  let ensureScheduled = false;
+  function scheduleEnsureUI() {
+    if (ensureScheduled) return;
+    ensureScheduled = true;
+    setTimeout(() => {
+      ensureScheduled = false;
+      try { mountOrRepairUI(); } catch (e) { console.warn("mountOrRepairUI error:", e); }
+    }, 300);
+  }
+
+  function startUiWatchdog() {
+    // MutationObserver: falls die SPA den DOM neu aufbaut
+    try {
+      const mo = new MutationObserver(() => {
+        if (!document.getElementById("tm-aistudio-mic") ||
+        !document.getElementById("tm-aistudio-clear") ||
+        !document.getElementById("tm-aistudio-prompt") ||
+        !document.getElementById("tm-aistudio-prompt2"))
+          scheduleEnsureUI();
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) {}
+
+    // History-Hooks: bei SPA-Navigation (pushState/replaceState)
+    try {
+      const _push    = history.pushState;
+      const _replace = history.replaceState;
+      history.pushState    = function () { const r = _push.apply(this, arguments);    scheduleEnsureUI(); return r; };
+      history.replaceState = function () { const r = _replace.apply(this, arguments); scheduleEnsureUI(); return r; };
+      window.addEventListener("popstate", scheduleEnsureUI, true);
+    } catch (e) {}
+
+    // Fallback-Interval (alle 3 s)
+    setInterval(() => {
+      if (!document.getElementById("tm-aistudio-mic") ||
+        !document.getElementById("tm-aistudio-clear") ||
+        !document.getElementById("tm-aistudio-prompt") ||
+        !document.getElementById("tm-aistudio-prompt2"))
+        scheduleEnsureUI();
+    }, 3000);
+  }
+function boot() {
+    if (!supportedSpeech) {
+      showToast("SpeechRecognition nicht verf\u00fcgbar (Chrome/Edge).", 7000);
+    }
+    mountOrRepairUI();
+    startUiWatchdog();
+    showToast("\u2705 Script aktiv. \uD83C\uDF99\uFE0F + \u274C + \u2728 + \uD83E\uDEA7 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann \uD83C\uDF99\uFE0F.", 2800);
   }
 
   boot();

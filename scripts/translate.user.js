@@ -961,6 +961,15 @@ ${text}
   // ============================================================
   // UI Button (BOTTOM RIGHT)
   // ============================================================
+  // ── Button IDs (Watchdog) ──
+  const UI_IDS = { mic: "tm-translate-mic", clear: "tm-translate-clear" };
+
+  function getOrCreateButton(id) {
+    let b = document.getElementById(id);
+    if (!b) { b = document.createElement("button"); b.id = id; }
+    return b;
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
     b.style.position = "fixed";
@@ -1336,44 +1345,85 @@ ${text}
   // ============================================================
   // Boot
   // ============================================================
-  function boot() {
+  function mountOrRepairUI() {
+    if (!document.body) return;
+
+    micBtn = getOrCreateButton(UI_IDS.mic);
+    styleRoundButton(micBtn, 0, 0);
+    if (!micBtn.getAttribute("data-state")) {
+      micBtn.innerHTML = MIC_ICON.mic;
+      micBtn.setAttribute("data-state", "idle");
+      micBtn.classList.add("stt-mic-btn");
+    }
+    micBtn.title = "Spracheingabe (Start/Stop)";
+    micBtn.onclick = toggleMic;
+    micBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    micBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!micBtn.isConnected) document.body.appendChild(micBtn);
+
+    clearBtn = getOrCreateButton(UI_IDS.clear);
+    styleRoundButton(clearBtn, 52, 0);
+    clearBtn.textContent = clearBtn.textContent || "\u274C";
+    clearBtn.style.color = "#c40000";
+    clearBtn.title = "Sprechblase leeren";
+    clearBtn.onclick = runClearPrompt;
+    clearBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    clearBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
+
+    setMicState("idle");
+  }
+  // ── UI Watchdog: Buttons nach SPA-Navigation wiederherstellen ──
+  let ensureScheduled = false;
+  function scheduleEnsureUI() {
+    if (ensureScheduled) return;
+    ensureScheduled = true;
+    setTimeout(() => {
+      ensureScheduled = false;
+      try { mountOrRepairUI(); } catch (e) { console.warn("mountOrRepairUI error:", e); }
+    }, 300);
+  }
+
+  function startUiWatchdog() {
+    // MutationObserver: falls die SPA den DOM neu aufbaut
+    try {
+      const mo = new MutationObserver(() => {
+        if (!document.getElementById("tm-translate-mic") ||
+        !document.getElementById("tm-translate-clear"))
+          scheduleEnsureUI();
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) {}
+
+    // History-Hooks: bei SPA-Navigation (pushState/replaceState)
+    try {
+      const _push    = history.pushState;
+      const _replace = history.replaceState;
+      history.pushState    = function () { const r = _push.apply(this, arguments);    scheduleEnsureUI(); return r; };
+      history.replaceState = function () { const r = _replace.apply(this, arguments); scheduleEnsureUI(); return r; };
+      window.addEventListener("popstate", scheduleEnsureUI, true);
+    } catch (e) {}
+
+    // Fallback-Interval (alle 3 s)
+    setInterval(() => {
+      if (!document.getElementById("tm-translate-mic") ||
+        !document.getElementById("tm-translate-clear"))
+        scheduleEnsureUI();
+    }, 3000);
+  }
+function boot() {
     if (!supportedSpeech) {
-      showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
+      showToast("SpeechRecognition nicht verf\u00fcgbar (Chrome/Edge).", 7000);
     }
 
     if (!getEffectiveApiKey()) {
-      showToast("🔑 API-Key fehlt. Eingabe wird abgefragt…", 3200);
-      setTimeout(() => {
-        if (!getEffectiveApiKey()) requestApiKey();
-      }, 800);
+      showToast("\uD83D\uDD11 API-Key fehlt. Eingabe wird abgefragt\u2026", 3200);
+      setTimeout(() => { if (!getEffectiveApiKey()) requestApiKey(); }, 800);
     }
 
-    micBtn = document.createElement("button");
-    styleRoundButton(micBtn, 0, 0);
-    micBtn.innerHTML = MIC_ICON.mic; micBtn.setAttribute("data-state", "idle"); micBtn.classList.add("stt-mic-btn");
-    micBtn.title = "Spracheingabe (Start/Stop)";
-    micBtn.addEventListener("click", toggleMic);
-    document.body.appendChild(micBtn);
-
-    clearBtn = document.createElement("button");
-    styleRoundButton(clearBtn, 52, 0);
-    clearBtn.textContent = "❌";
-    clearBtn.style.color = "#c40000";
-    clearBtn.title = "Sprechblase leeren";
-    clearBtn.addEventListener("click", runClearPrompt);
-    document.body.appendChild(clearBtn);
-
-    setMicState("idle");
-    showToast("✅ Script aktiv. 🎙️ + ❌ unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
-
-    // SPA/DOM-Rerender Schutz: falls Google das Element entfernt, hängen wir es wieder an
-    const ensureUI = () => {
-      if (!document.body) return;
-      if (micBtn && !document.body.contains(micBtn)) document.body.appendChild(micBtn);
-    };
-
-    const mo = new MutationObserver(() => ensureUI());
-    mo.observe(document.documentElement, { childList: true, subtree: true });
+    mountOrRepairUI();
+    startUiWatchdog();
+    showToast("\u2705 Script aktiv. \uD83C\uDF99\uFE0F + \u274C unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann \uD83C\uDF99\uFE0F.", 2800);
   }
 
   boot();

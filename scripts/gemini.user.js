@@ -1375,6 +1375,21 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     }
   }
 
+  // ── Button IDs (Watchdog) ──
+  const UI_IDS = {
+    mic:           "tm-gemini-mic",
+    mem:           "tm-gemini-mem",
+    clear:         "tm-gemini-clear",
+    promptFrank:   "tm-gemini-prompt",
+    promptGeneral: "tm-gemini-prompt2",
+  };
+
+  function getOrCreateButton(id) {
+    let b = document.getElementById(id);
+    if (!b) { b = document.createElement("button"); b.id = id; }
+    return b;
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
     b.style.position = "fixed";
@@ -1959,73 +1974,118 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // Boot
   // ============================================================
-  function boot() {
-    bindUiRelayoutListeners();
+  function mountOrRepairUI() {
+    if (!document.body) return;
+    const mountNode = document.body;
 
-    if (!supportedSpeech) {
-      showToast("SpeechRecognition nicht verfügbar (Chrome/Edge).", 7000);
-    }
-
-    const mountNode = document.body || document.documentElement;
-
-    micBtn = document.createElement("button");
+    micBtn = getOrCreateButton(UI_IDS.mic);
     styleRoundButton(micBtn, 0, 0);
-    micBtn.innerHTML = MIC_ICON.mic; micBtn.setAttribute("data-state", "idle"); micBtn.classList.add("stt-mic-btn");
+    if (!micBtn.getAttribute("data-state")) {
+      micBtn.innerHTML = MIC_ICON.mic;
+      micBtn.setAttribute("data-state", "idle");
+      micBtn.classList.add("stt-mic-btn");
+    }
     micBtn.title = "Spracheingabe (Start/Stop)";
-    micBtn.addEventListener("click", toggleMic);
-    mountNode.appendChild(micBtn);
+    micBtn.onclick = toggleMic;
+    micBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    micBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!micBtn.isConnected) mountNode.appendChild(micBtn);
 
-    memBtn = document.createElement("button");
+    memBtn = getOrCreateButton(UI_IDS.mem);
     styleRoundButton(memBtn, 52, 0);
-    memBtn.textContent = "💾";
-    memBtn.title = "Memory-Prompt einfügen";
-    memBtn.addEventListener("click", runMemoryPrompt);
-    mountNode.appendChild(memBtn);
+    memBtn.textContent = memBtn.textContent || "\uD83D\uDCAE";
+    memBtn.title = "Memory-Prompt einf\u00fcgen";
+    memBtn.onclick = runMemoryPrompt;
+    memBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    memBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!memBtn.isConnected) mountNode.appendChild(memBtn);
 
-    clearBtn = document.createElement("button");
+    clearBtn = getOrCreateButton(UI_IDS.clear);
     styleRoundButton(clearBtn, 104, 0);
-    clearBtn.textContent = "❌";
+    clearBtn.textContent = clearBtn.textContent || "\u274C";
     clearBtn.style.color = "#c40000";
     clearBtn.title = "Sprechblase leeren";
-    clearBtn.addEventListener("click", runClearPrompt);
-    mountNode.appendChild(clearBtn);
+    clearBtn.onclick = runClearPrompt;
+    clearBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    clearBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!clearBtn.isConnected) mountNode.appendChild(clearBtn);
 
-    memBtn = document.createElement("button");
-    styleRoundButton(memBtn, 52, 0);
-    memBtn.textContent = "💾";
-    memBtn.title = "Memory-Prompt einfügen";
-    memBtn.addEventListener("click", runMemoryPrompt);
-    document.body.appendChild(memBtn);
-
-    clearBtn = document.createElement("button");
-    styleRoundButton(clearBtn, 104, 0);
-    clearBtn.textContent = "❌";
-    clearBtn.style.color = "#c40000";
-    clearBtn.title = "Sprechblase leeren";
-    clearBtn.addEventListener("click", runClearPrompt);
-    document.body.appendChild(clearBtn);
-
-    promptBtn = document.createElement("button");
+    promptBtn = getOrCreateButton(UI_IDS.promptFrank);
     styleRoundButton(promptBtn, 0, 52);
-    promptBtn.textContent = "✨";
-    promptBtn.title = "Prompt (für Frank) einbetten";
-    promptBtn.addEventListener("click", runPromptBuilder);
-    mountNode.appendChild(promptBtn);
+    promptBtn.textContent = promptBtn.textContent || "\u2728";
+    promptBtn.title = "Prompt (f\u00fcr Frank) einbetten";
+    promptBtn.onclick = runPromptBuilder;
+    promptBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    promptBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!promptBtn.isConnected) mountNode.appendChild(promptBtn);
 
-    promptBtn2 = document.createElement("button");
+    promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
     styleRoundButton(promptBtn2, 0, 104);
-    promptBtn2.textContent = "🪄";
+    promptBtn2.textContent = promptBtn2.textContent || "\uD83E\uDEA7";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
-    promptBtn2.addEventListener("click", runPromptBuilderGeneral);
-    mountNode.appendChild(promptBtn2);
+    promptBtn2.onclick = runPromptBuilderGeneral;
+    promptBtn2.addEventListener("pointerdown", e => e.preventDefault(), true);
+    promptBtn2.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!promptBtn2.isConnected) mountNode.appendChild(promptBtn2);
 
     scheduleUiRelayout();
-
     setMicState("idle");
     setMemBtnState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
-    showToast("✅ Script aktiv. 🎙️ + 💾 + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.", 2800);
+  }
+  // ── UI Watchdog: Buttons nach SPA-Navigation wiederherstellen ──
+  let ensureScheduled = false;
+  function scheduleEnsureUI() {
+    if (ensureScheduled) return;
+    ensureScheduled = true;
+    setTimeout(() => {
+      ensureScheduled = false;
+      try { mountOrRepairUI(); } catch (e) { console.warn("mountOrRepairUI error:", e); }
+    }, 300);
+  }
+
+  function startUiWatchdog() {
+    // MutationObserver: falls die SPA den DOM neu aufbaut
+    try {
+      const mo = new MutationObserver(() => {
+        if (!document.getElementById("tm-gemini-mic") ||
+        !document.getElementById("tm-gemini-mem") ||
+        !document.getElementById("tm-gemini-clear") ||
+        !document.getElementById("tm-gemini-prompt") ||
+        !document.getElementById("tm-gemini-prompt2"))
+          scheduleEnsureUI();
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) {}
+
+    // History-Hooks: bei SPA-Navigation (pushState/replaceState)
+    try {
+      const _push    = history.pushState;
+      const _replace = history.replaceState;
+      history.pushState    = function () { const r = _push.apply(this, arguments);    scheduleEnsureUI(); return r; };
+      history.replaceState = function () { const r = _replace.apply(this, arguments); scheduleEnsureUI(); return r; };
+      window.addEventListener("popstate", scheduleEnsureUI, true);
+    } catch (e) {}
+
+    // Fallback-Interval (alle 3 s)
+    setInterval(() => {
+      if (!document.getElementById("tm-gemini-mic") ||
+        !document.getElementById("tm-gemini-mem") ||
+        !document.getElementById("tm-gemini-clear") ||
+        !document.getElementById("tm-gemini-prompt") ||
+        !document.getElementById("tm-gemini-prompt2"))
+        scheduleEnsureUI();
+    }, 3000);
+  }
+function boot() {
+    bindUiRelayoutListeners();
+    if (!supportedSpeech) {
+      showToast("SpeechRecognition nicht verf\u00fcgbar (Chrome/Edge).", 7000);
+    }
+    mountOrRepairUI();
+    startUiWatchdog();
+    showToast("\u2705 Script aktiv. \uD83C\uDF99\uFE0F + \uD83D\uDCAE + \u274C + \u2728 + \uD83E\uDEA7 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann \uD83C\uDF99\uFE0F.", 2800);
   }
 
   boot();
