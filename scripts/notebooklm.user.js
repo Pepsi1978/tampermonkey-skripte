@@ -93,12 +93,12 @@
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const supportedSpeech = !!SpeechRecognition;
 
-  // ── SVG-Icons für Mikrofon-Button (Stil: claude-code-spracheingabe) ──
+  // ── Icons für Mikrofon-Button (textContent-safe für Trusted Types Seiten) ──
   const MIC_ICON = {
-    mic: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
-    stop: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
-    spinner: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
-    error: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    mic: "🎙️",
+    stop: "⏹️",
+    spinner: "⏳",
+    error: "⚠️",
   };
 
   // ============================================================
@@ -1321,26 +1321,26 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     if (!micBtn.classList.contains("stt-mic-btn")) micBtn.classList.add("stt-mic-btn");
 
     if (state === "listening") {
-      micBtn.innerHTML = MIC_ICON.stop;
+      micBtn.textContent = MIC_ICON.stop;
       micBtn.setAttribute("data-state", "listening");
       micBtn.title = "Spracheingabe läuft – klicken zum Stop";
       return;
     }
     if (state === "working") {
-      micBtn.innerHTML = MIC_ICON.spinner;
+      micBtn.textContent = MIC_ICON.spinner;
       micBtn.setAttribute("data-state", "working");
       micBtn.title = msg || "Bereinigung läuft…";
       return;
     }
     if (state === "error") {
-      micBtn.innerHTML = MIC_ICON.error;
+      micBtn.textContent = MIC_ICON.error;
       micBtn.setAttribute("data-state", "error");
       micBtn.title = msg || "Fehler";
       return;
     }
 
     // idle
-    micBtn.innerHTML = MIC_ICON.mic;
+    micBtn.textContent = MIC_ICON.mic;
     micBtn.setAttribute("data-state", "idle");
     micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
   }
@@ -1832,7 +1832,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     micBtn = getOrCreateButton(UI_IDS.mic);
     styleRoundButton(micBtn, 0, 0);
     if (!micBtn.getAttribute("data-state")) {
-      micBtn.innerHTML = MIC_ICON.mic;
+      micBtn.textContent = MIC_ICON.mic;
       micBtn.setAttribute("data-state", "idle");
       micBtn.classList.add("stt-mic-btn");
     }
