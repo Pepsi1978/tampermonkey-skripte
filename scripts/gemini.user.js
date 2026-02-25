@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Gemini V.1.1.7
+// @name         Gemini V.1.1.8
 // @namespace    https://gemini.google.com/
-// @version      1.1.7
+// @version      1.1.8
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
 // @match        https://gemini.google.com/app*
 // @run-at       document-idle
@@ -1317,6 +1317,30 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     return [micBtn, memBtn, clearBtn, promptBtn, promptBtn2].filter(Boolean);
   }
 
+  function setUiStyle(el, prop, value) {
+    if (!el) return;
+    el.style.setProperty(prop, value, "important");
+  }
+
+  function enforceUiButtonVisibility(button) {
+    if (!button) return;
+    setUiStyle(button, "display", "flex");
+    setUiStyle(button, "align-items", "center");
+    setUiStyle(button, "justify-content", "center");
+    setUiStyle(button, "visibility", "visible");
+    setUiStyle(button, "opacity", "1");
+    setUiStyle(button, "pointer-events", "auto");
+    setUiStyle(button, "appearance", "none");
+    setUiStyle(button, "-webkit-appearance", "none");
+    setUiStyle(button, "box-sizing", "border-box");
+    setUiStyle(button, "padding", "0");
+    setUiStyle(button, "margin", "0");
+    setUiStyle(button, "overflow", "visible");
+    setUiStyle(button, "line-height", "1");
+    setUiStyle(button, "font-family", "Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif");
+    setUiStyle(button, "user-select", "none");
+  }
+
   function applyButtonPosition(button) {
     if (!button) return;
 
@@ -1328,10 +1352,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     const vv = window.visualViewport;
     if (!vv || !Number.isFinite(vv.width) || !Number.isFinite(vv.height)) {
-      button.style.right = `calc(env(safe-area-inset-right, 0px) + ${rightPx}px)`;
-      button.style.bottom = `calc(env(safe-area-inset-bottom, 0px) + ${bottomPx}px)`;
-      button.style.left = "auto";
-      button.style.top = "auto";
+      setUiStyle(button, "right", `calc(env(safe-area-inset-right, 0px) + ${rightPx}px)`);
+      setUiStyle(button, "bottom", `calc(env(safe-area-inset-bottom, 0px) + ${bottomPx}px)`);
+      setUiStyle(button, "left", "auto");
+      setUiStyle(button, "top", "auto");
       return;
     }
 
@@ -1342,10 +1366,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     const left = vv.offsetLeft + vv.width - buttonW - rightPx;
     const top = vv.offsetTop + vv.height - buttonH - bottomPx;
 
-    button.style.left = `${Math.max(UI_MIN_EDGE_GAP, Math.round(left))}px`;
-    button.style.top = `${Math.max(UI_MIN_EDGE_GAP, Math.round(top))}px`;
-    button.style.right = "auto";
-    button.style.bottom = "auto";
+    setUiStyle(button, "left", `${Math.max(UI_MIN_EDGE_GAP, Math.round(left))}px`);
+    setUiStyle(button, "top", `${Math.max(UI_MIN_EDGE_GAP, Math.round(top))}px`);
+    setUiStyle(button, "right", "auto");
+    setUiStyle(button, "bottom", "auto");
   }
 
   function relayoutUiButtons() {
@@ -1392,19 +1416,20 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
-    b.style.position = "fixed";
-    b.style.zIndex = "2147483647";
-    b.style.width = `${UI_BUTTON_SIZE}px`;
-    b.style.height = `${UI_BUTTON_SIZE}px`;
-    b.style.borderRadius = "50%";
-    b.style.cursor = "pointer";
-    b.style.touchAction = "manipulation";
-    b.style.border = "1px solid rgba(0,0,0,0.2)";
-    b.style.background = "white";
-    b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
-    b.style.fontSize = "18px";
-    b.style.left = "auto";
-    b.style.top = "auto";
+    setUiStyle(b, "position", "fixed");
+    setUiStyle(b, "z-index", "2147483647");
+    setUiStyle(b, "width", `${UI_BUTTON_SIZE}px`);
+    setUiStyle(b, "height", `${UI_BUTTON_SIZE}px`);
+    setUiStyle(b, "border-radius", "50%");
+    setUiStyle(b, "cursor", "pointer");
+    setUiStyle(b, "touch-action", "manipulation");
+    setUiStyle(b, "border", "1px solid rgba(0,0,0,0.2)");
+    setUiStyle(b, "background", "white");
+    setUiStyle(b, "box-shadow", "0 6px 18px rgba(0,0,0,0.18)");
+    setUiStyle(b, "font-size", "18px");
+    setUiStyle(b, "left", "auto");
+    setUiStyle(b, "top", "auto");
+    enforceUiButtonVisibility(b);
 
     b.dataset.uiRightOffset = String(rightOffsetPx);
     b.dataset.uiBottomOffset = String(bottomOffsetPx);
@@ -1445,22 +1470,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       memBtn.textContent = "⏳";
-      memBtn.style.background = "#444";
-      memBtn.style.color = "white";
+      setUiStyle(memBtn, "background", "#444");
+      setUiStyle(memBtn, "color", "white");
       memBtn.title = msg || "Memory-Prompt wird eingefügt…";
       return;
     }
     if (state === "error") {
       memBtn.textContent = "⚠️";
-      memBtn.style.background = "#8b0000";
-      memBtn.style.color = "white";
+      setUiStyle(memBtn, "background", "#8b0000");
+      setUiStyle(memBtn, "color", "white");
       memBtn.title = msg || "Fehler";
       return;
     }
 
     memBtn.textContent = "💾";
-    memBtn.style.background = "white";
-    memBtn.style.color = "black";
+    setUiStyle(memBtn, "background", "white");
+    setUiStyle(memBtn, "color", "black");
     memBtn.title = "Memory-Prompt einfügen";
   }
 
@@ -1469,22 +1494,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       promptBtn.textContent = "⏳";
-      promptBtn.style.background = "#444";
-      promptBtn.style.color = "white";
+      setUiStyle(promptBtn, "background", "#444");
+      setUiStyle(promptBtn, "color", "white");
       promptBtn.title = msg || "Prompt wird gebaut…";
       return;
     }
     if (state === "error") {
       promptBtn.textContent = "⚠️";
-      promptBtn.style.background = "#8b0000";
-      promptBtn.style.color = "white";
+      setUiStyle(promptBtn, "background", "#8b0000");
+      setUiStyle(promptBtn, "color", "white");
       promptBtn.title = msg || "Fehler";
       return;
     }
 
     promptBtn.textContent = "✨";
-    promptBtn.style.background = "white";
-    promptBtn.style.color = "black";
+    setUiStyle(promptBtn, "background", "white");
+    setUiStyle(promptBtn, "color", "black");
     promptBtn.title = "Prompt (für Frank) einbetten";
   }
 
@@ -1493,22 +1518,22 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       promptBtn2.textContent = "⏳";
-      promptBtn2.style.background = "#444";
-      promptBtn2.style.color = "white";
+      setUiStyle(promptBtn2, "background", "#444");
+      setUiStyle(promptBtn2, "color", "white");
       promptBtn2.title = msg || "Prompt wird gebaut…";
       return;
     }
     if (state === "error") {
       promptBtn2.textContent = "⚠️";
-      promptBtn2.style.background = "#8b0000";
-      promptBtn2.style.color = "white";
+      setUiStyle(promptBtn2, "background", "#8b0000");
+      setUiStyle(promptBtn2, "color", "white");
       promptBtn2.title = msg || "Fehler";
       return;
     }
 
     promptBtn2.textContent = "🪄";
-    promptBtn2.style.background = "white";
-    promptBtn2.style.color = "black";
+    setUiStyle(promptBtn2, "background", "white");
+    setUiStyle(promptBtn2, "color", "black");
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
   }
 
@@ -2003,7 +2028,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     clearBtn = getOrCreateButton(UI_IDS.clear);
     styleRoundButton(clearBtn, 104, 0);
     clearBtn.textContent = clearBtn.textContent || "\u274C";
-    clearBtn.style.color = "#c40000";
+    setUiStyle(clearBtn, "color", "#c40000");
     clearBtn.title = "Sprechblase leeren";
     clearBtn.onclick = runClearPrompt;
     clearBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
