@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Translate V.1.1.2
+// @name         Translate V.1.1.3
 // @namespace    https://translate.google.com/
-// @version      1.1.2
+// @version      1.1.3
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview. API-Key wird in Tampermonkey gespeichert.
 // @match        https://translate.google.com/*
 // @match        https://www.translate.google.com/*
@@ -970,23 +970,48 @@ ${text}
     return b;
   }
 
+  function setUiStyle(el, prop, value) {
+    if (!el) return;
+    el.style.setProperty(prop, value, "important");
+  }
+
+  function enforceUiButtonVisibility(button) {
+    if (!button) return;
+    setUiStyle(button, "display", "flex");
+    setUiStyle(button, "align-items", "center");
+    setUiStyle(button, "justify-content", "center");
+    setUiStyle(button, "visibility", "visible");
+    setUiStyle(button, "opacity", "1");
+    setUiStyle(button, "pointer-events", "auto");
+    setUiStyle(button, "appearance", "none");
+    setUiStyle(button, "-webkit-appearance", "none");
+    setUiStyle(button, "box-sizing", "border-box");
+    setUiStyle(button, "padding", "0");
+    setUiStyle(button, "margin", "0");
+    setUiStyle(button, "overflow", "visible");
+    setUiStyle(button, "line-height", "1");
+    setUiStyle(button, "font-family", "Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif");
+    setUiStyle(button, "user-select", "none");
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
-    b.style.position = "fixed";
-    b.style.zIndex = "2147483647";
-    b.style.width = "42px";
-    b.style.height = "42px";
-    b.style.borderRadius = "50%";
-    b.style.cursor = "pointer";
-    b.style.border = "1px solid rgba(0,0,0,0.2)";
-    b.style.background = "white";
-    b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
-    b.style.fontSize = "18px";
+    setUiStyle(b, "position", "fixed");
+    setUiStyle(b, "z-index", "2147483647");
+    setUiStyle(b, "width", "42px");
+    setUiStyle(b, "height", "42px");
+    setUiStyle(b, "border-radius", "50%");
+    setUiStyle(b, "cursor", "pointer");
+    setUiStyle(b, "border", "1px solid rgba(0,0,0,0.2)");
+    setUiStyle(b, "background", "white");
+    setUiStyle(b, "box-shadow", "0 6px 18px rgba(0,0,0,0.18)");
+    setUiStyle(b, "font-size", "18px");
 
-    b.style.right = `${UI_POS.rightPx + rightOffsetPx}px`;
-    b.style.bottom = `${UI_POS.bottomPx + bottomOffsetPx}px`;
-    b.style.left = "auto";
-    b.style.top = "auto";
+    setUiStyle(b, "right", `${UI_POS.rightPx + rightOffsetPx}px`);
+    setUiStyle(b, "bottom", `${UI_POS.bottomPx + bottomOffsetPx}px`);
+    setUiStyle(b, "left", "auto");
+    setUiStyle(b, "top", "auto");
+    enforceUiButtonVisibility(b);
   }
 
   function setMicState(state, msg = "") {
@@ -1364,7 +1389,7 @@ ${text}
     clearBtn = getOrCreateButton(UI_IDS.clear);
     styleRoundButton(clearBtn, 52, 0);
     clearBtn.textContent = clearBtn.textContent || "\u274C";
-    clearBtn.style.color = "#c40000";
+    setUiStyle(clearBtn, "color", "#c40000");
     clearBtn.title = "Sprechblase leeren";
     clearBtn.onclick = runClearPrompt;
     clearBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
