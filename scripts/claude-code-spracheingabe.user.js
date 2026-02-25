@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude Code - Spracheingabe mit Autokorrektur V.1.0.1
+// @name         Claude Code - Spracheingabe mit Autokorrektur
 // @namespace    claude-code-speech-input
-// @version      1.0.1
+// @version      1.1.0
 // @description  Spracheingabe mit automatischer Rechtschreib- und Grammatikkorrektur für Claude Code. Funktioniert auf Chrome (Windows/Mac) und Edge (Android).
 // @author       Assistant
 // @match        https://claude.ai/code
@@ -37,15 +37,18 @@
         { code: 'pt-BR', label: 'Português', lt: 'pt-BR' },
     ];
 
-    // Selektoren für das Eingabefeld (Reihenfolge = Priorität)
+    // Selektoren für das Eingabefeld (Fallback, nur wenn kein Feld fokussiert)
     const INPUT_SELECTORS = [
         'div.ProseMirror[contenteditable="true"]',
         '[contenteditable="true"][role="textbox"]',
-        'div[contenteditable="true"]',
+        '[contenteditable="true"][data-placeholder]',
+        '[contenteditable="true"][aria-label]',
         'textarea[placeholder]',
         'textarea',
+        'div[contenteditable="true"]',
         '[role="textbox"]',
         'input[type="text"]',
+        'input:not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"])',
     ];
 
     // ============================================================
@@ -119,6 +122,9 @@
     let correctableTimer = null;
     let lastClickTime = 0;
     let currentLang = store.get('language', 'de-DE');
+
+    // Zuletzt fokussiertes Eingabefeld (vom Nutzer angeklickt)
+    let lastFocusedInput = null;
 
     // UI-Referenzen
     let micBtn = null;
@@ -288,6 +294,11 @@
             langMenu.style.right = pos.right;
         }
 
+        // Verhindert, dass der Button den Fokus vom Eingabefeld klaut
+        micBtn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+        });
+
         // Events
         micBtn.addEventListener('click', onBtnClick);
         micBtn.addEventListener('contextmenu', onBtnContext);
@@ -426,16 +437,103 @@
     // ============================================================
     //  EINGABEFELD FINDEN & TEXT LESEN/SCHREIBEN
     // ============================================================
+
+    /**
+     * Prüft, ob ein Element ein beschreibbares Eingabefeld ist.
+     */
+    function isEditableElement(el) {
+        if (!el || el.nodeType !== 1) return false;
+        // Unser eigener Button/UI ignorieren
+        if (el.id === 'stt-btn' || el.id === 'stt-status' || el.id === 'stt-lang-menu') return false;
+        if (el.closest('#stt-btn, #stt-status, #stt-lang-menu')) return false;
+        // Contenteditable
+        if (el.isContentEditable) return true;
+        // Textarea
+        if (el.tagName === 'TEXTAREA') return true;
+        // Input (text-artig)
+        if (el.tagName === 'INPUT') {
+            const t = (el.type || 'text').toLowerCase();
+            return ['text', 'search', 'url', 'email', 'tel', 'number'].includes(t);
+        }
+        return false;
+    }
+
+    /**
+     * Prüft, ob ein Element sichtbar und interagierbar ist.
+     */
+    function isVisibleAndUsable(el) {
+        if (!el) return false;
+        if (!el.isConnected) return false;
+        if (el.offsetParent === null && getComputedStyle(el).position !== 'fixed') return false;
+        const rect = el.getBoundingClientRect();
+        if (rect.width < 10 || rect.height < 10) return false;
+        return true;
+    }
+
+    /**
+     * Focus-Tracking: Merkt sich das zuletzt angeklickte/fokussierte Eingabefeld.
+     */
+    function setupFocusTracking() {
+        // focusin bubbelt (im Gegensatz zu focus)
+        document.addEventListener('focusin', (e) => {
+            const el = e.target;
+            if (isEditableElement(el)) {
+                lastFocusedInput = el;
+            }
+        }, true);
+
+        // Zusätzlich: Klick-Tracking für Fälle, in denen focusin nicht feuert
+        document.addEventListener('mousedown', (e) => {
+            const el = e.target;
+            // Auch Parent-Elemente prüfen (z.B. Klick in ein Kind eines contenteditable)
+            const editable = el.isContentEditable
+                ? (el.closest('[contenteditable="true"]') || el)
+                : el;
+            if (isEditableElement(editable)) {
+                lastFocusedInput = editable;
+            }
+        }, true);
+    }
+
+    /**
+     * Findet das aktive Eingabefeld.
+     * Priorität:
+     *   1. Zuletzt vom Nutzer fokussiertes/angeklicktes Feld (lastFocusedInput)
+     *   2. document.activeElement, falls editierbar
+     *   3. Fallback: erstes sichtbares Eingabefeld per Selektor
+     */
     function findInput() {
+        // 1. Vom Nutzer zuletzt angeklicktes Feld
+        if (lastFocusedInput && isVisibleAndUsable(lastFocusedInput) && isEditableElement(lastFocusedInput)) {
+            return lastFocusedInput;
+        }
+
+        // 2. Aktuell fokussiertes Element
+        const active = document.activeElement;
+        if (active && isEditableElement(active) && isVisibleAndUsable(active)) {
+            lastFocusedInput = active;
+            return active;
+        }
+
+        // 2b. Bei Shadow-DOM oder iframes: activeElement könnte ein Container sein
+        if (active && active.shadowRoot) {
+            const shadowActive = active.shadowRoot.activeElement;
+            if (shadowActive && isEditableElement(shadowActive)) {
+                lastFocusedInput = shadowActive;
+                return shadowActive;
+            }
+        }
+
+        // 3. Fallback: Selektoren durchgehen
         for (const sel of INPUT_SELECTORS) {
             const els = document.querySelectorAll(sel);
             for (const el of els) {
-                // Nur sichtbare Elemente mit einer gewissen Mindestgröße
-                if (el.offsetParent !== null && el.offsetWidth > 40 && el.offsetHeight > 20) {
+                if (isVisibleAndUsable(el)) {
                     return el;
                 }
             }
         }
+
         return null;
     }
 
@@ -686,7 +784,7 @@
     function startRecording() {
         const el = findInput();
         if (!el) {
-            showStatus('Kein Eingabefeld gefunden!', 'error', 4000);
+            showStatus('Bitte zuerst in ein Eingabefeld klicken!', 'error', 4000);
             return;
         }
 
@@ -745,7 +843,7 @@
 
         const el = findInput();
         if (!el) {
-            showStatus('Kein Eingabefeld gefunden!', 'error', 4000);
+            showStatus('Bitte zuerst in ein Eingabefeld klicken!', 'error', 4000);
             setState('IDLE');
             return;
         }
@@ -831,12 +929,15 @@
     //  INITIALISIERUNG
     // ============================================================
     function init() {
+        // Focus-Tracking sofort starten (auch bevor UI gerendert ist)
+        setupFocusTracking();
+
         // Kurz warten, damit die Seite fertig gerendert ist (SPA)
         const delay = document.readyState === 'complete' ? 800 : 2000;
         setTimeout(() => {
             createUI();
             setState('IDLE');
-            console.log('[STT] Claude Code Spracheingabe initialisiert (v1.0.0)');
+            console.log('[STT] Claude Code Spracheingabe initialisiert (v1.1.0)');
         }, delay);
     }
 
