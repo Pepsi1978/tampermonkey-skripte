@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Translate V.1.1.5
 // @namespace    https://translate.google.com/
-// @version      1.1.5
+// @version      1.1.6
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview. API-Key wird in Tampermonkey gespeichert.
 // @match        https://translate.google.com/*
 // @match        https://www.translate.google.com/*
@@ -19,8 +19,10 @@
 
 (() => {
   "use strict";
-    // ── CSS für Mikrofon-Button Animationen ──
-    (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}";(document.head||document.documentElement).appendChild(s)})();
+        // ── CSS für Mikrofon-Button Animationen (mit Fehlerbehandlung) ──
+    try {
+      (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}";try{(document.head||document.documentElement).appendChild(s);}catch(e){document.documentElement.appendChild(s);}})();
+    } catch(e) { /* CSS-Animation nicht verfügbar, Buttons funktionieren trotzdem */ }
 
 
   // ============================================================
@@ -108,10 +110,11 @@
   toast.style.color = "white";
   toast.style.display = "none";
   toast.style.whiteSpace = "pre-wrap";
-  document.body.appendChild(toast);
+  try { if (document.body) document.body.appendChild(toast); } catch(e) {}
 
   let toastTimer = null;
   function showToast(msg, ms = 5500) {
+    if (!toast.isConnected && document.body) { try { document.body.appendChild(toast); } catch(e) {} }
     clearTimeout(toastTimer);
     toast.textContent = msg;
     toast.style.display = "block";
@@ -1446,10 +1449,14 @@ function boot() {
       setTimeout(() => { if (!getEffectiveApiKey()) requestApiKey(); }, 800);
     }
 
-    mountOrRepairUI();
-    startUiWatchdog();
+    try { mountOrRepairUI(); } catch(e) { console.error("[STT-translate] mountOrRepairUI:", e); }
+    try { startUiWatchdog(); } catch(e) { console.error("[STT-translate] startUiWatchdog:", e); }
     showToast("\u2705 Script aktiv. \uD83C\uDF99\uFE0F + \u274C unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann \uD83C\uDF99\uFE0F.", 2800);
   }
 
-  boot();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(boot, 500));
+  } else {
+    setTimeout(boot, 500);
+  }
 })();
