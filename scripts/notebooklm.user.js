@@ -1319,34 +1319,68 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     enforceUiButtonVisibility(b);
   }
 
-  function setMicState(state, msg = "") {
-    if (!micBtn) return;
-    if (!micBtn.classList.contains("stt-mic-btn")) micBtn.classList.add("stt-mic-btn");
 
-    if (state === "listening") {
-      micBtn.textContent = MIC_ICON.stop;
-      micBtn.setAttribute("data-state", "listening");
-      micBtn.title = "Spracheingabe läuft – klicken zum Stop";
-      return;
-    }
-    if (state === "working") {
-      micBtn.textContent = MIC_ICON.spinner;
-      micBtn.setAttribute("data-state", "working");
-      micBtn.title = msg || "Bereinigung läuft…";
-      return;
-    }
-    if (state === "error") {
-      micBtn.textContent = MIC_ICON.error;
-      micBtn.setAttribute("data-state", "error");
-      micBtn.title = msg || "Fehler";
-      return;
-    }
-
-    // idle
-    micBtn.textContent = MIC_ICON.mic;
-    micBtn.setAttribute("data-state", "idle");
-    micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
+  // ── Web Animations API Fallback (funktioniert ohne CSS-Injection) ──
+  let _sttAnim = null;
+  function _sttStartPulse(el) {
+    _sttStopAnims();
+    if (!el || !el.animate) return;
+    try {
+      _sttAnim = el.animate([
+        { boxShadow: "0 0 0 0 rgba(220,38,38,0.45)" },
+        { boxShadow: "0 0 0 14px rgba(220,38,38,0)" },
+        { boxShadow: "0 0 0 0 rgba(220,38,38,0.45)" }
+      ], { duration: 1400, iterations: Infinity, easing: "ease-in-out" });
+    } catch(e) {}
   }
+  function _sttStartSpin(el) {
+    _sttStopAnims();
+    if (!el || !el.animate) return;
+    try {
+      _sttAnim = el.animate([
+        { transform: "rotate(0deg)" },
+        { transform: "rotate(360deg)" }
+      ], { duration: 800, iterations: Infinity, easing: "linear" });
+    } catch(e) {}
+  }
+  function _sttStopAnims() {
+    if (_sttAnim) { try { _sttAnim.cancel(); } catch(e) {} _sttAnim = null; }
+  }
+
+  function setMicState(state, msg = "") {
+      if (!micBtn) return;
+      if (!micBtn.classList.contains("stt-mic-btn")) micBtn.classList.add("stt-mic-btn");
+      _sttStopAnims(); // Laufende Animationen immer zuerst stoppen
+
+      if (state === "listening") {
+        micBtn.textContent = MIC_ICON.stop;
+        micBtn.setAttribute("data-state", "listening");
+        setUiStyle(micBtn, "background", "#dc2626"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#dc2626");
+        micBtn.title = "Spracheingabe läuft – klicken zum Stop";
+        _sttStartPulse(micBtn); // Pulsierendes rotes Leuchten
+        return;
+      }
+      if (state === "working") {
+        micBtn.textContent = MIC_ICON.spinner;
+        micBtn.setAttribute("data-state", "working");
+        setUiStyle(micBtn, "background", "#d97706"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#d97706");
+        micBtn.title = msg || "Bereinigung läuft…";
+        _sttStartSpin(micBtn); // Rotierende Spinner-Animation
+        return;
+      }
+      if (state === "error") {
+        micBtn.textContent = MIC_ICON.error;
+        micBtn.setAttribute("data-state", "error");
+        setUiStyle(micBtn, "background", "#8b0000"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#8b0000");
+        micBtn.title = msg || "Fehler";
+        return;
+      }
+      // idle
+      micBtn.textContent = MIC_ICON.mic;
+      micBtn.setAttribute("data-state", "idle");
+      setUiStyle(micBtn, "background", "#2563eb"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#2563eb");
+      micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
+    }
 
   function setPromptBtnState(state, msg = "") {
     if (!promptBtn) return;
