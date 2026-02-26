@@ -97,10 +97,10 @@
 
   // ── Icons für Mikrofon-Button (textContent-safe für Trusted Types Seiten) ──
   const MIC_ICON = {
-    mic: "🎙️",
-    stop: "⏹️",
-    spinner: "⏳",
-    error: "⚠️",
+    mic: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+    stop: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+    spinner: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
+    error: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
   };
 
   // ============================================================
@@ -1320,7 +1320,28 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   }
 
 
-  // ── Web Animations API Fallback (funktioniert ohne CSS-Injection) ──
+
+  // ── Trusted-Types-sicheres SVG-Icon setzen ──────────────────────────────────
+  function setSvgIcon(el, svgStr) {
+    try {
+      el.innerHTML = svgStr; // Funktioniert auf den meisten Seiten
+    } catch(e) {
+      // Trusted Types Fallback: SVG via DOMParser (kein innerHTML in aktuellem Dokument)
+      try {
+        el.textContent = "";
+        const doc = new DOMParser().parseFromString(svgStr, "image/svg+xml");
+        const node = doc.documentElement;
+        if (node && node.tagName === "svg") el.appendChild(document.adoptNode(node));
+      } catch(e2) {
+        // Letzter Fallback: Emoji (immer sicher)
+        el.textContent = svgStr.includes("M12 1a3") ? "🎙️"
+                       : svgStr.includes("<rect") ? "⏹️"
+                       : svgStr.includes("M12 2a10") ? "⏳" : "⚠️";
+      }
+    }
+  }
+
+  // ── Web Animations API (Fallback wenn CSS @keyframes nicht geladen) ─────────
   let _sttAnim = null;
   function _sttStartPulse(el) {
     _sttStopAnims();
@@ -1335,9 +1356,11 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   }
   function _sttStartSpin(el) {
     _sttStopAnims();
-    if (!el || !el.animate) return;
+    // Nur das SVG-Kind drehen (wie CSS .stt-mic-btn[data-state=working] svg { animation: stt-spin })
+    const target = (el && el.querySelector("svg")) || el;
+    if (!target || !target.animate) return;
     try {
-      _sttAnim = el.animate([
+      _sttAnim = target.animate([
         { transform: "rotate(0deg)" },
         { transform: "rotate(360deg)" }
       ], { duration: 800, iterations: Infinity, easing: "linear" });
@@ -1350,35 +1373,43 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   function setMicState(state, msg = "") {
       if (!micBtn) return;
       if (!micBtn.classList.contains("stt-mic-btn")) micBtn.classList.add("stt-mic-btn");
-      _sttStopAnims(); // Laufende Animationen immer zuerst stoppen
+      _sttStopAnims(); // Laufende Animationen stoppen
 
       if (state === "listening") {
-        micBtn.textContent = MIC_ICON.stop;
+        setSvgIcon(micBtn, MIC_ICON.stop);
         micBtn.setAttribute("data-state", "listening");
-        setUiStyle(micBtn, "background", "#dc2626"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#dc2626");
+        setUiStyle(micBtn, "background", "#dc2626");
+        setUiStyle(micBtn, "color", "#fff");
+        setUiStyle(micBtn, "border-color", "#dc2626");
         micBtn.title = "Spracheingabe läuft – klicken zum Stop";
-        _sttStartPulse(micBtn); // Pulsierendes rotes Leuchten
+        _sttStartPulse(micBtn); // Pulsierendes rotes Leuchten (wie CSS stt-pulse)
         return;
       }
       if (state === "working") {
-        micBtn.textContent = MIC_ICON.spinner;
+        setSvgIcon(micBtn, MIC_ICON.spinner);
         micBtn.setAttribute("data-state", "working");
-        setUiStyle(micBtn, "background", "#d97706"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#d97706");
+        setUiStyle(micBtn, "background", "#d97706");
+        setUiStyle(micBtn, "color", "#fff");
+        setUiStyle(micBtn, "border-color", "#d97706");
         micBtn.title = msg || "Bereinigung läuft…";
-        _sttStartSpin(micBtn); // Rotierende Spinner-Animation
+        _sttStartSpin(micBtn); // Spinner-SVG rotiert (wie CSS stt-spin)
         return;
       }
       if (state === "error") {
-        micBtn.textContent = MIC_ICON.error;
+        setSvgIcon(micBtn, MIC_ICON.error);
         micBtn.setAttribute("data-state", "error");
-        setUiStyle(micBtn, "background", "#8b0000"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#8b0000");
+        setUiStyle(micBtn, "background", "#8b0000");
+        setUiStyle(micBtn, "color", "#fff");
+        setUiStyle(micBtn, "border-color", "#8b0000");
         micBtn.title = msg || "Fehler";
         return;
       }
       // idle
-      micBtn.textContent = MIC_ICON.mic;
+      setSvgIcon(micBtn, MIC_ICON.mic);
       micBtn.setAttribute("data-state", "idle");
-      setUiStyle(micBtn, "background", "#2563eb"); setUiStyle(micBtn, "color", "#fff"); setUiStyle(micBtn, "border-color", "#2563eb");
+      setUiStyle(micBtn, "background", "#2563eb");
+      setUiStyle(micBtn, "color", "#fff");
+      setUiStyle(micBtn, "border-color", "#2563eb");
       micBtn.title = supportedSpeech ? "Spracheingabe (Start/Stop)" : "Speech API nicht verfügbar";
     }
 
@@ -1869,7 +1900,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     micBtn = getOrCreateButton(UI_IDS.mic);
     styleRoundButton(micBtn, 0, 0);
     if (!micBtn.getAttribute("data-state")) {
-      micBtn.textContent = MIC_ICON.mic;
+      setSvgIcon(micBtn, MIC_ICON.mic);
       micBtn.setAttribute("data-state", "idle");
       micBtn.classList.add("stt-mic-btn");
     }
