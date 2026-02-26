@@ -1428,7 +1428,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     setUiStyle(b, "touch-action", "manipulation");
     setUiStyle(b, "border", "1px solid rgba(0,0,0,0.2)");
     setUiStyle(b, "background", "white");
-    setUiStyle(b, "box-shadow", "0 6px 18px rgba(0,0,0,0.18)");
+    b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)"; // kein !important – Animation muss box-shadow überschreiben können
     setUiStyle(b, "font-size", "18px");
     setUiStyle(b, "left", "auto");
     setUiStyle(b, "top", "auto");

@@ -1007,7 +1007,7 @@ ${text}
     setUiStyle(b, "cursor", "pointer");
     setUiStyle(b, "border", "1px solid rgba(0,0,0,0.2)");
     setUiStyle(b, "background", "white");
-    setUiStyle(b, "box-shadow", "0 6px 18px rgba(0,0,0,0.18)");
+    b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)"; // kein !important – Animation muss box-shadow überschreiben können
     setUiStyle(b, "font-size", "18px");
 
     setUiStyle(b, "right", `${UI_POS.rightPx + rightOffsetPx}px`);
