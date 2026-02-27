@@ -577,7 +577,7 @@ document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent
     // enthielten.
     // Fix: Min=20 → Wörter <20 Zeichen lösen keinen False-Positive aus.
     //      Cumulative-Transkript-Duplikate (>>20 Zeichen) bleiben korrekt erkannt.
-    const minOv = isMobileAndroid ? 20 : 12;
+    const minOv = isMobileAndroid ? 50 : 12;
     const ov = longestOverlapSuffixPrefix(curText, newText, CFG.overlapMaxChars || 80, minOv);
     if (!ov) return newText;
     return newText.slice(ov).trimStart();
