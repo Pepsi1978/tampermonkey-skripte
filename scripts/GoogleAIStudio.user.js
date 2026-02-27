@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AI Studio V.1.2.1
 // @namespace    https://aistudio.google.com/prompts/new_chat
-// @version      1.2.1
+// @version      1.2.2
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://aistudio.google.com/*
 // @match        https://www.aistudio.google.com/*
@@ -1511,14 +1511,21 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let restartTimer = null;
   let lastFinalTranscript = "";
   let recentFinalNorm = [];
+  let lastFinalTranscriptTime = 0;   // ANDROID-FIX: Alter des letzten Dedup-Snapshots
+  let consecutiveNoSpeech    = 0;   // ANDROID-FIX: Zähler aufeinanderfolgender no-speech
+  let lastProcessedResultIdx = -1;  // ANDROID-FIX: Letzter verarbeiteter e.resultIndex
+  let sttWatchdogTimer = null;      // ANDROID-FIX: Watchdog erkennt "Stuck"-Zustand
 
   function resetRestartCounterOnGoodInput() {
     restartCount = 0;
+    consecutiveNoSpeech = 0; // ANDROID-FIX
   }
 
   function resetSpeechDedupeState() {
     lastFinalTranscript = "";
     recentFinalNorm = [];
+    lastFinalTranscriptTime = 0;   // ANDROID-FIX
+    lastProcessedResultIdx  = -1;  // ANDROID-FIX
   }
 
   function rememberFinalNorm(snippet) {
@@ -1541,6 +1548,21 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     return recentFinalNorm.includes(n);
   }
 
+  // ANDROID-FIX: Watchdog erkennt Stuck-Zustand (keine Events >25s) und erzwingt
+  // einen harten Reset. Betrifft nur Android (isMobileAndroid = true).
+  function resetSttWatchdog() {
+    clearTimeout(sttWatchdogTimer);
+    if (!isMobileAndroid) return;
+    sttWatchdogTimer = setTimeout(() => {
+      if (!wantsRecording || stopRequested) return;
+      console.warn("STT Watchdog: Keine Events seit 25 s → Hard Reset");
+      if (rec) { try { rec.stop(); } catch {} rec = null; }
+      restartCount = 0; consecutiveNoSpeech = 0;
+      lastFinalTranscript = ""; recentFinalNorm = []; lastProcessedResultIdx = -1;
+      scheduleAutoRestart("watchdog");
+    }, 25000);
+  }
+
   function scheduleAutoRestart(reason = "") {
     if (!CFG.autoRestart) return;
     if (!wantsRecording) return;
@@ -1560,13 +1582,17 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // f\u00fcr dieselbe Session \u2192 restartCount w\u00fcrde doppelt erh\u00f6ht.
     // Das Flag verhindert das Doppel-Increment.
     if (!restartAlreadyScheduled) {
-      restartCount++;
+      // ANDROID-FIX: no-speech ist normal bei Sprechpausen → kein Delay-Anstieg.
+      if (reason !== "no-speech" || !isMobileAndroid) restartCount++;
       restartAlreadyScheduled = true;
     }
 
     const base = CFG.autoRestartBaseDelayMs || 250;
     const max  = CFG.autoRestartMaxDelayMs  || 2000;
-    const delay = Math.min(max, base + restartCount * 120);
+    // ANDROID-FIX: no-speech → sofort (<400ms) neu starten statt exponentiell
+    const delay = (reason === "no-speech" && isMobileAndroid)
+      ? Math.min(400, base)
+      : Math.min(max, base + restartCount * 120);
 
     restartTimer = setTimeout(() => {
       restartAlreadyScheduled = false;
@@ -1648,36 +1674,47 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     const r = new SpeechRecognition();
     r.lang = CFG.speechLang;
     r.continuous = true;
-    r.interimResults = CFG.interimResults;
+    // ANDROID-FIX: interimResults:false → weniger Netzwerk-Events, stabilere Erkennung
+    r.interimResults = isMobileAndroid ? false : (CFG.interimResults ?? true);
 
     r.onresult = (e) => {
       resetRestartCounterOnGoodInput();
+      resetSttWatchdog(); // ANDROID-FIX: Watchdog zurücksetzen
       const curP = getUserTargetEditable();
       if (curP) rememberEditable(curP);
 
       const target = curP || lastUserEditable || findPrompt();
       if (!target) return;
 
-      for (let i = e.resultIndex; i < e.results.length; i++) {
+      // ANDROID/EDGE-FIX: Edge sendet manchmal e.resultIndex=0 obwohl Ergebnisse
+      // bereits verarbeitet wurden → nie rückwärts springen.
+      const _sttStart = Math.max(e.resultIndex, lastProcessedResultIdx + 1);
+      for (let i = _sttStart; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
+          lastProcessedResultIdx = i; // ANDROID-FIX: verarbeiteten Index merken
           const raw = cleanText(e.results[i][0].transcript);
           if (!raw) continue;
 
+          // ANDROID-FIX: lastFinalTranscript läuft ab wenn >15s alt.
+          // Verhindert, dass uralte Dedup-Daten neuen Text fälschlich verschlucken.
+          const _now = Date.now();
+          if (_now - lastFinalTranscriptTime > 15000) { lastFinalTranscript = ""; }
+
           let t = trimRepeatedPrefix(lastFinalTranscript, raw);
           if (!t && raw) {
-            lastFinalTranscript = raw;
+            lastFinalTranscript = raw; lastFinalTranscriptTime = _now;
             continue;
           }
 
           const currentText = readPromptText(target);
           if (wasRecentlySeenFinal(t) || appearsAlreadyInTail(currentText, t)) {
-            lastFinalTranscript = raw;
+            lastFinalTranscript = raw; lastFinalTranscriptTime = _now;
             continue;
           }
 
           insertText(target, t);
           rememberFinalNorm(t);
-          lastFinalTranscript = raw;
+          lastFinalTranscript = raw; lastFinalTranscriptTime = _now;
         }
       }
     };
@@ -1685,6 +1722,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     r.onerror = (e) => {
       const err = String(e?.error || "speech-error");
       console.warn("Speech error:", err);
+
+      // ANDROID-FIX: no-speech zählen → ≥8 in Folge ohne Input = Stuck-State → Hard Reset
+      if (err === "no-speech" && isMobileAndroid) {
+        consecutiveNoSpeech++;
+        if (consecutiveNoSpeech >= 8) {
+          console.warn("STT: " + consecutiveNoSpeech + "x no-speech → Hard Reset");
+          consecutiveNoSpeech = 0; restartCount = 0;
+          lastFinalTranscript = ""; recentFinalNorm = []; lastProcessedResultIdx = -1;
+        }
+      }
 
       // Manche Fehler sind "normal" bei WebSpeech (no-speech / aborted) -> Auto-Restart
       const restartable = ["no-speech", "aborted", "network"].includes(err);
@@ -1719,6 +1766,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     r.onend = () => {
       rec = null;
+      clearTimeout(sttWatchdogTimer); // ANDROID-FIX
 
       // User wollte stop
       if (stopRequested) {
@@ -1760,10 +1808,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     if (isRestart) {
       recentFinalNorm = [];
     }
+    lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
+    consecutiveNoSpeech    = 0;  // ANDROID-FIX
 
     try {
       rec = buildRecognitionInstance();
       rec.start();
+      resetSttWatchdog(); // ANDROID-FIX: Watchdog starten
       setMicState("listening");
       if (!isRestart) {
         showToast("\uD83C\uDF99\uFE0F Aufnahme l\u00e4uft\u2026 (Stop \u00fcber \u23F9\uFE0F)", 1500);
@@ -1785,6 +1836,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     restartAlreadyScheduled = false;
     resetSpeechDedupeState();
     clearTimeout(restartTimer);
+    clearTimeout(sttWatchdogTimer); // ANDROID-FIX
+    consecutiveNoSpeech = 0;        // ANDROID-FIX
 
     tryStartRecognition(false, "");
   }
@@ -1796,6 +1849,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     stopRequested = true;
     wantsRecording = false;
     clearTimeout(restartTimer);
+    clearTimeout(sttWatchdogTimer); // ANDROID-FIX
 
     setMicState("working", "Stop… dann Gemini…");
     try { rec?.stop(); } catch {}
