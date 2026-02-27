@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Grok V.1.1.5
+// @name         Grok V.1.1.7
 // @namespace    https://grok.com/
-// @version      1.1.6
+// @version      1.1.7
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
