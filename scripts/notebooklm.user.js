@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Notebook LM V.1.2.3
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.2.3
+// @version      1.2.4
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
@@ -66,7 +66,7 @@
     dictationCleanupMode: "balanced",
 
     // Overlap-Prevention beim Live-Diktat
-    overlapMaxChars: 80,
+    overlapMaxChars: isMobileAndroid ? 200 : 80,  // ANDROID-FIX v2
 
     // Lokale Vorfilter
     removeDisfluenciesLocally: true,
@@ -1776,6 +1776,13 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     // als Duplikat eingestuft und verschluckt werden.
     if (isRestart) {
       recentFinalNorm = [];
+      // ANDROID-FIX v2: lastFinalTranscript bei Restart leeren.
+      // BUG: Session 1 endet mit "X" → lastFinalTranscript="X".
+      //      Session 2: isFinal("X ist toll") → startsWith("X") → slice → "ist toll".
+      //      "X" wird verschluckt! stripOverlap() in insertText() fängt kumulative
+      //      Transkript-Duplikate ab (bis overlapMaxChars Zeichen).
+      lastFinalTranscript    = "";
+      lastFinalTranscriptTime = 0;
     }
     lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
     consecutiveNoSpeech    = 0;  // ANDROID-FIX

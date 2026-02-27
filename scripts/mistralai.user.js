@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mistral V.1.1.6
 // @namespace    https://chat.mistral.ai/chat
-// @version      1.1.6
+// @version      1.1.7
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://chat.mistral.ai/chat*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/mistral.user.js
@@ -80,7 +80,7 @@
     dictationCleanupMode: "balanced",
 
     // Overlap-Prevention beim Live-Diktat
-    overlapMaxChars: 80,
+    overlapMaxChars: isMobileAndroid ? 200 : 80,  // ANDROID-FIX v2
 
     // Lokale Vorfilter
     removeDisfluenciesLocally: true,
@@ -1754,6 +1754,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // als Duplikat eingestuft und verschluckt werden.
     if (isRestart) {
       recentFinalNorm = [];
+      // ANDROID-FIX v2: lastFinalTranscript bei Restart leeren.
+      // BUG: Session 1 endet mit "X" → lastFinalTranscript="X".
+      //      Session 2: isFinal("X ist toll") → startsWith("X") → slice → "ist toll".
+      //      "X" wird verschluckt! stripOverlap() in insertText() fängt kumulative
+      //      Transkript-Duplikate ab (bis overlapMaxChars Zeichen).
+      lastFinalTranscript    = "";
+      lastFinalTranscriptTime = 0;
     }
     lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
     consecutiveNoSpeech    = 0;  // ANDROID-FIX

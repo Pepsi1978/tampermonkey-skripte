@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Arena V.1.1.4
 // @namespace    https://arena.ai/
-// @version      1.1.4
+// @version      1.1.5
 // @description  Speech-to-Text + Gemini-Korrektur (DE) ohne stilles Fallback. Zeigt Output-Preview. Send-Button-Fix via React-Nudge.
 // @match        https://arena.ai/*
 // @match        https://web.arena.ai/*
@@ -70,7 +70,7 @@
     dictationCleanupMode: "balanced",
 
     // Overlap-Prevention beim Live-Diktat
-    overlapMaxChars: 80,
+    overlapMaxChars: isMobileAndroid ? 200 : 80,  // ANDROID-FIX v2
 
     // Lokale Vorfilter
     removeDisfluenciesLocally: true,
@@ -1684,6 +1684,13 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
     // als Duplikat eingestuft und verschluckt werden.
     if (isRestart) {
       recentFinalNorm = [];
+      // ANDROID-FIX v2: lastFinalTranscript bei Restart leeren.
+      // BUG: Session 1 endet mit "X" → lastFinalTranscript="X".
+      //      Session 2: isFinal("X ist toll") → startsWith("X") → slice → "ist toll".
+      //      "X" wird verschluckt! stripOverlap() in insertText() fängt kumulative
+      //      Transkript-Duplikate ab (bis overlapMaxChars Zeichen).
+      lastFinalTranscript    = "";
+      lastFinalTranscriptTime = 0;
     }
     lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
     consecutiveNoSpeech    = 0;  // ANDROID-FIX

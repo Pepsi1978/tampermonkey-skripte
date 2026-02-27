@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT V.1.1.7
 // @namespace    https://chatgpt.com/
-// @version      1.1.7
+// @version      1.1.8
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -178,7 +178,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     dictationCleanupMode: "balanced",
 
     // Overlap-Prevention beim Live-Diktat
-    overlapMaxChars: 80,
+    overlapMaxChars: isMobileAndroid ? 200 : 80,  // ANDROID-FIX v2
 
     // Zusätzliche Duplikat-Bremse für WebKit/Edge Android
     recentFinalMemory: 8,
@@ -1789,6 +1789,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // als Duplikat eingestuft und verschluckt werden.
     if (isRestart) {
       recentFinalNorm = [];
+      // ANDROID-FIX v2: lastFinalTranscript bei Restart leeren.
+      // BUG: Session 1 endet mit "X" → lastFinalTranscript="X".
+      //      Session 2: isFinal("X ist toll") → startsWith("X") → slice → "ist toll".
+      //      "X" wird verschluckt! stripOverlap() in insertText() fängt kumulative
+      //      Transkript-Duplikate ab (bis overlapMaxChars Zeichen).
+      lastFinalTranscript    = "";
+      lastFinalTranscriptTime = 0;
     }
     lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
     consecutiveNoSpeech    = 0;  // ANDROID-FIX
