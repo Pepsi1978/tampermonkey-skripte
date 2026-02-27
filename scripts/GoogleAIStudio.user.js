@@ -556,11 +556,11 @@ document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent
     return s;
   }
 
-  function longestOverlapSuffixPrefix(a, b, maxLen = 80) {
+  function longestOverlapSuffixPrefix(a, b, maxLen = 80, minLen = 12) {
     const A = normalizeSpaces(cleanText(a));
     const B = normalizeSpaces(cleanText(b));
     const m = Math.min(maxLen, A.length, B.length);
-    for (let len = m; len >= 12; len--) {
+    for (let len = m; len >= minLen; len--) {
       const as = A.slice(-len).toLowerCase();
       const bs = B.slice(0, len).toLowerCase();
       if (as === bs) return len;
@@ -569,7 +569,16 @@ document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent
   }
 
   function stripOverlap(curText, newText) {
-    const ov = longestOverlapSuffixPrefix(curText, newText, CFG.overlapMaxChars || 80);
+    // ANDROID-FIX v4: Mindest-Overlap-Länge auf 20 erhöht.
+    // Problem: Min=12 erkannte Einzelwörter (z.B. "funktionieren"=13 Zeichen)
+    // als Overlap zwischen Feld-Ende und neuem Snippet-Anfang → Wort wurde
+    // stumm gelöscht. Wort blieb für ~10 weitere Sätze verschluckt, bis genug
+    // neuer Text im Feld stand und die letzten 13 Zeichen nicht mehr das Wort
+    // enthielten.
+    // Fix: Min=20 → Wörter <20 Zeichen lösen keinen False-Positive aus.
+    //      Cumulative-Transkript-Duplikate (>>20 Zeichen) bleiben korrekt erkannt.
+    const minOv = isMobileAndroid ? 20 : 12;
+    const ov = longestOverlapSuffixPrefix(curText, newText, CFG.overlapMaxChars || 80, minOv);
     if (!ov) return newText;
     return newText.slice(ov).trimStart();
   }
