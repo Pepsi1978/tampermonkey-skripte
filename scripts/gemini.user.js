@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini V.1.3.3
 // @namespace    https://gemini.google.com/
-// @version      1.3.3
+// @version      1.3.4
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
 // @match        https://gemini.google.com/*
 // @run-at       document-idle
@@ -776,14 +776,16 @@ async function setViaPaste(el, text) {
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { setContentEditablePreserveNewlines(el, combined); } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { setContentEditablePreserveNewlines(el, combined); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT V.1.2.2
 // @namespace    https://chatgpt.com/
-// @version      1.2.2
+// @version      1.2.3
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -805,21 +805,23 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     const combined = cleanText(cur + spacer + add);
 
     if (isTextInput(el)) {
+      el.focus();
       setNativeValue(el, combined);
       try { el.setSelectionRange(combined.length, combined.length); } catch {}
       dispatchReactInput(el, "insertText", add);
       return;
     }
 
-    try {
-      el.focus();
-      // insertText ist hier ok; falls es hakt, fallback: komplett setzen
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { setContentEditablePreserveNewlines(el, combined); } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { setContentEditablePreserveNewlines(el, combined); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

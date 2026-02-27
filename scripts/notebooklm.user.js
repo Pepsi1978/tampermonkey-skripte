@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Notebook LM V.1.2.8
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.2.8
+// @version      1.2.9
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
@@ -716,14 +716,16 @@ async function setViaPaste(el, text) {
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { setContentEditablePreserveNewlines(el, combined); } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { setContentEditablePreserveNewlines(el, combined); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

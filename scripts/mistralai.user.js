@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mistral V.1.2.1
 // @namespace    https://chat.mistral.ai/chat
-// @version      1.2.1
+// @version      1.2.2
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://chat.mistral.ai/chat*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/tampermonkey-skripte/main/scripts/mistral.user.js
@@ -760,6 +760,19 @@
     return equalTextStructureAware(readPromptText(el), target);
   }
 
+  function moveCaretToEnd(el) {
+    try {
+      el.focus();
+      const sel = window.getSelection();
+      if (!sel) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch {}
+  }
+
   function insertText(el, text) {
     if (!el || !text) return;
 
@@ -787,16 +800,16 @@
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { el.innerHTML = escapeHtml(combined).replace(/\n/g, "<br>"); } catch {
-        try { el.textContent = combined; } catch {}
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { el.innerHTML = escapeHtml(combined).replace(/\n/g, "<br>"); moveCaretToEnd(el); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
       }
-      dispatchReactInput(el, "insertReplacementText", combined);
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

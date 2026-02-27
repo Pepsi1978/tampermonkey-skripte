@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude V.1.2.1
 // @namespace    https://claude.ai/
-// @version      1.2.1
+// @version      1.2.2
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze). Fix: strengere Prompt-Feld-Erkennung (kein Seitentext mehr).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -780,6 +780,19 @@
     return normalizeForCompare(readPromptText(targetEl)) === targetCmp || normalizeForCompare(readPromptText(targetEl)).length >= Math.min(20, targetCmp.length);
   }
 
+  function moveCaretToEnd(el) {
+    try {
+      el.focus();
+      const sel = window.getSelection();
+      if (!sel) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch {}
+  }
+
   function insertText(el, text) {
     if (!el || !text) return;
 
@@ -807,14 +820,20 @@
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { el.textContent = combined; } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try {
+        const safe = escapeHtml(combined);
+        el.innerHTML = safe.replace(/\n/g, "<br>");
+        moveCaretToEnd(el);
+      } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

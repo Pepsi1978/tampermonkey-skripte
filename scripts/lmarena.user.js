@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Arena V.1.1.9
 // @namespace    https://arena.ai/
-// @version      1.1.9
+// @version      1.2.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) ohne stilles Fallback. Zeigt Output-Preview. Send-Button-Fix via React-Nudge.
 // @match        https://arena.ai/*
 // @match        https://web.arena.ai/*
@@ -703,14 +703,16 @@ async function setViaPaste(el, text) {
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { setContentEditablePreserveNewlines(el, combined); } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { setContentEditablePreserveNewlines(el, combined); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================

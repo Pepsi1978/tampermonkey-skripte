@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grok V.1.2.2
 // @namespace    https://grok.com/
-// @version      1.2.2
+// @version      1.2.3
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
@@ -787,6 +787,19 @@
     return normalizeForCompare(readPromptText(el)) === normalizeForCompare(target);
   }
 
+  function moveCaretToEnd(el) {
+    try {
+      el.focus();
+      const sel = window.getSelection();
+      if (!sel) return;
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch {}
+  }
+
   function insertText(el, text) {
     if (!el || !text) return;
 
@@ -814,14 +827,16 @@
       return;
     }
 
-    try {
-      el.focus();
-      document.execCommand("insertText", false, spacer + add);
-      dispatchReactInput(el, "insertText", add);
-    } catch {
-      try { el.innerText = combined; } catch {}
-      dispatchReactInput(el, "insertReplacementText", combined);
+    el.focus();
+    moveCaretToEnd(el);
+    let _cmdOk = false;
+    try { _cmdOk = document.execCommand("insertText", false, spacer + add); } catch {}
+    if (!_cmdOk) {
+      try { el.innerText = combined; moveCaretToEnd(el); } catch {
+        try { el.textContent = combined; moveCaretToEnd(el); } catch {}
+      }
     }
+    dispatchReactInput(el, _cmdOk ? "insertText" : "insertReplacementText", _cmdOk ? add : combined);
   }
 
   // ============================================================
