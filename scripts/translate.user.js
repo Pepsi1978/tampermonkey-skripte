@@ -1153,6 +1153,10 @@ ${text}
   function wasRecentlySeenFinal(snippet) {
     const n = normalizeForSpeechDedupe(snippet);
     if (!n) return false;
+    // Android/Edge: kurze Fragmente (einzelne Wörter / sehr kurze Phrasen)
+    // sollen nicht global weggededuped werden, sonst lassen sie sich nach
+    // einem „Verschlucken“ nicht mehr erneut einfügen.
+    if (isMobileAndroid && n.length < 25) return false;
     return recentFinalNorm.includes(n);
   }
 
