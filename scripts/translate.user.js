@@ -1132,7 +1132,7 @@ ${text}
   let recentFinalNorm = [];
   let lastFinalTranscriptTime = 0;   // ANDROID-FIX: Alter des letzten Dedup-Snapshots
   let consecutiveNoSpeech    = 0;   // ANDROID-FIX: Zähler aufeinanderfolgender no-speech
-  let lastProcessedResultIdx = -1;  // ANDROID-FIX: Letzter verarbeiteter e.resultIndex
+  let processedResults = new Map(); // ANDROID-FIX v3: Duplikat-Tracking (Index→Transkript)
   let sttWatchdogTimer = null;      // ANDROID-FIX: Watchdog erkennt "Stuck"-Zustand
 
   function resetRestartCounterOnGoodInput() {
@@ -1144,7 +1144,7 @@ ${text}
     lastFinalTranscript = "";
     recentFinalNorm = [];
     lastFinalTranscriptTime = 0;   // ANDROID-FIX
-    lastProcessedResultIdx  = -1;  // ANDROID-FIX
+    processedResults.clear();       // ANDROID-FIX v3
   }
 
   function rememberFinalNorm(snippet) {
@@ -1177,7 +1177,7 @@ ${text}
       console.warn("STT Watchdog: Keine Events seit 25 s → Hard Reset");
       if (rec) { try { rec.stop(); } catch {} rec = null; }
       restartCount = 0; consecutiveNoSpeech = 0;
-      lastFinalTranscript = ""; recentFinalNorm = []; lastProcessedResultIdx = -1;
+      lastFinalTranscript = ""; recentFinalNorm = []; processedResults.clear();
       scheduleAutoRestart("watchdog");
     }, 25000);
   }
@@ -1293,8 +1293,7 @@ ${text}
     const r = new SpeechRecognition();
     r.lang = CFG.speechLang;
     r.continuous = true;
-    // ANDROID-FIX: interimResults:false → weniger Netzwerk-Events, stabilere Erkennung
-    r.interimResults = isMobileAndroid ? false : (CFG.interimResults ?? true);
+    r.interimResults = CFG.interimResults ?? true;
 
     r.onresult = (e) => {
       resetRestartCounterOnGoodInput();
@@ -1305,14 +1304,17 @@ ${text}
       const target = curP || lastUserEditable || findPrompt();
       if (!target) return;
 
-      // ANDROID/EDGE-FIX: Edge sendet manchmal e.resultIndex=0 obwohl Ergebnisse
-      // bereits verarbeitet wurden → nie rückwärts springen.
-      const _sttStart = Math.max(e.resultIndex, lastProcessedResultIdx + 1);
-      for (let i = _sttStart; i < e.results.length; i++) {
+      // ANDROID/EDGE-FIX v3: Map-Tracking ersetzt lastProcessedResultIdx.
+      // Problem: lastProcessedResultIdx blockierte Refinements (gleicher Index,
+      //          verbesserter Text von Edge/Android) → letztes Wort verschluckt.
+      // Fix: Map trackt (Index→Transkript). Gleiches Paar → skip. Neuer Text → verarbeiten.
+      for (let i = e.resultIndex; i < e.results.length; i++) {
         if (e.results[i].isFinal) {
-          lastProcessedResultIdx = i; // ANDROID-FIX: verarbeiteten Index merken
           const raw = cleanText(e.results[i][0].transcript);
           if (!raw) continue;
+          if (processedResults.get(i) === raw) continue; // Exakt-Duplikat → skip
+          processedResults.set(i, raw);
+          if (processedResults.size > 60) processedResults.delete(processedResults.keys().next().value);
 
           // ANDROID-FIX: lastFinalTranscript läuft ab wenn >15s alt.
           // Verhindert, dass uralte Dedup-Daten neuen Text fälschlich verschlucken.
@@ -1348,7 +1350,7 @@ ${text}
         if (consecutiveNoSpeech >= 8) {
           console.warn("STT: " + consecutiveNoSpeech + "x no-speech → Hard Reset");
           consecutiveNoSpeech = 0; restartCount = 0;
-          lastFinalTranscript = ""; recentFinalNorm = []; lastProcessedResultIdx = -1;
+          lastFinalTranscript = ""; recentFinalNorm = []; processedResults.clear();
         }
       }
 
@@ -1431,7 +1433,7 @@ ${text}
       lastFinalTranscript    = "";
       lastFinalTranscriptTime = 0;
     }
-    lastProcessedResultIdx = -1; // ANDROID-FIX: immer zurücksetzen
+    processedResults.clear();    // ANDROID-FIX v3: Map-Reset für neue Session
     consecutiveNoSpeech    = 0;  // ANDROID-FIX
 
     try {
