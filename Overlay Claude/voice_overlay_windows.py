@@ -20,12 +20,9 @@ from tkinter import font as tkfont
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from voice_core import AudioRecorder, transcribe_audio
 
-# Windows-spezifisch: globaler Hotkey
-try:
-    import keyboard  # pip install keyboard
-    HAS_KEYBOARD = True
-except ImportError:
-    HAS_KEYBOARD = False
+# Windows-spezifisch: globaler Hotkey über Windows API (sicher, kein Hook)
+import ctypes
+import ctypes.wintypes
 
 
 def paste_to_claude_window(text):
@@ -193,9 +190,14 @@ class VoiceOverlayWindows:
         self.menu.add_command(label="Beenden", command=self._quit)
         self.canvas.bind("<Button-3>", lambda e: self.menu.tk_popup(e.x_root, e.y_root))
 
-        # Globaler Hotkey (Strg+Shift+M)
-        if HAS_KEYBOARD:
-            keyboard.add_hotkey("ctrl+shift+m", self._on_hotkey)
+        # Globaler Hotkey (Strg+Shift+M) über Windows RegisterHotKey API
+        self._hotkey_id = 1
+        MOD_CTRL = 0x0002
+        MOD_SHIFT = 0x0004
+        VK_M = 0x4D
+        ctypes.windll.user32.RegisterHotKey(None, self._hotkey_id, MOD_CTRL | MOD_SHIFT, VK_M)
+        self._hotkey_thread = threading.Thread(target=self._hotkey_listener, daemon=True)
+        self._hotkey_thread.start()
 
         # Escape zum Beenden
         self.root.bind("<Escape>", lambda e: self._quit())
@@ -208,9 +210,12 @@ class VoiceOverlayWindows:
         else:
             self._start_recording()
 
-    def _on_hotkey(self):
-        """Globaler Hotkey Handler (wird aus anderem Thread aufgerufen)."""
-        self.root.after(0, self._on_click)
+    def _hotkey_listener(self):
+        """Lauscht auf den registrierten Windows-Hotkey (eigener Thread)."""
+        msg = ctypes.wintypes.MSG()
+        while ctypes.windll.user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
+            if msg.message == 0x0312 and msg.wParam == self._hotkey_id:  # WM_HOTKEY
+                self.root.after(0, self._on_click)
 
     def _start_recording(self):
         self.is_recording = True
@@ -323,8 +328,7 @@ class VoiceOverlayWindows:
     def _quit(self):
         if self.is_recording:
             self.recorder.stop()
-        if HAS_KEYBOARD:
-            keyboard.unhook_all()
+        ctypes.windll.user32.UnregisterHotKey(None, self._hotkey_id)
         self.root.destroy()
 
     def run(self):
