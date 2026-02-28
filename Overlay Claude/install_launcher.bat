@@ -41,43 +41,28 @@ echo Pakete werden installiert/aktualisiert...
 echo Pakete bereit.
 echo.
 
-REM ---- Desktop-Ordner finden (auch bei OneDrive) ----
-set "DESKTOP="
+REM ---- Desktop-Verknüpfung per PowerShell erstellen ----
+REM PowerShell erledigt alles: Desktop-Pfad finden und Shortcut erstellen
 powershell -NoProfile -Command ^
-    "[Environment]::GetFolderPath('Desktop')" > "%TEMP%\claude_desktop_path.txt"
-set /p DESKTOP=<"%TEMP%\claude_desktop_path.txt"
-del "%TEMP%\claude_desktop_path.txt" >nul 2>&1
-
-REM Fallback falls PowerShell-Abfrage fehlschlaegt
-if "%DESKTOP%"=="" set "DESKTOP=%USERPROFILE%\Desktop"
-if not exist "%DESKTOP%" set "DESKTOP=%USERPROFILE%\OneDrive\Desktop"
-if not exist "%DESKTOP%" set "DESKTOP=%USERPROFILE%\Desktop"
-
-echo Desktop-Ordner: %DESKTOP%
-
-REM ---- Desktop-Verknüpfung erstellen ----
-set "SHORTCUT=%DESKTOP%\Claude + Voice.lnk"
-
-REM Alten Shortcut entfernen falls vorhanden
-if exist "%SHORTCUT%" del "%SHORTCUT%"
-
-powershell -NoProfile -Command ^
-    "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%SHORTCUT%'); $s.TargetPath = 'wscript.exe'; $s.Arguments = '\"%VBS_LAUNCHER%\"'; $s.WorkingDirectory = '%SCRIPT_DIR%'; $s.Description = 'Claude Desktop mit Voice Overlay starten'; $s.IconLocation = 'shell32.dll,168'; $s.Save()"
-
-if exist "%SHORTCUT%" (
-    echo Desktop-Verknuepfung erstellt!
-) else (
-    echo HINWEIS: Desktop-Verknuepfung konnte nicht erstellt werden.
-    echo Du kannst start_claude.vbs auch direkt per Doppelklick starten.
-)
+    "$desktop = [Environment]::GetFolderPath('Desktop');" ^
+    "Write-Host \"Desktop-Ordner: $desktop\";" ^
+    "$lnk = Join-Path $desktop 'ClaudeVoice.lnk';" ^
+    "if (Test-Path $lnk) { Remove-Item $lnk };" ^
+    "$ws = New-Object -ComObject WScript.Shell;" ^
+    "$s = $ws.CreateShortcut($lnk);" ^
+    "$s.TargetPath = 'wscript.exe';" ^
+    "$s.Arguments = '\"' + '%VBS_LAUNCHER%' + '\"';" ^
+    "$s.WorkingDirectory = '%SCRIPT_DIR%';" ^
+    "$s.Description = 'Claude Desktop mit Voice Overlay starten';" ^
+    "$s.Save();" ^
+    "if (Test-Path $lnk) { Write-Host 'Desktop-Verknuepfung erstellt!' } else { Write-Host 'FEHLER: Verknuepfung konnte nicht erstellt werden.' }"
 
 echo.
-echo   Verknuepfung:  %SHORTCUT%
 echo   Launcher:      %VBS_LAUNCHER%
 echo.
 echo -------------------------------------------------------
 echo   Starte Claude Desktop ab jetzt ueber:
-echo   - Die Desktop-Verknuepfung "Claude + Voice"
+echo   - Die Desktop-Verknuepfung "ClaudeVoice"
 echo   - Oder Doppelklick auf start_claude.vbs
 echo.
 echo   Das Overlay startet automatisch mit Claude Desktop.
