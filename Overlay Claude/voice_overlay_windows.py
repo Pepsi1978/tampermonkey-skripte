@@ -56,6 +56,28 @@ def paste_to_claude_window(text):
     pyautogui.hotkey("ctrl", "v")
 
 
+def clear_claude_input():
+    """Fokussiert das Claude-Fenster und löscht den gesamten Text im Eingabefeld."""
+    import pyautogui
+    import time
+
+    try:
+        import pygetwindow as gw
+        windows = gw.getWindowsWithTitle("Claude")
+        if windows:
+            claude_win = windows[0]
+            if claude_win.isMinimized:
+                claude_win.restore()
+            claude_win.activate()
+            time.sleep(0.3)
+    except Exception:
+        time.sleep(0.3)
+
+    pyautogui.hotkey("ctrl", "a")
+    time.sleep(0.1)
+    pyautogui.press("delete")
+
+
 class VoiceOverlayWindows:
     """Schwebender Mikrofon-Button als Overlay über der Claude Desktop App."""
 
@@ -92,13 +114,13 @@ class VoiceOverlayWindows:
         screen_h = self.root.winfo_screenheight()
         x = screen_w - self.btn_size - self.padding - 80
         y = screen_h - self.btn_size - self.padding - 100
-        self.root.geometry(f"{self.btn_size + 40}x{self.btn_size + 60}+{x}+{y}")
+        self.root.geometry(f"{self.btn_size + 40}x{self.btn_size * 2 + 50}+{x}+{y}")
 
         # Canvas für runden Button
         self.canvas = tk.Canvas(
             self.root,
             width=self.btn_size + 40,
-            height=self.btn_size + 60,
+            height=self.btn_size * 2 + 50,
             bg="magenta",
             highlightthickness=0,
         )
@@ -125,20 +147,43 @@ class VoiceOverlayWindows:
             fill=self.COLOR_MIC,
         )
 
-        # Status-Text unter dem Button
+        # X-Button (Eingabefeld leeren) unter dem Mikrofon-Button
+        clear_cy = cy + self.btn_size + 10
+        self.clear_circle = self.canvas.create_oval(
+            cx - r, clear_cy - r, cx + r, clear_cy + r,
+            fill=self.COLOR_IDLE,
+            outline="#555555",
+            width=2,
+        )
+
+        clear_font = tkfont.Font(family="Segoe UI", size=18, weight="bold")
+        self.clear_text = self.canvas.create_text(
+            cx, clear_cy,
+            text="\u2715",
+            font=clear_font,
+            fill=self.COLOR_MIC,
+        )
+
+        # Status-Text unter dem X-Button
         status_font = tkfont.Font(family="Segoe UI", size=8)
         self.status_text = self.canvas.create_text(
-            cx, cy + r + 14,
+            cx, clear_cy + r + 14,
             text="Bereit",
             font=status_font,
             fill="#AAAAAA",
         )
 
-        # Events
+        # Events - Mikrofon-Button
         self.canvas.tag_bind(self.btn_circle, "<Button-1>", self._on_click)
         self.canvas.tag_bind(self.mic_text, "<Button-1>", self._on_click)
         self.canvas.tag_bind(self.btn_circle, "<Enter>", self._on_enter)
         self.canvas.tag_bind(self.btn_circle, "<Leave>", self._on_leave)
+
+        # Events - X-Button (Leeren)
+        self.canvas.tag_bind(self.clear_circle, "<Button-1>", self._on_clear_click)
+        self.canvas.tag_bind(self.clear_text, "<Button-1>", self._on_clear_click)
+        self.canvas.tag_bind(self.clear_circle, "<Enter>", self._on_clear_enter)
+        self.canvas.tag_bind(self.clear_circle, "<Leave>", self._on_clear_leave)
 
         # Drag zum Verschieben
         self._drag_data = {"x": 0, "y": 0}
@@ -236,6 +281,18 @@ class VoiceOverlayWindows:
     def _on_leave(self, event):
         if not self.is_recording and not self.is_processing:
             self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_IDLE)
+
+    def _on_clear_click(self, event=None):
+        """Löscht den gesamten Text im Claude-Eingabefeld."""
+        self.canvas.itemconfig(self.status_text, text="Gelöscht!", fill="#FF5722")
+        threading.Thread(target=clear_claude_input, daemon=True).start()
+        self.root.after(2000, self._reset_status)
+
+    def _on_clear_enter(self, event):
+        self.canvas.itemconfig(self.clear_circle, fill=self.COLOR_HOVER)
+
+    def _on_clear_leave(self, event):
+        self.canvas.itemconfig(self.clear_circle, fill=self.COLOR_IDLE)
 
     def _on_drag_start(self, event):
         self._drag_data["x"] = event.x
