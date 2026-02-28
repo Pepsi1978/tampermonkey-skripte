@@ -41,8 +41,21 @@ echo Pakete werden installiert/aktualisiert...
 echo Pakete bereit.
 echo.
 
+REM ---- Desktop-Ordner finden (auch bei OneDrive) ----
+set "DESKTOP="
+powershell -NoProfile -Command ^
+    "[Environment]::GetFolderPath('Desktop')" > "%TEMP%\claude_desktop_path.txt"
+set /p DESKTOP=<"%TEMP%\claude_desktop_path.txt"
+del "%TEMP%\claude_desktop_path.txt" >nul 2>&1
+
+REM Fallback falls PowerShell-Abfrage fehlschlaegt
+if "%DESKTOP%"=="" set "DESKTOP=%USERPROFILE%\Desktop"
+if not exist "%DESKTOP%" set "DESKTOP=%USERPROFILE%\OneDrive\Desktop"
+if not exist "%DESKTOP%" set "DESKTOP=%USERPROFILE%\Desktop"
+
+echo Desktop-Ordner: %DESKTOP%
+
 REM ---- Desktop-Verknüpfung erstellen ----
-set "DESKTOP=%USERPROFILE%\Desktop"
 set "SHORTCUT=%DESKTOP%\Claude + Voice.lnk"
 
 REM Alten Shortcut entfernen falls vorhanden
