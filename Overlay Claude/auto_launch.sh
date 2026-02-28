@@ -12,7 +12,7 @@ OVERLAY_PID=""
 CHECK_INTERVAL=3  # Sekunden zwischen Checks
 
 # Whisper-Modell und Sprache (anpassbar)
-MODEL="${VOICE_MODEL:-base}"
+MODEL="${VOICE_MODEL:-small}"
 LANG="${VOICE_LANG:-de}"
 
 log() {

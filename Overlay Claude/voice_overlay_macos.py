@@ -291,9 +291,9 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="base",
+        default="small",
         choices=["tiny", "base", "small", "medium", "large"],
-        help="Whisper Modell-Größe (Standard: base)",
+        help="Whisper Modell-Größe (Standard: small)",
     )
     parser.add_argument(
         "--lang",
