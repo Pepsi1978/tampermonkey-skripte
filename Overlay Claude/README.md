@@ -92,11 +92,53 @@ python voice_overlay_macos.py --lang en
 python voice_overlay_windows.py --model tiny
 ```
 
-## Autostart (macOS)
+## Autostart
 
 Das Voice Overlay kann automatisch mitgestartet werden, wenn du die Claude Desktop App öffnest.
+Ein Watcher-Prozess läuft im Hintergrund und überwacht, ob Claude Desktop offen ist – wenn ja,
+erscheint das Overlay automatisch. Wird Claude geschlossen, wird auch das Overlay beendet.
 
-### Installation
+### Windows
+
+#### Installation
+
+```batch
+cd "Overlay Claude"
+install_autostart_windows.bat
+```
+
+Das Skript erstellt die virtuelle Umgebung, installiert alle Pakete und richtet einen
+Autostart-Eintrag ein. Beim nächsten Windows-Login startet der Watcher automatisch.
+
+Zum sofortigen Starten (ohne Neuanmeldung): Doppelklick auf `claude_voice_launcher.vbs`.
+
+#### Deinstallation
+
+```batch
+uninstall_autostart_windows.bat
+```
+
+#### Konfiguration
+
+Whisper-Modell und Sprache lassen sich über Umgebungsvariablen anpassen:
+
+```batch
+set VOICE_MODEL=small
+set VOICE_LANG=en
+```
+
+Diese kannst du dauerhaft in den Windows-Umgebungsvariablen setzen
+(Systemsteuerung > System > Erweiterte Systemeinstellungen > Umgebungsvariablen).
+
+#### Logs
+
+```
+%LOCALAPPDATA%\ClaudeVoiceOverlay\overlay.log
+```
+
+### macOS
+
+#### Installation
 
 ```bash
 cd "Overlay Claude"
@@ -105,13 +147,13 @@ bash install_autostart.sh
 
 Das war's! Ab jetzt wird das Overlay automatisch gestartet, sobald du Claude Desktop öffnest, und beendet, sobald du Claude schließt.
 
-### Deinstallation
+#### Deinstallation
 
 ```bash
 bash uninstall_autostart.sh
 ```
 
-### Konfiguration
+#### Konfiguration
 
 Du kannst Whisper-Modell und Sprache über Umgebungsvariablen anpassen.
 Bearbeite dazu die plist-Datei unter `~/Library/LaunchAgents/com.claude-voice.overlay.plist`
@@ -124,7 +166,7 @@ und füge hinzu:
 <string>en</string>
 ```
 
-### Logs
+#### Logs
 
 Logs findest du unter:
 ```
@@ -177,13 +219,16 @@ Für Deutsch empfehle ich mindestens `base`, für beste Ergebnisse `small` oder 
 
 ```
 Overlay Claude/
-├── voice_core.py              # Shared: Whisper-Integration, AudioRecorder
-├── voice_overlay_windows.py   # Windows-spezifisches Overlay (tkinter)
-├── voice_overlay_macos.py     # macOS-spezifisches Overlay (tkinter + AppleScript)
-├── auto_launch.sh             # Watcher: startet Overlay wenn Claude läuft
-├── install_autostart.sh       # Installiert macOS LaunchAgent (Autostart)
-├── uninstall_autostart.sh     # Entfernt den Autostart
-├── requirements-windows.txt   # Windows Abhängigkeiten
-├── requirements-macos.txt     # macOS Abhängigkeiten
+├── voice_core.py                    # Shared: Whisper-Integration, AudioRecorder
+├── voice_overlay_windows.py         # Windows-spezifisches Overlay (tkinter)
+├── voice_overlay_macos.py           # macOS-spezifisches Overlay (AppKit/PyObjC)
+├── auto_launch_windows.py           # Windows-Watcher: startet Overlay wenn Claude läuft
+├── install_autostart_windows.bat    # Installiert Windows Autostart (Startup-Ordner)
+├── uninstall_autostart_windows.bat  # Entfernt den Windows Autostart
+├── auto_launch.sh                   # macOS-Watcher: startet Overlay wenn Claude läuft
+├── install_autostart.sh             # Installiert macOS LaunchAgent (Autostart)
+├── uninstall_autostart.sh           # Entfernt den macOS Autostart
+├── requirements-windows.txt         # Windows Abhängigkeiten
+├── requirements-macos.txt           # macOS Abhängigkeiten
 └── README.md
 ```
