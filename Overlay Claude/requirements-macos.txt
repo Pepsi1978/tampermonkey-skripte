@@ -9,9 +9,5 @@ faster-whisper>=1.0.0     # Empfohlen: schneller, weniger RAM
 sounddevice>=0.4.6
 numpy>=1.24.0
 
-# Globaler Hotkey (optional, für Cmd+Shift+M)
-pynput>=1.7.6
-
 # Clipboard & Paste: macOS nutzt pbcopy/osascript (vorinstalliert)
-# pyautogui wird nur als Fallback benötigt:
-# pyautogui>=0.9.54
+# Keine weiteren Abhängigkeiten nötig!

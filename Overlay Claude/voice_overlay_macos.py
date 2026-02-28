@@ -6,7 +6,7 @@ Nutzung:
     python voice_overlay_macos.py [--model base] [--lang de]
 
 Tastenkürzel:
-    Cmd+Shift+M  - Aufnahme starten/stoppen (global, benötigt pynput)
+    Cmd+Shift+M  - Aufnahme starten/stoppen (wenn Fenster fokussiert)
 
 Hinweis:
     macOS erfordert Mikrofon- und Bedienungshilfen-Berechtigung.
@@ -23,13 +23,6 @@ from tkinter import font as tkfont
 # Eigenes Core-Modul
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from voice_core import AudioRecorder, transcribe_audio
-
-# macOS-spezifisch: globaler Hotkey über pynput
-try:
-    from pynput import keyboard as pynput_keyboard
-    HAS_PYNPUT = True
-except ImportError:
-    HAS_PYNPUT = False
 
 
 def paste_to_claude_window(text):
@@ -186,37 +179,12 @@ class VoiceOverlayMacOS:
         self.canvas.bind("<Control-ButtonPress-1>", self._on_drag_start)
         self.canvas.bind("<Control-B1-Motion>", self._on_drag_motion)
 
-        # Globaler Hotkey (Cmd+Shift+M) über pynput
-        self._hotkey_listener = None
-        if HAS_PYNPUT:
-            self._setup_global_hotkey()
+        # Hotkey Cmd+Shift+M (funktioniert wenn Overlay-Fenster fokussiert ist)
+        self.root.bind("<Command-Shift-m>", self._on_click)
+        self.root.bind("<Command-Shift-M>", self._on_click)
 
         # Escape zum Beenden
         self.root.bind("<Escape>", lambda e: self._quit())
-
-    def _setup_global_hotkey(self):
-        """Richtet den globalen Hotkey Cmd+Shift+M ein."""
-        pressed_keys = set()
-
-        def on_press(key):
-            pressed_keys.add(key)
-            # Cmd+Shift+M prüfen
-            if (
-                pynput_keyboard.Key.cmd in pressed_keys
-                and pynput_keyboard.Key.shift in pressed_keys
-                and hasattr(key, "char") and key.char == "m"
-            ):
-                self.root.after(0, self._on_click)
-
-        def on_release(key):
-            pressed_keys.discard(key)
-
-        self._hotkey_listener = pynput_keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release,
-        )
-        self._hotkey_listener.daemon = True
-        self._hotkey_listener.start()
 
     def _on_click(self, event=None):
         if self.is_processing:
@@ -304,13 +272,11 @@ class VoiceOverlayMacOS:
     def _quit(self):
         if self.is_recording:
             self.recorder.stop()
-        if self._hotkey_listener:
-            self._hotkey_listener.stop()
         self.root.destroy()
 
     def run(self):
         print("Claude Voice Input - macOS")
-        print("Klicke auf den Mikrofon-Button oder drücke Cmd+Shift+M")
+        print("Klicke auf den Mikrofon-Button")
         print("Ctrl+Click + Ziehen zum Verschieben")
         print("Escape zum Beenden")
         print()
