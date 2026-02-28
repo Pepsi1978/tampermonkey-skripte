@@ -50,7 +50,7 @@ def is_claude_running():
             capture_output=True, text=True, timeout=5,
             creationflags=subprocess.CREATE_NO_WINDOW,
         )
-        return "Claude.exe" in result.stdout
+        return "claude.exe" in result.stdout.lower()
     except Exception:
         return False
 
