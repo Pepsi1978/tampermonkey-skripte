@@ -1,6 +1,9 @@
 # Claude Desktop Voice Input - macOS Dependencies
 # Installation: pip install -r requirements-macos.txt
 
+# Native macOS GUI (ersetzt tkinter, das auf macOS Tahoe crasht)
+pyobjc-framework-Cocoa>=10.0
+
 # Speech-to-Text (wähle eines):
 faster-whisper>=1.0.0     # Empfohlen: schneller, weniger RAM
 # openai-whisper>=20231117  # Alternative: Original von OpenAI

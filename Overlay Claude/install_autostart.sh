@@ -18,12 +18,15 @@ echo
 if [ ! -f "$SCRIPT_DIR/venv/bin/python3" ]; then
     echo "Virtuelle Umgebung wird erstellt..."
     python3 -m venv "$SCRIPT_DIR/venv"
-    source "$SCRIPT_DIR/venv/bin/activate"
-    pip install -r "$SCRIPT_DIR/requirements-macos.txt"
-    deactivate
-    echo "Virtuelle Umgebung erstellt und Pakete installiert."
+    echo "Virtuelle Umgebung erstellt."
     echo
 fi
+
+# Pakete immer aktualisieren (damit neue Abhängigkeiten installiert werden)
+echo "Pakete werden installiert/aktualisiert..."
+"$SCRIPT_DIR/venv/bin/pip" install -q -r "$SCRIPT_DIR/requirements-macos.txt"
+echo "Pakete bereit."
+echo
 
 # Ausführbar machen
 chmod +x "$WATCHER"

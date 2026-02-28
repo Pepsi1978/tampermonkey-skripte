@@ -1,15 +1,16 @@
 """
-Claude Desktop Voice Input - macOS Overlay
+Claude Desktop Voice Input - macOS Overlay (Native AppKit)
 Schwebender Mikrofon-Button über der Claude Desktop App.
 
 Nutzung:
     python voice_overlay_macos.py [--model base] [--lang de]
 
-Tastenkürzel:
-    Cmd+Shift+M  - Aufnahme starten/stoppen (wenn Fenster fokussiert)
+Tastenkürzel (bei fokussiertem Overlay-Fenster):
+    Cmd+Shift+M  - Aufnahme starten/stoppen
+    Escape        - Beenden
 
 Hinweis:
-    macOS erfordert Mikrofon- und Bedienungshilfen-Berechtigung.
+    macOS erfordert Mikrofon-Berechtigung.
     Beim ersten Start wirst du danach gefragt.
 """
 
@@ -17,12 +18,61 @@ import sys
 import os
 import threading
 import argparse
-import tkinter as tk
-from tkinter import font as tkfont
+
+import objc
+from AppKit import (
+    NSApplication,
+    NSWindow,
+    NSView,
+    NSColor,
+    NSFont,
+    NSBezierPath,
+    NSAttributedString,
+    NSScreen,
+    NSEvent,
+    NSFontAttributeName,
+    NSForegroundColorAttributeName,
+    NSParagraphStyleAttributeName,
+    NSMutableParagraphStyle,
+    NSFloatingWindowLevel,
+    NSBackingStoreBuffered,
+    NSTrackingArea,
+    NSTrackingMouseEnteredAndExited,
+    NSTrackingActiveAlways,
+    NSTrackingMouseMoved,
+    NSTrackingInVisibleRect,
+    NSApplicationActivationPolicyAccessory,
+)
+from Foundation import (
+    NSObject,
+    NSPoint,
+    NSMakeRect,
+    NSTimer,
+)
+from PyObjCTools import AppHelper
 
 # Eigenes Core-Modul
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from voice_core import AudioRecorder, transcribe_audio
+
+
+# ── Helpers ──────────────────────────────────────────────────
+
+_COLOR_CACHE = {}
+
+
+def _nscolor(hex_str, alpha=1.0):
+    """Convert '#RRGGBB' to NSColor (cached)."""
+    key = (hex_str, alpha)
+    if key not in _COLOR_CACHE:
+        h = hex_str.lstrip("#")
+        r = int(h[0:2], 16) / 255.0
+        g = int(h[2:4], 16) / 255.0
+        b = int(h[4:6], 16) / 255.0
+        _COLOR_CACHE[key] = NSColor.colorWithCalibratedRed_green_blue_alpha_(
+            r, g, b, alpha
+        )
+    return _COLOR_CACHE[key]
 
 
 def paste_to_claude_window(text):
@@ -33,17 +83,12 @@ def paste_to_claude_window(text):
     if not text.strip():
         return
 
-    # Text in macOS Clipboard kopieren
     process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
     process.communicate(text.encode("utf-8"))
 
-    # Claude-Fenster über AppleScript fokussieren
     try:
         subprocess.run(
-            [
-                "osascript", "-e",
-                'tell application "Claude" to activate'
-            ],
+            ["osascript", "-e", 'tell application "Claude" to activate'],
             timeout=3,
             capture_output=True,
         )
@@ -51,36 +96,33 @@ def paste_to_claude_window(text):
     except Exception:
         time.sleep(0.3)
 
-    # Cmd+V per AppleScript simulieren
     try:
         subprocess.run(
             [
-                "osascript", "-e",
-                'tell application "System Events" to keystroke "v" using command down'
+                "osascript",
+                "-e",
+                'tell application "System Events" to keystroke "v" using command down',
             ],
             timeout=3,
             capture_output=True,
         )
     except Exception:
-        # Fallback: pyautogui
         try:
             import pyautogui
+
             pyautogui.hotkey("command", "v")
         except ImportError:
-            print("Konnte Cmd+V nicht simulieren. Installiere pyautogui als Fallback.")
+            print("Konnte Cmd+V nicht simulieren.")
 
 
 def clear_claude_input():
-    """Fokussiert das Claude-Fenster und löscht den gesamten Text im Eingabefeld."""
+    """Fokussiert das Claude-Fenster und löscht den Text im Eingabefeld."""
     import subprocess
     import time
 
     try:
         subprocess.run(
-            [
-                "osascript", "-e",
-                'tell application "Claude" to activate'
-            ],
+            ["osascript", "-e", 'tell application "Claude" to activate'],
             timeout=3,
             capture_output=True,
         )
@@ -91,8 +133,9 @@ def clear_claude_input():
     try:
         subprocess.run(
             [
-                "osascript", "-e",
-                'tell application "System Events" to keystroke "a" using command down'
+                "osascript",
+                "-e",
+                'tell application "System Events" to keystroke "a" using command down',
             ],
             timeout=3,
             capture_output=True,
@@ -100,8 +143,9 @@ def clear_claude_input():
         time.sleep(0.1)
         subprocess.run(
             [
-                "osascript", "-e",
-                'tell application "System Events" to key code 51'
+                "osascript",
+                "-e",
+                'tell application "System Events" to key code 51',
             ],
             timeout=3,
             capture_output=True,
@@ -109,6 +153,7 @@ def clear_claude_input():
     except Exception:
         try:
             import pyautogui
+
             pyautogui.hotkey("command", "a")
             time.sleep(0.1)
             pyautogui.press("delete")
@@ -116,158 +161,291 @@ def clear_claude_input():
             print("Konnte Text nicht löschen.")
 
 
-class VoiceOverlayMacOS:
-    """Schwebender Mikrofon-Button als Overlay über der Claude Desktop App."""
+# ── Borderless Window (accepts keyboard input) ──────────────
 
-    # Farben
-    COLOR_IDLE = "#2D2D2D"
-    COLOR_RECORDING = "#E53935"
-    COLOR_PROCESSING = "#FF9800"
-    COLOR_HOVER = "#3D3D3D"
-    COLOR_TEXT = "#FFFFFF"
 
-    def __init__(self, model_size="base", language="de"):
+class OverlayWindow(NSWindow):
+    """Borderless window that can become key (for keyboard shortcuts)."""
+
+    def canBecomeKeyWindow(self):
+        return True
+
+    def canBecomeMainWindow(self):
+        return False
+
+
+# ── Custom View ──────────────────────────────────────────────
+
+
+class OverlayView(NSView):
+    """Draws mic button, clear button, and status text."""
+
+    BTN_SIZE = 56
+
+    def initWithFrame_(self, frame):
+        self = objc.super(OverlayView, self).initWithFrame_(frame)
+        if self is None:
+            return None
+        self.ctrl = None  # VoiceOverlay controller, set externally
+        self._hover_mic = False
+        self._hover_clear = False
+        self._drag_start_screen = None
+        self._win_origin_start = None
+        return self
+
+    def isFlipped(self):
+        return True  # y=0 at top, like tkinter
+
+    def acceptsFirstResponder(self):
+        return True
+
+    def acceptsFirstMouse_(self, event):
+        return True  # allow clicks when window is not key
+
+    # --- Tracking areas (hover detection) ---
+
+    def updateTrackingAreas(self):
+        for ta in self.trackingAreas():
+            self.removeTrackingArea_(ta)
+        opts = (
+            NSTrackingMouseEnteredAndExited
+            | NSTrackingActiveAlways
+            | NSTrackingMouseMoved
+            | NSTrackingInVisibleRect
+        )
+        ta = NSTrackingArea.alloc().initWithRect_options_owner_userInfo_(
+            self.bounds(), opts, self, None
+        )
+        self.addTrackingArea_(ta)
+        objc.super(OverlayView, self).updateTrackingAreas()
+
+    # --- Geometry ---
+
+    @objc.python_method
+    def _geom(self):
+        """Return (cx, mic_cy, clr_cy, r)."""
+        w = self.bounds().size.width
+        s = self.BTN_SIZE
+        cx = w / 2
+        r = s / 2
+        mic_cy = s / 2 + 5
+        clr_cy = mic_cy + s + 10
+        return cx, mic_cy, clr_cy, r
+
+    @objc.python_method
+    def _in_circle(self, px, py, cx, cy, r):
+        return (px - cx) ** 2 + (py - cy) ** 2 <= r * r
+
+    # --- Drawing ---
+
+    def drawRect_(self, dirty):
+        c = self.ctrl
+        if c is None:
+            return
+        cx, mic_cy, clr_cy, r = self._geom()
+
+        # Canvas background
+        _nscolor("#1E1E1E").set()
+        NSBezierPath.fillRect_(self.bounds())
+
+        # ── Mic button ──
+        self._draw_btn(
+            cx,
+            mic_cy,
+            r,
+            self._mic_fill(),
+            c.pulse_bright,
+            "\U0001F3A4",
+            20,
+            False,
+        )
+
+        # ── Clear (X) button ──
+        fill = _nscolor("#3D3D3D") if self._hover_clear else _nscolor("#2D2D2D")
+        self._draw_btn(cx, clr_cy, r, fill, False, "\u2715", 18, True)
+
+        # ── Status text ──
+        self._draw_text(c.status_text, cx, clr_cy + r + 8, 9, False, c.status_color)
+
+    @objc.python_method
+    def _mic_fill(self):
+        c = self.ctrl
+        if c.is_recording:
+            return _nscolor("#E53935")
+        if c.is_processing:
+            return _nscolor("#FF9800")
+        if self._hover_mic:
+            return _nscolor("#3D3D3D")
+        return _nscolor("#2D2D2D")
+
+    @objc.python_method
+    def _draw_btn(self, cx, cy, r, fill, bright_outline, icon, size, bold):
+        # Shadow
+        _nscolor("#111111").set()
+        NSBezierPath.bezierPathWithOvalInRect_(
+            NSMakeRect(cx - r - 3, cy - r - 3, (r + 3) * 2, (r + 3) * 2)
+        ).fill()
+        # Fill
+        fill.set()
+        rect = NSMakeRect(cx - r, cy - r, r * 2, r * 2)
+        NSBezierPath.bezierPathWithOvalInRect_(rect).fill()
+        # Outline
+        color = _nscolor("#FF6666") if bright_outline else _nscolor("#555555")
+        color.set()
+        path = NSBezierPath.bezierPathWithOvalInRect_(rect)
+        path.setLineWidth_(2)
+        path.stroke()
+        # Icon text
+        self._draw_text(icon, cx, cy, size, bold, NSColor.whiteColor())
+
+    @objc.python_method
+    def _draw_text(self, text, cx, cy, size, bold, color):
+        font = (
+            NSFont.boldSystemFontOfSize_(size)
+            if bold
+            else NSFont.systemFontOfSize_(size)
+        )
+        style = NSMutableParagraphStyle.alloc().init()
+        style.setAlignment_(2)  # NSCenterTextAlignment
+        attrs = {
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: color,
+            NSParagraphStyleAttributeName: style,
+        }
+        astr = NSAttributedString.alloc().initWithString_attributes_(text, attrs)
+        sz = astr.size()
+        astr.drawAtPoint_(NSPoint(cx - sz.width / 2, cy - sz.height / 2))
+
+    # --- Mouse events ---
+
+    def mouseDown_(self, event):
+        loc = self.convertPoint_fromView_(event.locationInWindow(), None)
+        cx, mic_cy, clr_cy, r = self._geom()
+
+        if self._in_circle(loc.x, loc.y, cx, mic_cy, r):
+            if self.ctrl:
+                self.ctrl.on_mic_click()
+            return
+        if self._in_circle(loc.x, loc.y, cx, clr_cy, r):
+            if self.ctrl:
+                self.ctrl.on_clear_click()
+            return
+
+        # Begin window drag
+        self._drag_start_screen = NSEvent.mouseLocation()
+        self._win_origin_start = self.window().frame().origin
+
+    def mouseDragged_(self, event):
+        if self._drag_start_screen is None:
+            return
+        current = NSEvent.mouseLocation()
+        dx = current.x - self._drag_start_screen.x
+        dy = current.y - self._drag_start_screen.y
+        self.window().setFrameOrigin_(
+            NSPoint(
+                self._win_origin_start.x + dx,
+                self._win_origin_start.y + dy,
+            )
+        )
+
+    def mouseUp_(self, event):
+        self._drag_start_screen = None
+
+    def mouseMoved_(self, event):
+        loc = self.convertPoint_fromView_(event.locationInWindow(), None)
+        cx, mic_cy, clr_cy, r = self._geom()
+        hm = self._in_circle(loc.x, loc.y, cx, mic_cy, r)
+        hc = self._in_circle(loc.x, loc.y, cx, clr_cy, r)
+        if hm != self._hover_mic or hc != self._hover_clear:
+            self._hover_mic = hm
+            self._hover_clear = hc
+            self.setNeedsDisplay_(True)
+
+    def mouseExited_(self, event):
+        if self._hover_mic or self._hover_clear:
+            self._hover_mic = False
+            self._hover_clear = False
+            self.setNeedsDisplay_(True)
+
+    # --- Keyboard ---
+
+    def keyDown_(self, event):
+        mods = event.modifierFlags()
+        ch = event.charactersIgnoringModifiers()
+
+        # Cmd+Shift+M
+        CMD = 1 << 20
+        SHIFT = 1 << 17
+        if ch and ch.lower() == "m" and (mods & CMD) and (mods & SHIFT):
+            if self.ctrl:
+                self.ctrl.on_mic_click()
+            return
+
+        # Escape
+        if event.keyCode() == 53:
+            if self.ctrl:
+                self.ctrl.quit()
+            return
+
+        objc.super(OverlayView, self).keyDown_(event)
+
+
+# ── Controller ───────────────────────────────────────────────
+
+
+class VoiceOverlay(NSObject):
+    """Main overlay controller (NSObject subclass for NSTimer callbacks)."""
+
+    def initWithModel_language_(self, model_size, language):
+        self = objc.super(VoiceOverlay, self).init()
+        if self is None:
+            return None
         self.model_size = model_size
         self.language = language
         self.recorder = AudioRecorder()
         self.is_recording = False
         self.is_processing = False
+        self.status_text = "Bereit"
+        self.status_color = _nscolor("#AAAAAA")
+        self.pulse_bright = False
+        self._pulse_timer = None
+        self._setup_window()
+        return self
 
-        # Tkinter Setup
-        self.root = tk.Tk()
-        self.root.title("Claude Voice")
-        self.root.overrideredirect(True)          # Kein Fensterrahmen
-        self.root.attributes("-topmost", True)     # Immer im Vordergrund
+    @objc.python_method
+    def _setup_window(self):
+        s = 56  # button size
+        w = s + 40  # 96
+        h = s * 2 + 50  # 162
 
-        # macOS-spezifisch: Transparenz
-        self.root.attributes("-alpha", 0.92)
-        # macOS transparent background
-        self.root.configure(bg="systemTransparent")
+        screen = NSScreen.mainScreen().frame()
+        x = screen.size.width - w - 80
+        y = 120  # distance from bottom
 
-        # Fenstergröße und Position (rechts unten)
-        self.btn_size = 56
-        self.padding = 20
-        screen_w = self.root.winfo_screenwidth()
-        screen_h = self.root.winfo_screenheight()
-        x = screen_w - self.btn_size - self.padding - 80
-        y = screen_h - self.btn_size - self.padding - 120
-        self.root.geometry(f"{self.btn_size + 40}x{self.btn_size * 2 + 50}+{x}+{y}")
-
-        # Canvas für runden Button
-        bg_color = "#1E1E1E"
-        self.canvas = tk.Canvas(
-            self.root,
-            width=self.btn_size + 40,
-            height=self.btn_size * 2 + 50,
-            bg=bg_color,
-            highlightthickness=0,
+        self.window = OverlayWindow.alloc().initWithContentRect_styleMask_backing_defer_(
+            NSMakeRect(x, y, w, h),
+            0,  # borderless
+            NSBackingStoreBuffered,
+            False,
         )
-        self.canvas.pack()
+        self.window.setLevel_(NSFloatingWindowLevel)
+        self.window.setOpaque_(False)
+        self.window.setBackgroundColor_(NSColor.clearColor())
+        self.window.setAlphaValue_(0.92)
+        self.window.setHasShadow_(False)
+        self.window.setAcceptsMouseMovedEvents_(True)
+        # Show on all Spaces
+        self.window.setCollectionBehavior_(1 << 1)
 
-        # Runden Hintergrund zeichnen (um den "nicht-transparenten" Canvas zu kaschieren)
-        cx = (self.btn_size + 40) // 2
-        cy = self.btn_size // 2 + 5
-        r = self.btn_size // 2
+        self.view = OverlayView.alloc().initWithFrame_(NSMakeRect(0, 0, w, h))
+        self.view.ctrl = self
+        self.window.setContentView_(self.view)
+        self.window.makeKeyAndOrderFront_(None)
 
-        # Äußerer Schatten-Kreis
-        self.canvas.create_oval(
-            cx - r - 3, cy - r - 3, cx + r + 3, cy + r + 3,
-            fill="#111111",
-            outline="",
-        )
+    # --- Mic button actions ---
 
-        # Haupt-Button
-        self.btn_circle = self.canvas.create_oval(
-            cx - r, cy - r, cx + r, cy + r,
-            fill=self.COLOR_IDLE,
-            outline="#555555",
-            width=2,
-        )
-
-        # Mikrofon-Symbol
-        # macOS hat guten Unicode-Support
-        try:
-            mic_font = tkfont.Font(family="Apple Color Emoji", size=20)
-        except Exception:
-            mic_font = tkfont.Font(size=20)
-
-        self.mic_text = self.canvas.create_text(
-            cx, cy,
-            text="\U0001F3A4",
-            font=mic_font,
-            fill=self.COLOR_TEXT,
-        )
-
-        # X-Button (Eingabefeld leeren) unter dem Mikrofon-Button
-        clear_cy = cy + self.btn_size + 10
-
-        # Schatten für X-Button
-        self.canvas.create_oval(
-            cx - r - 3, clear_cy - r - 3, cx + r + 3, clear_cy + r + 3,
-            fill="#111111",
-            outline="",
-        )
-
-        self.clear_circle = self.canvas.create_oval(
-            cx - r, clear_cy - r, cx + r, clear_cy + r,
-            fill=self.COLOR_IDLE,
-            outline="#555555",
-            width=2,
-        )
-
-        try:
-            clear_font = tkfont.Font(family="SF Pro Text", size=18, weight="bold")
-        except Exception:
-            clear_font = tkfont.Font(size=18, weight="bold")
-
-        self.clear_text = self.canvas.create_text(
-            cx, clear_cy,
-            text="\u2715",
-            font=clear_font,
-            fill=self.COLOR_TEXT,
-        )
-
-        # Status-Text unter dem X-Button
-        try:
-            status_font = tkfont.Font(family="SF Pro Text", size=9)
-        except Exception:
-            status_font = tkfont.Font(size=9)
-
-        self.status_text = self.canvas.create_text(
-            cx, clear_cy + r + 14,
-            text="Bereit",
-            font=status_font,
-            fill="#AAAAAA",
-        )
-
-        # Events - Mikrofon-Button
-        self.canvas.tag_bind(self.btn_circle, "<Button-1>", self._on_click)
-        self.canvas.tag_bind(self.mic_text, "<Button-1>", self._on_click)
-        self.canvas.tag_bind(self.btn_circle, "<Enter>", self._on_enter)
-        self.canvas.tag_bind(self.btn_circle, "<Leave>", self._on_leave)
-
-        # Events - X-Button (Leeren)
-        self.canvas.tag_bind(self.clear_circle, "<Button-1>", self._on_clear_click)
-        self.canvas.tag_bind(self.clear_text, "<Button-1>", self._on_clear_click)
-        self.canvas.tag_bind(self.clear_circle, "<Enter>", self._on_clear_enter)
-        self.canvas.tag_bind(self.clear_circle, "<Leave>", self._on_clear_leave)
-
-        # Drag zum Verschieben (Rechtsklick auf macOS = Ctrl+Click oder Button-2)
-        self._drag_data = {"x": 0, "y": 0}
-        self.canvas.bind("<ButtonPress-2>", self._on_drag_start)
-        self.canvas.bind("<B2-Motion>", self._on_drag_motion)
-        # Auch Ctrl+Click für macOS
-        self.canvas.bind("<Control-ButtonPress-1>", self._on_drag_start)
-        self.canvas.bind("<Control-B1-Motion>", self._on_drag_motion)
-
-        # Hotkey Cmd+Shift+M (funktioniert wenn Overlay-Fenster fokussiert ist)
-        self.root.bind("<Command-Shift-m>", self._on_click)
-        self.root.bind("<Command-Shift-M>", self._on_click)
-
-        # Escape zum Beenden
-        self.root.bind("<Escape>", lambda e: self._quit())
-
-    def _on_click(self, event=None):
+    @objc.python_method
+    def on_mic_click(self):
         if self.is_processing:
             return
         if self.is_recording:
@@ -275,18 +453,24 @@ class VoiceOverlayMacOS:
         else:
             self._start_recording()
 
+    @objc.python_method
     def _start_recording(self):
         self.is_recording = True
-        self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_RECORDING)
-        self.canvas.itemconfig(self.status_text, text="Aufnahme...", fill="#E53935")
+        self.status_text = "Aufnahme..."
+        self.status_color = _nscolor("#E53935")
+        self.view.setNeedsDisplay_(True)
         self.recorder.start()
-        self._pulse_animation()
+        self._start_pulse()
 
+    @objc.python_method
     def _stop_recording(self):
         self.is_recording = False
         self.is_processing = True
-        self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_PROCESSING)
-        self.canvas.itemconfig(self.status_text, text="Verarbeite...", fill="#FF9800")
+        self.status_text = "Verarbeite..."
+        self.status_color = _nscolor("#FF9800")
+        self.pulse_bright = False
+        self._stop_pulse()
+        self.view.setNeedsDisplay_(True)
 
         audio_data = self.recorder.stop()
 
@@ -297,85 +481,83 @@ class VoiceOverlayMacOS:
                     language=self.language,
                     model_size=self.model_size,
                 )
-                if text.strip():
-                    self.root.after(0, lambda: self._on_transcription_done(text))
-                else:
-                    self.root.after(0, lambda: self._on_transcription_done(None))
+                text = text.strip() if text else ""
             except Exception as e:
                 print(f"Transkription Fehler: {e}")
-                self.root.after(0, lambda: self._on_transcription_done(None))
+                text = ""
+            AppHelper.callAfter(self._on_transcription_done, text)
 
         threading.Thread(target=do_transcribe, daemon=True).start()
 
+    @objc.python_method
     def _on_transcription_done(self, text):
         self.is_processing = False
-        self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_IDLE)
-
         if text:
-            self.canvas.itemconfig(self.status_text, text="Eingefügt!", fill="#4CAF50")
+            self.status_text = "Eingefügt!"
+            self.status_color = _nscolor("#4CAF50")
             paste_to_claude_window(text)
         else:
-            self.canvas.itemconfig(
-                self.status_text, text="Kein Text erkannt", fill="#FF5722"
-            )
+            self.status_text = "Kein Text erkannt"
+            self.status_color = _nscolor("#FF5722")
+        self.view.setNeedsDisplay_(True)
 
-        self.root.after(3000, self._reset_status)
+        NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(
+            3.0, self, "resetStatus:", None, False
+        )
 
-    def _reset_status(self):
+    def resetStatus_(self, timer):
         if not self.is_recording and not self.is_processing:
-            self.canvas.itemconfig(self.status_text, text="Bereit", fill="#AAAAAA")
+            self.status_text = "Bereit"
+            self.status_color = _nscolor("#AAAAAA")
+            self.view.setNeedsDisplay_(True)
 
-    def _pulse_animation(self):
-        if not self.is_recording:
-            return
-        current = self.canvas.itemcget(self.btn_circle, "outline")
-        new_color = "#FF6666" if current == "#555555" else "#555555"
-        self.canvas.itemconfig(self.btn_circle, outline=new_color)
-        self.root.after(500, self._pulse_animation)
+    # --- Clear button ---
 
-    def _on_enter(self, event):
-        if not self.is_recording and not self.is_processing:
-            self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_HOVER)
-
-    def _on_leave(self, event):
-        if not self.is_recording and not self.is_processing:
-            self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_IDLE)
-
-    def _on_clear_click(self, event=None):
-        """Löscht den gesamten Text im Claude-Eingabefeld."""
-        self.canvas.itemconfig(self.status_text, text="Gelöscht!", fill="#FF5722")
+    @objc.python_method
+    def on_clear_click(self):
+        self.status_text = "Gelöscht!"
+        self.status_color = _nscolor("#FF5722")
+        self.view.setNeedsDisplay_(True)
         threading.Thread(target=clear_claude_input, daemon=True).start()
-        self.root.after(2000, self._reset_status)
 
-    def _on_clear_enter(self, event):
-        self.canvas.itemconfig(self.clear_circle, fill=self.COLOR_HOVER)
+        NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(
+            2.0, self, "resetStatus:", None, False
+        )
 
-    def _on_clear_leave(self, event):
-        self.canvas.itemconfig(self.clear_circle, fill=self.COLOR_IDLE)
+    # --- Pulse animation ---
 
-    def _on_drag_start(self, event):
-        self._drag_data["x"] = event.x
-        self._drag_data["y"] = event.y
+    @objc.python_method
+    def _start_pulse(self):
+        self._pulse_timer = (
+            NSTimer.scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(
+                0.5, self, "pulseToggle:", None, True
+            )
+        )
 
-    def _on_drag_motion(self, event):
-        x = self.root.winfo_x() + (event.x - self._drag_data["x"])
-        y = self.root.winfo_y() + (event.y - self._drag_data["y"])
-        self.root.geometry(f"+{x}+{y}")
+    @objc.python_method
+    def _stop_pulse(self):
+        if self._pulse_timer:
+            self._pulse_timer.invalidate()
+            self._pulse_timer = None
 
-    def _quit(self):
+    def pulseToggle_(self, timer):
+        if self.is_recording:
+            self.pulse_bright = not self.pulse_bright
+            self.view.setNeedsDisplay_(True)
+        else:
+            timer.invalidate()
+
+    # --- Quit ---
+
+    @objc.python_method
+    def quit(self):
         if self.is_recording:
             self.recorder.stop()
-        self.root.destroy()
+        self._stop_pulse()
+        AppHelper.stopEventLoop()
 
-    def run(self):
-        print("Claude Voice Input - macOS")
-        print("Klicke auf den Mikrofon-Button")
-        print("Ctrl+Click + Ziehen zum Verschieben")
-        print("Escape zum Beenden")
-        print()
-        print("Hinweis: Erlaube Mikrofon- und Bedienungshilfen-Zugriff")
-        print("unter Systemeinstellungen > Datenschutz & Sicherheit")
-        self.root.mainloop()
+
+# ── Main ─────────────────────────────────────────────────────
 
 
 def main():
@@ -395,8 +577,20 @@ def main():
     )
     args = parser.parse_args()
 
-    app = VoiceOverlayMacOS(model_size=args.model, language=args.lang)
-    app.run()
+    app = NSApplication.sharedApplication()
+    app.setActivationPolicy_(NSApplicationActivationPolicyAccessory)
+
+    overlay = VoiceOverlay.alloc().initWithModel_language_(args.model, args.lang)
+
+    print("Claude Voice Input - macOS (Native)")
+    print("Klicke auf den Mikrofon-Button")
+    print("Ziehen zum Verschieben")
+    print("Escape zum Beenden")
+    print()
+    print("Hinweis: Erlaube Mikrofon-Zugriff")
+    print("unter Systemeinstellungen > Datenschutz & Sicherheit")
+
+    AppHelper.runEventLoop()
 
 
 if __name__ == "__main__":
