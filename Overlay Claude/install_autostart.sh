@@ -14,10 +14,29 @@ LOG_DIR="$HOME/Library/Logs/ClaudeVoiceOverlay"
 echo "=== Claude Voice Overlay – Autostart Installation ==="
 echo
 
+# Bestes verfügbares Python finden (Homebrew bevorzugt)
+PYTHON=""
+for candidate in /opt/homebrew/bin/python3.13 /opt/homebrew/bin/python3.12 \
+                 /opt/homebrew/bin/python3.11 /opt/homebrew/bin/python3 \
+                 /usr/local/bin/python3 python3; do
+    if command -v "$candidate" &>/dev/null; then
+        PYTHON="$candidate"
+        break
+    fi
+done
+
+if [ -z "$PYTHON" ]; then
+    echo "FEHLER: Kein Python 3 gefunden!"
+    echo "Installiere Homebrew Python: brew install python"
+    exit 1
+fi
+
+echo "Python: $($PYTHON --version) ($PYTHON)"
+
 # Prüfe ob venv existiert
 if [ ! -f "$SCRIPT_DIR/venv/bin/python3" ]; then
     echo "Virtuelle Umgebung wird erstellt..."
-    python3 -m venv "$SCRIPT_DIR/venv"
+    "$PYTHON" -m venv "$SCRIPT_DIR/venv"
     echo "Virtuelle Umgebung erstellt."
     echo
 fi
