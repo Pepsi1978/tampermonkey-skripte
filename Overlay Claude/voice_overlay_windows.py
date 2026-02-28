@@ -173,26 +173,25 @@ class VoiceOverlayWindows:
             fill="#AAAAAA",
         )
 
-        # Events - Mikrofon-Button
-        self.canvas.tag_bind(self.btn_circle, "<Button-1>", self._on_click)
-        self.canvas.tag_bind(self.mic_text, "<Button-1>", self._on_click)
+        # Hover-Events
         self.canvas.tag_bind(self.btn_circle, "<Enter>", self._on_enter)
         self.canvas.tag_bind(self.btn_circle, "<Leave>", self._on_leave)
-
-        # Events - X-Button (Leeren)
-        self.canvas.tag_bind(self.clear_circle, "<Button-1>", self._on_clear_click)
-        self.canvas.tag_bind(self.clear_text, "<Button-1>", self._on_clear_click)
         self.canvas.tag_bind(self.clear_circle, "<Enter>", self._on_clear_enter)
         self.canvas.tag_bind(self.clear_circle, "<Leave>", self._on_clear_leave)
 
-        # Drag zum Verschieben
-        self._drag_data = {"x": 0, "y": 0}
-        self.canvas.bind("<ButtonPress-3>", self._on_drag_start)
-        self.canvas.bind("<B3-Motion>", self._on_drag_motion)
+        # Drag zum Verschieben (Linksklick + Ziehen auf beliebigem Element)
+        self._drag_data = {"x": 0, "y": 0, "dragging": False}
+        self.DRAG_THRESHOLD = 5  # Pixel bevor Drag erkannt wird
+
+        for item in (self.btn_circle, self.mic_text, self.clear_circle, self.clear_text):
+            self.canvas.tag_bind(item, "<ButtonPress-1>", self._on_press)
+            self.canvas.tag_bind(item, "<B1-Motion>", self._on_motion)
+            self.canvas.tag_bind(item, "<ButtonRelease-1>", self._on_release)
 
         # Rechtsklick-Menü
         self.menu = tk.Menu(self.root, tearoff=0)
         self.menu.add_command(label="Beenden", command=self._quit)
+        self.canvas.bind("<Button-3>", lambda e: self.menu.tk_popup(e.x_root, e.y_root))
 
         # Globaler Hotkey (Strg+Shift+M)
         if HAS_KEYBOARD:
@@ -294,14 +293,32 @@ class VoiceOverlayWindows:
     def _on_clear_leave(self, event):
         self.canvas.itemconfig(self.clear_circle, fill=self.COLOR_IDLE)
 
-    def _on_drag_start(self, event):
+    def _on_press(self, event):
         self._drag_data["x"] = event.x
         self._drag_data["y"] = event.y
+        self._drag_data["dragging"] = False
+        self._drag_data["item"] = self.canvas.find_closest(event.x, event.y)[0]
 
-    def _on_drag_motion(self, event):
-        x = self.root.winfo_x() + (event.x - self._drag_data["x"])
-        y = self.root.winfo_y() + (event.y - self._drag_data["y"])
-        self.root.geometry(f"+{x}+{y}")
+    def _on_motion(self, event):
+        dx = event.x - self._drag_data["x"]
+        dy = event.y - self._drag_data["y"]
+        if not self._drag_data["dragging"]:
+            if abs(dx) > self.DRAG_THRESHOLD or abs(dy) > self.DRAG_THRESHOLD:
+                self._drag_data["dragging"] = True
+        if self._drag_data["dragging"]:
+            x = self.root.winfo_x() + dx
+            y = self.root.winfo_y() + dy
+            self.root.geometry(f"+{x}+{y}")
+
+    def _on_release(self, event):
+        if self._drag_data["dragging"]:
+            return  # War ein Drag, kein Klick
+        # War ein normaler Klick – Aktion ausführen
+        item = self._drag_data.get("item")
+        if item in (self.btn_circle, self.mic_text):
+            self._on_click()
+        elif item in (self.clear_circle, self.clear_text):
+            self._on_clear_click()
 
     def _quit(self):
         if self.is_recording:
