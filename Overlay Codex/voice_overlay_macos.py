@@ -3,7 +3,7 @@ Codex Desktop Voice Input - macOS Overlay
 Schwebender Mikrofon-Button über der Codex Desktop App.
 
 Nutzung:
-    python voice_overlay_macos.py [--model base] [--lang de]
+    python voice_overlay_macos.py [--model small] [--lang de]
 
 Tastenkürzel:
     Cmd+Shift+M  - Aufnahme starten/stoppen (global, benötigt pynput)
@@ -15,8 +15,10 @@ Hinweis:
 
 import sys
 import os
+import subprocess
 import threading
 import argparse
+import time
 import tkinter as tk
 from tkinter import font as tkfont
 
@@ -30,6 +32,19 @@ try:
     HAS_PYNPUT = True
 except ImportError:
     HAS_PYNPUT = False
+
+
+def is_codex_running():
+    """Prüft ob die Codex Desktop App gerade läuft."""
+    try:
+        result = subprocess.run(
+            ["pgrep", "-f", "Codex"],
+            capture_output=True,
+            timeout=3,
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
 
 
 def paste_to_codex_window(text):
@@ -87,7 +102,10 @@ class VoiceOverlayMacOS:
     COLOR_HOVER = "#3D3D3D"
     COLOR_TEXT = "#FFFFFF"
 
-    def __init__(self, model_size="base", language="de"):
+    # Intervall in ms für die Codex-Prüfung
+    CODEX_CHECK_INTERVAL = 3000
+
+    def __init__(self, model_size="small", language="de"):
         self.model_size = model_size
         self.language = language
         self.recorder = AudioRecorder()
@@ -308,14 +326,35 @@ class VoiceOverlayMacOS:
             self._hotkey_listener.stop()
         self.root.destroy()
 
+    def _check_codex_running(self):
+        """Prüft regelmäßig ob Codex noch läuft. Beendet das Overlay wenn nicht."""
+        if not is_codex_running():
+            print("Codex Desktop App wurde geschlossen. Overlay wird beendet.")
+            self._quit()
+            return
+        self.root.after(self.CODEX_CHECK_INTERVAL, self._check_codex_running)
+
     def run(self):
         print("Codex Voice Input - macOS")
+        print("Warte auf Codex Desktop App...")
+
+        # Warte bis Codex gestartet wird
+        while not is_codex_running():
+            time.sleep(2)
+
+        print("Codex Desktop App erkannt!")
         print("Klicke auf den Mikrofon-Button oder drücke Cmd+Shift+M")
         print("Ctrl+Click + Ziehen zum Verschieben")
         print("Escape zum Beenden")
         print()
         print("Hinweis: Erlaube Mikrofon- und Bedienungshilfen-Zugriff")
         print("unter Systemeinstellungen > Datenschutz & Sicherheit")
+        print()
+        print("Das Overlay schließt sich automatisch wenn Codex beendet wird.")
+
+        # Starte die regelmäßige Codex-Prüfung
+        self.root.after(self.CODEX_CHECK_INTERVAL, self._check_codex_running)
+
         self.root.mainloop()
 
 
@@ -325,9 +364,9 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="base",
+        default="small",
         choices=["tiny", "base", "small", "medium", "large"],
-        help="Whisper Modell-Größe (Standard: base)",
+        help="Whisper Modell-Größe (Standard: small)",
     )
     parser.add_argument(
         "--lang",
