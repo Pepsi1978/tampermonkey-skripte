@@ -2,8 +2,16 @@
 Codex Desktop Voice Input - macOS Overlay
 Schwebender Mikrofon-Button über der Codex Desktop App.
 
+Läuft als Hintergrund-Dienst:
+    - Startet automatisch beim Login (via LaunchAgent)
+    - Erscheint automatisch wenn Codex Desktop geöffnet wird
+    - Versteckt sich wenn Codex geschlossen wird
+    - Läuft dauerhaft im Hintergrund
+
 Nutzung:
     python voice_overlay_macos.py [--model small] [--lang de]
+    python voice_overlay_macos.py --install   (LaunchAgent installieren)
+    python voice_overlay_macos.py --uninstall (LaunchAgent entfernen)
 
 Tastenkürzel:
     Cmd+Shift+M  - Aufnahme starten/stoppen (global, benötigt pynput)
@@ -111,6 +119,7 @@ class VoiceOverlayMacOS:
         self.recorder = AudioRecorder()
         self.is_recording = False
         self.is_processing = False
+        self.visible = False
 
         # Tkinter Setup
         self.root = tk.Tk()
@@ -326,36 +335,126 @@ class VoiceOverlayMacOS:
             self._hotkey_listener.stop()
         self.root.destroy()
 
+    def _show(self):
+        """Zeigt das Overlay-Fenster."""
+        if not self.visible:
+            self.visible = True
+            self.root.deiconify()
+            print("Overlay angezeigt.")
+
+    def _hide(self):
+        """Versteckt das Overlay-Fenster."""
+        if self.visible:
+            # Laufende Aufnahme abbrechen
+            if self.is_recording:
+                self.is_recording = False
+                self.recorder.stop()
+                self.canvas.itemconfig(self.btn_circle, fill=self.COLOR_IDLE)
+            self.visible = False
+            self.root.withdraw()
+            print("Codex geschlossen. Overlay versteckt.")
+
     def _check_codex_running(self):
-        """Prüft regelmäßig ob Codex noch läuft. Beendet das Overlay wenn nicht."""
-        if not is_codex_running():
-            print("Codex Desktop App wurde geschlossen. Overlay wird beendet.")
-            self._quit()
-            return
+        """Prüft regelmäßig ob Codex läuft und zeigt/versteckt das Overlay."""
+        if is_codex_running():
+            self._show()
+        else:
+            self._hide()
         self.root.after(self.CODEX_CHECK_INTERVAL, self._check_codex_running)
 
     def run(self):
-        print("Codex Voice Input - macOS")
-        print("Warte auf Codex Desktop App...")
-
-        # Warte bis Codex gestartet wird
-        while not is_codex_running():
-            time.sleep(2)
-
-        print("Codex Desktop App erkannt!")
-        print("Klicke auf den Mikrofon-Button oder drücke Cmd+Shift+M")
-        print("Ctrl+Click + Ziehen zum Verschieben")
-        print("Escape zum Beenden")
+        print("Codex Voice Input - macOS (Hintergrund-Dienst)")
+        print("Überwache Codex Desktop App...")
         print()
         print("Hinweis: Erlaube Mikrofon- und Bedienungshilfen-Zugriff")
         print("unter Systemeinstellungen > Datenschutz & Sicherheit")
-        print()
-        print("Das Overlay schließt sich automatisch wenn Codex beendet wird.")
 
-        # Starte die regelmäßige Codex-Prüfung
-        self.root.after(self.CODEX_CHECK_INTERVAL, self._check_codex_running)
+        # Starte versteckt
+        self.root.withdraw()
+
+        # Sofort prüfen und dann alle 3 Sekunden
+        self._check_codex_running()
 
         self.root.mainloop()
+
+
+LAUNCHAGENT_LABEL = "com.codex.voice-overlay"
+
+
+def get_launchagent_path():
+    return os.path.expanduser(f"~/Library/LaunchAgents/{LAUNCHAGENT_LABEL}.plist")
+
+
+def install_launchagent(model="small", lang="de"):
+    """Installiert einen macOS LaunchAgent für den automatischen Start."""
+    script_path = os.path.abspath(__file__)
+    # Python aus dem venv benutzen, falls vorhanden
+    venv_python = os.path.join(os.path.dirname(script_path), "venv", "bin", "python3")
+    if os.path.exists(venv_python):
+        python_path = venv_python
+    else:
+        python_path = sys.executable
+
+    plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{LAUNCHAGENT_LABEL}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>{python_path}</string>
+        <string>{script_path}</string>
+        <string>--model</string>
+        <string>{model}</string>
+        <string>--lang</string>
+        <string>{lang}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/codex-voice-overlay.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/codex-voice-overlay.log</string>
+</dict>
+</plist>
+"""
+    plist_path = get_launchagent_path()
+    os.makedirs(os.path.dirname(plist_path), exist_ok=True)
+
+    # Falls schon geladen, erst entladen
+    subprocess.run(["launchctl", "unload", plist_path],
+                   capture_output=True)
+
+    with open(plist_path, "w") as f:
+        f.write(plist_content)
+
+    subprocess.run(["launchctl", "load", plist_path], check=True)
+    print(f"LaunchAgent installiert: {plist_path}")
+    print(f"Python: {python_path}")
+    print(f"Modell: {model}, Sprache: {lang}")
+    print()
+    print("Das Overlay startet jetzt automatisch beim Login")
+    print("und erscheint sobald du Codex Desktop öffnest.")
+    print()
+    print(f"Log: /tmp/codex-voice-overlay.log")
+    print(f"Deinstallieren: python {script_path} --uninstall")
+
+
+def uninstall_launchagent():
+    """Entfernt den LaunchAgent."""
+    plist_path = get_launchagent_path()
+    if os.path.exists(plist_path):
+        subprocess.run(["launchctl", "unload", plist_path],
+                       capture_output=True)
+        os.remove(plist_path)
+        print(f"LaunchAgent entfernt: {plist_path}")
+        print("Der Dienst wurde gestoppt.")
+    else:
+        print("Kein LaunchAgent installiert.")
 
 
 def main():
@@ -373,7 +472,25 @@ def main():
         default="de",
         help="Sprache für die Erkennung (Standard: de)",
     )
+    parser.add_argument(
+        "--install",
+        action="store_true",
+        help="LaunchAgent installieren (Autostart beim Login)",
+    )
+    parser.add_argument(
+        "--uninstall",
+        action="store_true",
+        help="LaunchAgent entfernen",
+    )
     args = parser.parse_args()
+
+    if args.uninstall:
+        uninstall_launchagent()
+        return
+
+    if args.install:
+        install_launchagent(model=args.model, lang=args.lang)
+        return
 
     app = VoiceOverlayMacOS(model_size=args.model, language=args.lang)
     app.run()
