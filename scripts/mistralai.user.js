@@ -22,7 +22,7 @@
 (() => {
   "use strict";
     // ── CSS für Mikrofon-Button Animationen ──
-    (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}";(document.head||document.documentElement).appendChild(s)})();
+    (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}#stt-live-preview{position:fixed;bottom:80px;right:16px;max-width:420px;min-width:180px;padding:10px 14px;background:rgba(0,0,0,.88);color:#fff;border-radius:10px;font-size:14px;line-height:1.5;z-index:2147483646;box-shadow:0 4px 20px rgba(0,0,0,.3);max-height:180px;overflow-y:auto;word-wrap:break-word;transition:opacity .25s}#stt-live-preview .stt-pv-label{font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:.4px}#stt-live-preview .stt-pv-interim{color:#9ca3af;font-style:italic}#stt-live-preview .stt-pv-final{color:#fff}#stt-live-preview .stt-pv-waiting{color:#fbbf24;font-style:italic}";(document.head||document.documentElement).appendChild(s)})();
 
 
   // Mehrfach-Injection verhindern (SPA/Reload/History-Edgecases)
@@ -100,6 +100,10 @@
   };
 
   const supportedSpeech = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+
+  // Web Speech API für Live-Vorschau (Hybrid-Modus)
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const supportedWebSpeech = !!SpeechRecognitionAPI;
 
   // ── SVG-Icons für Mikrofon-Button (Stil: claude-code-spracheingabe) ──
   const MIC_ICON = {
@@ -1315,10 +1319,113 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let audioChunks = [];
   let audioStream = null;
 
+  // Hybrid-Modus: Web Speech API Live-Vorschau
+  let speechRecognition = null;
+  let livePreviewEl = null;
+  let textBeforeSpeech = "";
+
+  // ── Live-Preview Overlay ──
+  function createLivePreview() {
+    removeLivePreview();
+    livePreviewEl = document.createElement("div");
+    livePreviewEl.id = "stt-live-preview";
+    livePreviewEl.innerHTML =
+      '<div class="stt-pv-label">\u{1F3A4} Live-Vorschau</div>' +
+      '<div class="stt-pv-text">\u2026</div>';
+    document.body.appendChild(livePreviewEl);
+  }
+
+  function updateLivePreview(finalText, interimText) {
+    if (!livePreviewEl) return;
+    const box = livePreviewEl.querySelector(".stt-pv-text");
+    if (!box) return;
+    box.innerHTML = "";
+    if (finalText) {
+      const s = document.createElement("span");
+      s.className = "stt-pv-final";
+      s.textContent = finalText;
+      box.appendChild(s);
+    }
+    if (interimText) {
+      const s = document.createElement("span");
+      s.className = "stt-pv-interim";
+      s.textContent = (finalText ? " " : "") + interimText;
+      box.appendChild(s);
+    }
+    if (!finalText && !interimText) {
+      box.textContent = "\u2026";
+    }
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function setLivePreviewWaiting() {
+    if (!livePreviewEl) return;
+    const box = livePreviewEl.querySelector(".stt-pv-text");
+    if (!box) return;
+    box.innerHTML = '<span class="stt-pv-waiting">Whisper transkribiert\u2026</span>';
+  }
+
+  function removeLivePreview() {
+    if (livePreviewEl) {
+      livePreviewEl.remove();
+      livePreviewEl = null;
+    }
+  }
+
+  function startWebSpeech() {
+    if (!supportedWebSpeech) return;
+    try {
+      speechRecognition = new SpeechRecognitionAPI();
+      speechRecognition.lang = CFG.whisperLang || "de";
+      speechRecognition.continuous = true;
+      speechRecognition.interimResults = true;
+      speechRecognition.maxAlternatives = 1;
+
+      speechRecognition.onresult = (event) => {
+        let finalT = "";
+        let interimT = "";
+        for (let i = 0; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            finalT += event.results[i][0].transcript;
+          } else {
+            interimT += event.results[i][0].transcript;
+          }
+        }
+        updateLivePreview(finalT, interimT);
+      };
+
+      speechRecognition.onerror = (event) => {
+        if (event.error === "no-speech" || event.error === "aborted") return;
+        console.log("[STT] Web Speech API Fehler (unkritisch):", event.error);
+      };
+
+      speechRecognition.onend = () => {
+        if (wantsRecording && speechRecognition) {
+          try { speechRecognition.start(); } catch {}
+        }
+      };
+
+      speechRecognition.start();
+      createLivePreview();
+    } catch (e) {
+      console.log("[STT] Web Speech API nicht verfügbar:", e);
+      speechRecognition = null;
+    }
+  }
+
+  function stopWebSpeech() {
+    if (speechRecognition) {
+      const ref = speechRecognition;
+      speechRecognition = null;
+      try { ref.abort(); } catch {}
+    }
+  }
+
   function groqTranscribe(audioBlob) {
     const groqKey = getGroqKey();
     if (!groqKey) {
       setMicState("error", "Groq API-Key fehlt");
+      removeLivePreview();
       showToast("❌ Groq API-Key fehlt.\nTampermonkey-Menü → Groq-Key setzen.", 8000);
       setTimeout(() => setMicState("idle"), 3000);
       return;
@@ -1333,12 +1440,14 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     const req = gmRequest();
     if (!req) {
       setMicState("error", "GM Request API fehlt");
+      removeLivePreview();
       showToast("❌ GM Request API fehlt (Tampermonkey Grants).", 7000);
       setTimeout(() => setMicState("idle"), 3000);
       return;
     }
 
     setMicState("working", "Whisper transkribiert…");
+    setLivePreviewWaiting();
     showToast("🎧 Whisper transkribiert…", 2000);
 
     req({
@@ -1353,6 +1462,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
           let msg = (r.responseText || "").slice(0, 400) || ("HTTP " + r.status);
           try { const j = JSON.parse(r.responseText); if (j?.error?.message) msg = j.error.message; } catch {}
           setMicState("error", msg);
+          removeLivePreview();
           showToast("❌ Groq Fehler:\n" + msg, 9000);
           setTimeout(() => setMicState("idle"), 3000);
           return;
@@ -1361,6 +1471,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         const text = (r.responseText || "").trim();
         if (!text) {
           setMicState("idle");
+          removeLivePreview();
           showToast("⚠️ Keine Sprache erkannt.", 3000);
           return;
         }
@@ -1368,16 +1479,18 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         const el = getUserTargetEditable();
         if (!el) {
           setMicState("error", "Kein Eingabefeld");
+          removeLivePreview();
           showToast("❌ Eingabefeld nicht gefunden.", 5000);
           setTimeout(() => setMicState("idle"), 2500);
           return;
         }
 
-        const cur = readPromptText(el);
-        const spacer = cur && !cur.endsWith(" ") && !cur.endsWith("\n") ? " " : "";
-        const combined = cur + spacer + text;
+        const base = textBeforeSpeech;
+        const spacer = base && !base.endsWith(" ") && !base.endsWith("\n") ? " " : "";
+        const combined = base + spacer + text;
 
         const ok = await setViaPaste(el, combined);
+        removeLivePreview();
         if (ok) {
           setMicState("idle");
           const preview = text.length > 80 ? text.slice(0, 80) + "…" : text;
@@ -1391,11 +1504,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
       onerror: () => {
         setMicState("error", "Netzwerk-Fehler");
+        removeLivePreview();
         showToast("❌ Netzwerk-Fehler bei Groq API.\nHinweise: @connect, Adblock/Privacy, VPN/Proxy.", 7000);
         setTimeout(() => setMicState("idle"), 3000);
       },
       ontimeout: () => {
         setMicState("error", "Timeout");
+        removeLivePreview();
         showToast("❌ Groq API Timeout.", 5000);
         setTimeout(() => setMicState("idle"), 3000);
       }
@@ -1411,6 +1526,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     } else {
       rememberEditable(t);
     }
+
+    // Text vor Aufnahme merken (für Hybrid-Kombination mit Whisper)
+    textBeforeSpeech = t ? readPromptText(t) : "";
 
     wantsRecording = true;
     audioChunks = [];
@@ -1438,6 +1556,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
           if (audioChunks.length === 0) {
             setMicState("idle");
+            removeLivePreview();
             return;
           }
 
@@ -1449,6 +1568,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         mediaRecorder.start(1000);
         setMicState("listening");
         showToast("🎙️ Aufnahme läuft… (Stop über ⏹️)", 1500);
+
+        // Web Speech API parallel starten für Live-Vorschau
+        startWebSpeech();
       })
       .catch(err => {
         wantsRecording = false;
@@ -1461,14 +1583,19 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   function stopListening() {
     wantsRecording = false;
 
+    // Web Speech API stoppen
+    stopWebSpeech();
+
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
       setMicState("working", "Aufnahme beendet…");
+      setLivePreviewWaiting();
       mediaRecorder.stop();
     } else {
       if (audioStream) {
         audioStream.getTracks().forEach(t => t.stop());
         audioStream = null;
       }
+      removeLivePreview();
       setMicState("idle");
     }
   }
