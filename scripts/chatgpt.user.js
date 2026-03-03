@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         ChatGPT V.1.2.5
+// @name         ChatGPT V.1.2.6
 // @namespace    https://chatgpt.com/
-// @version      1.2.5
-// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld.
+// @version      1.2.6
+// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
 // @run-at       document-idle
@@ -194,7 +194,9 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // UI POSITION
   // ============================================================
   const UI_POS = { rightPx: 16, bottomPx: 16 };
-  const UI_SHIFT_LEFT = "3mm"; // ✅ Buttons ~3mm nach links (mehr Abstand zur Scrollbar)
+  const UI_BUTTON_SIZE = 42;
+  const UI_MIN_EDGE_GAP = 4;
+  const UI_SHIFT_LEFT_PX = 11.34; // ✅ ~3mm nach links (mehr Abstand zur Scrollbar)
   // Android/Edge Mobile-Erkennung (für angepasste Restart-Delays)
   const isMobileAndroid = /Android/i.test(navigator.userAgent);
 
@@ -433,6 +435,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   let clearBtn = null;
   let promptBtn = null;
   let promptBtn2 = null;
+  let uiLayoutRaf = 0;
 
   function isEditableTarget(el) {
     if (!el) return false;
@@ -1235,24 +1238,106 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // ============================================================
   // UI Buttons (BOTTOM RIGHT)
   // ============================================================
+  function listUiButtons() {
+    return [micBtn, memBtn, clearBtn, promptBtn, promptBtn2].filter(Boolean);
+  }
+
+  function setUiStyle(el, prop, value) {
+    if (!el) return;
+    el.style.setProperty(prop, value, "important");
+  }
+
+  function enforceUiButtonVisibility(button) {
+    if (!button) return;
+    setUiStyle(button, "display", "flex");
+    setUiStyle(button, "align-items", "center");
+    setUiStyle(button, "justify-content", "center");
+    setUiStyle(button, "visibility", "visible");
+    setUiStyle(button, "opacity", "1");
+    setUiStyle(button, "pointer-events", "auto");
+    setUiStyle(button, "appearance", "none");
+    setUiStyle(button, "-webkit-appearance", "none");
+    setUiStyle(button, "box-sizing", "border-box");
+    setUiStyle(button, "padding", "0");
+    setUiStyle(button, "margin", "0");
+    setUiStyle(button, "overflow", "visible");
+    setUiStyle(button, "line-height", "1");
+    setUiStyle(button, "user-select", "none");
+    setUiStyle(button, "-webkit-user-select", "none");
+  }
+
+  function applyButtonPosition(button) {
+    if (!button) return;
+
+    const rightOffsetPx = Number(button.dataset.uiRightOffset || 0);
+    const bottomOffsetPx = Number(button.dataset.uiBottomOffset || 0);
+    const rightPx = UI_POS.rightPx + rightOffsetPx + UI_SHIFT_LEFT_PX;
+    const bottomPx = UI_POS.bottomPx + bottomOffsetPx;
+
+    const vv = window.visualViewport;
+    if (!vv || !Number.isFinite(vv.width) || !Number.isFinite(vv.height)) {
+      setUiStyle(button, "right", `calc(env(safe-area-inset-right, 0px) + ${rightPx}px)`);
+      setUiStyle(button, "bottom", `calc(env(safe-area-inset-bottom, 0px) + ${bottomPx}px)`);
+      setUiStyle(button, "left", "auto");
+      setUiStyle(button, "top", "auto");
+      return;
+    }
+
+    const rect = button.getBoundingClientRect();
+    const buttonW = rect.width || UI_BUTTON_SIZE;
+    const buttonH = rect.height || UI_BUTTON_SIZE;
+
+    const left = vv.offsetLeft + vv.width - buttonW - rightPx;
+    const top = vv.offsetTop + vv.height - buttonH - bottomPx;
+
+    setUiStyle(button, "left", `${Math.max(UI_MIN_EDGE_GAP, Math.round(left))}px`);
+    setUiStyle(button, "top", `${Math.max(UI_MIN_EDGE_GAP, Math.round(top))}px`);
+    setUiStyle(button, "right", "auto");
+    setUiStyle(button, "bottom", "auto");
+  }
+
+  function relayoutUiButtons() {
+    for (const btn of listUiButtons()) applyButtonPosition(btn);
+  }
+
+  function scheduleUiRelayout() {
+    if (uiLayoutRaf) cancelAnimationFrame(uiLayoutRaf);
+    uiLayoutRaf = requestAnimationFrame(() => {
+      uiLayoutRaf = 0;
+      relayoutUiButtons();
+    });
+  }
+
+  function bindUiRelayoutListeners() {
+    const onRelayout = () => scheduleUiRelayout();
+    window.addEventListener("resize", onRelayout, { passive: true });
+    window.addEventListener("orientationchange", onRelayout, { passive: true });
+    const vv = window.visualViewport;
+    if (vv) {
+      vv.addEventListener("resize", onRelayout, { passive: true });
+      vv.addEventListener("scroll", onRelayout, { passive: true });
+    }
+  }
+
   function styleRoundButton(b, rightOffsetPx = 0, bottomOffsetPx = 0) {
     b.type = "button";
-    b.style.position = "fixed";
-    b.style.zIndex = "999999";
-    b.style.width = "42px";
-    b.style.height = "42px";
-    b.style.borderRadius = "50%";
-    b.style.cursor = "pointer";
+    setUiStyle(b, "position", "fixed");
+    setUiStyle(b, "z-index", "2147483647");
+    setUiStyle(b, "width", `${UI_BUTTON_SIZE}px`);
+    setUiStyle(b, "height", `${UI_BUTTON_SIZE}px`);
+    setUiStyle(b, "border-radius", "50%");
+    setUiStyle(b, "cursor", "pointer");
+    setUiStyle(b, "touch-action", "manipulation");
     b.style.border = "1px solid rgba(0,0,0,0.2)";
     b.style.background = "white";
     b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)";
     b.style.fontSize = "18px";
-
-    // ✅ FIX: +3mm mehr Abstand von rechts => Buttons wandern nach links
-    b.style.right = `calc(${UI_POS.rightPx + rightOffsetPx}px + ${UI_SHIFT_LEFT})`;
-    b.style.bottom = `${UI_POS.bottomPx + bottomOffsetPx}px`;
-    b.style.left = "auto";
-    b.style.top = "auto";
+    setUiStyle(b, "left", "auto");
+    setUiStyle(b, "top", "auto");
+    enforceUiButtonVisibility(b);
+    b.dataset.uiRightOffset = String(rightOffsetPx);
+    b.dataset.uiBottomOffset = String(bottomOffsetPx);
+    applyButtonPosition(b);
 
     // ✅ FIX: Button soll beim Klicken NICHT den Fokus klauen
     b.tabIndex = -1;
@@ -1260,9 +1345,17 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
   function preventFocusSteal(btn) {
     try {
+      if (btn.dataset.tmFocusGuard === "1") return;
       btn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
       btn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+      btn.dataset.tmFocusGuard = "1";
     } catch {}
+  }
+
+  function setButtonColors(btn, bg, fg) {
+    if (!btn) return;
+    setUiStyle(btn, "background", bg);
+    setUiStyle(btn, "color", fg);
   }
 
   function setMicState(state, msg = "") {
@@ -1299,22 +1392,19 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       memBtn.textContent = "⏳";
-      memBtn.style.background = "#444";
-      memBtn.style.color = "white";
+      setButtonColors(memBtn, "#444", "white");
       memBtn.title = msg || "Memory-Prompt wird eingefügt…";
       return;
     }
     if (state === "error") {
       memBtn.textContent = "⚠️";
-      memBtn.style.background = "#8b0000";
-      memBtn.style.color = "white";
+      setButtonColors(memBtn, "#8b0000", "white");
       memBtn.title = msg || "Fehler";
       return;
     }
 
     memBtn.textContent = "💾";
-    memBtn.style.background = "white";
-    memBtn.style.color = "black";
+    setButtonColors(memBtn, "white", "black");
     memBtn.title = "Memory-Prompt einfügen";
   }
 
@@ -1323,22 +1413,19 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       promptBtn.textContent = "⏳";
-      promptBtn.style.background = "#444";
-      promptBtn.style.color = "white";
+      setButtonColors(promptBtn, "#444", "white");
       promptBtn.title = msg || "Prompt wird gebaut…";
       return;
     }
     if (state === "error") {
       promptBtn.textContent = "⚠️";
-      promptBtn.style.background = "#8b0000";
-      promptBtn.style.color = "white";
+      setButtonColors(promptBtn, "#8b0000", "white");
       promptBtn.title = msg || "Fehler";
       return;
     }
 
     promptBtn.textContent = "✨";
-    promptBtn.style.background = "white";
-    promptBtn.style.color = "black";
+    setButtonColors(promptBtn, "white", "black");
     promptBtn.title = "Prompt (für Frank) einbetten";
   }
 
@@ -1347,22 +1434,19 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     if (state === "working") {
       promptBtn2.textContent = "⏳";
-      promptBtn2.style.background = "#444";
-      promptBtn2.style.color = "white";
+      setButtonColors(promptBtn2, "#444", "white");
       promptBtn2.title = msg || "Prompt wird gebaut…";
       return;
     }
     if (state === "error") {
       promptBtn2.textContent = "⚠️";
-      promptBtn2.style.background = "#8b0000";
-      promptBtn2.style.color = "white";
+      setButtonColors(promptBtn2, "#8b0000", "white");
       promptBtn2.title = msg || "Fehler";
       return;
     }
 
     promptBtn2.textContent = "🪄";
-    promptBtn2.style.background = "white";
-    promptBtn2.style.color = "black";
+    setButtonColors(promptBtn2, "white", "black");
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
   }
 
@@ -1858,7 +1942,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function mountOrRepairUI() {
-    if (!document.body) return;
+    const mountNode = document.body || document.documentElement;
+    if (!mountNode) return;
 
     ensureToast();
 
@@ -1869,7 +1954,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     /* mic icon wird via setMicState gesetzt */
     micBtn.title = "Spracheingabe (Start/Stop)";
     micBtn.onclick = toggleMic;
-    if (!micBtn.isConnected) document.body.appendChild(micBtn);
+    if (!micBtn.isConnected || micBtn.parentNode !== mountNode) mountNode.appendChild(micBtn);
 
     // Memory (links neben Mic)
     memBtn = getOrCreateButton(UI_IDS.mem);
@@ -1878,16 +1963,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     memBtn.textContent = memBtn.textContent || "💾";
     memBtn.title = "Memory-Prompt einfügen";
     memBtn.onclick = runMemoryPrompt;
-    if (!memBtn.isConnected) document.body.appendChild(memBtn);
+    if (!memBtn.isConnected || memBtn.parentNode !== mountNode) mountNode.appendChild(memBtn);
 
     clearBtn = getOrCreateButton(UI_IDS.clear);
     styleRoundButton(clearBtn, 104, 0);
     preventFocusSteal(clearBtn);
     clearBtn.textContent = clearBtn.textContent || "❌";
-    clearBtn.style.color = "#c40000";
+    setUiStyle(clearBtn, "color", "#c40000");
     clearBtn.title = "Sprechblase leeren";
     clearBtn.onclick = runClearPrompt;
-    if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
+    if (!clearBtn.isConnected || clearBtn.parentNode !== mountNode) mountNode.appendChild(clearBtn);
 
     // Prompt-Builder (Frank) über Mic
     promptBtn = getOrCreateButton(UI_IDS.promptFrank);
@@ -1896,7 +1981,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     promptBtn.textContent = promptBtn.textContent || "✨";
     promptBtn.title = "Prompt (für Frank) einbetten";
     promptBtn.onclick = runPromptBuilder;
-    if (!promptBtn.isConnected) document.body.appendChild(promptBtn);
+    if (!promptBtn.isConnected || promptBtn.parentNode !== mountNode) mountNode.appendChild(promptBtn);
 
     // Prompt-Builder (Allgemein) darüber
     promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
@@ -1905,12 +1990,37 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     promptBtn2.textContent = promptBtn2.textContent || "🪄";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
     promptBtn2.onclick = runPromptBuilderGeneral;
-    if (!promptBtn2.isConnected) document.body.appendChild(promptBtn2);
+    if (!promptBtn2.isConnected || promptBtn2.parentNode !== mountNode) mountNode.appendChild(promptBtn2);
 
+    scheduleUiRelayout();
     setMicState("idle");
     setMemBtnState("idle");
     setPromptBtnState("idle");
     setPromptBtn2State("idle");
+  }
+
+  function isButtonRenderable(btn) {
+    if (!btn || !btn.isConnected) return false;
+    const cs = window.getComputedStyle(btn);
+    if (!cs || cs.display === "none" || cs.visibility === "hidden") return false;
+    const opacity = Number.parseFloat(cs.opacity || "1");
+    if (!Number.isFinite(opacity) || opacity < 0.05) return false;
+    const rect = btn.getBoundingClientRect();
+    if (rect.width < 10 || rect.height < 10) return false;
+    if (rect.right < -8 || rect.bottom < -8 || rect.left > window.innerWidth + 8 || rect.top > window.innerHeight + 8) return false;
+    return true;
+  }
+
+  function needsUiRepair() {
+    const nodes = [
+      document.getElementById(UI_IDS.mic),
+      document.getElementById(UI_IDS.mem),
+      document.getElementById(UI_IDS.clear),
+      document.getElementById(UI_IDS.promptFrank),
+      document.getElementById(UI_IDS.promptGeneral)
+    ];
+    if (nodes.some((n) => !n)) return true;
+    return nodes.some((n) => !isButtonRenderable(n));
   }
 
   let ensureScheduled = false;
@@ -1919,7 +2029,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     ensureScheduled = true;
     setTimeout(() => {
       ensureScheduled = false;
-      try { mountOrRepairUI(); } catch {}
+      try { mountOrRepairUI(); } catch (e) { console.warn("mountOrRepairUI error:", e); }
     }, 250);
   }
 
@@ -1927,14 +2037,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     // MutationObserver: falls React DOM neu baut und Buttons entfernt
     try {
       const mo = new MutationObserver(() => {
-        const missing =
-          !document.getElementById(UI_IDS.mic) ||
-          !document.getElementById(UI_IDS.mem) ||
-          !document.getElementById(UI_IDS.clear) ||
-          !document.getElementById(UI_IDS.promptFrank) ||
-          !document.getElementById(UI_IDS.promptGeneral);
-
-        if (missing) scheduleEnsureUI();
+        if (needsUiRepair()) scheduleEnsureUI();
       });
       mo.observe(document.documentElement, { childList: true, subtree: true });
     } catch {}
@@ -1959,13 +2062,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     // Low-cost Watchdog
     setInterval(() => {
-      const missing =
-        !document.getElementById(UI_IDS.mic) ||
-        !document.getElementById(UI_IDS.mem) ||
-        !document.getElementById(UI_IDS.clear) ||
-        !document.getElementById(UI_IDS.promptFrank) ||
-        !document.getElementById(UI_IDS.promptGeneral);
-      if (missing) scheduleEnsureUI();
+      if (needsUiRepair()) scheduleEnsureUI();
     }, 3000);
   }
 
@@ -1973,6 +2070,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   // Boot
   // ============================================================
   function boot() {
+    bindUiRelayoutListeners();
     if (!supportedSpeech) {
       showToast("Mikrofon nicht verfügbar (getUserMedia fehlt).", 7000);
     }
