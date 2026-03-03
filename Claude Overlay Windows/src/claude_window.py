@@ -16,8 +16,9 @@ def is_claude_running(settings: Settings) -> bool:
     names = set(settings.claude_process_names)
     for proc in psutil.process_iter(["name"]):
         name = (proc.info.get("name") or "").lower()
-        if name in names:
-            return True
+        for candidate in names:
+            if candidate and candidate in name:
+                return True
     return False
 
 
