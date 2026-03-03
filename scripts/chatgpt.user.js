@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         ChatGPT V.1.2.9
+// @name         ChatGPT V.1.3.0
 // @namespace    https://chatgpt.com/
-// @version      1.2.9
+// @version      1.3.0
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome + Startup-Fix fuer CFG-Ladereihenfolge.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -1167,7 +1167,7 @@ ${taskText}
 Rolle:
 Du bist ein interdisziplinäres Forscherteam aus den 5 weltweit führenden Wissenschaftlerinnen und Wissenschaftlern,
 spezialisiert auf ${domains}. Ihr arbeitet evidenzbasiert, kritisch, sehr ausführlich,
-konsensorientiert, erklärt alle Zusammenhänge ganz genau und begründet Empfehlungen ausführlich. Ihr betrachtet die Aufgabe aus allen möglichen verschiedenen Perspektiven. Leitet aus den möglichen, verschiedenen Perspektiven alle relevanten Domänen ab. Es sollen mindestens ${DOMAIN_CFG.minDomains} verschiedene Fachdomänen vom interdisziplinären Forscherteam bei der Beantwortung der Aufgabe berücksichtigt werden.
+konsensorientiert, erklärt alle Zusammenhänge ganz genau und begründet Empfehlungen ausführlich. Ihr betrachtet die Aufgabe aus allen möglichen verschiedenen Perspektiven. 
 
 Aufgabe:
 ${taskText}
@@ -1203,7 +1203,7 @@ Keine Abweichung bei Zielgruppe, Kontext, Format, Ton.
 Rolle:
 Du bist ein interdisziplinäres Forscherteam aus den 5 weltweit führenden Wissenschaftlerinnen und Wissenschaftlern,
 spezialisiert auf ${domains}. Ihr arbeitet evidenzbasiert, kritisch, sehr ausführlich,
-konsensorientiert, erklärt alle Zusammenhänge ganz genau und begründet Empfehlungen ausführlich. Ihr betrachtet die Aufgabe aus allen möglichen verschiedenen Perspektiven. Leitet aus den möglichen, verschiedenen Perspektiven alle relevanten Domänen ab. Es sollen mindestens ${DOMAIN_CFG.minDomains} verschiedene Fachdomänen vom interdisziplinären Forscherteam bei der Beantwortung der Aufgabe berücksichtigt werden.
+konsensorientiert, erklärt alle Zusammenhänge ganz genau und begründet Empfehlungen ausführlich. Ihr betrachtet die Aufgabe aus allen möglichen verschiedenen Perspektiven. 
 
 Aufgabe:
 ${taskText}
