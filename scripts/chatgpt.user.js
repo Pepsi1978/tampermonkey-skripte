@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         ChatGPT V.1.2.7
+// @name         ChatGPT V.1.2.8
 // @namespace    https://chatgpt.com/
-// @version      1.2.7
-// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome.
+// @version      1.2.8
+// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome + Startup-Fix fuer CFG-Ladereihenfolge.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
 // @run-at       document-idle
@@ -131,10 +131,8 @@
     } catch {}
   })();
 
-  // Gespeicherten Auto-Korrektur-Status laden
-  if (typeof GM_getValue === "function") {
-    CFG.autoGeminiCorrection = GM_getValue("autoGeminiCorrection", true) !== false;
-  }
+  const initialAutoGeminiCorrection =
+    (typeof GM_getValue === "function" ? GM_getValue("autoGeminiCorrection", true) : true) !== false;
 
   // ============================================================
   // Modell
@@ -218,7 +216,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
     grammarMaxOutputTokens: 8192,
     grammarChunkChars: 3500,
     grammarTruncationRatio: 0.85,
-    autoGeminiCorrection: true,
+    autoGeminiCorrection: initialAutoGeminiCorrection,
 
     // Groq Whisper Speech-to-Text
     whisperModel: "whisper-large-v3",
