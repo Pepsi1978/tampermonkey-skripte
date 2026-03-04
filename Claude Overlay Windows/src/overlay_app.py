@@ -275,7 +275,17 @@ class ClaudeOverlayApp:
             self.canvas.itemconfig(self.gemini_circle, fill=COLOR_GEMINI_OFF)
             self.canvas.itemconfig(self.gemini_text, fill="#888888")
             self._set_status("Gemini AUS", COLOR_STATUS)
-        self.root.after(2000, self._reset_to_idle)
+        # Status nach 2s wiederherstellen: Aufnahme-/Verarbeitungsstatus beibehalten
+        self.root.after(2000, self._restore_status_after_toggle)
+
+    def _restore_status_after_toggle(self) -> None:
+        """Stellt den passenden Status wieder her, je nach aktuellem Zustand."""
+        if self.is_recording:
+            self._set_status("Aufnahme...", COLOR_RECORDING)
+        elif self.is_processing:
+            self._set_status("Verarbeite...", COLOR_PROCESSING)
+        else:
+            self._reset_to_idle()
 
     # ------------------------------------------------------------------
     # Statustext
