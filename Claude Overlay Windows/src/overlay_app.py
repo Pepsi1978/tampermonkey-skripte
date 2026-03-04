@@ -370,9 +370,14 @@ class ClaudeOverlayApp:
         self.canvas.itemconfig(self.mic_circle, fill=COLOR_PROCESSING, outline="#555555")
         self._set_status("Verarbeite...", COLOR_PROCESSING)
 
+        # Claude-Fenster im Hauptthread suchen (EnumWindows funktioniert nicht in Threads)
+        from claude_window import _find_claude_hwnd
+        overlay_hwnd = self._get_overlay_hwnd()
+        claude_hwnd = _find_claude_hwnd(overlay_hwnd, self.settings)
+
         worker = threading.Thread(
             target=self._process_audio_pipeline,
-            args=(audio_path,),
+            args=(audio_path, claude_hwnd),
             daemon=True,
         )
         worker.start()
@@ -381,7 +386,7 @@ class ClaudeOverlayApp:
         """Aktualisiert den Status-Text thread-sicher."""
         self.root.after(0, lambda: self._set_status(text, COLOR_PROCESSING))
 
-    def _process_audio_pipeline(self, audio_path: Path) -> None:
+    def _process_audio_pipeline(self, audio_path: Path, claude_hwnd: int | None = None) -> None:
         transcript = None
         try:
             self.root.after(0, lambda: self._set_status("Transkribiere...", COLOR_PROCESSING))
@@ -398,8 +403,7 @@ class ClaudeOverlayApp:
             else:
                 final_text = transcript
 
-            overlay_hwnd = self._get_overlay_hwnd()
-            insert_text_into_claude(final_text, overlay_hwnd=overlay_hwnd, settings=self.settings)
+            insert_text_into_claude(final_text, claude_hwnd=claude_hwnd, settings=self.settings)
 
             self.root.after(0, lambda: self._on_pipeline_success())
         except Exception as exc:
