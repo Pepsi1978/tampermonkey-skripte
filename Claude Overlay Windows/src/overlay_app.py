@@ -5,6 +5,7 @@ import threading
 import time
 from pathlib import Path
 
+import ctypes
 import tkinter as tk
 import tkinter.font as tkfont
 
@@ -277,7 +278,8 @@ class ClaudeOverlayApp:
             result = improve_text_with_gemini(transcript, self.settings)
 
             final_text = result["verbesserter_text"]
-            insert_text_into_claude(final_text)
+            overlay_hwnd = self._get_overlay_hwnd()
+            insert_text_into_claude(final_text, overlay_hwnd=overlay_hwnd)
 
             self.root.after(0, lambda: self._on_pipeline_success())
         except Exception as exc:
@@ -312,7 +314,7 @@ class ClaudeOverlayApp:
     # ------------------------------------------------------------------
     def _clear_input(self) -> None:
         try:
-            clear_claude_input()
+            clear_claude_input(overlay_hwnd=self._get_overlay_hwnd())
             self._set_status("Feld geleert", COLOR_SUCCESS)
             self.root.after(2000, self._reset_to_idle)
         except Exception as exc:
@@ -339,6 +341,13 @@ class ClaudeOverlayApp:
             except Exception:
                 pass
         self.root.destroy()
+
+    def _get_overlay_hwnd(self) -> int | None:
+        """Gibt das native HWND des Tkinter-Overlay-Fensters zurueck."""
+        try:
+            return ctypes.windll.user32.GetParent(self.root.winfo_id())
+        except Exception:
+            return None
 
     def run(self) -> None:
         self.root.mainloop()

@@ -1,15 +1,50 @@
 from __future__ import annotations
 
+import ctypes
 import time
 from typing import Optional
 
 import psutil
 import pyperclip
-from pywinauto import Desktop
-from pywinauto.controls.hwndwrapper import HwndWrapper
-from pywinauto.keyboard import send_keys
+import win32con
+import win32gui
 
 from config import Settings
+
+# Virtual key codes
+VK_CONTROL = 0x11
+VK_V = 0x56
+VK_A = 0x41
+VK_BACK = 0x08
+
+KEYEVENTF_KEYUP = 0x0002
+
+
+def _keybd_event(vk: int, up: bool = False) -> None:
+    flags = KEYEVENTF_KEYUP if up else 0
+    ctypes.windll.user32.keybd_event(vk, 0, flags, 0)
+
+
+def _send_ctrl_v() -> None:
+    _keybd_event(VK_CONTROL)
+    _keybd_event(VK_V)
+    time.sleep(0.05)
+    _keybd_event(VK_V, up=True)
+    _keybd_event(VK_CONTROL, up=True)
+
+
+def _send_ctrl_a() -> None:
+    _keybd_event(VK_CONTROL)
+    _keybd_event(VK_A)
+    time.sleep(0.05)
+    _keybd_event(VK_A, up=True)
+    _keybd_event(VK_CONTROL, up=True)
+
+
+def _send_backspace() -> None:
+    _keybd_event(VK_BACK)
+    time.sleep(0.05)
+    _keybd_event(VK_BACK, up=True)
 
 
 def is_claude_running(settings: Settings) -> bool:
@@ -23,86 +58,104 @@ def is_claude_running(settings: Settings) -> bool:
     return False
 
 
-def _find_claude_window() -> Optional[HwndWrapper]:
-    """Sucht das Claude-Desktop-Fenster ueber den Fenstertitel."""
-    desktop = Desktop(backend="uia")
-    windows = desktop.windows()
+def _find_claude_hwnd() -> Optional[int]:
+    """Sucht das Claude-Desktop-Fenster und gibt dessen HWND zurueck."""
+    result = []
 
-    for window in windows:
-        title = (window.window_text() or "").lower()
+    def _enum_callback(hwnd: int, _: object) -> bool:
+        if not win32gui.IsWindowVisible(hwnd):
+            return True
+        title = win32gui.GetWindowText(hwnd).lower()
         if "claude" in title:
-            return window
+            result.append(hwnd)
+        return True
 
-    return None
-
-
-def _focus_input(window: HwndWrapper) -> None:
-    """Versucht, das Eingabefeld im Claude-Fenster zu fokussieren.
-
-    Claude Desktop ist eine Electron-App.  Klassische 'Edit'-Controls
-    existieren dort nicht, daher werden mehrere Strategien probiert.
-    """
-    # Strategie 1: 'Edit'-Control (klassische Win32-Apps)
-    try:
-        edits = window.descendants(control_type="Edit")
-        if edits:
-            edits[-1].set_focus()
-            return
-    except Exception:
-        pass
-
-    # Strategie 2: 'Document'-Control (Electron / Chromium)
-    try:
-        docs = window.descendants(control_type="Document")
-        if docs:
-            docs[-1].set_focus()
-            return
-    except Exception:
-        pass
-
-    # Strategie 3: Fenster fokussieren und per Mausklick ins Eingabefeld
-    window.set_focus()
-    time.sleep(0.1)
-    try:
-        rect = window.rectangle()
-        # Eingabefeld ist typischerweise unten mittig
-        click_x = rect.left + (rect.width() // 2)
-        click_y = rect.bottom - 80
-        import pywinauto.mouse as mouse
-        mouse.click(coords=(click_x, click_y))
-    except Exception:
-        pass
+    win32gui.EnumWindows(_enum_callback, None)
+    return result[0] if result else None
 
 
-def insert_text_into_claude(text: str) -> None:
+def _bring_to_front(hwnd: int) -> None:
+    """Bringt ein Fenster zuverlaessig in den Vordergrund."""
+    # Falls minimiert, wiederherstellen
+    if win32gui.IsIconic(hwnd):
+        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+
+    win32gui.ShowWindow(hwnd, win32con.SW_SHOW)
+
+    # AllowSetForegroundWindow fuer den eigenen Prozess
+    ctypes.windll.user32.AllowSetForegroundWindow(ctypes.windll.kernel32.GetCurrentProcessId())
+
+    # Attachment-Trick: Verbinde unseren Thread mit dem Ziel-Thread
+    fore_thread = ctypes.windll.user32.GetWindowThreadProcessId(
+        ctypes.windll.user32.GetForegroundWindow(), None
+    )
+    target_thread = ctypes.windll.user32.GetWindowThreadProcessId(hwnd, None)
+
+    if fore_thread != target_thread:
+        ctypes.windll.user32.AttachThreadInput(fore_thread, target_thread, True)
+        win32gui.SetForegroundWindow(hwnd)
+        ctypes.windll.user32.AttachThreadInput(fore_thread, target_thread, False)
+    else:
+        win32gui.SetForegroundWindow(hwnd)
+
+
+def insert_text_into_claude(text: str, overlay_hwnd: int | None = None) -> None:
     """Fuegt Text in das Claude-Eingabefeld ein (ueber Zwischenablage + Ctrl+V)."""
     if not text.strip():
         return
 
-    window = _find_claude_window()
-    if window is None:
+    hwnd = _find_claude_hwnd()
+    if hwnd is None:
         raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
 
-    window.set_focus()
-    time.sleep(0.3)
-    _focus_input(window)
-    time.sleep(0.2)
+    # Overlay kurz verstecken, damit es den Fokus nicht stiehlt
+    if overlay_hwnd:
+        win32gui.ShowWindow(overlay_hwnd, win32con.SW_HIDE)
+        time.sleep(0.1)
 
-    pyperclip.copy(text)
-    send_keys("^v")
+    try:
+        pyperclip.copy(text)
+        _bring_to_front(hwnd)
+        time.sleep(0.5)
+        _send_ctrl_v()
+        time.sleep(0.1)
+    finally:
+        # Overlay wieder anzeigen
+        if overlay_hwnd:
+            time.sleep(0.2)
+            win32gui.ShowWindow(overlay_hwnd, win32con.SW_SHOW)
+            # Overlay wieder topmost setzen
+            win32gui.SetWindowPos(
+                overlay_hwnd,
+                win32con.HWND_TOPMOST,
+                0, 0, 0, 0,
+                win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_NOACTIVATE,
+            )
 
 
-def clear_claude_input() -> None:
+def clear_claude_input(overlay_hwnd: int | None = None) -> None:
     """Leert das Eingabefeld in Claude (Ctrl+A, dann Backspace)."""
-    window = _find_claude_window()
-    if window is None:
+    hwnd = _find_claude_hwnd()
+    if hwnd is None:
         raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
 
-    window.set_focus()
-    time.sleep(0.3)
-    _focus_input(window)
-    time.sleep(0.2)
+    if overlay_hwnd:
+        win32gui.ShowWindow(overlay_hwnd, win32con.SW_HIDE)
+        time.sleep(0.1)
 
-    send_keys("^a")
-    time.sleep(0.05)
-    send_keys("{BACKSPACE}")
+    try:
+        _bring_to_front(hwnd)
+        time.sleep(0.5)
+        _send_ctrl_a()
+        time.sleep(0.1)
+        _send_backspace()
+    finally:
+        if overlay_hwnd:
+            time.sleep(0.2)
+            win32gui.ShowWindow(overlay_hwnd, win32con.SW_SHOW)
+            win32gui.SetWindowPos(
+                overlay_hwnd,
+                win32con.HWND_TOPMOST,
+                0, 0, 0, 0,
+                win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_NOACTIVATE,
+            )
