@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import subprocess
 import time
 from typing import Optional
 
@@ -28,129 +27,16 @@ def is_claude_running(settings: Settings) -> bool:
     return False
 
 
-def _get_claude_pids(settings: Settings) -> set[int]:
-    """Gibt alle PIDs von Claude-Prozessen zurueck."""
-    pids = set()
-    names = set(settings.claude_process_names)
-    for proc in psutil.process_iter(["name", "pid"]):
-        name = (proc.info.get("name") or "").lower()
-        for candidate in names:
-            if candidate and candidate in name:
-                pids.add(proc.info["pid"])
-    return pids
-
-
-def _find_claude_hwnd(overlay_hwnd: int | None = None,
-                      settings: Settings | None = None) -> int | None:
-    """Findet das Claude Desktop Hauptfenster.
-
-    Verwendet mehrere Strategien:
-    1. pywinauto findwindows (eigene C-Level Enumeration)
-    2. win32gui.EnumWindows (Python-Callback)
-    3. PID-basierte Suche ueber Claude-Prozesse
-    """
-    EXCLUDED_TITLES = {"mic overlay", ""}
-
-    # --- Strategie 1: pywinauto (robusteste Methode) ---
+def get_foreground_window() -> int | None:
+    """Gibt das aktuell aktive Fenster (HWND) zurueck."""
     try:
-        from pywinauto import findwindows, handleprops
-        all_hwnds = findwindows.find_windows(visible_only=True)
-        log.info("pywinauto fand %d sichtbare Fenster", len(all_hwnds))
-
-        for hwnd in all_hwnds:
-            if overlay_hwnd and hwnd == overlay_hwnd:
-                continue
-            try:
-                title = handleprops.text(hwnd)
-            except Exception:
-                continue
-            if not title or title.lower() in EXCLUDED_TITLES:
-                continue
-
-            if "claude" in title.lower():
-                log.info("Claude-Fenster gefunden (pywinauto/Titel): hwnd=%s title=%r", hwnd, title)
-                return hwnd
-
-        # PID-basierte Suche
-        if settings:
-            claude_pids = _get_claude_pids(settings)
-            if claude_pids:
-                log.info("Claude PIDs: %s", claude_pids)
-                for hwnd in all_hwnds:
-                    if overlay_hwnd and hwnd == overlay_hwnd:
-                        continue
-                    try:
-                        pid = handleprops.processid(hwnd)
-                        title = handleprops.text(hwnd)
-                    except Exception:
-                        continue
-                    if pid in claude_pids and title and title.lower() not in EXCLUDED_TITLES:
-                        log.info("Claude-Fenster gefunden (pywinauto/PID): hwnd=%s title=%r pid=%s",
-                                 hwnd, title, pid)
-                        return hwnd
-
-        # Debug
-        log.warning("pywinauto: Claude nicht gefunden. Top 20 Fenster:")
-        for hwnd in all_hwnds[:20]:
-            try:
-                title = handleprops.text(hwnd)
-                pid = handleprops.processid(hwnd)
-                log.warning("  hwnd=%s pid=%s title=%r", hwnd, pid, title)
-            except Exception:
-                pass
-
-    except Exception as exc:
-        log.warning("pywinauto fehlgeschlagen: %s", exc)
-
-    # --- Strategie 2: win32gui.EnumWindows (Fallback) ---
-    try:
-        results = []
-
-        def _enum_cb(hwnd, _):
-            try:
-                if not win32gui.IsWindowVisible(hwnd):
-                    return True
-                if overlay_hwnd and hwnd == overlay_hwnd:
-                    return True
-                title = win32gui.GetWindowText(hwnd)
-                if title and title.lower() not in EXCLUDED_TITLES:
-                    results.append((hwnd, title))
-            except Exception:
-                pass
-            return True
-
-        win32gui.EnumWindows(_enum_cb, None)
-        log.info("win32gui.EnumWindows fand %d Fenster", len(results))
-
-        for hwnd, title in results:
-            if "claude" in title.lower():
-                log.info("Claude-Fenster gefunden (win32gui): hwnd=%s title=%r", hwnd, title)
-                return hwnd
-
-    except Exception as exc:
-        log.warning("win32gui.EnumWindows fehlgeschlagen: %s", exc)
-
-    # --- Strategie 3: PowerShell als letzter Fallback ---
-    try:
-        ps_cmd = (
-            "Get-Process | Where-Object {$_.MainWindowHandle -ne 0 -and "
-            "$_.MainWindowTitle -like '*Claude*'} | "
-            "Select-Object -First 1 -ExpandProperty MainWindowHandle"
-        )
-        result = subprocess.run(
-            ["powershell", "-NoProfile", "-Command", ps_cmd],
-            capture_output=True, text=True, timeout=5,
-        )
-        hwnd_str = result.stdout.strip()
-        if hwnd_str and hwnd_str.isdigit():
-            hwnd = int(hwnd_str)
-            log.info("Claude-Fenster gefunden (PowerShell): hwnd=%s", hwnd)
+        hwnd = win32gui.GetForegroundWindow()
+        if hwnd and hwnd != 0:
+            title = win32gui.GetWindowText(hwnd)
+            log.info("Vordergrund-Fenster gespeichert: hwnd=%s title=%r", hwnd, title)
             return hwnd
-        else:
-            log.warning("PowerShell: Kein Claude-Fenster gefunden. stdout=%r", hwnd_str)
     except Exception as exc:
-        log.warning("PowerShell Fallback fehlgeschlagen: %s", exc)
-
+        log.warning("GetForegroundWindow fehlgeschlagen: %s", exc)
     return None
 
 
@@ -174,80 +60,88 @@ def _get_shell():
     return win32com.client.Dispatch("WScript.Shell")
 
 
-def insert_text_into_claude(text: str, overlay_hwnd: int | None = None,
-                            claude_hwnd: int | None = None,
-                            settings: Settings | None = None, **_kwargs) -> None:
-    """Fuegt Text an der aktuellen Cursorposition in Claude ein."""
+def paste_text(text: str, target_hwnd: int | None = None, **_kwargs) -> None:
+    """Fuegt Text per Clipboard + Ctrl+V in das Ziel-Fenster ein.
+
+    Wenn target_hwnd angegeben, wird dieses Fenster aktiviert.
+    Sonst wird AppActivate('Claude') als Fallback versucht.
+    """
     if not text.strip():
         return
 
-    hwnd = claude_hwnd or _find_claude_hwnd(overlay_hwnd, settings)
-    if not hwnd:
-        # Fallback: AppActivate versuchen
-        try:
-            shell = _get_shell()
-            if shell.AppActivate("Claude"):
-                log.info("Claude via AppActivate gefunden (Fallback)")
-                pyperclip.copy(text)
-                time.sleep(0.3)
-                shell.SendKeys("^v")
-                return
-        except Exception as exc:
-            log.warning("AppActivate Fallback fehlgeschlagen: %s", exc)
-        finally:
-            try:
-                pythoncom.CoUninitialize()
-            except Exception:
-                pass
-        raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
-
     pyperclip.copy(text)
-    _activate_window(hwnd)
-    time.sleep(0.3)
 
-    try:
-        shell = _get_shell()
-        shell.SendKeys("^v")
-    finally:
-        try:
-            pythoncom.CoUninitialize()
-        except Exception:
-            pass
-
-
-def clear_claude_input(overlay_hwnd: int | None = None,
-                       claude_hwnd: int | None = None,
-                       settings: Settings | None = None, **_kwargs) -> None:
-    """Leert das Eingabefeld in Claude (Ctrl+A, dann Backspace)."""
-    hwnd = claude_hwnd or _find_claude_hwnd(overlay_hwnd, settings)
-    if not hwnd:
+    if target_hwnd:
+        _activate_window(target_hwnd)
+        time.sleep(0.3)
         try:
             shell = _get_shell()
-            if shell.AppActivate("Claude"):
-                time.sleep(0.3)
-                shell.SendKeys("^a")
-                time.sleep(0.05)
-                shell.SendKeys("{BACKSPACE}")
-                return
-        except Exception:
-            pass
+            shell.SendKeys("^v")
         finally:
             try:
                 pythoncom.CoUninitialize()
             except Exception:
                 pass
-        raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
+        return
 
-    _activate_window(hwnd)
-    time.sleep(0.3)
-
+    # Fallback: AppActivate
     try:
         shell = _get_shell()
-        shell.SendKeys("^a")
-        time.sleep(0.05)
-        shell.SendKeys("{BACKSPACE}")
+        if shell.AppActivate("Claude"):
+            log.info("Claude via AppActivate gefunden")
+            time.sleep(0.3)
+            shell.SendKeys("^v")
+            return
+    except Exception as exc:
+        log.warning("AppActivate fehlgeschlagen: %s", exc)
     finally:
         try:
             pythoncom.CoUninitialize()
         except Exception:
             pass
+    raise RuntimeError("Ziel-Fenster konnte nicht aktiviert werden.")
+
+
+def clear_input(target_hwnd: int | None = None, **_kwargs) -> None:
+    """Leert das Eingabefeld (Ctrl+A, dann Backspace)."""
+    if target_hwnd:
+        _activate_window(target_hwnd)
+        time.sleep(0.3)
+        try:
+            shell = _get_shell()
+            shell.SendKeys("^a")
+            time.sleep(0.05)
+            shell.SendKeys("{BACKSPACE}")
+        finally:
+            try:
+                pythoncom.CoUninitialize()
+            except Exception:
+                pass
+        return
+
+    # Fallback
+    try:
+        shell = _get_shell()
+        if shell.AppActivate("Claude"):
+            time.sleep(0.3)
+            shell.SendKeys("^a")
+            time.sleep(0.05)
+            shell.SendKeys("{BACKSPACE}")
+            return
+    except Exception:
+        pass
+    finally:
+        try:
+            pythoncom.CoUninitialize()
+        except Exception:
+            pass
+    raise RuntimeError("Ziel-Fenster konnte nicht aktiviert werden.")
+
+
+# Abwaertskompatible Aliase
+def insert_text_into_claude(text: str, claude_hwnd: int | None = None, **kwargs) -> None:
+    paste_text(text, target_hwnd=claude_hwnd, **kwargs)
+
+
+def clear_claude_input(claude_hwnd: int | None = None, **kwargs) -> None:
+    clear_input(target_hwnd=claude_hwnd, **kwargs)
