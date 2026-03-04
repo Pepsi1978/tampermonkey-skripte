@@ -54,7 +54,7 @@ class ClaudeOverlayApp:
         )
         self.is_recording = False
         self.is_processing = False
-        self.gemini_enabled = True
+        self.gemini_enabled = self.settings.gemini_available
         self._drag_data = {"x": 0, "y": 0}
 
         # ----- Fenster -----
@@ -124,14 +124,17 @@ class ClaudeOverlayApp:
         gemini_cx = cr + 6
         gemini_cy = cr + 6
 
+        gemini_fill = COLOR_GEMINI_ON if self.gemini_enabled else COLOR_GEMINI_OFF
+        gemini_text_fill = COLOR_TEXT if self.gemini_enabled else "#888888"
+
         self.gemini_circle = self.canvas.create_oval(
             gemini_cx - cr, gemini_cy - cr, gemini_cx + cr, gemini_cy + cr,
-            fill=COLOR_GEMINI_ON, outline="",
+            fill=gemini_fill, outline="",
         )
 
         gemini_font = tkfont.Font(family="Segoe UI", size=8, weight="bold")
         self.gemini_text = self.canvas.create_text(
-            gemini_cx, gemini_cy, text="G", font=gemini_font, fill=COLOR_TEXT,
+            gemini_cx, gemini_cy, text="G", font=gemini_font, fill=gemini_text_fill,
         )
 
         # ----- Beenden-Button (kleines X oben rechts) -----
@@ -266,6 +269,10 @@ class ClaudeOverlayApp:
     # Gemini-Toggle
     # ------------------------------------------------------------------
     def _toggle_gemini(self) -> None:
+        if not self.settings.gemini_available:
+            self._set_status("Gemini nicht konfiguriert", COLOR_ERROR)
+            self.root.after(2000, self._restore_status_after_toggle)
+            return
         self.gemini_enabled = not self.gemini_enabled
         if self.gemini_enabled:
             self.canvas.itemconfig(self.gemini_circle, fill=COLOR_GEMINI_ON)
