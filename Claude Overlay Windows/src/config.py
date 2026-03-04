@@ -62,8 +62,8 @@ class Settings:
             ),
             whisper_lang=os.getenv("WHISPER_LANG", "de"),
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
-            gemini_model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
-            gemini_thinking_level=os.getenv("GEMINI_THINKING_LEVEL", "MEDIUM"),
+            gemini_model=os.getenv("GEMINI_MODEL", ""),
+            gemini_thinking_level=os.getenv("GEMINI_THINKING_LEVEL", ""),
             audio_sample_rate=int(os.getenv("AUDIO_SAMPLE_RATE", "16000")),
             audio_channels=int(os.getenv("AUDIO_CHANNELS", "1")),
             claude_process_names=process_names,
@@ -75,6 +75,8 @@ class Settings:
             missing.append("GROQ_API_KEY")
         if not self.gemini_api_key:
             missing.append("GEMINI_API_KEY")
+        if not self.gemini_model:
+            missing.append("GEMINI_MODEL")
 
         if missing:
             raise ValueError(
