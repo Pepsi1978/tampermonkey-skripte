@@ -69,14 +69,15 @@ class Settings:
             claude_process_names=process_names,
         )
 
+    @property
+    def gemini_available(self) -> bool:
+        """Prueft ob Gemini vollstaendig konfiguriert ist (API-Key und Modell)."""
+        return bool(self.gemini_api_key and self.gemini_model)
+
     def validate(self) -> None:
         missing = []
         if not self.groq_api_key:
             missing.append("GROQ_API_KEY")
-        if not self.gemini_api_key:
-            missing.append("GEMINI_API_KEY")
-        if not self.gemini_model:
-            missing.append("GEMINI_MODEL")
 
         if missing:
             raise ValueError(
