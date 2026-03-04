@@ -53,7 +53,7 @@ class ClaudeOverlayApp:
 
         # ----- Fenster -----
         self.root = tk.Tk()
-        self.root.title("Claude Overlay")
+        self.root.title("Mic Overlay")
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
         self.root.attributes("-alpha", 0.93)
