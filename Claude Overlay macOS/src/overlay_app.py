@@ -81,21 +81,6 @@ class ClaudeOverlayApp:
         self.root = tk.Tk()
         self.root.title("Mic Overlay")
 
-        # macOS: MacWindowStyle fuer rahmenloses Fenster ohne Titelleiste.
-        # "plain" entfernt alle Fensterdekorationen, "none" entfernt alle Attribute.
-        try:
-            self.root.tk.call(
-                "::tk::unsupported::MacWindowStyle", "style",
-                self.root._w, "plain", "none",
-            )
-        except tk.TclError:
-            # Fallback: overrideredirect
-            self.root.overrideredirect(True)
-
-        self.root.attributes("-topmost", True)
-        self.root.attributes("-alpha", 0.93)
-        self.root.configure(bg=COLOR_BG)
-
         r = self.BTN_RADIUS
         d = r * 2
         total_w = d + self.BTN_GAP + d + self.PADDING * 2
@@ -105,7 +90,34 @@ class ClaudeOverlayApp:
         screen_h = self.root.winfo_screenheight()
         x = screen_w - total_w - 24
         y = screen_h - total_h - 80
+
+        # Fenster unsichtbar vorbereiten, Geometrie setzen
+        self.root.withdraw()
+        self.root.configure(bg=COLOR_BG)
         self.root.geometry(f"{total_w}x{total_h}+{x}+{y}")
+        self.root.update_idletasks()
+
+        # Rahmenlos: MacWindowStyle (bevorzugt), sonst overrideredirect
+        _frameless_ok = False
+        try:
+            self.root.tk.call(
+                "::tk::unsupported::MacWindowStyle", "style",
+                self.root._w, "plain", "none",
+            )
+            _frameless_ok = True
+        except tk.TclError:
+            pass
+
+        if not _frameless_ok:
+            self.root.overrideredirect(True)
+
+        self.root.attributes("-topmost", True)
+        self.root.attributes("-alpha", 0.93)
+
+        # Fenster sichtbar machen (nach Style-Aenderung)
+        self.root.deiconify()
+        self.root.update_idletasks()
+        self.root.lift()
 
         # ----- Canvas -----
         self.canvas = tk.Canvas(
