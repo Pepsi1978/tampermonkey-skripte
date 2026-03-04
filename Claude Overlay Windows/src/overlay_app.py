@@ -269,13 +269,22 @@ class ClaudeOverlayApp:
         )
         worker.start()
 
+    def _update_status_from_thread(self, text: str) -> None:
+        """Aktualisiert den Status-Text thread-sicher."""
+        self.root.after(0, lambda: self._set_status(text, COLOR_PROCESSING))
+
     def _process_audio_pipeline(self, audio_path: Path) -> None:
+        transcript = None
         try:
             self.root.after(0, lambda: self._set_status("Transkribiere...", COLOR_PROCESSING))
             transcript = transcribe_with_grok(audio_path, self.settings)
 
             self.root.after(0, lambda: self._set_status("Verbessere Text...", COLOR_PROCESSING))
-            result = improve_text_with_gemini(transcript, self.settings)
+            result = improve_text_with_gemini(
+                transcript,
+                self.settings,
+                status_callback=self._update_status_from_thread,
+            )
 
             final_text = result["verbesserter_text"]
             overlay_hwnd = self._get_overlay_hwnd()
@@ -284,12 +293,31 @@ class ClaudeOverlayApp:
             self.root.after(0, lambda: self._on_pipeline_success())
         except Exception as exc:
             err_msg = str(exc)
+            # Transkript sichern, damit es nicht verloren geht
+            if transcript:
+                self._save_failed_transcript(transcript, err_msg)
             self.root.after(0, lambda: self._on_pipeline_error(err_msg))
         finally:
             try:
                 audio_path.unlink(missing_ok=True)
             except Exception:
                 pass
+
+    def _save_failed_transcript(self, transcript: str, error: str) -> None:
+        """Speichert ein fehlgeschlagenes Transkript in einer Datei."""
+        try:
+            backup_dir = Path(__file__).resolve().parents[1] / "failed_transcripts"
+            backup_dir.mkdir(exist_ok=True)
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+            backup_file = backup_dir / f"transcript_{timestamp}.txt"
+            backup_file.write_text(
+                f"Fehler: {error}\n\n"
+                f"Transkript:\n{transcript}\n",
+                encoding="utf-8",
+            )
+            print(f"[Info] Transkript gesichert: {backup_file}", file=sys.stderr)
+        except Exception as save_exc:
+            print(f"[Fehler] Transkript konnte nicht gesichert werden: {save_exc}", file=sys.stderr)
 
     def _on_pipeline_success(self) -> None:
         self.is_processing = False
