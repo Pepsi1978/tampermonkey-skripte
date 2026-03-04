@@ -34,7 +34,10 @@ def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
             timeout=120,
         )
 
-    response.raise_for_status()
+    if not response.ok:
+        raise RuntimeError(
+            f"Grok API Fehler {response.status_code}: {response.text}"
+        )
     payload = response.json()
 
     text = payload.get("text") or payload.get("transcript") or ""
