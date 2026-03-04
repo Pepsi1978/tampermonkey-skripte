@@ -77,7 +77,8 @@ class ClaudeOverlayApp:
         self.is_processing = False
         self.gemini_enabled = self.settings.gemini_available
         self._drag_data = {"x": 0, "y": 0}
-        self._target_hwnd: int | None = None  # HWND des Fensters vor der Aufnahme
+        self._target_hwnd: int | None = None  # Letztes Nicht-Overlay-Fenster
+        self._overlay_hwnd: int | None = None  # Wird nach root.update() gesetzt
 
         # ----- Fenster -----
         self.root = tk.Tk()
@@ -196,6 +197,9 @@ class ClaudeOverlayApp:
         self.canvas.bind("<B3-Motion>", self._on_drag_motion)
 
         self.root.bind("<Escape>", lambda _: self._quit())
+
+        # Overlay-HWND ermitteln und Vordergrund-Tracking starten
+        self.root.after(500, self._init_hwnd_tracking)
 
         # Claude-Prozess-Watcher
         self.root.after(2000, self._watch_claude_process)
@@ -346,9 +350,7 @@ class ClaudeOverlayApp:
             self._start_recording()
 
     def _start_recording(self) -> None:
-        # Vordergrund-Fenster merken (bevor Overlay den Fokus hat)
-        self._target_hwnd = get_foreground_window()
-        log.info("Ziel-HWND gespeichert: %s", self._target_hwnd)
+        log.info("Aufnahme starten, Ziel-HWND: %s", self._target_hwnd)
         try:
             self.recorder.start()
             self.is_recording = True
@@ -481,6 +483,22 @@ class ClaudeOverlayApp:
             self._set_status("Loeschen fehlgeschlagen", COLOR_ERROR)
             log.error("Eingabefeld leeren: %s", exc)
             self.root.after(3000, self._reset_to_idle)
+
+    # ------------------------------------------------------------------
+    # Vordergrund-Fenster-Tracking
+    # ------------------------------------------------------------------
+    def _init_hwnd_tracking(self) -> None:
+        """Ermittelt das eigene Overlay-HWND und startet das Tracking."""
+        self._overlay_hwnd = self._get_overlay_hwnd()
+        log.info("Overlay-HWND: %s", self._overlay_hwnd)
+        self._track_foreground()
+
+    def _track_foreground(self) -> None:
+        """Speichert regelmaessig das aktive Nicht-Overlay-Fenster."""
+        hwnd = get_foreground_window()
+        if hwnd and hwnd != self._overlay_hwnd:
+            self._target_hwnd = hwnd
+        self.root.after(300, self._track_foreground)
 
     # ------------------------------------------------------------------
     # Claude-Prozess-Watcher
