@@ -44,7 +44,7 @@ cat > "$PLIST_PATH" << EOF
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <false/>
+    <true/>
     <key>StandardOutPath</key>
     <string>${SCRIPT_DIR}/watcher_stdout.log</string>
     <key>StandardErrorPath</key>
