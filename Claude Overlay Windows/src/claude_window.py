@@ -37,7 +37,12 @@ def _find_claude_window() -> Optional[HwndWrapper]:
 
 
 def _focus_input(window: HwndWrapper) -> None:
-    """Versucht, das Eingabefeld im Claude-Fenster zu fokussieren."""
+    """Versucht, das Eingabefeld im Claude-Fenster zu fokussieren.
+
+    Claude Desktop ist eine Electron-App.  Klassische 'Edit'-Controls
+    existieren dort nicht, daher werden mehrere Strategien probiert.
+    """
+    # Strategie 1: 'Edit'-Control (klassische Win32-Apps)
     try:
         edits = window.descendants(control_type="Edit")
         if edits:
@@ -46,7 +51,27 @@ def _focus_input(window: HwndWrapper) -> None:
     except Exception:
         pass
 
+    # Strategie 2: 'Document'-Control (Electron / Chromium)
+    try:
+        docs = window.descendants(control_type="Document")
+        if docs:
+            docs[-1].set_focus()
+            return
+    except Exception:
+        pass
+
+    # Strategie 3: Fenster fokussieren und per Mausklick ins Eingabefeld
     window.set_focus()
+    time.sleep(0.1)
+    try:
+        rect = window.rectangle()
+        # Eingabefeld ist typischerweise unten mittig
+        click_x = rect.left + (rect.width() // 2)
+        click_y = rect.bottom - 80
+        import pywinauto.mouse as mouse
+        mouse.click(coords=(click_x, click_y))
+    except Exception:
+        pass
 
 
 def insert_text_into_claude(text: str) -> None:
@@ -59,9 +84,9 @@ def insert_text_into_claude(text: str) -> None:
         raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
 
     window.set_focus()
-    time.sleep(0.15)
+    time.sleep(0.3)
     _focus_input(window)
-    time.sleep(0.1)
+    time.sleep(0.2)
 
     pyperclip.copy(text)
     send_keys("^v")
@@ -74,9 +99,9 @@ def clear_claude_input() -> None:
         raise RuntimeError("Claude-Fenster wurde nicht gefunden.")
 
     window.set_focus()
-    time.sleep(0.15)
+    time.sleep(0.3)
     _focus_input(window)
-    time.sleep(0.1)
+    time.sleep(0.2)
 
     send_keys("^a")
     time.sleep(0.05)
