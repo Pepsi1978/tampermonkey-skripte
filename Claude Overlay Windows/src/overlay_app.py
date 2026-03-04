@@ -12,7 +12,7 @@ import tkinter.font as tkfont
 
 from api_clients import improve_text_with_gemini, transcribe_with_grok
 from audio_capture import AudioRecorder
-from claude_window import clear_claude_input, insert_text_into_claude, is_claude_running
+from claude_window import clear_input, get_foreground_window, is_claude_running, paste_text
 from config import Settings
 
 # ---------------------------------------------------------------------------
@@ -77,6 +77,7 @@ class ClaudeOverlayApp:
         self.is_processing = False
         self.gemini_enabled = self.settings.gemini_available
         self._drag_data = {"x": 0, "y": 0}
+        self._target_hwnd: int | None = None  # Fenster das vor der Aufnahme aktiv war
 
         # ----- Fenster -----
         self.root = tk.Tk()
@@ -345,6 +346,8 @@ class ClaudeOverlayApp:
             self._start_recording()
 
     def _start_recording(self) -> None:
+        # Ziel-Fenster merken BEVOR Aufnahme startet (= wo der Cursor gerade ist)
+        self._target_hwnd = get_foreground_window()
         try:
             self.recorder.start()
             self.is_recording = True
@@ -370,14 +373,11 @@ class ClaudeOverlayApp:
         self.canvas.itemconfig(self.mic_circle, fill=COLOR_PROCESSING, outline="#555555")
         self._set_status("Verarbeite...", COLOR_PROCESSING)
 
-        # Claude-Fenster im Hauptthread suchen (EnumWindows funktioniert nicht in Threads)
-        from claude_window import _find_claude_hwnd
-        overlay_hwnd = self._get_overlay_hwnd()
-        claude_hwnd = _find_claude_hwnd(overlay_hwnd, self.settings)
+        target_hwnd = self._target_hwnd
 
         worker = threading.Thread(
             target=self._process_audio_pipeline,
-            args=(audio_path, claude_hwnd),
+            args=(audio_path, target_hwnd),
             daemon=True,
         )
         worker.start()
@@ -386,7 +386,7 @@ class ClaudeOverlayApp:
         """Aktualisiert den Status-Text thread-sicher."""
         self.root.after(0, lambda: self._set_status(text, COLOR_PROCESSING))
 
-    def _process_audio_pipeline(self, audio_path: Path, claude_hwnd: int | None = None) -> None:
+    def _process_audio_pipeline(self, audio_path: Path, target_hwnd: int | None = None) -> None:
         transcript = None
         try:
             self.root.after(0, lambda: self._set_status("Transkribiere...", COLOR_PROCESSING))
@@ -403,7 +403,7 @@ class ClaudeOverlayApp:
             else:
                 final_text = transcript
 
-            insert_text_into_claude(final_text, claude_hwnd=claude_hwnd, settings=self.settings)
+            paste_text(final_text, target_hwnd=target_hwnd)
 
             self.root.after(0, lambda: self._on_pipeline_success())
         except Exception as exc:
@@ -466,7 +466,7 @@ class ClaudeOverlayApp:
     # ------------------------------------------------------------------
     def _clear_input(self) -> None:
         try:
-            clear_claude_input(overlay_hwnd=self._get_overlay_hwnd(), settings=self.settings)
+            clear_input(target_hwnd=self._target_hwnd)
             self._set_status("Feld geleert", COLOR_SUCCESS)
             self.root.after(2000, self._reset_to_idle)
         except Exception as exc:
