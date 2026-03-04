@@ -27,9 +27,10 @@ def _load_dotenv_file(path: Path) -> None:
 
 @dataclass(frozen=True)
 class Settings:
-    grok_api_key: str
-    grok_whisper_model: str
-    grok_whisper_url: str
+    groq_api_key: str
+    whisper_model: str
+    whisper_url: str
+    whisper_lang: str
     gemini_api_key: str
     gemini_model: str
     audio_sample_rate: int
@@ -53,11 +54,12 @@ class Settings:
         ]
 
         return cls(
-            grok_api_key=os.getenv("GROK_API_KEY", ""),
-            grok_whisper_model=os.getenv("GROK_WHISPER_MODEL", "grok-2-whisper-1"),
-            grok_whisper_url=os.getenv(
-                "GROK_WHISPER_URL", "https://api.x.ai/v1/audio/transcriptions"
+            groq_api_key=os.getenv("GROQ_API_KEY", ""),
+            whisper_model=os.getenv("WHISPER_MODEL", "whisper-large-v3"),
+            whisper_url=os.getenv(
+                "WHISPER_URL", "https://api.groq.com/openai/v1/audio/transcriptions"
             ),
+            whisper_lang=os.getenv("WHISPER_LANG", "de"),
             gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
             gemini_model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
             audio_sample_rate=int(os.getenv("AUDIO_SAMPLE_RATE", "16000")),
@@ -67,8 +69,8 @@ class Settings:
 
     def validate(self) -> None:
         missing = []
-        if not self.grok_api_key:
-            missing.append("GROK_API_KEY")
+        if not self.groq_api_key:
+            missing.append("GROQ_API_KEY")
         if not self.gemini_api_key:
             missing.append("GEMINI_API_KEY")
 

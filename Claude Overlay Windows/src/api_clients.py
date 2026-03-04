@@ -13,7 +13,7 @@ from config import Settings
 def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
     """Sendet eine WAV-Datei an die Grok Whisper API und gibt den transkribierten Text zurueck."""
     headers = {
-        "Authorization": f"Bearer {settings.grok_api_key}",
+        "Authorization": f"Bearer {settings.groq_api_key}",
     }
 
     with audio_path.open("rb") as audio_file:
@@ -21,13 +21,14 @@ def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
             "file": (audio_path.name, audio_file, "audio/wav"),
         }
         data = {
-            "model": settings.grok_whisper_model,
+            "model": settings.whisper_model,
+            "language": settings.whisper_lang,
             "response_format": "json",
             "temperature": "0",
         }
 
         response = requests.post(
-            settings.grok_whisper_url,
+            settings.whisper_url,
             headers=headers,
             files=files,
             data=data,
@@ -36,7 +37,7 @@ def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
 
     if not response.ok:
         raise RuntimeError(
-            f"Grok API Fehler {response.status_code}: {response.text}"
+            f"Groq API Fehler {response.status_code}: {response.text}"
         )
     payload = response.json()
 
