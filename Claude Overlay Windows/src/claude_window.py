@@ -130,12 +130,13 @@ def _get_shell():
 
 
 def insert_text_into_claude(text: str, overlay_hwnd: int | None = None,
+                            claude_hwnd: int | None = None,
                             settings: Settings | None = None, **_kwargs) -> None:
     """Fuegt Text an der aktuellen Cursorposition in Claude ein."""
     if not text.strip():
         return
 
-    hwnd = _find_claude_hwnd(overlay_hwnd, settings)
+    hwnd = claude_hwnd or _find_claude_hwnd(overlay_hwnd, settings)
     if not hwnd:
         # Fallback: AppActivate versuchen
         try:
@@ -170,9 +171,10 @@ def insert_text_into_claude(text: str, overlay_hwnd: int | None = None,
 
 
 def clear_claude_input(overlay_hwnd: int | None = None,
+                       claude_hwnd: int | None = None,
                        settings: Settings | None = None, **_kwargs) -> None:
     """Leert das Eingabefeld in Claude (Ctrl+A, dann Backspace)."""
-    hwnd = _find_claude_hwnd(overlay_hwnd, settings)
+    hwnd = claude_hwnd or _find_claude_hwnd(overlay_hwnd, settings)
     if not hwnd:
         try:
             shell = _get_shell()
