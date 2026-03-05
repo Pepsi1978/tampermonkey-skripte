@@ -40,30 +40,27 @@ def _run_applescript(script: str, timeout: int = 5) -> Optional[str]:
 # ---------------------------------------------------------------------------
 
 _CLAUDE_BUNDLE_ID = "com.anthropic.claudefordesktop"
+_CODEX_BUNDLE_ID = "com.openai.codex"
+
+# Alle Bundle-IDs der unterstuetzten Ziel-Apps
+_TARGET_BUNDLE_IDS = [_CLAUDE_BUNDLE_ID, _CODEX_BUNDLE_ID]
 
 
-def is_claude_running(settings: Settings) -> bool:
-    """Prueft, ob die Claude Desktop App laeuft.
-
-    Verwendet den Bundle-Identifier (com.anthropic.claudefordesktop), um
-    ausschliesslich die native Claude Desktop App zu erkennen.
-    Chrome-Tabs, PWAs oder andere Prozesse mit 'Claude' im Namen
-    werden zuverlaessig ignoriert.
-    """
-    # 1. Primaer: AppleScript – holt alle Bundle-IDs und prueft ob unsere dabei ist
+def _is_bundle_running(bundle_id: str) -> bool:
+    """Prueft, ob eine App mit der gegebenen Bundle-ID laeuft."""
     check_script = (
         'tell application "System Events" to '
         '(bundle identifier of every application process) '
-        f'contains "{_CLAUDE_BUNDLE_ID}"'
+        f'contains "{bundle_id}"'
     )
     result = _run_applescript(check_script, timeout=3)
     if result == "true":
         return True
 
-    # 2. Fallback: lsappinfo (listet laufende Apps mit Bundle-ID)
+    # Fallback: lsappinfo
     try:
         proc = subprocess.run(
-            ["lsappinfo", "find", f"bundleid={_CLAUDE_BUNDLE_ID}"],
+            ["lsappinfo", "find", f"bundleid={bundle_id}"],
             capture_output=True,
             text=True,
             timeout=3,
@@ -73,6 +70,19 @@ def is_claude_running(settings: Settings) -> bool:
     except Exception:
         pass
 
+    return False
+
+
+def is_claude_running(settings: Settings) -> bool:
+    """Prueft, ob eine der Ziel-Apps (Claude Desktop oder Codex) laeuft.
+
+    Verwendet die Bundle-Identifier, um ausschliesslich die nativen
+    Desktop-Apps zu erkennen. Chrome-Tabs, PWAs oder andere Prozesse
+    werden zuverlaessig ignoriert.
+    """
+    for bundle_id in _TARGET_BUNDLE_IDS:
+        if _is_bundle_running(bundle_id):
+            return True
     return False
 
 
@@ -168,8 +178,29 @@ def _send_key_code(code: int, using: str = "") -> bool:
 # Einfuegen / Leeren
 # ---------------------------------------------------------------------------
 
+def _activate_app_by_name(app_name: str) -> bool:
+    """Aktiviert eine App ueber ihren Namen."""
+    script = f'tell application "{app_name}" to activate'
+    result = _run_applescript(script, timeout=3)
+    if result is not None:
+        time.sleep(0.3)
+        return True
+    return False
+
+
+def _find_and_activate_any_target() -> bool:
+    """Versucht eine der Ziel-Apps zu finden und zu aktivieren."""
+    # Zuerst Claude versuchen
+    if _find_and_activate_claude():
+        return True
+    # Dann Codex versuchen
+    if _is_bundle_running(_CODEX_BUNDLE_ID):
+        return _activate_app_by_name("Codex")
+    return False
+
+
 def _activate_target(target_app: str | None = None) -> bool:
-    """Aktiviert das Zielfenster. Versucht gespeicherte App, dann Claude-Suche."""
+    """Aktiviert das Zielfenster. Versucht gespeicherte App, dann Ziel-App-Suche."""
     # 1. Gespeicherte App verwenden
     if target_app and target_app.lower() != "python":
         script = f'tell application "{target_app}" to activate'
@@ -179,8 +210,8 @@ def _activate_target(target_app: str | None = None) -> bool:
             return True
         log.warning("App '%s' konnte nicht aktiviert werden", target_app)
 
-    # 2. Claude direkt aktivieren
-    if _find_and_activate_claude():
+    # 2. Ziel-Apps durchsuchen (Claude, Codex)
+    if _find_and_activate_any_target():
         return True
 
     log.warning("Kein Zielfenster gefunden")

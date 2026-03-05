@@ -1,6 +1,6 @@
 # Claude Overlay Windows
 
-Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
+Ein Python-Overlay fuer die **Windows Claude Desktop App** und die **OpenAI Codex Desktop App** mit zwei Buttons:
 
 - **Mikrofon-Button** (Mic): Nimmt deine Sprache auf, schickt das Audio an die **Groq Whisper API** (Transkription), dann optional an die **Gemini API** (Intentionserkennung + hochwertiges Deutsch) und fuegt den verbesserten Text automatisch in das Claude-Eingabefeld ein.
 - **X-Button**: Leert das gesamte Eingabefeld in der Claude Desktop App.
@@ -10,7 +10,8 @@ Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
 - Der **Watcher** (`watcher.py`) ueberwacht, ob die Claude Desktop App laeuft.
 - Wenn Claude gestartet wird: Das Overlay startet automatisch.
 - Wenn Claude geschlossen wird: Das Overlay beendet sich automatisch.
-- Das Overlay ist **rahmenlos** (kein Fenstertitel), **immer im Vordergrund** und kann per **Rechtsklick + Ziehen** frei verschoben werden.
+- Das Overlay ist **rahmenlos** (kein Fenstertitel) und kann per **Rechtsklick + Ziehen** frei verschoben werden.
+- Das Overlay **blendet sich automatisch aus**, wenn eine andere App als Claude oder Codex im Vordergrund ist, und erscheint wieder, sobald Claude/Codex aktiv wird.
 - Waehrend der Aufnahme **pulsiert** der Mikrofon-Button rot.
 - Lange Aufnahmen (>20 MB) werden automatisch in Teile aufgesplittet und stueckweise transkribiert.
 - Bei API-Fehlern (429/500/503) wird automatisch mit Backoff erneut versucht.
@@ -34,19 +35,20 @@ Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
 13. [Fehlerbehebung / FAQ](#13-fehlerbehebung--faq)
 14. [Projektstruktur](#14-projektstruktur)
 15. [Deinstallation](#15-deinstallation)
+16. [Repository auf einem neuen Rechner einrichten / synchronisieren](#16-repository-auf-einem-neuen-rechner-einrichten--synchronisieren)
 
 ---
 
 ## 1. Was macht dieses Tool?
 
-Wenn du mit der Claude Desktop App arbeitest, moechtest du vielleicht manchmal **per Sprache** Eingaben machen, anstatt alles zu tippen. Dieses Tool:
+Wenn du mit der Claude Desktop App oder der OpenAI Codex Desktop App arbeitest, moechtest du vielleicht manchmal **per Sprache** Eingaben machen, anstatt alles zu tippen. Dieses Tool:
 
 1. **Hoert dir zu** (Mikrofon-Aufnahme)
 2. **Wandelt deine Sprache in Text um** (Groq Whisper API - schnelle und praezise Spracherkennung)
 3. **Verbessert den Text** (Gemini API - erkennt deine Absichten und formuliert sie in gutem Deutsch)
-4. **Fuegt den fertigen Text ein** (automatisch in das Claude-Eingabefeld)
+4. **Fuegt den fertigen Text ein** (automatisch in das Eingabefeld von Claude oder Codex)
 
-Das spart Zeit und sorgt dafuer, dass deine Spracheingaben sauber und klar formuliert bei Claude ankommen.
+Das spart Zeit und sorgt dafuer, dass deine Spracheingaben sauber und klar formuliert ankommen. Das Overlay blendet sich automatisch aus, wenn du zu einer anderen App wechselst, und erscheint wieder, sobald Claude oder Codex im Vordergrund ist.
 
 ---
 
@@ -58,7 +60,7 @@ Bevor du loslegst, brauchst du folgendes auf deinem Windows-Rechner:
 |---|---|
 | **Windows 10 oder 11** | Das Tool nutzt Windows-spezifische Funktionen (Fenstererkennung, UI-Automation) |
 | **Python 3.11 oder neuer** | Die Programmiersprache, in der das Tool geschrieben ist. Python fuehrt den Code aus |
-| **Claude Desktop App** | Die App, in die das Overlay den Text einfuegt |
+| **Claude Desktop App** oder **Codex Desktop App** | Die App, in die das Overlay den Text einfuegt |
 | **Internetverbindung** | Fuer die API-Aufrufe (Groq Whisper + Gemini) |
 | **Ein Mikrofon** | Zum Aufnehmen deiner Sprache (eingebaut oder extern) |
 | **Groq API-Key** | Zugang zur Sprach-Transkription (von Groq Cloud) |
@@ -302,6 +304,7 @@ In der `.env`-Datei kannst du auch folgendes anpassen:
 | `AUDIO_SAMPLE_RATE` | `16000` | Audio-Abtastrate in Hz (16000 ist Standard fuer Sprache) |
 | `AUDIO_CHANNELS` | `1` | Mono (1) oder Stereo (2) |
 | `CLAUDE_PROCESS_NAMES` | `Claude.exe,...` | Name(n) des Claude-Prozesses (kommagetrennt) |
+| `OVERLAY_TARGET_PROCESS_NAMES` | `Claude.exe,...,Codex.exe,...` | Alle Apps, bei denen das Overlay sichtbar sein soll (kommagetrennt) |
 
 ---
 
@@ -446,8 +449,8 @@ python -m pip install -r requirements.txt
 
 ### "Claude-Fenster wurde nicht gefunden"
 
-- Stelle sicher, dass die Claude Desktop App geoeffnet ist
-- Falls deine Claude-App einen anderen Fenstertitel hat, passe `CLAUDE_PROCESS_NAMES` in der `.env` an
+- Stelle sicher, dass die Claude Desktop App oder Codex Desktop App geoeffnet ist
+- Falls deine App einen anderen Fenstertitel hat, passe `CLAUDE_PROCESS_NAMES` und `OVERLAY_TARGET_PROCESS_NAMES` in der `.env` an
 
 ### "Fehlende Umgebungsvariablen: GROQ_API_KEY"
 
@@ -547,3 +550,186 @@ Loesche einfach den Ordner `Claude Overlay Windows` (oder das gesamte Repository
 ### Virtuelle Umgebung loeschen:
 
 Die virtuelle Umgebung ist im Ordner `.venv` innerhalb des Projektordners. Wenn du den Projektordner loeschst, ist sie automatisch mit weg.
+
+---
+
+## 16. Repository auf einem neuen Rechner einrichten / synchronisieren
+
+Diese Anleitung erklaert, wie du dieses Repository auf einem **neuen Windows-Rechner** einrichtest oder auf einem **bestehenden Rechner** den aktuellen Stand holst.
+
+> **Hinweis:** Diese Anleitung findest du auch in der [Haupt-README des Repositories](../README.md).
+
+---
+
+### Situation A: Neuer Rechner (Ersteinrichtung)
+
+Wenn du das Projekt zum ersten Mal auf einem neuen PC einrichten moechtest:
+
+#### 1. Python installieren
+
+Python ist die Programmiersprache, in der viele Tools in diesem Repository geschrieben sind.
+
+1. Gehe zu: **https://www.python.org/downloads/**
+2. Klicke auf **"Download Python 3.1x.x"**
+3. **WICHTIG:** Setze im Installer den Haken bei **`Add python.exe to PATH`**
+4. Klicke auf **"Install Now"**
+
+> **Warum PATH?** Damit Windows den Befehl `python` in der Kommandozeile findet.
+
+#### 2. Git installieren
+
+Git ist ein Versionsverwaltungs-Tool, mit dem du Code von GitHub herunterladen und synchronisieren kannst.
+
+1. Gehe zu: **https://git-scm.com/download/win**
+2. Lade den **64-bit Git for Windows Setup** herunter
+3. Fuehre den Installer aus (Standardeinstellungen beibehalten, einfach "Next" klicken)
+
+#### 3. Installation pruefen
+
+Oeffne **Windows PowerShell** (`Win + X` > "Terminal" oder "PowerShell"):
+
+```powershell
+python --version
+git --version
+```
+
+> Beide Befehle muessen eine Versionsnummer anzeigen. Falls nicht, starte PowerShell nach der Installation neu.
+
+#### 4. Repository klonen
+
+```powershell
+cd $HOME\Documents
+git clone https://github.com/Pepsi1978/tampermonkey-skripte.git
+cd tampermonkey-skripte
+```
+
+> **Was passiert?** `git clone` laedt das komplette Repository (alle Dateien und die gesamte Versionshistorie) von GitHub auf deinen Rechner herunter.
+
+#### 5. Projekt einrichten (Claude Overlay Windows)
+
+```powershell
+cd "Claude Overlay Windows"
+python -m venv .venv
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+> **Warum eine virtuelle Umgebung (.venv)?** Sie isoliert die Python-Pakete dieses Projekts von anderen Projekten auf deinem Rechner. Die `.venv` wird NICHT im Repository gespeichert und muss auf jedem Rechner neu erstellt werden.
+
+#### 6. API-Keys eintragen
+
+```powershell
+copy .env.example .env
+notepad .env
+```
+
+Trage deine API-Keys ein (GROQ_API_KEY, optional GEMINI_API_KEY) und speichere die Datei.
+
+> **Wichtig:** Die `.env`-Datei wird NICHT auf GitHub hochgeladen (steht in `.gitignore`). Du musst deine Keys auf jedem Rechner neu eintragen.
+
+#### 7. Autostart einrichten (optional)
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install_autostart.ps1
+```
+
+#### 8. Starten
+
+Doppelklicke auf `start_watcher.vbs` oder starte manuell:
+
+```powershell
+.\.venv\Scripts\activate
+python src\watcher.py
+```
+
+---
+
+### Situation B: Bestehender Rechner (aktuellen Stand holen)
+
+Wenn du das Repository bereits auf dem Rechner hast und nur die **neuesten Aenderungen** uebernehmen moechtest:
+
+#### 1. In den Projektordner wechseln
+
+```powershell
+cd "$HOME\Documents\tampermonkey-skripte"
+```
+
+#### 2. Aenderungen vom Server holen
+
+```powershell
+git pull origin main
+```
+
+> **Was passiert?**
+> - `git pull` laedt alle neuen Commits von GitHub herunter und wendet sie auf deine lokale Kopie an
+> - `origin` ist der Name des GitHub-Servers (Standardname beim Klonen)
+> - `main` ist der Hauptbranch des Repositories
+
+#### 3. Pruefen, was sich geaendert hat
+
+```powershell
+git log --oneline -10
+```
+
+> Zeigt die letzten 10 Commits mit Kurzbeschreibung an.
+
+#### 4. Eventuell neue Abhaengigkeiten installieren
+
+Falls sich die `requirements.txt` geaendert hat:
+
+```powershell
+cd "Claude Overlay Windows"
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+> **Tipp:** Im Zweifel einfach ausfuehren - bereits installierte Pakete werden uebersprungen.
+
+#### 5. Overlay neu starten
+
+Beende den laufenden Watcher/Overlay (Task-Manager > `pythonw.exe` beenden) und starte neu per Doppelklick auf `start_watcher.vbs`.
+
+---
+
+### Kurzreferenz: Die wichtigsten Git-Befehle
+
+| Befehl | Was er tut |
+|---|---|
+| `git clone <url>` | Repository zum ersten Mal herunterladen |
+| `git pull origin main` | Neueste Aenderungen vom Server holen und anwenden |
+| `git status` | Zeigt, ob du lokale Aenderungen hast (geaenderte/neue Dateien) |
+| `git log --oneline -10` | Letzte 10 Commits anzeigen (Kurzform) |
+| `git diff` | Zeigt deine lokalen Aenderungen im Detail an |
+| `git add .` | Alle lokalen Aenderungen fuer einen Commit vormerken |
+| `git commit -m "Beschreibung"` | Aenderungen als neuen Commit speichern |
+| `git push origin main` | Lokale Commits auf den Server (GitHub) hochladen |
+
+---
+
+### Typischer Workflow zwischen zwei Rechnern
+
+```
+Rechner A (Aenderungen machen):
+  git add .
+  git commit -m "Beschreibung der Aenderung"
+  git push origin main
+
+Rechner B (Aenderungen uebernehmen):
+  git pull origin main
+```
+
+> **Wichtig:** Fuehre `git pull` immer **vor** deinen eigenen Aenderungen aus, damit es keine Konflikte gibt. Falls doch ein Konflikt entsteht (beide Rechner haben die gleiche Datei geaendert), zeigt Git dir die betroffenen Stellen an - du musst dann manuell entscheiden, welche Version behalten wird.
+
+---
+
+### Haeufige Probleme
+
+| Problem | Loesung |
+|---|---|
+| `python wird nicht erkannt` | Python neu installieren mit Haken bei "Add to PATH", dann PowerShell neu starten |
+| `git wird nicht erkannt` | Git installieren von https://git-scm.com/download/win, dann PowerShell neu starten |
+| `Activate.ps1 kann nicht geladen werden` | Einmalig ausfuehren: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` |
+| `git pull` zeigt Konflikte | Konflikte in den betroffenen Dateien manuell loesen, dann `git add .` und `git commit` |
+| `pip install` schlaegt fehl | Pruefen ob `.venv` aktiviert ist (steht `(.venv)` am Zeilenanfang?) |

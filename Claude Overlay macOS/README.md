@@ -1,6 +1,6 @@
 # Claude Overlay macOS
 
-Ein Python-Overlay fuer die **macOS Claude Desktop App** mit zwei Buttons:
+Ein Python-Overlay fuer die **macOS Claude Desktop App** und **OpenAI Codex** mit zwei Buttons:
 
 - **Mikrofon-Button** (Mic): Nimmt deine Sprache auf, schickt das Audio an die **Groq Whisper API** (Transkription), dann optional an die **Gemini API** (Intentionserkennung + hochwertiges Deutsch) und fuegt den verbesserten Text automatisch in das Claude-Eingabefeld ein.
 - **Radiergummi-Button**: Leert das gesamte Eingabefeld in der Claude Desktop App.
@@ -10,7 +10,7 @@ Ein Python-Overlay fuer die **macOS Claude Desktop App** mit zwei Buttons:
 - Der **Watcher** (`watcher.py`) ueberwacht, ob die Claude Desktop App laeuft.
 - Wenn Claude gestartet wird: Das Overlay startet automatisch.
 - Wenn Claude geschlossen wird: Das Overlay beendet sich automatisch.
-- Das Overlay ist **rahmenlos** (kein Fenstertitel, kein Dock-Icon) und **nur sichtbar, wenn Claude Desktop im Vordergrund ist**. Wechselst du zu einer anderen App (z.B. Chrome), verschwindet das Overlay automatisch. Es kann per **Rechtsklick + Ziehen** oder **Ctrl+Klick + Ziehen** frei verschoben werden.
+- Das Overlay ist **rahmenlos** (kein Fenstertitel, kein Dock-Icon) und **nur sichtbar, wenn eine Ziel-App (Claude Desktop oder Codex) im Vordergrund ist**. Wechselst du zu einer anderen App (z.B. Chrome), verschwindet das Overlay automatisch. Weitere Ziel-Apps koennen ueber `OVERLAY_TARGET_APPS` in der `.env`-Datei konfiguriert werden. Es kann per **Rechtsklick + Ziehen** oder **Ctrl+Klick + Ziehen** frei verschoben werden.
 - Der Watcher nutzt eine **PID-Lock-Datei**, sodass nie zwei Instanzen gleichzeitig laufen koennen.
 - Waehrend der Aufnahme **pulsiert** der Mikrofon-Button rot.
 - Lange Aufnahmen (>20 MB) werden automatisch in Teile aufgesplittet und stueckweise transkribiert.
@@ -61,7 +61,7 @@ Bevor du loslegst, brauchst du folgendes auf deinem Mac:
 |---|---|
 | **macOS 12 (Monterey) oder neuer** | Das Tool nutzt AppleScript fuer Fenstererkennung und Tastatur-Simulation |
 | **Python 3.11 oder neuer** | Die Programmiersprache, in der das Tool geschrieben ist |
-| **Claude Desktop App** | Die App, in die das Overlay den Text einfuegt |
+| **Claude Desktop App und/oder OpenAI Codex** | Die App(s), in die das Overlay den Text einfuegt |
 | **Internetverbindung** | Fuer die API-Aufrufe (Groq Whisper + Gemini) |
 | **Ein Mikrofon** | Zum Aufnehmen deiner Sprache (eingebaut oder extern) |
 | **Groq API-Key** | Zugang zur Sprach-Transkription (von Groq Cloud) |
@@ -262,6 +262,7 @@ Speichere mit `Ctrl + O`, dann `Enter`, dann `Ctrl + X` zum Beenden von nano.
 | `AUDIO_SAMPLE_RATE` | `16000` | Audio-Abtastrate in Hz |
 | `AUDIO_CHANNELS` | `1` | Mono (1) oder Stereo (2) |
 | `CLAUDE_PROCESS_NAMES` | `Claude` | Name(n) des Claude-Prozesses (kommagetrennt). Hinweis: Die Erkennung nutzt primaer den Bundle-Identifier (`com.anthropic.claudefordesktop`) und ist damit unabhaengig vom Prozessnamen. |
+| `OVERLAY_TARGET_APPS` | `Claude,Codex` | Bei welchen Apps das Overlay sichtbar sein soll (kommagetrennt, Gross-/Kleinschreibung beachten). Standard: Claude Desktop und OpenAI Codex. |
 
 ---
 
@@ -434,10 +435,10 @@ pip install sounddevice
 - Pruefe die Bedienungshilfen-Berechtigung: **Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen**
 - Stelle sicher, dass **Terminal** (oder deine Start-App) in der Liste ist und aktiviert
 
-### "Claude nicht gefunden"
+### "Ziel-App nicht gefunden"
 
-- Stelle sicher, dass die Claude Desktop App geoeffnet ist (nicht nur ein Claude-Tab im Browser)
-- Die Erkennung nutzt den macOS Bundle-Identifier (`com.anthropic.claudefordesktop`) und reagiert nur auf die native Claude Desktop App, nicht auf Browser-Tabs oder PWAs
+- Stelle sicher, dass die Claude Desktop App oder OpenAI Codex geoeffnet ist (nicht nur ein Claude-Tab im Browser)
+- Die Erkennung nutzt macOS Bundle-Identifier (`com.anthropic.claudefordesktop` fuer Claude, `com.openai.codex` fuer Codex) und reagiert nur auf die nativen Desktop-Apps, nicht auf Browser-Tabs oder PWAs
 
 ### "Fehlende Umgebungsvariablen: GROQ_API_KEY"
 
@@ -459,10 +460,10 @@ pip install sounddevice
 ### Das Overlay erscheint nicht
 
 - Stelle sicher, dass der Watcher laeuft (`bash start_watcher.sh`)
-- Oeffne die Claude Desktop App und bringe sie in den Vordergrund (das Overlay ist nur sichtbar, wenn Claude Desktop die aktive App ist)
+- Oeffne die Claude Desktop App oder OpenAI Codex und bringe sie in den Vordergrund (das Overlay ist nur sichtbar, wenn eine Ziel-App aktiv ist)
 - Pruefe im Aktivitaetsmonitor (Programme > Dienstprogramme), ob `python` laeuft
 - Pruefe `watcher.log` auf Fehlermeldungen
-- Falls Chrome mit claude.ai offen ist: Das Overlay reagiert nur auf die native Claude Desktop App, nicht auf Browser-Tabs
+- Falls Chrome mit claude.ai offen ist: Das Overlay reagiert nur auf die nativen Desktop-Apps (Claude, Codex), nicht auf Browser-Tabs
 
 ### tkinter fehlt / ImportError
 
@@ -493,7 +494,7 @@ Claude Overlay macOS/
     config.py               # Laedt .env-Datei und stellt Einstellungen bereit
     audio_capture.py         # Nimmt Audio vom Mikrofon auf und speichert als WAV
     api_clients.py           # Kommuniziert mit Groq Whisper + Gemini API
-    claude_window.py         # Erkennt Claude via Bundle-ID, fuegt Text ein/loescht
+    claude_window.py         # Erkennt Claude/Codex via Bundle-ID, fuegt Text ein/loescht
     overlay_app.py           # Die sichtbare Overlay-Oberflaeche (Buttons, Farben)
     watcher.py               # Ueberwacht, ob Claude laeuft; startet/stoppt Overlay
 ```

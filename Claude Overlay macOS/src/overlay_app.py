@@ -563,7 +563,7 @@ class ClaudeOverlayApp:
         elif "503" in msg or "nicht erreichbar" in msg:
             short = "API nicht erreichbar"
         elif "Fenster" in msg or "nicht gefunden" in msg:
-            short = "Claude nicht gefunden"
+            short = "Ziel-App nicht gefunden"
         else:
             short = "Fehler"
         self._set_status(short, COLOR_ERROR)
@@ -593,12 +593,12 @@ class ClaudeOverlayApp:
     # ------------------------------------------------------------------
     def _track_frontmost_app(self) -> None:
         """Speichert die aktive Nicht-Overlay-App und blendet das Overlay
-        nur ein, wenn Claude Desktop im Vordergrund ist."""
+        nur ein, wenn eine Ziel-App (Claude, Codex, ...) im Vordergrund ist."""
         try:
             app = get_frontmost_app()
             if app and app.lower() not in ("python", "tkinter", "wish"):
                 self._target_app = app
-                if app == "Claude":
+                if app in self.settings.overlay_target_apps:
                     self._show_overlay()
                 else:
                     self._hide_overlay()
