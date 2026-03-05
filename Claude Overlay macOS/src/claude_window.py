@@ -39,36 +39,41 @@ def _run_applescript(script: str, timeout: int = 5) -> Optional[str]:
 # Prozess-Erkennung
 # ---------------------------------------------------------------------------
 
+_CLAUDE_BUNDLE_ID = "com.anthropic.claude"
+
+
 def is_claude_running(settings: Settings) -> bool:
     """Prueft, ob die Claude Desktop App laeuft.
 
-    Verwendet AppleScript ueber System Events, um nur die native App zu
-    erkennen.  Browser-Tabs mit 'Claude' im Titel werden ignoriert.
-    Fallback auf ``pgrep -x`` (exakter Prozessname, ohne -f), falls
-    AppleScript fehlschlaegt.
+    Verwendet den Bundle-Identifier (com.anthropic.claude), um
+    ausschliesslich die native Claude Desktop App zu erkennen.
+    Chrome-Tabs, PWAs oder andere Prozesse mit 'Claude' im Namen
+    werden zuverlaessig ignoriert.
     """
-    # 1. Primaer: AppleScript – prueft ob die App als eigener Prozess existiert
+    # 1. Primaer: AppleScript – prueft Bundle-Identifier ueber System Events
     check_script = (
-        'tell application "System Events" to get name of every '
-        'application process whose name is "Claude"'
+        'tell application "System Events" to get bundle identifier of every '
+        f'application process whose bundle identifier is "{_CLAUDE_BUNDLE_ID}"'
     )
     result = _run_applescript(check_script, timeout=3)
-    if result and "Claude" in result:
+    if result and _CLAUDE_BUNDLE_ID in result:
         return True
 
-    # 2. Fallback: pgrep mit -x (exakter Name, NICHT -f / full command line)
-    names = settings.claude_process_names
-    for name in names:
-        try:
-            proc = subprocess.run(
-                ["pgrep", "-ix", name],
-                capture_output=True,
-                timeout=3,
-            )
-            if proc.returncode == 0:
-                return True
-        except Exception:
-            continue
+    # 2. Fallback: lsappinfo (listet laufende Apps mit Bundle-ID)
+    try:
+        proc = subprocess.run(
+            ["lsappinfo", "find", f"bundleid={_CLAUDE_BUNDLE_ID}"],
+            capture_output=True,
+            text=True,
+            timeout=3,
+        )
+        # lsappinfo gibt z.B. '"ASN:0x0-0x1234:"' zurueck wenn die App laeuft,
+        # oder nichts/leeren String wenn nicht
+        if proc.returncode == 0 and proc.stdout.strip() and "ASN:" in proc.stdout:
+            return True
+    except Exception:
+        pass
+
     return False
 
 
@@ -96,14 +101,16 @@ def _activate_claude() -> bool:
 
 
 def _find_and_activate_claude() -> bool:
-    """Versucht Claude zu finden und zu aktivieren."""
-    # Pruefe ob Claude als App existiert
+    """Versucht Claude Desktop zu finden und zu aktivieren.
+
+    Nutzt den Bundle-Identifier, damit nur die native App erkannt wird.
+    """
     check_script = (
-        'tell application "System Events" to get name of every '
-        'application process whose name contains "Claude"'
+        'tell application "System Events" to get bundle identifier of every '
+        f'application process whose bundle identifier is "{_CLAUDE_BUNDLE_ID}"'
     )
     result = _run_applescript(check_script)
-    if result:
+    if result and _CLAUDE_BUNDLE_ID in result:
         return _activate_claude()
     return False
 
