@@ -39,7 +39,7 @@ def _run_applescript(script: str, timeout: int = 5) -> Optional[str]:
 # Prozess-Erkennung
 # ---------------------------------------------------------------------------
 
-_CLAUDE_BUNDLE_ID = "com.anthropic.claude"
+_CLAUDE_BUNDLE_ID = "com.anthropic.claudefordesktop"
 
 
 def is_claude_running(settings: Settings) -> bool:
