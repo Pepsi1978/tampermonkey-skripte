@@ -56,3 +56,11 @@ Bei jeder Aufgabe, die ein neues Projekt, Tool oder Skript erstellt oder veränd
 - **Erklärungen**: Bei jedem Schritt erklären, **warum** dieser Schritt wichtig ist und was er bewirkt
 - **Reihenfolge**: Die Anleitung muss in der richtigen Reihenfolge aufgebaut sein – erst Voraussetzungen, dann Installation, dann Konfiguration, dann Start
 - **Fehlerbehebung**: Häufige Probleme und deren Lösungen am Ende der Anleitung auflisten
+
+## Synchronisation der CLAUDE.md
+
+Die CLAUDE.md existiert sowohl **lokal** im Repository als auch **auf GitHub** (via git push). Bei jeder Änderung an der CLAUDE.md müssen **immer beide Versionen synchron gehalten werden**:
+
+- Nach jeder Bearbeitung der CLAUDE.md muss die Änderung **committet und gepusht** werden, damit die GitHub-Version aktuell bleibt
+- Neue Anweisungen oder Regeländerungen dürfen **niemals nur lokal** gespeichert werden
+- Der Workflow ist: Datei bearbeiten → committen → pushen
