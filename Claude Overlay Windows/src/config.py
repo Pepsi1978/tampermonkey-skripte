@@ -37,6 +37,7 @@ class Settings:
     audio_sample_rate: int
     audio_channels: int
     claude_process_names: List[str]
+    overlay_target_process_names: List[str]
 
     @classmethod
     def load(cls, env_path: Path | None = None) -> "Settings":
@@ -54,6 +55,17 @@ class Settings:
             if item.strip()
         ]
 
+        # Alle Prozesse, bei denen das Overlay sichtbar sein soll
+        overlay_targets_raw = os.getenv(
+            "OVERLAY_TARGET_PROCESS_NAMES",
+            "Claude.exe,Claude Desktop.exe,claude.exe,Codex.exe,codex.exe",
+        )
+        overlay_target_names = [
+            item.strip().lower()
+            for item in overlay_targets_raw.split(",")
+            if item.strip()
+        ]
+
         return cls(
             groq_api_key=os.getenv("GROQ_API_KEY", ""),
             whisper_model=os.getenv("WHISPER_MODEL", "whisper-large-v3"),
@@ -67,6 +79,7 @@ class Settings:
             audio_sample_rate=int(os.getenv("AUDIO_SAMPLE_RATE", "16000")),
             audio_channels=int(os.getenv("AUDIO_CHANNELS", "1")),
             claude_process_names=process_names,
+            overlay_target_process_names=overlay_target_names,
         )
 
     @property

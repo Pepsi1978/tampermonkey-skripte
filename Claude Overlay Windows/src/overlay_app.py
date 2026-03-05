@@ -12,7 +12,7 @@ import tkinter.font as tkfont
 
 from api_clients import improve_text_with_gemini, transcribe_with_grok
 from audio_capture import AudioRecorder
-from claude_window import clear_input, get_foreground_window, is_claude_running, paste_text
+from claude_window import clear_input, get_foreground_window, is_claude_running, is_target_app_window, paste_text
 from config import Settings
 
 # ---------------------------------------------------------------------------
@@ -79,6 +79,7 @@ class ClaudeOverlayApp:
         self._drag_data = {"x": 0, "y": 0}
         self._target_hwnd: int | None = None  # Letztes Nicht-Overlay-Fenster
         self._overlay_hwnd: int | None = None  # Wird nach root.update() gesetzt
+        self._overlay_visible: bool = True  # Sichtbarkeitsstatus fuer Auto-Hide
 
         # ----- Fenster -----
         self.root = tk.Tk()
@@ -201,6 +202,9 @@ class ClaudeOverlayApp:
 
         # Overlay-HWND ermitteln und Vordergrund-Tracking starten
         self.root.after(500, self._init_hwnd_tracking)
+
+        # Periodisch topmost sicherstellen (wie macOS-Overlay)
+        self.root.after(2000, self._keep_on_top)
 
         # Claude-Prozess-Watcher
         self.root.after(2000, self._watch_claude_process)
@@ -495,11 +499,42 @@ class ClaudeOverlayApp:
         self._track_foreground()
 
     def _track_foreground(self) -> None:
-        """Speichert regelmaessig das aktive Nicht-Overlay-Fenster."""
+        """Speichert das aktive Fenster und blendet Overlay bei Fokuswechsel aus/ein."""
         hwnd = get_foreground_window()
         if hwnd and hwnd != self._overlay_hwnd:
             self._target_hwnd = hwnd
+            # Auto-Hide: Overlay nur anzeigen, wenn Claude im Vordergrund ist
+            if is_target_app_window(hwnd):
+                self._show_overlay()
+            else:
+                self._hide_overlay()
         self.root.after(300, self._track_foreground)
+
+    def _show_overlay(self) -> None:
+        """Zeigt das Overlay an, falls es versteckt ist."""
+        if not self._overlay_visible:
+            self._overlay_visible = True
+            self.root.deiconify()
+            self.root.lift()
+            self.root.attributes("-topmost", True)
+            log.info("Overlay eingeblendet (Claude aktiv)")
+
+    def _hide_overlay(self) -> None:
+        """Versteckt das Overlay, falls es sichtbar ist."""
+        if self._overlay_visible and not self.is_recording and not self.is_processing:
+            self._overlay_visible = False
+            self.root.withdraw()
+            log.info("Overlay ausgeblendet (anderes Fenster aktiv)")
+
+    def _keep_on_top(self) -> None:
+        """Hebt das Overlay periodisch in den Vordergrund (nur wenn sichtbar)."""
+        try:
+            if self._overlay_visible:
+                self.root.lift()
+                self.root.attributes("-topmost", True)
+        except tk.TclError:
+            return  # Fenster wurde geschlossen
+        self.root.after(2000, self._keep_on_top)
 
     # ------------------------------------------------------------------
     # Claude-Prozess-Watcher

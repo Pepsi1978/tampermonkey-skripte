@@ -178,6 +178,21 @@ def _find_claude_hwnd() -> int | None:
     return None
 
 
+def is_target_app_window(hwnd: int) -> bool:
+    """Prueft, ob ein Fenster-Handle zu einer unterstuetzten App gehoert (Claude oder Codex)."""
+    try:
+        length = _user32.GetWindowTextLengthW(hwnd)
+        if length > 0:
+            buf = ctypes.create_unicode_buffer(length + 1)
+            _user32.GetWindowTextW(hwnd, buf, length + 1)
+            title = buf.value.lower()
+            if "claude" in title or "codex" in title:
+                return True
+    except Exception:
+        pass
+    return False
+
+
 def _activate_window(hwnd: int) -> bool:
     """Aktiviert ein Fenster per SetForegroundWindow."""
     try:
@@ -192,13 +207,13 @@ def _activate_window(hwnd: int) -> bool:
 
 
 def is_claude_running(settings: Settings) -> bool:
-    """Prueft, ob die Claude Desktop App laeuft.
+    """Prueft, ob die Claude Desktop App oder Codex Desktop App laeuft.
 
     Verwendet einen exakten Vergleich des Prozessnamens, damit
     Browser-Prozesse (z.B. Chrome mit einem Claude-Tab) nicht
-    faelschlicherweise als Claude Desktop erkannt werden.
+    faelschlicherweise als Ziel-App erkannt werden.
     """
-    names = set(settings.claude_process_names)
+    names = set(settings.overlay_target_process_names)
     for proc in psutil.process_iter(["name"]):
         proc_name = (proc.info.get("name") or "").lower()
         if proc_name in names:

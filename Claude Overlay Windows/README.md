@@ -1,6 +1,6 @@
 # Claude Overlay Windows
 
-Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
+Ein Python-Overlay fuer die **Windows Claude Desktop App** und die **OpenAI Codex Desktop App** mit zwei Buttons:
 
 - **Mikrofon-Button** (Mic): Nimmt deine Sprache auf, schickt das Audio an die **Groq Whisper API** (Transkription), dann optional an die **Gemini API** (Intentionserkennung + hochwertiges Deutsch) und fuegt den verbesserten Text automatisch in das Claude-Eingabefeld ein.
 - **X-Button**: Leert das gesamte Eingabefeld in der Claude Desktop App.
@@ -10,7 +10,8 @@ Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
 - Der **Watcher** (`watcher.py`) ueberwacht, ob die Claude Desktop App laeuft.
 - Wenn Claude gestartet wird: Das Overlay startet automatisch.
 - Wenn Claude geschlossen wird: Das Overlay beendet sich automatisch.
-- Das Overlay ist **rahmenlos** (kein Fenstertitel), **immer im Vordergrund** und kann per **Rechtsklick + Ziehen** frei verschoben werden.
+- Das Overlay ist **rahmenlos** (kein Fenstertitel) und kann per **Rechtsklick + Ziehen** frei verschoben werden.
+- Das Overlay **blendet sich automatisch aus**, wenn eine andere App als Claude oder Codex im Vordergrund ist, und erscheint wieder, sobald Claude/Codex aktiv wird.
 - Waehrend der Aufnahme **pulsiert** der Mikrofon-Button rot.
 - Lange Aufnahmen (>20 MB) werden automatisch in Teile aufgesplittet und stueckweise transkribiert.
 - Bei API-Fehlern (429/500/503) wird automatisch mit Backoff erneut versucht.
@@ -39,14 +40,14 @@ Ein Python-Overlay fuer die **Windows Claude Desktop App** mit zwei Buttons:
 
 ## 1. Was macht dieses Tool?
 
-Wenn du mit der Claude Desktop App arbeitest, moechtest du vielleicht manchmal **per Sprache** Eingaben machen, anstatt alles zu tippen. Dieses Tool:
+Wenn du mit der Claude Desktop App oder der OpenAI Codex Desktop App arbeitest, moechtest du vielleicht manchmal **per Sprache** Eingaben machen, anstatt alles zu tippen. Dieses Tool:
 
 1. **Hoert dir zu** (Mikrofon-Aufnahme)
 2. **Wandelt deine Sprache in Text um** (Groq Whisper API - schnelle und praezise Spracherkennung)
 3. **Verbessert den Text** (Gemini API - erkennt deine Absichten und formuliert sie in gutem Deutsch)
-4. **Fuegt den fertigen Text ein** (automatisch in das Claude-Eingabefeld)
+4. **Fuegt den fertigen Text ein** (automatisch in das Eingabefeld von Claude oder Codex)
 
-Das spart Zeit und sorgt dafuer, dass deine Spracheingaben sauber und klar formuliert bei Claude ankommen.
+Das spart Zeit und sorgt dafuer, dass deine Spracheingaben sauber und klar formuliert ankommen. Das Overlay blendet sich automatisch aus, wenn du zu einer anderen App wechselst, und erscheint wieder, sobald Claude oder Codex im Vordergrund ist.
 
 ---
 
@@ -58,7 +59,7 @@ Bevor du loslegst, brauchst du folgendes auf deinem Windows-Rechner:
 |---|---|
 | **Windows 10 oder 11** | Das Tool nutzt Windows-spezifische Funktionen (Fenstererkennung, UI-Automation) |
 | **Python 3.11 oder neuer** | Die Programmiersprache, in der das Tool geschrieben ist. Python fuehrt den Code aus |
-| **Claude Desktop App** | Die App, in die das Overlay den Text einfuegt |
+| **Claude Desktop App** oder **Codex Desktop App** | Die App, in die das Overlay den Text einfuegt |
 | **Internetverbindung** | Fuer die API-Aufrufe (Groq Whisper + Gemini) |
 | **Ein Mikrofon** | Zum Aufnehmen deiner Sprache (eingebaut oder extern) |
 | **Groq API-Key** | Zugang zur Sprach-Transkription (von Groq Cloud) |
@@ -302,6 +303,7 @@ In der `.env`-Datei kannst du auch folgendes anpassen:
 | `AUDIO_SAMPLE_RATE` | `16000` | Audio-Abtastrate in Hz (16000 ist Standard fuer Sprache) |
 | `AUDIO_CHANNELS` | `1` | Mono (1) oder Stereo (2) |
 | `CLAUDE_PROCESS_NAMES` | `Claude.exe,...` | Name(n) des Claude-Prozesses (kommagetrennt) |
+| `OVERLAY_TARGET_PROCESS_NAMES` | `Claude.exe,...,Codex.exe,...` | Alle Apps, bei denen das Overlay sichtbar sein soll (kommagetrennt) |
 
 ---
 
@@ -446,8 +448,8 @@ python -m pip install -r requirements.txt
 
 ### "Claude-Fenster wurde nicht gefunden"
 
-- Stelle sicher, dass die Claude Desktop App geoeffnet ist
-- Falls deine Claude-App einen anderen Fenstertitel hat, passe `CLAUDE_PROCESS_NAMES` in der `.env` an
+- Stelle sicher, dass die Claude Desktop App oder Codex Desktop App geoeffnet ist
+- Falls deine App einen anderen Fenstertitel hat, passe `CLAUDE_PROCESS_NAMES` und `OVERLAY_TARGET_PROCESS_NAMES` in der `.env` an
 
 ### "Fehlende Umgebungsvariablen: GROQ_API_KEY"
 
