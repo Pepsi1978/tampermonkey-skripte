@@ -272,9 +272,12 @@ class ClaudeOverlayApp:
         self.canvas.bind("<Button-1>", self._on_click)
         self.canvas.bind("<Motion>", self._on_motion)
         self.canvas.bind("<Leave>", self._on_leave)
-        # Verschieben nur per Rechtsklick (Button-2) oder Ctrl+Click
+        # Verschieben per Rechtsklick oder Ctrl+Click
+        # macOS: Button-2 = Mitte, Button-3 = Rechtsklick (inkl. Trackpad)
         self.canvas.bind("<Button-2>", self._on_drag_start)
         self.canvas.bind("<B2-Motion>", self._on_drag_motion)
+        self.canvas.bind("<Button-3>", self._on_drag_start)
+        self.canvas.bind("<B3-Motion>", self._on_drag_motion)
         self.canvas.bind("<Control-ButtonPress-1>", self._on_drag_start)
         self.canvas.bind("<Control-B1-Motion>", self._on_drag_motion)
 
