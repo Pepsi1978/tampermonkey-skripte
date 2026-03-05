@@ -1,4 +1,4 @@
-# Claude Code lernen – Erkenntnisse
+# Claude Code kennen lernen
 
 ## Tag 1 – Git & Claude Code Grundlagen
 
