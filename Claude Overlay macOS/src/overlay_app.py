@@ -143,8 +143,8 @@ class ClaudeOverlayApp:
         screen_w = self.root.winfo_screenwidth()
         screen_h = self.root.winfo_screenheight()
         x = screen_w - total_w - 24
-        # Genug Abstand zum Dock (ca. 150px) und Menubar (ca. 25px)
-        y = screen_h - total_h - 150
+        # Abstand zum Dock (~260px vom unteren Rand)
+        y = screen_h - total_h - 260
 
         # Fenster unsichtbar vorbereiten
         self.root.withdraw()
