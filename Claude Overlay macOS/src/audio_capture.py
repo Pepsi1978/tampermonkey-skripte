@@ -51,8 +51,19 @@ class AudioRecorder:
         self._stream.start()
         self._recording = True
 
+    # Minimale RMS-Lautstaerke damit die Aufnahme als "nicht still" gilt.
+    # Werte darunter sind typischerweise Hintergrundrauschen / Stille.
+    _MIN_RMS = 0.005
+
+    # Minimale Aufnahmedauer in Sekunden
+    _MIN_DURATION_SEC = 0.4
+
     def stop(self) -> Path:
-        """Stoppt die Aufnahme und gibt den Pfad zur WAV-Datei zurueck."""
+        """Stoppt die Aufnahme und gibt den Pfad zur WAV-Datei zurueck.
+
+        Raises:
+            RuntimeError: Bei zu kurzer oder zu leiser Aufnahme.
+        """
         if not self._recording or self._stream is None:
             raise RuntimeError("Es laeuft gerade keine Aufnahme.")
 
@@ -65,6 +76,16 @@ class AudioRecorder:
             if not self._frames:
                 raise RuntimeError("Keine Audiodaten aufgenommen.")
             audio = np.concatenate(self._frames, axis=0)
+
+        # Zu kurze Aufnahmen verwerfen (versehentliches Tippen)
+        duration = len(audio) / self.sample_rate
+        if duration < self._MIN_DURATION_SEC:
+            raise RuntimeError("Aufnahme zu kurz – bitte laenger sprechen.")
+
+        # Stille-Erkennung: RMS-Lautstaerke pruefen
+        rms = float(np.sqrt(np.mean(audio ** 2)))
+        if rms < self._MIN_RMS:
+            raise RuntimeError("Nichts erkannt – Mikrofon zu leise oder Stille.")
 
         tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
         tmp_path = Path(tmp_file.name)
