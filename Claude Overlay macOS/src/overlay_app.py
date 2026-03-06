@@ -560,7 +560,9 @@ class ClaudeOverlayApp:
         self.is_processing = False
         self.canvas.itemconfig(self.mic_circle, fill=COLOR_ERROR)
         # Kurze Fehlermeldung im Overlay, volle Meldung im Log
-        if "Rate Limit" in msg or "429" in msg:
+        if "Nichts erkannt" in msg or "zu kurz" in msg or "zu leise" in msg or "Stille" in msg:
+            short = "Nichts erkannt"
+        elif "Rate Limit" in msg or "429" in msg:
             short = "API ueberlastet - warte kurz"
         elif "503" in msg or "nicht erreichbar" in msg:
             short = "API nicht erreichbar"
