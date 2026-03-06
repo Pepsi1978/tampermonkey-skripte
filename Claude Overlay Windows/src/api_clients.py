@@ -55,6 +55,34 @@ def _split_audio(audio_path: Path, max_bytes: int = _MAX_CHUNK_BYTES) -> List[Pa
     return chunks
 
 
+_HALLUCINATION_PATTERNS = [
+    "vielen dank",
+    "danke fuers zuschauen",
+    "danke fürs zuschauen",
+    "untertitel von",
+    "untertitel der amara",
+    "copyright",
+    "thank you",
+    "thanks for watching",
+    "subtitles by",
+    "bis zum naechsten mal",
+    "bis zum nächsten mal",
+    "tschuess",
+    "tschüss",
+]
+
+
+def _is_hallucination(text: str) -> bool:
+    """Prueft ob der Text eine bekannte Whisper-Halluzination ist."""
+    if not text:
+        return True
+    lower = text.lower().strip(" .!,")
+    # Nur kurze Texte pruefen (echte Halluzinationen sind typischerweise kurz)
+    if len(lower) > 60:
+        return False
+    return any(lower.startswith(p) or lower == p for p in _HALLUCINATION_PATTERNS)
+
+
 def _transcribe_single(audio_path: Path, settings: Settings) -> str:
     """Transkribiert eine einzelne WAV-Datei (muss unter 25 MB sein)."""
     headers = {
@@ -102,10 +130,16 @@ def _transcribe_single(audio_path: Path, settings: Settings) -> str:
     payload = response.json()
 
     text = payload.get("text") or payload.get("transcript") or ""
-    if not text.strip():
+    text = text.strip()
+
+    # Bekannte Whisper-Halluzinationen herausfiltern
+    if _is_hallucination(text):
+        return ""
+
+    if not text:
         raise RuntimeError(f"Unerwartete Grok-Whisper-Antwort: {payload}")
 
-    return text.strip()
+    return text
 
 
 def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
@@ -125,7 +159,9 @@ def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:
                 except Exception:
                     pass
 
-    return " ".join(parts)
+    # Leere Teile (gefilterte Halluzinationen) entfernen
+    parts = [p for p in parts if p]
+    return " ".join(parts).strip()
 
 
 def _extract_json_block(text: str) -> Dict[str, Any]:

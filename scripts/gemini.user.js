@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Gemini V.1.3.7
+// @name         Gemini V.1.3.8
 // @namespace    https://gemini.google.com/
-// @version      1.3.7
+// @version      1.3.8
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
 // @match        https://gemini.google.com/*
 // @run-at       document-idle
@@ -22,7 +22,7 @@
   "use strict";
         // ── CSS für Mikrofon-Button Animationen (mit Fehlerbehandlung) ──
     try {
-      (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}#stt-live-preview{position:fixed;bottom:520px;right:16px;max-width:420px;min-width:180px;padding:10px 14px;background:rgba(0,0,0,.88);color:#fff;border-radius:10px;font-size:14px;line-height:1.5;z-index:2147483646;box-shadow:0 4px 20px rgba(0,0,0,.3);max-height:180px;overflow-y:auto;word-wrap:break-word;transition:opacity .25s}#stt-live-preview .stt-pv-label{font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:.4px}#stt-live-preview .stt-pv-interim{color:#9ca3af;font-style:italic}#stt-live-preview .stt-pv-final{color:#fff}#stt-live-preview .stt-pv-waiting{color:#fbbf24;font-style:italic}";try{(document.head||document.documentElement).appendChild(s);}catch(e){document.documentElement.appendChild(s);}})();
+      (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.06)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}#stt-live-preview{position:fixed;bottom:80px;right:16px;max-width:420px;min-width:180px;padding:10px 14px;background:rgba(0,0,0,.88);color:#fff;border-radius:10px;font-size:14px;line-height:1.5;z-index:2147483646;box-shadow:0 4px 20px rgba(0,0,0,.3);max-height:180px;overflow-y:auto;word-wrap:break-word;transition:opacity .25s}#stt-live-preview .stt-pv-label{font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:.4px}#stt-live-preview .stt-pv-interim{color:#9ca3af;font-style:italic}#stt-live-preview .stt-pv-final{color:#fff}#stt-live-preview .stt-pv-waiting{color:#fbbf24;font-style:italic}";try{(document.head||document.documentElement).appendChild(s);}catch(e){document.documentElement.appendChild(s);}})();
     } catch(e) { /* CSS-Animation nicht verfügbar, Buttons funktionieren trotzdem */ }
 
 
@@ -74,7 +74,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // ============================================================
   // UI POSITION
   // ============================================================
-  const UI_POS = { rightPx: 16, bottomPx: 200 };
+  const UI_POS = { rightPx: 16, bottomPx: 16 };
   const UI_BUTTON_SIZE = 42;
   const UI_MIN_EDGE_GAP = 4;
   // Android/Edge Mobile-Erkennung (für angepasste Restart-Delays)
@@ -1992,8 +1992,17 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     micBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
     if (!micBtn.isConnected) mountNode.appendChild(micBtn);
 
+    memBtn = getOrCreateButton(UI_IDS.mem);
+    styleRoundButton(memBtn, 52, 0);
+    memBtn.textContent = memBtn.textContent || "\uD83D\uDCAE";
+    memBtn.title = "Memory-Prompt einf\u00fcgen";
+    memBtn.onclick = runMemoryPrompt;
+    memBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
+    memBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
+    if (!memBtn.isConnected) mountNode.appendChild(memBtn);
+
     clearBtn = getOrCreateButton(UI_IDS.clear);
-    styleRoundButton(clearBtn, 0, 104);
+    styleRoundButton(clearBtn, 104, 0);
     clearBtn.textContent = clearBtn.textContent || "\u274C";
     setUiStyle(clearBtn, "color", "#c40000");
     clearBtn.title = "Sprechblase leeren";
@@ -2003,7 +2012,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     if (!clearBtn.isConnected) mountNode.appendChild(clearBtn);
 
     promptBtn = getOrCreateButton(UI_IDS.promptFrank);
-    styleRoundButton(promptBtn, 0, 156);
+    styleRoundButton(promptBtn, 0, 52);
     promptBtn.textContent = promptBtn.textContent || "\u2728";
     promptBtn.title = "Prompt (f\u00fcr Frank) einbetten";
     promptBtn.onclick = runPromptBuilder;
@@ -2012,36 +2021,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     if (!promptBtn.isConnected) mountNode.appendChild(promptBtn);
 
     promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
-    styleRoundButton(promptBtn2, 0, 208);
+    styleRoundButton(promptBtn2, 0, 104);
     promptBtn2.textContent = promptBtn2.textContent || "\uD83E\uDEA7";
     promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
     promptBtn2.onclick = runPromptBuilderGeneral;
     promptBtn2.addEventListener("pointerdown", e => e.preventDefault(), true);
     promptBtn2.addEventListener("mousedown",   e => e.preventDefault(), true);
     if (!promptBtn2.isConnected) mountNode.appendChild(promptBtn2);
-
-    memBtn = getOrCreateButton(UI_IDS.mem);
-    styleRoundButton(memBtn, 0, 260);
-    memBtn.textContent = memBtn.textContent || "\uD83D\uDCAE";
-    memBtn.title = "Memory-Prompt einf\u00fcgen";
-    memBtn.onclick = runMemoryPrompt;
-    memBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
-    memBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
-    if (!memBtn.isConnected) mountNode.appendChild(memBtn);
-
-    // Gemini-Korrektur Toggle (ganz unten)
-    geminiBtn = getOrCreateButton(UI_IDS.gemini);
-    styleRoundButton(geminiBtn, 0, 0);
-    geminiBtn.addEventListener("pointerdown", e => e.preventDefault(), true);
-    geminiBtn.addEventListener("mousedown",   e => e.preventDefault(), true);
-    geminiBtn.onclick = function() {
-      CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
-      if (typeof GM_setValue === "function") GM_setValue("autoGeminiCorrection", CFG.autoGeminiCorrection);
-      updateGeminiBtn();
-      showToast(CFG.autoGeminiCorrection ? "✅ Gemini-Korrektur aktiviert" : "❌ Gemini-Korrektur deaktiviert", 3000);
-    };
-    if (!geminiBtn.isConnected) mountNode.appendChild(geminiBtn);
-    updateGeminiBtn();
 
     scheduleUiRelayout();
     setMicState("idle");
