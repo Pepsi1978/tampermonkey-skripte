@@ -22,45 +22,6 @@ _MAX_CHUNK_BYTES = 20 * 1024 * 1024
 # Retry-faehige HTTP-Statuscodes
 _RETRYABLE_STATUS_CODES = {429, 500, 503}
 
-# Bekannte Whisper-Halluzinationen bei Stille oder sehr leiser Aufnahme.
-# Whisper generiert diese Phrasen zufaellig, wenn kein echtes Sprachsignal vorliegt.
-_HALLUCINATION_PHRASES = {
-    "vielen dank",
-    "vielen dank.",
-    "vielen dank!",
-    "vielen dank fürs zuschauen",
-    "vielen dank fürs zuschauen.",
-    "vielen dank fürs zuschauen!",
-    "vielen dank für's zuschauen",
-    "vielen dank für's zuschauen.",
-    "danke fürs zuschauen",
-    "danke fürs zuschauen.",
-    "danke fürs zuschauen!",
-    "danke für's zuschauen",
-    "danke.",
-    "danke",
-    "tschüss",
-    "tschüss.",
-    "bis zum nächsten mal",
-    "bis zum nächsten mal.",
-    "untertitelung des zdf",
-    "untertitelung des zdf.",
-    "untertitel von stephanie geiges",
-    "untertitel der amara.org-community",
-    "copyright watchbetter 2021",
-    "thank you.",
-    "thank you",
-    "thank you for watching",
-    "thank you for watching.",
-    "thanks for watching",
-    "thanks for watching.",
-    "you",
-    "bye.",
-    "bye",
-    "...",
-    ".",
-}
-
 
 def _split_audio(audio_path: Path, max_bytes: int = _MAX_CHUNK_BYTES) -> List[Path]:
     """Teilt eine WAV-Datei in Chunks auf, die jeweils unter max_bytes liegen."""
@@ -102,7 +63,8 @@ def _transcribe_single(audio_path: Path, settings: Settings) -> str:
     data = {
         "model": settings.whisper_model,
         "language": settings.whisper_lang,
-        "response_format": "text",
+        "response_format": "json",
+        "temperature": "0",
     }
 
     max_retries = 3
@@ -137,18 +99,13 @@ def _transcribe_single(audio_path: Path, settings: Settings) -> str:
             f"Groq API Fehler {response.status_code}: {response.text}"
         )
 
-    text = response.text or ""
+    payload = response.json()
+
+    text = payload.get("text") or payload.get("transcript") or ""
     if not text.strip():
-        raise RuntimeError("Groq Whisper lieferte keinen Text.")
+        raise RuntimeError(f"Unerwartete Grok-Whisper-Antwort: {payload}")
 
-    cleaned = text.strip()
-
-    # Whisper-Halluzinationen filtern
-    if cleaned.lower() in _HALLUCINATION_PHRASES:
-        log.info("Whisper-Halluzination erkannt und gefiltert: %r", cleaned)
-        raise RuntimeError("Nichts erkannt – bitte nochmal sprechen.")
-
-    return cleaned
+    return text.strip()
 
 
 def transcribe_with_grok(audio_path: Path, settings: Settings) -> str:

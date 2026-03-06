@@ -108,11 +108,11 @@ COLOR_STATUS = "#AAAAAA"
 class ClaudeOverlayApp:
     """Modernes rahmenloses Overlay mit Mikrofon-, Radiergummi- und Beenden-Button (macOS)."""
 
-    BTN_RADIUS = 24
-    BTN_GAP = 12
-    PADDING = 10
-    STATUS_HEIGHT = 18
-    CLOSE_RADIUS = 9
+    BTN_RADIUS = 28
+    BTN_GAP = 16
+    PADDING = 12
+    STATUS_HEIGHT = 22
+    CLOSE_RADIUS = 10
 
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
@@ -128,7 +128,6 @@ class ClaudeOverlayApp:
         self._drag_data = {"x": 0, "y": 0}
         self._target_app: str | None = None  # Letztes Nicht-Overlay-Fenster (App-Name)
         self._overlay_visible: bool = True  # Overlay-Sichtbarkeit
-        self._claude_not_found_count: int = 0  # Zaehler fuer fehlgeschlagene Prozessabfragen
 
         # ----- Fenster -----
         self.root = tk.Tk()
@@ -139,15 +138,14 @@ class ClaudeOverlayApp:
 
         r = self.BTN_RADIUS
         d = r * 2
-        # Hochformat: Buttons vertikal gestapelt (Besen oben, Mikrofon unten)
-        total_w = d + self.PADDING * 2
-        total_h = d + self.BTN_GAP + d + self.STATUS_HEIGHT + self.PADDING * 2
+        total_w = d + self.BTN_GAP + d + self.PADDING * 2
+        total_h = d + self.STATUS_HEIGHT + self.PADDING * 2
 
         screen_w = self.root.winfo_screenwidth()
         screen_h = self.root.winfo_screenheight()
         x = screen_w - total_w - 24
-        # Abstand zum Dock (~150px vom unteren Rand)
-        y = screen_h - total_h - 150
+        # Abstand zum Dock (~340px vom unteren Rand)
+        y = screen_h - total_h - 340
 
         # Fenster unsichtbar vorbereiten
         self.root.withdraw()
@@ -181,26 +179,9 @@ class ClaudeOverlayApp:
             2, 2, total_w - 2, total_h - 2, radius=16, fill=COLOR_BG, outline="#333333"
         )
 
-        # ----- Radiergummi-Button oben (Eingabefeld leeren) -----
-        eraser_cx = self.PADDING + r
-        eraser_cy = self.PADDING + r
-
-        self.eraser_circle = self.canvas.create_oval(
-            eraser_cx - r, eraser_cy - r, eraser_cx + r, eraser_cy + r,
-            fill=COLOR_ERASER_IDLE, outline="#555555", width=2,
-        )
-
-        try:
-            eraser_font = tkfont.Font(family="Apple Color Emoji", size=14)
-        except Exception:
-            eraser_font = tkfont.Font(size=14)
-        self.eraser_text = self.canvas.create_text(
-            eraser_cx, eraser_cy, text="\U0001F9F9", font=eraser_font, fill=COLOR_TEXT,
-        )
-
-        # ----- Mikrofon-Button unten -----
-        mic_cx = eraser_cx
-        mic_cy = eraser_cy + d + self.BTN_GAP
+        # ----- Mikrofon-Button -----
+        mic_cx = self.PADDING + r
+        mic_cy = self.PADDING + r
 
         self.mic_circle = self.canvas.create_oval(
             mic_cx - r, mic_cy - r, mic_cx + r, mic_cy + r,
@@ -209,17 +190,34 @@ class ClaudeOverlayApp:
 
         # macOS-Fonts
         try:
-            mic_font = tkfont.Font(family="Apple Color Emoji", size=14)
+            mic_font = tkfont.Font(family="Apple Color Emoji", size=18)
         except Exception:
-            mic_font = tkfont.Font(size=14)
+            mic_font = tkfont.Font(size=18)
         self.mic_text = self.canvas.create_text(
             mic_cx, mic_cy, text="\U0001F3A4", font=mic_font, fill=COLOR_TEXT,
         )
 
-        # ----- Gemini-Toggle (kleines "G" links oben am Mikrofon) -----
+        # ----- Radiergummi-Button (Eingabefeld leeren) -----
+        eraser_cx = mic_cx + d + self.BTN_GAP
+        eraser_cy = mic_cy
+
+        self.eraser_circle = self.canvas.create_oval(
+            eraser_cx - r, eraser_cy - r, eraser_cx + r, eraser_cy + r,
+            fill=COLOR_ERASER_IDLE, outline="#555555", width=2,
+        )
+
+        try:
+            eraser_font = tkfont.Font(family="Apple Color Emoji", size=16)
+        except Exception:
+            eraser_font = tkfont.Font(size=16)
+        self.eraser_text = self.canvas.create_text(
+            eraser_cx, eraser_cy, text="\U0001F9F9", font=eraser_font, fill=COLOR_TEXT,
+        )
+
+        # ----- Gemini-Toggle (kleines "G" oben links) -----
         cr = self.CLOSE_RADIUS
-        gemini_cx = mic_cx - r + cr
-        gemini_cy = mic_cy - r + cr
+        gemini_cx = cr + 6
+        gemini_cy = cr + 6
 
         gemini_fill = COLOR_GEMINI_ON if self.gemini_enabled else COLOR_GEMINI_OFF
         gemini_text_fill = COLOR_TEXT if self.gemini_enabled else "#888888"
@@ -230,16 +228,16 @@ class ClaudeOverlayApp:
         )
 
         try:
-            gemini_font = tkfont.Font(family="SF Pro Text", size=7, weight="bold")
+            gemini_font = tkfont.Font(family="SF Pro Text", size=8, weight="bold")
         except Exception:
-            gemini_font = tkfont.Font(size=7, weight="bold")
+            gemini_font = tkfont.Font(size=8, weight="bold")
         self.gemini_text = self.canvas.create_text(
             gemini_cx, gemini_cy, text="G", font=gemini_font, fill=gemini_text_fill,
         )
 
         # ----- Beenden-Button (kleines X oben rechts) -----
-        close_cx = total_w - cr - 5
-        close_cy = cr + 5
+        close_cx = total_w - cr - 6
+        close_cy = cr + 6
 
         self.close_circle = self.canvas.create_oval(
             close_cx - cr, close_cy - cr, close_cx + cr, close_cy + cr,
@@ -247,19 +245,19 @@ class ClaudeOverlayApp:
         )
 
         try:
-            close_font = tkfont.Font(family="SF Pro Text", size=7, weight="bold")
+            close_font = tkfont.Font(family="SF Pro Text", size=8, weight="bold")
         except Exception:
-            close_font = tkfont.Font(size=7, weight="bold")
+            close_font = tkfont.Font(size=8, weight="bold")
         self.close_text = self.canvas.create_text(
             close_cx, close_cy, text="\u2715", font=close_font, fill="#888888",
         )
 
         # ----- Statustext -----
         try:
-            status_font = tkfont.Font(family="SF Pro Text", size=7)
+            status_font = tkfont.Font(family="SF Pro Text", size=9)
         except Exception:
-            status_font = tkfont.Font(size=7)
-        status_cy = mic_cy + r + self.STATUS_HEIGHT // 2 + 2
+            status_font = tkfont.Font(size=9)
+        status_cy = mic_cy + r + self.STATUS_HEIGHT // 2 + 4
         self.status_text = self.canvas.create_text(
             total_w // 2, status_cy, text="Bereit",
             font=status_font, fill=COLOR_STATUS,
@@ -560,9 +558,7 @@ class ClaudeOverlayApp:
         self.is_processing = False
         self.canvas.itemconfig(self.mic_circle, fill=COLOR_ERROR)
         # Kurze Fehlermeldung im Overlay, volle Meldung im Log
-        if "Nichts erkannt" in msg or "zu kurz" in msg or "zu leise" in msg or "Stille" in msg:
-            short = "Nichts erkannt"
-        elif "Rate Limit" in msg or "429" in msg:
+        if "Rate Limit" in msg or "429" in msg:
             short = "API ueberlastet - warte kurz"
         elif "503" in msg or "nicht erreichbar" in msg:
             short = "API nicht erreichbar"
@@ -630,27 +626,10 @@ class ClaudeOverlayApp:
     # ------------------------------------------------------------------
     # Claude-Prozess-Watcher
     # ------------------------------------------------------------------
-    _CLAUDE_MAX_MISS = 3  # Anzahl Fehlversuche bevor Overlay beendet wird
-
     def _watch_claude_process(self) -> None:
-        try:
-            running = is_claude_running(self.settings)
-        except Exception:
-            running = False
-
-        if running:
-            self._claude_not_found_count = 0
-        else:
-            self._claude_not_found_count += 1
-            log.info(
-                "Claude nicht erkannt (%d/%d)",
-                self._claude_not_found_count,
-                self._CLAUDE_MAX_MISS,
-            )
-            if self._claude_not_found_count >= self._CLAUDE_MAX_MISS:
-                log.info("Claude %dx nicht erkannt – beende Overlay", self._CLAUDE_MAX_MISS)
-                self._quit()
-                return
+        if not is_claude_running(self.settings):
+            self._quit()
+            return
         self.root.after(2000, self._watch_claude_process)
 
     # ------------------------------------------------------------------
