@@ -145,8 +145,8 @@ class ClaudeOverlayApp:
         screen_w = self.root.winfo_screenwidth()
         screen_h = self.root.winfo_screenheight()
         x = screen_w - total_w - 24
-        # Abstand zum Dock (~340px vom unteren Rand)
-        y = screen_h - total_h - 340
+        # Abstand zum Dock (~150px vom unteren Rand)
+        y = screen_h - total_h - 150
 
         # Fenster unsichtbar vorbereiten
         self.root.withdraw()
@@ -215,10 +215,10 @@ class ClaudeOverlayApp:
             mic_cx, mic_cy, text="\U0001F3A4", font=mic_font, fill=COLOR_TEXT,
         )
 
-        # ----- Gemini-Toggle (kleines "G" oben links) -----
+        # ----- Gemini-Toggle (kleines "G" links oben am Mikrofon) -----
         cr = self.CLOSE_RADIUS
-        gemini_cx = cr + 5
-        gemini_cy = cr + 5
+        gemini_cx = mic_cx - r + cr
+        gemini_cy = mic_cy - r + cr
 
         gemini_fill = COLOR_GEMINI_ON if self.gemini_enabled else COLOR_GEMINI_OFF
         gemini_text_fill = COLOR_TEXT if self.gemini_enabled else "#888888"
