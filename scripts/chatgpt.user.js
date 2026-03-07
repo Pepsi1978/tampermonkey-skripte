@@ -193,7 +193,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   // ============================================================
   // UI POSITION
   // ============================================================
-  const UI_POS = { rightPx: 16, bottomPx: 200 };
+  const UI_POS = { rightPx: 16, bottomPx: 124 };
   const UI_BUTTON_SIZE = 42;
   const UI_MIN_EDGE_GAP = 4;
   const UI_SHIFT_LEFT_PX = 11.34; // ✅ ~3mm nach links (mehr Abstand zur Scrollbar)
