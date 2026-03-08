@@ -1,13 +1,19 @@
-# install_autostart.ps1 — Richtet den Autostart fuer TerminalVoiceOverlay ein
+# install_autostart.ps1 — Richtet den Autostart mit Watcher fuer TerminalVoiceOverlay ein
 # Ausfuehren: pwsh -File install_autostart.ps1
 
 $ErrorActionPreference = "Stop"
 
 $exePath = Join-Path $PSScriptRoot "publish\TerminalVoiceOverlay.exe"
+$watcherPath = Join-Path $PSScriptRoot "watcher.vbs"
 
 if (-not (Test-Path $exePath)) {
     Write-Host "Fehler: $exePath nicht gefunden." -ForegroundColor Red
     Write-Host "Bitte zuerst 'pwsh -File publish.ps1' ausfuehren." -ForegroundColor Yellow
+    exit 1
+}
+
+if (-not (Test-Path $watcherPath)) {
+    Write-Host "Fehler: $watcherPath nicht gefunden." -ForegroundColor Red
     exit 1
 }
 
@@ -19,21 +25,23 @@ if ((Test-Path $envSource) -and -not (Test-Path $envTarget)) {
     Write-Host ".env nach publish/ kopiert." -ForegroundColor Cyan
 }
 
-# Verknuepfung im Autostart-Ordner erstellen
-$startupFolder = [System.IO.Path]::Combine(
+# Verknuepfung im Autostart-Ordner erstellen — startet den Watcher
+$startupLink = [System.IO.Path]::Combine(
     [Environment]::GetFolderPath("Startup"),
     "TerminalVoiceOverlay.lnk"
 )
 
 $shell = New-Object -ComObject WScript.Shell
-$shortcut = $shell.CreateShortcut($startupFolder)
-$shortcut.TargetPath = $exePath
-$shortcut.WorkingDirectory = Join-Path $PSScriptRoot "publish"
-$shortcut.Description = "TerminalVoiceOverlay — Spracheingabe fuer Terminal"
-$shortcut.WindowStyle = 7  # Minimiert starten
+$shortcut = $shell.CreateShortcut($startupLink)
+$shortcut.TargetPath = "wscript.exe"
+$shortcut.Arguments = """$watcherPath"""
+$shortcut.WorkingDirectory = $PSScriptRoot
+$shortcut.Description = "TerminalVoiceOverlay Watcher — startet Overlay automatisch neu"
+$shortcut.WindowStyle = 7  # Minimiert
 $shortcut.Save()
 
-Write-Host "`nAutostart eingerichtet!" -ForegroundColor Green
-Write-Host "Verknuepfung: $startupFolder"
+Write-Host "`nAutostart mit Watcher eingerichtet!" -ForegroundColor Green
+Write-Host "Verknuepfung: $startupLink"
+Write-Host "Watcher: $watcherPath"
 Write-Host "Programm: $exePath"
-Write-Host "`nTerminalVoiceOverlay startet jetzt automatisch bei der Windows-Anmeldung."
+Write-Host "`nDer Watcher startet bei der Windows-Anmeldung und haelt das Overlay am Laufen."
