@@ -8,8 +8,9 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 Set objWMI = GetObject("winmgmts:\\.\root\cimv2")
 Set colWscript = objWMI.ExecQuery("SELECT CommandLine FROM Win32_Process WHERE Name='wscript.exe'")
 watcherCount = 0
+myScript = LCase(WScript.ScriptFullName)
 For Each proc In colWscript
-    If InStr(LCase(proc.CommandLine), "watcher.vbs") > 0 Then
+    If InStr(LCase(proc.CommandLine), myScript) > 0 Then
         watcherCount = watcherCount + 1
     End If
 Next
