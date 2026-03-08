@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace TerminalVoiceOverlay.Services
 {
@@ -81,7 +80,7 @@ namespace TerminalVoiceOverlay.Services
 
         private static Dictionary<string, string> ParseEnvFile()
         {
-            var exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? ".";
+            var exeDir = AppContext.BaseDirectory;
             var cwd = Environment.CurrentDirectory;
             var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
