@@ -4,7 +4,21 @@
 Set WshShell = CreateObject("WScript.Shell")
 Set fso = CreateObject("Scripting.FileSystemObject")
 
-' Pfad zur .exe (im selben Ordner wie dieses Script)
+' Pruefen ob bereits ein anderer Watcher laeuft
+Set objWMI = GetObject("winmgmts:\\.\root\cimv2")
+Set colWscript = objWMI.ExecQuery("SELECT CommandLine FROM Win32_Process WHERE Name='wscript.exe'")
+watcherCount = 0
+For Each proc In colWscript
+    If InStr(LCase(proc.CommandLine), "watcher.vbs") > 0 Then
+        watcherCount = watcherCount + 1
+    End If
+Next
+If watcherCount > 1 Then
+    ' Ein anderer Watcher laeuft bereits — beenden
+    WScript.Quit 0
+End If
+
+' Pfad zur .exe (publish-Ordner relativ zum Script)
 scriptDir = fso.GetParentFolderName(WScript.ScriptFullName)
 exePath = fso.BuildPath(scriptDir, "publish\TerminalVoiceOverlay.exe")
 
@@ -26,8 +40,8 @@ Loop
 
 Function IsProcessRunning(processName)
     IsProcessRunning = False
-    Set objWMI = GetObject("winmgmts:\\.\root\cimv2")
-    Set colProcesses = objWMI.ExecQuery("SELECT Name FROM Win32_Process WHERE Name='" & processName & "'")
+    Set objWMI2 = GetObject("winmgmts:\\.\root\cimv2")
+    Set colProcesses = objWMI2.ExecQuery("SELECT Name FROM Win32_Process WHERE Name='" & processName & "'")
     If colProcesses.Count > 0 Then
         IsProcessRunning = True
     End If
