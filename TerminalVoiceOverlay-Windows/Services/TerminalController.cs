@@ -12,7 +12,7 @@ namespace TerminalVoiceOverlay.Services
         /// Pastes text into the terminal via Clipboard + Ctrl+V.
         /// Ensures the terminal window is focused first.
         /// </summary>
-        public static void PasteText(string text, IntPtr terminalHwnd)
+        public static void PasteText(string text, IntPtr terminalHwnd, bool autoEnter = false)
         {
             // Set clipboard on UI thread
             Application.Current.Dispatcher.Invoke(() => Clipboard.SetText(text));
@@ -27,6 +27,20 @@ namespace TerminalVoiceOverlay.Services
             // Send Ctrl+V
             SendCtrlV();
             Console.WriteLine($"TerminalController: Text eingefügt (hwnd={terminalHwnd})");
+
+            // Send Enter if auto-enter is enabled
+            if (autoEnter)
+            {
+                Thread.Sleep(500);
+                // Re-focus terminal before Enter
+                if (terminalHwnd != IntPtr.Zero)
+                {
+                    Win32.SetForegroundWindow(terminalHwnd);
+                    Thread.Sleep(100);
+                }
+                SendKey(VK_RETURN);
+                Console.WriteLine("TerminalController: Enter gesendet (Auto-Enter)");
+            }
         }
 
         /// <summary>
@@ -61,6 +75,7 @@ namespace TerminalVoiceOverlay.Services
 
         private const byte VK_END = 0x23;
         private const byte VK_BACKSPACE = 0x08;
+        private const byte VK_RETURN = 0x0D;
 
         private static void SendCtrlV()
         {

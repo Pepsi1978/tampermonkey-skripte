@@ -19,7 +19,9 @@ namespace TerminalVoiceOverlay.Views
         private static readonly SolidColorBrush BrushProcessing = new(Color.FromRgb(0xFF, 0x98, 0x00));
         private static readonly SolidColorBrush BrushSuccess = new(Color.FromRgb(0x43, 0xA0, 0x47));
         private static readonly SolidColorBrush BrushGeminiOn = new(Color.FromRgb(0x22, 0xC5, 0x5E));
-        private static readonly SolidColorBrush BrushGeminiOff = new(Color.FromRgb(0xEF, 0x44, 0x44));
+        private static readonly SolidColorBrush BrushGeminiOff = new(Color.FromRgb(0x2D, 0x2D, 0x2D));
+        private static readonly SolidColorBrush BrushAutoEnterOn = new(Color.FromRgb(0x22, 0xC5, 0x5E));
+        private static readonly SolidColorBrush BrushAutoEnterOff = new(Color.FromRgb(0x2D, 0x2D, 0x2D));
 
         // ── Services ──
         private readonly AudioRecorder _audioRecorder;
@@ -31,6 +33,9 @@ namespace TerminalVoiceOverlay.Views
         private RecordingState _micState = RecordingState.Idle;
         private bool _isProcessing;
         private bool _geminiEnabled = false;
+        private bool _autoEnterEnabled = false;
+        private bool _hasPastedText = false;
+        private string? _lastRawTranscript;
         private readonly DispatcherTimer _pulseTimer;
         private readonly DispatcherTimer _resetTimer;
         private bool _pulseBright;
@@ -68,8 +73,9 @@ namespace TerminalVoiceOverlay.Views
                 SetMicState(RecordingState.Idle);
             };
 
-            // Set initial Gemini button state
+            // Set initial button states
             UpdateGeminiButton();
+            UpdateAutoEnterButton();
 
             // Terminal watcher events
             _terminalWatcher.TerminalActivated += OnTerminalActivated;
@@ -139,6 +145,7 @@ namespace TerminalVoiceOverlay.Views
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
             TerminalController.ClearLine(_terminalWatcher.ActiveTerminalHwnd);
+            _hasPastedText = false;
         }
 
         private async void BtnMic_Click(object sender, RoutedEventArgs e)
@@ -163,6 +170,7 @@ namespace TerminalVoiceOverlay.Views
                 {
                     var transcript = await _groqClient.TranscribeAsync(wavFile);
                     Console.WriteLine($"Transkription: {transcript}");
+                    _lastRawTranscript = transcript;
 
                     string finalText;
                     if (_geminiEnabled && _geminiClient != null)
@@ -184,9 +192,19 @@ namespace TerminalVoiceOverlay.Views
                         finalText = transcript;
                     }
 
-                    TerminalController.PasteText(finalText, _terminalWatcher.ActiveTerminalHwnd);
+                    // Prepend space if text was already pasted on this line
+                    if (_hasPastedText)
+                        finalText = " " + finalText;
+
+                    TerminalController.PasteText(finalText, _terminalWatcher.ActiveTerminalHwnd, _autoEnterEnabled);
                     SetMicState(RecordingState.Success);
                     Console.WriteLine("Text eingefügt");
+
+                    // Track paste state: reset after Enter, keep for next paste
+                    if (_autoEnterEnabled)
+                        _hasPastedText = false;
+                    else
+                        _hasPastedText = true;
                 }
                 catch (Exception ex)
                 {
@@ -221,12 +239,33 @@ namespace TerminalVoiceOverlay.Views
             }
         }
 
+        private void BtnWhisperUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (_lastRawTranscript == null) return;
+
+            // Clear the current line (same logic as X button)
+            TerminalController.ClearLine(_terminalWatcher.ActiveTerminalHwnd);
+
+            // Paste the raw Whisper transcript
+            System.Threading.Thread.Sleep(100);
+            TerminalController.PasteText(_lastRawTranscript, _terminalWatcher.ActiveTerminalHwnd);
+            _hasPastedText = true;
+            Console.WriteLine($"Whisper-Rohtext eingefügt: {_lastRawTranscript}");
+        }
+
         private void BtnGemini_Click(object sender, RoutedEventArgs e)
         {
             if (_geminiClient == null) return;
             _geminiEnabled = !_geminiEnabled;
             UpdateGeminiButton();
             Console.WriteLine($"Gemini {(_geminiEnabled ? "AN" : "AUS")}");
+        }
+
+        private void BtnAutoEnter_Click(object sender, RoutedEventArgs e)
+        {
+            _autoEnterEnabled = !_autoEnterEnabled;
+            UpdateAutoEnterButton();
+            Console.WriteLine($"Auto-Enter {(_autoEnterEnabled ? "AN" : "AUS")}");
         }
 
         // ── State management ──
@@ -261,6 +300,11 @@ namespace TerminalVoiceOverlay.Views
         private void UpdateGeminiButton()
         {
             BtnGemini.Background = _geminiEnabled ? BrushGeminiOn : BrushGeminiOff;
+        }
+
+        private void UpdateAutoEnterButton()
+        {
+            BtnAutoEnter.Background = _autoEnterEnabled ? BrushAutoEnterOn : BrushAutoEnterOff;
         }
 
         private void ScheduleReset()
