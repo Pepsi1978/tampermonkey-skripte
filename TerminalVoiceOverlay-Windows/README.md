@@ -1,13 +1,17 @@
 # TerminalVoiceOverlay — Windows
 
-Ein schwebendes WPF-Overlay, das sich automatisch am Rand des aktiven Terminals einblendet. Per Knopfdruck wird Sprache aufgenommen, via **Groq Whisper** in Text umgewandelt und direkt ins Terminal eingefuegt. Optional korrigiert **Google Gemini** den transkribierten Text vor dem Einfuegen.
+Ein schwebendes WPF-Overlay, das sich automatisch am Rand des aktiven Terminals einblendet. Per Knopfdruck wird Sprache aufgenommen, via **Groq Whisper** in Text umgewandelt und direkt ins Terminal eingefuegt. Optional korrigiert **Google Gemini** den transkribierten Text vor dem Einfuegen — optimiert fuer Programmier-Anweisungen an KI-Coding-Tools wie Claude Code.
 
 ---
 
 ## Features
 
 - **Voice-to-Text**: Mikrofon-Button druecken, sprechen, nochmal druecken — der transkribierte Text wird direkt ins Terminal eingefuegt
-- **Gemini-Korrektur** (optional): Verbessert Grammatik, Rechtschreibung und Zeichensetzung des transkribierten Texts vor dem Einfuegen
+- **Gemini-Korrektur** (optional): Verbessert Grammatik und erkennt falsch transkribierte englische Fachbegriffe — optimiert fuer Programmier-Kontext
+- **Whisper-Undo**: Falls die Gemini-Korrektur nicht gefaellt, kann der originale Whisper-Rohtext per W-Button eingefuegt werden
+- **Auto-Enter**: Optionaler Toggle, der den Text nach dem Einfuegen automatisch absendet (Enter-Taste)
+- **Audio-Feedback**: Kurzer Ton beim Start der Aufnahme, Doppel-Ton beim Stopp — kein Hinschauen noetig
+- **Leerzeichen zwischen Eingaben**: Bei mehreren aufeinanderfolgenden Spracheingaben wird automatisch ein Leerzeichen eingefuegt
 - **Automatische Sichtbarkeit**: Das Overlay erscheint nur, wenn ein Terminal-Fenster aktiv ist, und versteckt sich automatisch
 - **Multi-Monitor**: Das Overlay positioniert sich immer auf dem Monitor des aktiven Terminals
 - **Zeile loeschen**: X-Button loescht die aktuelle Zeile im Terminal
@@ -19,7 +23,23 @@ Ein schwebendes WPF-Overlay, das sich automatisch am Rand des aktiven Terminals 
 
 ## Voraussetzungen
 
-### 1. .NET 8 SDK
+### 1. Git
+
+Git wird benoetigt, um das Repository von GitHub herunterzuladen.
+
+Download: **https://git-scm.com/download/win**
+
+> Lade den **64-bit Git for Windows Setup** Installer herunter und fuehre ihn aus. Die Standardeinstellungen bei der Installation koennen beibehalten werden.
+
+Nach der Installation pruefen — oeffne ein neues Terminal und fuehre aus:
+
+```powershell
+git --version
+```
+
+> Es muss eine Versionsnummer wie `git version 2.x.x` angezeigt werden.
+
+### 2. .NET 8 SDK
 
 Das Projekt ist eine WPF-App, die mit .NET 8 gebaut wird. Du brauchst das SDK zum Kompilieren.
 
@@ -27,15 +47,15 @@ Download: **https://dotnet.microsoft.com/download/dotnet/8.0**
 
 > Lade den **SDK-Installer** herunter (nicht nur die Runtime). Waehle **Windows x64**.
 
-Nach der Installation pruefen — oeffne ein neues Terminal und fuehre aus:
+Nach der Installation pruefen — oeffne ein **neues** Terminal und fuehre aus:
 
 ```powershell
 dotnet --version
 ```
 
-> Es muss eine Versionsnummer wie `8.0.x` angezeigt werden.
+> Es muss eine Versionsnummer wie `8.0.x` angezeigt werden. Falls der Befehl nicht erkannt wird, starte das Terminal neu.
 
-### 2. Groq API-Key (erforderlich)
+### 3. Groq API-Key (erforderlich)
 
 Groq stellt die Whisper-API fuer die Spracherkennung bereit. Du brauchst einen kostenlosen API-Key.
 
@@ -44,9 +64,9 @@ Groq stellt die Whisper-API fuer die Spracherkennung bereit. Du brauchst einen k
 3. Gehe zu **API Keys** und erstelle einen neuen Key
 4. Kopiere den Key — du brauchst ihn gleich fuer die `.env`-Datei
 
-### 3. Gemini API-Key (optional)
+### 4. Gemini API-Key (optional, aber empfohlen)
 
-Gemini korrigiert den transkribierten Text (Grammatik, Satzzeichen). Ohne Gemini-Key wird der Rohtext von Whisper direkt eingefuegt.
+Gemini korrigiert den transkribierten Text — speziell optimiert fuer Programmier-Anweisungen. Ohne Gemini-Key wird der Rohtext von Whisper direkt eingefuegt.
 
 1. Gehe zu: **https://aistudio.google.com/apikey**
 2. Melde dich mit deinem Google-Konto an
@@ -58,15 +78,19 @@ Gemini korrigiert den transkribierten Text (Grammatik, Satzzeichen). Ohne Gemini
 
 ### 1. Repository klonen
 
-Falls du das Repository noch nicht auf deinem Rechner hast:
+Oeffne ein Terminal (Windows Terminal oder PowerShell) und wechsle in den Ordner, in dem du das Projekt speichern moechtest:
 
 ```powershell
 cd $HOME\Documents
 ```
 
+Klone das Repository von GitHub:
+
 ```powershell
 git clone https://github.com/Pepsi1978/proggs.git
 ```
+
+Wechsle in den Projektordner:
 
 ```powershell
 cd proggs\TerminalVoiceOverlay-Windows
@@ -88,7 +112,7 @@ cd TerminalVoiceOverlay-Windows
 
 ### 2. Projekt kompilieren
 
-Das Skript `publish.ps1` baut eine einzelne, ausfuehrbare `.exe`-Datei (self-contained, kein .NET auf dem Zielrechner noetig):
+Das Skript `publish.ps1` baut eine einzelne, ausfuehrbare `.exe`-Datei. Diese ist self-contained — das bedeutet, auf dem Zielrechner muss kein .NET installiert sein, um die fertige `.exe` auszufuehren:
 
 ```powershell
 pwsh -File publish.ps1
@@ -139,11 +163,15 @@ Die `.env`-Datei wird in folgender Reihenfolge gesucht:
 
 ### 4. Starten
 
+Starte das Overlay:
+
 ```powershell
 .\publish\TerminalVoiceOverlay.exe
 ```
 
 Das Overlay erscheint automatisch am rechten Rand, sobald ein Terminal-Fenster (Windows Terminal, PowerShell) aktiv ist.
+
+> **Hinweis:** Falls Windows Smart App Control oder ein Virenscanner die `.exe` beim ersten Start blockiert, musst du die Datei manuell erlauben (Rechtsklick → „Trotzdem ausfuehren" oder eine Ausnahme im Virenscanner hinzufuegen).
 
 ---
 
@@ -167,13 +195,15 @@ pwsh -File uninstall_autostart.ps1
 
 ## Bedienung
 
-Das Overlay zeigt drei runde Buttons:
+Das Overlay zeigt fuenf runde Buttons:
 
 | Button | Funktion |
 |---|---|
 | **X** | Loescht die aktuelle Zeile im Terminal (simuliert End + Backspace) |
-| **Mikrofon** | Aufnahme starten/stoppen — spricht den Text ins Terminal |
-| **G** | Gemini-Korrektur an/aus (gruen = an, rot = aus) |
+| **Mikrofon** 🎤 | Aufnahme starten/stoppen — transkribierter Text wird ins Terminal eingefuegt |
+| **W** | Whisper-Undo: Ersetzt den Gemini-korrigierten Text durch den originalen Whisper-Rohtext |
+| **G** | Gemini-Korrektur an/aus (gruen = an, grau = aus) |
+| **⏎** | Auto-Enter an/aus (gruen = an, grau = aus) — sendet Text nach dem Einfuegen automatisch ab |
 
 ### Mikrofon-Farben
 
@@ -184,14 +214,29 @@ Das Overlay zeigt drei runde Buttons:
 | Orange | Verarbeitung (Transkription / Korrektur) |
 | Gruen | Erfolgreich eingefuegt |
 
+### Audio-Feedback
+
+| Ton | Bedeutung |
+|---|---|
+| Kurzer hoher Ton (880Hz) | Aufnahme gestartet |
+| Absteigender Doppel-Ton (660Hz → 440Hz) | Aufnahme gestoppt |
+
 ### Workflow
 
 1. Terminal-Fenster oeffnen (Windows Terminal, PowerShell)
 2. Das Overlay erscheint automatisch am rechten Bildschirmrand
-3. Mikrofon-Button klicken — Aufnahme startet (Button pulsiert rot)
+3. Mikrofon-Button klicken — Aufnahme startet (Button pulsiert rot, kurzer Ton)
 4. Sprechen
-5. Mikrofon-Button nochmal klicken — Aufnahme stoppt
+5. Mikrofon-Button nochmal klicken — Aufnahme stoppt (Doppel-Ton)
 6. Text wird transkribiert, optional von Gemini korrigiert, und ins Terminal eingefuegt
+7. Falls Gemini-Korrektur nicht gefaellt: W-Button druecken — ersetzt durch Whisper-Rohtext
+8. Falls Auto-Enter (⏎) aktiviert ist, wird der Text automatisch abgesendet
+
+### Mehrere Eingaben hintereinander
+
+Bei aufeinanderfolgenden Spracheingaben wird automatisch ein Leerzeichen zwischen den Texten eingefuegt, damit keine Woerter zusammenkleben. Das Leerzeichen wird zurueckgesetzt, wenn:
+- Die Zeile geloescht wird (X-Button)
+- Auto-Enter aktiv ist (nach dem Enter beginnt eine neue Zeile)
 
 ---
 
@@ -210,12 +255,12 @@ TerminalVoiceOverlay-Windows/
   Services/
     AudioRecorder.cs     — Mikrofon-Aufnahme via NAudio
     Config.cs            — .env-Datei laden und parsen
-    GeminiClient.cs      — Google Gemini API-Client fuer Textkorrektur
+    GeminiClient.cs      — Google Gemini API-Client fuer Textkorrektur (Programmier-Kontext)
     GroqWhisperClient.cs — Groq Whisper API-Client fuer Transkription
-    TerminalController.cs — Text ins Terminal einfuegen, Zeile loeschen
+    TerminalController.cs — Text ins Terminal einfuegen, Zeile loeschen, Auto-Enter
     TerminalWatcher.cs   — Erkennt aktive Terminal-Fenster
   Views/
-    OverlayWindow.xaml   — Overlay-UI (drei runde Buttons)
+    OverlayWindow.xaml   — Overlay-UI (fuenf runde Buttons)
     OverlayWindow.xaml.cs — Overlay-Logik
   publish.ps1            — Build-Skript (erzeugt einzelne .exe)
   install_autostart.ps1  — Richtet Autostart mit Watcher ein
@@ -230,13 +275,16 @@ TerminalVoiceOverlay-Windows/
 | Problem | Loesung |
 |---|---|
 | `dotnet wird nicht erkannt` | .NET 8 SDK installieren von https://dotnet.microsoft.com/download/dotnet/8.0 und Terminal neu starten |
+| `git wird nicht erkannt` | Git installieren von https://git-scm.com/download/win und Terminal neu starten |
 | `pwsh wird nicht erkannt` | PowerShell 7 installieren oder stattdessen `powershell -File publish.ps1` verwenden |
+| `.exe` wird von Windows blockiert | Smart App Control oder Virenscanner blockiert die unsignierte `.exe`. Rechtsklick → „Trotzdem ausfuehren" oder Ausnahme im Virenscanner hinzufuegen |
 | Overlay erscheint nicht | Pruefen ob ein Terminal-Fenster (Windows Terminal / PowerShell) im Vordergrund ist. Andere Terminals muessen ggf. in `TERMINAL_PROCESS_NAMES` ergaenzt werden |
 | Transkription schlaegt fehl | `GROQ_API_KEY` in der `.env` pruefen. Ist der Key gueltig? Ist die `.env` neben der `.exe`? |
 | Gemini-Korrektur funktioniert nicht | `GEMINI_API_KEY` pruefen. Ohne Key wird Gemini automatisch deaktiviert (kein Fehler) |
 | Text wird nicht eingefuegt | Das Terminal-Fenster muss im Vordergrund sein. Das Overlay aktiviert das Terminal vor dem Einfuegen automatisch |
 | Watcher startet nicht | Pruefen ob `watcher.vbs` und `publish\TerminalVoiceOverlay.exe` im selben Verzeichnis liegen |
 | Mehrere Overlay-Instanzen | Der Watcher hat eine Doppelstart-Sperre. Falls trotzdem mehrere laufen: Task-Manager oeffnen und `TerminalVoiceOverlay.exe` beenden |
+| Kein Audio-Feedback | Der System-Lautsprecher muss aktiviert sein. `Console.Beep` nutzt den internen PC-Speaker |
 
 ---
 
@@ -245,5 +293,5 @@ TerminalVoiceOverlay-Windows/
 - **C# / WPF** (.NET 8) — Desktop-UI mit transparentem, nicht-aktivierendem Overlay
 - **NAudio** — Mikrofon-Aufnahme (WAV)
 - **Groq Whisper API** — Speech-to-Text
-- **Google Gemini API** — Textkorrektur (optional)
+- **Google Gemini API** — Textkorrektur fuer Programmier-Kontext (optional)
 - **Win32 API** — Fenster-Erkennung, Vordergrund-Steuerung, Tastatureingabe-Simulation
