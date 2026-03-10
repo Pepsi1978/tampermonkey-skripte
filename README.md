@@ -91,6 +91,27 @@ Fuer Voice-Overlay-Projekte: Kopiere `.env.example` zu `.env` und trage deine AP
 
 ---
 
+## Tampermonkey-Skripte: Update-URLs
+
+Jedes Skript kann in Tampermonkey ueber seine **Update-URL** automatisch aktualisiert werden. Kopiere die jeweilige URL und fuege sie in Tampermonkey unter **Einstellungen > Skript-Editor > @updateURL** ein:
+
+| Skript | Update-URL |
+|--------|-----------|
+| **ChatGPT** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js` |
+| **Claude** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/claude.user.js` |
+| **Gemini** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/gemini.user.js` |
+| **AI Studio** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/GoogleAIStudio.user.js` |
+| **Grok** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/grok.user.js` |
+| **Arena (LMArena)** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/lmarena.user.js` |
+| **Mistral** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/mistral.user.js` |
+| **Notebook LM** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/notebooklm.user.js` |
+| **Platform OAI** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/platformopenai.user.js` |
+| **Translate** | `https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/translate.user.js` |
+
+> **Tipp:** Alle Skripte haben die `@updateURL` und `@downloadURL` bereits im Header eingebaut. Wenn du ein Skript ueber die URL installierst, prueft Tampermonkey automatisch auf Updates.
+
+---
+
 ### Situation B: Bestehender Rechner (aktuellen Stand holen)
 
 Wenn du das Repository bereits auf dem Rechner hast und nur die **neuesten Aenderungen** uebernehmen moechtest:
