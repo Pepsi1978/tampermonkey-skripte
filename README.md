@@ -1,6 +1,43 @@
-# tampermonkey-skripte
+# proggs
 
-Dieses Repository enthaelt verschiedene Tampermonkey-Skripte und Tools (z.B. das Claude Overlay fuer Windows und macOS).
+Dieses Repository enthaelt verschiedene Tampermonkey-Skripte, Voice-Overlay-Tools (macOS + Windows) und das plattformuebergreifende Claude Code Setup.
+
+---
+
+## Claude Code Setup (Neuen Rechner einrichten)
+
+Das **Wichtigste zuerst**: Wenn du Claude Code auf einem neuen Rechner einrichten willst, brauchst du nur **3 Befehle**. Das Setup-Skript installiert automatisch alle 32 Plugins, 4 Custom Skills, Dev-Tools (Bun, Deno, Rust, Docker, .NET), MCP-Server und den Parry Security-Scanner.
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/Pepsi1978/proggs.git
+cd proggs
+bash claude-code-setup/setup.sh
+```
+
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/Pepsi1978/proggs.git
+cd proggs
+powershell claude-code-setup/setup.ps1
+```
+
+### Was wird installiert?
+
+| Kategorie | Inhalt |
+|-----------|--------|
+| **Plugins** | 32 Stueck (26 offizielle + 7 Superpowers-Marketplace) |
+| **Custom Skills** | auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes |
+| **Dev-Tools** | Bun, Deno, Rust/Cargo, Docker, .NET SDK |
+| **MCP Server** | Sequential Thinking (Problemzerlegung) |
+| **Security** | Parry (Prompt-Injection-Scanner) |
+| **Features** | Agent Teams (experimentell), Episodic Memory |
+
+> **Hinweis:** Das Setup erkennt bereits installierte Tools und ueberspringt sie. Du kannst es also jederzeit erneut ausfuehren, um fehlende Komponenten nachzuinstallieren.
+
+> **Automatisch:** Claude Code prueft beim Start automatisch die `claude-code-setup/manifest.json` und weist auf fehlende Plugins hin (siehe CLAUDE.md).
 
 ---
 
@@ -14,18 +51,7 @@ Diese Anleitung erklaert, wie du dieses Repository auf einem **neuen Windows-Rec
 
 Wenn du das Repository zum ersten Mal auf einem neuen PC einrichten moechtest:
 
-#### 1. Python installieren
-
-Python ist die Programmiersprache, in der viele Tools in diesem Repository geschrieben sind.
-
-1. Gehe zu: **https://www.python.org/downloads/**
-2. Klicke auf **"Download Python 3.1x.x"**
-3. **WICHTIG:** Setze im Installer den Haken bei **`Add python.exe to PATH`**
-4. Klicke auf **"Install Now"**
-
-> **Warum PATH?** Damit Windows den Befehl `python` in der Kommandozeile findet.
-
-#### 2. Git installieren
+#### 1. Git installieren
 
 Git ist ein Versionsverwaltungs-Tool, mit dem du Code von GitHub herunterladen und synchronisieren kannst.
 
@@ -33,48 +59,33 @@ Git ist ein Versionsverwaltungs-Tool, mit dem du Code von GitHub herunterladen u
 2. Lade den **64-bit Git for Windows Setup** herunter
 3. Fuehre den Installer aus (Standardeinstellungen beibehalten, einfach "Next" klicken)
 
-#### 3. Installation pruefen
+#### 2. Node.js installieren
 
-Oeffne **Windows PowerShell** (`Win + X` > "Terminal" oder "PowerShell"):
+Node.js wird fuer Claude Code und viele Plugins benoetigt.
 
-```powershell
-python --version
-git --version
-```
+1. Gehe zu: **https://nodejs.org/**
+2. Lade die **LTS-Version** herunter und installiere sie
 
-> Beide Befehle muessen eine Versionsnummer anzeigen. Falls nicht, starte PowerShell nach der Installation neu.
-
-#### 4. Repository klonen
+#### 3. Claude Code installieren
 
 ```powershell
-cd $HOME\Documents
-git clone https://github.com/Pepsi1978/tampermonkey-skripte.git
-cd tampermonkey-skripte
+npm install -g @anthropic-ai/claude-code
 ```
 
-> **Was passiert?** `git clone` laedt das komplette Repository (alle Dateien und die gesamte Versionshistorie) von GitHub auf deinen Rechner herunter.
-
-#### 5. Projekt einrichten (am Beispiel Claude Overlay Windows)
+#### 4. Repository klonen und Setup ausfuehren
 
 ```powershell
-cd "Claude Overlay Windows"
-python -m venv .venv
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-.\.venv\Scripts\activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+cd $HOME
+git clone https://github.com/Pepsi1978/proggs.git
+cd proggs
+powershell claude-code-setup/setup.ps1
 ```
 
-> **Warum eine virtuelle Umgebung (.venv)?** Sie isoliert die Python-Pakete dieses Projekts von anderen Projekten auf deinem Rechner. Die `.venv` wird NICHT im Repository gespeichert und muss auf jedem Rechner neu erstellt werden.
+> **Was passiert?** Das Setup-Skript installiert automatisch alle Plugins, Dev-Tools, MCP-Server und Custom Skills. Siehe oben fuer Details.
 
-#### 6. API-Keys eintragen
+#### 5. API-Keys eintragen
 
-```powershell
-copy .env.example .env
-notepad .env
-```
-
-Trage deine API-Keys ein (GROQ_API_KEY, optional GEMINI_API_KEY) und speichere die Datei.
+Fuer Voice-Overlay-Projekte: Kopiere `.env.example` zu `.env` und trage deine API-Keys ein (GROQ_API_KEY, optional GEMINI_API_KEY).
 
 > **Wichtig:** Die `.env`-Datei wird NICHT auf GitHub hochgeladen (steht in `.gitignore`). Du musst deine Keys auf jedem Rechner neu eintragen.
 
