@@ -7,11 +7,14 @@ namespace ClaudeVoiceOverlay.Services
 {
     public static class AppController
     {
+        private const byte VK_RETURN = 0x0D;
+
         /// <summary>
         /// Pastes text into the target app (Claude/Codex) via Clipboard + SendKeys Ctrl+V.
         /// Uses SendKeys.SendWait for Electron-App compatibility, with keybd_event fallback.
+        /// Optionally sends Enter afterwards (auto-enter).
         /// </summary>
-        public static void PasteText(string text, IntPtr appHwnd)
+        public static void PasteText(string text, IntPtr appHwnd, bool autoEnter = false)
         {
             // Set clipboard on UI thread
             Application.Current.Dispatcher.Invoke(() => Clipboard.SetText(text));
@@ -33,6 +36,20 @@ namespace ClaudeVoiceOverlay.Services
             {
                 Console.WriteLine($"AppController: SendKeys fehlgeschlagen ({ex.Message}), verwende keybd_event Fallback");
                 SendCtrlVFallback();
+            }
+
+            // Send Enter if auto-enter is enabled
+            if (autoEnter)
+            {
+                Thread.Sleep(500);
+                // Re-focus app before Enter
+                if (appHwnd != IntPtr.Zero)
+                {
+                    Win32.SetForegroundWindow(appHwnd);
+                    Thread.Sleep(100);
+                }
+                SendKey(VK_RETURN);
+                Console.WriteLine("AppController: Enter gesendet (Auto-Enter)");
             }
         }
 
@@ -90,6 +107,12 @@ namespace ClaudeVoiceOverlay.Services
             Win32.keybd_event(VK_BACKSPACE, 0, 0, UIntPtr.Zero);
             Win32.keybd_event(VK_BACKSPACE, 0, Win32.KEYEVENTF_KEYUP, UIntPtr.Zero);
             Console.WriteLine("AppController: Eingabe geloescht (keybd_event Fallback)");
+        }
+
+        private static void SendKey(byte vk)
+        {
+            Win32.keybd_event(vk, 0, 0, UIntPtr.Zero);
+            Win32.keybd_event(vk, 0, Win32.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
     }
 }

@@ -1,155 +1,296 @@
-# ClaudeVoiceOverlay-Windows
+# ClaudeVoiceOverlay — Windows
 
-Voice-to-Text Overlay fuer die **Claude Desktop App** und **Codex Desktop App** unter Windows.
+Ein schwebendes WPF-Overlay, das sich automatisch am Rand der aktiven **Claude Desktop App** oder **Codex Desktop App** einblendet. Per Knopfdruck wird Sprache aufgenommen, via **Groq Whisper** in Text umgewandelt und direkt in die App eingefuegt. Optional korrigiert **Google Gemini** den transkribierten Text vor dem Einfuegen — optimiert fuer Programmier-Anweisungen an KI-Coding-Tools wie Claude Code.
 
-Das Overlay erscheint automatisch am rechten Bildschirmrand, wenn Claude oder Codex im Vordergrund ist, und verschwindet bei anderen Anwendungen.
+---
 
-## Funktionen
+## Features
 
-- **Mikrofon-Button**: Sprache aufnehmen und als Text in Claude/Codex einfuegen (via Groq Whisper)
-- **Gemini-Button (G)**: Textverbesserung durch Google Gemini an/aus schalten
-- **X-Button**: Aktuelle Eingabe in Claude/Codex loeschen
+- **Voice-to-Text**: Mikrofon-Button druecken, sprechen, nochmal druecken — der transkribierte Text wird direkt in Claude/Codex eingefuegt
+- **Gemini-Korrektur** (optional): Verbessert Grammatik und erkennt falsch transkribierte englische Fachbegriffe — optimiert fuer Programmier-Kontext
+- **Whisper-Undo**: Falls die Gemini-Korrektur nicht gefaellt, kann der originale Whisper-Rohtext per W-Button eingefuegt werden
+- **Auto-Enter**: Optionaler Toggle, der den Text nach dem Einfuegen automatisch absendet (Enter-Taste)
+- **Audio-Feedback**: Kurzer Ton beim Start der Aufnahme, Doppel-Ton beim Stopp — kein Hinschauen noetig
+- **Leerzeichen zwischen Eingaben**: Bei mehreren aufeinanderfolgenden Spracheingaben wird automatisch ein Leerzeichen eingefuegt
+- **Automatische Sichtbarkeit**: Das Overlay erscheint nur, wenn Claude oder Codex im Vordergrund ist, und versteckt sich automatisch
+- **Multi-Monitor**: Das Overlay positioniert sich immer auf dem Monitor der aktiven App
+- **Zeile loeschen**: X-Button loescht die aktuelle Eingabe in Claude/Codex
+- **System-Tray**: Laeuft unauffaellig im Hintergrund mit Tray-Icon
+- **Watcher**: Optionaler Watcher startet das Overlay automatisch neu, falls es sich beendet
+- **Autostart**: Kann sich beim Windows-Login automatisch starten
+
+---
 
 ## Voraussetzungen
 
-### .NET 8 SDK
+### 1. Git
 
-Wird benoetigt, um das Projekt zu kompilieren. Download:
+Git wird benoetigt, um das Repository von GitHub herunterzuladen.
 
-https://dotnet.microsoft.com/download/dotnet/8.0
+Download: **https://git-scm.com/download/win**
 
-Nach der Installation pruefen:
+> Lade den **64-bit Git for Windows Setup** Installer herunter und fuehre ihn aus. Die Standardeinstellungen bei der Installation koennen beibehalten werden.
 
+Nach der Installation pruefen — oeffne ein neues Terminal und fuehre aus:
+
+```powershell
+git --version
 ```
+
+> Es muss eine Versionsnummer wie `git version 2.x.x` angezeigt werden.
+
+### 2. .NET 8 SDK
+
+Das Projekt ist eine WPF-App, die mit .NET 8 gebaut wird. Du brauchst das SDK zum Kompilieren.
+
+Download: **https://dotnet.microsoft.com/download/dotnet/8.0**
+
+> Lade den **SDK-Installer** herunter (nicht nur die Runtime). Waehle **Windows x64**.
+
+Nach der Installation pruefen — oeffne ein **neues** Terminal und fuehre aus:
+
+```powershell
 dotnet --version
 ```
 
-### Groq API-Key
+> Es muss eine Versionsnummer wie `8.0.x` angezeigt werden. Falls der Befehl nicht erkannt wird, starte das Terminal neu.
 
-Wird fuer die Spracherkennung (Whisper) benoetigt. Kostenlos erstellen unter:
+### 3. Groq API-Key (erforderlich)
 
-https://console.groq.com/
+Groq stellt die Whisper-API fuer die Spracherkennung bereit. Du brauchst einen kostenlosen API-Key.
 
-### Gemini API-Key (optional)
+1. Gehe zu: **https://console.groq.com/**
+2. Erstelle ein Konto oder melde dich an
+3. Gehe zu **API Keys** und erstelle einen neuen Key
+4. Kopiere den Key — du brauchst ihn gleich fuer die `.env`-Datei
 
-Wird fuer die automatische Textverbesserung benoetigt. Kostenlos erstellen unter:
+### 4. Gemini API-Key (optional, aber empfohlen)
 
-https://aistudio.google.com/apikey
+Gemini korrigiert den transkribierten Text — speziell optimiert fuer Programmier-Anweisungen. Ohne Gemini-Key wird der Rohtext von Whisper direkt eingefuegt.
+
+1. Gehe zu: **https://aistudio.google.com/apikey**
+2. Melde dich mit deinem Google-Konto an
+3. Erstelle einen API-Key und kopiere ihn
+
+---
 
 ## Installation
 
-Repository klonen oder herunterladen:
+### 1. Repository klonen
 
-```
-git clone https://github.com/IHR-USERNAME/ClaudeVoiceOverlay-Windows.git
+Oeffne ein Terminal (Windows Terminal oder PowerShell) und wechsle in den Ordner, in dem du das Projekt speichern moechtest:
+
+```powershell
+cd $HOME\Documents
 ```
 
-In das Projektverzeichnis wechseln:
+Klone das Repository von GitHub:
 
+```powershell
+git clone https://github.com/Pepsi1978/proggs.git
 ```
+
+Wechsle in den Projektordner:
+
+```powershell
+cd proggs\ClaudeVoiceOverlay-Windows
+```
+
+Falls du das Repository bereits hast, hole den aktuellen Stand:
+
+```powershell
+cd $HOME\Documents\proggs
+```
+
+```powershell
+git pull origin main
+```
+
+```powershell
 cd ClaudeVoiceOverlay-Windows
 ```
 
-Die `.env.example` Datei kopieren und als `.env` speichern:
+### 2. Projekt kompilieren
 
-```
-copy .env.example .env
-```
+Das Skript `publish.ps1` baut eine einzelne, ausfuehrbare `.exe`-Datei. Diese ist self-contained — das bedeutet, auf dem Zielrechner muss kein .NET installiert sein, um die fertige `.exe` auszufuehren:
 
-Die `.env` Datei oeffnen und die API-Keys eintragen:
-
-```
-notepad .env
-```
-
-## Build
-
-Das Projekt als selbststaendige .exe kompilieren:
-
-```
+```powershell
 pwsh -File publish.ps1
 ```
 
-Dies erzeugt `publish/ClaudeVoiceOverlay.exe` — eine einzelne, ausfuehrbare Datei.
+> Die fertige `ClaudeVoiceOverlay.exe` liegt danach im Ordner `publish/`. Die Datei ist ca. 60-80 MB gross, da die komplette .NET-Runtime enthalten ist.
 
-## Starten
+**Hinweis:** Falls `pwsh` nicht gefunden wird, nutze stattdessen:
 
-Die .exe direkt starten:
-
+```powershell
+powershell -File publish.ps1
 ```
+
+### 3. Konfiguration (.env-Datei)
+
+Erstelle die `.env`-Datei aus der Vorlage:
+
+```powershell
+copy .env.example publish\.env
+```
+
+Oeffne die Datei zum Bearbeiten:
+
+```powershell
+notepad publish\.env
+```
+
+Trage mindestens deinen **Groq API-Key** ein. Die wichtigsten Einstellungen:
+
+| Variable | Pflicht | Beschreibung |
+|---|---|---|
+| `GROQ_API_KEY` | Ja | Dein Groq API-Key fuer Whisper Speech-to-Text |
+| `WHISPER_MODEL` | Nein | Whisper-Modell (Standard: `whisper-large-v3`) |
+| `WHISPER_LANG` | Nein | Sprache der Aufnahme (Standard: `de` fuer Deutsch) |
+| `GEMINI_API_KEY` | Nein | Google Gemini API-Key fuer Textkorrektur |
+| `GEMINI_MODEL` | Nein | Gemini-Modell (Standard: `gemini-3.1-flash-lite-preview`) |
+| `GEMINI_THINKING_LEVEL` | Nein | Thinking-Level fuer Gemini 3.x: `LOW`, `MEDIUM` oder `HIGH` |
+| `TARGET_PROCESS_NAMES` | Nein | Kommagetrennte Prozessnamen (Standard: `Claude,Codex`) |
+
+> **Wichtig:** Die `.env`-Datei enthaelt deine geheimen API-Keys. Sie darf **niemals** auf GitHub hochgeladen werden.
+
+Die `.env`-Datei wird in folgender Reihenfolge gesucht:
+
+1. Neben der `.exe` (empfohlen)
+2. Im aktuellen Arbeitsverzeichnis
+3. In `%USERPROFILE%\.env`
+4. In `%APPDATA%\ClaudeVoiceOverlay\.env`
+
+### 4. Starten
+
+Starte das Overlay:
+
+```powershell
 .\publish\ClaudeVoiceOverlay.exe
 ```
 
-Das Overlay erscheint automatisch, sobald Claude oder Codex in den Vordergrund kommt.
+Das Overlay erscheint automatisch am rechten Rand, sobald Claude oder Codex im Vordergrund ist.
+
+> **Hinweis:** Falls Windows Smart App Control oder ein Virenscanner die `.exe` beim ersten Start blockiert, musst du die Datei manuell erlauben (Rechtsklick → „Trotzdem ausfuehren" oder eine Ausnahme im Virenscanner hinzufuegen).
+
+---
 
 ## Autostart einrichten
 
-Damit das Overlay bei jedem Windows-Start automatisch laeuft:
+Damit das Overlay bei jedem Windows-Login automatisch startet:
 
-```
+```powershell
 pwsh -File install_autostart.ps1
 ```
 
-Der Watcher (`watcher.vbs`) startet bei der Windows-Anmeldung und haelt das Overlay am Laufen. Wenn das Overlay abstuerzt, wird es automatisch neu gestartet.
+> Das Skript erstellt eine Verknuepfung im Windows-Autostart-Ordner, die den **Watcher** startet. Der Watcher ueberwacht alle 3 Sekunden, ob das Overlay laeuft, und startet es automatisch neu, falls es sich beendet hat.
 
-## Autostart entfernen
+Um den Autostart wieder zu entfernen:
 
-```
+```powershell
 pwsh -File uninstall_autostart.ps1
 ```
 
+---
+
 ## Bedienung
 
+Das Overlay zeigt fuenf runde Buttons:
+
 | Button | Funktion |
-|--------|----------|
+|---|---|
 | **X** | Loescht die aktuelle Eingabe in Claude/Codex (Ctrl+A + Backspace) |
-| **Mikrofon** | Klick = Aufnahme starten (rot pulsierend), erneut klicken = stoppen und Text einfuegen |
-| **G** | Gemini-Textverbesserung an (gruen) / aus (rot) |
+| **Mikrofon** 🎤 | Aufnahme starten/stoppen — transkribierter Text wird in Claude/Codex eingefuegt |
+| **W** | Whisper-Undo: Ersetzt den Gemini-korrigierten Text durch den originalen Whisper-Rohtext |
+| **G** | Gemini-Korrektur an/aus (gruen = an, grau = aus) |
+| **⏎** | Auto-Enter an/aus (gruen = an, grau = aus) — sendet Text nach dem Einfuegen automatisch ab |
 
-### Farben des Mikrofon-Buttons
+### Mikrofon-Farben
 
-- **Grau**: Bereit
-- **Rot pulsierend**: Nimmt auf
-- **Orange**: Verarbeitet (Transkription/Korrektur)
-- **Gruen**: Erfolgreich eingefuegt
-- **Rot (statisch)**: Fehler
+| Farbe | Bedeutung |
+|---|---|
+| Dunkelgrau | Bereit (Idle) |
+| Rot (pulsierend) | Aufnahme laeuft |
+| Orange | Verarbeitung (Transkription / Korrektur) |
+| Gruen | Erfolgreich eingefuegt |
 
-## Konfiguration (.env)
+### Audio-Feedback
 
-| Variable | Beschreibung | Standard |
-|----------|-------------|----------|
-| `GROQ_API_KEY` | Groq API-Key (erforderlich) | — |
-| `WHISPER_MODEL` | Whisper-Modell | `whisper-large-v3` |
-| `WHISPER_LANG` | Sprache fuer Erkennung | `de` |
-| `WHISPER_URL` | Groq API-Endpunkt | `https://api.groq.com/openai/v1/audio/transcriptions` |
-| `GEMINI_API_KEY` | Gemini API-Key (optional) | — |
-| `GEMINI_MODEL` | Gemini-Modell | `gemini-3.1-flash-lite-preview` |
-| `GEMINI_THINKING_LEVEL` | Thinking-Level (LOW/MEDIUM/HIGH) | `MEDIUM` |
-| `AUDIO_SAMPLE_RATE` | Abtastrate | `16000` |
-| `AUDIO_CHANNELS` | Kanaele | `1` |
-| `TARGET_PROCESS_NAMES` | Ziel-Prozesse (kommagetrennt) | `Claude,Codex` |
+| Ton | Bedeutung |
+|---|---|
+| Kurzer hoher Ton (880Hz) | Aufnahme gestartet |
+| Absteigender Doppel-Ton (660Hz → 440Hz) | Aufnahme gestoppt |
 
-Die `.env` Datei wird in folgender Reihenfolge gesucht:
+### Workflow
 
-1. Neben der `.exe`
-2. Im aktuellen Arbeitsverzeichnis
-3. `%USERPROFILE%\.env`
-4. `%APPDATA%\ClaudeVoiceOverlay\.env`
+1. Claude Desktop oder Codex oeffnen
+2. Das Overlay erscheint automatisch am rechten Bildschirmrand
+3. Mikrofon-Button klicken — Aufnahme startet (Button pulsiert rot, kurzer Ton)
+4. Sprechen
+5. Mikrofon-Button nochmal klicken — Aufnahme stoppt (Doppel-Ton)
+6. Text wird transkribiert, optional von Gemini korrigiert, und in Claude/Codex eingefuegt
+7. Falls Gemini-Korrektur nicht gefaellt: W-Button druecken — ersetzt durch Whisper-Rohtext
+8. Falls Auto-Enter (⏎) aktiviert ist, wird der Text automatisch abgesendet
 
-## Fehlerbehebung
+### Mehrere Eingaben hintereinander
 
-### Overlay erscheint nicht
+Bei aufeinanderfolgenden Spracheingaben wird automatisch ein Leerzeichen zwischen den Texten eingefuegt, damit keine Woerter zusammenkleben. Das Leerzeichen wird zurueckgesetzt, wenn:
+- Die Eingabe geloescht wird (X-Button)
+- Auto-Enter aktiv ist (nach dem Enter beginnt eine neue Eingabe)
 
-Pruefen ob Claude oder Codex wirklich im Vordergrund ist. Die Prozessnamen muessen mit `TARGET_PROCESS_NAMES` uebereinstimmen (Standard: `Claude,Codex`).
+---
 
-### Kein Ton / Mikrofon-Fehler
+## Projektstruktur
 
-Sicherstellen, dass ein Mikrofon angeschlossen und in den Windows-Einstellungen als Standardgeraet aktiviert ist.
+```
+ClaudeVoiceOverlay-Windows/
+  .env.example          — Vorlage fuer die Konfiguration
+  App.xaml / App.xaml.cs — WPF-Anwendung mit System-Tray-Icon
+  ClaudeVoiceOverlay.csproj — Projektdatei (.NET 8, WPF)
+  app.manifest           — Windows-Manifest
+  Models/
+    RecordingState.cs    — Enum fuer Aufnahmezustaende
+  NativeMethods/
+    Win32.cs             — Win32-API-Aufrufe (SetForegroundWindow, SendInput, etc.)
+  Services/
+    AudioRecorder.cs     — Mikrofon-Aufnahme via NAudio
+    Config.cs            — .env-Datei laden und parsen
+    GeminiClient.cs      — Google Gemini API-Client fuer Textkorrektur (Programmier-Kontext)
+    GroqWhisperClient.cs — Groq Whisper API-Client fuer Transkription
+    AppController.cs     — Text in Claude/Codex einfuegen, Eingabe loeschen, Auto-Enter
+    AppWatcher.cs        — Erkennt aktive Claude/Codex-Fenster
+  Views/
+    OverlayWindow.xaml   — Overlay-UI (fuenf runde Buttons)
+    OverlayWindow.xaml.cs — Overlay-Logik
+  publish.ps1            — Build-Skript (erzeugt einzelne .exe)
+  install_autostart.ps1  — Richtet Autostart mit Watcher ein
+  uninstall_autostart.ps1 — Entfernt den Autostart
+  watcher.vbs            — Ueberwacht das Overlay und startet es bei Bedarf neu
+```
 
-### API-Fehler
+---
 
-Die API-Keys in der `.env` pruefen. Bei 429-Fehlern (Rate Limit) wird automatisch erneut versucht.
+## Haeufige Probleme
 
-### Text wird nicht eingefuegt
+| Problem | Loesung |
+|---|---|
+| `dotnet wird nicht erkannt` | .NET 8 SDK installieren von https://dotnet.microsoft.com/download/dotnet/8.0 und Terminal neu starten |
+| `git wird nicht erkannt` | Git installieren von https://git-scm.com/download/win und Terminal neu starten |
+| `pwsh wird nicht erkannt` | PowerShell 7 installieren oder stattdessen `powershell -File publish.ps1` verwenden |
+| `.exe` wird von Windows blockiert | Smart App Control oder Virenscanner blockiert die unsignierte `.exe`. Rechtsklick → „Trotzdem ausfuehren" oder Ausnahme im Virenscanner hinzufuegen |
+| Overlay erscheint nicht | Pruefen ob Claude oder Codex wirklich im Vordergrund ist. Die Prozessnamen muessen mit `TARGET_PROCESS_NAMES` uebereinstimmen (Standard: `Claude,Codex`) |
+| Transkription schlaegt fehl | `GROQ_API_KEY` in der `.env` pruefen. Ist der Key gueltig? Ist die `.env` neben der `.exe`? |
+| Gemini-Korrektur funktioniert nicht | `GEMINI_API_KEY` pruefen. Ohne Key wird Gemini automatisch deaktiviert (kein Fehler) |
+| Text wird nicht eingefuegt | Claude/Codex muss im Vordergrund sein. Das Overlay setzt den Text in die Zwischenablage und sendet Ctrl+V |
+| Watcher startet nicht | Pruefen ob `watcher.vbs` und `publish\ClaudeVoiceOverlay.exe` im selben Verzeichnis liegen |
+| Kein Audio-Feedback | Der System-Lautsprecher muss aktiviert sein. `Console.Beep` nutzt den internen PC-Speaker |
 
-Claude/Codex muss im Vordergrund sein. Das Overlay setzt den Text in die Zwischenablage und sendet Ctrl+V. Falls das nicht funktioniert, pruefen ob die Zwischenablage von einem anderen Programm blockiert wird.
+---
+
+## Technologie
+
+- **C# / WPF** (.NET 8) — Desktop-UI mit transparentem, nicht-aktivierendem Overlay
+- **NAudio** — Mikrofon-Aufnahme (WAV)
+- **Groq Whisper API** — Speech-to-Text
+- **Google Gemini API** — Textkorrektur fuer Programmier-Kontext (optional)
+- **Win32 API** — Fenster-Erkennung, Vordergrund-Steuerung, Tastatureingabe-Simulation
