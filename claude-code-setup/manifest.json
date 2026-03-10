@@ -1,6 +1,6 @@
 {
   "description": "Claude Code Setup-Manifest - Installiert alle Plugins, Skills und Settings auf einem neuen Rechner",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Pepsi1978",
   "github_user": "Pepsi1978",
   "repo": "https://github.com/Pepsi1978/proggs",
@@ -27,13 +27,17 @@
       "code-review",
       "playwright",
       "coderabbit",
-      "explanatory-output-style"
+      "explanatory-output-style",
+      "skill-creator"
     ],
     "superpowers-marketplace": [
       "episodic-memory",
       "double-shot-latte",
       "superpowers-chrome",
-      "claude-session-driver"
+      "claude-session-driver",
+      "superpowers-lab",
+      "superpowers-developing-for-claude-code",
+      "elements-of-style"
     ]
   },
 

@@ -123,7 +123,7 @@ SKIPPED=0
 FAILED=0
 
 # Official Marketplace Plugins
-for PLUGIN in swift-lsp typescript-lsp csharp-lsp superpowers frontend-design context7 github feature-dev code-simplifier commit-commands security-guidance claude-md-management pr-review-toolkit claude-code-setup hookify playground ralph-loop code-review playwright coderabbit explanatory-output-style; do
+for PLUGIN in swift-lsp typescript-lsp csharp-lsp superpowers frontend-design context7 github feature-dev code-simplifier commit-commands security-guidance claude-md-management pr-review-toolkit claude-code-setup hookify playground ralph-loop code-review playwright coderabbit explanatory-output-style skill-creator; do
     echo -ne "  $PLUGIN@claude-plugins-official ... "
     if claude plugins install "$PLUGIN@claude-plugins-official" 2>/dev/null; then
         echo -e "${GREEN}✓${NC}"
@@ -135,7 +135,7 @@ for PLUGIN in swift-lsp typescript-lsp csharp-lsp superpowers frontend-design co
 done
 
 # Superpowers Marketplace Plugins
-for PLUGIN in episodic-memory double-shot-latte superpowers-chrome claude-session-driver; do
+for PLUGIN in episodic-memory double-shot-latte superpowers-chrome claude-session-driver superpowers-lab superpowers-developing-for-claude-code elements-of-style; do
     echo -ne "  $PLUGIN@superpowers-marketplace ... "
     if claude plugins install "$PLUGIN@superpowers-marketplace" 2>/dev/null; then
         echo -e "${GREEN}✓${NC}"
@@ -182,8 +182,9 @@ echo -e "${BLUE}=============================================${NC}"
 echo -e "${GREEN}  Setup abgeschlossen!${NC}"
 echo -e "${BLUE}=============================================${NC}"
 echo ""
-echo "  Installierte Plugins:  25"
+echo "  Installierte Plugins:  29"
 echo "  Installierte Skills:   4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
+echo "  Agent Teams:           Aktiviert (experimentell)"
 echo "  Marketplaces:          2 (claude-plugins-official, superpowers-marketplace)"
 echo ""
 echo -e "  ${YELLOW}Starte Claude Code neu, damit alle Plugins aktiv werden:${NC}"

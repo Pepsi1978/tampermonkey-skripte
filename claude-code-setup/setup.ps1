@@ -133,7 +133,7 @@ $officialPlugins = @(
     "code-simplifier", "commit-commands", "security-guidance",
     "claude-md-management", "pr-review-toolkit", "claude-code-setup",
     "hookify", "playground", "ralph-loop", "code-review",
-    "playwright", "coderabbit", "explanatory-output-style"
+    "playwright", "coderabbit", "explanatory-output-style", "skill-creator"
 )
 
 foreach ($plugin in $officialPlugins) {
@@ -150,7 +150,8 @@ foreach ($plugin in $officialPlugins) {
 
 # Superpowers Marketplace Plugins
 $superpowersPlugins = @(
-    "episodic-memory", "double-shot-latte", "superpowers-chrome", "claude-session-driver"
+    "episodic-memory", "double-shot-latte", "superpowers-chrome", "claude-session-driver",
+    "superpowers-lab", "superpowers-developing-for-claude-code", "elements-of-style"
 )
 
 foreach ($plugin in $superpowersPlugins) {
@@ -205,8 +206,9 @@ Write-Host "=============================================" -ForegroundColor Blue
 Write-Host "  Setup abgeschlossen!" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Blue
 Write-Host ""
-Write-Host "  Installierte Plugins:  25"
+Write-Host "  Installierte Plugins:  29"
 Write-Host "  Installierte Skills:   4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
+Write-Host "  Agent Teams:           Aktiviert (experimentell)"
 Write-Host "  Marketplaces:          2 (claude-plugins-official, superpowers-marketplace)"
 Write-Host ""
 Write-Host "  Starte Claude Code neu, damit alle Plugins aktiv werden:" -ForegroundColor Yellow
