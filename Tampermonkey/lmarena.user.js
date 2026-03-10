@@ -41,7 +41,7 @@
   // ============================================================
   // UI POSITION
   // ============================================================
-  const UI_POS = { rightPx: 16, bottomPx: 124 };
+  const UI_POS = { rightPx: 27, bottomPx: 124 };
   const UI_IDS = {
     mic: "tm-lmarena-mic",
     geminiToggle: "tm-lmarena-gemini-toggle",

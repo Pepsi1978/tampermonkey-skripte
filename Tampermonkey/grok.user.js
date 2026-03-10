@@ -37,7 +37,7 @@
   // ============================================================
   // UI POSITION
   // ============================================================
-  const UI_POS = { rightPx: 16, bottomPx: 124 };
+  const UI_POS = { rightPx: 27, bottomPx: 124 };
   // Android/Edge Mobile-Erkennung (für angepasste Restart-Delays)
   const isMobileAndroid = /Android/i.test(navigator.userAgent);
 
