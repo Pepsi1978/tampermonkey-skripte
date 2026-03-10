@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         ChatGPT V.1.3.7
+// @name         ChatGPT V.1.3.8
 // @namespace    https://chatgpt.com/
-// @version      1.3.7
+// @version      1.3.8
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome + Startup-Fix fuer CFG-Ladereihenfolge.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -1345,8 +1345,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     // Hover-Effekt: sanftes Vergrößern
     setUiStyle(b, "transition", "transform 0.15s ease, box-shadow 0.25s ease");
-    b.addEventListener("mouseenter", () => { b.style.transform = "scale(1.15)"; });
-    b.addEventListener("mouseleave", () => { b.style.transform = "scale(1)"; });
+    setUiStyle(b, "transform-origin", "center center");
+    setUiStyle(b, "transform", "scale(1)");
+    b.addEventListener("mouseenter", () => { b.style.setProperty("transform", "scale(1.15)", "important"); });
+    b.addEventListener("mouseleave", () => { b.style.setProperty("transform", "scale(1)", "important"); });
 
     // ✅ FIX: Button soll beim Klicken NICHT den Fokus klauen
     b.tabIndex = -1;
