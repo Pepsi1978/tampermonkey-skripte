@@ -52,7 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panel.onMicClicked = { [weak self] in self?.toggleRecording() }
         panel.onWClicked = { [weak self] in self?.whisperUndo() }
         panel.onGClicked = { [weak self] in self?.toggleGemini() }
-        panel.onEnterClicked = { [weak self] in self?.toggleAutoEnter() }
+        panel.onEnterClicked = { [weak self] in self?.handleEnterClick() }
 
         // Setup menu bar icon
         setupStatusItem()
@@ -238,12 +238,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Gemini %@", geminiEnabled ? "AN" : "AUS")
     }
 
-    // MARK: - Auto-Enter Toggle
+    // MARK: - Auto-Enter Toggle & Manual Enter
 
-    private func toggleAutoEnter() {
-        autoEnterEnabled.toggle()
-        panel.setAutoEnterEnabled(autoEnterEnabled)
-        NSLog("Auto-Enter %@", autoEnterEnabled ? "AN" : "AUS")
+    private func handleEnterClick() {
+        if autoEnterEnabled {
+            // AN → ausschalten
+            autoEnterEnabled = false
+            panel.setAutoEnterEnabled(autoEnterEnabled)
+            NSLog("Auto-Enter AUS")
+        } else {
+            // AUS → einschalten UND sofort Enter senden
+            autoEnterEnabled = true
+            panel.setAutoEnterEnabled(autoEnterEnabled)
+            NSLog("Auto-Enter AN + Enter gesendet")
+            DispatchQueue.global(qos: .userInitiated).async {
+                InputController.activateTargetApp()
+                usleep(150_000)
+                InputController.sendKeyCombo(keyCode: 0x24, flags: []) // Return
+            }
+        }
     }
 
     // MARK: - Reset Timer

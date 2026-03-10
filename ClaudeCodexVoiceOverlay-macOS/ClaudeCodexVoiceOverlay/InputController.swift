@@ -55,14 +55,14 @@ final class InputController {
     static var lastActiveTargetBundleID: String?
 
     /// Brings the last active target app (Claude Desktop or Codex) to the front so CGEvent reaches it
-    private static func activateTargetApp() {
+    static func activateTargetApp() {
         guard let bundleID = lastActiveTargetBundleID,
               let app = NSWorkspace.shared.runningApplications
                 .first(where: { $0.bundleIdentifier == bundleID }) else { return }
         app.activate(options: [])
     }
 
-    private static func sendKeyCombo(keyCode: CGKeyCode, flags: CGEventFlags) {
+    static func sendKeyCombo(keyCode: CGKeyCode, flags: CGEventFlags) {
         let source = CGEventSource(stateID: .hidSystemState)
 
         guard let keyDown = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: true),

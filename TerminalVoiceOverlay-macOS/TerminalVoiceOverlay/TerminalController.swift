@@ -48,14 +48,14 @@ final class TerminalController {
     }
 
     /// Brings Terminal.app to the front so CGEvent reaches it
-    private static func activateTerminal() {
+    static func activateTerminal() {
         if let app = NSWorkspace.shared.runningApplications
             .first(where: { $0.bundleIdentifier == "com.apple.Terminal" }) {
             app.activate(options: [])
         }
     }
 
-    private static func sendKeyCombo(keyCode: CGKeyCode, flags: CGEventFlags) {
+    static func sendKeyCombo(keyCode: CGKeyCode, flags: CGEventFlags) {
         let source = CGEventSource(stateID: .hidSystemState)
 
         guard let keyDown = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: true),

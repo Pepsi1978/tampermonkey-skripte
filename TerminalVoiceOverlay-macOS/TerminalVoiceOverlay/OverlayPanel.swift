@@ -29,6 +29,8 @@ class RoundButton: NSView {
     var label: String = "" { didSet { needsDisplay = true } }
     var labelFont: NSFont = .systemFont(ofSize: 16, weight: .bold)
     var onClick: (() -> Void)?
+    var onMouseDown: (() -> Void)?
+    var onMouseUp: (() -> Void)?
 
     init(label: String, color: NSColor) {
         self.label = label
@@ -56,7 +58,15 @@ class RoundButton: NSView {
     }
 
     override func mouseDown(with event: NSEvent) {
-        onClick?()
+        if onMouseDown != nil {
+            onMouseDown?()
+        } else {
+            onClick?()
+        }
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        onMouseUp?()
     }
 }
 
@@ -238,7 +248,8 @@ final class OverlayPanel: NSPanel {
 
         switch event.type {
         case .rightMouseDown:
-            if frame.contains(mouseLocation) {
+            let clickedWindowNumber = NSWindow.windowNumber(at: mouseLocation, belowWindowWithWindowNumber: 0)
+            if frame.contains(mouseLocation) && clickedWindowNumber == self.windowNumber {
                 isDragging = true
                 dragStartMouseLocation = mouseLocation
                 dragStartPanelOrigin = frame.origin
