@@ -123,7 +123,7 @@ SKIPPED=0
 FAILED=0
 
 # Official Marketplace Plugins
-for PLUGIN in swift-lsp typescript-lsp csharp-lsp superpowers frontend-design context7 github feature-dev code-simplifier commit-commands security-guidance claude-md-management pr-review-toolkit claude-code-setup hookify playground ralph-loop code-review; do
+for PLUGIN in swift-lsp typescript-lsp csharp-lsp superpowers frontend-design context7 github feature-dev code-simplifier commit-commands security-guidance claude-md-management pr-review-toolkit claude-code-setup hookify playground ralph-loop code-review playwright coderabbit explanatory-output-style; do
     echo -ne "  $PLUGIN@claude-plugins-official ... "
     if claude plugins install "$PLUGIN@claude-plugins-official" 2>/dev/null; then
         echo -e "${GREEN}✓${NC}"
@@ -182,8 +182,8 @@ echo -e "${BLUE}=============================================${NC}"
 echo -e "${GREEN}  Setup abgeschlossen!${NC}"
 echo -e "${BLUE}=============================================${NC}"
 echo ""
-echo "  Installierte Plugins:  22"
-echo "  Installierte Skills:   3 (auto-verify-iterate, cross-platform, tampermonkey-version)"
+echo "  Installierte Plugins:  25"
+echo "  Installierte Skills:   4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
 echo "  Marketplaces:          2 (claude-plugins-official, superpowers-marketplace)"
 echo ""
 echo -e "  ${YELLOW}Starte Claude Code neu, damit alle Plugins aktiv werden:${NC}"

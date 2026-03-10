@@ -132,7 +132,8 @@ $officialPlugins = @(
     "frontend-design", "context7", "github", "feature-dev",
     "code-simplifier", "commit-commands", "security-guidance",
     "claude-md-management", "pr-review-toolkit", "claude-code-setup",
-    "hookify", "playground", "ralph-loop", "code-review"
+    "hookify", "playground", "ralph-loop", "code-review",
+    "playwright", "coderabbit", "explanatory-output-style"
 )
 
 foreach ($plugin in $officialPlugins) {
@@ -204,8 +205,8 @@ Write-Host "=============================================" -ForegroundColor Blue
 Write-Host "  Setup abgeschlossen!" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Blue
 Write-Host ""
-Write-Host "  Installierte Plugins:  22"
-Write-Host "  Installierte Skills:   3 (auto-verify-iterate, cross-platform, tampermonkey-version)"
+Write-Host "  Installierte Plugins:  25"
+Write-Host "  Installierte Skills:   4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
 Write-Host "  Marketplaces:          2 (claude-plugins-official, superpowers-marketplace)"
 Write-Host ""
 Write-Host "  Starte Claude Code neu, damit alle Plugins aktiv werden:" -ForegroundColor Yellow

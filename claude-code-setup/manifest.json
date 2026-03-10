@@ -1,6 +1,6 @@
 {
   "description": "Claude Code Setup-Manifest - Installiert alle Plugins, Skills und Settings auf einem neuen Rechner",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Pepsi1978",
   "github_user": "Pepsi1978",
   "repo": "https://github.com/Pepsi1978/proggs",
@@ -24,7 +24,10 @@
       "hookify",
       "playground",
       "ralph-loop",
-      "code-review"
+      "code-review",
+      "playwright",
+      "coderabbit",
+      "explanatory-output-style"
     ],
     "superpowers-marketplace": [
       "episodic-memory",
@@ -45,7 +48,8 @@
   "custom_skills": [
     "auto-verify-iterate",
     "cross-platform",
-    "tampermonkey-version"
+    "tampermonkey-version",
+    "undo-changes"
   ],
 
   "settings": {
