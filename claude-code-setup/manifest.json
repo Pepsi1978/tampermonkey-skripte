@@ -1,15 +1,42 @@
 {
-  "description": "Claude Code Setup-Manifest - Installiert alle Plugins, Skills und Settings auf einem neuen Rechner",
-  "version": "1.2.0",
+  "description": "Claude Code Setup-Manifest - Installiert alle Plugins, Skills, Dev-Tools, MCP-Server und Settings auf einem neuen Rechner",
+  "version": "2.0.0",
   "author": "Pepsi1978",
   "github_user": "Pepsi1978",
   "repo": "https://github.com/Pepsi1978/proggs",
+
+  "dev_tools": {
+    "required": ["node", "git", "gh"],
+    "recommended": {
+      "bun": {
+        "macos": "brew install oven-sh/bun/bun",
+        "windows": "winget install Oven-sh.Bun"
+      },
+      "deno": {
+        "macos": "brew install deno",
+        "windows": "winget install DenoLand.Deno"
+      },
+      "rust": {
+        "macos": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y",
+        "windows": "winget install Rustlang.Rustup"
+      },
+      "docker": {
+        "macos": "brew install --cask docker",
+        "windows": "winget install Docker.DockerDesktop"
+      },
+      "dotnet": {
+        "macos": "brew install dotnet-sdk",
+        "windows": "winget install Microsoft.DotNet.SDK.10"
+      }
+    }
+  },
 
   "plugins": {
     "claude-plugins-official": [
       "swift-lsp",
       "typescript-lsp",
       "csharp-lsp",
+      "clangd-lsp",
       "superpowers",
       "frontend-design",
       "context7",
@@ -28,7 +55,10 @@
       "playwright",
       "coderabbit",
       "explanatory-output-style",
-      "skill-creator"
+      "skill-creator",
+      "plugin-dev",
+      "agent-sdk-dev",
+      "serena"
     ],
     "superpowers-marketplace": [
       "episodic-memory",
@@ -39,6 +69,28 @@
       "superpowers-developing-for-claude-code",
       "elements-of-style"
     ]
+  },
+
+  "mcp_servers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  },
+
+  "security_tools": {
+    "parry": {
+      "install": {
+        "macos": "~/.cargo/bin/cargo install --git https://github.com/vaporif/parry parry-ai",
+        "windows": "%USERPROFILE%\\.cargo\\bin\\cargo install --git https://github.com/vaporif/parry parry-ai"
+      },
+      "hooks": {
+        "UserPromptSubmit": {
+          "command": "parry hook",
+          "timeout": 2
+        }
+      }
+    }
   },
 
   "extra_marketplaces": {
@@ -58,6 +110,9 @@
 
   "settings": {
     "effortLevel": "high",
+    "env": {
+      "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    },
     "permissions": [
       "Bash", "Read", "Edit", "Write", "Glob", "Grep",
       "WebFetch", "WebSearch", "Agent", "NotebookEdit"

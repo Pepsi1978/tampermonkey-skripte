@@ -39,9 +39,20 @@ swiftc \
     -framework CoreGraphics \
     "${SWIFT_FILES[@]}"
 
-# Copy entitlements and sign the app so macOS keeps permissions across rebuilds
+# Copy entitlements and sign with persistent certificate (not ad-hoc)
+# This ensures TCC permissions survive rebuilds, because macOS identifies
+# the app by certificate identity instead of binary hash.
 cp "$SRC_DIR/$APP_NAME.entitlements" "$APP_BUNDLE/Contents/Resources/"
-codesign --force --sign - --entitlements "$SRC_DIR/$APP_NAME.entitlements" --deep "$APP_BUNDLE"
+
+SIGNING_IDENTITY="Frank Local Dev"
+if security find-identity -v -p codesigning | grep -q "$SIGNING_IDENTITY"; then
+    codesign --force --sign "$SIGNING_IDENTITY" --entitlements "$SRC_DIR/$APP_NAME.entitlements" --deep "$APP_BUNDLE"
+    echo "=== Signiert mit Zertifikat: $SIGNING_IDENTITY ==="
+else
+    echo "⚠ Zertifikat '$SIGNING_IDENTITY' nicht gefunden, fallback auf ad-hoc Signierung"
+    echo "  TCC-Berechtigungen gehen bei Rebuild verloren!"
+    codesign --force --sign - --entitlements "$SRC_DIR/$APP_NAME.entitlements" --deep "$APP_BUNDLE"
+fi
 
 echo "=== Build erfolgreich: $APP_BUNDLE ==="
 echo ""

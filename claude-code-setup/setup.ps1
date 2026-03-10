@@ -1,6 +1,7 @@
 # =============================================================================
 # Claude Code Setup - Windows (PowerShell)
-# Installiert alle Plugins, Skills und Settings aus dem Manifest
+# Installiert alle Plugins, Skills, Dev-Tools, MCP-Server und Settings
+# Version 2.0.0
 # =============================================================================
 
 $ErrorActionPreference = "Continue"
@@ -13,14 +14,14 @@ $ClaudeSettings = Join-Path $env:USERPROFILE ".claude\settings.json"
 
 Write-Host ""
 Write-Host "=============================================" -ForegroundColor Blue
-Write-Host "  Claude Code Setup - Plattformuebergreifend " -ForegroundColor Blue
+Write-Host "  Claude Code Setup v2.0 - Windows           " -ForegroundColor Blue
 Write-Host "=============================================" -ForegroundColor Blue
 Write-Host ""
 
 # ---------------------------------------------------
 # 1. Voraussetzungen pruefen
 # ---------------------------------------------------
-Write-Host "[1/6] Voraussetzungen pruefen..." -ForegroundColor Yellow
+Write-Host "[1/8] Voraussetzungen pruefen..." -ForegroundColor Yellow
 
 $Missing = @()
 
@@ -28,14 +29,15 @@ if (-not (Get-Command "claude" -ErrorAction SilentlyContinue)) {
     $Missing += "claude"
     Write-Host "  X Claude Code CLI nicht gefunden" -ForegroundColor Red
 } else {
-    Write-Host "  OK Claude Code CLI" -ForegroundColor Green
+    $ver = claude --version 2>&1 | Select-Object -First 1
+    Write-Host "  OK Claude Code CLI $ver" -ForegroundColor Green
 }
 
 if (-not (Get-Command "git" -ErrorAction SilentlyContinue)) {
     $Missing += "git"
     Write-Host "  X Git nicht gefunden" -ForegroundColor Red
 } else {
-    Write-Host "  OK Git" -ForegroundColor Green
+    Write-Host "  OK Git $(git --version)" -ForegroundColor Green
 }
 
 if (-not (Get-Command "gh" -ErrorAction SilentlyContinue)) {
@@ -62,7 +64,7 @@ if ($Missing.Count -gt 0) {
 # 2. Rechner erkennen
 # ---------------------------------------------------
 Write-Host ""
-Write-Host "[2/6] Rechner erkennen..." -ForegroundColor Yellow
+Write-Host "[2/8] Rechner erkennen..." -ForegroundColor Yellow
 
 $IsKnownMachine = $false
 $GitHubUser = ""
@@ -97,9 +99,90 @@ if ($GitHubUser -eq "Pepsi1978") {
 }
 
 # ---------------------------------------------------
-# 3. Extra Marketplaces einrichten
+# 3. Dev-Tools installieren
 # ---------------------------------------------------
-Write-Host "[3/6] Marketplaces einrichten..." -ForegroundColor Yellow
+Write-Host ""
+Write-Host "[3/8] Dev-Tools installieren..." -ForegroundColor Yellow
+
+# Bun
+if (-not (Get-Command "bun" -ErrorAction SilentlyContinue)) {
+    Write-Host "  Bun installieren ... " -NoNewline
+    try {
+        winget install Oven-sh.Bun --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+        Write-Host "OK" -ForegroundColor Green
+    } catch {
+        Write-Host "X (manuell: winget install Oven-sh.Bun)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  OK Bun $(bun --version)" -ForegroundColor Green
+}
+
+# Deno
+if (-not (Get-Command "deno" -ErrorAction SilentlyContinue)) {
+    Write-Host "  Deno installieren ... " -NoNewline
+    try {
+        winget install DenoLand.Deno --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+        Write-Host "OK" -ForegroundColor Green
+    } catch {
+        Write-Host "X (manuell: winget install DenoLand.Deno)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  OK Deno $(deno -V)" -ForegroundColor Green
+}
+
+# Rust
+$rustcPath = Join-Path $env:USERPROFILE ".cargo\bin\rustc.exe"
+if ((-not (Get-Command "rustc" -ErrorAction SilentlyContinue)) -and (-not (Test-Path $rustcPath))) {
+    Write-Host "  Rust installieren ... " -NoNewline
+    try {
+        winget install Rustlang.Rustup --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+        Write-Host "OK" -ForegroundColor Green
+        # PATH aktualisieren fuer aktuelle Session
+        $cargoPath = Join-Path $env:USERPROFILE ".cargo\bin"
+        $env:PATH = "$cargoPath;$env:PATH"
+    } catch {
+        Write-Host "X (manuell: winget install Rustlang.Rustup)" -ForegroundColor Red
+    }
+} else {
+    if (Test-Path $rustcPath) {
+        $rustVer = & $rustcPath --version 2>&1
+    } else {
+        $rustVer = rustc --version 2>&1
+    }
+    Write-Host "  OK Rust $rustVer" -ForegroundColor Green
+}
+
+# Docker
+if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
+    Write-Host "  Docker Desktop installieren ... " -NoNewline
+    try {
+        winget install Docker.DockerDesktop --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+        Write-Host "OK (bitte App einmal starten)" -ForegroundColor Green
+    } catch {
+        Write-Host "X (manuell: winget install Docker.DockerDesktop)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  OK Docker $(docker --version)" -ForegroundColor Green
+}
+
+# .NET SDK
+if (-not (Get-Command "dotnet" -ErrorAction SilentlyContinue)) {
+    Write-Host "  .NET SDK installieren ... " -NoNewline
+    try {
+        winget install Microsoft.DotNet.SDK.10 --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+        Write-Host "OK" -ForegroundColor Green
+    } catch {
+        Write-Host "X (manuell: winget install Microsoft.DotNet.SDK.10)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  OK .NET $(dotnet --version)" -ForegroundColor Green
+}
+
+# ---------------------------------------------------
+# 4. Extra Marketplaces einrichten
+# ---------------------------------------------------
+Write-Host ""
+Write-Host "[4/8] Marketplaces einrichten..." -ForegroundColor Yellow
 
 $claudeDir = Join-Path $env:USERPROFILE ".claude"
 if (-not (Test-Path $claudeDir)) {
@@ -118,22 +201,23 @@ if (Test-Path $ClaudeSettings) {
 }
 
 # ---------------------------------------------------
-# 4. Plugins installieren
+# 5. Plugins installieren
 # ---------------------------------------------------
 Write-Host ""
-Write-Host "[4/6] Plugins installieren..." -ForegroundColor Yellow
+Write-Host "[5/8] Plugins installieren..." -ForegroundColor Yellow
 
 $Installed = 0
 $Skipped = 0
 
 # Official Marketplace Plugins
 $officialPlugins = @(
-    "swift-lsp", "typescript-lsp", "csharp-lsp", "superpowers",
-    "frontend-design", "context7", "github", "feature-dev",
-    "code-simplifier", "commit-commands", "security-guidance",
+    "swift-lsp", "typescript-lsp", "csharp-lsp", "clangd-lsp",
+    "superpowers", "frontend-design", "context7", "github",
+    "feature-dev", "code-simplifier", "commit-commands", "security-guidance",
     "claude-md-management", "pr-review-toolkit", "claude-code-setup",
     "hookify", "playground", "ralph-loop", "code-review",
-    "playwright", "coderabbit", "explanatory-output-style", "skill-creator"
+    "playwright", "coderabbit", "explanatory-output-style", "skill-creator",
+    "plugin-dev", "agent-sdk-dev", "serena"
 )
 
 foreach ($plugin in $officialPlugins) {
@@ -170,10 +254,48 @@ Write-Host ""
 Write-Host "  Installiert: $Installed | Uebersprungen: $Skipped" -ForegroundColor Green
 
 # ---------------------------------------------------
-# 5. Custom Skills kopieren
+# 6. MCP Server einrichten
 # ---------------------------------------------------
 Write-Host ""
-Write-Host "[5/6] Custom Skills installieren..." -ForegroundColor Yellow
+Write-Host "[6/8] MCP Server einrichten..." -ForegroundColor Yellow
+
+Write-Host "  sequential-thinking installieren ... " -NoNewline
+try {
+    claude mcp add --scope user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking 2>&1 | Out-Null
+    Write-Host "OK" -ForegroundColor Green
+} catch {
+    Write-Host "(bereits installiert oder Fehler)" -ForegroundColor Yellow
+}
+
+# ---------------------------------------------------
+# 7. Security Tools (Parry)
+# ---------------------------------------------------
+Write-Host ""
+Write-Host "[7/8] Security Tools installieren..." -ForegroundColor Yellow
+
+$cargoPath = Join-Path $env:USERPROFILE ".cargo\bin\cargo.exe"
+$parryPath = Join-Path $env:USERPROFILE ".cargo\bin\parry.exe"
+
+if (Test-Path $parryPath) {
+    $parryVer = & $parryPath --version 2>&1
+    Write-Host "  OK Parry $parryVer" -ForegroundColor Green
+} elseif (Test-Path $cargoPath) {
+    Write-Host "  Parry installieren (dauert ~2 Min) ... " -NoNewline
+    try {
+        & $cargoPath install --git https://github.com/vaporif/parry parry-ai 2>&1 | Out-Null
+        Write-Host "OK" -ForegroundColor Green
+    } catch {
+        Write-Host "X (manuell: cargo install --git https://github.com/vaporif/parry parry-ai)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  ! Rust/Cargo nicht gefunden - Parry kann nicht installiert werden" -ForegroundColor Yellow
+}
+
+# ---------------------------------------------------
+# 8. Custom Skills kopieren
+# ---------------------------------------------------
+Write-Host ""
+Write-Host "[8/8] Custom Skills installieren..." -ForegroundColor Yellow
 
 if (Test-Path $SkillsDir) {
     $skillFolders = Get-ChildItem -Path $SkillsDir -Directory
@@ -199,18 +321,24 @@ if (Test-Path $SkillsDir) {
 }
 
 # ---------------------------------------------------
-# 6. Zusammenfassung
+# Zusammenfassung
 # ---------------------------------------------------
 Write-Host ""
 Write-Host "=============================================" -ForegroundColor Blue
 Write-Host "  Setup abgeschlossen!" -ForegroundColor Green
 Write-Host "=============================================" -ForegroundColor Blue
 Write-Host ""
-Write-Host "  Installierte Plugins:  29"
-Write-Host "  Installierte Skills:   4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
-Write-Host "  Agent Teams:           Aktiviert (experimentell)"
-Write-Host "  Marketplaces:          2 (claude-plugins-official, superpowers-marketplace)"
+Write-Host "  Plugins:        32 (26 official + 7 superpowers-marketplace)"
+Write-Host "  Skills:          4 (auto-verify-iterate, cross-platform, tampermonkey-version, undo-changes)"
+Write-Host "  MCP Server:      sequential-thinking"
+Write-Host "  Security:        Parry (Prompt-Injection-Scanner)"
+Write-Host "  Dev-Tools:       Bun, Deno, Rust, Docker, .NET SDK"
+Write-Host "  Agent Teams:     Aktiviert (experimentell)"
+Write-Host "  Marketplaces:    2 (claude-plugins-official, superpowers-marketplace)"
 Write-Host ""
 Write-Host "  Starte Claude Code neu, damit alle Plugins aktiv werden:" -ForegroundColor Yellow
 Write-Host "  claude"
+Write-Host ""
+Write-Host "  Optional: Parry benoetigt einen HuggingFace-Token fuer volle Funktionalitaet:" -ForegroundColor Yellow
+Write-Host '  $env:HF_TOKEN = "hf_dein_token"'
 Write-Host ""
