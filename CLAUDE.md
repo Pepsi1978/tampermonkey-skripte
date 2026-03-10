@@ -9,17 +9,30 @@ Wenn Terminal-Befehle ausgeführt werden sollen, führe diese **immer direkt sel
 
 Der Benutzer sieht jede Ausführung und kann sie über das Berechtigungssystem genehmigen oder ablehnen.
 
-## Installationsanleitung in der README
+## README-Dateien
 
-Bei jeder Aufgabe, die ein neues Projekt, Tool oder Skript erstellt oder verändert, muss eine **Schritt-für-Schritt-Installationsanleitung** in der zugehörigen `README.md` erstellt oder aktualisiert werden. Dabei gelten folgende Regeln:
+Jedes Projekt muss eine ausfuehrliche `README.md` enthalten. Diese besteht aus zwei Hauptteilen:
 
-- **Zielgruppe**: Windows-Benutzer, die Anfänger bei der Installation von KI-programmierten Programmen sind
-- **Voraussetzungen**: Alle nötigen Programme und Tools auflisten (z.B. Python, Node.js, Git, etc.), mit Erklärung **warum** jede Voraussetzung benötigt wird
+### 1. Programmbeschreibung
+
+- **Was macht das Programm?** — Ausfuehrliche Erklaerung der Funktionalitaet, des Zwecks und der Features
+- **Fuer wen ist es gedacht?** — Zielgruppe und Anwendungsfaelle beschreiben
+- **Wie funktioniert es?** — Technische Uebersicht (welche APIs, Frameworks, Technologien werden verwendet)
+- **Screenshots** — Wenn moeglich, Screenshots oder GIFs der Benutzeroberflaeche beifuegen
+
+### 2. Installation und Einrichtung
+
+Die Installationsanleitung muss **fuer jedes unterstuetzte System** (macOS, Windows, ggf. Linux) separat beschrieben werden. Dabei gelten folgende Regeln:
+
+- **Zielgruppe**: Anfaenger, die mit der Installation von KI-programmierten Programmen nicht vertraut sind
+- **Plattform-spezifische Abschnitte**: Getrennte Anleitungen fuer macOS und Windows mit den jeweiligen Befehlen (Terminal bzw. PowerShell)
+- **Voraussetzungen pro Plattform**: Alle noetigen Programme und Tools auflisten (z.B. Xcode CLI Tools, .NET SDK, Node.js, Git, etc.), mit Erklaerung **warum** jede Voraussetzung benoetigt wird
 - **Download-Links**: Direkte Links zu den offiziellen Download-Seiten jeder Voraussetzung angeben
-- **Schritt-für-Schritt**: Jeden Installations- und Einrichtungsschritt einzeln erklären, mit konkreten Befehlen für Windows (PowerShell/Terminal)
-- **Erklärungen**: Bei jedem Schritt erklären, **warum** dieser Schritt wichtig ist und was er bewirkt
-- **Reihenfolge**: Die Anleitung muss in der richtigen Reihenfolge aufgebaut sein – erst Voraussetzungen, dann Installation, dann Konfiguration, dann Start
-- **Fehlerbehebung**: Häufige Probleme und deren Lösungen am Ende der Anleitung auflisten
+- **Schritt-fuer-Schritt**: Jeden Installations- und Einrichtungsschritt einzeln erklaeren — Befehle duerfen logisch nach Arbeitsschritten gruppiert werden (z.B. drei Befehle fuer eine Tool-Installation in einem Block)
+- **Erklaerungen**: Bei jedem Schritt erklaeren, **warum** dieser Schritt wichtig ist und was er bewirkt
+- **Reihenfolge**: Erst Voraussetzungen, dann Installation, dann Konfiguration, dann Start
+- **Berechtigungen und Sicherheit**: Hinweise zu noetigen Systemberechtigungen (z.B. Accessibility-Berechtigung auf macOS, Smart App Control auf Windows)
+- **Fehlerbehebung**: Haeufige Probleme und deren Loesungen am Ende der Anleitung auflisten, getrennt nach Plattform
 
 ## Synchronisation der CLAUDE.md
 
