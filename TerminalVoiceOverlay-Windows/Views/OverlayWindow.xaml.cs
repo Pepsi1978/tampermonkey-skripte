@@ -111,7 +111,7 @@ namespace TerminalVoiceOverlay.Views
         {
             // Position overlay on the correct monitor
             var workArea = TerminalWatcher.GetMonitorWorkArea(terminalHwnd);
-            Left = workArea.X + workArea.Width - Width - 4;
+            Left = workArea.X + workArea.Width - Width - 42;
             Top = workArea.Y + (workArea.Height - Height) / 2;
 
             if (!IsVisible)
