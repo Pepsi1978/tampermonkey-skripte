@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         AI Studio V.1.3.9
+// @name         AI Studio V.1.4.0
 // @namespace    https://aistudio.google.com/prompts/new_chat
-// @version      1.3.9
+// @version      1.4.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf ChatGPT. Mic-Button unten links. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://aistudio.google.com/*
 // @match        https://www.aistudio.google.com/*
@@ -1214,12 +1214,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     setUiStyle(b, "background", "white");
     b.style.boxShadow = "0 6px 18px rgba(0,0,0,0.18)"; // kein !important – Animation muss box-shadow überschreiben können
     setUiStyle(b, "font-size", "18px");
+    setUiStyle(b, "transition", "transform 0.15s ease, box-shadow 0.25s ease");
 
     setUiStyle(b, "left", `${UI_POS.leftPx + rightOffsetPx}px`);
     setUiStyle(b, "bottom", `${UI_POS.bottomPx + bottomOffsetPx}px`);
     setUiStyle(b, "right", "auto");
     setUiStyle(b, "top", "auto");
     enforceUiButtonVisibility(b);
+
+    b.addEventListener("mouseenter", () => { b.style.transform = "scale(1.15)"; });
+    b.addEventListener("mouseleave", () => { b.style.transform = "scale(1)"; });
   }
 
 
