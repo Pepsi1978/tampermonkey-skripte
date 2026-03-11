@@ -14,7 +14,7 @@ private extension NSColor {
     static let btnBtwPulse = NSColor(hex: "#90CAF9")
     static let btnX = NSColor(hex: "#E53935")
     static let btnXPressed = NSColor(hex: "#FF6666")
-    static let btnMicIdle = NSColor(hex: "#FFE082")
+    static let btnMicIdle = NSColor(hex: "#3D7BC7")
 
     convenience init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
