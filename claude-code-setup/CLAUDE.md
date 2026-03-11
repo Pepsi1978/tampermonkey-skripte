@@ -1,11 +1,12 @@
 # Projektregeln
 
 ## Sichtbarkeit (KRITISCH)
-- NIEMALS im Hintergrund arbeiten. Kein `context: fork`, kein `run_in_background`, keine stillen Subagents.
+- NIEMALS unsichtbar im Hintergrund arbeiten. Kein `context: fork`, keine stillen Subagents die der Benutzer nicht sehen kann.
 - Der Benutzer MUSS jede Aktion in Echtzeit mitlesen koennen.
 - Jede Aktion bekommt eine eigene sichtbare Zeile — vorherige Ausgaben NIEMALS ueberschreiben.
 - Vor jeder Aktion kurz auf Deutsch erklaeren, was gleich passiert.
 - Nach jeder Aktion das Ergebnis zeigen, damit der Benutzer den Fortschritt verfolgen kann.
+- **Parallele Agenten sind ausdruecklich erwuenscht** — mehrere sichtbare Agent-Tool-Aufrufe gleichzeitig sind das Ziel, nicht die Ausnahme. Nur versteckte/unsichtbare Arbeit ist verboten.
 
 ## Einziges Repository (KRITISCH)
 - **ALLE Dateien gehoeren in `Pepsi1978/proggs`** — es gibt kein anderes Repo.
@@ -17,20 +18,22 @@
 ## Automatisierung & Workflow
 - Maximale Automatisierung: Nie nach Erlaubnis fragen fuer Standardaktionen (Build, Test, Commit, Push).
 - Committen und Pushen immer direkt machen — nicht vorher fragen.
-- Immer so viele Aufgaben wie moeglich **parallel** ausfuehren (Agent Teams nutzen) — aber IMMER sichtbar in der Hauptkonversation.
+- **IMMER so viele Aufgaben wie moeglich PARALLEL ausfuehren** — das ist keine Option, sondern die Standardarbeitsweise.
+- Wenn 2+ unabhaengige Aufgaben anstehen: Sofort parallele Agent-Tool-Aufrufe in einer einzigen Nachricht absetzen.
 - Nach jeder Code-Aenderung automatisch: Build → Test → Review → Verbessern (Schleife, bis Qualitaet stimmt).
 - Bei Fehlern: Selbststaendig debuggen und fixen, nicht den Benutzer fragen.
 - Ergebnisse ausfuehrlich erklaeren — der Benutzer ist kein Programmierer und will verstehen, was passiert ist.
 - Terminal-Befehle **immer direkt selbst ausfuehren** (ueber das Bash-Tool), niemals dem Benutzer Zeilen zum Kopieren geben.
 
-## Qualitaetsschleife
-- Jedes fertige Feature durchlaeuft mindestens 3 Pruefungen:
-  1. Build & Test (kompiliert es, funktioniert es?) → Custom Agent: `tester`
-  2. Code Review (ist der Code sauber und sicher?) → Custom Agent: `code-reviewer`
-  3. Verbesserung (kann es eleganter, schneller, schoener sein?) → Custom Agents: `optimizer` + `ui-polisher`
+## Qualitaetsschleife (PARALLEL ausfuehren!)
+- Jedes fertige Feature durchlaeuft mindestens 3 Pruefungen — **alle 3 gleichzeitig starten**:
+  1. Build & Test → Custom Agent: `tester`
+  2. Code Review → Custom Agent: `code-reviewer`
+  3. Verbesserung → Custom Agents: `optimizer` + `ui-polisher`
+- Diese 3 Agents werden als **parallele Agent-Tool-Aufrufe in einer Nachricht** gestartet.
 - Erst wenn alle 3 bestanden sind, wird committed und gepusht.
-- Bei neuen Projekten zuerst den `architect` Agent nutzen, um die Architektur zu planen.
-- Bei Bugs den `debugger` Agent nutzen fuer systematische Diagnose.
+- Bei neuen Projekten: `architect` Agent + Recherche-Agent **parallel** starten.
+- Bei Bugs: `debugger` Agent nutzen (kann selbst Sub-Agenten fuer konkurrierende Hypothesen spawnen).
 
 ## Skill-Erstellung
 - Wenn ein neuer Skill erstellt, bearbeitet oder getestet werden soll, MUSS immer der `/skill-creator:skill-creator` Skill verwendet werden.
@@ -48,11 +51,78 @@
 - Bevorzugte Sprachen: Swift, C#, TypeScript, Rust, Go. In dieser Reihenfolge.
 - Auslieferung: Eine einzelne .app (macOS) oder .exe (Windows) — keine Installationsabhaengigkeiten fuer den Endnutzer.
 
-## Agent Teams
-- Bei komplexen Aufgaben mit 3+ unabhaengigen Teilschritten: Agent Teams nutzen (3-5 Teammates optimal).
-- Jeder Teammate braucht klaren Kontext: Was ist das Projekt, welche Dateien gehoeren ihm, welche Konventionen gelten.
-- Datei-Ownership beachten: Verschiedene Teammates arbeiten an verschiedenen Dateien, um Konflikte zu vermeiden.
-- Qualitaetspruefungen (Schritt 2+3 der Qualitaetsschleife) koennen parallel laufen.
+## Parallelisierung & Agenten-Schwarm (KRITISCH)
+
+### Grundregel: Immer parallel, nie sequentiell
+- Wenn 2+ Aufgaben unabhaengig sind: SOFORT parallel starten — nie eine nach der anderen.
+- Jede Nachricht mit mehreren unabhaengigen Aufgaben → mehrere Agent-Tool-Aufrufe in EINEM Antwortblock.
+- Parallele Tool-Calls (Bash, Read, Glob, Grep) in einem Antwortblock sind immer besser als nacheinander.
+- Ziel: Maximale Gleichzeitigkeit bei voller Sichtbarkeit.
+
+### Wann welches Parallelisierungs-Muster nutzen
+
+**Parallele Tool-Calls (kein Agent noetig):**
+- 2-5 unabhaengige Bash-Befehle, Datei-Reads, Glob/Grep-Suchen
+- Beispiel: `brew outdated` + `rustup check` + `claude --version` gleichzeitig
+
+**Parallele Subagents (Agent-Tool, Foreground):**
+- 2-5 unabhaengige Teilaufgaben die jeweils eigene Analyse/Arbeit brauchen
+- Beispiel: Code Review + Tests + UI Polish gleichzeitig nach einem Feature
+- Beispiel: 3 verschiedene Dateien gleichzeitig refactoren lassen
+- Beispiel: Recherche zu 3 verschiedenen Themen parallel
+- Jeder Subagent bekommt vollen Kontext: Projekt, Dateien, Konventionen
+
+**Agent Teams (TeamCreate, fuer grosse Projekte):**
+- 3-5 Teammates fuer komplexe Aufgaben die Stunden dauern und Kommunikation brauchen
+- Beispiel: Neues Feature mit Frontend + Backend + Tests, jeder Teammate besitzt eigene Dateien
+- Beispiel: Debugging mit konkurrierenden Hypothesen — Teammates testen verschiedene Theorien
+- 5-6 Tasks pro Teammate, Datei-Ownership strikt trennen
+
+### Konkrete Parallel-Muster
+
+**Nach jedem Feature (Qualitaetsschleife parallel):**
+```
+→ Gleichzeitig 3 Agents starten:
+  Agent 1: tester (Build + Tests)
+  Agent 2: code-reviewer (Security + Quality)
+  Agent 3: optimizer + ui-polisher (Performance + Design)
+→ Erst wenn alle 3 bestanden: Commit + Push
+```
+
+**Bei neuem Projekt:**
+```
+→ Gleichzeitig 2 Agents starten:
+  Agent 1: architect (Architektur planen)
+  Agent 2: Recherche (Libs, APIs, Best Practices)
+→ Ergebnisse zusammenfuehren, dann implementieren
+```
+
+**Bei Cross-Platform-Feature:**
+```
+→ Gleichzeitig 2 Agents starten:
+  Agent 1: macOS-Implementation (Swift/AppKit)
+  Agent 2: Windows-Implementation (C#/WPF)
+→ Parallel testen lassen
+```
+
+**Bei Recherche-Aufgaben:**
+```
+→ Gleichzeitig 3-5 WebSearch/WebFetch parallel
+→ Oder 3 Explore-Agents fuer verschiedene Bereiche
+```
+
+**Bei Code-Verbesserungen:**
+```
+→ Gleichzeitig verschiedene Dateien von verschiedenen Agents bearbeiten lassen
+→ Datei-Ownership: Jeder Agent bekommt eigene Dateien, NIE die gleiche Datei
+```
+
+### Regeln fuer parallele Agenten
+- Jeder Agent braucht **vollen Kontext**: Was ist das Projekt, welche Dateien gehoeren ihm, welche Konventionen gelten.
+- **Datei-Ownership ist heilig**: Zwei Agenten duerfen NIEMALS die gleiche Datei gleichzeitig bearbeiten.
+- **Kontext grosszuegig geben**: Agents erben NICHT die Konversations-Historie. Alles Wichtige im Prompt mitgeben.
+- **3-5 parallele Agents** ist der Sweet Spot. Mehr als 5 bringt kaum Geschwindigkeitsvorteil, aber viel mehr Token-Kosten.
+- Bei kleinen Aufgaben (unter 2 Minuten) reicht ein einzelner Agent oder direktes Tool-Call.
 
 ## Sicherheit bei externem Code (KRITISCH)
 - Gilt fuer ALLES was extern hinzugefuegt wird: Skills, Plugins, Agents, MCP-Server, Hooks, Commands, npm-Pakete, GitHub Actions, etc.

@@ -121,9 +121,20 @@
   "custom_skills": [
     "auto-verify-iterate",
     "cross-platform",
+    "self-improve",
     "tampermonkey-version",
     "tool-check",
     "undo-changes"
+  ],
+
+  "custom_agents": [
+    "architect",
+    "code-reviewer",
+    "debugger",
+    "optimizer",
+    "researcher",
+    "tester",
+    "ui-polisher"
   ],
 
   "settings": {
