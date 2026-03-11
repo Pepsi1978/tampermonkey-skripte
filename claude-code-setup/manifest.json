@@ -122,6 +122,7 @@
     "auto-verify-iterate",
     "cross-platform",
     "tampermonkey-version",
+    "tool-check",
     "undo-changes"
   ],
 
