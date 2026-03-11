@@ -7,6 +7,7 @@ private extension NSColor {
     static let btnProcessing = NSColor(hex: "#FF9800")
     static let btnSuccess = NSColor(hex: "#43A047")
     static let toggleOn = NSColor(hex: "#16a34a")
+    static let toggleOnBright = NSColor(hex: "#22c55e")
     static let toggleOff = NSColor(hex: "#2D2D2D")
     static let btnBtwIdle = NSColor(hex: "#64B5F6")
     static let btnBtwRecording = NSColor(hex: "#1E88E5")
@@ -293,7 +294,7 @@ final class OverlayPanel: NSPanel {
 
     func setAutoEnterEnabled(_ enabled: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.enterButton.buttonColor = enabled ? .toggleOn : .toggleOff
+            self?.enterButton.buttonColor = enabled ? .toggleOnBright : .toggleOff
         }
     }
 
