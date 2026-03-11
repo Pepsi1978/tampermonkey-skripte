@@ -89,7 +89,8 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 - Read `~/.claude/settings.json` — verify all settings are optimal
 - Read `~/CLAUDE.md` — verify rules are current and complete
 - List `~/.claude/rules/` — check all rule files for accuracy
-- List `~/.claude/agents/` — verify all agents use `model: opus`
+- List `~/.claude/agents/` — verify agents use correct model tier (Opus for reasoning agents, Sonnet for execution agents)
+- **Speed-Tier check**: `jq '.env.CLAUDE_CODE_SUBAGENT_MODEL' ~/.claude/settings.json` — must be `"sonnet"`. If missing or wrong → flag for Phase 3. Also verify new agents have correct model assignment (coder/batch-reviewer/researcher = Sonnet, architect/debugger/code-reviewer/optimizer/tester/ui-polisher = Opus).
 - List `~/.claude/commands/` — check custom commands
 - Read `~/.claude/projects/-Users-frank/memory/MEMORY.md` — is memory accurate?
 - Count plugins precisely: `jq '.plugins | keys | length' ~/.claude/plugins/installed_plugins.json` — compare with `enabledPlugins` count in settings.json
@@ -107,24 +108,20 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 ### Phase 2: RESEARCH (Discover New Things)
 
-Use WebSearch and WebFetch to find improvements. **Launch all research queries in parallel** — either as multiple WebSearch tool calls in one message, or by spawning 3-5 `researcher` agents (Sonnet-based, fast and cheap) simultaneously for different topics.
+**IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchführt, Seiten lädt, filtert und zusammenfasst.
 
-**Preferred pattern — parallel researcher agents:**
+**Standard-Recherche (IMMER diese 5 Agents gleichzeitig spawnen):**
 ```
-→ Spawn 3-5 researcher agents simultaneously:
-  Researcher 1: "Claude Code changelog latest version features"
-  Researcher 2: "superpowers marketplace new plugins [current month+year]"
-  Researcher 3: "Claude Code agent teams best practices"
-  Researcher 4: "[language] toolchain latest version" (for each main language)
-  Researcher 5: "security vulnerabilities [tool names]"
+→ Spawn 5 researcher agents simultaneously:
+  Researcher 1: "Claude Code changelog latest version features + speed/performance"
+  Researcher 2: "superpowers marketplace + official plugins new [current month+year]"
+  Researcher 3: "Claude Code agent teams + parallelization + hooks/automation best practices"
+  Researcher 4: "Latest versions: Node.js, Bun, Deno, Go, .NET SDK, Swift, Xcode, Rust, Biome, golangci-lint"
+  Researcher 5: "Security vulnerabilities in installed tools + Claude Code security updates"
 ```
 
-**Fallback — direct parallel WebSearch (if researcher agents are not available):**
-1. **Claude Code updates**: Search for "Claude Code new features" or "Claude Code changelog"
-2. **Plugin marketplace**: Fetch the superpowers-marketplace catalog and the official plugins
-3. **Skills and best practices**: Search for "Claude Code skills best practices"
-4. **Language tooling**: Check for newer versions of key tools (Xcode, .NET SDK, Rust, Go, Node, Bun)
-5. **Security**: Any known vulnerabilities in installed tools?
+**Fallback — nur wenn researcher Agents nicht verfügbar sind:**
+Direkte parallele WebSearch-Aufrufe für die gleichen 5 Themen.
 
 **Important**: Only suggest installing things that align with the user's goals. Don't suggest Python tools or frameworks unless they're invisible backend components.
 
@@ -183,6 +180,8 @@ Beispiel:
 ```
 
 **Transparenz-Regel**: Keine stille Änderung. Jede Datei, jede Einstellung, jeder Befehl der geändert wird, muss im Report erscheinen.
+
+**Sofort-Sync-Regel**: Nach JEDER Schleife, die Dateien ändert, sofort alle geänderten Dateien nach `~/proggs/claude-code-setup/` kopieren. Das ist nur ein `cp`-Befehl pro geänderter Datei — kostet fast nichts, verhindert aber Backup-Drift. So ist das Backup auch aktuell, wenn die Session unerwartet endet (Context-Limit, Netzwerkfehler, Abbruch).
 
 ## After All 3 Loops: Phase 6 — META-IMPROVE (Self-Improvement des Skills)
 
@@ -318,4 +317,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v1.5 | Date: 2026-03-11 | Last Meta-Improve: 2026-03-11 | Lines: 321/500 | Changes: faster .NET check, backup drift detection, change counter in final summary, detailed 3-part Meta-Improve suggestion format, line limit increased 400→500 -->
+<!-- Skill Version: v1.6 | Date: 2026-03-11 | Last Meta-Improve: 2026-03-11 | Lines: ~330/500 | Changes: v1.6 — mandatory 5 parallel researcher agents in Phase 2, after-each-loop backup sync rule, speed-tier check (CLAUDE_CODE_SUBAGENT_MODEL) in Phase 1 -->
