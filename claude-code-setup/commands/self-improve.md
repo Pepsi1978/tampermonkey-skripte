@@ -9,8 +9,9 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v1.5 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v1.7 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
+║  Cross-Platform: macOS + Windows (automatische Erkennung)    ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Was passiert jetzt:                                         ║
@@ -26,7 +27,7 @@ description: Systematic self-improvement of the Claude Code development environm
 ║    Sicherheitsupdates, Tool-Versionen im Web recherchieren   ║
 ║                                                              ║
 ║  Phase 3: UPDATE — Gefundene Updates anwenden                ║
-║    Homebrew, Rust, Plugins etc. aktualisieren                ║
+║    Paketmanager, Rust, Plugins etc. aktualisieren            ║
 ║                                                              ║
 ║  Phase 4: IMPROVE — Kreativ verbessern                       ║
 ║    Regeln optimieren, neue Hooks, bessere Automatisierung    ║
@@ -71,6 +72,38 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
 
+## Platform Detection (FIRST STEP — before anything else)
+
+Detect the platform at the start of EVERY run. This determines which commands to use throughout all phases.
+
+```
+# Run this FIRST:
+uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash
+# OR on Windows PowerShell:
+$env:OS    # "Windows_NT" = Windows
+```
+
+**Platform-specific command mapping:**
+
+| Task | macOS | Windows (PowerShell) |
+|------|-------|---------------------|
+| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` |
+| Package manager upgrade | `brew upgrade` | `winget upgrade --all` |
+| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) |
+| Disk space | `df -h /` | `Get-PSDrive C` |
+| Rust updates | `rustup check` | `rustup check` (identical) |
+| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` |
+| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` |
+| Claude config path | `~/.claude/` | `~/.claude/` (same on both) |
+| Repo path | `~/proggs/` | `~/proggs/` (same on both) |
+| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) |
+| Linter: C# | `dotnet format` | `dotnet format` (identical) |
+| Linter: TypeScript | `biome check` | `biome check` (identical) |
+| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) |
+| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) |
+
+**Rule**: Always use the correct platform command. Never run `brew` on Windows or `winget` on macOS. If a tool is not available on the current platform, skip that check and note it in the report.
+
 ## The 3-Loop Process
 
 For each loop (1, 2, 3), execute ALL 5 phases. Each loop should find progressively subtler improvements.
@@ -83,24 +116,28 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 - `claude --version && echo "---" && npm view @anthropic-ai/claude-code version` — compare both outputs in one call. If the npm version is higher, flag for update in Phase 3.
 
 **Check these in parallel (all at once, same message block):**
-- `brew outdated` — any Homebrew packages need updating?
-- `rustup check` — Rust toolchain updates?
-- `dotnet --list-sdks | tail -1` — is the .NET SDK current? (faster than workload check)
+
+**Platform-specific checks (use the correct one):**
+- macOS: `brew outdated` / Windows: `winget upgrade --include-unknown`
+- `rustup check` — Rust toolchain updates? (same on both platforms)
+- macOS: `dotnet --list-sdks | tail -1` / Windows: `dotnet --list-sdks | Select-Object -Last 1`
+- macOS: Check `~/.zshrc` — verify PATH and aliases / Windows: Check `$PROFILE` — verify PowerShell profile
+- macOS: `df -h /` / Windows: `Get-PSDrive C`
+
+**Platform-independent checks (same on both):**
 - Read `~/.claude/settings.json` — verify all settings are optimal
 - Read `~/CLAUDE.md` — verify rules are current and complete
 - List `~/.claude/rules/` — check all rule files for accuracy
 - List `~/.claude/agents/` — verify agents use correct model tier (Opus for reasoning agents, Sonnet for execution agents)
 - **Speed-Tier check**: `jq '.env.CLAUDE_CODE_SUBAGENT_MODEL' ~/.claude/settings.json` — must be `"sonnet"`. If missing or wrong → flag for Phase 3. Also verify new agents have correct model assignment (coder/batch-reviewer/researcher = Sonnet, architect/debugger/code-reviewer/optimizer/tester/ui-polisher = Opus).
 - List `~/.claude/commands/` — check custom commands
-- Read `~/.claude/projects/-Users-frank/memory/MEMORY.md` — is memory accurate?
+- Read memory file (MEMORY.md) — is memory accurate?
 - Count plugins precisely: `jq '.plugins | keys | length' ~/.claude/plugins/installed_plugins.json` — compare with `enabledPlugins` count in settings.json
-- Check `~/.zshrc` — verify PATH and aliases are correct
 - Run `git config --global --list` — verify git settings
-- Check disk space with `df -h /`
 - **Cleanup check**: Look for orphaned directories, stale repos, leftover files from previous runs (e.g. `~/claude-config/`, temp folders, unused local repos)
 - List all GitHub repos with `gh repo list` — are there any that shouldn't exist?
 
-- **Backup drift check**: Compare local config with backup — `diff ~/.claude/agents/ ~/proggs/claude-code-setup/agents/`, same for `rules/`, `hooks/`, `commands/`. Flag any files that differ so they get synced in Phase 3.
+- **Backup drift check**: Compare local config with backup — diff `~/.claude/agents/` vs `~/proggs/claude-code-setup/agents/`, same for `rules/`, `hooks/`, `commands/`. On macOS use `diff`, on Windows use `Compare-Object`.
 
 **Collect all findings into a status report before proceeding.**
 
@@ -129,8 +166,12 @@ Direkte parallele WebSearch-Aufrufe für die gleichen 5 Themen.
 
 Based on findings from CHECK and RESEARCH:
 
-- Run `brew upgrade` if packages are outdated (but skip Python-related packages)
-- Run `rustup update` if Rust has updates
+**Platform-specific updates:**
+- macOS: `brew upgrade` (skip Python-related packages) / Windows: `winget upgrade --all`
+- `rustup update` — Rust updates (same on both platforms)
+- `dotnet workload update` — .NET workloads (same on both platforms)
+
+**Platform-independent updates:**
 - Update plugins if new versions exist
 - Fix any settings that have drifted from optimal
 - Update rule files if language versions changed
@@ -204,9 +245,9 @@ Count the lines of this skill file:
 wc -l ~/.claude/commands/self-improve.md
 ```
 
-- If **under 400 lines**: Improvements can be suggested freely
-- If **400-500 lines**: Warn the user that the limit is approaching
-- If **500+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+- If **under 500 lines**: Improvements can be suggested freely
+- If **500-600 lines**: Warn the user that the limit is approaching
+- If **600+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
 
 ### Step 3: Present Suggestions (NEVER auto-apply!)
 
@@ -237,7 +278,7 @@ prevent errors, or improve quality? Relate it back to the user's goals.
 ...
 
 ### Skill-Status
-- Aktuelle Zeilenzahl: [N]/500
+- Aktuelle Zeilenzahl: [N]/600
 - Letzte Meta-Verbesserung: [Datum oder "erste"]
 
 Soll ich diese Aenderungen umsetzen? (Ja/Nein/Teilweise)
@@ -265,12 +306,9 @@ If the user approves:
 After all 3 loops are complete, **always sync changes to the cross-platform repo**:
 
 1. **Copy changed files** from `~/.claude/` to `~/proggs/claude-code-setup/`:
-   - `cp ~/.claude/rules/*.md ~/proggs/claude-code-setup/rules/`
-   - `cp ~/.claude/agents/*.md ~/proggs/claude-code-setup/agents/`
-   - `cp ~/.claude/commands/*.md ~/proggs/claude-code-setup/commands/`
-   - `cp ~/.claude/hooks/auto-format.sh ~/proggs/claude-code-setup/hooks/`
-   - `cp ~/CLAUDE.md ~/proggs/claude-code-setup/CLAUDE.md`
-   - `cp ~/.gitignore_global ~/proggs/claude-code-setup/.gitignore_global`
+   - macOS: `cp ~/.claude/rules/*.md ~/proggs/claude-code-setup/rules/` (etc.)
+   - Windows: `Copy-Item ~/.claude/rules/*.md ~/proggs/claude-code-setup/rules/` (etc.)
+   - Files to sync: `rules/`, `agents/`, `commands/`, `hooks/`, `~/CLAUDE.md`, `~/.gitignore_global`
    - Update `~/proggs/claude-code-setup/settings.json` (without platform-specific hooks)
 
 2. **Check if Windows variants need updating**: If a rule, agent, or hook changed, consider whether the Windows equivalent (`hooks/auto-format.ps1`, `hooks-windows.json`) also needs to be updated to match.
@@ -302,7 +340,7 @@ Give a final comprehensive summary:
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
-- This skill file has a **500-line limit**. If approaching, warn the user.
+- This skill file has a **600-line limit**. If approaching, warn the user.
 - **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - **Security for ALL external code** (skills, plugins, agents, MCP servers, hooks, commands, npm packages, GitHub Actions, etc.):
   1. Check the source — only use trusted, well-known sources (official Anthropic, superpowers-marketplace, established GitHub repos)
@@ -317,4 +355,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v1.6 | Date: 2026-03-11 | Last Meta-Improve: 2026-03-11 | Lines: ~330/500 | Changes: v1.6 — mandatory 5 parallel researcher agents in Phase 2, after-each-loop backup sync rule, speed-tier check (CLAUDE_CODE_SUBAGENT_MODEL) in Phase 1 -->
+<!-- Skill Version: v1.7 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~370/600 | Changes: v1.7 — cross-platform support (macOS+Windows auto-detection), platform-specific command mapping table, line limit raised 500→600 -->
