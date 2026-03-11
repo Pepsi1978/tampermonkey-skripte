@@ -1,0 +1,67 @@
+# Secrets & credentials
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# Build artifacts
+build/
+dist/
+*.app/
+*.exe
+*.dll
+*.dylib
+*.so
+
+# .NET / C#
+bin/
+obj/
+
+# Swift SPM
+.build/
+.swiftpm/
+
+# Rust / Cargo
+target/
+
+# Go
+vendor/
+
+# Dependencies
+node_modules/
+.packages/
+Pods/
+bun.lockb
+
+# Claude Code
+.claude/memory/
+.claude-trace/
+
+# Crash reports & logs
+*.crash
+*.log
+npm-debug.log*
+yarn-error.log*
