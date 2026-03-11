@@ -252,9 +252,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         isProcessing = false
 
         if wasBtw {
-            panel.setBtwMicState(.success)
+            panel.setBtwMicState(.idle)
         } else {
-            panel.setMicState(.success)
+            panel.setMicState(.idle)
         }
         NSLog("Text eingefuegt")
 
@@ -263,8 +263,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             hasPastedText = true
         }
-
-        scheduleReset(wasBtw: wasBtw)
     }
 
     // MARK: - Error Feedback

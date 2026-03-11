@@ -281,11 +281,9 @@ final class OverlayPanel: NSPanel {
         if xButtonCooldown { return false }
         xButtonCooldown = true
         DispatchQueue.main.async { [weak self] in
-            self?.xButton.buttonColor = .btnXPressed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self?.xButton.buttonColor = .btnIdle
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
                 self?.xButton.buttonColor = .btnX
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                 self?.xButtonCooldown = false
             }
         }
