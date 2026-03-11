@@ -9,13 +9,22 @@ You are performing a systematic self-improvement of your development environment
 
 The user is not a programmer. Explain everything in German, in simple terms, so they understand what you did and why.
 
+## Visibility Rules (CRITICAL)
+
+- **NEVER run anything in the background** (no `context: fork`, no `run_in_background`, no silent subagents)
+- The user MUST be able to read along with EVERY action in real-time
+- Each action gets its own visible output line that stays on screen — never overwrite previous output
+- Before each action, write a short German explanation of what you're about to do
+- After each action, write the result so the user can follow the progress
+- Think of it as a live protocol: the user reads along like watching a log file
+
 ## User Goals (never forget these)
 
 - **Zero friction**: No permission prompts, no manual steps, full automation
 - **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit) and Windows (C#/WPF)
 - **Preferred languages**: Swift, C#, TypeScript, Rust, Go (in this order). No Python for visible things.
 - **Best model always**: Opus with high effort and extended thinking
-- **Parallel execution**: Use Agent Teams and subagents wherever possible
+- **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
 
 ## The 3-Loop Process

@@ -1,9 +1,16 @@
 # Projektregeln
 
+## Sichtbarkeit (KRITISCH)
+- NIEMALS im Hintergrund arbeiten. Kein `context: fork`, kein `run_in_background`, keine stillen Subagents.
+- Der Benutzer MUSS jede Aktion in Echtzeit mitlesen koennen.
+- Jede Aktion bekommt eine eigene sichtbare Zeile — vorherige Ausgaben NIEMALS ueberschreiben.
+- Vor jeder Aktion kurz auf Deutsch erklaeren, was gleich passiert.
+- Nach jeder Aktion das Ergebnis zeigen, damit der Benutzer den Fortschritt verfolgen kann.
+
 ## Automatisierung & Workflow
 - Maximale Automatisierung: Nie nach Erlaubnis fragen fuer Standardaktionen (Build, Test, Commit, Push).
 - Committen und Pushen immer direkt machen — nicht vorher fragen.
-- Immer so viele Aufgaben wie moeglich **parallel** ausfuehren (Agent Teams nutzen).
+- Immer so viele Aufgaben wie moeglich **parallel** ausfuehren (Agent Teams nutzen) — aber IMMER sichtbar in der Hauptkonversation.
 - Nach jeder Code-Aenderung automatisch: Build → Test → Review → Verbessern (Schleife, bis Qualitaet stimmt).
 - Bei Fehlern: Selbststaendig debuggen und fixen, nicht den Benutzer fragen.
 - Ergebnisse ausfuehrlich erklaeren — der Benutzer ist kein Programmierer und will verstehen, was passiert ist.
