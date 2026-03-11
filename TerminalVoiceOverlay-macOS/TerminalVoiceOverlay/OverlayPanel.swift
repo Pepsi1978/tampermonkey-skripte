@@ -108,7 +108,7 @@ final class OverlayPanel: NSPanel {
 
         // Create buttons
         xButton = RoundButton(label: "X", color: .btnIdle)
-        btwButton = RoundButton(label: "B", color: .toggleOff)
+        btwButton = RoundButton(label: "?", color: .toggleOff)
         micButton = RoundButton(label: "\u{1F3A4}", color: .btnIdle)
         micButton.labelFont = .systemFont(ofSize: 14)
         wButton = RoundButton(label: "W", color: .btnIdle)
