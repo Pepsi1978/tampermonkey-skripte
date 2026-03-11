@@ -134,8 +134,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("Aufnahme gestartet")
         } catch {
             NSLog("Mikrofon-Fehler: %@", error.localizedDescription)
-            panel.setMicState(.error)
-            scheduleReset()
+            pasteError("Mikrofon nicht verfuegbar — \(error.localizedDescription)")
         }
     }
 
@@ -175,10 +174,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     self?.handleTranscript(transcript)
                 case .failure(let error):
                     NSLog("Transkriptionsfehler: %@", error.localizedDescription)
+                    let msg = Self.describeTranscriptionError(error)
                     DispatchQueue.main.async {
-                        self?.isProcessing = false
-                        self?.panel.setMicState(.error)
-                        self?.scheduleReset()
+                        self?.pasteError(msg)
                     }
                 }
             }
@@ -227,6 +225,60 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             hasPastedText = true
         }
 
+        scheduleReset()
+    }
+
+    // MARK: - Error Feedback
+
+    private static func describeTranscriptionError(_ error: Error) -> String {
+        let nsError = error as NSError
+
+        // Network connectivity issues
+        if nsError.domain == NSURLErrorDomain {
+            switch nsError.code {
+            case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost:
+                return "Kein Internet — Spracheingabe konnte nicht transkribiert werden"
+            case NSURLErrorTimedOut:
+                return "Timeout — Groq API antwortet nicht (Internet-Problem?)"
+            case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
+                return "Groq API nicht erreichbar — DNS oder Server-Problem"
+            case NSURLErrorSecureConnectionFailed:
+                return "SSL-Fehler — sichere Verbindung zu Groq fehlgeschlagen"
+            default:
+                return "Netzwerkfehler — \(error.localizedDescription)"
+            }
+        }
+
+        // Groq API errors (from GroqWhisperClient)
+        if let apiError = error as? GroqWhisperClient.APIError {
+            switch apiError {
+            case .fileReadError:
+                return "Audio-Datei konnte nicht gelesen werden"
+            case .httpError(let code, _):
+                if code == 429 {
+                    return "Groq API Rate-Limit erreicht — zu viele Anfragen, kurz warten"
+                } else if (500...599).contains(code) {
+                    return "Groq API Server-Fehler (\(code)) — spaeter nochmal versuchen"
+                } else {
+                    return "Groq API Fehler \(code) — \(error.localizedDescription)"
+                }
+            }
+        }
+
+        return "Transkription fehlgeschlagen — \(error.localizedDescription)"
+    }
+
+    private func pasteError(_ message: String) {
+        let errorText = "# [VoiceOverlay] FEHLER: \(message)"
+        NSLog("Fehler ins Terminal eingefuegt: %@", errorText)
+        DispatchQueue.global(qos: .userInitiated).async {
+            TerminalController.clearLine()
+            usleep(100_000)
+            TerminalController.pasteText(errorText)
+        }
+        hasPastedText = false
+        isProcessing = false
+        panel.setMicState(.error)
         scheduleReset()
     }
 
