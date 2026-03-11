@@ -41,6 +41,7 @@ class RoundButton: NSView {
         self.label = label
         self.buttonColor = color
         super.init(frame: NSRect(x: 0, y: 0, width: diameter, height: diameter))
+        wantsLayer = true
         let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self)
         addTrackingArea(trackingArea)
     }
@@ -72,6 +73,30 @@ class RoundButton: NSView {
 
     override func mouseUp(with event: NSEvent) {
         onMouseUp?()
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        animateScale(1.15)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        animateScale(1.0)
+    }
+
+    private func animateScale(_ scale: CGFloat) {
+        let mid = bounds.width / 2
+        var t = CATransform3DIdentity
+        t = CATransform3DTranslate(t, mid, mid, 0)
+        t = CATransform3DScale(t, scale, scale, 1)
+        t = CATransform3DTranslate(t, -mid, -mid, 0)
+
+        let anim = CABasicAnimation(keyPath: "transform")
+        anim.toValue = NSValue(caTransform3D: t)
+        anim.duration = 0.15
+        anim.fillMode = .forwards
+        anim.isRemovedOnCompletion = false
+        anim.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        layer?.add(anim, forKey: "hoverScale")
     }
 }
 
