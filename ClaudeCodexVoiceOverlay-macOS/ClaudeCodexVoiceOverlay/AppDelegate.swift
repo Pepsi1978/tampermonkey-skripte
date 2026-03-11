@@ -156,7 +156,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 panel.setMicState(.recording)
             }
             NSSound.beep()
+            #if DEBUG
             NSLog("Aufnahme gestartet (BTW: %@)", btw ? "JA" : "NEIN")
+            #endif
         } catch {
             NSLog("Mikrofon-Fehler: %@", error.localizedDescription)
             pasteError("Mikrofon nicht verfuegbar — \(error.localizedDescription)")
@@ -200,16 +202,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self.groqClient.transcribe(fileURL: fileURL) { [weak self] result in
                 try? FileManager.default.removeItem(at: fileURL)
 
-                switch result {
-                case .success(let transcript):
-                    NSLog("Transkription: %@", transcript)
-                    self?.lastRawTranscript = transcript
-                    self?.handleTranscript(transcript, wasBtw: wasBtw)
-                case .failure(let error):
-                    NSLog("Transkriptionsfehler: %@", error.localizedDescription)
-                    let msg = Self.describeTranscriptionError(error)
-                    DispatchQueue.main.async {
-                        self?.pasteError(msg, wasBtw: wasBtw)
+                DispatchQueue.main.async {
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let transcript):
+                        #if DEBUG
+                        NSLog("Transcript: %@", transcript)
+                        #endif
+                        self.lastRawTranscript = transcript
+                        self.handleTranscript(transcript, wasBtw: wasBtw)
+                    case .failure(let error):
+                        NSLog("Transcription error: %@", error.localizedDescription)
+                        let msg = ErrorDescriptions.describeTranscriptionError(error)
+                        self.pasteError(msg, wasBtw: wasBtw)
                     }
                 }
             }
@@ -218,16 +223,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleTranscript(_ transcript: String, wasBtw: Bool) {
         if geminiEnabled, let geminiClient = geminiClient {
+            #if DEBUG
             NSLog("Gemini-Korrektur...")
+            #endif
             geminiClient.correctText(transcript) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let corrected):
+                        #if DEBUG
                         NSLog("Korrigiert: %@", corrected)
+                        #endif
                         self?.insertText(corrected, wasBtw: wasBtw)
                     case .failure(let error):
                         NSLog("Gemini-Fehler: %@, verwende Rohtext", error.localizedDescription)
-                        let hint = Self.describeGeminiError(error)
+                        let hint = ErrorDescriptions.describeGeminiError(error)
                         self?.insertText("\(transcript) # [VoiceOverlay] \(hint)", wasBtw: wasBtw)
                     }
                 }
@@ -256,7 +265,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             panel.setMicState(.idle)
         }
+        #if DEBUG
         NSLog("Text eingefuegt")
+        #endif
 
         if autoEnterEnabled {
             hasPastedText = false
@@ -266,76 +277,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     // MARK: - Error Feedback
-
-    private static func describeGeminiError(_ error: Error) -> String {
-        let nsError = error as NSError
-
-        if nsError.domain == NSURLErrorDomain {
-            switch nsError.code {
-            case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost:
-                return "Gemini offline (kein Internet) — Rohtext verwendet"
-            case NSURLErrorTimedOut:
-                return "Gemini Timeout — Rohtext verwendet"
-            case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
-                return "Gemini nicht erreichbar — Rohtext verwendet"
-            default:
-                return "Gemini Netzwerkfehler — Rohtext verwendet"
-            }
-        }
-
-        if let apiError = error as? GeminiClient.APIError {
-            switch apiError {
-            case .httpError(let code, _):
-                if code == 429 {
-                    return "Gemini Rate-Limit — Rohtext verwendet"
-                } else if (500...599).contains(code) {
-                    return "Gemini Server-Fehler (\(code)) — Rohtext verwendet"
-                } else {
-                    return "Gemini Fehler \(code) — Rohtext verwendet"
-                }
-            case .noData, .unexpectedResponse, .noTextInResponse:
-                return "Gemini lieferte keine Antwort — Rohtext verwendet"
-            }
-        }
-
-        return "Gemini-Korrektur fehlgeschlagen — Rohtext verwendet"
-    }
-
-    private static func describeTranscriptionError(_ error: Error) -> String {
-        let nsError = error as NSError
-
-        if nsError.domain == NSURLErrorDomain {
-            switch nsError.code {
-            case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost:
-                return "Kein Internet — Spracheingabe konnte nicht transkribiert werden"
-            case NSURLErrorTimedOut:
-                return "Timeout — Groq API antwortet nicht (Internet-Problem?)"
-            case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
-                return "Groq API nicht erreichbar — DNS oder Server-Problem"
-            case NSURLErrorSecureConnectionFailed:
-                return "SSL-Fehler — sichere Verbindung zu Groq fehlgeschlagen"
-            default:
-                return "Netzwerkfehler — \(error.localizedDescription)"
-            }
-        }
-
-        if let apiError = error as? GroqWhisperClient.APIError {
-            switch apiError {
-            case .fileReadError:
-                return "Audio-Datei konnte nicht gelesen werden"
-            case .httpError(let code, _):
-                if code == 429 {
-                    return "Groq API Rate-Limit erreicht — zu viele Anfragen, kurz warten"
-                } else if (500...599).contains(code) {
-                    return "Groq API Server-Fehler (\(code)) — spaeter nochmal versuchen"
-                } else {
-                    return "Groq API Fehler \(code) — \(error.localizedDescription)"
-                }
-            }
-        }
-
-        return "Transkription fehlgeschlagen — \(error.localizedDescription)"
-    }
 
     private func pasteError(_ message: String, wasBtw: Bool = false) {
         if wasBtw {
@@ -379,7 +320,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             DispatchQueue.main.async {
                 self?.hasPastedText = true
             }
+            #if DEBUG
             NSLog("Whisper-Rohtext eingefuegt: %@", rawTranscript)
+            #endif
         }
     }
 
@@ -389,7 +332,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard config.geminiAvailable else { return }
         geminiEnabled.toggle()
         panel.setGeminiEnabled(geminiEnabled)
+        #if DEBUG
         NSLog("Gemini %@", geminiEnabled ? "AN" : "AUS")
+        #endif
     }
 
     // MARK: - Auto-Enter Toggle & Manual Enter
@@ -398,11 +343,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if autoEnterEnabled {
             autoEnterEnabled = false
             panel.setAutoEnterEnabled(autoEnterEnabled)
+            #if DEBUG
             NSLog("Auto-Enter AUS")
+            #endif
         } else {
             autoEnterEnabled = true
             panel.setAutoEnterEnabled(autoEnterEnabled)
+            #if DEBUG
             NSLog("Auto-Enter AN + Enter gesendet")
+            #endif
             DispatchQueue.global(qos: .userInitiated).async {
                 InputController.activateTargetApp()
                 usleep(150_000)
