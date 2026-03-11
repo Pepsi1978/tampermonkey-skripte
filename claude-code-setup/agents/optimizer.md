@@ -9,6 +9,7 @@ tools:
   - Bash
   - Edit
   - Write
+  - WebSearch
   - LSP
   - Agent
 ---

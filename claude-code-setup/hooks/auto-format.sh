@@ -8,8 +8,8 @@ case "${file_path##*.}" in
   swift) swift-format --in-place "$file_path" 2>/dev/null ;;
   go)    gofmt -w "$file_path" 2>/dev/null ;;
   rs)    rustfmt "$file_path" 2>/dev/null ;;
-  ts|tsx|mts)
-    # Format TypeScript with Biome if available, else Prettier
+  js|ts|tsx|mts|mjs|jsx)
+    # Format JS/TS with Biome if available, else Prettier
     dir=$(dirname "$file_path")
     if command -v biome &>/dev/null; then
       biome format --write "$file_path" 2>/dev/null

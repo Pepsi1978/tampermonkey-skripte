@@ -29,4 +29,4 @@ Rules:
 - Keep dependencies minimal — fewer dependencies = fewer problems
 - Consider offline functionality by default
 
-Output in German. Technical terms in English.
+Communication: German. Code comments: English.
