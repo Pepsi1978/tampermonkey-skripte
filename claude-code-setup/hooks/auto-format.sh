@@ -19,7 +19,7 @@ case "${file_path##*.}" in
     ;;
   cs)
     # Format C# with dotnet format if inside a project
-    proj_dir="$dir"
+    proj_dir=$(dirname "$file_path")
     while [[ "$proj_dir" != "/" ]]; do
       if ls "$proj_dir"/*.csproj "$proj_dir"/*.sln 2>/dev/null | head -1 >/dev/null 2>&1; then
         dotnet format whitespace "$proj_dir" --include "$file_path" 2>/dev/null
