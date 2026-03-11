@@ -87,25 +87,91 @@ This is the creative phase. Think about:
 
 ### Phase 5: REPORT (Explain in German)
 
-After each loop, give a clear summary:
+After each loop, give a **detailed** summary. The user must understand exactly what changed and why.
 
 ```
 ## Verbesserungsschleife [N]/3
 
 ### Was ich geprüft habe
-[kurze Liste]
+[kurze Liste aller Checks]
 
 ### Was ich aktualisiert habe
-[Liste mit Erklärungen]
+[JEDE einzelne Änderung mit Dateiname/Pfad und Begründung]
+Beispiel:
+- `~/.claude/rules/rust.md` → MinGW-Hinweis hinzugefügt, weil Cross-Compilation jetzt aktiv
+- `~/.claude/agents/debugger.md` → LSP-Tools hinzugefügt für bessere Fehlersuche
 
 ### Was ich verbessert habe
-[konkrete Verbesserungen mit Begründung]
+[konkrete Verbesserungen mit Begründung — was war vorher, was ist jetzt]
+
+### Was ich NICHT geändert habe (und warum)
+[wichtige Entscheidungen, etwas bewusst nicht zu ändern]
 
 ### Status
 [Gesamtstatus der Umgebung]
 ```
 
-## After All 3 Loops: SYNC to GitHub
+**Transparenz-Regel**: Keine stille Änderung. Jede Datei, jede Einstellung, jeder Befehl der geändert wird, muss im Report erscheinen.
+
+## After All 3 Loops: Phase 6 — META-IMPROVE (Self-Improvement des Skills)
+
+After all 3 loops are complete, this skill analyzes and improves **itself**. This is the meta-layer: the improvement skill improving its own improvement process.
+
+### Step 1: Self-Analysis
+
+Read this skill file (`~/.claude/commands/self-improve.md`) and reflect on the 3 loops that just ran:
+
+- Which checks found nothing useful across all 3 loops? → Could they be removed or replaced?
+- Was something missing that would have been useful to check?
+- Were there steps that took too long or produced low-value results?
+- Did any phase feel redundant or could phases be combined?
+- Were there new tools, techniques, or patterns discovered during the loops that should become standard checks?
+
+### Step 2: Line Count Check
+
+Count the lines of this skill file:
+```
+wc -l ~/.claude/commands/self-improve.md
+```
+
+- If **under 350 lines**: Improvements can be suggested freely
+- If **350-400 lines**: Warn the user that the limit is approaching
+- If **400+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+
+### Step 3: Present Suggestions (NEVER auto-apply!)
+
+Present improvement suggestions to the user in this format:
+
+```
+## Meta-Verbesserung: Vorschläge für den Skill selbst
+
+### Vorschlag 1: [Titel]
+**Was**: [Was soll geändert werden]
+**Warum**: [Begründung aus den 3 Loops]
+**Wo im Skill**: [Zeile/Phase die betroffen ist]
+
+### Vorschlag 2: [Titel]
+...
+
+### Skill-Status
+- Aktuelle Zeilenzahl: [N]/400
+- Letzte Meta-Verbesserung: [Datum oder "erste"]
+
+Soll ich diese Änderungen umsetzen? (Ja/Nein/Teilweise)
+```
+
+**CRITICAL**: NEVER modify this skill file without explicit user approval. Only suggest, never auto-apply.
+
+### Step 4: Apply (only after user says yes)
+
+If the user approves:
+1. Apply the approved changes to `~/.claude/commands/self-improve.md`
+2. Document exactly what changed (old → new)
+3. The updated skill will be synced to GitHub in the next step
+
+---
+
+## After Meta-Improve: SYNC to GitHub
 
 After all 3 loops are complete, **always sync changes to the cross-platform repo**:
 
@@ -141,9 +207,12 @@ Give a final comprehensive summary:
 ## Important Rules
 
 - NEVER create new GitHub repositories. ALL files belong in `Pepsi1978/proggs`. Always push to the existing repo, never create separate repos.
+- NEVER modify this skill file without explicit user approval (Meta-Improve is suggest-only)
 - NEVER downgrade the model from Opus or reduce effort level
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
+- This skill file has a **400-line limit**. If approaching, warn the user.
+- **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - ALWAYS run updates that don't require user passwords automatically
 - If something needs `sudo`, tell the user what to run manually
 - If you find a critical security issue, report it IMMEDIATELY, don't wait for the loop to finish
