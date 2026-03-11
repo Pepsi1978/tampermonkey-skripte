@@ -241,22 +241,53 @@ ClaudeCodexVoiceOverlay-macOS/
     GeminiClient.swift      — Google Gemini API-Client fuer Textkorrektur (Programmier-Kontext)
     Config.swift            — .env-Datei laden und parsen
     AppWatcher.swift        — Erkennt aktive Ziel-Apps (Claude Desktop, Codex)
+    ErrorDescriptions.swift  — Benutzerfreundliche Fehlermeldungen fuer API-Fehler
 ```
 
 ---
 
-## Unterschiede zu TerminalVoiceOverlay-Windows
+## Schwester-Projekte
 
-| Feature | TerminalVoiceOverlay-Windows | ClaudeCodexVoiceOverlay-macOS |
+Dieses Projekt ist Teil einer Familie von Voice-Overlay-Apps. Alle teilen die gleiche Architektur und ca. 80% des Codes:
+
+| Projekt | Plattform | Ziel-Apps | Sprache |
+|---|---|---|---|
+| TerminalVoiceOverlay-macOS | macOS | Terminal.app, iTerm2, Warp | Swift / AppKit |
+| **ClaudeCodexVoiceOverlay-macOS** | macOS | Claude Desktop, Codex | Swift / AppKit |
+| TerminalVoiceOverlay-Windows | Windows | Windows Terminal, PowerShell | C# / WPF |
+| ClaudeVoiceOverlay-Windows | Windows | Claude Desktop, Codex | C# / WPF |
+
+**Wichtig:** Bei Aenderungen an einem Projekt muessen die Schwester-Projekte ebenfalls aktualisiert werden, da sie den gleichen Code fuer Groq Whisper, Gemini, Audio-Aufnahme und UI-Logik verwenden. Nur die Ziel-App-Erkennung und Tastatureingabe unterscheiden sich.
+
+### Architektur-Mapping macOS ↔ Windows
+
+| macOS (Swift) | Windows (C#) | Funktion |
 |---|---|---|
-| Plattform | Windows (WPF, .NET 8) | macOS (AppKit, Swift) |
-| Ziel-Apps | Windows Terminal, PowerShell | Claude Desktop, Codex |
-| X-Button | End + Backspace (Shell) | Cmd+A + Backspace (Electron) |
-| Audio-Aufnahme | NAudio | AVAudioEngine |
-| Tastatureingabe | Win32 keybd_event | CGEvent |
-| Audio-Feedback | Console.Beep (880Hz / 660+440Hz) | NSSound.beep (Systemton) |
-| System-Integration | System Tray (NotifyIcon) | Menueleiste (NSStatusItem) |
-| Autostart | Windows Autostart-Ordner + Watcher | LaunchAgent |
+| AppDelegate.swift | OverlayWindow.xaml.cs | Zentrale App-Logik |
+| OverlayPanel.swift | OverlayWindow.xaml | UI (fuenf runde Buttons) |
+| InputController.swift | AppController.cs | Tastatureingabe (Cmd+V / Ctrl+V) |
+| AudioRecorder.swift | AudioRecorder.cs | Mikrofon-Aufnahme |
+| GroqWhisperClient.swift | GroqWhisperClient.cs | Groq API |
+| GeminiClient.swift | GeminiClient.cs | Gemini API |
+| Config.swift | Config.cs | .env laden |
+| AppWatcher.swift | AppWatcher.cs | Fenster-Erkennung |
+| ErrorDescriptions.swift | (inline in OverlayWindow) | Fehlermeldungen |
+| build.sh | publish.ps1 | Build-Script |
+
+---
+
+## Letzte Aenderungen (2026-03-12)
+
+- Fix: Force-unwrap in Config.swift durch sicheren Optional-Zugriff ersetzt
+- Fix: CoreFoundation takeRetainedValue → takeUnretainedValue (Crash-Verhinderung)
+- Fix: deinit mit removeObserver in AppWatcher (Memory-Leak-Verhinderung)
+- Fix: Thread-Safety — Groq-Callback auf Main Thread gewrappt
+- Fix: Thread.sleep in Retry-Logik durch DispatchQueue.asyncAfter ersetzt (non-blocking)
+- Fix: Zwischenablage wird vor dem Einfuegen gesichert und danach wiederhergestellt
+- Fix: Debug-Logging in #if DEBUG gewrappt (Release-Build sauber)
+- Fix: Auto-Enter Sleep von 500ms auf 300ms reduziert
+- Fix: .data(using: .utf8)! durch Data(_.utf8) ersetzt (kein Force-unwrap)
+- Refactoring: Fehlerbeschreibungen in eigene Datei ErrorDescriptions.swift ausgelagert
 
 ---
 
