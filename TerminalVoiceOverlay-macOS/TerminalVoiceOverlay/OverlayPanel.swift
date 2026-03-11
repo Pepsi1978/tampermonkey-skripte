@@ -294,7 +294,7 @@ final class OverlayPanel: NSPanel {
 
     func setAutoEnterEnabled(_ enabled: Bool) {
         DispatchQueue.main.async { [weak self] in
-            self?.enterButton.buttonColor = enabled ? .btnBtwRecording : .toggleOff
+            self?.enterButton.buttonColor = enabled ? .btnProcessing : .toggleOff
         }
     }
 
