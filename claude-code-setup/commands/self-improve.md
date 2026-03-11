@@ -9,7 +9,7 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v1.4 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v1.5 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
@@ -85,7 +85,7 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 **Check these in parallel (all at once, same message block):**
 - `brew outdated` — any Homebrew packages need updating?
 - `rustup check` — Rust toolchain updates?
-- `dotnet workload update --check` — .NET workload updates?
+- `dotnet --list-sdks | tail -1` — is the .NET SDK current? (faster than workload check)
 - Read `~/.claude/settings.json` — verify all settings are optimal
 - Read `~/CLAUDE.md` — verify rules are current and complete
 - List `~/.claude/rules/` — check all rule files for accuracy
@@ -98,6 +98,8 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 - Check disk space with `df -h /`
 - **Cleanup check**: Look for orphaned directories, stale repos, leftover files from previous runs (e.g. `~/claude-config/`, temp folders, unused local repos)
 - List all GitHub repos with `gh repo list` — are there any that shouldn't exist?
+
+- **Backup drift check**: Compare local config with backup — `diff ~/.claude/agents/ ~/proggs/claude-code-setup/agents/`, same for `rules/`, `hooks/`, `commands/`. Flag any files that differ so they get synced in Phase 3.
 
 **Collect all findings into a status report before proceeding.**
 
@@ -203,33 +205,46 @@ Count the lines of this skill file:
 wc -l ~/.claude/commands/self-improve.md
 ```
 
-- If **under 350 lines**: Improvements can be suggested freely
-- If **350-400 lines**: Warn the user that the limit is approaching
-- If **400+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+- If **under 400 lines**: Improvements can be suggested freely
+- If **400-500 lines**: Warn the user that the limit is approaching
+- If **500+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
 
 ### Step 3: Present Suggestions (NEVER auto-apply!)
 
-Present improvement suggestions to the user in this format:
+Present improvement suggestions to the user **in detail**. The user is not a programmer — short bullet points are not enough. Each suggestion MUST use this 3-part structure so the user can fully understand and evaluate it:
 
 ```
-## Meta-Verbesserung: Vorschläge für den Skill selbst
+## Meta-Verbesserung: Vorschlaege fuer den Skill selbst
 
 ### Vorschlag 1: [Titel]
-**Was**: [Was soll geändert werden]
-**Warum**: [Begründung aus den 3 Loops]
-**Wo im Skill**: [Zeile/Phase die betroffen ist]
+
+**Was ist das Problem?**
+[Explain in plain German what currently happens and why it's suboptimal.
+Give a concrete example from the 3 loops that just ran, so the user
+can relate to the issue. 3-5 sentences minimum.]
+
+**Was moechte ich aendern?**
+[Describe the specific change — what gets added, removed, or rewritten.
+If it's a config/code change, show the before/after or the new addition.
+The user should be able to picture exactly what will be different. 3-5 sentences minimum.]
+
+**Warum ist das nuetzlich?**
+[Explain the practical benefit in everyday terms. How does this save time,
+prevent errors, or improve quality? Relate it back to the user's goals.
+2-3 sentences minimum.]
 
 ### Vorschlag 2: [Titel]
+[same 3-part structure]
 ...
 
 ### Skill-Status
-- Aktuelle Zeilenzahl: [N]/400
+- Aktuelle Zeilenzahl: [N]/500
 - Letzte Meta-Verbesserung: [Datum oder "erste"]
 
-Soll ich diese Änderungen umsetzen? (Ja/Nein/Teilweise)
+Soll ich diese Aenderungen umsetzen? (Ja/Nein/Teilweise)
 ```
 
-**CRITICAL**: NEVER modify this skill file without explicit user approval. Only suggest, never auto-apply.
+**CRITICAL**: NEVER modify this skill file without explicit user approval. Only suggest, never auto-apply. The detailed format is non-negotiable — never fall back to short one-liners.
 
 ### Step 4: Apply (only after user says yes)
 
@@ -273,7 +288,7 @@ This ensures the Windows machine always has access to the latest optimizations. 
 ## Final Summary
 
 Give a final comprehensive summary:
-- Total number of improvements made
+- **Change counter**: Count ALL changes across all 3 loops and show: "Bilanz: X Aenderungen in Y Dateien (Schleife 1: A | Schleife 2: B | Schleife 3: C)". This gives the user an instant overview of how productive the run was.
 - Current environment status (everything green?)
 - GitHub sync status (what was pushed)
 - Any recommendations that need the user's input
@@ -288,7 +303,7 @@ Give a final comprehensive summary:
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
-- This skill file has a **400-line limit**. If approaching, warn the user.
+- This skill file has a **500-line limit**. If approaching, warn the user.
 - **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - **Security for ALL external code** (skills, plugins, agents, MCP servers, hooks, commands, npm packages, GitHub Actions, etc.):
   1. Check the source — only use trusted, well-known sources (official Anthropic, superpowers-marketplace, established GitHub repos)
@@ -303,4 +318,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v1.4 | Date: 2026-03-11 | Last Meta-Improve: 2026-03-11 | Lines: 306/400 | Changes: parallel tool-call mandate in Phase 1, researcher agent pattern in Phase 2, combined version check command -->
+<!-- Skill Version: v1.5 | Date: 2026-03-11 | Last Meta-Improve: 2026-03-11 | Lines: 321/500 | Changes: faster .NET check, backup drift detection, change counter in final summary, detailed 3-part Meta-Improve suggestion format, line limit increased 400→500 -->
