@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         ChatGPT V.1.4.2
+// @name         ChatGPT V.1.4.3
 // @namespace    https://chatgpt.com/
-// @version      1.4.2
+// @version      1.4.3
 // @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
-// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome + Startup-Fix fuer CFG-Ladereihenfolge.
+// @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. v1.4.3: Live-Vorschau Debounce, parallele Chunk-Korrektur, MutationObserver-Throttle, Gemini-Modell per Menü änderbar, API-Key-Status beim Start.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
 // @run-at       document-idle
@@ -17,14 +17,60 @@
 // @connect      *.googleapis.com
 // @connect      googleapis.com
 // @connect      api.groq.com
-// @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
-// @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
 // ==/UserScript==
 
 (() => {
   "use strict";
     // ── CSS für Mikrofon-Button Animationen ──
-    (function(){if(document.getElementById("stt-mic-css"))return;var s=document.createElement("style");s.id="stt-mic-css";s.textContent=".stt-mic-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;transition:background .25s,transform .15s,box-shadow .25s!important}.stt-mic-btn:active{transform:scale(.93)!important}.stt-mic-btn[data-state=idle]{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}.stt-mic-btn[data-state=idle]:hover{background:#1d4ed8!important;transform:scale(1.15)!important}.stt-mic-btn[data-state=listening]{background:#dc2626!important;color:#fff!important;border-color:#dc2626!important;animation:stt-pulse 1.4s ease-in-out infinite!important}.stt-mic-btn[data-state=working]{background:#d97706!important;color:#fff!important;border-color:#d97706!important}.stt-mic-btn[data-state=error]{background:#8b0000!important;color:#fff!important;border-color:#8b0000!important}@keyframes stt-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.45)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}.stt-mic-btn[data-state=working] svg{animation:stt-spin .8s linear infinite}@keyframes stt-spin{to{transform:rotate(360deg)}}#stt-live-preview{position:fixed;bottom:460px;right:16px;max-width:420px;min-width:180px;padding:10px 14px;background:rgba(0,0,0,.88);color:#fff;border-radius:10px;font-size:14px;line-height:1.5;z-index:2147483646;box-shadow:0 4px 20px rgba(0,0,0,.3);max-height:180px;overflow-y:auto;word-wrap:break-word;transition:opacity .25s}#stt-live-preview .stt-pv-label{font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:.4px}#stt-live-preview .stt-pv-interim{color:#9ca3af;font-style:italic}#stt-live-preview .stt-pv-final{color:#fff}#stt-live-preview .stt-pv-waiting{color:#fbbf24;font-style:italic}";(document.head||document.documentElement).appendChild(s)})();
+    (function(){
+      if (document.getElementById("stt-mic-css")) return;
+      var s = document.createElement("style");
+      s.id = "stt-mic-css";
+      s.textContent = `
+        .stt-mic-btn {
+          display: flex !important; align-items: center !important;
+          justify-content: center !important; padding: 0 !important;
+          transition: background .25s, transform .15s, box-shadow .25s !important;
+        }
+        .stt-mic-btn:active { transform: scale(.93) !important; }
+        .stt-mic-btn[data-state=idle] {
+          background: #2563eb !important; color: #fff !important; border-color: #2563eb !important;
+        }
+        .stt-mic-btn[data-state=idle]:hover {
+          background: #1d4ed8 !important; transform: scale(1.15) !important;
+        }
+        .stt-mic-btn[data-state=listening] {
+          background: #dc2626 !important; color: #fff !important; border-color: #dc2626 !important;
+          animation: stt-pulse 1.4s ease-in-out infinite !important;
+        }
+        .stt-mic-btn[data-state=working] {
+          background: #d97706 !important; color: #fff !important; border-color: #d97706 !important;
+        }
+        .stt-mic-btn[data-state=error] {
+          background: #8b0000 !important; color: #fff !important; border-color: #8b0000 !important;
+        }
+        @keyframes stt-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,.45); }
+          50% { box-shadow: 0 0 0 14px rgba(220,38,38,0); }
+        }
+        .stt-mic-btn[data-state=working] svg { animation: stt-spin .8s linear infinite; }
+        @keyframes stt-spin { to { transform: rotate(360deg); } }
+        #stt-live-preview {
+          position: fixed; bottom: 460px; right: 16px;
+          max-width: 420px; min-width: 180px; padding: 10px 14px;
+          background: rgba(0,0,0,.88); color: #fff; border-radius: 10px;
+          font-size: 14px; line-height: 1.5; z-index: 2147483646;
+          box-shadow: 0 4px 20px rgba(0,0,0,.3);
+          max-height: 180px; overflow-y: auto; word-wrap: break-word;
+          transition: opacity .25s;
+        }
+        #stt-live-preview .stt-pv-label { font-size: 11px; color: #aaa; margin-bottom: 4px; letter-spacing: .4px; }
+        #stt-live-preview .stt-pv-interim { color: #9ca3af; font-style: italic; }
+        #stt-live-preview .stt-pv-final { color: #fff; }
+        #stt-live-preview .stt-pv-waiting { color: #fbbf24; font-style: italic; }
+      `;
+      (document.head || document.documentElement).appendChild(s);
+    })();
 
 
   // ============================================================
@@ -40,7 +86,7 @@
         // GM.getValue ist async (Promise). Hier nicht verwenden, um den Rest nicht umzubauen.
         return fallback;
       }
-    } catch {}
+    } catch (e) { console.debug("[TM] _tmGetValue error:", e); }
     return fallback;
   }
 
@@ -51,7 +97,7 @@
         // GM.setValue ist async (Promise). Hier nicht verwenden.
         return;
       }
-    } catch {}
+    } catch (e) { console.debug("[TM] _tmSetValue error:", e); }
   }
 
   function getGeminiKey() {
@@ -119,6 +165,8 @@
           if (typeof GM_setValue === "function") GM_setValue("autoGeminiCorrection", CFG.autoGeminiCorrection);
           showToast(CFG.autoGeminiCorrection ? "✅ Auto-Korrektur aktiviert" : "❌ Auto-Korrektur deaktiviert", 3000);
         });
+        GM_registerMenuCommand("🤖 Gemini-Modell ändern", setGeminiModel);
+        GM_registerMenuCommand("🔄 Gemini-Modell zurücksetzen", resetGeminiModel);
       } else if (typeof GM !== "undefined" && typeof GM.registerMenuCommand === "function") {
         GM.registerMenuCommand("🔑 Gemini-Key setzen/ändern", setGeminiKey);
         GM.registerMenuCommand("🧹 Gemini-Key löschen", clearGeminiKey);
@@ -129,18 +177,35 @@
           if (typeof GM_setValue === "function") GM_setValue("autoGeminiCorrection", CFG.autoGeminiCorrection);
           showToast(CFG.autoGeminiCorrection ? "✅ Auto-Korrektur aktiviert" : "❌ Auto-Korrektur deaktiviert", 3000);
         });
+        GM.registerMenuCommand("🤖 Gemini-Modell ändern", setGeminiModel);
+        GM.registerMenuCommand("🔄 Gemini-Modell zurücksetzen", resetGeminiModel);
       }
-    } catch {}
+    } catch (e) { console.debug("[TM] registerMenus error:", e); }
   })();
 
   const initialAutoGeminiCorrection =
     (typeof GM_getValue === "function" ? GM_getValue("autoGeminiCorrection", true) : true) !== false;
 
   // ============================================================
-  // Modell
+  // Modell (konfigurierbar per Tampermonkey-Menü)
   // ============================================================
-  const GEMINI_MODEL = "models/gemini-3.1-flash-lite-preview";
+  const GEMINI_MODEL_DEFAULT = "models/gemini-3.1-flash-lite-preview";
+  const GEMINI_MODEL = (_tmGetValue("geminiModel", "") || "").trim() || GEMINI_MODEL_DEFAULT;
   const GEMINI_THINKING_LEVEL = "MEDIUM";
+
+  function setGeminiModel() {
+    const current = (_tmGetValue("geminiModel", "") || "").trim() || GEMINI_MODEL_DEFAULT;
+    let model = (prompt("Gemini-Modell eingeben (aktuell: " + current + "):", current) || "").trim();
+    if (model) {
+      _tmSetValue("geminiModel", model);
+      alert("✅ Gemini-Modell gespeichert: " + model + "\nSeite neu laden zum Aktivieren.");
+    }
+  }
+
+  function resetGeminiModel() {
+    _tmSetValue("geminiModel", "");
+    alert("✅ Gemini-Modell zurückgesetzt auf Standard:\n" + GEMINI_MODEL_DEFAULT + "\nSeite neu laden zum Aktivieren.");
+  }
 
   // ============================================================
   // 🆔 UI IDs (für Selbstheilung / Dedupe)
@@ -295,7 +360,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       toastTimer = setTimeout(() => {
         if (toast) toast.style.display = "none";
       }, ms);
-    } catch {}
+    } catch (e) { console.debug("[TM] showToast error:", e); }
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -526,10 +591,9 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
   }
 
   // Fokus/Click-Tracking (auch Shadow DOM)
+  // Focus-Tracking: focusin + pointerdown reichen aus (mousedown/click sind redundant)
   document.addEventListener("focusin", (e) => rememberEditable(pickEditableFromEvent(e) || document.activeElement), true);
   document.addEventListener("pointerdown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("mousedown", (e) => rememberEditable(pickEditableFromEvent(e)), true);
-  document.addEventListener("click", (e) => rememberEditable(pickEditableFromEvent(e)), true);
 
   // ============================================================
   // React/Input Events
@@ -579,13 +643,15 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       return;
     }
 
+    // NOTE: execCommand is deprecated but still works in all browsers.
+    // No replacement API exists yet. Monitor for future removal.
     try {
       document.execCommand("insertText", false, " ");
       dispatchReactInput(el, "insertText", " ");
       await sleep(20);
       document.execCommand("delete", false, null);
       dispatchReactInput(el, "deleteContentBackward", null);
-    } catch {}
+    } catch (e) { console.debug("[TM] execCommand fallback error:", e); }
   }
 
   // ============================================================
@@ -610,7 +676,7 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
       range.collapse(false);
       sel.removeAllRanges();
       sel.addRange(range);
-    } catch {}
+    } catch (e) { console.debug("[TM] moveCaretToEnd error:", e); }
   }
 
   function setContentEditablePreserveNewlines(el, text) {
@@ -908,15 +974,14 @@ ${text}
     if (ratio >= (CFG.grammarTruncationRatio || 0.85)) return oneShot;
 
     const chunks = splitIntoChunksByParagraphs(input, CFG.grammarChunkChars || 3500);
-    const outParts = [];
-
-    for (let i = 0; i < chunks.length; i++) {
+    // Parallel processing of all chunks (significantly faster for 3+ chunks)
+    const results = await Promise.all(chunks.map(async (chunk, i) => {
       onProgress?.(i + 1, chunks.length);
-      const fixed = await geminiRewriteGrammar(chunks[i]);
-      outParts.push(fixed && fixed.trim().length ? fixed.trim() : chunks[i].trim());
-    }
+      const fixed = await geminiRewriteGrammar(chunk);
+      return fixed && fixed.trim().length ? fixed.trim() : chunk.trim();
+    }));
 
-    return outParts.join("\n\n").trim();
+    return results.join("\n\n").trim();
   }
 
   // ============================================================
@@ -1162,7 +1227,7 @@ ${taskText}
     }
 
     list = pickFinalDomains(list, DOMAIN_CFG.minDomains, DOMAIN_CFG.maxDomains);
-    if (list.length < 3) return ["Neurowissenschaften", "Zellbiologie", "Molekularbiologie"];
+    if (list.length < 3) return ["Allgemeinwissen", "Interdisziplinäre Analyse", "Kritisches Denken"];
     return list;
   }
 
@@ -1192,7 +1257,7 @@ primären Bezugsrahmen für diese Aufgabe. Keine zusätzlichen Kontextabfragen; 
 Format:
 Strikte Ausgabestruktur „Einleitung – Hauptteil – Zusammenfassung“. Fachbegriffe sofort kurz erklären (in Klammern); Erläutere alle Zusammenhänge sämtlicher Faktoren sehr genau, damit Frank alle Zusammenhänge (wie, warum etwas so ist) genaustens versteht.
 Abkürzungen bei erster Nennung ausschreiben; logisch, faktenbasiert, umfassend, nachvollziehbar. Benutze gegeben falls auch Symbole und Smilies, große Überschriften, Tabelle zu besseren optischen Gliederung.
-Mindestwortanzahl: 2000, Maximale Wortanzalhl: 10000, Entscheidend ist, dass die Aufgabe/Frage sehr ausführlich erledigt/beantwortet wird.
+Mindestwortanzahl: 2000, Maximale Wortanzahl: 10000, Entscheidend ist, dass die Aufgabe/Frage sehr ausführlich erledigt/beantwortet wird.
 
 Ton:
 Wissenschaftlich-professionell, präzise, didaktisch klar, ausführlich, ohne metasprachliche Hinweise oder Floskeln, leicht verständlich.
@@ -1230,7 +1295,7 @@ Fachbegriffe sofort kurz erklären (in Klammern).
 Abkürzungen bei erster Nennung ausschreiben.
 Logisch, faktenbasiert, umfassend, nachvollziehbar.
 Keine Stichpunkte; Tabellen nur, wenn sie die Verständlichkeit klar verbessern.
-Mindestwortanzahl: 2000, Maximale Wortanzalhl: 10000, Entscheidend ist, dass die Aufgabe sehr ausführlich erledigt/beantwortet wird.
+Mindestwortanzahl: 2000, Maximale Wortanzahl: 10000, Entscheidend ist, dass die Aufgabe sehr ausführlich erledigt/beantwortet wird.
 
 Ton:
 Wissenschaftlich-professionell, klar und präzise; sehr ausführlich, didaktisch verständlich ohne Floskeln.
@@ -1553,6 +1618,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       speechRecognition.interimResults = true;
       speechRecognition.maxAlternatives = 1;
 
+      let _liveDebounce = null;
       speechRecognition.onresult = (event) => {
         let finalT = "";
         let interimT = "";
@@ -1563,13 +1629,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
             interimT += event.results[i][0].transcript;
           }
         }
-        // Live-Text direkt ins Eingabefeld schreiben
-        const el = getUserTargetEditable();
-        if (el) {
-          const preview = finalT + interimT;
-          const spacer = textBeforeSpeech && !textBeforeSpeech.endsWith(" ") && !textBeforeSpeech.endsWith("\n") ? " " : "";
-          setViaPaste(el, textBeforeSpeech + spacer + preview);
-        }
+        // Live-Text debounced ins Eingabefeld schreiben (prevents race conditions)
+        clearTimeout(_liveDebounce);
+        _liveDebounce = setTimeout(() => {
+          const el = getUserTargetEditable();
+          if (el) {
+            const preview = finalT + interimT;
+            const spacer = textBeforeSpeech && !textBeforeSpeech.endsWith(" ") && !textBeforeSpeech.endsWith("\n") ? " " : "";
+            setViaPaste(el, textBeforeSpeech + spacer + preview);
+          }
+        }, 120);
       };
 
       speechRecognition.onerror = (event) => {
@@ -2085,10 +2154,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   function startUiWatchdog() {
     // MutationObserver: falls React DOM neu baut und Buttons entfernt
     try {
-      if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => {
-        if (needsUiRepair()) scheduleEnsureUI();
+      if (_domObserver) _domObserver.disconnect();
+      let _mutThrottle = 0;
+      _domObserver = new MutationObserver(() => {
+        if (_mutThrottle) return;
+        _mutThrottle = setTimeout(() => { _mutThrottle = 0; if (needsUiRepair()) scheduleEnsureUI(); }, 1000);
       });
-      _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+      _domObserver.observe(document.body || document.documentElement, { childList: true, subtree: true });
     } catch (e) { console.warn("[TM] Observer setup failed:", e); }
 
     // History Hooks (SPA Navigation)
@@ -2128,6 +2200,16 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     startUiWatchdog();
 
     showToast("✅ Script aktiv. 💾 + ❌ + 🎙️ + G + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button drücken.", 3200);
+
+    // API-Key Status prüfen und warnen falls Keys fehlen
+    const hasGemini = !!(_tmGetValue("geminiKey", "") || "").trim();
+    const hasGroq = !!(_tmGetValue("groqKey", "") || "").trim();
+    if (!hasGemini || !hasGroq) {
+      const missing = [];
+      if (!hasGemini) missing.push("Gemini");
+      if (!hasGroq) missing.push("Groq/Whisper");
+      setTimeout(() => showToast("⚠️ Fehlende API-Keys: " + missing.join(", ") + "\nTampermonkey-Menü → Key setzen.", 6000), 3500);
+    }
   }
 
   setTimeout(boot, 350);
