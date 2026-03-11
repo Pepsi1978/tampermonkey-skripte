@@ -1,9 +1,18 @@
 import AppKit
 
 final class AppWatcher {
-    private let targetBundleID = "com.apple.Terminal"
+    static let targetBundleIDs: Set<String> = [
+        "com.apple.Terminal",
+        "com.googlecode.iterm2",
+    ]
+
     var onTerminalActivated: (() -> Void)?
     var onTerminalDeactivated: (() -> Void)?
+
+    static func isTargetApp(_ bundleID: String?) -> Bool {
+        guard let id = bundleID else { return false }
+        return targetBundleIDs.contains(id)
+    }
 
     func start() {
         let nc = NSWorkspace.shared.notificationCenter
@@ -14,14 +23,14 @@ final class AppWatcher {
 
         // Check initial state
         if let frontApp = NSWorkspace.shared.frontmostApplication,
-           frontApp.bundleIdentifier == targetBundleID {
+           Self.isTargetApp(frontApp.bundleIdentifier) {
             onTerminalActivated?()
         }
     }
 
     @objc private func appActivated(_ notification: Notification) {
         guard let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else { return }
-        if app.bundleIdentifier == targetBundleID {
+        if Self.isTargetApp(app.bundleIdentifier) {
             onTerminalActivated?()
         } else {
             onTerminalDeactivated?()
@@ -30,7 +39,7 @@ final class AppWatcher {
 
     @objc private func appTerminated(_ notification: Notification) {
         guard let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else { return }
-        if app.bundleIdentifier == targetBundleID {
+        if Self.isTargetApp(app.bundleIdentifier) {
             onTerminalDeactivated?()
         }
     }

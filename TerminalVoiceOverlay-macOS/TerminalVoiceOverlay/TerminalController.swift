@@ -47,10 +47,11 @@ final class TerminalController {
         }
     }
 
-    /// Brings Terminal.app to the front so CGEvent reaches it
+    /// Brings the active terminal app (Terminal.app or iTerm2) to the front so CGEvent reaches it
     static func activateTerminal() {
+        // Prefer the frontmost target app, otherwise pick the first running one
         if let app = NSWorkspace.shared.runningApplications
-            .first(where: { $0.bundleIdentifier == "com.apple.Terminal" }) {
+            .first(where: { AppWatcher.isTargetApp($0.bundleIdentifier) }) {
             app.activate(options: [])
         }
     }
