@@ -55,7 +55,7 @@ class RoundButton: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        let path = NSBezierPath(ovalIn: bounds.insetBy(dx: 1, dy: 1))
+        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: 1, dy: 1), xRadius: 6, yRadius: 6)
         buttonColor.setFill()
         path.fill()
 
@@ -184,7 +184,7 @@ final class OverlayPanel: NSPanel {
 
         // Round corners – use content view layer for rounded background
         self.contentView?.wantsLayer = true
-        self.contentView?.layer?.cornerRadius = panelWidth / 2
+        self.contentView?.layer?.cornerRadius = 12
         self.contentView?.layer?.masksToBounds = true
         self.contentView?.layer?.backgroundColor = NSColor(white: 0.12, alpha: 0.9).cgColor
 
