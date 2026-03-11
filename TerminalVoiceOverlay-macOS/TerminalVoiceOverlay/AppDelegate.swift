@@ -194,8 +194,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                         self?.insertText(corrected)
                     case .failure(let error):
                         NSLog("Gemini-Fehler: %@, verwende Rohtext", error.localizedDescription)
-                        // Fallback to raw transcript
-                        self?.insertText(transcript)
+                        let hint = Self.describeGeminiError(error)
+                        self?.insertText("\(transcript) # [VoiceOverlay] \(hint)")
                     }
                 }
             }
@@ -266,6 +266,40 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         return "Transkription fehlgeschlagen — \(error.localizedDescription)"
+    }
+
+    private static func describeGeminiError(_ error: Error) -> String {
+        let nsError = error as NSError
+
+        if nsError.domain == NSURLErrorDomain {
+            switch nsError.code {
+            case NSURLErrorNotConnectedToInternet, NSURLErrorNetworkConnectionLost:
+                return "Gemini offline (kein Internet) — Rohtext verwendet"
+            case NSURLErrorTimedOut:
+                return "Gemini Timeout — Rohtext verwendet"
+            case NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorDNSLookupFailed:
+                return "Gemini nicht erreichbar — Rohtext verwendet"
+            default:
+                return "Gemini Netzwerkfehler — Rohtext verwendet"
+            }
+        }
+
+        if let apiError = error as? GeminiClient.APIError {
+            switch apiError {
+            case .httpError(let code, _):
+                if code == 429 {
+                    return "Gemini Rate-Limit — Rohtext verwendet"
+                } else if (500...599).contains(code) {
+                    return "Gemini Server-Fehler (\(code)) — Rohtext verwendet"
+                } else {
+                    return "Gemini Fehler \(code) — Rohtext verwendet"
+                }
+            case .noData, .unexpectedResponse, .noTextInResponse:
+                return "Gemini lieferte keine Antwort — Rohtext verwendet"
+            }
+        }
+
+        return "Gemini-Korrektur fehlgeschlagen — Rohtext verwendet"
     }
 
     private func pasteError(_ message: String) {
