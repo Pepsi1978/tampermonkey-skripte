@@ -25,7 +25,7 @@ jobs:
           node-version: '20'
 
       - name: ESLint installieren
-        run: npm install eslint@9 @eslint/js globals --no-save
+        run: npm install eslint@9 @eslint/js@9 globals --no-save
 
       - name: ESLint ausfuehren
         run: npx eslint Tampermonkey/*.user.js
