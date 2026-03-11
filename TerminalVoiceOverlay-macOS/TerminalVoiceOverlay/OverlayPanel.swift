@@ -138,8 +138,8 @@ final class OverlayPanel: NSPanel {
         let micSize: CGFloat = 52
         let gap: CGFloat = 8
         let panelWidth: CGFloat = micSize + 20
-        // Height: 4 small buttons + 2 large mic buttons + 5 gaps + padding
-        let panelHeight: CGFloat = btnSize * 4 + micSize * 2 + gap * 5 + 16
+        // Height: 4 small buttons + 2 large mic buttons + 5 gaps + padding (16 top + 16 bottom)
+        let panelHeight: CGFloat = btnSize * 4 + micSize * 2 + gap * 5 + 32
 
         // Create buttons
         xButton = RoundButton(label: "X", color: .btnX)
@@ -192,7 +192,7 @@ final class OverlayPanel: NSPanel {
         // Bottom to top: Enter, G, Mic(big), BTW-Mic(big), W, X
         let smallInset = (panelWidth - btnSize) / 2
         let micInset = (panelWidth - micSize) / 2
-        var yPos: CGFloat = 8
+        var yPos: CGFloat = 16
         enterButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
         yPos += btnSize + gap
         gButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
