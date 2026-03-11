@@ -270,6 +270,57 @@ TerminalVoiceOverlay-Windows/
 
 ---
 
+## Schwester-Projekte
+
+Dieses Projekt ist Teil einer Familie von Voice-Overlay-Apps. Alle teilen die gleiche Architektur und ca. 80% des Codes:
+
+| Projekt | Plattform | Ziel-Apps | Sprache |
+|---|---|---|---|
+| TerminalVoiceOverlay-macOS | macOS | Terminal.app, iTerm2, Warp | Swift / AppKit |
+| ClaudeCodexVoiceOverlay-macOS | macOS | Claude Desktop, Codex | Swift / AppKit |
+| **TerminalVoiceOverlay-Windows** | Windows | Windows Terminal, PowerShell | C# / WPF |
+| ClaudeVoiceOverlay-Windows | Windows | Claude Desktop, Codex | C# / WPF |
+
+**Wichtig:** Bei Aenderungen an einem Projekt muessen die Schwester-Projekte ebenfalls aktualisiert werden, da sie den gleichen Code fuer Groq Whisper, Gemini, Audio-Aufnahme und UI-Logik verwenden. Nur die Ziel-App-Erkennung und Tastatureingabe unterscheiden sich.
+
+### Architektur-Mapping Windows ↔ macOS
+
+| Windows (C#) | macOS (Swift) | Funktion |
+|---|---|---|
+| OverlayWindow.xaml.cs | AppDelegate.swift | Zentrale App-Logik |
+| OverlayWindow.xaml | OverlayPanel.swift | UI (fuenf runde Buttons) |
+| TerminalController.cs | TerminalController.swift | Tastatureingabe (Ctrl+V / Cmd+V) |
+| AudioRecorder.cs | AudioRecorder.swift | Mikrofon-Aufnahme (NAudio / AVAudioEngine) |
+| GroqWhisperClient.cs | GroqWhisperClient.swift | Groq Whisper API |
+| GeminiClient.cs | GeminiClient.swift | Gemini API |
+| Config.cs | Config.swift | .env laden und parsen |
+| TerminalWatcher.cs | AppWatcher.swift | Fenster-Erkennung |
+| Win32.cs | (CGEvent direkt) | Native API-Aufrufe |
+| publish.ps1 | build.sh | Build-Script |
+
+### Fuer Entwickler: Aenderungen von macOS portieren
+
+Wenn die macOS-Version (Swift) aktualisiert wurde, muessen folgende Schritte fuer Windows (C#) durchgefuehrt werden:
+
+1. **GroqWhisperClient / GeminiClient**: API-Logik ist fast identisch. Aenderungen an Retry-Logik, Timeouts oder Endpunkten 1:1 uebernehmen.
+2. **Config**: Neue .env-Variablen muessen in beiden Versionen hinzugefuegt werden.
+3. **UI-Logik (AppDelegate ↔ OverlayWindow)**: Button-Handler, State-Management und Fehlerbehandlung sind funktional identisch. C# verwendet `async/await` statt Swift-Closures.
+4. **Tastatureingabe**: macOS verwendet `CGEvent`, Windows verwendet `keybd_event`. Die Logik unterscheidet sich, aber das Verhalten soll identisch sein.
+5. **Fenster-Erkennung**: macOS verwendet `NSWorkspace` Notifications, Windows verwendet `SetWinEventHook`. Neue Ziel-Apps muessen in beiden Versionen ergaenzt werden.
+
+---
+
+## Letzte Aenderungen (2026-03-12)
+
+- Die macOS-Versionen (Swift) haben folgende Fixes erhalten, die bereits in den Windows-Versionen (C#) korrekt implementiert waren:
+  - Retry-Logik verwendet async Task.Delay statt Thread.Sleep (C# war bereits korrekt)
+  - IDisposable/Dispose fuer sauberes Aufraemen (C# war bereits korrekt)
+  - Async/await fuer Thread-Safety (C# war bereits korrekt)
+- Fix: Zwischenablage wird vor dem Einfuegen gesichert und danach wiederhergestellt
+- Fix: Auto-Enter Sleep von 500ms auf 300ms reduziert
+
+---
+
 ## Haeufige Probleme
 
 | Problem | Loesung |
