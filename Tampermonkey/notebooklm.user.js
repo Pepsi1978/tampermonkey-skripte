@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Notebook LM V.1.3.8
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.3.8
+// @version      1.3.9
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
@@ -1357,6 +1357,9 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
+  let _uiInterval = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1579,7 +1582,8 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1596,6 +1600,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1634,6 +1639,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -1867,7 +1873,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   function startUiWatchdog() {
     // MutationObserver: falls die SPA den DOM neu aufbaut
     try {
-      const mo = new MutationObserver(() => {
+      if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => {
         if (!document.getElementById("tm-notebooklm-mic") ||
         !document.getElementById("tm-notebooklm-gemini-toggle") ||
         !document.getElementById("tm-notebooklm-clear") ||
@@ -1875,8 +1881,8 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
         !document.getElementById("tm-notebooklm-prompt2"))
           scheduleEnsureUI();
       });
-      mo.observe(document.documentElement, { childList: true, subtree: true });
-    } catch (e) {}
+      _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) { console.warn("[TM] Init error:", e); }
 
     // History-Hooks: bei SPA-Navigation (pushState/replaceState)
     try {
@@ -1885,10 +1891,10 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
       history.pushState    = function () { const r = _push.apply(this, arguments);    scheduleEnsureUI(); return r; };
       history.replaceState = function () { const r = _replace.apply(this, arguments); scheduleEnsureUI(); return r; };
       window.addEventListener("popstate", scheduleEnsureUI, true);
-    } catch (e) {}
+    } catch (e) { console.warn("[TM] Init error:", e); }
 
     // Fallback-Interval (alle 3 s)
-    setInterval(() => {
+    if (_uiInterval) clearInterval(_uiInterval); _uiInterval = setInterval(() => {
       if (!document.getElementById("tm-notebooklm-mic") ||
         !document.getElementById("tm-notebooklm-gemini-toggle") ||
         !document.getElementById("tm-notebooklm-clear") ||

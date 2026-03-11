@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grok V.1.3.2
 // @namespace    https://grok.com/
-// @version      1.3.2
+// @version      1.3.3
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
@@ -1367,6 +1367,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1591,7 +1593,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1608,6 +1611,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1646,6 +1650,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -1905,7 +1910,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
     window.addEventListener("tm:grok:navigation", scheduleEnsureUI, true);
 
     // DOM watchdog: wenn Grok den DOM remounted und Buttons verschwinden → neu injizieren
-    const mo = new MutationObserver(() => {
+    if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => {
       const mic = document.getElementById(UI_IDS.mic);
       const gt = document.getElementById(UI_IDS.geminiToggle);
       const clear = document.getElementById(UI_IDS.clear);
@@ -1914,7 +1919,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       const t = document.getElementById(UI_IDS.toast);
       if (!mic || !gt || !clear || !p1 || !p2 || !t) scheduleEnsureUI();
     });
-    mo.observe(document.documentElement, { childList: true, subtree: true });
+    _domObserver.observe(document.documentElement, { childList: true, subtree: true });
 
     // Initial + kurzer Nachlauf (falls Hydration später kommt)
     ensureUI();

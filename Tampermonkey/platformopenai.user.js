@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Platform OAI V.1.3.0
 // @namespace    https://www.platform.openai.com/
-// @version      1.3.0
+// @version      1.3.1
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://platform.openai.com/chat/*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/platformopenai.user.js
@@ -1266,6 +1266,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1488,7 +1489,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1505,6 +1507,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1543,6 +1546,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);

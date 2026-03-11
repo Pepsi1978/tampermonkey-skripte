@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT V.1.4.0
 // @namespace    https://chatgpt.com/
-// @version      1.4.0
+// @version      1.4.1
 // @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/chatgpt.user.js
 // @description  Speech-to-Text + Gemini-Diktat-Bereinigung (DE) auf ChatGPT. Mic-Button unten rechts. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Memory-Button links neben dem Mic. Kein stilles Fallback. Mit Output-Preview. Fix: kein "SelectAll" auf ganzer Seite + Memory/Builder immer ins Composer-Feld + robustere Button-Sichtbarkeit auf Chrome + Startup-Fix fuer CFG-Ladereihenfolge.
@@ -1485,6 +1485,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
+  let _uiInterval = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1709,7 +1712,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1726,6 +1730,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1764,6 +1769,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("\u274c Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -2079,11 +2085,11 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   function startUiWatchdog() {
     // MutationObserver: falls React DOM neu baut und Buttons entfernt
     try {
-      const mo = new MutationObserver(() => {
+      if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => {
         if (needsUiRepair()) scheduleEnsureUI();
       });
-      mo.observe(document.documentElement, { childList: true, subtree: true });
-    } catch {}
+      _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) { console.warn("[TM] Observer setup failed:", e); }
 
     // History Hooks (SPA Navigation)
     try {
@@ -2101,10 +2107,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         return r;
       };
       window.addEventListener("popstate", scheduleEnsureUI, true);
-    } catch {}
+    } catch (e) { console.warn("[TM] History hooks setup failed:", e); }
 
     // Low-cost Watchdog
-    setInterval(() => {
+    if (_uiInterval) clearInterval(_uiInterval); _uiInterval = setInterval(() => {
       if (needsUiRepair()) scheduleEnsureUI();
     }, 3000);
   }

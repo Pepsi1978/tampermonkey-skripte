@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mistral V.1.3.5
 // @namespace    https://chat.mistral.ai/chat
-// @version      1.3.5
+// @version      1.3.6
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://chat.mistral.ai/chat*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/mistral.user.js
@@ -1345,6 +1345,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
+  let _uiInterval = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1567,7 +1570,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1584,6 +1588,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1622,6 +1627,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -1886,10 +1892,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   };
 
   try {
-    const mo = new MutationObserver(() => ensureUI());
-    mo.observe(document.documentElement, { childList: true, subtree: true });
-  } catch {}
+    if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => ensureUI());
+    _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) { console.warn("[TM] Observer setup failed:", e); }
 
-  setInterval(ensureUI, 1200);
+  if (_uiInterval) clearInterval(_uiInterval); _uiInterval = setInterval(ensureUI, 1200);
 
 })();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini V.1.4.4
 // @namespace    https://gemini.google.com/
-// @version      1.4.4
+// @version      1.4.5
 // @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/gemini.user.js
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/gemini.user.js
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Gemini Web. Mic-Button fest unten rechts. Auto-Restart bei Speech-Ende (auch bei Pausen). Schreibt ins zuletzt fokussierte Eingabefeld. Mit Output-Preview.
@@ -1504,6 +1504,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
+  let _uiInterval = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1728,7 +1731,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1745,6 +1749,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1783,6 +1788,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -2066,7 +2072,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
   function startUiWatchdog() {
     // MutationObserver: falls die SPA den DOM neu aufbaut
     try {
-      const mo = new MutationObserver(() => {
+      if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => {
         if (!document.getElementById("tm-gemini-mic") ||
         !document.getElementById("tm-gemini-gemini-toggle") ||
         !document.getElementById("tm-gemini-mem") ||
@@ -2075,8 +2081,8 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
         !document.getElementById("tm-gemini-prompt2"))
           scheduleEnsureUI();
       });
-      mo.observe(document.documentElement, { childList: true, subtree: true });
-    } catch (e) {}
+      _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) { console.warn("[TM] Init error:", e); }
 
     // History-Hooks: bei SPA-Navigation (pushState/replaceState)
     try {
@@ -2085,10 +2091,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
       history.pushState    = function () { const r = _push.apply(this, arguments);    scheduleEnsureUI(); return r; };
       history.replaceState = function () { const r = _replace.apply(this, arguments); scheduleEnsureUI(); return r; };
       window.addEventListener("popstate", scheduleEnsureUI, true);
-    } catch (e) {}
+    } catch (e) { console.warn("[TM] Init error:", e); }
 
     // Fallback-Interval (alle 3 s)
-    setInterval(() => {
+    if (_uiInterval) clearInterval(_uiInterval); _uiInterval = setInterval(() => {
       if (!document.getElementById("tm-gemini-mic") ||
         !document.getElementById("tm-gemini-gemini-toggle") ||
         !document.getElementById("tm-gemini-mem") ||

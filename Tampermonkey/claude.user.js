@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Claude V.1.3.1
 // @namespace    https://claude.ai/
-// @version      1.3.1
+// @version      1.3.2
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze). Fix: strengere Prompt-Feld-Erkennung (kein Seitentext mehr).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -1340,6 +1340,8 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   let mediaRecorder = null;
   let audioChunks = [];
   let audioStream = null;
+  let _micPending = false;
+  let _domObserver = null;
 
   // Hybrid-Modus: Web Speech API Live-Vorschau
   let speechRecognition = null;
@@ -1566,7 +1568,8 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   }
 
   function startListening() {
-    if (!supportedSpeech) return;
+    if (!supportedSpeech || _micPending) return;
+    _micPending = true;
 
     const t = getUserTargetEditable();
     if (!t) {
@@ -1583,6 +1586,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
+        _micPending = false;
         audioStream = stream;
 
         const mimeType = typeof MediaRecorder.isTypeSupported === "function"
@@ -1621,6 +1625,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
         startWebSpeech();
       })
       .catch(err => {
+        _micPending = false;
         wantsRecording = false;
         setMicState("error", String(err));
         showToast("❌ Mikrofon-Zugriff fehlgeschlagen:\n" + String(err), 8000);
@@ -1889,10 +1894,10 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
   }
 
   // MutationObserver: Claude ersetzt oft Teile des DOM -> Buttons verschwinden
-  const mo = new MutationObserver(() => scheduleEnsureUI());
+  if (_domObserver) _domObserver.disconnect(); _domObserver = new MutationObserver(() => scheduleEnsureUI());
   try {
-    mo.observe(document.documentElement, { childList: true, subtree: true });
-  } catch {}
+    _domObserver.observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) { console.warn("[TM] Observer setup failed:", e); }
 
   // SPA Navigation: pushState/replaceState + popstate
   (function hookHistory() {
