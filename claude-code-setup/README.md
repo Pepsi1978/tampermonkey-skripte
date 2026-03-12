@@ -36,7 +36,7 @@ cd claude-code-setup
 ## Configuration
 
 - **Model:** Claude Opus 4.6 (always the best)
-- **Effort:** Max + Extended Thinking always on
+- **Effort:** High + Extended Thinking always on
 - **50 Plugins** (all official + marketplace)
 - **144 Tool Permissions** (zero friction)
 - **Agent Teams** enabled for parallel execution

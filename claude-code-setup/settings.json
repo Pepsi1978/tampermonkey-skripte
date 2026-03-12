@@ -6,7 +6,7 @@
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "95",
     "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "CLAUDE_CODE_EFFORT_LEVEL": "max"
+    "CLAUDE_CODE_EFFORT_LEVEL": "high"
   },
   "permissions": {
     "allow": [
@@ -145,7 +145,7 @@
     ]
   },
   "model": "claude-opus-4-6",
-  "effortLevel": "max",
+  "effortLevel": "high",
   "enableAllProjectMcpServers": true,
   "hooks": {
     "Notification": [

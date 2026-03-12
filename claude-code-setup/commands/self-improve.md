@@ -224,8 +224,8 @@ If a tool is in SKIP_TOOLS, do NOT attempt to install it. Note it in the report 
 - Install any new plugins or tools discovered in RESEARCH phase
 
 **PROTECTED SETTINGS (NEVER change these, even if changelogs suggest otherwise):**
-- `effortLevel`: MUST stay `"max"`. The user pays for the Max Plan and explicitly forbids reducing it to `"high"` or lower. If a researcher agent or changelog reports that `"max"` is deprecated, note it in the report but DO NOT modify the setting.
-- `CLAUDE_CODE_EFFORT_LEVEL`: MUST stay `"max"` in the env block. Same reasoning as above.
+- `effortLevel`: MUST stay `"high"`. The user pays for the Max Plan but wants to conserve quota. NEVER reduce to `"medium"` or lower. If a researcher agent or changelog reports effort level changes, note it in the report but do NOT reduce below `"high"`.
+- `CLAUDE_CODE_EFFORT_LEVEL`: MUST stay `"high"` in the env block. Same reasoning as above.
 
 **Always explain what you're updating and why before doing it.**
 
@@ -395,7 +395,7 @@ Give a final comprehensive summary:
 - NEVER create new GitHub repositories. ALL files belong in `Pepsi1978/proggs`. Always push to the existing repo, never create separate repos.
 - NEVER modify this skill file without explicit user approval (Meta-Improve is suggest-only)
 - NEVER delete files, folders or repos without asking the user first (cleanup is suggest-only too)
-- NEVER downgrade the model from Opus or reduce effort level. `effortLevel` MUST stay `"max"` — this is a user-protected setting (see Phase 3 PROTECTED SETTINGS)
+- NEVER downgrade the model from Opus or reduce effort level below `"high"`. `effortLevel` MUST stay `"high"` — this is a user-protected setting (see Phase 3 PROTECTED SETTINGS)
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
