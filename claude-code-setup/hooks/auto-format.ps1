@@ -16,7 +16,7 @@ switch ($ext) {
         $proj = Get-ChildItem -Path $dir -Filter "*.csproj" -Recurse -Depth 3 -ErrorAction SilentlyContinue | Select-Object -First 1
         if ($proj) { & dotnet format whitespace $proj.DirectoryName --include $filePath 2>$null }
     }
-    { $_ -in 'ts','tsx','mts' } {
+    { $_ -in 'ts','tsx','mts','js','jsx','mjs','json','css' } {
         if (Get-Command biome -ErrorAction SilentlyContinue) {
             & biome format --write $filePath 2>$null
         } elseif (Get-Command prettier -ErrorAction SilentlyContinue) {

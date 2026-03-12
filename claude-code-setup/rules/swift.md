@@ -15,4 +15,5 @@ paths:
 - Sign with ad-hoc: `codesign --force --sign -`
 - Format code: `swift-format --in-place` (installed via Homebrew)
 - Lint code: `swiftlint` (installed via Homebrew)
+- Run tests: `swift test` (SPM projects) or `xcodebuild test` (Xcode projects)
 - Follow Apple Human Interface Guidelines for UI

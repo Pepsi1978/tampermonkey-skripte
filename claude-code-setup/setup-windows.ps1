@@ -45,6 +45,12 @@ git config --global init.defaultBranch main
 git config --global pull.rebase true
 git config --global push.autoSetupRemote true
 git config --global core.excludesFile "$env:USERPROFILE\.gitignore_global"
+git config --global core.autocrlf true
+git config --global core.longpaths true
+git config --global rerere.enabled true
+git config --global fetch.prune true
+git config --global diff.algorithm histogram
+git config --global merge.conflictstyle zdiff3
 git config --global alias.wt "worktree add"
 git config --global alias.wtl "worktree list"
 git config --global alias.wtr "worktree remove"

@@ -10,4 +10,6 @@ paths:
 - Commit messages follow format: `#NNN - Description` (sequential numbering)
 - Repository: https://github.com/Pepsi1978/proggs
 - All scripts share common UI patterns (buttons, overlays) — keep consistent
-- Test in browser before committing
+- Lint code: `bunx biome check <file>` (catches bugs and complexity issues in JS)
+- Format code: `bunx biome format --write <file>` (consistent formatting)
+- Test: Manually test in browser before committing (no automated test framework)
