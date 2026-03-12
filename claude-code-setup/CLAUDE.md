@@ -43,8 +43,8 @@
 
 ## Cross-Platform-Entwicklung & Config-Sync
 - Alle Projekte muessen reibungslos auf macOS und Windows funktionieren.
-- macOS: Swift/AppKit, Windows: C#/WPF.
-- Bei Cross-Platform-Features immer beide Plattformen beruecksichtigen.
+- macOS: Swift/AppKit, Windows: C#/WPF, Termux/Android: CLI-Tools (TypeScript, Rust, Go).
+- Bei Cross-Platform-Features immer beide Desktop-Plattformen beruecksichtigen. Termux ist nur fuer CLI/Backend-Tools relevant.
 - Claude Code Konfiguration lebt in `~/proggs/claude-code-setup/`.
 - Bei Aenderungen an Regeln, Agents, Commands oder Hooks: Immer auch nach `~/proggs/claude-code-setup/` kopieren und pushen.
 - UI-Design: Modern, poliert, professionell — muss aussehen wie gekaufte Software aus dem Laden.

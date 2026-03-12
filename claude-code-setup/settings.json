@@ -234,7 +234,11 @@
       "autoUpdate": true
     }
   },
+  "worktree": {
+    "symlinkDirectories": ["node_modules", ".cache"]
+  },
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "language": "de"
 }

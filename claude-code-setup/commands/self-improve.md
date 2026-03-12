@@ -68,7 +68,7 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 - **Zero friction**: No permission prompts, no manual steps, full automation
 - **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit) and Windows (C#/WPF)
 - **Preferred languages**: Swift, C#, TypeScript, Rust, Go (in this order). No Python for visible things.
-- **Best model always**: Opus with high effort and extended thinking
+- **Best model always**: Opus with max effort and extended thinking
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
 
@@ -78,35 +78,41 @@ Detect the platform at the start of EVERY run. This determines which commands to
 
 ```
 # Run this FIRST:
-uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash
-# Termux detection:
-echo $TERMUX_VERSION   # Non-empty = Android/Termux
+uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash, "Linux" = Linux/Termux
 # OR on Windows PowerShell:
 $env:OS    # "Windows_NT" = Windows
+# Termux detection:
+echo $PREFIX   # "/data/data/com.termux/files/usr" = Termux on Android
 ```
 
 **Platform-specific command mapping:**
 
-| Task | macOS | Windows (PowerShell) | Android/Termux |
+| Task | macOS | Windows (PowerShell) | Termux/Android |
 |------|-------|---------------------|----------------|
-| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `apt list --upgradable` |
+| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `pkg upgrade -n` (dry-run) |
 | Package manager upgrade | `brew upgrade` | `winget upgrade --all` | `pkg upgrade -y` |
-| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` |
-| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data/data/com.termux/files/home` |
-| Rust updates | `rustup check` | `rustup check` | `rustup check` (if installed) |
-| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Android) |
-| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` | `diff dir1/ dir2/` |
-| Claude config path | `~/.claude/` | `~/.claude/` | `~/.claude/` (same) |
-| Repo path | `~/proggs/` | `~/proggs/` | `~/projects/proggs/` |
-| Linter: Swift | `swiftlint` | N/A | N/A (no Swift on Android) |
-| Linter: C# | `dotnet format` | `dotnet format` | N/A |
-| Linter: TypeScript | `biome check` | `biome check` | `biome check` (if installed) |
-| Linter: Rust | `cargo clippy` | `cargo clippy` | `cargo clippy` (if installed) |
-| Linter: Go | `golangci-lint run` | `golangci-lint run` | `golangci-lint run` (if installed) |
-| Notification hook | `notify.sh` (terminal-notifier) | `notify.ps1` (Toast) | `notify.sh` (termux-notification) |
-| Claude version | `claude --version` | `claude --version` | `npm list -g @anthropic-ai/claude-code` (shebang fix) |
+| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` or `~/.zshrc` |
+| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data` |
+| Rust updates | `rustup check` | `rustup check` (identical) | `rustup check` (identical) |
+| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Termux) |
+| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` | `diff dir1/ dir2/` (identical) |
+| Claude config path | `~/.claude/` | `~/.claude/` (same on all) | `~/.claude/` (same on all) |
+| Repo path | `~/proggs/` | `~/proggs/` (same on all) | `~/proggs/` (same on all) |
+| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) | N/A (no Swift on Android) |
+| Linter: C# | `dotnet format` | `dotnet format` (identical) | N/A (no .NET on Termux) |
+| Linter: TypeScript | `biome check` | `biome check` (identical) | `biome check` (identical) |
+| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) | `cargo clippy` (identical) |
+| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) | `golangci-lint run` (identical) |
 
-**Rule**: Always use the correct platform command. Never run `brew` on Windows/Termux, `winget` on macOS/Termux, or `pkg` on macOS/Windows. On Termux, `claude --version` fails due to shebang — use `npm list -g` instead. If a tool is not available on the current platform, skip that check and note it in the report.
+**Termux-specific notes:**
+- Termux uses `pkg` as package manager (based on apt). Install with `pkg install <name>`.
+- No `sudo` on Termux — everything runs as user. No admin actions needed.
+- Storage access: `termux-setup-storage` must be run once to access shared storage (`~/storage/`).
+- Claude Code on Termux: Install via `npm install -g @anthropic-ai/claude-code`. Node.js required: `pkg install nodejs-lts`.
+- Available dev tools: Node.js, Rust (via rustup), Go, Git, Biome, CMake. No .NET or Swift.
+- Hooks: Use bash scripts (`.sh`), not PowerShell. Notifications via `termux-notification` (requires `termux-api` package).
+
+**Rule**: Always use the correct platform command. Never run `brew` on Windows, `winget` on macOS, or `pkg` outside Termux. If a tool is not available on the current platform, skip that check and note it in the report.
 
 ## The 3-Loop Process
 
@@ -263,9 +269,9 @@ Count the lines of this skill file:
 wc -l ~/.claude/commands/self-improve.md
 ```
 
-- If **under 500 lines**: Improvements can be suggested freely
-- If **500-600 lines**: Warn the user that the limit is approaching
-- If **600+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+- If **under 800 lines**: Improvements can be suggested freely
+- If **800-1000 lines**: Warn the user that the limit is approaching
+- If **1000+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
 
 ### Step 3: Present Suggestions (NEVER auto-apply!)
 
@@ -296,7 +302,7 @@ prevent errors, or improve quality? Relate it back to the user's goals.
 ...
 
 ### Skill-Status
-- Aktuelle Zeilenzahl: [N]/600
+- Aktuelle Zeilenzahl: [N]/1000
 - Letzte Meta-Verbesserung: [Datum oder "erste"]
 
 Soll ich diese Aenderungen umsetzen? (Ja/Nein/Teilweise)
@@ -359,7 +365,7 @@ Give a final comprehensive summary:
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
-- This skill file has a **600-line limit**. If approaching, warn the user.
+- This skill file has a **1000-line limit**. If approaching, warn the user.
 - **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - **Security for ALL external code** (skills, plugins, agents, MCP servers, hooks, commands, npm packages, GitHub Actions, etc.):
   1. Check the source — only use trusted, well-known sources (official Anthropic, superpowers-marketplace, established GitHub repos)
@@ -374,4 +380,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v2.0 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~400/600 | Changes: v2.0 — Added Android/Termux platform support: pkg commands, Termux-specific paths, claude --version shebang workaround, termux-notification hook, N/A markers for unavailable tools (Swift, .NET, Docker) -->
+<!-- Skill Version: v2.0 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~430/1000 | Changes: v2.0 — Added Termux/Android platform support (pkg, termux-notification, termux-specific notes), expanded platform mapping table to 3 columns, increased line limit from 600 to 1000, fixed "high" to "max" effort in User Goals section -->
