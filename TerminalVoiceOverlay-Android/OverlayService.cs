@@ -72,12 +72,12 @@ public class OverlayService : Service
 
     // ── Views ─────────────────────────────────────────────────────────────────
     private View?   _overlayRoot;
-    private Button? _btnX;
-    private Button? _btnW;
-    private Button? _btnBtw;
-    private Button? _btnMic;
-    private Button? _btnG;
-    private Button? _btnEnter;
+    private View? _btnX;
+    private View? _btnW;
+    private View? _btnBtw;
+    private View? _btnMic;
+    private View? _btnG;
+    private View? _btnEnter;
 
     // ── Drag tracking ────────────────────────────────────────────────────────
     private int  _dragInitialY;
@@ -189,12 +189,12 @@ public class OverlayService : Service
         _overlayRoot = inflater.Inflate(Resource.Layout.overlay_layout, null)!;
 
         // Resolve buttons
-        _btnX     = _overlayRoot.FindViewById<Button>(Resource.Id.btn_x)!;
-        _btnW     = _overlayRoot.FindViewById<Button>(Resource.Id.btn_w)!;
-        _btnBtw   = _overlayRoot.FindViewById<Button>(Resource.Id.btn_btw)!;
-        _btnMic   = _overlayRoot.FindViewById<Button>(Resource.Id.btn_mic)!;
-        _btnG     = _overlayRoot.FindViewById<Button>(Resource.Id.btn_g)!;
-        _btnEnter = _overlayRoot.FindViewById<Button>(Resource.Id.btn_enter)!;
+        _btnX     = _overlayRoot.FindViewById(Resource.Id.btn_x)!;
+        _btnW     = _overlayRoot.FindViewById(Resource.Id.btn_w)!;
+        _btnBtw   = _overlayRoot.FindViewById(Resource.Id.btn_btw)!;
+        _btnMic   = _overlayRoot.FindViewById(Resource.Id.btn_mic)!;
+        _btnG     = _overlayRoot.FindViewById(Resource.Id.btn_g)!;
+        _btnEnter = _overlayRoot.FindViewById(Resource.Id.btn_enter)!;
 
         // Apply initial colours
         SetButtonColor(_btnX,     ColBtnX);           // red  — always
@@ -572,7 +572,7 @@ public class OverlayService : Service
     // Helper — button colour via GradientDrawable (runtime-changeable)
     // ─────────────────────────────────────────────────────────────────────────
 
-    private static void SetButtonColor(Button btn, Color color)
+    private static void SetButtonColor(View btn, Color color)
     {
         var drawable = btn.Background as GradientDrawable
                     ?? new GradientDrawable();
