@@ -55,7 +55,7 @@ TEXT_START
 
     private async Task<string> SendWithRetry(string prompt, int attempt)
     {
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{_model}:generateContent?key={_apiKey}";
+        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{_model}:generateContent";
 
         var payload = new
         {
@@ -76,7 +76,9 @@ TEXT_START
 
         var json = JsonSerializer.Serialize(payload);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _http.PostAsync(url, content);
+        using var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = content };
+        request.Headers.Add("x-goog-api-key", _apiKey);
+        var response = await _http.SendAsync(request);
         var statusCode = (int)response.StatusCode;
 
         if (response.IsSuccessStatusCode)

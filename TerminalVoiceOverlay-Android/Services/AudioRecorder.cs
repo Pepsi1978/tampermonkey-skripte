@@ -99,12 +99,12 @@ public sealed class AudioRecorder : IDisposable
     public string? Stop()
     {
         if (!_isRecording) return null;
-        _isRecording = false;
 
         try
         {
-            _recordingThread?.Join(2000); // wait up to 2s for recording thread
-            _audioRecord?.Stop();
+            _audioRecord?.Stop();   // Stop hardware first — unblocks Read()
+            _isRecording = false;   // Then signal the recording thread
+            _recordingThread?.Join(3000);
             _audioRecord?.Release();
             _audioRecord?.Dispose();
             _audioRecord = null;
@@ -115,6 +115,11 @@ public sealed class AudioRecorder : IDisposable
         }
         catch (Exception ex)
         {
+            _isRecording = false;
+            _audioRecord?.Release();
+            _audioRecord?.Dispose();
+            _audioRecord = null;
+            _recordingThread = null;
             Android.Util.Log.Error("VoiceOverlay", $"AudioRecorder: Error stopping: {ex.Message}");
             return null;
         }
@@ -123,7 +128,6 @@ public sealed class AudioRecorder : IDisposable
     public void Dispose()
     {
         if (_isRecording) Stop();
-        _audioRecord?.Release();
-        _audioRecord?.Dispose();
+        // Stop() already cleans up _audioRecord, so no double-release needed
     }
 }
