@@ -36,7 +36,7 @@ $shortcut = $shell.CreateShortcut($startupLink)
 $shortcut.TargetPath = "wscript.exe"
 $shortcut.Arguments = """$watcherPath"""
 $shortcut.WorkingDirectory = $PSScriptRoot
-$shortcut.Description = "TerminalVoiceOverlay Watcher — startet Overlay automatisch neu"
+$shortcut.Description = "TerminalVoiceOverlay Watcher - startet Overlay automatisch neu"
 $shortcut.WindowStyle = 7  # Minimiert
 $shortcut.Save()
 
