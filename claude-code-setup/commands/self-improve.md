@@ -9,9 +9,9 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v2.1 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v1.9 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
-║  Cross-Platform: macOS + Windows + Termux/Android            ║
+║  Cross-Platform: macOS + Windows (automatische Erkennung)    ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Was passiert jetzt:                                         ║
@@ -68,7 +68,7 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 - **Zero friction**: No permission prompts, no manual steps, full automation
 - **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit) and Windows (C#/WPF)
 - **Preferred languages**: Swift, C#, TypeScript, Rust, Go (in this order). No Python for visible things.
-- **Best model always**: Opus with max effort and extended thinking
+- **Best model always**: Opus with high effort and extended thinking
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
 
@@ -78,43 +78,35 @@ Detect the platform at the start of EVERY run. This determines which commands to
 
 ```
 # Run this FIRST:
-uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash, "Linux" = Linux/Termux
+uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash
+# Termux detection:
+echo $TERMUX_VERSION   # Non-empty = Android/Termux
 # OR on Windows PowerShell:
 $env:OS    # "Windows_NT" = Windows
-# Termux detection:
-echo $PREFIX   # "/data/data/com.termux/files/usr" = Termux on Android
 ```
 
 **Platform-specific command mapping:**
 
-**Windows shell note:** When running from Git Bash, always use `pwsh` (PowerShell 7+) instead of `powershell` (Windows PowerShell 5.1). The old `powershell` often fails with complex commands when invoked from Git Bash. All PowerShell commands below assume `pwsh`.
-
-| Task | macOS | Windows (pwsh) | Termux/Android |
+| Task | macOS | Windows (PowerShell) | Android/Termux |
 |------|-------|---------------------|----------------|
-| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `pkg upgrade -n` (dry-run) |
+| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `apt list --upgradable` |
 | Package manager upgrade | `brew upgrade` | `winget upgrade --all` | `pkg upgrade -y` |
-| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` or `~/.zshrc` |
-| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data` |
-| Rust updates | `rustup check` | `rustup check` (identical) | `rustup check` (identical) |
-| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Termux) |
-| Diff directories | `diff dir1/ dir2/` | `diff dir1/ dir2/` (Git Bash) | `diff dir1/ dir2/` (identical) |
-| Claude config path | `~/.claude/` | `~/.claude/` (same on all) | `~/.claude/` (same on all) |
-| Repo path | `~/proggs/` | `~/proggs/` (same on all) | `~/proggs/` (same on all) |
-| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) | N/A (no Swift on Android) |
-| Linter: C# | `dotnet format` | `dotnet format` (identical) | N/A (no .NET on Termux) |
-| Linter: TypeScript | `biome check` | `biome check` (identical) | `biome check` (identical) |
-| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) | `cargo clippy` (identical) |
-| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) | `golangci-lint run` (identical) |
+| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` |
+| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data/data/com.termux/files/home` |
+| Rust updates | `rustup check` | `rustup check` | `rustup check` (if installed) |
+| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Android) |
+| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` | `diff dir1/ dir2/` |
+| Claude config path | `~/.claude/` | `~/.claude/` | `~/.claude/` (same) |
+| Repo path | `~/proggs/` | `~/proggs/` | `~/projects/proggs/` |
+| Linter: Swift | `swiftlint` | N/A | N/A (no Swift on Android) |
+| Linter: C# | `dotnet format` | `dotnet format` | N/A |
+| Linter: TypeScript | `biome check` | `biome check` | `biome check` (if installed) |
+| Linter: Rust | `cargo clippy` | `cargo clippy` | `cargo clippy` (if installed) |
+| Linter: Go | `golangci-lint run` | `golangci-lint run` | `golangci-lint run` (if installed) |
+| Notification hook | `notify.sh` (terminal-notifier) | `notify.ps1` (Toast) | `notify.sh` (termux-notification) |
+| Claude version | `claude --version` | `claude --version` | `npm list -g @anthropic-ai/claude-code` (shebang fix) |
 
-**Termux-specific notes:**
-- Termux uses `pkg` as package manager (based on apt). Install with `pkg install <name>`.
-- No `sudo` on Termux — everything runs as user. No admin actions needed.
-- Storage access: `termux-setup-storage` must be run once to access shared storage (`~/storage/`).
-- Claude Code on Termux: Install via `npm install -g @anthropic-ai/claude-code`. Node.js required: `pkg install nodejs-lts`.
-- Available dev tools: Node.js, Rust (via rustup), Go, Git, Biome, CMake. No .NET or Swift.
-- Hooks: Use bash scripts (`.sh`), not PowerShell. Notifications via `termux-notification` (requires `termux-api` package).
-
-**Rule**: Always use the correct platform command. Never run `brew` on Windows, `winget` on macOS, or `pkg` outside Termux. If a tool is not available on the current platform, skip that check and note it in the report.
+**Rule**: Always use the correct platform command. Never run `brew` on Windows/Termux, `winget` on macOS/Termux, or `pkg` on macOS/Windows. On Termux, `claude --version` fails due to shebang — use `npm list -g` instead. If a tool is not available on the current platform, skip that check and note it in the report.
 
 ## The 3-Loop Process
 
@@ -167,13 +159,9 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 ### Phase 2: RESEARCH (Discover New Things)
 
-**Smart Research Rule — nicht jede Schleife braucht volle Recherche:**
+**IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchführt, Seiten lädt, filtert und zusammenfasst.
 
-**Loop 1: Keine Researcher — nur allgemeine Verbesserungspruefung.**
-Loop 1 konzentriert sich auf Phase 1 (CHECK) und Phase 4 (IMPROVE). Die lokale Umgebung wird gruendlich geprueft und sofort verbessert. Keine Web-Recherche noetig — die eigenen Checks liefern genug Material.
-
-**Loop 2: IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchfuehrt, Seiten laedt, filtert und zusammenfasst.
-
+**Standard-Recherche (IMMER diese 5 Agents gleichzeitig spawnen):**
 ```
 → Spawn 5 researcher agents simultaneously:
   Researcher 1: "Claude Code changelog latest version features + speed/performance"
@@ -183,11 +171,8 @@ Loop 1 konzentriert sich auf Phase 1 (CHECK) und Phase 4 (IMPROVE). Die lokale U
   Researcher 5: "Security vulnerabilities in installed tools + Claude Code security updates"
 ```
 
-**Loop 3: Gezielte Recherche nur bei Bedarf.**
-Nur Researcher spawnen fuer Themen, bei denen Loop 2 offene Fragen oder neue Leads gefunden hat. Wenn Loop 2 alles abgedeckt hat → Recherche in Loop 3 ueberspringen und stattdessen auf Verifikation und Feinschliff fokussieren.
-
-**Fallback — nur wenn researcher Agents nicht verfuegbar sind:**
-Direkte parallele WebSearch-Aufrufe fuer die gleichen 5 Themen.
+**Fallback — nur wenn researcher Agents nicht verfügbar sind:**
+Direkte parallele WebSearch-Aufrufe für die gleichen 5 Themen.
 
 **Important**: Only suggest installing things that align with the user's goals. Don't suggest Python tools or frameworks unless they're invisible backend components.
 
@@ -255,10 +240,7 @@ Beispiel:
 
 **Transparenz-Regel**: Keine stille Änderung. Jede Datei, jede Einstellung, jeder Befehl der geändert wird, muss im Report erscheinen.
 
-**Aggressive-Sync-Regel**: Nach JEDER Phase (nicht nur nach jeder Schleife), die Dateien aendert, sofort committen und pushen. Besonders wichtig nach:
-- Phase 3 (UPDATE) — Updates sind angewandt, muessen sofort gesichert werden
-- Phase 4 (IMPROVE) — Verbesserungen sind gemacht, muessen sofort gesichert werden
-Lieber 3 kleine Commits als 1 grosser, der verloren geht. Context-Limits, Netzwerkfehler oder Session-Abbrueche koennen jederzeit passieren — was gepusht ist, ist sicher.
+**Sofort-Sync-Regel**: Nach JEDER Schleife, die Dateien ändert, sofort alle geänderten Dateien nach `~/proggs/claude-code-setup/` kopieren. Das ist nur ein `cp`-Befehl pro geänderter Datei — kostet fast nichts, verhindert aber Backup-Drift. So ist das Backup auch aktuell, wenn die Session unerwartet endet (Context-Limit, Netzwerkfehler, Abbruch).
 
 ## After All 3 Loops: Phase 6 — META-IMPROVE (Self-Improvement des Skills)
 
@@ -281,9 +263,9 @@ Count the lines of this skill file:
 wc -l ~/.claude/commands/self-improve.md
 ```
 
-- If **under 800 lines**: Improvements can be suggested freely
-- If **800-1000 lines**: Warn the user that the limit is approaching
-- If **1000+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+- If **under 500 lines**: Improvements can be suggested freely
+- If **500-600 lines**: Warn the user that the limit is approaching
+- If **600+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
 
 ### Step 3: Present Suggestions (NEVER auto-apply!)
 
@@ -314,7 +296,7 @@ prevent errors, or improve quality? Relate it back to the user's goals.
 ...
 
 ### Skill-Status
-- Aktuelle Zeilenzahl: [N]/1000
+- Aktuelle Zeilenzahl: [N]/600
 - Letzte Meta-Verbesserung: [Datum oder "erste"]
 
 Soll ich diese Aenderungen umsetzen? (Ja/Nein/Teilweise)
@@ -377,7 +359,7 @@ Give a final comprehensive summary:
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
-- This skill file has a **1000-line limit**. If approaching, warn the user.
+- This skill file has a **600-line limit**. If approaching, warn the user.
 - **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - **Security for ALL external code** (skills, plugins, agents, MCP servers, hooks, commands, npm packages, GitHub Actions, etc.):
   1. Check the source — only use trusted, well-known sources (official Anthropic, superpowers-marketplace, established GitHub repos)
@@ -391,18 +373,5 @@ Give a final comprehensive summary:
 - Use Agent Teams to parallelize research and updates wherever possible
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
-## Multi-Device Safety
-
-The user runs Claude Code on multiple devices (macOS, Windows, Termux/Android). Self-improve may run on different devices simultaneously or in close succession, which can cause Git conflicts.
-
-- **Before pushing**: ALWAYS run `git pull --rebase` first to check for remote changes from other devices.
-- **If a rebase conflict occurs**:
-  1. Show the conflict to the user
-  2. Prefer the LOCAL version (this device's changes) for config files that were just modified
-  3. For CLAUDE.md: merge both changes carefully, keeping content from both devices
-  4. After resolving: `git rebase --continue`
-- **Commit messages** should note the platform: e.g. `#NNN - Self-improve sync (Windows)` or `(Termux)` or `(macOS)`
-- **Warning**: If `git pull --rebase` shows changes to the same files you just modified, warn the user that another device may be running self-improve simultaneously.
-
 ---
-<!-- Skill Version: v2.1 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~410/1000 | Changes: v2.1 — Meta-improve: (1) Banner updated v1.9→v2.1 with Termux, (2) pwsh note for Windows Git Bash, (3) Smart Research: Loop 1 no researchers, Loop 2 always 5, Loop 3 only if needed, (4) Multi-Device Safety section for concurrent self-improve runs, (5) diff on all platforms instead of Compare-Object, (6) Aggressive-Sync after every phase not just every loop -->
+<!-- Skill Version: v2.0 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~400/600 | Changes: v2.0 — Added Android/Termux platform support: pkg commands, Termux-specific paths, claude --version shebang workaround, termux-notification hook, N/A markers for unavailable tools (Swift, .NET, Docker) -->
