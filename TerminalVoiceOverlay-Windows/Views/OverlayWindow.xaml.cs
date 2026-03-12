@@ -202,13 +202,20 @@ namespace TerminalVoiceOverlay.Views
         /// <summary>X button — clear current terminal line.</summary>
         private async void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            TerminalController.ClearLine(_terminalWatcher.ActiveTerminalHwnd);
+            var hwnd = _terminalWatcher.ActiveTerminalHwnd;
             hasPastedText = false;
 
             // Flash X button: gray for 2 s then back to red
             XButton.Background = BtnIdle;
-            await Task.Delay(2000);
-            XButton.Background = BtnX;
+
+            // Run ClearLine on background thread (Thread.Sleep blocks UI thread)
+            await Task.Run(() => TerminalController.ClearLine(hwnd));
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(2000);
+                Dispatcher.Invoke(() => XButton.Background = BtnX);
+            });
         }
 
         /// <summary>Main mic button — start / stop recording.</summary>

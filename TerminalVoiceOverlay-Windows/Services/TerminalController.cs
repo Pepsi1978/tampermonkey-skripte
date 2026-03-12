@@ -59,31 +59,30 @@ namespace TerminalVoiceOverlay.Services
 
         /// <summary>
         /// Clears the current terminal input line.
-        /// Escape → Home → Shift+End → Delete (fast and reliable, matches macOS Ctrl+C approach).
+        /// Sends Escape (clears line in PowerShell/cmd), then Home+Shift+End+Delete as fallback.
         /// </summary>
         public static void ClearLine(IntPtr terminalHwnd)
         {
             if (terminalHwnd != IntPtr.Zero)
             {
+                Win32.AllowSetForegroundWindow(unchecked((uint)-1));
                 Win32.SetForegroundWindow(terminalHwnd);
-                Thread.Sleep(150);
+                Thread.Sleep(200);
             }
 
-            // Escape to cancel any selection/mode
+            // Escape clears the current input line in PowerShell and cmd
             SendKey(Win32.VK_ESCAPE);
-            Thread.Sleep(50);
+            Thread.Sleep(100);
 
-            // Home — go to start of line
+            // Fallback: Home → Shift+End → Delete (in case Escape wasn't enough)
             SendKey(VK_HOME);
             Thread.Sleep(50);
 
-            // Shift+End — select entire line
             Win32.keybd_event((byte)Win32.VK_SHIFT, 0, 0, UIntPtr.Zero);
             SendKey(VK_END);
             Win32.keybd_event((byte)Win32.VK_SHIFT, 0, Win32.KEYEVENTF_KEYUP, UIntPtr.Zero);
             Thread.Sleep(50);
 
-            // Delete — delete the selection
             SendKey(VK_DELETE);
         }
 
