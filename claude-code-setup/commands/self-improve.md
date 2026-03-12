@@ -79,30 +79,34 @@ Detect the platform at the start of EVERY run. This determines which commands to
 ```
 # Run this FIRST:
 uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash
+# Termux detection:
+echo $TERMUX_VERSION   # Non-empty = Android/Termux
 # OR on Windows PowerShell:
 $env:OS    # "Windows_NT" = Windows
 ```
 
 **Platform-specific command mapping:**
 
-| Task | macOS | Windows (PowerShell) |
-|------|-------|---------------------|
-| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` |
-| Package manager upgrade | `brew upgrade` | `winget upgrade --all` |
-| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) |
-| Disk space | `df -h /` | `Get-PSDrive C` |
-| Rust updates | `rustup check` | `rustup check` (identical) |
-| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` |
-| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` |
-| Claude config path | `~/.claude/` | `~/.claude/` (same on both) |
-| Repo path | `~/proggs/` | `~/proggs/` (same on both) |
-| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) |
-| Linter: C# | `dotnet format` | `dotnet format` (identical) |
-| Linter: TypeScript | `biome check` | `biome check` (identical) |
-| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) |
-| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) |
+| Task | macOS | Windows (PowerShell) | Android/Termux |
+|------|-------|---------------------|----------------|
+| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `apt list --upgradable` |
+| Package manager upgrade | `brew upgrade` | `winget upgrade --all` | `pkg upgrade -y` |
+| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` |
+| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data/data/com.termux/files/home` |
+| Rust updates | `rustup check` | `rustup check` | `rustup check` (if installed) |
+| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Android) |
+| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` | `diff dir1/ dir2/` |
+| Claude config path | `~/.claude/` | `~/.claude/` | `~/.claude/` (same) |
+| Repo path | `~/proggs/` | `~/proggs/` | `~/projects/proggs/` |
+| Linter: Swift | `swiftlint` | N/A | N/A (no Swift on Android) |
+| Linter: C# | `dotnet format` | `dotnet format` | N/A |
+| Linter: TypeScript | `biome check` | `biome check` | `biome check` (if installed) |
+| Linter: Rust | `cargo clippy` | `cargo clippy` | `cargo clippy` (if installed) |
+| Linter: Go | `golangci-lint run` | `golangci-lint run` | `golangci-lint run` (if installed) |
+| Notification hook | `notify.sh` (terminal-notifier) | `notify.ps1` (Toast) | `notify.sh` (termux-notification) |
+| Claude version | `claude --version` | `claude --version` | `npm list -g @anthropic-ai/claude-code` (shebang fix) |
 
-**Rule**: Always use the correct platform command. Never run `brew` on Windows or `winget` on macOS. If a tool is not available on the current platform, skip that check and note it in the report.
+**Rule**: Always use the correct platform command. Never run `brew` on Windows/Termux, `winget` on macOS/Termux, or `pkg` on macOS/Windows. On Termux, `claude --version` fails due to shebang — use `npm list -g` instead. If a tool is not available on the current platform, skip that check and note it in the report.
 
 ## The 3-Loop Process
 
@@ -370,4 +374,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v1.9 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~390/600 | Changes: v1.9 — Added 3 meta-improvements from pass 2: (1) hook existence check — verifies all hook commands reference existing executables, (2) effortLevel protection — PROTECTED SETTINGS block prevents changing effortLevel from "max", (3) auto-format coverage check — compares auto-format hook extensions against rule file glob patterns -->
+<!-- Skill Version: v2.0 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~400/600 | Changes: v2.0 — Added Android/Termux platform support: pkg commands, Termux-specific paths, claude --version shebang workaround, termux-notification hook, N/A markers for unavailable tools (Swift, .NET, Docker) -->
