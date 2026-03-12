@@ -52,18 +52,35 @@
         android:textColor="@color/text_secondary"
         android:layout_marginBottom="4dp" />
 
-    <EditText
-        android:id="@+id/edit_groq_key"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/surface_dark"
-        android:textColor="@color/text_primary"
-        android:textColorHint="@color/text_secondary"
-        android:hint="gsk_..."
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:textSize="14sp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp">
+      <EditText
+          android:id="@+id/edit_groq_key"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_toStartOf="@+id/btn_toggle_groq"
+          android:background="@android:color/transparent"
+          android:textColor="@color/text_primary"
+          android:textColorHint="@color/text_secondary"
+          android:hint="gsk_..."
+          android:inputType="textPassword"
+          android:paddingStart="12dp"
+          android:paddingEnd="4dp"
+          android:textSize="14sp" />
+      <TextView
+          android:id="@+id/btn_toggle_groq"
+          android:layout_width="44dp"
+          android:layout_height="match_parent"
+          android:layout_alignParentEnd="true"
+          android:gravity="center"
+          android:text="&#128065;"
+          android:textSize="20sp"
+          android:clickable="true"
+          android:focusable="true" />
+    </RelativeLayout>
 
     <!-- Gemini API Key -->
     <TextView
@@ -74,18 +91,35 @@
         android:textColor="@color/text_secondary"
         android:layout_marginBottom="4dp" />
 
-    <EditText
-        android:id="@+id/edit_gemini_key"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/surface_dark"
-        android:textColor="@color/text_primary"
-        android:textColorHint="@color/text_secondary"
-        android:hint="AIza..."
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:textSize="14sp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp">
+      <EditText
+          android:id="@+id/edit_gemini_key"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_toStartOf="@+id/btn_toggle_gemini"
+          android:background="@android:color/transparent"
+          android:textColor="@color/text_primary"
+          android:textColorHint="@color/text_secondary"
+          android:hint="AIza..."
+          android:inputType="textPassword"
+          android:paddingStart="12dp"
+          android:paddingEnd="4dp"
+          android:textSize="14sp" />
+      <TextView
+          android:id="@+id/btn_toggle_gemini"
+          android:layout_width="44dp"
+          android:layout_height="match_parent"
+          android:layout_alignParentEnd="true"
+          android:gravity="center"
+          android:text="&#128065;"
+          android:textSize="20sp"
+          android:clickable="true"
+          android:focusable="true" />
+    </RelativeLayout>
 
     <!-- Whisper Model -->
     <TextView

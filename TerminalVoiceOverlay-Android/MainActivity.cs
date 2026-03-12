@@ -4,6 +4,8 @@ using Android.Content.PM;
 using Android.Net;
 using Android.OS;
 using Android.Provider;
+using Android.Text;
+using Android.Views;
 using Android.Widget;
 using TerminalVoiceOverlay.Services;
 
@@ -48,6 +50,10 @@ public class MainActivity : Activity
         // Button clicks
         _btnSave!.Click += (_, _) => SaveSettings();
         _btnToggle!.Click += (_, _) => ToggleOverlay();
+
+        // API key visibility toggles (eye icon)
+        SetupPasswordToggle(Resource.Id.btn_toggle_groq, _editGroqKey!);
+        SetupPasswordToggle(Resource.Id.btn_toggle_gemini, _editGeminiKey!);
 
         // Request permissions
         RequestPermissions();
@@ -186,6 +192,32 @@ public class MainActivity : Activity
 
         if (permsNeeded.Count > 0)
             RequestPermissions(permsNeeded.ToArray(), PermissionRequestCode);
+    }
+
+    private void SetupPasswordToggle(int toggleId, EditText editText)
+    {
+        var toggle = FindViewById<TextView>(toggleId);
+        if (toggle == null) return;
+
+        toggle.Click += (_, _) =>
+        {
+            var cursorPos = editText.SelectionStart;
+            if (editText.InputType.HasFlag(InputTypes.TextVariationPassword))
+            {
+                // Show password
+                editText.InputType = InputTypes.ClassText | InputTypes.TextVariationVisiblePassword;
+                toggle.Text = "\ud83d\ude48"; // see-no-evil monkey = hidden
+            }
+            else
+            {
+                // Hide password
+                editText.InputType = InputTypes.ClassText | InputTypes.TextVariationPassword;
+                toggle.Text = "\ud83d\udc41"; // eye = visible
+            }
+            // Restore cursor position and text color
+            editText.SetSelection(Math.Min(cursorPos, editText.Text?.Length ?? 0));
+            editText.SetTextColor(Android.Graphics.Color.White);
+        };
     }
 
     protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
