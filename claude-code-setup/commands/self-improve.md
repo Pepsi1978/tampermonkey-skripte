@@ -9,9 +9,9 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v1.9 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v2.1 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
-║  Cross-Platform: macOS + Windows (automatische Erkennung)    ║
+║  Cross-Platform: macOS + Windows + Termux (auto-detect)      ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Was passiert jetzt:                                         ║
@@ -153,6 +153,16 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 - **Auto-format coverage check**: Compare the file extensions handled by the auto-format hook (`auto-format.sh` or `auto-format.ps1`) against the file extensions defined in `~/.claude/rules/*.md` path globs. Any extension in a rule file but missing from the auto-format hook = flag for Phase 4 improvement. This ensures every language with a rule also gets automatic formatting.
 
+- **Hook integrity check (Termux CRITICAL)**: On Linux/Termux, the Write tool may create files with CRLF line endings which silently break shell scripts (`$'\r': command not found`). Fix and verify ALL hook scripts in one step:
+  ```
+  # Fix line endings + syntax check all hooks
+  find ~/.claude/hooks -name "*.sh" -exec dos2unix {} \; 2>/dev/null
+  for f in ~/.claude/hooks/*.sh; do
+    bash -n "$f" 2>&1 && echo "$(basename $f): OK" || echo "$(basename $f): SYNTAX ERROR"
+  done
+  ```
+  Any hook with SYNTAX ERROR = flag for immediate fix in Phase 3. This check is fast (<1 second) and prevents hooks from failing silently at runtime.
+
 **Collect all findings into a status report before proceeding.**
 
 **IMPORTANT for cleanup**: If you find things to clean up (orphaned folders, stale repos, unused files), ALWAYS ask the user for permission before deleting anything. Never auto-delete.
@@ -179,6 +189,27 @@ Direkte parallele WebSearch-Aufrufe für die gleichen 5 Themen.
 ### Phase 3: UPDATE (Apply Updates)
 
 Based on findings from CHECK and RESEARCH:
+
+**Platform Compatibility Pre-Check (BEFORE installing anything):**
+Before installing any tool, verify it actually works on the current platform. Known incompatibilities:
+```
+# Detect platform and set skip list
+ARCH=$(uname -m)  # aarch64, x86_64, arm64
+OS=$(uname -s)    # Darwin, Linux, MINGW*
+TERMUX=${TERMUX_VERSION:+yes}
+
+# Tools NOT available per platform:
+# Termux/Android: Biome (no ARM64-Android binary), Bun (no Android build), Docker, Swift, .NET, Xcode
+# macOS: winget, pwsh (native)
+# Windows: brew, swift (native), pkg
+
+if [ -n "$TERMUX" ]; then
+  SKIP_TOOLS="biome bun docker swift dotnet xcode"
+elif [ "$OS" = "Darwin" ]; then
+  SKIP_TOOLS="winget"
+fi
+```
+If a tool is in SKIP_TOOLS, do NOT attempt to install it. Note it in the report as "skipped (not available on this platform)" and suggest the platform-appropriate alternative (e.g. prettier instead of biome on Termux).
 
 **Platform-specific updates:**
 - macOS: `brew upgrade` (skip Python-related packages) / Windows: `winget upgrade --all`
@@ -211,6 +242,15 @@ This is the creative phase. Think about:
 - Can the quality loop (build → test → review → improve) be made more automatic?
 
 **Implement at least one concrete improvement per loop, even if small.**
+
+**Termux line-ending safety net (run at the END of every Phase 4):**
+The Write tool on Termux creates files with CRLF line endings. After creating or modifying any `.sh` file, always run:
+```
+# Fix CRLF on all shell scripts touched in this loop
+find ~/.claude/hooks ~/.shortcuts ~/scripts -name "*.sh" -o -type f -executable 2>/dev/null | \
+  xargs dos2unix 2>/dev/null
+```
+This is a no-op on files already with LF endings, so it's safe to run unconditionally.
 
 ### Phase 5: REPORT (Explain in German)
 
@@ -374,4 +414,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v2.0 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~400/600 | Changes: v2.0 — Added Android/Termux platform support: pkg commands, Termux-specific paths, claude --version shebang workaround, termux-notification hook, N/A markers for unavailable tools (Swift, .NET, Docker) -->
+<!-- Skill Version: v2.1 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~410/600 | Changes: v2.1 — (1) Added Hook integrity check in Phase 1: dos2unix + bash -n dry-run on all .sh hooks to catch CRLF issues before they cause runtime failures. (2) Added Platform Compatibility Pre-Check in Phase 3: skip-list of tools known to be incompatible per platform (e.g. Biome/Bun on Termux) to avoid wasted install attempts. (3) Added dos2unix safety net at end of Phase 4 for all newly created shell scripts. (4) Updated banner to v2.1 with Termux in platform list. -->
