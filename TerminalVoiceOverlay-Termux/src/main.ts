@@ -1,3 +1,4 @@
+import { execSync } from "node:child_process";
 import { loadConfig } from "./config.js";
 import { AudioRecorder } from "./audio-recorder.js";
 import { GroqWhisperClient } from "./groq-client.js";
@@ -81,6 +82,30 @@ function render(): void {
     activeMic: state.activeMic,
   };
   renderOverlay(overlayState);
+}
+
+// ── tmux Text Injection ───────────────────────────────────────────────────
+
+function injectTextToTarget(text: string): void {
+  const tmuxPane = process.env["TMUX_TARGET_PANE"];
+  if (tmuxPane) {
+    // tmux send-keys tippt den Text direkt in die Ziel-Pane
+    // Escape special chars, send line by line
+    const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\$/g, "\\$").replace(/`/g, "\\`");
+    try {
+      execSync(`tmux send-keys -t "${tmuxPane}" -l "${escaped}"`, { stdio: "ignore" });
+      if (state.autoEnterEnabled) {
+        execSync(`tmux send-keys -t "${tmuxPane}" Enter`, { stdio: "ignore" });
+      }
+    } catch {
+      // Fallback: nur Clipboard
+      try { execSync(`termux-clipboard-set "${escaped}"`, { stdio: "ignore" }); } catch { /* ignore */ }
+    }
+  } else {
+    // Kein tmux — nur Clipboard
+    const escaped = text.replace(/"/g, '\\"');
+    try { execSync(`termux-clipboard-set "${escaped}"`, { stdio: "ignore" }); } catch { /* ignore */ }
+  }
 }
 
 // ── Reset helper ──────────────────────────────────────────────────────────
@@ -186,8 +211,8 @@ async function stopRecording(which: "main" | "btw"): Promise<void> {
 
     state.lastText = finalText;
 
-    // Text ins Clipboard
-    TerminalController.setClipboard(finalText);
+    // Text in Ziel-Pane tippen (oder Clipboard als Fallback)
+    injectTextToTarget(finalText);
     TerminalController.toast(finalText.length > 60 ? `${finalText.slice(0, 60)}…` : finalText);
 
     if (which === "main") {
@@ -261,12 +286,20 @@ function handleClearLine(): void {
     TerminalController.toast("Verarbeitung laeuft...");
     return;
   } else {
-    // Clipboard leeren
-    TerminalController.setClipboard("");
+    // Ziel-Pane: C-c senden (wenn tmux aktiv), sonst Clipboard leeren
+    const tmuxPane = process.env["TMUX_TARGET_PANE"];
+    if (tmuxPane) {
+      try {
+        execSync(`tmux send-keys -t "${tmuxPane}" C-c`, { stdio: "ignore" });
+      } catch { /* ignore */ }
+      TerminalController.toast("Zeile abgebrochen (C-c)");
+    } else {
+      TerminalController.setClipboard("");
+      TerminalController.toast("Zwischenablage geloescht");
+    }
     state.lastText = "";
     state.rawText = "";
     render();
-    TerminalController.toast("Zwischenablage geloescht");
   }
 
   // 2s Cooldown setzen
@@ -291,7 +324,7 @@ function handleWhisperUndo(): void {
       : state.rawText;
 
   state.lastText = restoredText;
-  TerminalController.setClipboard(restoredText);
+  injectTextToTarget(restoredText);
   TerminalController.toast("Whisper-Rohtext wiederhergestellt");
   render();
 }
