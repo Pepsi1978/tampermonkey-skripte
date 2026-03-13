@@ -9,9 +9,9 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v1.8 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v1.9 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
-║  Cross-Platform: macOS + Windows (automatische Erkennung)    ║
+║  Cross-Platform: macOS + Windows + Android (autom. Erkennung)║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Was passiert jetzt:                                         ║
@@ -66,8 +66,8 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 ## User Goals (never forget these)
 
 - **Zero friction**: No permission prompts, no manual steps, full automation
-- **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit) and Windows (C#/WPF)
-- **Preferred languages**: Swift, C#, TypeScript, Rust, Go (in this order). No Python for visible things.
+- **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit), Windows (C#/WPF) and Android (Kotlin/Compose)
+- **Preferred languages**: Swift, C#, Kotlin, TypeScript, Rust, Go (in this order). No Python for visible things.
 - **Best model always**: Opus with high effort and extended thinking
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
@@ -101,6 +101,8 @@ $env:OS    # "Windows_NT" = Windows
 | Linter: TypeScript | `biome check` | `biome check` (identical) |
 | Linter: Rust | `cargo clippy` | `cargo clippy` (identical) |
 | Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) |
+| Linter: Kotlin | `ktfmt --dry-run` + `detekt` | `ktfmt --dry-run` + `detekt` (identical) |
+| Android SDK | `sdkmanager --list_installed` | N/A (no Android SDK on Windows via CLI) |
 
 **Rule**: Always use the correct platform command. Never run `brew` on Windows or `winget` on macOS. If a tool is not available on the current platform, skip that check and note it in the report.
 
@@ -145,6 +147,19 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 - **Rule completeness audit**: For each rule file in `~/.claude/rules/`, verify it documents at least: (1) a **format** command, (2) a **lint** command, (3) a **test** command. Use: `for f in ~/.claude/rules/*.md; do echo "=== $(basename $f) ==="; grep -ci "format\|lint\|test\|clippy\|audit" "$f"; done` — any file with 0 matches = flag for Phase 4 improvement. This prevents quality gaps between languages (e.g. Rust having all three while C# has none).
 
+- **Android development environment check** (only if ANDROID_HOME is set or Android tools are installed):
+  ```
+  echo "=== Android Environment ===" &&
+  java -version 2>&1 | head -1 &&
+  kotlin -version 2>&1 &&
+  gradle --version 2>&1 | head -2 &&
+  sdkmanager --list_installed 2>&1 | grep -E "build-tools|platforms|emulator|system-images" &&
+  avdmanager list avd 2>&1 | grep -E "Name:|Target:" &&
+  ktfmt --version 2>&1 &&
+  detekt --version 2>&1
+  ```
+  Check for: outdated SDK packages (`sdkmanager --update` available?), missing AVDs, new API levels, Kotlin version vs latest stable. If ANDROID_HOME is not set but Kotlin/Gradle are installed → flag as incomplete Android setup.
+
 **Collect all findings into a status report before proceeding.**
 
 **IMPORTANT for cleanup**: If you find things to clean up (orphaned folders, stale repos, unused files), ALWAYS ask the user for permission before deleting anything. Never auto-delete.
@@ -153,18 +168,20 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 **IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchführt, Seiten lädt, filtert und zusammenfasst.
 
-**Standard-Recherche (IMMER diese 5 Agents gleichzeitig spawnen):**
+**Standard-Recherche (IMMER diese 6 Agents gleichzeitig spawnen):**
 ```
-→ Spawn 5 researcher agents simultaneously:
+→ Spawn 6 researcher agents simultaneously:
   Researcher 1: "Claude Code changelog latest version features + speed/performance"
   Researcher 2: "superpowers marketplace + official plugins new [current month+year]"
   Researcher 3: "Claude Code agent teams + parallelization + hooks/automation best practices"
   Researcher 4: "Latest versions: Node.js, Bun, Deno, Go, .NET SDK, Swift, Xcode, Rust, Biome, golangci-lint"
   Researcher 5: "Security vulnerabilities in installed tools + Claude Code security updates"
+  Researcher 6: "Android development: latest API level, Jetpack Compose version, AGP version, Kotlin version, Material 3 updates, Google Play targetSdk requirements, new Android SDK build-tools"
 ```
+**Note on Researcher 6**: Only spawn if Android tools are installed (ANDROID_HOME set). Skip if no Android environment exists. This researcher is critical because Google Play enforces targetSdk deadlines — missing an update can get apps removed from the store.
 
 **Fallback — nur wenn researcher Agents nicht verfügbar sind:**
-Direkte parallele WebSearch-Aufrufe für die gleichen 5 Themen.
+Direkte parallele WebSearch-Aufrufe für die gleichen 6 Themen (skip Android if not installed).
 
 **Important**: Only suggest installing things that align with the user's goals. Don't suggest Python tools or frameworks unless they're invisible backend components.
 
@@ -176,6 +193,12 @@ Based on findings from CHECK and RESEARCH:
 - macOS: `brew upgrade` (skip Python-related packages) / Windows: `winget upgrade --all`
 - `rustup update` — Rust updates (same on both platforms)
 - `dotnet workload update` — .NET workloads (same on both platforms)
+
+**Android SDK updates (only if ANDROID_HOME is set):**
+- `sdkmanager --update` — update all installed SDK packages
+- Check if a newer `build-tools` or `platforms;android-XX` version is available and install it
+- Update `~/.claude/rules/android.md` if targetSdk or compileSdk should change
+- Update `~/.zshrc` PATH if build-tools version changed (e.g. 35.0.0 → 36.0.0)
 
 **Platform-independent updates:**
 - Update plugins if new versions exist
@@ -197,6 +220,8 @@ This is the creative phase. Think about:
 - Can build/test/deploy workflows be streamlined?
 - Are there new cross-compilation targets worth adding?
 - Can the quality loop (build → test → review → improve) be made more automatic?
+
+**Cross-platform pattern check**: Verify the "Bei Cross-Platform-Feature" pattern in CLAUDE.md lists ALL active platforms. Compare the platforms mentioned in the pattern against the platforms in the "Cross-Platform-Entwicklung" section. If a platform exists in the section but not in the pattern (e.g. Android is listed as a platform but not in the parallel-agent pattern), flag it and add the missing platform. This prevents new platforms from being forgotten in the parallelization strategy.
 
 **Implement at least one concrete improvement per loop, even if small.**
 
@@ -362,4 +387,4 @@ Give a final comprehensive summary:
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
 ---
-<!-- Skill Version: v1.8 | Date: 2026-03-12 | Last Meta-Improve: 2026-03-12 | Lines: ~375/600 | Changes: v1.8 — Added 3 new Phase 1 checks: cargo audit for Rust CVEs, notification hook quality (dynamic vs static), rule completeness audit (format/lint/test per language) -->
+<!-- Skill Version: v1.9 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~400/600 | Changes: v1.9 — Android support: Phase 1 Android SDK check (java/kotlin/gradle/sdkmanager/avdmanager/ktfmt/detekt), Phase 2 6th researcher for Android dev updates (API levels, Compose, AGP, targetSdk), Phase 3 Android SDK updater (sdkmanager --update, build-tools, platforms), Phase 4 cross-platform pattern check (verifies all platforms in parallel patterns), Kotlin/Android in platform mapping table and user goals -->
