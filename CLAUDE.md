@@ -43,16 +43,15 @@
 
 ## Cross-Platform-Entwicklung & Config-Sync
 - Alle Projekte muessen reibungslos auf macOS und Windows funktionieren.
-- macOS: Swift/AppKit, Windows: C#/WPF, Android: Kotlin/Jetpack Compose, Termux: CLI-Tools (TypeScript, Rust, Go).
-- Bei Cross-Platform-Features immer alle relevanten Plattformen beruecksichtigen. Termux ist nur fuer CLI/Backend-Tools relevant.
+- macOS: Swift/AppKit, Windows: C#/WPF, Termux/Android: CLI-Tools (TypeScript, Rust, Go).
+- Bei Cross-Platform-Features immer beide Desktop-Plattformen beruecksichtigen. Termux ist nur fuer CLI/Backend-Tools relevant.
 - Claude Code Konfiguration lebt in `~/proggs/claude-code-setup/`.
 - Bei Aenderungen an Regeln, Agents, Commands oder Hooks: Immer auch nach `~/proggs/claude-code-setup/` kopieren und pushen.
 - UI-Design: Modern, poliert, professionell — muss aussehen wie gekaufte Software aus dem Laden.
 - KEIN Python fuer GUIs oder Desktop-Apps. Python so weit wie moeglich vermeiden.
 - Wenn Python unvermeidbar ist (z.B. ML-Backend): IMMER vorher den Benutzer fragen und erklaeren ob der Python-Code sichtbar oder unsichtbar (Backend) ist. Nie stillschweigend Python einsetzen.
-- Bevorzugte Sprachen: Swift, C#, Kotlin, TypeScript, Rust, Go. In dieser Reihenfolge.
-- Android: Kotlin + Jetpack Compose + Material 3. MVVM + Clean Architecture. Gradle Wrapper (`./gradlew`).
-- Auslieferung: Eine einzelne .app (macOS), .exe (Windows) oder .apk/.aab (Android) — keine Installationsabhaengigkeiten fuer den Endnutzer.
+- Bevorzugte Sprachen: Swift, C#, TypeScript, Rust, Go. In dieser Reihenfolge.
+- Auslieferung: Eine einzelne .app (macOS) oder .exe (Windows) — keine Installationsabhaengigkeiten fuer den Endnutzer.
 
 ## Parallelisierung & Agenten-Schwarm (KRITISCH)
 
