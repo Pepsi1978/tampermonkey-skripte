@@ -95,37 +95,83 @@ gradle/
 
 ## Common Commands
 - Install APK to device: `adb install app-debug.apk`
-- View device logs: `adb logcat`
+- View device logs: `adb logcat -s "MyTag"`
 - List connected devices: `adb devices`
 - Clear app data: `adb shell pm clear com.example.app`
 - Screenshot: `adb shell screencap /sdcard/screenshot.png && adb pull /sdcard/screenshot.png`
-- Install SDK package: `sdkmanager "platforms;android-35"`
-- Update all SDK: `sdkmanager --update`
+- Screen record: `adb shell screenrecord /sdcard/demo.mp4 && adb pull /sdcard/demo.mp4`
+- Install SDK package: `sdkmanager "platforms;android-36"`
+- Mirror device: `scrcpy --serial emulator-5554`
+- AAB test install: `bundletool build-apks --bundle=app.aab --output=app.apks && bundletool install-apks --apks=app.apks`
 
-## UI Design
+## UI Design — Multi-Device (Phone, Foldable, Tablet)
 - Prefer Jetpack Compose over XML layouts (modern, declarative)
-- Follow Material Design 3 guidelines
+- Follow Material Design 3 Expressive guidelines (Android 16+)
 - Support dark mode (`isSystemInDarkTheme()`)
-- Test on multiple screen sizes
-- Use ConstraintLayout for complex XML layouts
-- App must look polished and professional — store-quality
+- **ALWAYS design for 3 form factors**: Compact (phone), Medium (foldable), Expanded (tablet)
+- Use `currentWindowAdaptiveInfo()` for WindowSizeClass — NEVER use `Configuration.orientation`
+- Use `NavigationSuiteScaffold` for auto-switching Bottom Nav ↔ Navigation Rail
+- Use `NavigableListDetailPaneScaffold` for list-detail patterns on tablets
+- App must look polished and professional — store-quality on ALL screen sizes
+
+### Key Adaptive Layout Dependencies (all in BOM)
+```kotlin
+// All managed by Compose BOM — no version needed
+implementation(platform("androidx.compose:compose-bom:2026.03.00"))
+implementation("androidx.compose.material3.adaptive:adaptive")
+implementation("androidx.compose.material3.adaptive:adaptive-layout")
+implementation("androidx.compose.material3.adaptive:adaptive-navigation")
+implementation("androidx.compose.material3:material3-window-size-class")
+implementation("androidx.window:window:1.5.1")  // Foldable posture APIs
+```
+
+### WindowSizeClass Breakpoints
+- **Compact** (< 600dp): Phone portrait, foldable folded → single pane, bottom nav
+- **Medium** (600–840dp): Foldable unfolded, small tablet → optional two pane, nav rail
+- **Expanded** (≥ 840dp): Tablet, desktop → two pane, persistent nav rail/drawer
+
+### Foldable Posture Detection
+- Use `WindowInfoTracker.getOrCreate(context).windowLayoutInfo(activity)`
+- Detect `FoldingFeature.State.HALF_OPENED` + `Orientation.HORIZONTAL` = Tabletop mode
+- Detect `FoldingFeature.State.HALF_OPENED` + `Orientation.VERTICAL` = Book mode
+- State in ViewModel — survives fold/unfold configuration changes
+
+### Accompanist — DEPRECATED (do not use)
+- Pager → use `HorizontalPager`/`VerticalPager` from foundation
+- SwipeRefresh → use `PullToRefreshBox` from Material3
+- Navigation Animation → native `NavHost` with AnimatedContent
+- Only `accompanist-permissions` still active (no official replacement yet)
 
 ## Performance
-- Use R8 (not ProGuard) for release builds — 10-20% faster builds, better Kotlin support
-- R8 is default since AGP 3.4+ — ProGuard rules files are still compatible
+- Use R8 (not ProGuard) for release builds — ProGuard rules files still compatible
+- R8 is default since AGP 3.4+, ProGuard `proguard-android.txt` deprecated in AGP 9.0
+- Use `getDefaultProguardFile("proguard-android-optimize.txt")` for R8
 - Avoid blocking the main thread — use coroutines
-- Use lazy loading for images (Coil or Glide)
-- Profile with Android Profiler or `adb shell dumpsys`
+- Use lazy loading for images (Coil 3.x preferred, or Glide)
+- Profile with `adb shell dumpsys meminfo com.example.app`
 
-## Emulator
-- AVD: `avdmanager create avd -n Pixel9_API35 -k "system-images;android-35;google_apis;x86_64" --device "pixel_9"`
-- Start: `emulator -avd Pixel9_API35`
-- List devices: `avdmanager list device`
-- Windows uses Hyper-V for acceleration (no HAXM needed)
+## Emulator & AVDs (macOS Apple Silicon)
+- **Phone**: `Pixel7_API35` (existing) — Compact layout testing
+- **Foldable**: `PixelFold_API36` — fold/unfold, hinge-angle sensor, Medium layout
+- **Tablet**: `PixelTablet_API36` — Expanded layout, two-pane, landscape
+- **Resizable**: `Resizable_API36` — quick switching between all form factors
+- Start: `emulator -avd PixelFold_API36`
+- Fold/unfold via telnet: `telnet localhost 5554` → `auth <token>` → `fold` / `unfold`
+- Hinge angle: `sensor set hinge-angle0 90:0:0` (tabletop mode)
+- All AVDs use ARM64 + Google Play system images (no x86 on Apple Silicon)
+
+## Screenshot Testing (no emulator needed)
+- **Roborazzi** (preferred): `./gradlew recordRoborazziDebug` / `./gradlew verifyRoborazziDebug`
+- **Paparazzi**: `./gradlew recordPaparazziDebug` / `./gradlew verifyPaparazziDebug`
+- Test multiple form factors via `@Config(qualifiers = "w600dp-h960dp")` for foldable, `"w800dp-h1280dp"` for tablet
 
 ## Security
-- Never hardcode API keys or secrets
-- Use EncryptedSharedPreferences for sensitive data
-- Enable network security config for HTTPS-only
-- Validate all user input
-- Use SafetyNet/Play Integrity for device attestation
+- Never hardcode API keys or secrets — use BuildConfig fields or local.properties
+- **EncryptedSharedPreferences is deprecated** — use DataStore + Tink encryption for new code
+- Use AndroidKeystore with `setIsStrongBoxBacked(true)` for hardware-backed encryption
+- Enable network security config (`res/xml/network_security_config.xml`) — `cleartextTrafficPermitted="false"`
+- Certificate pinning: only for high-risk apps, always set backup pin + expiration
+- Use Play Integrity API (SafetyNet is deprecated)
+- Use `dependencyGuard` plugin for supply chain protection
+- Use `org.owasp.dependencycheck` for CVE scanning
+- Static analysis: `detekt` with security rules + Android Lint security checks
