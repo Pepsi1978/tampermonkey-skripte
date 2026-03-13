@@ -9,9 +9,9 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v1.9 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v2.2 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
-║  Cross-Platform: macOS + Windows + Android (autom. Erkennung)║
+║  Cross-Platform: macOS + Windows + Termux/Android            ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Was passiert jetzt:                                         ║
@@ -66,8 +66,8 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 ## User Goals (never forget these)
 
 - **Zero friction**: No permission prompts, no manual steps, full automation
-- **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit), Windows (C#/WPF) and Android (Kotlin/Compose)
-- **Preferred languages**: Swift, C#, Kotlin, TypeScript, Rust, Go (in this order). No Python for visible things.
+- **Maximum quality**: Store-quality native apps for macOS (Swift/AppKit) and Windows (C#/WPF)
+- **Preferred languages**: Swift, C#, TypeScript, Rust, Go (in this order). No Python for visible things.
 - **Best model always**: Opus with high effort and extended thinking
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
@@ -78,33 +78,43 @@ Detect the platform at the start of EVERY run. This determines which commands to
 
 ```
 # Run this FIRST:
-uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash
+uname -s   # "Darwin" = macOS, "MINGW*"/"MSYS*"/"CYGWIN*" = Windows Git Bash, "Linux" = Linux/Termux
 # OR on Windows PowerShell:
 $env:OS    # "Windows_NT" = Windows
+# Termux detection:
+echo $PREFIX   # "/data/data/com.termux/files/usr" = Termux on Android
 ```
 
 **Platform-specific command mapping:**
 
-| Task | macOS | Windows (PowerShell) |
-|------|-------|---------------------|
-| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` |
-| Package manager upgrade | `brew upgrade` | `winget upgrade --all` |
-| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) |
-| Disk space | `df -h /` | `Get-PSDrive C` |
-| Rust updates | `rustup check` | `rustup check` (identical) |
-| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` |
-| Diff directories | `diff dir1/ dir2/` | `Compare-Object (ls dir1) (ls dir2)` |
-| Claude config path | `~/.claude/` | `~/.claude/` (same on both) |
-| Repo path | `~/proggs/` | `~/proggs/` (same on both) |
-| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) |
-| Linter: C# | `dotnet format` | `dotnet format` (identical) |
-| Linter: TypeScript | `biome check` | `biome check` (identical) |
-| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) |
-| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) |
-| Linter: Kotlin | `ktfmt --dry-run` + `detekt` | `ktfmt --dry-run` + `detekt` (identical) |
-| Android SDK | `sdkmanager --list_installed` | N/A (no Android SDK on Windows via CLI) |
+**Windows shell note:** When running from Git Bash, always use `pwsh` (PowerShell 7+) instead of `powershell` (Windows PowerShell 5.1). The old `powershell` often fails with complex commands when invoked from Git Bash. All PowerShell commands below assume `pwsh`.
 
-**Rule**: Always use the correct platform command. Never run `brew` on Windows or `winget` on macOS. If a tool is not available on the current platform, skip that check and note it in the report.
+| Task | macOS | Windows (pwsh) | Termux/Android |
+|------|-------|---------------------|----------------|
+| Package manager outdated | `brew outdated` | `winget upgrade --include-unknown` | `pkg upgrade -n` (dry-run) |
+| Package manager upgrade | `brew upgrade` | `winget upgrade --all` | `pkg upgrade -y` |
+| Shell config | `~/.zshrc` | `$PROFILE` (PowerShell profile) | `~/.bashrc` or `~/.zshrc` |
+| Disk space | `df -h /` | `Get-PSDrive C` | `df -h /data` |
+| Rust updates | `rustup check` | `rustup check` (identical) | `rustup check` (identical) |
+| .NET SDK check | `dotnet --list-sdks \| tail -1` | `dotnet --list-sdks \| Select-Object -Last 1` | N/A (no .NET on Termux) |
+| Diff directories | `diff dir1/ dir2/` | `diff dir1/ dir2/` (Git Bash) | `diff dir1/ dir2/` (identical) |
+| Claude config path | `~/.claude/` | `~/.claude/` (same on all) | `~/.claude/` (same on all) |
+| Repo path | `~/proggs/` | `~/proggs/` (same on all) | `~/proggs/` (same on all) |
+| Linter: Swift | `swiftlint` | N/A (no Swift on Windows) | N/A (no Swift on Android) |
+| Linter: C# | `dotnet format` | `dotnet format` (identical) | N/A (no .NET on Termux) |
+| Linter: TypeScript | `biome check` | `biome check` (identical) | `biome check` (identical) |
+| Linter: Rust | `cargo clippy` | `cargo clippy` (identical) | `cargo clippy` (identical) |
+| Linter: Go | `golangci-lint run` | `golangci-lint run` (identical) | `golangci-lint run` (identical) |
+
+**Termux-specific notes:**
+- Termux uses `pkg` as package manager (based on apt). Install with `pkg install <name>`.
+- No `sudo` on Termux — everything runs as user. No admin actions needed.
+- Storage access: `termux-setup-storage` must be run once to access shared storage (`~/storage/`).
+- Claude Code on Termux: Install via `npm install -g @anthropic-ai/claude-code`. Node.js required: `pkg install nodejs-lts`.
+- Available dev tools: Node.js, Rust (via rustup), Go, Git, Biome, CMake. No .NET or Swift.
+- Hooks: Use bash scripts (`.sh`), not PowerShell. Notifications via `termux-notification` (requires `termux-api` package).
+
+**Rule**: Always use the correct platform command. Never run `brew` on Windows, `winget` on macOS, or `pkg` outside Termux. If a tool is not available on the current platform, skip that check and note it in the report.
 
 ## The 3-Loop Process
 
@@ -147,18 +157,88 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 - **Rule completeness audit**: For each rule file in `~/.claude/rules/`, verify it documents at least: (1) a **format** command, (2) a **lint** command, (3) a **test** command. Use: `for f in ~/.claude/rules/*.md; do echo "=== $(basename $f) ==="; grep -ci "format\|lint\|test\|clippy\|audit" "$f"; done` — any file with 0 matches = flag for Phase 4 improvement. This prevents quality gaps between languages (e.g. Rust having all three while C# has none).
 
-- **Android development environment check** (only if ANDROID_HOME is set or Android tools are installed):
+- **Hook Functionality Check (CRITICAL)**: This is a comprehensive check of ALL configured hooks — not just existence, but actual functionality. Hooks are the automation backbone that runs when Claude Code starts, after file edits, and on notifications. Broken hooks cause silent failures, delays, and missing features the user expects.
+
+  **Step 1 — Existence**: For every hook command in `~/.claude/settings.json`, verify the referenced script/executable exists on disk. Resolve `$USERPROFILE` / `~` paths. Any missing file = flag for immediate fix in Phase 3.
+
+  **Step 2 — Syntax check**: For each `.ps1` hook (Windows): run `pwsh -Command "Get-Command -Syntax (Get-Content '<path>' -Raw)" 2>&1` or simply `pwsh -File '<path>' -WhatIf` to catch syntax errors without executing. For `.sh` hooks (macOS/Termux): `bash -n '<path>'` to check syntax.
+
+  **Step 3 — Dry-run test**: Execute each SessionStart hook manually and capture stdout:
+  - `powershell -ExecutionPolicy Bypass -File "$USERPROFILE/.claude/hooks/auto-sync.ps1"` (Windows)
+  - `bash ~/.claude/hooks/auto-sync.sh` (macOS)
+  Verify the output contains expected strings (e.g. "Auto-Sync:" for auto-sync, notification text for notify hooks). Empty output or error output = flag for fix.
+
+  **Step 4 — Plugin hooks**: Also check hooks provided by plugins (in `~/.claude/plugins/cache/*/hooks/hooks.json`). For each, verify the hook config is valid JSON and references existing scripts/commands.
+
+  **Step 5 — Report**: Create a hook health table:
   ```
-  echo "=== Android Environment ===" &&
-  java -version 2>&1 | head -1 &&
-  kotlin -version 2>&1 &&
-  gradle --version 2>&1 | head -2 &&
-  sdkmanager --list_installed 2>&1 | grep -E "build-tools|platforms|emulator|system-images" &&
-  avdmanager list avd 2>&1 | grep -E "Name:|Target:" &&
-  ktfmt --version 2>&1 &&
-  detekt --version 2>&1
+  | Hook              | Event        | Script existiert | Syntax OK | Output OK | Status |
+  |-------------------|--------------|------------------|-----------|-----------|--------|
+  | auto-sync.ps1     | SessionStart | ✓                | ✓         | ✓         | OK     |
+  | notify.ps1        | Notification | ✓                | ✓         | ✓         | OK     |
+  | auto-format.ps1   | PostToolUse  | ✓                | ✓         | (async)   | OK     |
   ```
-  Check for: outdated SDK packages (`sdkmanager --update` available?), missing AVDs, new API levels, Kotlin version vs latest stable. If ANDROID_HOME is not set but Kotlin/Gradle are installed → flag as incomplete Android setup.
+  Any hook with a problem gets detailed in the report with the exact error and a fix suggestion.
+
+- **Auto-format coverage check**: Compare the file extensions handled by the auto-format hook (`auto-format.sh` or `auto-format.ps1`) against the file extensions defined in `~/.claude/rules/*.md` path globs. Any extension in a rule file but missing from the auto-format hook = flag for Phase 4 improvement. This ensures every language with a rule also gets automatic formatting.
+
+- **Plugin Health Check**: Review all enabled plugins in `settings.json` for connection and usefulness issues. This check ensures no broken or useless plugins clutter the environment, while preserving all useful ones.
+
+  **Step 1 — MCP connection test**: For each plugin that provides an MCP server (has a `.mcp.json` in its cache directory), check the connection type:
+  - `type: "http"` or `type: "sse"` pointing to external URLs (linear.app, slack.com, gitlab.com, etc.) → check if the user has credentials/auth configured. If not, this plugin produces errors at startup.
+  - `type: "stdio"` with `command: "npx"` or similar → check if the command is available on the system.
+  - Plugins that need env vars (e.g. `$GREPTILE_API_KEY`, `$GITHUB_PERSONAL_ACCESS_TOKEN`) → check if those vars are set.
+
+  **Step 2 — Categorize plugins**:
+  - **Working**: Plugin loads, tools are available, no errors
+  - **Broken/Auth-missing**: Plugin needs external login/API key that isn't configured → candidate for removal
+  - **Missing dependency**: Plugin needs a tool not installed on this platform (e.g. PHP, uvx) → candidate for removal
+
+  **Step 3 — Suggest, NEVER auto-remove**: Present findings as a table to the user:
+  ```
+  | Plugin          | Status              | Empfehlung              | Grund                           |
+  |-----------------|---------------------|-------------------------|---------------------------------|
+  | github          | OK                  | Behalten                | Wird aktiv genutzt              |
+  | linear          | Auth fehlt          | Entfernen?              | Kein Konto, erzeugt Fehler      |
+  | context7        | OK                  | Behalten                | Dokumentations-Suche            |
+  ```
+  Also suggest useful plugins that could be ADDED (new official plugins, popular community plugins that match the user's workflow). Always explain what each suggested plugin does and why it would help.
+
+  **CRITICAL**: NEVER automatically remove or add plugins. Always present suggestions and let the user decide. Programming language plugins (LSPs, linters, formatters) are NEVER candidates for removal — the user wants all languages supported.
+
+- **Programming Language Readiness Check (CRITICAL)**: The user's system must support ALL programming languages (except Python) at all times. Claude Code should always be ready to work in any language the user might need. Python is explicitly unwanted — skip it entirely.
+
+  **Required language support — verify ALL of these every run:**
+
+  | Language | Compiler/Runtime | Linter/Formatter | LSP Plugin | Rule File |
+  |----------|-----------------|------------------|------------|-----------|
+  | Swift | `swift --version` (macOS only) | swiftlint | swift-lsp | swift.md |
+  | C# | `dotnet --version` | csharpier, `dotnet format` | csharp-lsp | csharp.md |
+  | TypeScript/JS | `node --version`, `bun --version` | biome | typescript-lsp | typescript.md |
+  | Rust | `rustc --version`, `cargo --version` | clippy, rustfmt | rust-analyzer-lsp | rust.md |
+  | Go | `go version` | golangci-lint (if installed) | gopls-lsp | go.md |
+  | Kotlin | `kotlin -version` or `kotlinc -version` | ktfmt, detekt | kotlin-lsp | kotlin.md |
+  | C/C++ | `cl.exe` (Windows) / `clang --version` (macOS) | clang-format | clangd-lsp | (check if exists) |
+  | Java | `java --version`, `javac --version` | (via IDE) | jdtls-lsp | (check if exists) |
+  | Ruby | `ruby --version` | (if installed) | ruby-lsp | (check if exists) |
+  | Lua | `lua -v` (if installed) | (if installed) | lua-lsp | (check if exists) |
+  | PHP | `php --version` (if installed) | (if installed) | php-lsp | (check if exists) |
+
+  **For each language, check 4 things:**
+  1. **Runtime/Compiler** available on PATH? If missing → flag for installation in Phase 3 (except Python)
+  2. **LSP Plugin** enabled in settings.json? If missing → flag for activation
+  3. **Linter/Formatter** installed? If missing and one exists → suggest installation
+  4. **Rule file** in `~/.claude/rules/`? If missing → create one in Phase 4 with at minimum: format command, lint command, test command, file patterns
+
+  **Platform awareness**: Some languages are platform-specific:
+  - Swift: macOS only (skip on Windows/Termux)
+  - C#/.NET: macOS + Windows (skip on Termux)
+  - Kotlin/Java: All platforms (via JDK)
+  - The rest: All platforms
+
+  **Report as a readiness table** showing green/yellow/red per language per check. Any yellow/red items get fixed in Phase 3 (install) or Phase 4 (create rules/improve config).
+
+  **Python exception**: Do NOT check for Python, do NOT suggest installing Python, do NOT create Python rules. The user explicitly does not want Python on the system. If Python is found installed, do NOT suggest removing it (it may be a system dependency), but never suggest using it for new projects.
 
 **Collect all findings into a status report before proceeding.**
 
@@ -166,22 +246,27 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 
 ### Phase 2: RESEARCH (Discover New Things)
 
-**IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchführt, Seiten lädt, filtert und zusammenfasst.
+**Smart Research Rule — nicht jede Schleife braucht volle Recherche:**
 
-**Standard-Recherche (IMMER diese 6 Agents gleichzeitig spawnen):**
+**Loop 1: Keine Researcher — nur allgemeine Verbesserungspruefung.**
+Loop 1 konzentriert sich auf Phase 1 (CHECK) und Phase 4 (IMPROVE). Die lokale Umgebung wird gruendlich geprueft und sofort verbessert. Keine Web-Recherche noetig — die eigenen Checks liefern genug Material.
+
+**Loop 2: IMMER 5 parallele `researcher` Agents (Sonnet) spawnen** — in einer einzigen Nachricht, alle gleichzeitig. Researcher-Agents liefern ~5x bessere Ergebnisse als direkte WebSearch-Aufrufe, weil jeder Agent mehrere Suchen durchfuehrt, Seiten laedt, filtert und zusammenfasst.
+
 ```
-→ Spawn 6 researcher agents simultaneously:
+→ Spawn 5 researcher agents simultaneously:
   Researcher 1: "Claude Code changelog latest version features + speed/performance"
   Researcher 2: "superpowers marketplace + official plugins new [current month+year]"
   Researcher 3: "Claude Code agent teams + parallelization + hooks/automation best practices"
   Researcher 4: "Latest versions: Node.js, Bun, Deno, Go, .NET SDK, Swift, Xcode, Rust, Biome, golangci-lint"
   Researcher 5: "Security vulnerabilities in installed tools + Claude Code security updates"
-  Researcher 6: "Android development: latest API level, Jetpack Compose version, AGP version, Kotlin version, Material 3 updates, Google Play targetSdk requirements, new Android SDK build-tools"
 ```
-**Note on Researcher 6**: Only spawn if Android tools are installed (ANDROID_HOME set). Skip if no Android environment exists. This researcher is critical because Google Play enforces targetSdk deadlines — missing an update can get apps removed from the store.
 
-**Fallback — nur wenn researcher Agents nicht verfügbar sind:**
-Direkte parallele WebSearch-Aufrufe für die gleichen 6 Themen (skip Android if not installed).
+**Loop 3: Gezielte Recherche nur bei Bedarf.**
+Nur Researcher spawnen fuer Themen, bei denen Loop 2 offene Fragen oder neue Leads gefunden hat. Wenn Loop 2 alles abgedeckt hat → Recherche in Loop 3 ueberspringen und stattdessen auf Verifikation und Feinschliff fokussieren.
+
+**Fallback — nur wenn researcher Agents nicht verfuegbar sind:**
+Direkte parallele WebSearch-Aufrufe fuer die gleichen 5 Themen.
 
 **Important**: Only suggest installing things that align with the user's goals. Don't suggest Python tools or frameworks unless they're invisible backend components.
 
@@ -194,18 +279,16 @@ Based on findings from CHECK and RESEARCH:
 - `rustup update` — Rust updates (same on both platforms)
 - `dotnet workload update` — .NET workloads (same on both platforms)
 
-**Android SDK updates (only if ANDROID_HOME is set):**
-- `sdkmanager --update` — update all installed SDK packages
-- Check if a newer `build-tools` or `platforms;android-XX` version is available and install it
-- Update `~/.claude/rules/android.md` if targetSdk or compileSdk should change
-- Update `~/.zshrc` PATH if build-tools version changed (e.g. 35.0.0 → 36.0.0)
-
 **Platform-independent updates:**
 - Update plugins if new versions exist
 - Fix any settings that have drifted from optimal
 - Update rule files if language versions changed
 - Update memory file if information is outdated
 - Install any new plugins or tools discovered in RESEARCH phase
+
+**PROTECTED SETTINGS (NEVER change these, even if changelogs suggest otherwise):**
+- `effortLevel`: MUST stay `"high"`. The user pays for the Max Plan but wants to conserve quota. NEVER reduce to `"medium"` or lower. If a researcher agent or changelog reports effort level changes, note it in the report but do NOT reduce below `"high"`.
+- `CLAUDE_CODE_EFFORT_LEVEL`: MUST stay `"high"` in the env block. Same reasoning as above.
 
 **Always explain what you're updating and why before doing it.**
 
@@ -220,8 +303,6 @@ This is the creative phase. Think about:
 - Can build/test/deploy workflows be streamlined?
 - Are there new cross-compilation targets worth adding?
 - Can the quality loop (build → test → review → improve) be made more automatic?
-
-**Cross-platform pattern check**: Verify the "Bei Cross-Platform-Feature" pattern in CLAUDE.md lists ALL active platforms. Compare the platforms mentioned in the pattern against the platforms in the "Cross-Platform-Entwicklung" section. If a platform exists in the section but not in the pattern (e.g. Android is listed as a platform but not in the parallel-agent pattern), flag it and add the missing platform. This prevents new platforms from being forgotten in the parallelization strategy.
 
 **Implement at least one concrete improvement per loop, even if small.**
 
@@ -253,7 +334,10 @@ Beispiel:
 
 **Transparenz-Regel**: Keine stille Änderung. Jede Datei, jede Einstellung, jeder Befehl der geändert wird, muss im Report erscheinen.
 
-**Sofort-Sync-Regel**: Nach JEDER Schleife, die Dateien ändert, sofort alle geänderten Dateien nach `~/proggs/claude-code-setup/` kopieren. Das ist nur ein `cp`-Befehl pro geänderter Datei — kostet fast nichts, verhindert aber Backup-Drift. So ist das Backup auch aktuell, wenn die Session unerwartet endet (Context-Limit, Netzwerkfehler, Abbruch).
+**Aggressive-Sync-Regel**: Nach JEDER Phase (nicht nur nach jeder Schleife), die Dateien aendert, sofort committen und pushen. Besonders wichtig nach:
+- Phase 3 (UPDATE) — Updates sind angewandt, muessen sofort gesichert werden
+- Phase 4 (IMPROVE) — Verbesserungen sind gemacht, muessen sofort gesichert werden
+Lieber 3 kleine Commits als 1 grosser, der verloren geht. Context-Limits, Netzwerkfehler oder Session-Abbrueche koennen jederzeit passieren — was gepusht ist, ist sicher.
 
 ## After All 3 Loops: Phase 6 — META-IMPROVE (Self-Improvement des Skills)
 
@@ -276,9 +360,9 @@ Count the lines of this skill file:
 wc -l ~/.claude/commands/self-improve.md
 ```
 
-- If **under 500 lines**: Improvements can be suggested freely
-- If **500-600 lines**: Warn the user that the limit is approaching
-- If **600+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
+- If **under 800 lines**: Improvements can be suggested freely
+- If **800-1000 lines**: Warn the user that the limit is approaching
+- If **1000+ lines**: STOP. Report to the user that the limit is reached. Ask how to proceed (compress existing content? split into sub-files? remove low-value sections?)
 
 ### Step 3: Present Suggestions (NEVER auto-apply!)
 
@@ -309,7 +393,7 @@ prevent errors, or improve quality? Relate it back to the user's goals.
 ...
 
 ### Skill-Status
-- Aktuelle Zeilenzahl: [N]/600
+- Aktuelle Zeilenzahl: [N]/1000
 - Letzte Meta-Verbesserung: [Datum oder "erste"]
 
 Soll ich diese Aenderungen umsetzen? (Ja/Nein/Teilweise)
@@ -368,11 +452,11 @@ Give a final comprehensive summary:
 - NEVER create new GitHub repositories. ALL files belong in `Pepsi1978/proggs`. Always push to the existing repo, never create separate repos.
 - NEVER modify this skill file without explicit user approval (Meta-Improve is suggest-only)
 - NEVER delete files, folders or repos without asking the user first (cleanup is suggest-only too)
-- NEVER downgrade the model from Opus or reduce effort level
+- NEVER downgrade the model from Opus or reduce effort level below `"high"`. `effortLevel` MUST stay `"high"` — this is a user-protected setting (see Phase 3 PROTECTED SETTINGS)
 - NEVER install Python tools for visible/GUI purposes
 - NEVER remove existing working configurations without replacement
 - **Before modifying this skill**: Always commit the current version as a backup first, so it can be restored if needed
-- This skill file has a **600-line limit**. If approaching, warn the user.
+- This skill file has a **1000-line limit**. If approaching, warn the user.
 - **Transparency**: Every single change (file, setting, config) must be documented in the report. No silent changes.
 - **Security for ALL external code** (skills, plugins, agents, MCP servers, hooks, commands, npm packages, GitHub Actions, etc.):
   1. Check the source — only use trusted, well-known sources (official Anthropic, superpowers-marketplace, established GitHub repos)
@@ -386,5 +470,18 @@ Give a final comprehensive summary:
 - Use Agent Teams to parallelize research and updates wherever possible
 - Keep the memory file under 200 lines (it gets truncated otherwise)
 
+## Multi-Device Safety
+
+The user runs Claude Code on multiple devices (macOS, Windows, Termux/Android). Self-improve may run on different devices simultaneously or in close succession, which can cause Git conflicts.
+
+- **Before pushing**: ALWAYS run `git pull --rebase` first to check for remote changes from other devices.
+- **If a rebase conflict occurs**:
+  1. Show the conflict to the user
+  2. Prefer the LOCAL version (this device's changes) for config files that were just modified
+  3. For CLAUDE.md: merge both changes carefully, keeping content from both devices
+  4. After resolving: `git rebase --continue`
+- **Commit messages** should note the platform: e.g. `#NNN - Self-improve sync (Windows)` or `(Termux)` or `(macOS)`
+- **Warning**: If `git pull --rebase` shows changes to the same files you just modified, warn the user that another device may be running self-improve simultaneously.
+
 ---
-<!-- Skill Version: v1.9 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~400/600 | Changes: v1.9 — Android support: Phase 1 Android SDK check (java/kotlin/gradle/sdkmanager/avdmanager/ktfmt/detekt), Phase 2 6th researcher for Android dev updates (API levels, Compose, AGP, targetSdk), Phase 3 Android SDK updater (sdkmanager --update, build-tools, platforms), Phase 4 cross-platform pattern check (verifies all platforms in parallel patterns), Kotlin/Android in platform mapping table and user goals -->
+<!-- Skill Version: v2.2 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~490/1000 | Changes: v2.2 — (1) Hook Functionality Check: 5-step deep test of all hooks (existence, syntax, dry-run, plugin hooks, report table), (2) Plugin Health Check: MCP connection test, auth detection, suggest-only removal/addition with table, (3) Programming Language Readiness Check: verify ALL languages except Python have runtime, LSP, linter, rules — install missing ones automatically -->
