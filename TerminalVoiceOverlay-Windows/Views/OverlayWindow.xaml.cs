@@ -169,10 +169,45 @@ namespace TerminalVoiceOverlay.Views
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == Win32.WM_MOUSEACTIVATE)
+            switch (msg)
             {
-                handled = true;
-                return (IntPtr)Win32.MA_NOACTIVATE;
+                case Win32.WM_MOUSEACTIVATE:
+                    handled = true;
+                    return (IntPtr)Win32.MA_NOACTIVATE;
+
+                case Win32.WM_RBUTTONDOWN:
+                    if (Win32.GetCursorPos(out var startPt))
+                    {
+                        _isDragging = true;
+                        _dragStartCursorX = startPt.X;
+                        _dragStartCursorY = startPt.Y;
+                        _dragStartLeft = Left;
+                        _dragStartTop = Top;
+                        var src = PresentationSource.FromVisual(this);
+                        _dragDpiX = src?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
+                        _dragDpiY = src?.CompositionTarget?.TransformToDevice.M22 ?? 1.0;
+                        Win32.SetCapture(hwnd);
+                    }
+                    handled = true;
+                    break;
+
+                case Win32.WM_MOUSEMOVE:
+                    if (_isDragging && Win32.GetCursorPos(out var movePt))
+                    {
+                        Left = _dragStartLeft + (movePt.X - _dragStartCursorX) / _dragDpiX;
+                        Top  = _dragStartTop  + (movePt.Y - _dragStartCursorY) / _dragDpiY;
+                    }
+                    break;
+
+                case Win32.WM_RBUTTONUP:
+                    if (_isDragging)
+                    {
+                        _isDragging = false;
+                        _manuallyPositioned = true;
+                        Win32.ReleaseCapture();
+                        handled = true;
+                    }
+                    break;
             }
             return IntPtr.Zero;
         }
@@ -206,55 +241,6 @@ namespace TerminalVoiceOverlay.Views
                 Hide();
                 Console.WriteLine("Overlay: hidden (terminal inactive)");
             }
-        }
-
-        // ── Right-click drag handlers ──
-
-        private void Border_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!Win32.GetCursorPos(out var pt)) return;
-            _isDragging = true;
-            _dragStartCursorX = pt.X;
-            _dragStartCursorY = pt.Y;
-            _dragStartLeft = Left;
-            _dragStartTop = Top;
-            var source = PresentationSource.FromVisual(this);
-            _dragDpiX = source?.CompositionTarget?.TransformToDevice.M11 ?? 1.0;
-            _dragDpiY = source?.CompositionTarget?.TransformToDevice.M22 ?? 1.0;
-            ((UIElement)sender).CaptureMouse();
-            ((FrameworkElement)sender).Cursor = Cursors.SizeAll;
-            e.Handled = true;
-        }
-
-        private void Border_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!_isDragging) return;
-            if (e.RightButton != MouseButtonState.Pressed)
-            {
-                StopDrag(sender);
-                return;
-            }
-
-            if (!Win32.GetCursorPos(out var pt)) return;
-            Left = _dragStartLeft + (pt.X - _dragStartCursorX) / _dragDpiX;
-            Top  = _dragStartTop  + (pt.Y - _dragStartCursorY) / _dragDpiY;
-        }
-
-        private void Border_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_isDragging)
-            {
-                StopDrag(sender);
-                e.Handled = true;
-            }
-        }
-
-        private void StopDrag(object sender)
-        {
-            _isDragging = false;
-            _manuallyPositioned = true;
-            ((FrameworkElement)sender).Cursor = null;
-            ((UIElement)sender).ReleaseMouseCapture();
         }
 
         // ── Button handlers ──

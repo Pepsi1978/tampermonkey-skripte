@@ -178,6 +178,18 @@ namespace ClaudeVoiceOverlay.NativeMethods
         public const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
         public const uint MOUSEEVENTF_LEFTUP = 0x0004;
 
+        // ── Mouse Capture ──
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetCapture(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        // ── Mouse Messages ──
+        public const int WM_RBUTTONDOWN = 0x0204;
+        public const int WM_MOUSEMOVE   = 0x0200;
+        public const int WM_RBUTTONUP   = 0x0205;
+
         // ── DPI ──
         [DllImport("shcore.dll")]
         public static extern int GetDpiForMonitor(IntPtr hmonitor, int dpiType, out uint dpiX, out uint dpiY);

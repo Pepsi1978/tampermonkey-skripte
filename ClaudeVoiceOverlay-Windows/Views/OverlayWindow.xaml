@@ -66,10 +66,7 @@
     <!-- Panel background: pill shape, semi-transparent dark -->
     <Border CornerRadius="36"
             Background="#B31E1E1E"
-            Width="72" Height="336"
-            MouseRightButtonDown="Border_MouseRightButtonDown"
-            MouseMove="Border_MouseMove"
-            MouseRightButtonUp="Border_MouseRightButtonUp">
+            Width="72" Height="336">
         <StackPanel VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Margin="0,16">
