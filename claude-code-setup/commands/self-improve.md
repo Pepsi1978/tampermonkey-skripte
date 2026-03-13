@@ -72,6 +72,18 @@ The user is not a programmer. Explain everything in German, in simple terms, so 
 - **Parallel execution**: Use Agent Teams and subagents wherever possible — BUT always in the main conversation, never hidden
 - **Self-explanatory**: Always explain what you did and why, in German
 
+## Focus Mode (Optional)
+
+If the user provides a focus topic (e.g., `/self-improve Android APK`, `verbessere dich mit Fokus Rust`), adapt ALL phases to prioritize that topic while still running standard checks:
+
+- **Without focus** (e.g., `/self-improve`, `verbessere deine Umgebung`): Run all standard checks equally — no topic gets special treatment.
+- **With focus** (e.g., `verbessere deine Umgebung mit Fokus Android`): Run standard checks AND deep-dive into the focus topic:
+  - **Phase 1 CHECK**: Standard checks run first (quick), then deep focus-specific checks (e.g., Android: JDK, SDK, Kotlin, Gradle, ADB, Emulator, NDK, signing, AVD)
+  - **Phase 2 RESEARCH**: Keep 2 standard researcher topics (Claude Code updates + security), replace 3 with focus-specific research
+  - **Phase 3 UPDATE**: Install/update focus-related tools FIRST, then general updates
+  - **Phase 4 IMPROVE**: Create/update rule files, agents, and configs for the focus area
+- **Focus does NOT skip anything** — standard checks still run, they're just not the main event. The focus topic gets the most time, the deepest checks, and the most researcher agents.
+
 ## Platform Detection (FIRST STEP — before anything else)
 
 Detect the platform at the start of EVERY run. This determines which commands to use throughout all phases.
@@ -88,6 +100,19 @@ echo $PREFIX   # "/data/data/com.termux/files/usr" = Termux on Android
 **Platform-specific command mapping:**
 
 **Windows shell note:** When running from Git Bash, always use `pwsh` (PowerShell 7+) instead of `powershell` (Windows PowerShell 5.1). The old `powershell` often fails with complex commands when invoked from Git Bash. All PowerShell commands below assume `pwsh`.
+
+**Windows PowerShell escaping workaround (CRITICAL for Git Bash):** Git Bash mangles PowerShell syntax — `$_`, `[math]::Round()`, `foreach ($x in $y)`, and method calls all break. Rule:
+- **Simple one-liners** (no variables, no loops): `pwsh -Command "Write-Host 'hello'"` is OK
+- **Anything complex**: Write a temp `.ps1` file and execute it:
+  ```bash
+  cat > /tmp/check.ps1 << 'PSEOF'
+  # Full PowerShell code here — no escaping issues
+  $drive = Get-PSDrive C
+  Write-Host ("Free: {0:N1} GB" -f ($drive.Free/1GB))
+  PSEOF
+  pwsh -File /tmp/check.ps1
+  ```
+  This avoids ALL Git Bash escaping issues with `$`, `[`, `]`, `::`, and `{}`.
 
 | Task | macOS | Windows (pwsh) | Termux/Android |
 |------|-------|---------------------|----------------|
@@ -239,6 +264,32 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
   **Report as a readiness table** showing green/yellow/red per language per check. Any yellow/red items get fixed in Phase 3 (install) or Phase 4 (create rules/improve config).
 
   **Python exception**: Do NOT check for Python, do NOT suggest installing Python, do NOT create Python rules. The user explicitly does not want Python on the system. If Python is found installed, do NOT suggest removing it (it may be a system dependency), but never suggest using it for new projects.
+
+- **Mobile Development Readiness Check**: The user's system must be ready to build Android APKs at all times. This check runs on every self-improve invocation (not just focus runs).
+
+  **Required mobile dev components — verify ALL on every run:**
+
+  | Component | Check Command | Required For | Platform |
+  |-----------|---------------|--------------|----------|
+  | JDK 21+ | `java --version` | All Android dev | All |
+  | Android SDK | `sdkmanager --list_installed` (in `$ANDROID_HOME`) | Native Android | All |
+  | Kotlin | `kotlinc -version` | Native Kotlin Android | All |
+  | Gradle | `gradle --version` | Native Android builds | All |
+  | ADB | `adb --version` | Device debugging | All |
+  | Android Emulator | `avdmanager list avd` | Testing without device | All |
+  | NDK | Check `$ANDROID_HOME/ndk/` exists | Rust/Go/C++ Android | All |
+  | cargo-ndk | `cargo ndk --version` | Rust → Android | All |
+  | gomobile | Check `~/go/bin/gomobile` exists | Go → Android | All |
+  | .NET Android | `dotnet workload list \| grep android` | C# → Android | macOS+Windows |
+
+  **Environment variables** (must be set, not empty):
+  - `JAVA_HOME` → JDK installation path
+  - `ANDROID_HOME` → Android SDK path
+  - Both must be on PATH (JDK/bin, SDK/cmdline-tools, SDK/platform-tools, SDK/emulator)
+
+  **If no AVD exists** → create a default one: `avdmanager create avd -n TestPhone_API35 -k "system-images;android-35;google_apis;x86_64" --device "medium_phone"`
+
+  **Report as a readiness table** (green/yellow/red). Any missing component gets installed in Phase 3.
 
 **Collect all findings into a status report before proceeding.**
 
@@ -484,4 +535,4 @@ The user runs Claude Code on multiple devices (macOS, Windows, Termux/Android). 
 - **Warning**: If `git pull --rebase` shows changes to the same files you just modified, warn the user that another device may be running self-improve simultaneously.
 
 ---
-<!-- Skill Version: v2.2 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~490/1000 | Changes: v2.2 — (1) Hook Functionality Check: 5-step deep test of all hooks (existence, syntax, dry-run, plugin hooks, report table), (2) Plugin Health Check: MCP connection test, auth detection, suggest-only removal/addition with table, (3) Programming Language Readiness Check: verify ALL languages except Python have runtime, LSP, linter, rules — install missing ones automatically -->
+<!-- Skill Version: v2.3 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~540/1000 | Changes: v2.3 — (1) PowerShell-from-Git-Bash workaround: document temp .ps1 file pattern to avoid escaping issues, (2) Focus Mode: optional topic-based deep-dive while keeping standard checks — triggered by user providing a focus topic, (3) Mobile SDK Readiness Check: verify JDK, Android SDK, Kotlin, Gradle, ADB, Emulator, NDK, cargo-ndk, gomobile on every run -->
