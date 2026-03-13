@@ -9,7 +9,7 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v2.2 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v2.4 — Deine Entwicklungsumgebung       ║
 ║  automatisch pruefen, aktualisieren und verbessern           ║
 ║  Cross-Platform: macOS + Windows + Termux/Android            ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -157,9 +157,13 @@ Run a comprehensive audit. **Fire as many parallel tool calls as possible in a s
 **Platform-specific checks (use the correct one):**
 - macOS: `brew outdated` / Windows: `winget upgrade --include-unknown`
 - `rustup check` — Rust toolchain updates? (same on both platforms)
-- macOS: `dotnet --list-sdks | tail -1` / Windows: `dotnet --list-sdks | Select-Object -Last 1`
+- `dotnet --list-sdks` — list ALL installed .NET SDK versions (compare exact patch versions, e.g. 10.0.200 vs 10.0.201)
 - macOS: Check `~/.zshrc` — verify PATH and aliases / Windows: Check `$PROFILE` — verify PowerShell profile
 - macOS: `df -h /` / Windows: `Get-PSDrive C`
+- **OS Patch Verification (CRITICAL — verify BEFORE reporting anything as missing):**
+  - Windows: `Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 5` — shows actually installed patches with dates. Use a temp .ps1 file for this.
+  - macOS: `softwareupdate --list` — shows pending macOS updates
+  - This check MUST run in the FIRST parallel block of Phase 1, not later. Any security claims in Phase 2 (RESEARCH) must be validated against this local data. NEVER report a patch as "missing" based on web research alone — always cross-check with actual system state first.
 
 **Platform-independent checks (same on both):**
 - Read `~/.claude/settings.json` — verify all settings are optimal
@@ -320,6 +324,16 @@ Nur Researcher spawnen fuer Themen, bei denen Loop 2 offene Fragen oder neue Lea
 Direkte parallele WebSearch-Aufrufe fuer die gleichen 5 Themen.
 
 **Important**: Only suggest installing things that align with the user's goals. Don't suggest Python tools or frameworks unless they're invisible backend components.
+
+**CRITICAL — Researcher Result Validation (after all researchers return):**
+After all researcher agents return their findings, ALWAYS cross-reference their claims against the **actual local system state** collected in Phase 1. This prevents false alarms:
+
+1. **Version claims**: If a researcher says "Tool X has version Y.Z available", compare against the exact version from Phase 1 `--version` checks. Only flag as "update needed" if the local version is actually lower.
+2. **Security patch claims**: If a researcher says "KB/CVE not patched", verify against the `Get-HotFix` / `softwareupdate` data from Phase 1. NEVER report a patch as missing if Phase 1 shows it installed.
+3. **"Not installed" claims**: If a researcher says a tool or update is missing, verify it wasn't already installed between the research and now (e.g. background updates, winget running in parallel).
+4. **Memory-based claims**: If a researcher references data from MEMORY.md (e.g. "Pending Admin Actions"), verify that the memory entry is still accurate. Memory can be outdated — system state is the source of truth.
+
+**Rule**: System state > Memory entries > Web research. When in doubt, re-run the check command rather than trusting cached data.
 
 ### Phase 3: UPDATE (Apply Updates)
 
@@ -535,4 +549,4 @@ The user runs Claude Code on multiple devices (macOS, Windows, Termux/Android). 
 - **Warning**: If `git pull --rebase` shows changes to the same files you just modified, warn the user that another device may be running self-improve simultaneously.
 
 ---
-<!-- Skill Version: v2.3 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~540/1000 | Changes: v2.3 — (1) PowerShell-from-Git-Bash workaround: document temp .ps1 file pattern to avoid escaping issues, (2) Focus Mode: optional topic-based deep-dive while keeping standard checks — triggered by user providing a focus topic, (3) Mobile SDK Readiness Check: verify JDK, Android SDK, Kotlin, Gradle, ADB, Emulator, NDK, cargo-ndk, gomobile on every run -->
+<!-- Skill Version: v2.4 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~560/1000 | Changes: v2.4 — (1) OS Patch Verification in Phase 1: Get-HotFix/softwareupdate in first parallel check block to prevent false security alarms, (2) Researcher Result Validation: mandatory cross-reference of researcher claims against local system state before reporting, (3) Precise .NET SDK version check: compare exact patch versions instead of just major version. Lesson learned: never report patches as missing based on web research alone — always verify against actual system state first. -->
