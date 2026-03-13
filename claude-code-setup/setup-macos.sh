@@ -16,7 +16,9 @@ cp "$SCRIPT_DIR/rules/"*.md ~/.claude/rules/
 cp "$SCRIPT_DIR/agents/"*.md ~/.claude/agents/
 cp "$SCRIPT_DIR/commands/"*.md ~/.claude/commands/
 cp "$SCRIPT_DIR/hooks/auto-format.sh" ~/.claude/hooks/
+cp "$SCRIPT_DIR/hooks/auto-sync.sh" ~/.claude/hooks/
 chmod +x ~/.claude/hooks/auto-format.sh
+chmod +x ~/.claude/hooks/auto-sync.sh
 cp "$SCRIPT_DIR/CLAUDE.md" ~/CLAUDE.md
 cp "$SCRIPT_DIR/.gitignore_global" ~/.gitignore_global
 

@@ -20,6 +20,7 @@ Copy-Item "$ScriptDir\agents\*.md" "$ClaudeDir\agents\" -Force
 Copy-Item "$ScriptDir\commands\*.md" "$ClaudeDir\commands\" -Force
 Copy-Item "$ScriptDir\hooks\auto-format.ps1" "$ClaudeDir\hooks\" -Force
 Copy-Item "$ScriptDir\hooks\notify.ps1" "$ClaudeDir\hooks\" -Force
+Copy-Item "$ScriptDir\hooks\auto-sync.ps1" "$ClaudeDir\hooks\" -Force
 Copy-Item "$ScriptDir\CLAUDE.md" "$env:USERPROFILE\CLAUDE.md" -Force
 Copy-Item "$ScriptDir\.gitignore_global" "$env:USERPROFILE\.gitignore_global" -Force
 

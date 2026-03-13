@@ -148,6 +148,17 @@
   "effortLevel": "high",
   "enableAllProjectMcpServers": true,
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/auto-sync.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [

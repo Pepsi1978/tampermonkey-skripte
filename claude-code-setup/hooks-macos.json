@@ -1,6 +1,17 @@
 {
   "_comment": "Add this 'hooks' section to settings.json on macOS. Add Parry hook only after installing parry.",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/auto-sync.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [

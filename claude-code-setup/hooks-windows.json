@@ -1,6 +1,17 @@
 {
   "_comment": "Add this 'hooks' section to settings.json on Windows. Add Parry hook only after installing parry.exe.",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -File %USERPROFILE%\\.claude\\hooks\\auto-sync.ps1",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [
