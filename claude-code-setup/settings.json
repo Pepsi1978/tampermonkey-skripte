@@ -85,34 +85,7 @@
       "mcp__plugin_playwright_playwright__browser_take_screenshot",
       "mcp__plugin_playwright_playwright__browser_type",
       "mcp__plugin_playwright_playwright__browser_wait_for",
-      "mcp__plugin_serena_serena__activate_project",
-      "mcp__plugin_serena_serena__check_onboarding_performed",
-      "mcp__plugin_serena_serena__create_text_file",
-      "mcp__plugin_serena_serena__delete_memory",
-      "mcp__plugin_serena_serena__edit_memory",
-      "mcp__plugin_serena_serena__execute_shell_command",
-      "mcp__plugin_serena_serena__find_file",
-      "mcp__plugin_serena_serena__find_referencing_symbols",
-      "mcp__plugin_serena_serena__find_symbol",
-      "mcp__plugin_serena_serena__get_current_config",
-      "mcp__plugin_serena_serena__get_symbols_overview",
-      "mcp__plugin_serena_serena__initial_instructions",
-      "mcp__plugin_serena_serena__insert_after_symbol",
-      "mcp__plugin_serena_serena__insert_before_symbol",
-      "mcp__plugin_serena_serena__list_dir",
-      "mcp__plugin_serena_serena__list_memories",
-      "mcp__plugin_serena_serena__onboarding",
-      "mcp__plugin_serena_serena__prepare_for_new_conversation",
-      "mcp__plugin_serena_serena__read_file",
-      "mcp__plugin_serena_serena__read_memory",
-      "mcp__plugin_serena_serena__rename_memory",
-      "mcp__plugin_serena_serena__rename_symbol",
-      "mcp__plugin_serena_serena__replace_content",
-      "mcp__plugin_serena_serena__replace_symbol_body",
-      "mcp__plugin_serena_serena__search_for_pattern",
-      "mcp__plugin_serena_serena__switch_modes",
-      "mcp__plugin_serena_serena__write_memory",
-      "mcp__plugin_context7_context7__query-docs",
+"mcp__plugin_context7_context7__query-docs",
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_episodic-memory_episodic-memory__read",
       "mcp__plugin_episodic-memory_episodic-memory__search",
@@ -145,7 +118,6 @@
     ]
   },
   "model": "claude-opus-4-6",
-  "effortLevel": "high",
   "enableAllProjectMcpServers": true,
   "hooks": {
     "SessionStart": [
@@ -153,7 +125,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/auto-sync.sh",
+            "command": "powershell -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/auto-sync.ps1\"",
             "timeout": 30
           }
         ]
@@ -164,7 +136,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File %USERPROFILE%\\.claude\\hooks\\notify.ps1",
+            "command": "powershell -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/notify.ps1\"",
             "timeout": 5
           }
         ]
@@ -176,12 +148,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File %USERPROFILE%\\.claude\\hooks\\auto-format.ps1",
+            "command": "powershell -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/auto-format.ps1\"",
             "timeout": 5,
             "async": true
           }
         ]
       }
+    ]
+  },
+  "worktree": {
+    "symlinkDirectories": [
+      "node_modules",
+      ".cache"
     ]
   },
   "enabledPlugins": {
@@ -217,24 +195,9 @@
     "plugin-dev@claude-plugins-official": true,
     "agent-sdk-dev@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true,
-    "serena@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "jdtls-lsp@claude-plugins-official": true,
-    "kotlin-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "firebase@claude-plugins-official": true,
-    "supabase@claude-plugins-official": true,
-    "stripe@claude-plugins-official": true,
-    "asana@claude-plugins-official": true,
-    "gitlab@claude-plugins-official": true,
-    "greptile@claude-plugins-official": true,
-    "laravel-boost@claude-plugins-official": true
+    "kotlin-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "superpowers-marketplace": {
@@ -245,11 +208,9 @@
       "autoUpdate": true
     }
   },
-  "worktree": {
-    "symlinkDirectories": ["node_modules", ".cache"]
-  },
+  "language": "de",
   "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true,
-  "language": "de"
+  "skipDangerousModePermissionPrompt": true
 }
