@@ -3,20 +3,35 @@ paths:
   - "**/*.kt"
   - "**/*.kts"
   - "**/build.gradle.kts"
-  - "**/settings.gradle.kts"
 ---
 
-# Kotlin Development Rules
+# Kotlin Rules
 
-- Use Kotlin 2.3+, prefer KSP over KAPT for annotation processing
-- Follow Kotlin coding conventions (kotlinlang.org/docs/coding-conventions.html)
-- Use data classes for DTOs, sealed classes/interfaces for state modeling
-- Prefer `val` over `var`, immutable collections over mutable
-- Use coroutines + Flow for async operations, never RxJava in new code
-- Use scope functions idiomatically: `let`, `apply`, `also`, `run`, `with`
-- Null safety: avoid `!!` operator, use `?.let {}`, `?:`, or `requireNotNull()`
-- Format code: `ktfmt --kotlinlang-style` (installed via Homebrew)
-- Lint code: `detekt` (installed via Homebrew, configurable via detekt.yml)
-- Build with Gradle Wrapper: `./gradlew build` (never use global `gradle` for project builds)
-- Run tests: `./gradlew test` (unit) or `./gradlew connectedAndroidTest` (instrumented)
-- Use Gradle Kotlin DSL (build.gradle.kts) over Groovy DSL
+## Format
+- Use `ktfmt` or IDE auto-format (Google style)
+- 4-space indentation, no tabs
+- Max line length: 120 characters
+
+## Lint
+- Use `detekt` for static analysis if configured in project
+- Use Android Lint for Android-specific issues: `./gradlew lint`
+- Use `kotlinc -Werror` to treat warnings as errors in CI
+
+## Test
+- Use `./gradlew test` for unit tests
+- Use `./gradlew connectedAndroidTest` for instrumented tests
+- Prefer JUnit 5 for pure Kotlin, JUnit 4 for Android (AndroidJUnit4)
+
+## Build
+- Use Gradle Kotlin DSL (`build.gradle.kts`) over Groovy DSL
+- Target JVM 21 for non-Android, JVM 11+ for Android
+- Use version catalogs (`libs.versions.toml`) for dependency management
+
+## Conventions
+- Prefer `data class` for DTOs and models
+- Use `sealed class`/`sealed interface` for state hierarchies
+- Prefer `val` over `var`, immutability by default
+- Use coroutines for async work, not callbacks
+- Use `Flow` for reactive streams
+- File naming: PascalCase matching the primary class name
+- Package naming: lowercase, no underscores
