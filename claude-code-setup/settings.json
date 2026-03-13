@@ -183,7 +183,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "RESPOND WITH ONLY A RAW JSON OBJECT. NO markdown, NO explanation, NO text before or after.\n\nCheck: Were protected settings in ~/.claude/settings.json modified this turn? Protected: effortLevel=high, CLAUDE_CODE_EFFORT_LEVEL=high, CLAUDE_CODE_SUBAGENT_MODEL=sonnet.\n\nIf nothing was changed (most common case): {\"decision\":true}\nIf a protected setting was modified: {\"decision\":false,\"reason\":\"Modified: [which]\"}",
+            "prompt": "RESPOND WITH ONLY A RAW JSON OBJECT. NO markdown, NO explanation, NO text before or after.\n\nCheck the conversation: Were any protected settings in ~/.claude/settings.json modified this turn?\n\nProtected settings and their required values:\n1. effortLevel must be 'high'\n2. env.CLAUDE_CODE_EFFORT_LEVEL must be 'high'\n3. env.CLAUDE_CODE_SUBAGENT_MODEL must be 'sonnet'\n4. model must be 'claude-opus-4-6'\n\nIf NONE were changed (most common case), respond EXACTLY: {\"decision\":true}\nIf ANY were modified, respond EXACTLY: {\"decision\":false,\"reason\":\"Modified: [which setting and to what value]\"}",
             "timeout": 15
           }
         ]
