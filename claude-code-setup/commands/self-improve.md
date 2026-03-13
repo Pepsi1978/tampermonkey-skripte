@@ -155,16 +155,47 @@ Researcher 5 — Security:
 Check: (1) CVEs in specific versions, (2) Windows-specific issues (Git Bash, NTLM, credential helpers),
 (3) Claude Code security advisories, (4) npm/cargo/NuGet supply chain alerts.
 IMPORTANT: Spawn sub-agents for each tool category (runtime CVEs, Windows CVEs, Claude Code CVEs).
+IMPORTANT (.NET versioning): .NET uses TWO version schemes — SDK version (e.g. 10.0.201) and Runtime
+version (e.g. 10.0.4). Security advisories cite Runtime versions. SDK 10.0.1xx = Runtime 10.0.x (1st band),
+SDK 10.0.2xx = Runtime 10.0.x (2nd band). Always map CVE 'fixed in' Runtime versions to installed SDK versions
+before reporting. Do NOT flag as vulnerable if the installed SDK already contains the patched Runtime.
 Return ONLY confirmed vulnerabilities — do not speculate."
 ```
 
-**After all researchers return — MANDATORY validation:**
+**After all researchers return — MANDATORY cross-validation using this table:**
 
-Cross-reference ALL researcher claims against the env-checker scan results:
-1. **Version claims**: Compare against exact versions from scan. Only flag if local is actually lower.
-2. **Security claims**: Verify against OS patch data from scan. NEVER report as "missing" if scan shows it installed.
-3. **"Not installed" claims**: Verify against scan data.
-4. **Rule**: System state > Memory > Web research. When in doubt, re-run the check.
+Show this table to the user with ALL researcher claims validated against scan data:
+```markdown
+### Kreuzvalidierung Researcher ↔ Scan
+
+| Behauptung (Researcher) | Quelle | Scan-Daten (Realitaet) | Stimmt? | Aktion |
+|--------------------------|--------|------------------------|---------|--------|
+| [tool] version X available | R4 | Installiert: Y | ✅/⚠️/❌ | Update/Skip/Pruefen |
+| [CVE] affects [tool] | R5 | Version: Z, Patch: ... | ✅/⚠️/❌ | Patched/Update/Warn |
+| [plugin] not installed | R2 | Plugin-Liste: ... | ✅/⚠️/❌ | Install/Skip |
+```
+
+**Validation rules (priority order):**
+1. **System state** (env-checker scan) > **Memory** > **Web research** (researchers). When in doubt, re-run the check.
+2. **Version claims**: Compare against exact versions from scan. Only flag if local version is actually LOWER than latest.
+3. **Security claims**: Verify against OS patch data from scan. NEVER report as "missing" if scan shows it installed/patched.
+4. **"Not installed" claims**: Verify against scan data and plugin list.
+5. **Contradictions between researchers**: Trust the researcher with the more specific source (official release page > blog post > generic search result).
+
+**For each plugin recommended by researchers — MANDATORY security review:**
+
+Spawn a `researcher` (Sonnet) agent with this template:
+```
+"Perform a security review of the Claude Code plugin '[owner/repo]' before installation.
+Check: (1) GitHub repo metrics — stars, forks, last commit, open issues, maintainer identity,
+(2) official marketplace listing — is it in anthropics/claude-plugins-official or superpowers-marketplace?,
+(3) security advisories or CVEs specific to this plugin,
+(4) code analysis — check plugin.json, hooks, scripts for obfuscated code, suspicious URLs, Base64 payloads,
+data exfiltration, or prompt injection attempts,
+(5) dependency analysis — are npm/cargo/pip dependencies from trusted sources?
+Return: SAFE / CAUTION / UNSAFE + reasoning + red flags + recommendation (Install/Skip)."
+```
+Only install plugins rated SAFE or CAUTION-with-no-red-flags. Show the assessment to the user.
 
 **Apply updates based on validated findings:**
 - Platform package manager updates (winget/brew/pkg)
@@ -172,7 +203,7 @@ Cross-reference ALL researcher claims against the env-checker scan results:
 - `dotnet workload update` if needed
 - Plugin updates if new versions exist
 - Fix any settings drift
-- Install tools/plugins discovered by researchers (with security review)
+- Install tools/plugins discovered by researchers (after passing security review above)
 
 **Commit after updates if any files changed:**
 ```bash
@@ -351,4 +382,4 @@ Always end with:
 - **Commit messages**: `#NNN - Description` format, auto-numbered from existing commits.
 
 ---
-<!-- Skill Version: v3.0 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~320/1000 | Changes: v3.0 — Complete rewrite: (1) 3-tier model replaces 3 identical loops, (2) env-checker agent for Phase 1, (3) fixed researcher templates with sub-agent spawning, (4) volatile/stable check distinction with thoroughness modifier, (5) commit per tier, (6) Stop-Hook quality gate, (7) template-based reports, (8) in-file focus templates with creativity aspect. All in one file per user preference. -->
+<!-- Skill Version: v3.1 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~380/1000 | Changes: v3.1 — Meta-improve: (1) .NET SDK/Runtime version mapping in R5 security template, (2) formalized plugin security review template with SAFE/CAUTION/UNSAFE rating, (3) structured cross-validation table template with priority rules. -->

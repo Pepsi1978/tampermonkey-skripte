@@ -282,7 +282,8 @@
     "docs@context-engineering-kit": true,
     "tech-stack@context-engineering-kit": true,
     "mcp@context-engineering-kit": true,
-    "fpf@context-engineering-kit": true
+    "fpf@context-engineering-kit": true,
+    "claude-code-lsps@boostvolt": true
   },
   "extraKnownMarketplaces": {
     "superpowers-marketplace": {
@@ -320,6 +321,12 @@
       "source": {
         "source": "github",
         "repo": "NeoLabHQ/context-engineering-kit"
+      }
+    },
+    "boostvolt": {
+      "source": {
+        "source": "github",
+        "repo": "boostvolt/claude-code-lsps"
       }
     }
   },
