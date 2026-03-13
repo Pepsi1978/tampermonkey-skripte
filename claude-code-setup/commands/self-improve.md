@@ -134,7 +134,11 @@ Researcher 2 — Plugins & Marketplace:
 Search: (1) new official plugins (anthropics/claude-plugins-official), (2) superpowers-marketplace updates,
 (3) popular community plugins for Swift/C#/TypeScript/Rust/Go/Kotlin developers.
 IMPORTANT: Spawn sub-agents to check GitHub repos of promising plugins (stars, last commit, security).
-Currently installed: [list from scan]. Only suggest NEW plugins not already installed."
+IMPORTANT (installed plugins verification): Before recommending ANY plugin, verify it is NOT in this
+complete list of already-installed plugins from settings.json enabledPlugins:
+[PASTE the full list of plugin keys from enabledPlugins here, one per line].
+Only suggest plugins whose exact name does NOT appear in this list. Previous runs had false positives
+where researchers recommended already-installed LSP plugins (gopls, jdtls, csharp) — avoid this."
 
 Researcher 3 — Parallelization & Automation:
 "Research Claude Code agent teams, parallelization patterns, and automation best practices as of [today].
@@ -148,6 +152,10 @@ Researcher 4 — Tool Versions:
 Kotlin, Gradle, GitHub CLI, Git for Windows, CMake, JDK.
 User's current versions: [from scan].
 IMPORTANT: Spawn a sub-agent to double-check each version against official release pages.
+IMPORTANT (version precision): The user's memory may store abbreviated versions (e.g., 'fd 10.4' when
+the actual install is 10.4.2). Always compare against the EXACT versions from the env-checker scan output,
+not against memory values. If exact scan data is unavailable, mark the version as 'unverified' instead of
+flagging for update.
 Return a comparison table: tool | current | latest | update needed?"
 
 Researcher 5 — Security:
@@ -382,4 +390,4 @@ Always end with:
 - **Commit messages**: `#NNN - Description` format, auto-numbered from existing commits.
 
 ---
-<!-- Skill Version: v3.1 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~380/1000 | Changes: v3.1 — Meta-improve: (1) .NET SDK/Runtime version mapping in R5 security template, (2) formalized plugin security review template with SAFE/CAUTION/UNSAFE rating, (3) structured cross-validation table template with priority rules. -->
+<!-- Skill Version: v3.2 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~395/1000 | Changes: v3.2 — Meta-improve: (1) R4 version precision warning to prevent false-positive update flags from abbreviated memory versions, (2) R2 full installed-plugin list verification to prevent false-positive plugin recommendations, (3) MEMORY.md documents known-but-unused v2.1.75 features to avoid redundant rediscovery. -->
