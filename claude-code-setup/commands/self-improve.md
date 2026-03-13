@@ -3,35 +3,38 @@ name: self-improve
 description: Systematic self-improvement of the Claude Code development environment. ONLY use when the user explicitly says "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", or "update alles". NEVER run this proactively or automatically — only on manual user request.
 ---
 
-# Self-Improve v3.0 — Systematic Environment Optimization
+# Self-Improve v4.0 — Systematic + Creative Environment Optimization
 
 **Before doing ANYTHING, show this overview in German:**
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v3.0 — Deine Entwicklungsumgebung       ║
-║  automatisch pruefen, aktualisieren und verbessern           ║
+║  Self-Improve Skill v4.0 — Deine Entwicklungsumgebung       ║
+║  pruefen, aktualisieren, KREATIV ERFORSCHEN                  ║
 ║  Cross-Platform: macOS + Windows + Termux/Android            ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
-║  Neues 3-Stufen-Modell (schneller als vorher):               ║
+║  4-Stufen-Modell (NEU: Kreatives Forschen!):                 ║
 ║                                                              ║
 ║  Stufe 1: SCAN — Umgebung pruefen                            ║
-║    → Delegiert an env-checker Agent (parallel-faehig)        ║
-║    → Quick-Mode oder Full-Mode je nach Auftrag               ║
+║    → env-checker Agent (inkl. Android/Mobile Deep-Scan)      ║
 ║                                                              ║
 ║  Stufe 2: DEEP-DIVE — Recherche + Updates                    ║
-║    → 5 parallele Researcher mit Sub-Agents                   ║
-║    → Startet PARALLEL zu Stufe 1                             ║
-║    → Ergebnisse werden kreuzvalidiert                        ║
+║    → 5 parallele Researcher (PARALLEL zu Stufe 1)            ║
+║    → Ergebnisse kreuzvalidiert                               ║
 ║                                                              ║
 ║  Stufe 3: IMPROVE — Verbessern + Berichten                   ║
-║    → Kreative Verbesserungen anwenden                        ║
-║    → Strukturierter Report mit Vorlagen                      ║
-║    → Meta-Improve: Diesen Skill selbst verbessern            ║
+║    → Verbesserungen anwenden + Report + Meta-Improve         ║
+║                                                              ║
+║  Stufe 4: CREATIVE RESEARCH — Kreativ forschen (NEU!)        ║
+║    → Multi-Perspektiven-Analyse (6 Denkweisen)               ║
+║    → Kombinatorisches Denken (Was + Was = Neu?)              ║
+║    → Kontraeres Denken (Was bremst uns?)                     ║
+║    → Umgebungs-Archaeologie (Was ist untergenutzt?)          ║
+║    → Tool-Erfindung (Luecken erkennen → selbst bauen)       ║
+║    → Zukunfts-Radar (Was kommt, was vorbereiten?)            ║
 ║                                                              ║
 ║  Danach: Alles nach GitHub pushen (Pepsi1978/proggs)         ║
-║  Sicherheit: Stop-Hook prueft geschuetzte Settings           ║
 ║  Du kannst jeden Schritt live mitlesen.                      ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
@@ -103,11 +106,21 @@ pwsh -File /tmp/check.ps1
 
 ```
 → Spawn env-checker agent:
-  Agent(env-checker, prompt: "Run environment health check. Mode: [quick|full]. Platform: [detected]. Date: [today]. Return full structured report.")
+  Agent(env-checker, prompt: "Run environment health check. Mode: [quick|full]. Platform: [detected]. Date: [today]. Return full structured report.
+
+  ANDROID DEEP-SCAN (always run in full mode, or when focus=Android):
+  - Run `sdkmanager --list_installed` and compare against latest available (build-tools, platforms, system-images, ndk, cmake)
+  - Run `avdmanager list avd` and verify AVDs exist for: phone, foldable, tablet, resizable
+  - Check ANDROID_HOME and ANDROID_NDK_HOME are set and exported in shell config
+  - Check PATH includes build-tools (latest version), platform-tools, emulator, cmdline-tools
+  - Verify Kotlin version matches Compose Compiler compatibility
+  - Check for cargo-ndk if Rust Android targets are installed
+  - Verify scrcpy and bundletool are available
+  - Report any missing components with exact sdkmanager install commands.")
 ```
 
 - **Standard mode** → `mode: quick` (volatile checks only: versions, patches, disk, updates, hooks, drift)
-- **Thorough mode** → `mode: full` (volatile + stable: settings, agent tiers, language readiness, rule completeness, mobile dev, git config)
+- **Thorough mode** → `mode: full` (volatile + stable: settings, agent tiers, language readiness, rule completeness, mobile dev incl. Android deep-scan, git config)
 
 The env-checker returns a structured report. Show the summary table to the user and note any items flagged for action.
 
@@ -345,6 +358,122 @@ When the user provides a focus topic, adapt ALL tiers to prioritize it. Focus do
 
 **General creativity rule for ALL focus topics**: After completing the checklist-based checks, spend time exploring BEYOND the checklist. Ask: "What would a world-class setup for [topic] look like? What am I missing? What new tools or patterns exist that aren't on any checklist?" This creative exploration is what makes focus mode valuable — not just deeper checks, but discovering things you didn't know to check for.
 
+## Stufe 4: CREATIVE RESEARCH (The Explorer's Mind)
+
+**This is NOT optional.** Stufe 4 runs after Stufen 1-3, or in parallel with Stufe 3 if time permits. It is the soul of self-improvement — everything before this was maintenance. This is where real intelligence happens.
+
+**Core principle: You are a RESEARCHER, not a CHECKER.** A checker follows lists. A researcher asks questions nobody thought to ask, explores paths nobody walked, and creates things that didn't exist before.
+
+### 4A: The Six Thinking Lenses
+
+For EACH self-improve run, pick at least 3 of these 6 lenses and spend genuine thought on each. Do NOT template these — the whole point is that each run produces DIFFERENT insights.
+
+**Lens 1 — The Archaeologist** (What's buried in my own environment?)
+- Explore tools, binaries, configs, and capabilities that are INSTALLED but NEVER USED
+- Run `ls ~/.claude/`, explore plugin capabilities you've never invoked
+- Check `brew list` for forgotten tools. Read man pages of obscure installed commands
+- Ask: "What can I do that I don't know I can do?"
+- Look at hook events, agent features, MCP capabilities that exist but aren't wired up
+- Dig into your own skills list — which skills have you NEVER triggered? Why? Could they help?
+
+**Lens 2 — The Combinatorist** (What happens when I mix X and Y?)
+- Take two unrelated tools/features and ask: "What if these worked together?"
+- Examples: "What if a SessionStart hook + episodic memory = automatic context loading?"
+- "What if cargo-ndk + a PostToolUse hook = auto-format Rust after every edit?"
+- "What if scrcpy + screenshot testing = live visual regression on real device?"
+- The best innovations come from unexpected combinations. Force yourself to try at least 2 wild combinations per run.
+
+**Lens 3 — The Contrarian** (What "best practice" is actually holding me back?)
+- Challenge every assumption: Is sequential compilation really necessary? Is the file structure optimal? Do I need ALL these plugins? Are there skills that ADD complexity instead of removing it?
+- Ask: "If I started from zero today, would I set things up this way?"
+- Ask: "What do I do because 'everyone does it' that has no actual benefit?"
+- Ask: "What rule in CLAUDE.md is outdated or counterproductive?"
+- Sometimes removing is more creative than adding.
+
+**Lens 4 — The Time Traveler** (What will I need in 6 months that I should prepare now?)
+- Research emerging tools, frameworks, APIs that are in alpha/beta today
+- Ask: "What's the next big shift in my stack?" (e.g., new Kotlin features, new Android APIs, new Claude Code capabilities)
+- Prepare infrastructure before it's needed — install experimental tools, set up test environments
+- Look at GitHub trending repos in your languages. What patterns are emerging?
+- Read changelogs of tools you use — what features shipped that you haven't adopted?
+
+**Lens 5 — The Cross-Pollinator** (What works in ecosystem A that ecosystem B is missing?)
+- Take a pattern from Swift and ask: "Why doesn't my Kotlin setup have this?"
+- Take a Rust tool and ask: "Can this concept improve my TypeScript workflow?"
+- Look at how OTHER people set up Claude Code (GitHub repos, blog posts, community discussions)
+- Steal ideas from completely different domains — game dev, embedded systems, data science
+- The best improvements come from outside your usual context.
+
+**Lens 6 — The Toolsmith** (What tool SHOULD exist but DOESN'T?)
+- Identify repetitive friction points in your daily workflow
+- Ask: "What 50-line script would save me 10 minutes every day?"
+- Ask: "What hook/skill/agent would prevent the last 3 mistakes I made?"
+- Design and BUILD the tool — a new hook, skill, CLI script, or agent
+- This is where self-improvement becomes self-CREATION
+- Examples: A hook that warns about outdated dependencies. A skill that auto-generates project scaffolds. A script that benchmarks build times across projects.
+
+### 4B: The Creative Research Process
+
+**Step 1: Question Generation** (divergent thinking)
+- Generate at least 5 genuinely novel questions about your environment
+- These must NOT be answerable by any checklist — they should surprise even you
+- Write them down and show them to the user before investigating
+
+**Step 2: Exploration** (follow the thread)
+- Pick the 2-3 most promising questions
+- Investigate them with NO predetermined outcome — you might find nothing, and that's OK
+- Use web research, tool exploration, file system archaeology, anything
+- Document what you discover, including dead ends (they're data too)
+
+**Step 3: Synthesis** (connect the dots)
+- What patterns emerge across your discoveries?
+- How do they connect to the user's actual workflow and goals?
+- What's the ONE thing that would make the biggest difference?
+
+**Step 4: Creation** (build something new)
+- If you found a genuine improvement: BUILD IT. Don't just report it.
+- Create a new skill, hook, script, agent, or configuration
+- If the improvement is too large for this session: write a detailed spec and save it to memory
+
+### 4C: Anti-Patterns (What Creative Research is NOT)
+
+- ❌ Running the same checks as Stufe 1 but calling them "creative"
+- ❌ Listing features from documentation without trying them
+- ❌ Suggesting improvements you've suggested before (check memory!)
+- ❌ Following a template for "creativity" (the irony should be obvious)
+- ❌ Recommending tools without explaining WHY they solve a real problem
+- ❌ Adding complexity for the sake of looking thorough
+- ✅ Finding something GENUINELY unexpected
+- ✅ Building something that didn't exist 10 minutes ago
+- ✅ Challenging an assumption that seemed untouchable
+- ✅ Connecting two ideas that were never connected before
+
+### 4D: Creative Research Report
+
+After Stufe 4, add this section to the main report:
+
+```markdown
+### Kreatives Forschen (Stufe 4)
+
+**Verwendete Linsen:** [which 3+ lenses were used]
+
+**Gestellte Fragen:**
+1. [genuinely novel question]
+2. [genuinely novel question]
+3. [...]
+
+**Entdeckungen:**
+| Entdeckung | Linse | Umsetzbar? | Umgesetzt? |
+|------------|-------|-----------|-----------|
+[one row per discovery]
+
+**Neu erschaffen:**
+[What was actually built — new skill, hook, script, config, or "nothing this run"]
+
+**Sackgassen (auch wertvoll):**
+[What was explored but led nowhere — and what was learned from it]
+```
+
 ## Sync to GitHub
 
 After all tiers are complete, sync to `Pepsi1978/proggs`:
@@ -390,4 +519,4 @@ Always end with:
 - **Commit messages**: `#NNN - Description` format, auto-numbered from existing commits.
 
 ---
-<!-- Skill Version: v3.2 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~395/1000 | Changes: v3.2 — Meta-improve: (1) R4 version precision warning to prevent false-positive update flags from abbreviated memory versions, (2) R2 full installed-plugin list verification to prevent false-positive plugin recommendations, (3) MEMORY.md documents known-but-unused v2.1.75 features to avoid redundant rediscovery. -->
+<!-- Skill Version: v4.0 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~520/1000 | Changes: v4.0 — Major: (1) NEW Stufe 4 Creative Research with 6 Thinking Lenses (Archaeologist, Combinatorist, Contrarian, Time Traveler, Cross-Pollinator, Toolsmith), (2) Anti-patterns for fake creativity, (3) Creative Research Report template, (4) env-checker Android deep-scan, (5) Renamed to v4.0 reflecting paradigm shift from maintenance to creative self-evolution. -->
