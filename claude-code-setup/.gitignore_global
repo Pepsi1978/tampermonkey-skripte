@@ -50,6 +50,16 @@ target/
 # Go
 vendor/
 
+# Android / Gradle
+.gradle/
+local.properties
+*.apk
+*.aab
+*.keystore
+*.jks
+keystore.properties
+google-services.json
+
 # Dependencies
 node_modules/
 .packages/

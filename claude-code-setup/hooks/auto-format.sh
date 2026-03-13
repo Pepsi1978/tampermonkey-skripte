@@ -34,5 +34,11 @@ case "${file_path##*.}" in
       clang-format -i "$file_path" 2>/dev/null
     fi
     ;;
+  kt|kts)
+    # Format Kotlin with ktfmt (kotlinlang style)
+    if command -v ktfmt &>/dev/null; then
+      ktfmt --kotlinlang-style "$file_path" 2>/dev/null
+    fi
+    ;;
 esac
 exit 0

@@ -39,6 +39,7 @@ For single-target projects, run tests directly without sub-agents.
 Test frameworks by language:
 - **Swift**: XCTest or swift-testing
 - **C#**: xUnit or NUnit
+- **Kotlin/Android**: JUnit 5 + MockK + Compose Testing (ComposeTestRule)
 - **TypeScript**: Vitest or Bun test
 - **Rust**: Built-in `#[test]` + cargo test
 - **Go**: Built-in `testing` package
