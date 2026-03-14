@@ -202,6 +202,7 @@ Show this table to the user with ALL researcher claims validated against scan da
 3. **Security claims**: Verify against OS patch data from scan. NEVER report as "missing" if scan shows it installed/patched.
 4. **"Not installed" claims**: Verify against scan data and plugin list.
 5. **Contradictions between researchers**: Trust the researcher with the more specific source (official release page > blog post > generic search result).
+6. **Schema validation (CRITICAL)**: Before implementing ANY new hook event, setting, or feature discovered by researchers, verify it exists in the actual JSON schema. Try a dry-run edit — if the schema validator rejects it, the feature is NOT available regardless of what documentation says. Documentation can be ahead of the schema; the schema is truth.
 
 **For each plugin recommended by researchers — MANDATORY security review:**
 
@@ -358,120 +359,126 @@ When the user provides a focus topic, adapt ALL tiers to prioritize it. Focus do
 
 **General creativity rule for ALL focus topics**: After completing the checklist-based checks, spend time exploring BEYOND the checklist. Ask: "What would a world-class setup for [topic] look like? What am I missing? What new tools or patterns exist that aren't on any checklist?" This creative exploration is what makes focus mode valuable — not just deeper checks, but discovering things you didn't know to check for.
 
-## Stufe 4: CREATIVE RESEARCH (The Explorer's Mind)
+## Stufe 4: CREATIVE RESEARCH (Build, Don't Just Report)
 
-**This is NOT optional.** Stufe 4 runs after Stufen 1-3, or in parallel with Stufe 3 if time permits. It is the soul of self-improvement — everything before this was maintenance. This is where real intelligence happens.
+**This is NOT optional.** Stufe 4 is the SOUL of self-improvement. Everything before was maintenance. This is where the environment becomes SUPERIOR to a standard Claude Code setup.
 
-**Core principle: You are a RESEARCHER, not a CHECKER.** A checker follows lists. A researcher asks questions nobody thought to ask, explores paths nobody walked, and creates things that didn't exist before.
+**Core principle: DISCOVER → EXPLAIN → BUILD → TEACH.** Every discovery MUST produce either a concrete improvement OR a detailed proposal the user can approve. "I found X exists" without "here's what it means, whether you should use it, and how" is FORBIDDEN.
 
-### 4A: The Six Thinking Lenses
+### The Non-Programmer Rule (CRITICAL)
 
-For EACH self-improve run, pick at least 3 of these 6 lenses and spend genuine thought on each. Do NOT template these — the whole point is that each run produces DIFFERENT insights.
+The user is NOT a programmer. For EVERY discovery and every feature:
+1. **Explain what it IS** in plain German — no jargon without translation
+2. **Explain HOW it works** with a simple analogy (e.g., "Agent Teams is like having a team of coworkers who talk to each other, instead of messengers who only talk to you")
+3. **Explain WHEN to use it** — concrete scenarios from the user's actual workflow
+4. **Explain HOW to trigger it** — does the user need to say something specific? Does it happen automatically? Does it need a setting?
+5. **Make a RECOMMENDATION** — should this be used? Yes/No/Sometimes, with reasoning
+
+### 4A: The Six Thinking Lenses (use ALL 6, not just 3)
+
+For EACH self-improve run, use ALL 6 lenses. Spend genuine thought on each. Each lens MUST produce at least one ACTIONABLE outcome — either something built or a concrete proposal.
 
 **Lens 1 — The Archaeologist** (What's buried in my own environment?)
-- Explore tools, binaries, configs, and capabilities that are INSTALLED but NEVER USED
-- Run `ls ~/.claude/`, explore plugin capabilities you've never invoked
-- Check `brew list` for forgotten tools. Read man pages of obscure installed commands
-- Ask: "What can I do that I don't know I can do?"
-- Look at hook events, agent features, MCP capabilities that exist but aren't wired up
-- Dig into your own skills list — which skills have you NEVER triggered? Why? Could they help?
+- Explore installed-but-unused tools, configs, capabilities
+- For EACH discovery: explain what it does, whether it's useful, and propose/build integration
+- Example output: "Du hast X installiert aber nie benutzt. Das ist ein Tool das [...]. Ich schlage vor, es so einzusetzen: [...]. Soll ich das einrichten?"
 
 **Lens 2 — The Combinatorist** (What happens when I mix X and Y?)
-- Take two unrelated tools/features and ask: "What if these worked together?"
-- Examples: "What if a SessionStart hook + episodic memory = automatic context loading?"
-- "What if cargo-ndk + a PostToolUse hook = auto-format Rust after every edit?"
-- "What if scrcpy + screenshot testing = live visual regression on real device?"
-- The best innovations come from unexpected combinations. Force yourself to try at least 2 wild combinations per run.
+- Combine two features into something new. Then BUILD or spec it.
+- Don't just say "what if X+Y" — actually TRY it or write the implementation
 
-**Lens 3 — The Contrarian** (What "best practice" is actually holding me back?)
-- Challenge every assumption: Is sequential compilation really necessary? Is the file structure optimal? Do I need ALL these plugins? Are there skills that ADD complexity instead of removing it?
-- Ask: "If I started from zero today, would I set things up this way?"
-- Ask: "What do I do because 'everyone does it' that has no actual benefit?"
-- Ask: "What rule in CLAUDE.md is outdated or counterproductive?"
-- Sometimes removing is more creative than adding.
+**Lens 3 — The Contrarian** (What's holding me back?)
+- Challenge assumptions. If something should be removed: explain WHY and propose the removal
+- If a rule is outdated: draft the replacement
 
-**Lens 4 — The Time Traveler** (What will I need in 6 months that I should prepare now?)
-- Research emerging tools, frameworks, APIs that are in alpha/beta today
-- Ask: "What's the next big shift in my stack?" (e.g., new Kotlin features, new Android APIs, new Claude Code capabilities)
-- Prepare infrastructure before it's needed — install experimental tools, set up test environments
-- Look at GitHub trending repos in your languages. What patterns are emerging?
-- Read changelogs of tools you use — what features shipped that you haven't adopted?
+**Lens 4 — The Time Traveler** (What's coming that I should prepare for?)
+- Research upcoming features/tools. For each: explain what it is, when it arrives, and what prep work to do NOW
 
-**Lens 5 — The Cross-Pollinator** (What works in ecosystem A that ecosystem B is missing?)
-- Take a pattern from Swift and ask: "Why doesn't my Kotlin setup have this?"
-- Take a Rust tool and ask: "Can this concept improve my TypeScript workflow?"
-- Look at how OTHER people set up Claude Code (GitHub repos, blog posts, community discussions)
-- Steal ideas from completely different domains — game dev, embedded systems, data science
-- The best improvements come from outside your usual context.
+**Lens 5 — The Cross-Pollinator** (Steal ideas from other ecosystems)
+- Look at how OTHER people set up Claude Code (GitHub repos, blog posts)
+- Adapt patterns from one language/framework to another
+- For each idea: explain the source, the adaptation, and build or spec it
 
-**Lens 6 — The Toolsmith** (What tool SHOULD exist but DOESN'T?)
-- Identify repetitive friction points in your daily workflow
-- Ask: "What 50-line script would save me 10 minutes every day?"
-- Ask: "What hook/skill/agent would prevent the last 3 mistakes I made?"
-- Design and BUILD the tool — a new hook, skill, CLI script, or agent
-- This is where self-improvement becomes self-CREATION
-- Examples: A hook that warns about outdated dependencies. A skill that auto-generates project scaffolds. A script that benchmarks build times across projects.
+**Lens 6 — The Toolsmith** (Build what's missing)
+- THIS IS THE MOST IMPORTANT LENS. Identify friction → design a solution → BUILD IT
+- Create at least ONE new hook, skill, script, agent, or configuration per run
+- The goal: make THIS Claude Code setup do things no other setup can do
 
-### 4B: The Creative Research Process
+### 4B: Knowledge Integration (NEW — build intelligence over time)
 
-**Step 1: Question Generation** (divergent thinking)
-- Generate at least 5 genuinely novel questions about your environment
-- These must NOT be answerable by any checklist — they should surprise even you
-- Write them down and show them to the user before investigating
+**After Stufe 2 researchers return, create/update a knowledge snapshot:**
 
-**Step 2: Exploration** (follow the thread)
-- Pick the 2-3 most promising questions
-- Investigate them with NO predetermined outcome — you might find nothing, and that's OK
-- Use web research, tool exploration, file system archaeology, anything
-- Document what you discover, including dead ends (they're data too)
+1. **Current Version Capabilities**: What does the installed Claude Code version support? List all hook events, settings, features, and agent capabilities that are available RIGHT NOW.
+2. **Usage Gap Analysis**: Compare what's AVAILABLE vs. what's ACTUALLY USED. Present as a table:
+```
+| Feature | Verfuegbar seit | Nutzen wir? | Sollten wir? | Warum/Warum nicht |
+```
+3. **Prerequisites Check**: For each unused feature — are all prerequisites installed? If not, list what's missing.
+4. **Save to Memory**: Update a reference memory file with the current capabilities snapshot so future sessions don't need to re-research from scratch.
 
-**Step 3: Synthesis** (connect the dots)
-- What patterns emerge across your discoveries?
-- How do they connect to the user's actual workflow and goals?
-- What's the ONE thing that would make the biggest difference?
+The goal: over time, build a complete knowledge base of what THIS Claude Code can do, so the gap between "possible" and "used" shrinks to zero.
 
-**Step 4: Creation** (build something new)
-- If you found a genuine improvement: BUILD IT. Don't just report it.
-- Create a new skill, hook, script, agent, or configuration
-- If the improvement is too large for this session: write a detailed spec and save it to memory
+### 4C: The Creative Process (build, don't list)
 
-### 4C: Anti-Patterns (What Creative Research is NOT)
+**Step 1: Deep Questions** (at least 7, shown to user)
+- Generate genuinely novel questions — NOT answerable by any checklist
+- Each question must target a REAL improvement, not academic curiosity
 
-- ❌ Running the same checks as Stufe 1 but calling them "creative"
-- ❌ Listing features from documentation without trying them
-- ❌ Suggesting improvements you've suggested before (check memory!)
-- ❌ Following a template for "creativity" (the irony should be obvious)
-- ❌ Recommending tools without explaining WHY they solve a real problem
-- ❌ Adding complexity for the sake of looking thorough
-- ✅ Finding something GENUINELY unexpected
-- ✅ Building something that didn't exist 10 minutes ago
-- ✅ Challenging an assumption that seemed untouchable
-- ✅ Connecting two ideas that were never connected before
+**Step 2: Investigate ALL questions** (not just 2-3)
+- Use web research, tool exploration, file archaeology
+- For each finding: full explanation in German + action proposal
 
-### 4D: Creative Research Report
+**Step 3: Build** (MANDATORY — at least 1 concrete artifact per run)
+- Create a new hook, skill, script, agent, config, or memory entry
+- If too large for this session: write a detailed spec with implementation steps and save to memory
+- "Nothing this run" is UNACCEPTABLE unless truly nothing was found (explain why)
 
-After Stufe 4, add this section to the main report:
+**Step 4: Teach** (explain everything to the user)
+- Every built artifact gets a plain-German explanation:
+  - What does it do?
+  - When does it activate?
+  - What changes for the user's daily workflow?
+  - Can it be turned off?
+
+### 4D: Anti-Patterns (STRICTLY FORBIDDEN)
+
+- ❌ "X exists" without explanation, action, or recommendation
+- ❌ "X is activated but never used" without explaining what it does and whether to use it
+- ❌ Listing discoveries without building anything
+- ❌ Features described without explaining how to trigger them
+- ❌ Assuming the user knows what technical terms mean
+- ❌ Reporting without concrete next steps
+- ✅ Every discovery has: explanation → recommendation → action/build
+- ✅ At least 1 NEW artifact (hook/skill/script/config) per run
+- ✅ Plain German explanations with analogies for non-programmers
+- ✅ "Here's what I built, here's what it does for you"
+
+### 4E: Creative Research Report
 
 ```markdown
 ### Kreatives Forschen (Stufe 4)
 
-**Verwendete Linsen:** [which 3+ lenses were used]
+**Verwendete Linsen:** Alle 6
+
+**Wissensluecken geschlossen:**
+| Feature | Verfuegbar | Genutzt? | Jetzt umgesetzt? |
+[gaps identified and addressed]
 
 **Gestellte Fragen:**
-1. [genuinely novel question]
-2. [genuinely novel question]
-3. [...]
+1-7. [questions with investigation results]
 
-**Entdeckungen:**
-| Entdeckung | Linse | Umsetzbar? | Umgesetzt? |
-|------------|-------|-----------|-----------|
-[one row per discovery]
+**Entdeckungen + Aktionen:**
+| Entdeckung | Was ist das? (Erklaerung) | Empfehlung | Umgesetzt? |
+[every discovery has a plain explanation and clear action]
 
-**Neu erschaffen:**
-[What was actually built — new skill, hook, script, config, or "nothing this run"]
+**Neu gebaut:**
+[Artifact name] — [what it does] — [how to use it] — [can be turned off?]
 
-**Sackgassen (auch wertvoll):**
-[What was explored but led nowhere — and what was learned from it]
+**Vorschlaege fuer naechsten Lauf:**
+[concrete proposals with implementation sketches, saved to memory]
+
+**Sackgassen (Lerneffekt):**
+[dead ends with lessons learned]
 ```
 
 ## Sync to GitHub
@@ -519,4 +526,4 @@ Always end with:
 - **Commit messages**: `#NNN - Description` format, auto-numbered from existing commits.
 
 ---
-<!-- Skill Version: v4.0 | Date: 2026-03-13 | Last Meta-Improve: 2026-03-13 | Lines: ~520/1000 | Changes: v4.0 — Major: (1) NEW Stufe 4 Creative Research with 6 Thinking Lenses (Archaeologist, Combinatorist, Contrarian, Time Traveler, Cross-Pollinator, Toolsmith), (2) Anti-patterns for fake creativity, (3) Creative Research Report template, (4) env-checker Android deep-scan, (5) Renamed to v4.0 reflecting paradigm shift from maintenance to creative self-evolution. -->
+<!-- Skill Version: v4.1 | Date: 2026-03-14 | Last Meta-Improve: 2026-03-14 | Lines: ~570/1000 | Changes: v4.1 — (1) Schema validation rule for researcher claims, (2) Complete Stufe 4 overhaul: ALL 6 lenses mandatory, Non-Programmer Rule, Knowledge Integration step, mandatory artifact creation per run, DISCOVER→EXPLAIN→BUILD→TEACH cycle, stricter anti-patterns (no reporting without building), Usage Gap Analysis table. -->
