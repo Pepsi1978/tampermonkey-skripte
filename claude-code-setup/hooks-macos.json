@@ -53,7 +53,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Check the conversation: Were any protected settings modified? Verify in ~/.claude/settings.json that: (1) effortLevel is 'high', (2) env.CLAUDE_CODE_EFFORT_LEVEL is 'high', (3) env.CLAUDE_CODE_SUBAGENT_MODEL is 'sonnet', (4) model is 'claude-opus-4-6'. If ANY of these changed, respond with {\"ok\": false, \"reason\": \"Protected setting was modified: [which one]\"}. If all are intact, respond with {\"ok\": true}.",
+            "prompt": "RESPOND WITH ONLY A RAW JSON OBJECT. NO markdown, NO explanation, NO text before or after.\n\nCheck the conversation: Were any protected settings in ~/.claude/settings.json modified this turn?\n\nProtected settings (BLOCK if changed):\n1. env.CLAUDE_CODE_SUBAGENT_MODEL must be 'sonnet'\n2. env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE must be >= 95\n\nWARNING-ONLY settings (allow but note in reason):\n3. effortLevel — user may intentionally switch between 'medium' and 'high'. Do NOT block.\n4. model — user may change models. Do NOT block.\n\nIf NONE were changed (most common case), respond EXACTLY: {\"decision\":true}\nIf a BLOCKED setting was modified, respond: {\"decision\":false,\"reason\":\"BLOCKED: [which setting and to what value]\"}\nIf only WARNING settings were changed, respond: {\"decision\":true,\"reason\":\"WARNUNG: effortLevel/model geaendert — ab sofort mit geaendertem Setting aktiv\"}",
             "timeout": 15
           }
         ]
