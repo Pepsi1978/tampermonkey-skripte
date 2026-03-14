@@ -2,6 +2,7 @@
 name: coder
 description: Fast implementation agent for well-defined coding tasks. Use for routine work, simple features, refactoring, boilerplate, and repetitive changes. Sonnet-based for speed — spawn 3-5 in parallel for maximum throughput.
 model: sonnet
+isolation: worktree
 tools:
   - Read
   - Glob

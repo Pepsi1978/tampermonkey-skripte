@@ -265,6 +265,17 @@
           }
         ]
       }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Context was just compacted. Briefly summarize what survived and what was lost. Mention: (1) Current task status, (2) Any pending file changes, (3) User decisions made. Keep to 3-4 sentences in German.",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "worktree": {

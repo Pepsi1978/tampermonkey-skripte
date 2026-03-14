@@ -2,6 +2,7 @@
 name: code-reviewer
 description: Reviews code for quality, security, and design. Use after completing a feature or before committing.
 model: opus
+memory: project
 tools:
   - Read
   - Glob
