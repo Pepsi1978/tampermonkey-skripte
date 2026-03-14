@@ -381,7 +381,9 @@
     "tech-stack@context-engineering-kit": true,
     "mcp@context-engineering-kit": true,
     "fpf@context-engineering-kit": true,
-    "claude-code-lsps@boostvolt": true
+    "claude-code-lsps@boostvolt": true,
+    "xclaude-plugin@xclaude-plugin-marketplace": true,
+    "apple-platform-build-tools@apple-platform-build-tools": true
   },
   "extraKnownMarketplaces": {
     "superpowers-marketplace": {
@@ -425,6 +427,18 @@
       "source": {
         "source": "github",
         "repo": "boostvolt/claude-code-lsps"
+      }
+    },
+    "xclaude-plugin-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "conorluddy/xclaude-plugin"
+      }
+    },
+    "apple-platform-build-tools": {
+      "source": {
+        "source": "github",
+        "repo": "kylehughes/apple-platform-build-tools-claude-code-plugin"
       }
     }
   },

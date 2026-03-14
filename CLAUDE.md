@@ -28,14 +28,15 @@
 - Terminal-Befehle **immer direkt selbst ausfuehren** (ueber das Bash-Tool), niemals dem Benutzer Zeilen zum Kopieren geben.
 
 ## Qualitaetsschleife (PARALLEL ausfuehren!)
-- Jedes fertige Feature durchlaeuft mindestens 3 Pruefungen — **alle 3 gleichzeitig starten**:
+- **Bevorzugt: `quality-gate` Agent** — startet tester + code-reviewer + optimizer automatisch parallel und gibt PASS/FAIL zurueck. Ein Agent-Aufruf statt drei.
+- **Alternative (manuell):** 3 Agents separat als parallele Agent-Tool-Aufrufe starten:
   1. Build & Test → Custom Agent: `tester`
-  2. Code Review → Custom Agent: `code-reviewer`
+  2. Code Review → Custom Agent: `code-reviewer` (hat `memory: project` — lernt ueber Sessions)
   3. Verbesserung → Custom Agents: `optimizer` + `ui-polisher`
-- Diese 3 Agents werden als **parallele Agent-Tool-Aufrufe in einer Nachricht** gestartet.
-- Erst wenn alle 3 bestanden sind, wird committed und gepusht.
+- Erst wenn alle Pruefungen bestanden sind, wird committed und gepusht.
 - Bei neuen Projekten: `architect` Agent + Recherche-Agent **parallel** starten.
 - Bei Bugs: `debugger` Agent nutzen (kann selbst Sub-Agenten fuer konkurrierende Hypothesen spawnen).
+- `coder` Agent hat `isolation: worktree` — mehrere Coder koennen sicher parallel an verschiedenen Dateien arbeiten.
 
 ## Skill-Erstellung
 - Wenn ein neuer Skill erstellt, bearbeitet oder getestet werden soll, MUSS immer der `/skill-creator:skill-creator` Skill verwendet werden.
