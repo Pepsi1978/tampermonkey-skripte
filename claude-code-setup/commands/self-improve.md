@@ -9,7 +9,7 @@ description: Systematic self-improvement of the Claude Code development environm
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v4.0 — Deine Entwicklungsumgebung       ║
+║  Self-Improve Skill v4.2 — Deine Entwicklungsumgebung       ║
 ║  pruefen, aktualisieren, KREATIV ERFORSCHEN                  ║
 ║  Cross-Platform: macOS + Windows + Termux/Android            ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -355,7 +355,7 @@ When the user provides a focus topic, adapt ALL tiers to prioritize it. Focus do
 
 **Focus: Cross-Platform** → Check: Feature parity between macOS and Windows implementations, shared code percentage, platform-specific bugs, build matrix. Creative: Could more code be shared? Rust core with platform wrappers?
 
-**Focus: Self-Improve** → Check: Skill line count, structure analysis, new Claude Code features not yet used, parallelization opportunities, check coverage gaps. Creative: What checks are missing? What would a v4.0 look like?
+**Focus: Self-Improve** → Check: Skill line count, structure analysis, new Claude Code features not yet used, parallelization opportunities, check coverage gaps. Creative: What checks are missing? What would a v5.0 look like?
 
 **General creativity rule for ALL focus topics**: After completing the checklist-based checks, spend time exploring BEYOND the checklist. Ask: "What would a world-class setup for [topic] look like? What am I missing? What new tools or patterns exist that aren't on any checklist?" This creative exploration is what makes focus mode valuable — not just deeper checks, but discovering things you didn't know to check for.
 
