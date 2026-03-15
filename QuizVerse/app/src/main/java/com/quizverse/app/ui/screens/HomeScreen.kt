@@ -59,6 +59,12 @@ import com.quizverse.app.ui.theme.Accent
 import com.quizverse.app.ui.theme.Primary
 import com.quizverse.app.ui.theme.Secondary
 import com.quizverse.app.util.DailyQuotes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
@@ -174,24 +180,41 @@ fun HomeScreen(navController: NavHostController) {
     )
 
     // Floating shapes animation
+    // Vertical float offsets — stronger movement
     val floatOffset1 = infiniteTransition.animateFloat(
-        initialValue = 0f, targetValue = 20f,
+        initialValue = -25f, targetValue = 25f,
         animationSpec = infiniteRepeatable(tween(4000, easing = FastOutSlowInEasing), RepeatMode.Reverse),
         label = "float1"
     )
     val floatOffset2 = infiniteTransition.animateFloat(
-        initialValue = 0f, targetValue = -15f,
+        initialValue = 20f, targetValue = -20f,
         animationSpec = infiniteRepeatable(tween(3500, easing = FastOutSlowInEasing), RepeatMode.Reverse),
         label = "float2"
     )
     val floatOffset3 = infiniteTransition.animateFloat(
-        initialValue = 0f, targetValue = 12f,
+        initialValue = -18f, targetValue = 18f,
         animationSpec = infiniteRepeatable(tween(5000, easing = FastOutSlowInEasing), RepeatMode.Reverse),
         label = "float3"
     )
+    // Horizontal drift offsets
+    val driftX1 = infiniteTransition.animateFloat(
+        initialValue = -15f, targetValue = 15f,
+        animationSpec = infiniteRepeatable(tween(5500, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "driftX1"
+    )
+    val driftX2 = infiniteTransition.animateFloat(
+        initialValue = 12f, targetValue = -12f,
+        animationSpec = infiniteRepeatable(tween(4200, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "driftX2"
+    )
+    val driftX3 = infiniteTransition.animateFloat(
+        initialValue = -10f, targetValue = 10f,
+        animationSpec = infiniteRepeatable(tween(6000, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "driftX3"
+    )
     val starRotation = infiniteTransition.animateFloat(
         initialValue = 0f, targetValue = 360f,
-        animationSpec = infiniteRepeatable(tween(12000, easing = LinearEasing), RepeatMode.Restart),
+        animationSpec = infiniteRepeatable(tween(10000, easing = LinearEasing), RepeatMode.Restart),
         label = "star_rotation"
     )
 
@@ -242,65 +265,103 @@ fun HomeScreen(navController: NavHostController) {
         ) {
             val w = size.width
             val h = size.height
+            val d1x = driftX1.value.dp.toPx()
+            val d2x = driftX2.value.dp.toPx()
+            val d3x = driftX3.value.dp.toPx()
+            val f1y = floatOffset1.value.dp.toPx()
+            val f2y = floatOffset2.value.dp.toPx()
+            val f3y = floatOffset3.value.dp.toPx()
 
-            // Circle 1 — top right, large, very subtle
+            // Circle 1 — top right, large
             drawCircle(
-                color = Primary.copy(alpha = 0.07f),
+                color = Primary.copy(alpha = 0.08f),
                 radius = 90.dp.toPx(),
-                center = Offset(w * 0.85f, 80.dp.toPx() + floatOffset1.value.dp.toPx())
+                center = Offset(w * 0.85f + d1x, 80.dp.toPx() + f1y)
             )
 
             // Circle 2 — left side, medium
             drawCircle(
-                color = Secondary.copy(alpha = 0.06f),
-                radius = 50.dp.toPx(),
-                center = Offset(w * 0.1f, h * 0.35f + floatOffset2.value.dp.toPx())
+                color = Secondary.copy(alpha = 0.07f),
+                radius = 55.dp.toPx(),
+                center = Offset(w * 0.08f + d2x, h * 0.35f + f2y)
             )
 
-            // Circle 3 — bottom right, small
+            // Circle 3 — bottom right
             drawCircle(
-                color = Accent.copy(alpha = 0.08f),
-                radius = 35.dp.toPx(),
-                center = Offset(w * 0.9f, h * 0.65f + floatOffset3.value.dp.toPx())
+                color = Accent.copy(alpha = 0.09f),
+                radius = 40.dp.toPx(),
+                center = Offset(w * 0.9f + d3x, h * 0.65f + f3y)
             )
 
-            // Circle 4 — center-left, tiny accent
+            // Circle 4 — center-left
             drawCircle(
-                color = Color(0xFFF59E0B).copy(alpha = 0.06f),
-                radius = 20.dp.toPx(),
-                center = Offset(w * 0.15f, h * 0.7f + floatOffset1.value.dp.toPx())
+                color = Color(0xFFF59E0B).copy(alpha = 0.07f),
+                radius = 25.dp.toPx(),
+                center = Offset(w * 0.15f + d1x, h * 0.7f + f1y)
             )
 
-            // Star 1 — top left, rotating
-            rotate(starRotation.value, pivot = Offset(w * 0.18f, 160.dp.toPx() + floatOffset2.value.dp.toPx())) {
-                val starCenter = Offset(w * 0.18f, 160.dp.toPx() + floatOffset2.value.dp.toPx())
-                val starPath = createStarPath(starCenter, 12.dp.toPx(), 6.dp.toPx(), 4)
-                drawPath(starPath, color = Color(0xFFF59E0B).copy(alpha = 0.12f))
+            // Circle 5 — top center
+            drawCircle(
+                color = Color(0xFFA855F7).copy(alpha = 0.06f),
+                radius = 30.dp.toPx(),
+                center = Offset(w * 0.55f + d2x, h * 0.12f + f3y)
+            )
+
+            // Star 1 — top left
+            val s1 = Offset(w * 0.18f + d2x, 160.dp.toPx() + f2y)
+            rotate(starRotation.value, pivot = s1) {
+                drawPath(createStarPath(s1, 14.dp.toPx(), 7.dp.toPx(), 4), color = Color(0xFFF59E0B).copy(alpha = 0.15f))
             }
 
-            // Star 2 — right side, rotating opposite
-            rotate(-starRotation.value * 0.7f, pivot = Offset(w * 0.88f, h * 0.45f + floatOffset3.value.dp.toPx())) {
-                val starCenter2 = Offset(w * 0.88f, h * 0.45f + floatOffset3.value.dp.toPx())
-                val starPath2 = createStarPath(starCenter2, 10.dp.toPx(), 5.dp.toPx(), 5)
-                drawPath(starPath2, color = Primary.copy(alpha = 0.10f))
+            // Star 2 — right side
+            val s2 = Offset(w * 0.88f + d3x, h * 0.45f + f3y)
+            rotate(-starRotation.value * 0.7f, pivot = s2) {
+                drawPath(createStarPath(s2, 12.dp.toPx(), 6.dp.toPx(), 5), color = Primary.copy(alpha = 0.12f))
             }
 
             // Star 3 — bottom left
-            rotate(starRotation.value * 0.5f, pivot = Offset(w * 0.25f, h * 0.85f + floatOffset1.value.dp.toPx())) {
-                val starCenter3 = Offset(w * 0.25f, h * 0.85f + floatOffset1.value.dp.toPx())
-                val starPath3 = createStarPath(starCenter3, 8.dp.toPx(), 4.dp.toPx(), 6)
-                drawPath(starPath3, color = Accent.copy(alpha = 0.10f))
+            val s3 = Offset(w * 0.22f + d1x, h * 0.85f + f1y)
+            rotate(starRotation.value * 0.5f, pivot = s3) {
+                drawPath(createStarPath(s3, 10.dp.toPx(), 5.dp.toPx(), 6), color = Accent.copy(alpha = 0.12f))
             }
 
-            // Tiny dots scattered
-            drawCircle(color = Primary.copy(alpha = 0.10f), radius = 3.dp.toPx(),
-                center = Offset(w * 0.4f, 120.dp.toPx() + floatOffset3.value.dp.toPx()))
-            drawCircle(color = Secondary.copy(alpha = 0.10f), radius = 4.dp.toPx(),
-                center = Offset(w * 0.7f, h * 0.3f + floatOffset1.value.dp.toPx()))
-            drawCircle(color = Color(0xFFA855F7).copy(alpha = 0.08f), radius = 3.dp.toPx(),
-                center = Offset(w * 0.5f, h * 0.55f + floatOffset2.value.dp.toPx()))
-            drawCircle(color = Accent.copy(alpha = 0.10f), radius = 2.5f.dp.toPx(),
-                center = Offset(w * 0.75f, h * 0.8f + floatOffset3.value.dp.toPx()))
+            // Star 4 — top center-right
+            val s4 = Offset(w * 0.72f + d2x, h * 0.18f + f2y)
+            rotate(starRotation.value * 0.8f, pivot = s4) {
+                drawPath(createStarPath(s4, 9.dp.toPx(), 4.dp.toPx(), 4), color = Secondary.copy(alpha = 0.13f))
+            }
+
+            // Star 5 — center left
+            val s5 = Offset(w * 0.05f + d3x, h * 0.52f + f3y)
+            rotate(-starRotation.value * 0.6f, pivot = s5) {
+                drawPath(createStarPath(s5, 8.dp.toPx(), 4.dp.toPx(), 5), color = Color(0xFFF59E0B).copy(alpha = 0.10f))
+            }
+
+            // Star 6 — bottom right
+            val s6 = Offset(w * 0.82f + d1x, h * 0.78f + f1y)
+            rotate(starRotation.value * 0.4f, pivot = s6) {
+                drawPath(createStarPath(s6, 7.dp.toPx(), 3.dp.toPx(), 4), color = Color(0xFFA855F7).copy(alpha = 0.11f))
+            }
+
+            // Star 7 — mid-center
+            val s7 = Offset(w * 0.45f + d2x, h * 0.42f + f2y)
+            rotate(-starRotation.value * 0.3f, pivot = s7) {
+                drawPath(createStarPath(s7, 6.dp.toPx(), 3.dp.toPx(), 6), color = Primary.copy(alpha = 0.08f))
+            }
+
+            // Floating dots
+            drawCircle(color = Primary.copy(alpha = 0.12f), radius = 4.dp.toPx(),
+                center = Offset(w * 0.4f + d3x, 120.dp.toPx() + f3y))
+            drawCircle(color = Secondary.copy(alpha = 0.12f), radius = 5.dp.toPx(),
+                center = Offset(w * 0.7f + d1x, h * 0.3f + f1y))
+            drawCircle(color = Color(0xFFA855F7).copy(alpha = 0.10f), radius = 3.5f.dp.toPx(),
+                center = Offset(w * 0.5f + d2x, h * 0.55f + f2y))
+            drawCircle(color = Accent.copy(alpha = 0.12f), radius = 3.dp.toPx(),
+                center = Offset(w * 0.75f + d3x, h * 0.8f + f3y))
+            drawCircle(color = Color(0xFFF59E0B).copy(alpha = 0.10f), radius = 3.dp.toPx(),
+                center = Offset(w * 0.3f + d1x, h * 0.22f + f1y))
+            drawCircle(color = Secondary.copy(alpha = 0.08f), radius = 2.5f.dp.toPx(),
+                center = Offset(w * 0.92f + d2x, h * 0.55f + f2y))
         }
 
         Column(
@@ -404,19 +465,42 @@ fun HomeScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Random motivational quote — tap for a new one
-            Text(
-                text = "\u201E$currentQuote\u201C",
-                style = MaterialTheme.typography.bodyMedium,
-                fontStyle = FontStyle.Italic,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                textAlign = TextAlign.Center,
+            // Random motivational quote — tap for animated transition to a new one
+            AnimatedContent(
+                targetState = currentQuote,
+                transitionSpec = {
+                    (scaleIn(
+                        initialScale = 0.85f,
+                        animationSpec = tween(400, easing = FastOutSlowInEasing)
+                    ) + fadeIn(
+                        animationSpec = tween(400)
+                    )).togetherWith(
+                        scaleOut(
+                            targetScale = 1.1f,
+                            animationSpec = tween(300, easing = FastOutSlowInEasing)
+                        ) + fadeOut(
+                            animationSpec = tween(300)
+                        )
+                    )
+                },
+                label = "quote_transition",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .alpha(quoteAlpha.value)
+                    .clip(RoundedCornerShape(16.dp))
                     .clickable { currentQuote = DailyQuotes.randomQuote(exclude = currentQuote) }
-            )
+                    .padding(vertical = 12.dp, horizontal = 8.dp)
+            ) { quote ->
+                Text(
+                    text = "\u201E$quote\u201C",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontStyle = FontStyle.Italic,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
         }
