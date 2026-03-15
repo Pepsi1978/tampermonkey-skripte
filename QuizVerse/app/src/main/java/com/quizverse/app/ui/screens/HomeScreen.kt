@@ -40,10 +40,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.quizverse.app.QuizVerseApp
 import com.quizverse.app.ui.navigation.Screen
 import com.quizverse.app.ui.theme.Accent
 import com.quizverse.app.ui.theme.Primary
 import com.quizverse.app.ui.theme.Secondary
+import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.delay
 
 // Data model for a home screen navigation card
@@ -103,6 +105,8 @@ private val homeCards = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavHostController) {
+    val app = LocalContext.current.applicationContext as QuizVerseApp
+
     // Entrance animation for the logo/title
     val logoScale = remember { Animatable(0.6f) }
     val logoAlpha = remember { Animatable(0f) }
@@ -193,7 +197,12 @@ fun HomeScreen(navController: NavHostController) {
                 AnimatedHomeCard(
                     card = card,
                     delayMillis = 300 + index * 80,
-                    onClick = { navController.navigate(card.route) }
+                    onClick = {
+                        if (card.route == Screen.Category.route) {
+                            app.soundManager.playCheerStart()
+                        }
+                        navController.navigate(card.route)
+                    }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }

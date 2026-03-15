@@ -27,6 +27,7 @@ class SoundManager(context: Context) {
     private var soundStadium: Int = 0
     private var soundTimeUp: Int = 0
     private var soundQuizComplete: Int = 0
+    private var soundCheerStart: Int = 0
 
     // Track currently playing stadium stream so we can stop it
     private var stadiumStreamId: Int = 0
@@ -66,6 +67,7 @@ class SoundManager(context: Context) {
         soundStadium = loadSafe(context, R.raw.sound_stadium_ambience)
         soundTimeUp = loadSafe(context, R.raw.sound_time_up)
         soundQuizComplete = loadSafe(context, R.raw.sound_quiz_complete)
+        soundCheerStart = loadSafe(context, R.raw.cheer_start)
     }
 
     // ---- Public methods ----------------------------------------------------
@@ -105,6 +107,9 @@ class SoundManager(context: Context) {
 
     /** Played when a quiz is completed (victory jingle). */
     fun playQuizComplete() = play(soundQuizComplete)
+
+    /** Played when the user taps "Quiz starten" on the home screen. */
+    fun playCheerStart() = play(soundCheerStart, volume = 0.7f)
 
     /** Start looping stadium ambience in the background. */
     fun startStadiumAmbience(volume: Float = 0.25f) {
