@@ -1,5 +1,10 @@
 package com.quizverse.app.ui.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -48,7 +53,10 @@ sealed class Screen(val route: String) {
     }
 }
 
-// Main navigation host that wires all screens together
+// Animation duration in milliseconds for all transitions
+private const val TRANSITION_DURATION = 300
+
+// Main navigation host that wires all screens together with smooth slide+fade transitions
 @Composable
 fun QuizVerseNavGraph(
     navController: NavHostController,
@@ -56,7 +64,33 @@ fun QuizVerseNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Home.route,
+        // Enter from right, exit to left (forward navigation)
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(TRANSITION_DURATION)
+            ) + fadeIn(animationSpec = tween(TRANSITION_DURATION))
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(TRANSITION_DURATION)
+            ) + fadeOut(animationSpec = tween(TRANSITION_DURATION))
+        },
+        // Pop enter from left, pop exit to right (back navigation)
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(TRANSITION_DURATION)
+            ) + fadeIn(animationSpec = tween(TRANSITION_DURATION))
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(TRANSITION_DURATION)
+            ) + fadeOut(animationSpec = tween(TRANSITION_DURATION))
+        }
     ) {
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
