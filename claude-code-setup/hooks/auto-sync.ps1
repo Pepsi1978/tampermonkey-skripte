@@ -113,16 +113,19 @@ if (Test-Path $commandsDir) {
     }
 }
 
-# Hooks (PowerShell scripts only)
+# Hooks (PowerShell + TypeScript scripts)
 $hooksDir = Join-Path $SetupDir "hooks"
 if (Test-Path $hooksDir) {
-    New-Item -ItemType Directory -Force -Path (Join-Path $ClaudeDir "hooks") | Out-Null
-    $hooks = @(Get-ChildItem "$hooksDir\*.ps1" -ErrorAction SilentlyContinue)
-    if ($hooks.Count -gt 0) {
-        foreach ($hook in $hooks) {
-            Copy-Item $hook.FullName (Join-Path $ClaudeDir "hooks") -Force
-        }
-        $synced += "Hooks($($hooks.Count))"
+    $destHooks = Join-Path $ClaudeDir "hooks"
+    New-Item -ItemType Directory -Force -Path $destHooks | Out-Null
+    $ps1Hooks = @(Get-ChildItem "$hooksDir\*.ps1" -ErrorAction SilentlyContinue)
+    $tsHooks = @(Get-ChildItem "$hooksDir\*.ts" -ErrorAction SilentlyContinue)
+    foreach ($hook in ($ps1Hooks + $tsHooks)) {
+        Copy-Item $hook.FullName $destHooks -Force
+    }
+    $hookCount = $ps1Hooks.Count + $tsHooks.Count
+    if ($hookCount -gt 0) {
+        $synced += "Hooks($hookCount)"
     }
 }
 
