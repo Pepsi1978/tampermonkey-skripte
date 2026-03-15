@@ -190,7 +190,16 @@ fun QuizScreen(
                     uiState             = uiState,
                     animatedTimerFraction = animatedTimerFraction,
                     timerColor          = timerColor,
-                    onAnswerSelected    = { index -> viewModel.submitAnswer(index) },
+                    onAnswerSelected    = { index ->
+                        viewModel.submitAnswer(index)
+                        // Play sound effect based on correctness
+                        val question = uiState.currentQuestion
+                        if (question != null) {
+                            val correct = index == question.correctAnswer
+                            if (correct) app.soundManager.playCorrect()
+                            else app.soundManager.playWrong()
+                        }
+                    },
                     onNextQuestion      = { viewModel.nextQuestion() },
                     onSkipQuestion      = { viewModel.skipQuestion() }
                 )

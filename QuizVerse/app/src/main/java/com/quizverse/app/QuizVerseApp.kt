@@ -2,6 +2,8 @@ package com.quizverse.app
 
 import android.app.Application
 import com.quizverse.app.data.database.QuizDatabase
+import com.quizverse.app.data.repository.SettingsRepository
+import com.quizverse.app.util.SoundManager
 
 /**
  * Application class for QuizVerse.
@@ -21,8 +23,24 @@ class QuizVerseApp : Application() {
         QuizDatabase.getDatabase(this)
     }
 
+    /** App-wide settings persisted in SharedPreferences. */
+    val settingsRepository: SettingsRepository by lazy {
+        SettingsRepository(this)
+    }
+
+    /** Manages all in-game sound effects via SoundPool. */
+    val soundManager: SoundManager by lazy {
+        SoundManager(this)
+    }
+
     override fun onCreate() {
         super.onCreate()
-        // Future: inject logging, analytics, crash reporting here
+        // Sync SoundManager enabled state with saved settings
+        soundManager.enabled = settingsRepository.soundEnabled.value
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        soundManager.release()
     }
 }

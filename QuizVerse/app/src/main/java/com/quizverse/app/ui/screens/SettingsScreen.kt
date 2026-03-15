@@ -42,6 +42,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,17 +52,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.quizverse.app.QuizVerseApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavHostController) {
 
-    // --- Toggle states ---
-    var soundEnabled by remember { mutableStateOf(true) }
-    var vibrationEnabled by remember { mutableStateOf(true) }
-    var darkModeEnabled by remember { mutableStateOf(false) }
+    // --- Real persisted settings ---
+    val app = LocalContext.current.applicationContext as QuizVerseApp
+    val settings = app.settingsRepository
+    val soundEnabled by settings.soundEnabled.collectAsState()
+    val vibrationEnabled by settings.vibrationEnabled.collectAsState()
+    val darkModeEnabled by settings.darkModeEnabled.collectAsState()
     var showResetDialog by remember { mutableStateOf(false) }
 
     // Entrance animation trigger
@@ -151,33 +156,36 @@ fun SettingsScreen(navController: NavHostController) {
                 // ── Section 1: Spieleinstellungen ──────────────────────────
                 SettingsSection(title = "Spieleinstellungen") {
                     SettingsToggleRow(
-                        emoji = "🔊",
+                        emoji = "\uD83D\uDD0A",
                         label = "Sound-Effekte",
                         description = "Töne bei richtigen und falschen Antworten",
                         checked = soundEnabled,
-                        onCheckedChange = { soundEnabled = it }
+                        onCheckedChange = {
+                            settings.setSoundEnabled(it)
+                            app.soundManager.enabled = it
+                        }
                     )
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                     )
                     SettingsToggleRow(
-                        emoji = "📳",
+                        emoji = "\uD83D\uDCF3",
                         label = "Vibration",
                         description = "Haptisches Feedback bei Aktionen",
                         checked = vibrationEnabled,
-                        onCheckedChange = { vibrationEnabled = it }
+                        onCheckedChange = { settings.setVibrationEnabled(it) }
                     )
                 }
 
                 // ── Section 2: Darstellung ─────────────────────────────────
                 SettingsSection(title = "Darstellung") {
                     SettingsToggleRow(
-                        emoji = "🌙",
+                        emoji = "\uD83C\uDF19",
                         label = "Dunkler Modus",
                         description = "Dunkles Design für die gesamte App",
                         checked = darkModeEnabled,
-                        onCheckedChange = { darkModeEnabled = it }
+                        onCheckedChange = { settings.setDarkModeEnabled(it) }
                     )
                 }
 
