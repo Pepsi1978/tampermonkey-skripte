@@ -92,14 +92,24 @@ if (Test-Path $agentsDir) {
     }
 }
 
-# Commands
+# Commands (including subdirectories like self-improve-ref/)
 $commandsDir = Join-Path $SetupDir "commands"
 if (Test-Path $commandsDir) {
-    New-Item -ItemType Directory -Force -Path (Join-Path $ClaudeDir "commands") | Out-Null
+    $destCommands = Join-Path $ClaudeDir "commands"
+    New-Item -ItemType Directory -Force -Path $destCommands | Out-Null
+    # Copy top-level .md files
     $commands = @(Get-ChildItem "$commandsDir\*.md" -ErrorAction SilentlyContinue)
     if ($commands.Count -gt 0) {
-        Copy-Item "$commandsDir\*.md" (Join-Path $ClaudeDir "commands") -Force
-        $synced += "Commands($($commands.Count))"
+        Copy-Item "$commandsDir\*.md" $destCommands -Force
+    }
+    # Copy subdirectories recursively (e.g. self-improve-ref/)
+    $subdirs = @(Get-ChildItem $commandsDir -Directory -ErrorAction SilentlyContinue)
+    foreach ($subdir in $subdirs) {
+        Copy-Item $subdir.FullName $destCommands -Recurse -Force
+    }
+    $totalCount = $commands.Count + $subdirs.Count
+    if ($totalCount -gt 0) {
+        $synced += "Commands($($commands.Count)+$($subdirs.Count)dirs)"
     }
 }
 
