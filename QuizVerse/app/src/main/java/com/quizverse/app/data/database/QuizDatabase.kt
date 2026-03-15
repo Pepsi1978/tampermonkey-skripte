@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
         HighScore::class,
         Achievement::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class QuizDatabase : RoomDatabase() {
@@ -58,6 +58,7 @@ abstract class QuizDatabase : RoomDatabase() {
                 QuizDatabase::class.java,
                 "quiz_database"
             )
+                .fallbackToDestructiveMigration()
                 .addCallback(DatabaseCallback())
                 .build()
         }
