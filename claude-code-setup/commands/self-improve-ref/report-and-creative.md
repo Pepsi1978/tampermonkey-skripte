@@ -18,6 +18,17 @@
 ### Scan-Ergebnis (Stufe 1)
 [Summary table from env-checker]
 
+### Research-Cache-Status (NEU v5.2)
+| Researcher | Status | Alter |
+|------------|--------|-------|
+| R1 Updates | Frisch | — |
+| R2 Plugins | [Frisch/Cache] | [N Tage] |
+| R3 Parallel | [Frisch/Cache] | [N Tage] |
+| R4 Versionen | [Frisch/Cache] | [N Tage] |
+| R5 Security | Frisch | — |
+| R6 Creative | Frisch | — |
+| R7 Focus | [Frisch/Nicht gestartet] | — |
+
 ### Recherche-Ergebnis (Stufe 2)
 | Researcher | Wichtigste Erkenntnis | Aktion |
 |------------|----------------------|--------|

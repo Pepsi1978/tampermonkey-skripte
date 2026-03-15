@@ -120,6 +120,32 @@ be adapted for this specific setup (macOS + Windows, Swift/C#/TypeScript/Rust/Go
 Return: at least 3 genuinely novel ideas with links and adaptation proposals."
 ```
 
+### R7 — Focus Deep-Dive (ONLY in Focus mode, NEW in v5.2)
+```
+"You are a DEEP-DIVE specialist for the topic: [FOCUS TOPIC].
+Your job is to go BEYOND what a general researcher would find.
+
+Research strategy:
+1. Search for advanced tutorials, conference talks, and expert blog posts on [FOCUS TOPIC]
+2. Find anti-patterns and common mistakes developers make with [FOCUS TOPIC]
+3. Look for benchmarks, performance comparisons, and real-world case studies
+4. Search for tools, libraries, and frameworks specifically designed for [FOCUS TOPIC]
+5. Find architecture patterns and best practices from production apps using [FOCUS TOPIC]
+6. Look for upcoming changes, deprecations, or new APIs related to [FOCUS TOPIC]
+
+DO NOT duplicate what R1-R6 already cover (versions, CVEs, general plugins).
+DO focus on: deep expertise, edge cases, production-ready patterns, expert opinions.
+
+For each finding: explain what it is, why it matters for production apps,
+and provide concrete implementation guidance (code snippets, Gradle deps, config).
+
+Return: at least 5 expert-level insights with implementation details."
+```
+
+**RULE**: R7 is ONLY spawned when the user specifies a focus topic (e.g., "Fokus Android Audio").
+In standard or thorough mode without focus, R7 is NOT spawned.
+R7 runs in parallel with R1-R6 — add it to the same spawn block.
+
 ## Cross-Validation Rules
 
 After all researchers return, validate against scan data:
