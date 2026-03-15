@@ -182,4 +182,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - Commit messages: `#NNN - Description` format.
 
 ---
-<!-- Skill Version: v5.0 | Date: 2026-03-14 | Lines: ~250/300 (main) | Ref files: researchers.md (~120), report-and-creative.md (~150) | Total: ~520/800 | Changes: v5.0 — (1) Progressive Disclosure: split into main + 2 reference files, (2) R6 Creative Researcher added, (3) Research caching with 7-day snapshots, (4) R2 auto-validates plugins via gh api, (5) Performance Benchmark lens added, (6) quality-gate agent integration, (7) Main file reduced from 562 to ~250 lines -->
+<!-- Skill Version: v5.2 | Date: 2026-03-15 | Lines: ~185/300 (main) | Ref files: researchers.md (~155), report-and-creative.md (~170) | Total: ~510/800 | Changes: v5.2 — (1) R3 now dynamically checks hook events from schema instead of hardcoded count, (2) Cross-validation rules 7+8 added (no hardcoded event counts, trust schema validator), (3) Session-Score Stop hook added for automatic quality tracking, (4) pending-admin-updates SessionEnd hook generates admin update scripts -->
