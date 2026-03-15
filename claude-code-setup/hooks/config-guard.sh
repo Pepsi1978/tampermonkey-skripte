@@ -3,6 +3,7 @@
 # Hook event: ConfigChange
 # effortLevel: WARNING only (user may intentionally set to medium to save tokens)
 HOOK_NAME="config-guard" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null
+hook_expect_exit 1  # exit 1 = intentional block of protected setting change
 
 SETTINGS="$HOME/.claude/settings.json"
 if [ ! -f "$SETTINGS" ]; then

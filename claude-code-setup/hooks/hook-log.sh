@@ -27,10 +27,22 @@ hook_log_error() {
     echo "[$(date '+%H:%M:%S')] ERROR $_HOOK_LOG_NAME: $*" >> "$_HOOK_LOG_FILE" 2>/dev/null
 }
 
-# Auto-log on non-zero exit (catches unexpected failures)
+# Expected exit codes (hooks can register intentional non-zero exits)
+_HOOK_EXPECTED_EXITS=()
+hook_expect_exit() {
+    _HOOK_EXPECTED_EXITS+=("$1")
+}
+
+# Auto-log on non-zero exit (catches unexpected failures, skips expected ones)
 _hook_exit_trap() {
     local rc=$?
     if [ $rc -ne 0 ]; then
+        for expected in "${_HOOK_EXPECTED_EXITS[@]}"; do
+            if [ "$rc" -eq "$expected" ]; then
+                hook_log "intentional exit $rc (blocked/rejected)"
+                return
+            fi
+        done
         hook_log_error "unexpected exit code $rc"
     fi
 }

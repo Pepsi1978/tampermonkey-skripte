@@ -1,6 +1,7 @@
 #!/bin/bash
 # Safety Gate: Block dangerous commands before execution (macOS/Linux version)
 HOOK_NAME="safety-gate" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null
+hook_expect_exit 2  # exit 2 = intentional block of dangerous command
 INPUT=$(cat)
 
 TOOL_NAME=$(echo "$INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('tool_name',''))" 2>/dev/null)
