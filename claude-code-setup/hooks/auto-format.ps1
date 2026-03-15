@@ -1,4 +1,7 @@
 # Auto-format: runs the appropriate code formatter after file edits (Windows)
+
+. "$PSScriptRoot/hook-log.ps1"
+
 $input = $args[0]
 if (-not $input) { $input = [Console]::In.ReadToEnd() }
 $data = $input | ConvertFrom-Json -ErrorAction SilentlyContinue
@@ -7,6 +10,7 @@ if (-not $data) { exit 0 }
 $filePath = $data.tool_input.file_path
 if (-not $filePath -or -not (Test-Path $filePath)) { exit 0 }
 
+Hook-Log "formatting $filePath"
 $ext = [System.IO.Path]::GetExtension($filePath).TrimStart('.')
 switch ($ext) {
     'go'    { & gofmt -w $filePath 2>$null }

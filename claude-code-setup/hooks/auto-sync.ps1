@@ -1,6 +1,8 @@
 # Auto-Sync: Syncs Claude Code config from GitHub on every session start
 # Runs as SessionStart hook — output is visible to the user
-# Platform: Windows (PowerShell)
+# Platform: Windows (PowerShell 7+)
+
+. "$PSScriptRoot/hook-log.ps1"
 
 $RepoDir = Join-Path $env:USERPROFILE "proggs"
 $SetupDir = Join-Path $RepoDir "claude-code-setup"
@@ -8,7 +10,8 @@ $ClaudeDir = Join-Path $env:USERPROFILE ".claude"
 
 # Check if repo exists
 if (-not (Test-Path (Join-Path $RepoDir ".git"))) {
-    Write-Output "Auto-Sync: ~/proggs Repo nicht gefunden — uebersprungen."
+    Hook-LogWarn "~/proggs repo not found — skipped"
+    Write-Output "Auto-Sync: ~/proggs Repo nicht gefunden -- uebersprungen."
     exit 0
 }
 
@@ -17,7 +20,8 @@ Set-Location $RepoDir
 # Fetch latest from remote
 $null = git fetch --quiet 2>&1
 if ($LASTEXITCODE -ne 0) {
-    Write-Output "Auto-Sync: Keine Internetverbindung — uebersprungen."
+    Hook-LogWarn "git fetch failed — no internet?"
+    Write-Output "Auto-Sync: Keine Internetverbindung -- uebersprungen."
     exit 0
 }
 
@@ -32,7 +36,7 @@ if ($local -eq $remote) {
 
 # Updates available!
 $behind = git rev-list --count "HEAD..@{u}" 2>$null
-Write-Output "Auto-Sync: $behind neue Commits auf GitHub gefunden — aktualisiere..."
+Write-Output "Auto-Sync: $behind neue Commits auf GitHub gefunden -- aktualisiere..."
 
 # Stash local changes if working tree is dirty (so rebase can proceed)
 $dirty = git status --porcelain 2>$null
@@ -50,6 +54,7 @@ $null = git pull --rebase --quiet 2>&1
 if ($LASTEXITCODE -ne 0) {
     # Restore stash if pull failed
     if ($stashed) { $null = git stash pop 2>&1 }
+    Hook-LogError "git pull --rebase failed — merge conflict?"
     Write-Output "Auto-Sync: FEHLER beim Pull (Merge-Konflikt?). Bitte manuell pruefen: cd ~/proggs; git status"
     exit 1
 }
@@ -58,7 +63,8 @@ if ($LASTEXITCODE -ne 0) {
 if ($stashed) {
     $null = git stash pop 2>&1
     if ($LASTEXITCODE -ne 0) {
-        Write-Output "Auto-Sync: WARNUNG — Stash-Restore hatte Konflikte. Bitte manuell pruefen: cd ~/proggs; git stash show"
+        Hook-LogWarn "stash pop had conflicts"
+        Write-Output "Auto-Sync: WARNUNG -- Stash-Restore hatte Konflikte. Bitte manuell pruefen: cd ~/proggs; git stash show"
     } else {
         Write-Output "Auto-Sync: Lokale Aenderungen wiederhergestellt."
     }
@@ -109,7 +115,8 @@ if (Test-Path $commandsDir) {
     }
     $totalCount = $commands.Count + $subdirs.Count
     if ($totalCount -gt 0) {
-        $synced += "Commands($($commands.Count)+$($subdirs.Count)dirs)"
+        $cmdLabel = "Commands($($commands.Count)+$($subdirs.Count) dirs)"
+        $synced += $cmdLabel
     }
 }
 
@@ -145,5 +152,6 @@ if (Test-Path $gitignore) {
 }
 
 $syncedStr = $synced -join " "
+Hook-Log "sync complete: $syncedStr"
 Write-Output "Auto-Sync: Lokale Konfiguration aktualisiert: $syncedStr"
-Write-Output "Auto-Sync: Hinweis — CLAUDE.md und Rules werden erst nach Neustart von Claude Code wirksam."
+Write-Output "Auto-Sync: Hinweis -- CLAUDE.md und Rules werden erst nach Neustart von Claude Code wirksam."

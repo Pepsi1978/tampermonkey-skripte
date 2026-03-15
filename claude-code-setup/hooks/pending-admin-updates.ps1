@@ -3,6 +3,8 @@
 # Run the generated script as admin when ready
 # Platform: Windows (PowerShell)
 
+. "$PSScriptRoot/hook-log.ps1"
+
 $OutputScript = Join-Path $env:USERPROFILE "Desktop" "install-updates.ps1"
 
 $commands = @()
@@ -52,6 +54,7 @@ foreach ($pkg in $securityPackages) {
 }
 
 if ($commands.Count -eq 0) {
+    Hook-Log "no pending admin updates"
     Write-Output "Pending-Admin-Updates: Keine ausstehenden Admin-Updates gefunden."
     exit 0
 }
@@ -74,4 +77,5 @@ Write-Host "Druecke eine Taste zum Schliessen..."
 "@
 
 $scriptContent | Out-File -FilePath $OutputScript -Encoding utf8
+Hook-Log "generated update script: $($commands.Count) updates ($($descriptions -join ', '))"
 Write-Output "Pending-Admin-Updates: Script erstellt auf Desktop ($($commands.Count) Updates: $($descriptions -join ', '))"

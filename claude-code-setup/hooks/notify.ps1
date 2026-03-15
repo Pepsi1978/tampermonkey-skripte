@@ -1,4 +1,7 @@
 # Dynamic notification for Windows: extracts the actual message from Claude Code
+
+. "$PSScriptRoot/hook-log.ps1"
+
 $input = [Console]::In.ReadToEnd()
 try {
     $json = $input | ConvertFrom-Json
@@ -7,6 +10,7 @@ try {
     $msg = $null
 }
 if (-not $msg) { $msg = "Braucht deine Aufmerksamkeit" }
+Hook-Log "notification: $($msg.Substring(0, [Math]::Min(80, $msg.Length)))"
 if ($msg.Length -gt 200) { $msg = $msg.Substring(0, 200) }
 
 # Windows Toast Notification
