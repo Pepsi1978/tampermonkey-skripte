@@ -597,6 +597,662 @@ fun literatureQuestions(): List<Question> = listOf(
         funFact = "Der Begriff stammt aus der Heraldik: Ein Wappenschild, der in der Mitte ein Miniaturbild desselben Schilds enthält."
     ),
 
+    // ── NEW EASY (difficulty = 1) ── 15 new questions ───────────────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb die Märchensammlung 'Kinder- und Hausmärchen'?",
+        answerA = "Hans Christian Andersen",
+        answerB = "Ludwig Tieck",
+        answerC = "Die Gebrüder Grimm",
+        answerD = "Wilhelm Busch",
+        correctAnswer = 2,
+        explanation = "Jacob und Wilhelm Grimm veröffentlichten ihre berühmte Märchensammlung erstmals 1812. Sie enthält Märchen wie Rotkäppchen, Hänsel und Gretel und Schneewittchen.",
+        difficulty = 1,
+        funFact = "Die erste Ausgabe enthielt 86 Märchen. Bis zur siebten Ausgabe (1857) war die Sammlung auf 200 Märchen angewachsen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Däne schrieb 'Das kleine Mädchen mit den Schwefelhölzern' und 'Die kleine Meerjungfrau'?",
+        answerA = "August Strindberg",
+        answerB = "Hans Christian Andersen",
+        answerC = "Henrik Ibsen",
+        answerD = "Søren Kierkegaard",
+        correctAnswer = 1,
+        explanation = "Hans Christian Andersen (1805–1875) war ein dänischer Dichter und Märchenautor, bekannt für Werke wie 'Die kleine Meerjungfrau', 'Das hässliche Entlein' und 'Thumbelina'.",
+        difficulty = 1,
+        funFact = "Andersen begann als armer Schusterssohn und wurde einer der meistübersetzten Schriftsteller der Welt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Autobiografie'?",
+        answerA = "Eine Biografie über eine berühmte Person, geschrieben von einem Journalisten",
+        answerB = "Ein Roman über das Leben einer fiktiven Figur",
+        answerC = "Die Lebensgeschichte einer Person, von ihr selbst geschrieben",
+        answerD = "Ein Tagebuch über tägliche Ereignisse",
+        correctAnswer = 2,
+        explanation = "Eine Autobiografie ist ein literarisches Werk, in dem eine Person ihr eigenes Leben beschreibt. Sie unterscheidet sich von der Biografie, die von einer anderen Person verfasst wird.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wie heißt der Zauberschüler in Goethes gleichnamigem Gedicht?",
+        answerA = "Das Gedicht nennt keinen Namen",
+        answerB = "Hans",
+        answerC = "Friedrich",
+        answerD = "Klaus",
+        correctAnswer = 0,
+        explanation = "In Goethes Ballade 'Der Zauberlehrling' (1797) wird der Lehrling nie beim Namen genannt. Er beschwört einen Besen, der Wasser trägt, kann den Zauber aber nicht stoppen.",
+        difficulty = 1,
+        funFact = "Walt Disney verfilmte den Zauberlehrling 1940 in 'Fantasia' mit Mickey Mouse in der Hauptrolle."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Tagebuch' als literarische Form?",
+        answerA = "Ein Brief an einen unbekannten Empfänger",
+        answerB = "Eine regelmäßige, datierte Aufzeichnung persönlicher Erlebnisse und Gedanken",
+        answerC = "Ein kurzer Roman über einen einzigen Tag",
+        answerD = "Eine Sammlung von Kurzgeschichten",
+        correctAnswer = 1,
+        explanation = "Das Tagebuch ist eine literarische Form, bei der persönliche Erlebnisse, Gedanken und Gefühle regelmäßig und datiert aufgezeichnet werden. Bekannte Beispiele sind Anne Franks Tagebuch.",
+        difficulty = 1,
+        funFact = "Anne Franks Tagebuch wurde in über 70 Sprachen übersetzt und ist eines der meistgelesenen Bücher der Welt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb den Roman 'Harry Potter und der Stein der Weisen'?",
+        answerA = "Roald Dahl",
+        answerB = "J.K. Rowling",
+        answerC = "C.S. Lewis",
+        answerD = "Philip Pullman",
+        correctAnswer = 1,
+        explanation = "J.K. Rowling veröffentlichte 1997 'Harry Potter und der Stein der Weisen', den ersten Band der siebenteiligen Harry-Potter-Reihe. Die Bücher wurden zu einem weltweiten Phänomen.",
+        difficulty = 1,
+        funFact = "Rowling schrieb das erste Harry-Potter-Buch teils in einem Edinburgher Café, während ihre Tochter schlief."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Reim'?",
+        answerA = "Eine Übertreibung in einem Gedicht",
+        answerB = "Der Gleichklang von Wörtern am Ende von Versen",
+        answerC = "Eine Pause in einem Gedicht",
+        answerD = "Die Anzahl der Silben in einer Zeile",
+        correctAnswer = 1,
+        explanation = "Ein Reim entsteht, wenn zwei oder mehr Wörter am Ende von Versen denselben oder ähnlichen Klang haben, zum Beispiel 'Haus' und 'Maus'. Es gibt verschiedene Reimschemata (Paarreim, Kreuzreim usw.).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer ist der Autor des Romans 'Der Herr der Ringe'?",
+        answerA = "C.S. Lewis",
+        answerB = "J.R.R. Tolkien",
+        answerC = "George R.R. Martin",
+        answerD = "Terry Pratchett",
+        correctAnswer = 1,
+        explanation = "J.R.R. Tolkien (John Ronald Reuel Tolkien) schrieb 'Der Herr der Ringe', veröffentlicht 1954–1955. Das epische Fantasy-Werk gilt als eines der einflussreichsten Bücher des 20. Jahrhunderts.",
+        difficulty = 1,
+        funFact = "Tolkien war Professor für Altenglisch in Oxford und erfand für seine Bücher mehrere vollständige Sprachen, darunter Elbisch."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Kurzgeschichte'?",
+        answerA = "Ein Roman unter 100 Seiten",
+        answerB = "Eine kurze Prosaerzählung, die einen einzelnen Moment oder Konflikt konzentriert darstellt",
+        answerC = "Ein Märchen für Kinder",
+        answerD = "Eine Zusammenfassung eines langen Romans",
+        correctAnswer = 1,
+        explanation = "Die Kurzgeschichte ist eine kurze Prosaform, die meist einen einzigen Konflikt oder Moment zeigt, ohne ausführliche Vorgeschichte. Sie endet oft offen. Die Gattung entstand im 19. Jahrhundert in Amerika.",
+        difficulty = 1,
+        funFact = "Edgar Allan Poe gilt als Begründer der modernen Kurzgeschichte."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Schweizer Schriftsteller schrieb 'Der Besuch der alten Dame'?",
+        answerA = "Max Frisch",
+        answerB = "Robert Walser",
+        answerC = "Friedrich Dürrenmatt",
+        answerD = "Peter Bichsel",
+        correctAnswer = 2,
+        explanation = "'Der Besuch der alten Dame' (1956) ist ein Theaterstück von Friedrich Dürrenmatt. Die reiche Clara Zachanassian kehrt in ihre Heimatstadt zurück und bietet Geld für die Ermordung ihres einstigen Geliebten.",
+        difficulty = 1,
+        funFact = "Dürrenmatt nannte das Stück eine 'tragische Komödie' — es endet tödlich, aber mit bitter-komischen Elementen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Fabel'?",
+        answerA = "Ein Lehrgedicht über Naturphänomene",
+        answerB = "Eine kurze Erzählung, meist mit Tieren als Figuren, die eine moralische Botschaft vermittelt",
+        answerC = "Eine lange Verserzählung über Helden",
+        answerD = "Ein Märchen ohne Hexen und Zauberer",
+        correctAnswer = 1,
+        explanation = "Die Fabel ist eine kurze allegorische Erzählung, meist mit Tieren als handelnden Figuren, die menschliche Eigenschaften zeigen. Sie endet mit einer moralischen Aussage. Bekannte Autoren: Äsop, La Fontaine, Lessing.",
+        difficulty = 1,
+        funFact = "Äsop war angeblich ein griechischer Sklave aus dem 6. Jahrhundert v. Chr. — ob er wirklich gelebt hat, ist historisch umstritten."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher russische Autor schrieb 'Krieg und Frieden'?",
+        answerA = "Fjodor Dostojewski",
+        answerB = "Anton Tschechow",
+        answerC = "Maxim Gorki",
+        answerD = "Lew Tolstoi",
+        correctAnswer = 3,
+        explanation = "'Krieg und Frieden' (1869) ist ein epischer Roman von Lew Tolstoi. Er schildert das russische Leben zur Zeit der napoleonischen Kriege und gilt als eines der größten Werke der Weltliteratur.",
+        difficulty = 1,
+        funFact = "Das Buch hat über 1.200 Seiten und mehr als 500 Figuren — Tolstoi schrieb sieben vollständige Überarbeitungen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bedeutet 'Prosa' in der Literatur?",
+        answerA = "Literatur in Versen mit festen Reimschemata",
+        answerB = "Ältere Bezeichnung für dramatische Texte",
+        answerC = "Nicht-gebundene Sprache ohne Versmaß oder Reim — die normale Schreibweise",
+        answerD = "Wissenschaftliche Fachliteratur",
+        correctAnswer = 2,
+        explanation = "Prosa ist die normale, nicht versgebundene Sprache ohne festes Metrum oder Reimschema. Romane, Kurzgeschichten und Erzählungen sind Prosawerke — im Gegensatz zur Lyrik (Gedichte) und Dramatik (Bühnentexte).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb den Roman 'Der Alchimist' (O Alquimista)?",
+        answerA = "Gabriel García Márquez",
+        answerB = "Pablo Coelho",
+        answerC = "Jorge Luis Borges",
+        answerD = "Isabel Allende",
+        correctAnswer = 1,
+        explanation = "'Der Alchimist' (1988) ist ein Roman des brasilianischen Autors Paulo Coelho. Er erzählt von einem andalusischen Hirtenbuben auf der Suche nach seinem Lebensschatz.",
+        difficulty = 1,
+        funFact = "Das Buch wurde in über 80 Sprachen übersetzt und hat sich weltweit über 65 Millionen Mal verkauft."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Romanfigur lebte bei Baker Street 221b in London?",
+        answerA = "Hercule Poirot",
+        answerB = "Philip Marlowe",
+        answerC = "Sherlock Holmes",
+        answerD = "James Bond",
+        correctAnswer = 2,
+        explanation = "Sherlock Holmes, der berühmte Detektiv aus den Geschichten von Arthur Conan Doyle, wohnte in der Baker Street 221b in London zusammen mit seinem Freund Dr. Watson.",
+        difficulty = 1,
+        funFact = "In der Baker Street gibt es heute ein Sherlock-Holmes-Museum — obwohl das Haus 221b zur Zeit Doyles gar nicht existierte, da die Nummernvergabe damals nur bis 85 reichte."
+    ),
+
+    // ── NEW MEDIUM (difficulty = 2) ── 20 new questions ─────────────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist der Unterschied zwischen einem 'Paarreim' und einem 'Kreuzreim'?",
+        answerA = "Paarreim: AABB (je zwei Zeilen reimen), Kreuzreim: ABAB (abwechselnd reimende Zeilen)",
+        answerB = "Paarreim: ABBA, Kreuzreim: AABB",
+        answerC = "Paarreim: nur männliche Reime, Kreuzreim: nur weibliche Reime",
+        answerD = "Es ist kein Unterschied — beide Begriffe bedeuten dasselbe",
+        correctAnswer = 0,
+        explanation = "Beim Paarreim (AABB) reimen immer zwei aufeinanderfolgende Zeilen. Beim Kreuzreim (ABAB) reimen die erste und dritte sowie die zweite und vierte Zeile alternierend.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Effi Briest' (1895)?",
+        answerA = "Theodor Storm",
+        answerB = "Theodor Fontane",
+        answerC = "Wilhelm Raabe",
+        answerD = "Gottfried Keller",
+        correctAnswer = 1,
+        explanation = "'Effi Briest' ist ein Roman von Theodor Fontane, der als sein bedeutendstes Werk gilt. Es erzählt vom Schicksal der jungen Effi, die einen viel älteren Mann heiratet und eine Affäre eingeht.",
+        difficulty = 2,
+        funFact = "Fontane veröffentlichte seinen ersten Roman erst mit 57 Jahren — 'Effi Briest' schrieb er im Alter von 75 Jahren."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was versteht man unter einem 'Antihelden' in der Literatur?",
+        answerA = "Einen Bösewicht, der am Ende bestraft wird",
+        answerB = "Eine Hauptfigur, der die klassischen Heldeneigenschaften wie Mut, Stärke und Moral fehlen",
+        answerC = "Einen Nebencharakter, der wichtiger ist als der Held",
+        answerD = "Einen Helden, der am Ende scheitert",
+        correctAnswer = 1,
+        explanation = "Ein Antiheld ist ein Protagonist, dem traditionelle Heldentugenden fehlen. Er kann feige, moralisch zweideutig, schwach oder kriminell sein. Bekannte Antiheldem: Raskolnikow (Dostojewski), Holden Caulfield (Salinger).",
+        difficulty = 2,
+        funFact = "Don Quijote von Cervantes gilt als einer der ersten großen Antiheldem der Weltliteratur."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb das Theaterstück 'Warten auf Godot' (1953)?",
+        answerA = "Jean-Paul Sartre",
+        answerB = "Albert Camus",
+        answerC = "Samuel Beckett",
+        answerD = "Eugène Ionesco",
+        correctAnswer = 2,
+        explanation = "'Warten auf Godot' ist ein Theaterstück des irisch-französischen Autors Samuel Beckett. Es gilt als Schlüsselwerk des absurden Theaters: Zwei Figuren warten auf jemanden, der nie kommt.",
+        difficulty = 2,
+        funFact = "Beckett schrieb das Stück auf Französisch, obwohl Englisch seine Muttersprache war, um 'ohne Stil zu schreiben'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet der Begriff 'magischer Realismus' in der Literatur?",
+        answerA = "Science-Fiction mit realistischen Elementen",
+        answerB = "Fantasy-Literatur mit mittelalterlichem Setting",
+        answerC = "Eine Erzählweise, in der magische Elemente selbstverständlich in eine realistische Welt eingebettet sind",
+        answerD = "Märchenliteratur für Erwachsene",
+        correctAnswer = 2,
+        explanation = "Magischer Realismus ist eine literarische Strömung, besonders in der lateinamerikanischen Literatur, bei der übernatürliche Ereignisse als völlig normal behandelt werden. Hauptvertreter: Gabriel García Márquez.",
+        difficulty = 2,
+        funFact = "García Márquez' 'Hundert Jahre Einsamkeit' gilt als das bekannteste Werk des magischen Realismus."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher österreichische Dichter schrieb 'Rainer Maria Rilke'?",
+        answerA = "Franz Kafka",
+        answerB = "Hugo von Hofmannsthal",
+        answerC = "Robert Musil",
+        answerD = "Rainer Maria Rilke ist selbst ein Autor — bekannt für die 'Duineser Elegien'",
+        correctAnswer = 3,
+        explanation = "Rainer Maria Rilke (1875–1926) war selbst ein bedeutender deutschsprachiger Lyriker, geboren in Prag. Sein Hauptwerk sind die 'Duineser Elegien' (1922) und die 'Sonette an Orpheus'.",
+        difficulty = 2,
+        funFact = "Rilke schrieb die ersten zwei 'Duineser Elegien' in einer einzigen inspirationsreichen Nacht auf Schloss Duino am Adriatischen Meer."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Dystopie' in der Literatur?",
+        answerA = "Eine Utopie, die sich langsam entfaltet",
+        answerB = "Eine fiktive Zukunftsgesellschaft, in der schreckliche, totalitäre oder unmenschliche Zustände herrschen",
+        answerC = "Eine Satire auf die gegenwärtige Politik",
+        answerD = "Ein pessimistischer Zukunftsroman ohne Science-Fiction-Elemente",
+        correctAnswer = 1,
+        explanation = "Eine Dystopie (Gegenteil der Utopie) ist eine negative Zukunftsvision: eine Gesellschaft mit Unterdrückung, Überwachung oder moralischem Verfall. Beispiele: '1984' (Orwell), 'Schöne neue Welt' (Huxley), 'Die Erzählung der Magd' (Atwood).",
+        difficulty = 2,
+        funFact = "Thomas Morus prägte 1516 den Begriff 'Utopie' (griech.: Nirgendort). Eine 'Dystopie' ist wörtlich ein 'schlechter Ort'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welches Werk von Bertolt Brecht enthält das Lied 'Mack the Knife' (Die Moritat von Mackie Messer)?",
+        answerA = "Mutter Courage und ihre Kinder",
+        answerB = "Der gute Mensch von Sezuan",
+        answerC = "Die Dreigroschenoper",
+        answerD = "Leben des Galilei",
+        correctAnswer = 2,
+        explanation = "'Die Dreigroschenoper' (1928) von Bertolt Brecht (Musik: Kurt Weill) ist eines der erfolgreichsten deutschen Theaterstücke. Die 'Moritat von Mackie Messer' ist das bekannteste Lied daraus.",
+        difficulty = 2,
+        funFact = "Louis Armstrong, Frank Sinatra und Bobby Darin haben 'Mack the Knife' aufgenommen — es wurde zu einem Jazzstandard."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist 'Naturalismus' als literarische Epoche?",
+        answerA = "Eine Bewegung, die Natur und Landleben idealisiert",
+        answerB = "Eine literarische Strömung (spätes 19. Jh.), die das Leben exakt und wissenschaftlich darstellt, besonders das Elend der Unterschicht",
+        answerC = "Eine Renaissance-Bewegung zur Wiederentdeckung der Antike",
+        answerD = "Eine moderne Richtung, die Naturmetaphern bevorzugt",
+        correctAnswer = 1,
+        explanation = "Der Naturalismus (ca. 1880–1900) wollte die Wirklichkeit so exakt wie möglich abbilden, beeinflusst von Darwin und Zola. Deutsche Vertreter: Gerhart Hauptmann ('Die Weber'), Arno Holz.",
+        difficulty = 2,
+        funFact = "Arno Holz und Johannes Schlaf entwickelten die 'konsequente Sekunde' — Literatur sollte im selben Tempo ablaufen wie das reale Leben."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb den Roman 'Der Name der Rose' (1980)?",
+        answerA = "Umberto Eco",
+        answerB = "Carlos Ruiz Zafón",
+        answerC = "Dan Brown",
+        answerD = "Ken Follett",
+        correctAnswer = 0,
+        explanation = "'Der Name der Rose' ist ein Mittelalter-Kriminalroman des italienischen Semiotik-Professors Umberto Eco. Der Franziskanermönch William von Baskerville untersucht mysteriöse Todesfälle in einer Abtei.",
+        difficulty = 2,
+        funFact = "Eco nannte seinen Detektiv 'William von Baskerville' als Anspielung auf Sherlock Holmes' Abenteuer 'Der Hund von Baskerville'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist das 'Epische Theater' nach Bertolt Brecht?",
+        answerA = "Theater mit Schauspielern auf einer sehr großen Bühne",
+        answerB = "Theaterform, die den Zuschauer zur kritischen Reflexion anregt, indem sie Illusionen bricht (Verfremdungseffekt)",
+        answerC = "Historische Dramen über antike Helden",
+        answerD = "Improvisationstheater ohne festes Skript",
+        correctAnswer = 1,
+        explanation = "Brechts Episches Theater will den Zuschauer nicht emotional mitreißen, sondern zum Nachdenken bringen. Der 'Verfremdungseffekt' (V-Effekt) unterbricht die Illusion: Schauspieler sprechen das Publikum an, Schilder erklären die Handlung.",
+        difficulty = 2,
+        funFact = "Brecht ließ Schauspieler auf der Bühne rauchen, um die theatralische Illusion zu durchbrechen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Don Quijote de la Mancha' (1605)?",
+        answerA = "Lope de Vega",
+        answerB = "Francisco de Quevedo",
+        answerC = "Miguel de Cervantes",
+        answerD = "Garcilaso de la Vega",
+        correctAnswer = 2,
+        explanation = "'Don Quijote de la Mancha' von Miguel de Cervantes (1605/1615) gilt als erster moderner Roman der Weltliteratur. Der adlige Don Quijote hält sich für einen Ritter und kämpft gegen Windmühlen.",
+        difficulty = 2,
+        funFact = "Cervantes schrieb den ersten Teil von 'Don Quijote' angeblich im Gefängnis, wo er wegen Schulden einsaß."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist der 'Expressionismus' in der deutschen Literatur?",
+        answerA = "Eine naturalistische Strömung mit sozialkritischem Fokus",
+        answerB = "Eine literarische Bewegung (ca. 1910–1925), die innere Zustände und Gefühle stark übertrieben und verzerrt darstellt",
+        answerC = "Eine Form des Impressionismus mit lyrischen Naturbeschreibungen",
+        answerD = "Eine politische Literaturbewegung der Nachkriegszeit",
+        correctAnswer = 1,
+        explanation = "Der literarische Expressionismus (ca. 1910–1925) drückt innere Welten, Angst und Zerrissenheit durch extreme Bilder und verzerrte Sprache aus. Vertreter: Georg Trakl, Ernst Toller, Else Lasker-Schüler.",
+        difficulty = 2,
+        funFact = "Georg Trakl schrieb seine expressionistischen Gedichte als Sanitäter im Ersten Weltkrieg. Er starb 1914 an einer Kokainüberdosis."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb die Erzählung 'Der Tod in Venedig' (1912)?",
+        answerA = "Stefan Zweig",
+        answerB = "Arthur Schnitzler",
+        answerC = "Robert Musil",
+        answerD = "Thomas Mann",
+        correctAnswer = 3,
+        explanation = "'Der Tod in Venedig' (1912) ist eine Novelle von Thomas Mann. Der alternde Schriftsteller Gustav von Aschenbach reist nach Venedig und verfällt in eine obsessive Leidenschaft für den jungen Tadzio.",
+        difficulty = 2,
+        funFact = "Luchino Visconti verfilmte die Novelle 1971 — mit Mahlers Adagietto als unvergesslichem Soundtrack."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Monolog' in der Literatur?",
+        answerA = "Ein Gespräch zwischen zwei Figuren",
+        answerB = "Eine lange Erzählpassage in Prosa",
+        answerC = "Eine längere Rede einer einzelnen Figur, an sich selbst oder das Publikum gerichtet",
+        answerD = "Eine Zusammenfassung am Ende eines Aktes",
+        correctAnswer = 2,
+        explanation = "Ein Monolog ist eine Rede einer einzelnen Person ohne Antwort. Im Drama ermöglicht er Einblick in innere Gedanken. Berühmtestes Beispiel: Hamlets 'Sein oder Nichtsein' in Shakespeares 'Hamlet'.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Roman von Hermann Hesse beschreibt eine indisch-spirituelle Suche?",
+        answerA = "Narciss und Goldmund",
+        answerB = "Siddhartha",
+        answerC = "Das Glasperlenspiel",
+        answerD = "Peter Camenzind",
+        correctAnswer = 1,
+        explanation = "'Siddhartha' (1922) von Hermann Hesse erzählt die spirituelle Reise eines jungen Brahmanen im alten Indien auf der Suche nach Erleuchtung. Das Buch wurde besonders in den 1960er Jahren ein Kultbuch.",
+        difficulty = 2,
+        funFact = "Hesse gewann 1946 den Nobelpreis für Literatur, unter anderem für 'Das Glasperlenspiel'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Novelle' als literarische Gattung?",
+        answerA = "Ein sehr kurzes Gedicht in drei Strophen",
+        answerB = "Ein Kurzroman mit einer einzigen unerhörten Begebenheit und strikter Handlungsführung",
+        answerC = "Ein dramatischer Einakter",
+        answerD = "Ein historischer Roman über reale Ereignisse",
+        correctAnswer = 1,
+        explanation = "Die Novelle ist eine mittellange Prosaform, die sich um eine einzige außergewöhnliche ('unerhörte') Begebenheit dreht. Sie ist straffer als ein Roman. Goethe formulierte: 'Eine Novelle ist eine sich ereignete unerhörte Begebenheit.'",
+        difficulty = 2,
+        funFact = "Kafkas 'Die Verwandlung', Kleists 'Michael Kohlhaas' und Storms 'Der Schimmelreiter' gelten als Meisterwerke der deutschen Novelle."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Schriftstellerin schrieb 'Die Erzählung der Magd' (The Handmaid's Tale)?",
+        answerA = "Toni Morrison",
+        answerB = "Doris Lessing",
+        answerC = "Margaret Atwood",
+        answerD = "Ursula K. Le Guin",
+        correctAnswer = 2,
+        explanation = "'Die Erzählung der Magd' (1985) ist ein dystopischer Roman der Kanadierin Margaret Atwood. In der totalitären Republik Gilead werden Frauen versklavt und als Gebärmaschinen benutzt.",
+        difficulty = 2,
+        funFact = "Atwood betont, dass alle im Buch beschriebenen Unterdrückungsmaßnahmen an realen historischen Ereignissen angelehnt sind."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bedeutet 'Poesie' im weiteren Sinne?",
+        answerA = "Ausschließlich gereimte Verse",
+        answerB = "Nur Lyrik ohne jede Prosa",
+        answerC = "Sprachliche Kunst mit besonderem Rhythmus, Klang und Bildsprache — kann Lyrik, aber auch Prosa umfassen",
+        answerD = "Mittelhochdeutsche Versform aus dem Minnesang",
+        correctAnswer = 2,
+        explanation = "Poesie bezeichnet im weiteren Sinne literarische Kunstsprache mit besonderer Wirkung durch Rhythmus, Klang und Metaphorik. Im engeren Sinne ist Poesie gleichbedeutend mit Lyrik (Gedichte).",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb die Erzählsammlung 'Tausendundeine Nacht'?",
+        answerA = "Omar Khayyam",
+        answerB = "Rumi",
+        answerC = "Der Autor ist unbekannt — es ist eine anonyme arabisch-persische Sammlung",
+        answerD = "Al-Jahiz",
+        correctAnswer = 2,
+        explanation = "'Tausendundeine Nacht' ist eine Sammlung arabischer, persischer und indischer Märchen und Erzählungen, zusammengestellt zwischen dem 8. und 14. Jahrhundert. Die Autorenschaft ist anonym und kollektiv.",
+        difficulty = 2,
+        funFact = "Scheherazade, die Haupterzählerin, rettet sich vor dem Hinrichtungsbefehl des Königs, indem sie jeden Abend eine Geschichte beginnt — und am Höhepunkt abbricht."
+    ),
+
+    // ── NEW HARD (difficulty = 3) ── 15 new questions ───────────────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist der 'Verfremdungseffekt' (V-Effekt) in Brechts Dramaturgie?",
+        answerA = "Eine Bühnentechnik, bei der Schauspieler fremde Sprachen sprechen",
+        answerB = "Ein Mittel, das dem Zuschauer das Vertraute fremd macht, um emotionale Distanz und kritisches Nachdenken zu erzwingen",
+        answerC = "Die Verwendung von Fremdwörtern und Fachbegriffen im Dialog",
+        answerD = "Ein Beleuchtungseffekt auf der Bühne",
+        correctAnswer = 1,
+        explanation = "Brechts V-Effekt (Verfremdungseffekt) verhindert die emotionale Einfühlung des Zuschauers. Mittel dazu: Schauspieler treten aus der Rolle, Schilder kommentieren die Handlung, Musik unterbricht — Ziel ist kritisches Denken statt Mitfühlen.",
+        difficulty = 3,
+        funFact = "Brecht ließ Theaterzettel verteilen, die die Handlung vorher verraten — damit das Publikum nicht gespannt mitfiebert, sondern analysiert."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Gattung bezeichnet 'Minnesang' im Mittelalter?",
+        answerA = "Religiöse Kirchenlieder des Hochmittelalters",
+        answerB = "Höfische Liebeslyrik des 12. bis 14. Jahrhunderts, in der Ritter ihre Minneherrin besingen",
+        answerC = "Volkslieder aus dem ländlichen Bereich des 15. Jahrhunderts",
+        answerD = "Klagelieder über verstorbene Helden",
+        correctAnswer = 1,
+        explanation = "Minnesang ist höfische Liebeslyrik des deutschen Mittelalters (ca. 1150–1350). Der Minnesänger verehrt seine 'Minneherrin' aus der Ferne — die Liebe bleibt meist unerfüllt. Bekanntester Vertreter: Walther von der Vogelweide.",
+        difficulty = 3,
+        funFact = "Das Wort 'Minne' bedeutete im Mittelhochdeutschen nicht nur 'Liebe', sondern auch 'liebevolles Gedenken' und 'Erinnerung'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die 'Hermeneutik' als literaturwissenschaftliche Methode?",
+        answerA = "Die statistische Analyse von Texthäufigkeiten",
+        answerB = "Die Lehre vom Verstehen und Interpretieren von Texten, insbesondere des Zusammenhangs zwischen Teil und Ganzem (hermeneutischer Zirkel)",
+        answerC = "Die vergleichende Analyse von Texten verschiedener Sprachen",
+        answerD = "Die Untersuchung von Druckfehlern in historischen Manuskripten",
+        correctAnswer = 1,
+        explanation = "Die Hermeneutik (von Hermes, dem Götterboten) ist die Kunst des Textverstehens. Der 'hermeneutische Zirkel' besagt: Um ein Detail zu verstehen, muss man das Ganze kennen — und umgekehrt. Friedrich Schleiermacher und Wilhelm Dilthey prägten die moderne Hermeneutik.",
+        difficulty = 3,
+        funFact = "Hans-Georg Gadamer erweiterte die Hermeneutik zur 'philosophischen Hermeneutik' — Verstehen ist immer durch den eigenen historischen Horizont geprägt ('Horizontverschmelzung')."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Roman des 20. Jahrhunderts gilt als Schlüsselwerk der lateinamerikanischen Literatur und enthält den 'Boom' dieser Epoche?",
+        answerA = "Pedro Páramo von Juan Rulfo",
+        answerB = "Hundert Jahre Einsamkeit von Gabriel García Márquez",
+        answerC = "Die Verwandlung von Franz Kafka",
+        answerD = "Ficciones von Jorge Luis Borges",
+        correctAnswer = 1,
+        explanation = "'Hundert Jahre Einsamkeit' (1967) von Gabriel García Márquez gilt als Hauptwerk des lateinamerikanischen 'Boom' und des magischen Realismus. Es erzählt die Geschichte der Familie Buendía in Macondo über sieben Generationen.",
+        difficulty = 3,
+        funFact = "García Márquez hielt das fertige Manuskript in der Hand, merkte dass er kein Geld für Porto hatte — seine Frau verpfändete den Kühlschrank, damit der Roman abgeschickt werden konnte."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Ekphrasis' in der Literatur?",
+        answerA = "Die schriftliche Beschreibung eines Kunstwerks (Gemälde, Skulptur) mit literarischen Mitteln",
+        answerB = "Ein literarischer Text, der bewusst keine Bilder verwendet",
+        answerC = "Die Übertragung eines literarischen Werks in ein anderes Medium",
+        answerD = "Eine Rede im antiken Drama, die die Vorgeschichte erklärt",
+        correctAnswer = 0,
+        explanation = "Ekphrasis (griech.: Beschreibung) ist die detaillierte literarische Beschreibung eines Kunstwerks. Bekanntestes Beispiel: Homers Beschreibung von Achilles' Schild in der Ilias. Keats' 'Ode on a Grecian Urn' ist ein modernes Beispiel.",
+        difficulty = 3,
+        funFact = "Die Ekphrasis war in der antiken Rhetorik eine Übung für Redner, die Bilder so lebendig wie möglich mit Worten zu beschreiben."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welches Werk Kafkas beschreibt eine kafkaeskе Bürokratie in einer unterirdischen Festungsanlage?",
+        answerA = "Das Schloss",
+        answerB = "Der Prozess",
+        answerC = "Amerika (Der Verschollene)",
+        answerD = "In der Strafkolonie",
+        correctAnswer = 0,
+        explanation = "'Das Schloss' (posthum 1926) ist Kafkas letzter, unvollendeter Roman. Der Landvermesser K. versucht vergeblich, Zugang zum Schloss zu erhalten, das eine undurchdringliche Bürokratie symbolisiert.",
+        difficulty = 3,
+        funFact = "Kafka hörte mitten in einem Satz auf zu schreiben — das Schloss bricht ab, ohne dass K. sein Ziel je erreicht. Laut Max Brod wollte Kafka K. 'erschöpft von der Bürokratie sterben' lassen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was beschreibt der Begriff 'Epochenwende' in der Literaturgeschichte am Übergang von Klassik zu Romantik um 1800?",
+        answerA = "Die Ablösung des Barocks durch die Aufklärung",
+        answerB = "Den Wandel von rationaler Harmonieideal und Humanismus (Klassik) hin zu Irrationalismus, Natursehnsucht, Nacht-Symbolik und Subjektivismus (Romantik)",
+        answerC = "Die Einführung des Drucks als neues Publikationsmedium",
+        answerD = "Die Verbreitung des Realismus als dominante Schreibweise",
+        correctAnswer = 1,
+        explanation = "Die Romantik (ca. 1795–1848) wandte sich gegen die Vernunftideal der Klassik und betonte Gefühl, Nacht, Traum, das Unendliche. Schlüsselfiguren: Novalis, E.T.A. Hoffmann, Joseph von Eichendorff.",
+        difficulty = 3,
+        funFact = "Novalis' 'Blaue Blume' wurde zum Symbol der Romantik — ein unerreichbares Sehnsuchtssymbol für das Absolute."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer verfasste das Drama 'Woyzeck' (Fragment, 1837)?",
+        answerA = "Heinrich von Kleist",
+        answerB = "Georg Büchner",
+        answerC = "Christian Dietrich Grabbe",
+        answerD = "Johann Nestroy",
+        correctAnswer = 1,
+        explanation = "'Woyzeck' von Georg Büchner ist ein fragmentarisches Drama über einen armen Soldaten, der seine Frau aus Eifersucht tötet. Es gilt als erstes sozialkritisches Drama der deutschen Literatur.",
+        difficulty = 3,
+        funFact = "Büchner starb mit nur 23 Jahren an Typhus, bevor er das Stück vollenden konnte. Alban Berg vertonte es 1925 als Oper 'Wozzeck'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist das literarische Konzept der 'Unzuverlässigen Erzählung' (unreliable narration)?",
+        answerA = "Eine Erzählweise, bei der Zeitsprünge die Handlung unverständlich machen",
+        answerB = "Ein Erzähler, dessen Bericht durch psychische Einschränkungen, Vorurteile oder Lügen bewusst oder unbewusst verzerrt ist",
+        answerC = "Ein auktorialer Erzähler mit unvollständigem Wissen über die Figuren",
+        answerD = "Eine Ich-Erzählung, die nachträglich erzählt wird",
+        correctAnswer = 1,
+        explanation = "Der unzuverlässige Erzähler ist eine Figur, deren Bericht der Leser nicht vollständig vertrauen kann. Gründe: mentale Instabilität, Naivität, Eigeninteresse oder bewusste Lüge. Wayne C. Booth prägte den Begriff 1961.",
+        difficulty = 3,
+        funFact = "Stevens in Kazuo Ishiguros 'Was vom Tage übrig blieb' ist ein klassischer unzuverlässiger Erzähler — er täuscht sich systematisch über die eigene Vergangenheit."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Der Mann ohne Eigenschaften' (1930–1943)?",
+        answerA = "Hugo von Hofmannsthal",
+        answerB = "Arthur Schnitzler",
+        answerC = "Robert Musil",
+        answerD = "Hermann Broch",
+        correctAnswer = 2,
+        explanation = "'Der Mann ohne Eigenschaften' ist Robert Musils unvollendetes Hauptwerk, eines der bedeutendsten Romane des 20. Jahrhunderts. Es spielt im Wien des Jahres 1913 und untersucht philosophisch die Identität des modernen Menschen.",
+        difficulty = 3,
+        funFact = "Musil arbeitete über 20 Jahre an dem Roman und hinterließ beim Tod 1942 mehrere tausend Seiten unveröffentlichtes Material."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die literarische Epoche der 'Aufklärung' in Deutschland (ca. 1720–1785)?",
+        answerA = "Eine religiöse Bewegung zur Verbreitung der Bibel",
+        answerB = "Eine Epoche, die Vernunft, kritisches Denken und Bildung als Mittel zur menschlichen Emanzipation betonte",
+        answerC = "Eine ästhetische Bewegung, die antike Stilideale wiederentdeckte",
+        answerD = "Eine Reaktion auf den Dreißigjährigen Krieg mit pessimistischer Weltsicht",
+        correctAnswer = 1,
+        explanation = "Die Aufklärung ('Sapere aude!' — Wage es, weise zu sein, Kant) betonte Vernunft, Kritik an Aberglauben und Kirche sowie die Würde des Menschen. Literarische Vertreter: Gotthold Ephraim Lessing, Christoph Martin Wieland.",
+        difficulty = 3,
+        funFact = "Immanuel Kants Schrift 'Was ist Aufklärung?' (1784) beginnt mit: 'Aufklärung ist der Ausgang des Menschen aus seiner selbst verschuldeten Unmündigkeit.'"
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Literaturnobelpreisträger schrieb 'Schuld und Sühne' (Prestuplenie i nakazanie)?",
+        answerA = "Leo Tolstoi",
+        answerB = "Ivan Turgenev",
+        answerC = "Anton Tschechow",
+        answerD = "Fjodor Dostojewski",
+        correctAnswer = 3,
+        explanation = "'Schuld und Sühne' (1866) von Fjodor Dostojewski ist einer der bedeutendsten psychologischen Romane der Weltliteratur. Der Student Raskolnikow tötet eine Pfandleiherin — und kämpft mit seiner Schuld.",
+        difficulty = 3,
+        funFact = "Dostojewski schrieb den Roman in acht Monaten, um Schulden zu bezahlen. Er diktierte der Stenografin Anna Snitkina, die er später heiratete."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet 'Biedermeier' als literarische Epoche (ca. 1815–1848)?",
+        answerA = "Eine rebellische Literaturbewegung gegen den Adel",
+        answerB = "Eine Zeit innerer Rückzug ins Private, Häuslichkeit und Naturliebe als Reaktion auf politische Unterdrückung nach dem Wiener Kongress",
+        answerC = "Die Hauptphase der deutschen Klassik mit Goethe und Schiller",
+        answerD = "Eine proletarische Literaturbewegung der Frühindustrialisierung",
+        correctAnswer = 1,
+        explanation = "Das Biedermeier (1815–1848) war eine Zeit politischer Repression (Metternich). Die Literatur zog sich ins Private zurück: Häuslichkeit, Natur, stille Resignation. Vertreter: Adalbert Stifter, Franz Grillparzer, Eduard Mörike.",
+        difficulty = 3,
+        funFact = "Der Begriff 'Biedermeier' entstand aus einer Parodie: 'Gottlieb Biedermaier' war eine Figur eines spießbürgerlichen, harmlosen Dichters — ursprünglich eine Satire."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Autorin erhielt 2004 den Literaturnobelpreis für ihren 'musikalischen Fluss von Stimmen und Gegenstimmen'?",
+        answerA = "Herta Müller",
+        answerB = "Doris Lessing",
+        answerC = "Elfriede Jelinek",
+        answerD = "Christa Wolf",
+        correctAnswer = 2,
+        explanation = "Die österreichische Autorin Elfriede Jelinek erhielt 2004 den Nobelpreis für Literatur. Bekannte Werke: 'Die Klavierspielerin', 'Lust'. Ihre Texte sind oft provokativ-feministisch und gesellschaftskritisch.",
+        difficulty = 3,
+        funFact = "Jelinek nahm den Nobelpreis nicht persönlich entgegen — sie litt an einer sozialen Phobie und schickte eine Videobotschaft nach Stockholm."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die 'Rahmenerzählung' als narratives Mittel?",
+        answerA = "Die Zusammenfassung eines Romans am Anfang und Ende",
+        answerB = "Eine äußere Erzählung, die eine oder mehrere Binnengeschichten umschließt und einbettet",
+        answerC = "Die Technik, einen Roman mit demselben Satz zu beginnen und zu enden",
+        answerD = "Ein Prolog, der die Handlung einleitet",
+        correctAnswer = 1,
+        explanation = "Die Rahmenerzählung hat eine äußere Handlung (Rahmen), in die eine oder mehrere Geschichten eingebettet sind (Binnenerzählungen). Berühmte Beispiele: Boccaccios 'Decameron', Storms 'Der Schimmelreiter', 'Tausendundeine Nacht'.",
+        difficulty = 3,
+        funFact = "In Storms 'Der Schimmelreiter' gibt es sogar drei Erzählebenen — eine Rahmenerzählung, eine zweite Ebene und die eigentliche Geschichte des Deichgrafen Hauke Haien."
+    ),
+
     // ── MASTER (difficulty = 5) ── ~5 questions ──────────────────────────────
 
     Question(
