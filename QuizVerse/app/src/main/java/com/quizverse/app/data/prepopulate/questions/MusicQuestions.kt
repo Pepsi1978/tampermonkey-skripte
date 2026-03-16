@@ -1318,5 +1318,830 @@ fun musicQuestions(): List<Question> = listOf(
         explanation = "New Complexity (entstanden ca. 1970–80) schreibt extrem detaillierte Partituren mit polyrhythmischen Schichten, mikrodynamischen Abstufungen und erweiterten Spieltechniken – die Komplexität selbst wird zum ästhetischen Prinzip.",
         difficulty = 5,
         funFact = "Ferneyhoughs Werke sind so schwer notiert, dass einige Musiker argumentieren, sie seien nur annähernd ausführbar – die 'Unrealisierbarkeit' ist bewusst einkalkuliert."
+    ),
+
+    // ── EASY BATCH 2 (1) ── 25 new questions ────────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie viele Musiker spielen in einem Duo?",
+        answerA = "1",
+        answerB = "2",
+        answerC = "3",
+        answerD = "4",
+        correctAnswer = 1,
+        explanation = "Ein Duo besteht aus genau zwei Musikern oder Sängern, die gemeinsam auftreten oder musizieren.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Sängerin ist bekannt für den Hit 'Shape of You'?",
+        answerA = "Justin Bieber",
+        answerB = "Ed Sheeran",
+        answerC = "Sam Smith",
+        answerD = "Charlie Puth",
+        correctAnswer = 1,
+        explanation = "'Shape of You' (2017) ist ein Welthit des britischen Sänger-Songwriters Ed Sheeran. Er wurde mit dem Grammy für Best Pop Solo Performance ausgezeichnet.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Zahl steht im Notensystem oben im Taktzeichen für den 4/4-Takt?",
+        answerA = "2",
+        answerB = "8",
+        answerC = "4",
+        answerD = "6",
+        correctAnswer = 2,
+        explanation = "Im 4/4-Takt steht die obere Zahl '4' für vier Schläge pro Takt und die untere '4' für die Notenwert-Einheit (Viertelnote).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument ist ein Blasinstrument aus Metall?",
+        answerA = "Oboe",
+        answerB = "Klarinette",
+        answerC = "Trompete",
+        answerD = "Fagott",
+        correctAnswer = 2,
+        explanation = "Die Trompete ist ein Blechblasinstrument (Aerophon). Oboe, Klarinette und Fagott sind Holzblasinstrumente, auch wenn Klarinette und Fagott oft aus Holz gefertigt sind.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt der berühmte Sänger von U2?",
+        answerA = "Bono",
+        answerB = "Sting",
+        answerC = "Chris Martin",
+        answerD = "Brandon Flowers",
+        correctAnswer = 0,
+        explanation = "Bono (Paul David Hewson) ist der Leadsänger der irischen Rockband U2, die 1976 in Dublin gegründet wurde.",
+        difficulty = 1,
+        funFact = "U2 ist eine der meistverkauften Bands aller Zeiten mit über 170 Millionen verkauften Tonträgern weltweit."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist der Unterschied zwischen einem Dur- und einem Moll-Akkord?",
+        answerA = "Dur klingt heller und fröhlicher, Moll dunkler und trauriger",
+        answerB = "Dur hat mehr Töne als Moll",
+        answerC = "Dur wird schneller gespielt als Moll",
+        answerD = "Dur ist lauter als Moll",
+        correctAnswer = 0,
+        explanation = "Dur-Akkorde (z.B. C-E-G) klingen hell und fröhlich durch die große Terz. Moll-Akkorde (z.B. C-Es-G) klingen dunkler und melancholischer durch die kleine Terz.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie nennt man einen Sänger mit der höchsten männlichen Stimmlage?",
+        answerA = "Bass",
+        answerB = "Bariton",
+        answerC = "Tenor",
+        answerD = "Alt",
+        correctAnswer = 2,
+        explanation = "Der Tenor ist die höchste reguläre männliche Stimmlage. Berühmte Tenöre sind Luciano Pavarotti und Plácido Domingo.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Pop-Star ist bekannt als 'Queen of Pop'?",
+        answerA = "Britney Spears",
+        answerB = "Lady Gaga",
+        answerC = "Madonna",
+        answerD = "Mariah Carey",
+        correctAnswer = 2,
+        explanation = "Madonna trägt den Titel 'Queen of Pop' für ihre jahrzehntelange Karriere, Verkaufszahlen von über 300 Millionen Tonträgern und ihren Einfluss auf Popkultur und Mode.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt das bekannteste Lied von The Beatles?",
+        answerA = "Hey Jude",
+        answerB = "Stairway to Heaven",
+        answerC = "Imagine",
+        answerD = "Let It Be",
+        correctAnswer = 0,
+        explanation = "'Hey Jude' (1968) von The Beatles hält den Rekord als eine der meistverkauften Singles aller Zeiten. Paul McCartney schrieb es für John Lennons Sohn Julian.",
+        difficulty = 1,
+        funFact = "Das Outro von 'Hey Jude' mit dem 'nah nah nah'-Teil dauert über vier Minuten und macht mehr als die Hälfte des Songs aus."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument hat schwarze und weiße Tasten?",
+        answerA = "Harfe",
+        answerB = "Geige",
+        answerC = "Klavier",
+        answerD = "Trompete",
+        correctAnswer = 2,
+        explanation = "Das Klavier hat 88 Tasten – 52 weiße (Stammtöne) und 36 schwarze (Halbtöne). Die schwarzen Tasten entsprechen Kreuzen und Bs.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wer sang 'I Will Always Love You' in der bekanntesten Version?",
+        answerA = "Celine Dion",
+        answerB = "Mariah Carey",
+        answerC = "Whitney Houston",
+        answerD = "Dolly Parton",
+        correctAnswer = 2,
+        explanation = "Whitney Houstons Version (1992) für den Film 'The Bodyguard' ist die bekannteste. Das Original stammt von Dolly Parton aus dem Jahr 1974.",
+        difficulty = 1,
+        funFact = "Dolly Parton schrieb das Lied für ihren Manager Porter Wagoner, als sie seine Begleitung verließ, um eine Solokarriere zu starten."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Solo' in der Musik?",
+        answerA = "Ein Stück für zwei Spieler",
+        answerB = "Ein Abschnitt, der von einem einzelnen Musiker alleine gespielt wird",
+        answerC = "Das Thema einer Sinfonie",
+        answerD = "Eine sehr laute Passage",
+        correctAnswer = 1,
+        explanation = "Ein Solo ist ein Musikabschnitt, in dem ein einzelner Musiker oder Sänger im Vordergrund steht, meist begleitet von anderen oder ganz allein.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Farbe hat die bekannteste Version von Elvis Presleys Kostüm?",
+        answerA = "Blau",
+        answerB = "Weiß",
+        answerC = "Schwarz",
+        answerD = "Rot",
+        correctAnswer = 1,
+        explanation = "Elvis Presleys ikonisches weißes 'Jumpsuit'-Kostüm mit Strasssteinen und hohem Kragen wurde in den späten 1960er und 1970er Jahren zu seinem Markenzeichen.",
+        difficulty = 1,
+        funFact = "Elvis Presley wird als 'King of Rock and Roll' bezeichnet und gilt als einer der einflussreichsten Musiker des 20. Jahrhunderts."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt das Instrument, das wie eine große Geige aussieht und tiefer klingt?",
+        answerA = "Mandoline",
+        answerB = "Banjo",
+        answerC = "Cello",
+        answerD = "Ukulele",
+        correctAnswer = 2,
+        explanation = "Das Cello (Violoncello) ist größer als die Geige und klingt tiefer. Es wird zwischen den Knien gehalten und mit einem Bogen gespielt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Band hat den Welthit 'We Will Rock You' veröffentlicht?",
+        answerA = "The Rolling Stones",
+        answerB = "Led Zeppelin",
+        answerC = "Queen",
+        answerD = "Aerosmith",
+        correctAnswer = 2,
+        explanation = "'We Will Rock You' (1977) von Queen ist bekannt für das markante Stampf-Klatsch-Stampf-Klatsch-Muster, das Brian May erfand.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Chor'?",
+        answerA = "Ein einzelner Solosänger",
+        answerB = "Ein Ensemble von mehreren Sängern",
+        answerC = "Ein Streichquartett",
+        answerD = "Eine einzelne Melodielinie",
+        correctAnswer = 1,
+        explanation = "Ein Chor ist eine Gruppe von Sängerinnen und Sängern, die gemeinsam musizieren. Je nach Größe unterscheidet man Kammerchor, Oratorienchor und Laienchor.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Aus welchem Land stammt Shakira?",
+        answerA = "Brasilien",
+        answerB = "Mexiko",
+        answerC = "Argentinien",
+        answerD = "Kolumbien",
+        correctAnswer = 3,
+        explanation = "Shakira Isabel Mebarak Ripoll wurde 1977 in Barranquilla, Kolumbien, geboren und wurde weltberühmt mit Hits wie 'Hips Don't Lie'.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Takt' in der Musik?",
+        answerA = "Die Lautstärke eines Musikstücks",
+        answerB = "Ein gleichmäßiger Zeitabschnitt mit einer bestimmten Anzahl von Schlägen",
+        answerC = "Die Melodie eines Lieds",
+        answerD = "Ein einzelner Ton",
+        correctAnswer = 1,
+        explanation = "Ein Takt ist die kleinste rhythmische Einheit mit einer festgelegten Anzahl an Schlägen. Taktstriche trennen die Takte optisch in der Notenschrift.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Sänger ist bekannt für das Lied 'Despacito'?",
+        answerA = "Maluma",
+        answerB = "J Balvin",
+        answerC = "Luis Fonsi",
+        answerD = "Daddy Yankee",
+        correctAnswer = 2,
+        explanation = "'Despacito' (2017) von Luis Fonsi (feat. Daddy Yankee) wurde eines der meistgestreamten Lieder der Geschichte und erzielte weltweit Nummer-1-Platzierungen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Musikgenre ist besonders für schnellen Sprechgesang bekannt?",
+        answerA = "Country",
+        answerB = "Jazz",
+        answerC = "Hip-Hop / Rap",
+        answerD = "Blues",
+        correctAnswer = 2,
+        explanation = "Hip-Hop und Rap sind Musikgenres, die durch schnellen, rhythmischen Sprechgesang (Rapping) über einen Beat gekennzeichnet sind.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt die höchste weibliche Stimmlage?",
+        answerA = "Mezzosopran",
+        answerB = "Alt",
+        answerC = "Kontraalt",
+        answerD = "Sopran",
+        correctAnswer = 3,
+        explanation = "Der Sopran ist die höchste Stimmlage für Frauen. Darunter folgen Mezzosopran und Alt (Contralto).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wer singt den Bond-Titelsong 'Skyfall' (2012)?",
+        answerA = "Shirley Bassey",
+        answerB = "Adele",
+        answerC = "Sam Smith",
+        answerD = "Billie Eilish",
+        correctAnswer = 1,
+        explanation = "Adele sang den Titelsong zum James-Bond-Film 'Skyfall' (2012). Das Lied gewann den Oscar für den Besten Originalsong.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument wird hauptsächlich in einem Blasorchester nicht gespielt?",
+        answerA = "Trompete",
+        answerB = "Posaune",
+        answerC = "Kontrabass-Geige",
+        answerD = "Tuba",
+        correctAnswer = 2,
+        explanation = "In einem Blasorchester (Blaskapelle) werden Blechblas- und Holzblasinstrumente sowie Schlagzeug gespielt. Die Kontrabassgeige ist ein Streichinstrument und gehört nicht dazu.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt die berühmte Sinfonie von Beethoven, die mit vier kurzen Tönen beginnt?",
+        answerA = "3. Sinfonie (Eroica)",
+        answerB = "6. Sinfonie (Pastorale)",
+        answerC = "9. Sinfonie (Choral)",
+        answerD = "5. Sinfonie (Schicksalssinfonie)",
+        correctAnswer = 3,
+        explanation = "Beethovens 5. Sinfonie in c-Moll beginnt mit dem berühmten viernotigen Schicksalsmotiv: drei kurze und ein langer Ton (kurz-kurz-kurz-lang).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was macht ein Sänger, wenn er 'a cappella' singt?",
+        answerA = "Er singt sehr laut",
+        answerB = "Er singt ohne Instrumentalbegleitung",
+        answerC = "Er singt in einer Kirche",
+        answerD = "Er singt auf Italienisch",
+        correctAnswer = 1,
+        explanation = "A cappella bedeutet Gesang ohne jegliche Instrumentalbegleitung. Der Begriff kommt aus dem Italienischen und bedeutet 'nach Kapellen-Art'.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // ── MEDIUM BATCH 2 (2) ── 15 new questions ──────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Schweizer Komponist schrieb das Oratorium 'Das Lied von der Erde' (1909)?",
+        answerA = "Richard Strauss",
+        answerB = "Gustav Mahler",
+        answerC = "Max Bruch",
+        answerD = "Carl Nielsen",
+        correctAnswer = 1,
+        explanation = "Gustav Mahler (1860–1911) komponierte 'Das Lied von der Erde' für Tenor, Alt und Orchester auf Texten chinesischer Tang-Dynastie-Gedichte.",
+        difficulty = 2,
+        funFact = "Mahler vermied es, das Werk als 9. Sinfonie zu bezeichnen – er glaubte an den 'Fluch der Neunten', denn Beethoven, Schubert und Bruckner starben alle nach ihrer 9. Sinfonie."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Band veröffentlichte das Album 'Appetite for Destruction' (1987)?",
+        answerA = "Metallica",
+        answerB = "Guns N' Roses",
+        answerC = "Motley Crue",
+        answerD = "Def Leppard",
+        correctAnswer = 1,
+        explanation = "'Appetite for Destruction' (1987) von Guns N' Roses ist mit über 30 Millionen verkauften Exemplaren das meistverkaufte Debütalbum der Geschichte.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Genre bezeichnet eine Mischung aus Country und Rock-Musik?",
+        answerA = "Bluegrass",
+        answerB = "Country Rock",
+        answerC = "Rockabilly",
+        answerD = "Folk Rock",
+        correctAnswer = 1,
+        explanation = "Country Rock ist eine Mischung aus Country-Elementen (Steel Guitar, Twang) und Rockmusik. Bands wie Eagles und Creedence Clearwater Revival prägten das Genre.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnet 'Swing' als musikalisches Element?",
+        answerA = "Eine bestimmte Lautstärke",
+        answerB = "Ein Rhythmusgefühl, bei dem Achtel ungleichmäßig betont werden (lang-kurz-Paar)",
+        answerC = "Eine Tempoanweisung für sehr schnelle Stücke",
+        answerD = "Das Spielen auf der offenen Saite",
+        correctAnswer = 1,
+        explanation = "Swing bezeichnet ein Rhythmusgefühl im Jazz, bei dem Achtelnotenpaare nicht gleichmäßig, sondern im Verhältnis von ca. 2:1 gespielt werden – das erzeugt den typischen 'schaukelnden' Groove.",
+        difficulty = 2,
+        funFact = "Der Begriff 'Swing' beschreibt sowohl das rhythmische Konzept als auch eine Jazz-Ära (1930er/40er), in der Big Bands für Tanzhallen spielten."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Komponist schrieb die Sinfonie 'Die Neue Welt' (Nr. 9, op. 95)?",
+        answerA = "Bedřich Smetana",
+        answerB = "Leoš Janáček",
+        answerC = "Antonín Dvořák",
+        answerD = "Bohuslav Martinů",
+        correctAnswer = 2,
+        explanation = "Antonín Dvořák (1841–1904) schrieb die 9. Sinfonie 'Aus der Neuen Welt' während seines Aufenthalts in New York (1892–95). Sie enthält Elemente amerikanischer Volksmusik.",
+        difficulty = 2,
+        funFact = "Das langsame Largo-Thema der Sinfonie wurde vom Schüler William Arms Fisher zum Spiritual 'Goin' Home' umgedichtet und ist eines der bekanntesten Melodien der Klassik."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument gehört zur Familie der Zupfinstrumente?",
+        answerA = "Oboe",
+        answerB = "Harfe",
+        answerC = "Posaune",
+        answerD = "Pauke",
+        correctAnswer = 1,
+        explanation = "Die Harfe ist ein Zupfinstrument (Chordophon). Die Saiten werden mit den Fingern gezupft. Sie gilt als eines der ältesten Musikinstrumente der Menschheit.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Sänger ist bekannt für den Stil des 'Crooning' und Klassiker wie 'Fly Me to the Moon'?",
+        answerA = "Dean Martin",
+        answerB = "Frank Sinatra",
+        answerC = "Sammy Davis Jr.",
+        answerD = "Tony Bennett",
+        correctAnswer = 1,
+        explanation = "Frank Sinatra (1915–1998) gilt als der Inbegriff des Crooning – ein weicher, entspannter Gesangsstil, der sich an der Mikrofontechnik orientiert. 'Fly Me to the Moon' ist einer seiner Signature-Songs.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Riff' in der Rockmusik?",
+        answerA = "Eine Improvisation über viele Takte",
+        answerB = "Ein kurzes, prägnantes Melodie- oder Akkordmuster, das wiederholt wird",
+        answerC = "Ein Gitarrensolo",
+        answerD = "Ein schneller Lauf auf allen Saiten",
+        correctAnswer = 1,
+        explanation = "Ein Riff ist ein kurzes, einprägsames musikalisches Muster, das als Grundlage oder wiederkehrendes Element eines Songs dient. Das Intro-Riff von 'Smoke on the Water' ist eines der bekanntesten.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "In welchem Jahrzehnt entstand Punk-Rock als Genre?",
+        answerA = "1960er",
+        answerB = "1970er",
+        answerC = "1980er",
+        answerD = "1990er",
+        correctAnswer = 1,
+        explanation = "Punk-Rock entstand Mitte der 1970er Jahre in New York und London. Bands wie The Ramones, Sex Pistols und The Clash prägten das Genre mit kurzen, schnellen, rohen Songs.",
+        difficulty = 2,
+        funFact = "Die Sex Pistols lösten 1977 mit 'God Save the Queen' in Großbritannien einen Skandal aus – der Song wurde im BBC-Radio verboten, erreichte aber trotzdem Platz 1 der Charts."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Musiker bildeten das Duo 'Simon & Garfunkel'?",
+        answerA = "Paul Simon und Art Garfunkel",
+        answerB = "Simon Le Bon und Nick Rhodes",
+        answerC = "Hall und Oates",
+        answerD = "Peter und Gordon",
+        correctAnswer = 0,
+        explanation = "Paul Simon und Art Garfunkel bildeten das Folk-Pop-Duo Simon & Garfunkel, das in den 1960ern mit 'The Sound of Silence', 'Mrs. Robinson' und 'Bridge Over Troubled Water' Welterfolge feierte.",
+        difficulty = 2,
+        funFact = "Beide Musiker wuchsen im selben Wohnblock in Queens, New York, auf und kannten sich seit der Grundschule."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist 'Sampling' in der modernen Musik?",
+        answerA = "Das Ausprobieren neuer Instrumente",
+        answerB = "Das digitale Entnehmen und Wiederverwenden von Klängen aus bestehenden Aufnahmen",
+        answerC = "Eine Probe für ein Konzert",
+        answerD = "Das Aufnehmen von Naturgeräuschen",
+        correctAnswer = 1,
+        explanation = "Sampling bezeichnet die Technik, kurze Klangschnipsel (Samples) aus vorhandenen Musikaufnahmen zu entnehmen und in neuen Produktionen zu verwenden. Es ist ein Grundpfeiler von Hip-Hop und elektronischer Musik.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Sängerin ist bekannt für das Album 'Back to Black' (2006)?",
+        answerA = "Lily Allen",
+        answerB = "Duffy",
+        answerC = "Amy Winehouse",
+        answerD = "Florence Welch",
+        correctAnswer = 2,
+        explanation = "Amy Winehouse veröffentlichte 'Back to Black' 2006. Das Album gewann fünf Grammy Awards und ist eines der meistverkauften britischen Alben aller Zeiten.",
+        difficulty = 2,
+        funFact = "Amy Winehouse starb 2011 im Alter von 27 Jahren und gehört damit zum sogenannten '27 Club' – Musiker, die in diesem Alter starben."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Musikrichtung ist für den 'Blue Note' und das pentatonische Tonleitersystem bekannt?",
+        answerA = "Klassik",
+        answerB = "Blues",
+        answerC = "Volksmusik",
+        answerD = "Gospel",
+        correctAnswer = 1,
+        explanation = "Der Blues nutzt die sogenannte Blues-Skala mit 'Blue Notes' – erniedrigte Terzen, Sexten und Septimen, die einen charakteristischen melancholischen Klang erzeugen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher österreichische Pianist und Dirigent gilt als einer der bedeutendsten Musiker des 20. Jahrhunderts und ist für seine Mozart-Interpretationen bekannt?",
+        answerA = "Wilhelm Backhaus",
+        answerB = "Friedrich Gulda",
+        answerC = "Alfred Brendel",
+        answerD = "Rudolf Serkin",
+        correctAnswer = 1,
+        explanation = "Friedrich Gulda (1930–2000) war ein österreichisches Ausnahmetalent, das klassische Musik und Jazz verband. Seine Mozart-Interpretationen gelten als Referenzaufnahmen.",
+        difficulty = 2,
+        funFact = "Gulda täuschte 1999 seinen eigenen Tod vor, um seinen 70. Geburtstag ungestört feiern zu können – ein typischer Schachzug des exzentrischen Musikers."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnet der Begriff 'Trassenmusik' oder 'Elevator Music'?",
+        answerA = "Musik speziell für Rockkonzerte",
+        answerB = "Beruhigende Hintergrundmusik für öffentliche Räume",
+        answerC = "Elektronische Tanzmusik",
+        answerD = "Musik aus Straßenbahnstrecken",
+        correctAnswer = 1,
+        explanation = "Fahrstuhl- oder Hintergrundmusik (auch 'Muzak') ist speziell arrangierte Musik, die in öffentlichen Räumen, Wartezimmern oder Kaufhäusern beruhigend und unauffällig im Hintergrund läuft.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // ── HARD BATCH 2 (3) ── 23 new questions ────────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Komponist des 20. Jahrhunderts ist bekannt für sein 'Prepared Piano', bei dem Objekte zwischen die Saiten des Klaviers gelegt werden?",
+        answerA = "Morton Feldman",
+        answerB = "Earle Brown",
+        answerC = "John Cage",
+        answerD = "Christian Wolff",
+        correctAnswer = 2,
+        explanation = "John Cage entwickelte das 'Prepared Piano' ab 1938 – Schrauben, Gummistücke und andere Objekte zwischen den Klaviersaiten verändern Klang und Timbre radikal.",
+        difficulty = 3,
+        funFact = "Cages 'Sonatas and Interludes' (1946–48) für Prepared Piano ist das bekannteste Werk für dieses Instrument."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was beschreibt das Konzept der 'Heterophonie' in der Musikethnologie?",
+        answerA = "Mehrstimmigkeit mit verschiedenen Tonleitern",
+        answerB = "Gleichzeitiges Ausführen derselben Melodie in leicht unterschiedlichen Varianten durch mehrere Spieler",
+        answerC = "Wechselnde Taktarten innerhalb eines Stücks",
+        answerD = "Gegenstimmige Führung zweier Melodien",
+        correctAnswer = 1,
+        explanation = "Heterophonie bezeichnet die simultane Ausführung derselben Melodie durch mehrere Musiker, wobei jeder leichte individuelle Abweichungen in Rhythmik oder Ornamentik einbringt. Typisch in asiatischer Musik.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Technik des Barockzeitalters bezeichnet das kontinuierliche Begleitmuster aus bezifferten Bassnoten?",
+        answerA = "Cantus firmus",
+        answerB = "Basso continuo (Generalbass)",
+        answerC = "Ripieno",
+        answerD = "Obbligato",
+        correctAnswer = 1,
+        explanation = "Der Basso continuo (Generalbass) ist eine barocke Begleittechnik: Ein Tasten- oder Zupfinstrument realisiert Akkorde anhand eines bezifferten Basses. Er war ca. 1600–1750 allgegenwärtig.",
+        difficulty = 3,
+        funFact = "Die Praxis des Basso continuo verschwand mit dem Ende des Barocks, wird aber heute in historisch informierten Aufführungen wieder gepflegt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Tritonus' in der Musiktheorie?",
+        answerA = "Ein Dreiklang mit drei gleichen Intervallen",
+        answerB = "Ein Intervall von sechs Halbtönen (übermäßige Quarte / verminderte Quinte)",
+        answerC = "Ein Akkord aus drei Quinten",
+        answerD = "Eine Skala mit drei Moll-Tönen",
+        correctAnswer = 1,
+        explanation = "Der Tritonus ist das Intervall von genau drei Ganztönen (sechs Halbtönen) – z.B. C bis Fis. Er klingt äußerst dissonant und wurde im Mittelalter 'diabolus in musica' (Teufel in der Musik) genannt.",
+        difficulty = 3,
+        funFact = "Der Tritonus ist das einzige Intervall, das sich selbst umkehrt und genau in der Mitte der Oktave liegt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Komponist schrieb die Oper 'Wozzeck' (1925), ein Meilenstein des Expressionismus?",
+        answerA = "Arnold Schönberg",
+        answerB = "Anton Webern",
+        answerC = "Alban Berg",
+        answerD = "Paul Hindemith",
+        correctAnswer = 2,
+        explanation = "Alban Bergs 'Wozzeck' (1925) ist eine der wichtigsten Opern des 20. Jahrhunderts. Sie kombiniert atonale Kompositionstechnik mit traditionellen Formen wie Sonate und Passacaglia.",
+        difficulty = 3,
+        funFact = "Berg vollendete 'Wozzeck' 1922, drei Jahre vor der Uraufführung. Der Dirigent Erich Kleiber ließ das Werk 137 Proben lang vorbereiten."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was versteht man in der Notation unter 'sul ponticello'?",
+        answerA = "Spielen am Steg des Streichinstruments (erzeugt hellen, metallischen Klang)",
+        answerB = "Spielen über dem Griffbrett (erzeugt weichen, flautigen Klang)",
+        answerC = "Mit gedämpftem Klang über die leere Saite spielen",
+        answerD = "Flageolett-Töne auf der höchsten Saite",
+        correctAnswer = 0,
+        explanation = "Sul ponticello (ital. 'am Steg') bedeutet, den Bogen nahe am Steg zu führen. Dies erzeugt einen hellen, schneidenden, manchmal kratzigen Klang mit betonten Obertönen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Begriff beschreibt die Technik, bei der der Sänger in der Jazzmusik die Melodie durch sinnfreie Silben improvisiert?",
+        answerA = "Scat",
+        answerB = "Riff",
+        answerC = "Vocalese",
+        answerD = "Melisma",
+        correctAnswer = 0,
+        explanation = "Scat-Gesang ist eine Jazztechnik, bei der der Sänger die Melodie mit sinnlosen Silben (wie 'ba-da-bop-bop-be') improvisiert. Ella Fitzgerald und Louis Armstrong waren Meister des Scat.",
+        difficulty = 3,
+        funFact = "Laut Legende erfand Louis Armstrong den Scat, als er beim Aufnehmen die Liedblätter fallen ließ und improvisiert weitersang."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Kompositionsform besteht aus einem Thema und einer Gegenmelodie, die imitatorisch durch verschiedene Stimmen geführt werden?",
+        answerA = "Chaconne",
+        answerB = "Passacaglia",
+        answerC = "Invention",
+        answerD = "Fuge",
+        correctAnswer = 3,
+        explanation = "Eine Fuge ist eine kontrapunktische Kompositionsform: Ein Thema (Subjekt) wird von einer Stimme begonnen und imitatorisch von anderen Stimmen aufgenommen. J.S. Bach ist der Meister der Fuge.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist eine 'Passacaglia' in der Barockmusik?",
+        answerA = "Eine Tanzform im 2/4-Takt",
+        answerB = "Eine Variationsform über einem sich wiederholenden Bass-Ostinato",
+        answerC = "Ein Blasinstrument aus der Renaissancezeit",
+        answerD = "Ein mehrstimmiges Vokalmadrigal",
+        correctAnswer = 1,
+        explanation = "Eine Passacaglia ist eine Variationsform, bei der über einem konstantem Bassthema (Ostinato) Variationen aufgebaut werden. Bachs 'Passacaglia und Fuge c-Moll' BWV 582 ist ein Meisterwerk dieser Form.",
+        difficulty = 3,
+        funFact = "Johannes Brahms nutzte die Passacaglia-Form im letzten Satz seiner 4. Sinfonie (e-Moll) – ein ungewöhnlicher Rückgriff auf barocke Formen in der Romantik."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Begriff bezeichnet in der Musiktheorie das Verhältnis eines Tones zu seiner Grundlage?",
+        answerA = "Intervall",
+        answerB = "Akkord",
+        answerC = "Motiv",
+        answerD = "Klangfarbe",
+        correctAnswer = 0,
+        explanation = "Ein Intervall ist der Abstand zwischen zwei Tönen in der Musiktheorie. Es wird nach Anzahl der Halbtöne gemessen und benannt: Prime, Sekunde, Terz, Quarte, Quinte, Sexte, Septime, Oktave.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnete der Begriff 'Musique concrète', der 1948 von Pierre Schaeffer geprägt wurde?",
+        answerA = "Musik für Beton-Gebäude mit besonderer Akustik",
+        answerB = "Elektronische Musik aus aufgezeichneten und manipulierten Alltagsgeräuschen und Klängen",
+        answerC = "Traditionelle französische Volksmusik",
+        answerD = "Musik basierend auf konkreten Zahlenreihen",
+        correctAnswer = 1,
+        explanation = "Musique concrète (Pierre Schaeffer, 1948) verwendet aufgenommene Realgeräusche (Züge, Stimmen, Natur), die auf Band manipuliert und als kompositorisches Material eingesetzt werden.",
+        difficulty = 3,
+        funFact = "Schaeffers 'Études de bruits' (1948) gilt als das erste Werk der Musique concrète – er arbeitete dafür mit dem aufgezeichneten Lärm eines Zuges."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welchen Begriff verwenden Musikethnologen für melodische Formeln und charakteristische Wendungen in der indischen Klassik?",
+        answerA = "Maqam",
+        answerB = "Tala",
+        answerC = "Raga",
+        answerD = "Pelog",
+        correctAnswer = 2,
+        explanation = "Ein Raga ist in der indischen Klassik ein melodisches Rahmenwerk mit charakteristischen Tönen, Intervallen und Ornamentierungsregeln. Jeder Raga hat eine spezifische emotionale Qualität und Tageszeit.",
+        difficulty = 3,
+        funFact = "Es gibt Hunderte klassifizierter Ragas. Ravi Shankar machte das Konzept durch seine Zusammenarbeit mit George Harrison für westliche Musikhörer bekannt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was versteht man unter dem Begriff 'musikalische Syntax'?",
+        answerA = "Die Schreibweise von Noten in der Partitur",
+        answerB = "Regeln und Strukturprinzipien, die musikalische Phrasen und Abschnitte organisieren und Erwartungen erzeugen",
+        answerC = "Die gleichzeitige Verwendung mehrerer Sprachen in Texten",
+        answerD = "Die Tempoangaben in einer Komposition",
+        correctAnswer = 1,
+        explanation = "Musikalische Syntax bezeichnet das System von Regeln, nach denen Töne, Akkorde und Phrasen zu sinnvollen musikalischen Aussagen organisiert werden – analog zur Satzstruktur in der Sprache.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Konzept bezeichnet in der Barockmusik die alternierende Gegenüberstellung von kleinen Solistengruppen und dem vollen Orchester?",
+        answerA = "Tutti-Soli",
+        answerB = "Concerto grosso",
+        answerC = "Sinfonia concertante",
+        answerD = "Ritornell-Form",
+        correctAnswer = 1,
+        explanation = "Das Concerto grosso (ital. 'großes Konzert') stellt eine kleine Solistengruppe (Concertino) dem vollen Orchester (Ripieno/Tutti) gegenüber. Corelli und Händel sind führende Vertreter.",
+        difficulty = 3,
+        funFact = "Bachs 'Brandenburgische Konzerte' (1721) sind die bekanntesten Beispiele des Concerto grosso-Prinzips, obwohl Bach den Begriff selbst nicht verwendete."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist eine 'Enharmonik' in der Musiktheorie?",
+        answerA = "Eine Stimmungsmethode für Blechblasinstrumente",
+        answerB = "Die Gleichheit zweier verschieden notierter, aber gleichklingender Töne (z.B. Cis = Des)",
+        answerC = "Ein Intervall aus zwei kleinen Terzen",
+        answerD = "Eine Kompositionstechnik aus der Romantik",
+        correctAnswer = 1,
+        explanation = "Enharmonik bezeichnet Töne, die in der gleichstufigen Temperierung gleich klingen, aber unterschiedlich notiert werden: Cis und Des, Fis und Ges, Gis und As. Enharmonische Umdeutung ermöglicht überraschende Modulationen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Saxofonist prägte mit 'sheets of sound' (Klangteppiche aus schnellen Läufen) den modalen Jazz der späten 1950er?",
+        answerA = "Coleman Hawkins",
+        answerB = "Lester Young",
+        answerC = "Ornette Coleman",
+        answerD = "John Coltrane",
+        correctAnswer = 3,
+        explanation = "John Coltrane (1926–1967) entwickelte auf Alben wie 'Giant Steps' (1960) und 'A Love Supreme' (1964) seinen charakteristischen Stil mit blitzschnellen Akkordwechseln (Coltrane Changes) und modalen Improvisationen.",
+        difficulty = 3,
+        funFact = "Coltranes 'Giant Steps' führte harmonisch so schnell durch verschiedene Tonarten, dass viele Jazz-Musiker anfangs Schwierigkeiten hatten, darüber zu improvisieren."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was beschreibt der Begriff 'Mikrotiming' oder 'Groove' in der modernen Musikwissenschaft?",
+        answerA = "Die exakte metronomische Präzision eines Orchesters",
+        answerB = "Winzige bewusste oder unbewusste Abweichungen vom exakten Raster, die Rhythmus lebendig wirken lassen",
+        answerC = "Das Spielen zwischen zwei Taktschlägen",
+        answerD = "Die Synchronisation mehrerer digitaler Spuren",
+        correctAnswer = 1,
+        explanation = "Mikrotiming bezeichnet minimale zeitliche Abweichungen von einem exakten metrischen Raster. Diese werden in Jazz, Funk und Soul bewusst eingesetzt, um einen 'menschlichen' Groove zu erzeugen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche russische Musikergruppe des 19. Jahrhunderts nannte sich selbst 'Das Mächtige Häuflein' (Mogutschaja kutschka)?",
+        answerA = "Balakiw, Cui, Mussorgski, Rimski-Korsakow, Borodin",
+        answerB = "Tschaikowski, Glasunow, Liadow",
+        answerC = "Rachmaninow, Skrjabin, Medtner",
+        answerD = "Stravinsky, Prokofjew, Schostakowitsch",
+        correctAnswer = 0,
+        explanation = "Das 'Mächtige Häuflein' (auch 'Die Fünf') bestand aus Balakirew, Cui, Mussorgski, Rimski-Korsakow und Borodin. Sie propagierten eine russische Nationalmusik ohne westlichen akademischen Einfluss.",
+        difficulty = 3,
+        funFact = "Modest Mussorgski schrieb 'Bilder einer Ausstellung' (1874) für Klavier – Maurice Ravel orchestrierte das Werk 1922 zu einem der populärsten Orchesterstücke der Klassik."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was versteht man unter 'Aleatorik' in der zeitgenössischen Komposition?",
+        answerA = "Komposition nur für Aleatoren (antike Würfelinstrumente)",
+        answerB = "Kompositions- oder Aufführungsmethode, bei der Zufallsprozesse integraler Bestandteil sind",
+        answerC = "Musik basierend auf algebraischen Gleichungen",
+        answerD = "Eine Stimmungsmethode für Orchesterstimmung",
+        correctAnswer = 1,
+        explanation = "Aleatorik (lat. 'alea' = Würfel) bezeichnet Musik, bei der der Zufall eine strukturelle Rolle spielt – entweder im Kompositionsprozess (Cage) oder in der Aufführungsentscheidung (Stockhausen, Boulez).",
+        difficulty = 3,
+        funFact = "John Cage nutzte das chinesische Orakel I Ching (Würfelwürfe) zur Komposition seiner 'Music of Changes' (1951)."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Begriff beschreibt in der Jazztheorie das Akkord-Progressions-System II-V-I?",
+        answerA = "Blues-Progression",
+        answerB = "Turnaround",
+        answerC = "Rhythm Changes",
+        answerD = "Two-Five-One (ii-V7-I)",
+        correctAnswer = 3,
+        explanation = "Die ii-V7-I-Kadenz ist die grundlegende harmonische Bewegung im Jazz: Vom Subdominant-Septakkord (Supertonica) über den Dominant-Septakkord zur Tonika. Sie erscheint in nahezu jedem Jazz-Standard.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welchen besonderen Stimmtypus besitzen Countertenöre (Altus)?",
+        answerA = "Eine sehr tiefe Bass-Stimme durch Mutation",
+        answerB = "Eine hohe männliche Stimme in der Falsett-Technik oder natürlichen Kopfstimme",
+        answerC = "Eine Sopranstimme durch chirurgischen Eingriff",
+        answerD = "Eine künstlich verstärkte Tenorstimme",
+        correctAnswer = 1,
+        explanation = "Countertenöre sind männliche Sänger, die im Alt- oder Sopranregister singen, meist durch Falsett-Technik. In der Barockoper übernahmen sie Rollen, die ursprünglich für Kastraten geschrieben wurden.",
+        difficulty = 3,
+        funFact = "Andreas Scholl und Philippe Jaroussky zählen zu den bekanntesten Countertenören der Gegenwart."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist das Besondere an der Stimmführungstechnik des 'Hoquetus' in der mittelalterlichen Polyphonie?",
+        answerA = "Alle Stimmen singen immer gleichzeitig in parallelen Quinten",
+        answerB = "Die Melodie wird durch abwechselnde Pausen zwischen zwei Stimmen aufgeteilt, die nie gleichzeitig klingen",
+        answerC = "Eine Stimme singt eine andere Tonart als die restlichen Stimmen",
+        answerD = "Jede Stimme bekommt ihre eigene Taktart",
+        correctAnswer = 1,
+        explanation = "Hoquetus (lat./franz. 'Schluckauf') ist eine mittelalterliche Technik, bei der eine Melodie auf zwei Stimmen aufgeteilt wird: Wenn eine singt, schweigt die andere – wie ein gegenseitiger Wechsel.",
+        difficulty = 3,
+        funFact = "Guillaume de Machaut war ein bedeutender Meister des Hoquetus im 14. Jahrhundert. Die Technik erlebt in zeitgenössischer Musik eine Renaissance."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Begriff aus der Harmonielehre bezeichnet das Einführen eines leiterfremden Tons, der zur nächsten Stufe hinzieht?",
+        answerA = "Neapolitaner",
+        answerB = "Wechselnote",
+        answerC = "Chromatischer Durchgang",
+        answerD = "Sensible (Leittöne)",
+        correctAnswer = 3,
+        explanation = "Ein Leitton (Sensible) ist ein Ton, der durch seinen Halbtonabstand zur nächsten Stufe 'zieht'. Der klassischste Leitton ist der erhöhte 7. Ton einer Durtonleiter, der zur Oktave strebt.",
+        difficulty = 3,
+        funFact = null
     )
 )
