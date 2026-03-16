@@ -662,5 +662,661 @@ fun animalQuestions(): List<Question> = listOf(
         explanation = "Das biogenetische Grundgesetz ('Ontogenese rekapituliert Phylogenese') gilt nur eingeschränkt. Bandwürmer und andere Parasiten zeigen direkte Entwicklung ohne ancestrale Larvenstadien.",
         difficulty = 5,
         funFact = null
+    ),
+
+    // ── NEW EASY (difficulty = 1) ── 15 questions ─────────────────────────────
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier ist das schnellste Landtier der Welt?",
+        answerA = "Löwe",
+        answerB = "Gepard",
+        answerC = "Gazelle",
+        answerD = "Gepard",
+        correctAnswer = 1,
+        explanation = "Der Gepard ist das schnellste Landtier und kann Geschwindigkeiten von bis zu 120 km/h erreichen.",
+        difficulty = 1,
+        funFact = "Ein Gepard beschleunigt in etwa 3 Sekunden von 0 auf 100 km/h – schneller als die meisten Sportwagen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie viele Beine hat eine Spinne?",
+        answerA = "6",
+        answerB = "8",
+        answerC = "10",
+        answerD = "12",
+        correctAnswer = 1,
+        explanation = "Spinnen sind Spinnentiere und haben 8 Beine. Insekten hingegen haben nur 6 Beine.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier ist ein Säugetier?",
+        answerA = "Krokodil",
+        answerB = "Schildkröte",
+        answerC = "Delfin",
+        answerD = "Thunfisch",
+        correctAnswer = 2,
+        explanation = "Der Delfin ist ein Säugetier: Er atmet mit Lungen, ist warmblütig und säugt seine Jungtiere.",
+        difficulty = 1,
+        funFact = "Delfine müssen regelmäßig an die Oberfläche kommen, um Luft zu holen – sie können nicht unter Wasser atmen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man das Jungtier einer Katze?",
+        answerA = "Welpe",
+        answerB = "Küken",
+        answerC = "Kätzchen",
+        answerD = "Fohlen",
+        correctAnswer = 2,
+        explanation = "Das Jungtier einer Katze heißt Kätzchen oder Kitten. Neugeborene Kätzchen öffnen ihre Augen erst nach etwa 10 Tagen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier produziert Wolle?",
+        answerA = "Ziege",
+        answerB = "Schaf",
+        answerC = "Kuh",
+        answerD = "Schwein",
+        correctAnswer = 1,
+        explanation = "Schafe werden geschoren, um ihre Wolle zu gewinnen. Die Wolle wächst jedes Jahr nach und muss regelmäßig geschoren werden.",
+        difficulty = 1,
+        funFact = "Ein Schaf liefert pro Jahr durchschnittlich 2–4 kg Wolle – genug für etwa zwei Pullover."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was fressen Pandas?",
+        answerA = "Fleisch",
+        answerB = "Früchte",
+        answerC = "Bambus",
+        answerD = "Insekten",
+        correctAnswer = 2,
+        explanation = "Große Pandas ernähren sich zu fast 99% von Bambus. Sie müssen täglich bis zu 15 kg Bambus fressen, da er sehr nährstoffarm ist.",
+        difficulty = 1,
+        funFact = "Obwohl Pandas Fleischfresser-Verdauung haben, fressen sie fast ausschließlich Bambus."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie heißt das weibliche Rind?",
+        answerA = "Stute",
+        answerB = "Kuh",
+        answerC = "Henne",
+        answerD = "Sau",
+        correctAnswer = 1,
+        explanation = "Das weibliche Rind heißt Kuh. Der männliche Stier heißt Bulle, das Jungtier Kalb.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier baut Dämme aus Holz und Schlamm?",
+        answerA = "Otter",
+        answerB = "Biber",
+        answerC = "Waschbär",
+        answerD = "Murmeltier",
+        correctAnswer = 1,
+        explanation = "Biber bauen Dämme aus Ästen, Holzstämmen und Schlamm, um Teiche zu schaffen, in denen sie ihre Burgen sicher anlegen können.",
+        difficulty = 1,
+        funFact = "Biberdämme können bis zu 100 Meter lang werden und verändern ganze Landschaften."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier trägt sein Junges im Beutel?",
+        answerA = "Koala",
+        answerB = "Känguru",
+        answerC = "Wombat",
+        answerD = "Alle genannten",
+        correctAnswer = 3,
+        explanation = "Känguru, Koala und Wombat sind alle Beuteltiere. Ihre unreif geborenen Jungtiere entwickeln sich im Beutel der Mutter weiter.",
+        difficulty = 1,
+        funFact = "Ein neugeborenes Känguru ist nur etwa 2 cm groß – so klein wie eine Bohne."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie viele Höcker hat ein Dromedar?",
+        answerA = "Keinen",
+        answerB = "Einen",
+        answerC = "Zwei",
+        answerD = "Drei",
+        correctAnswer = 1,
+        explanation = "Das Dromedar hat einen Höcker, das Trampeltier (Baktrisches Kamel) hat zwei Höcker. Im Höcker wird Fett gespeichert, kein Wasser.",
+        difficulty = 1,
+        funFact = "Ein erschöpftes Kamel hat einen schlaffen Höcker – das Fett wurde aufgebraucht."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier ist für seine schwarzweißen Streifen bekannt?",
+        answerA = "Gepard",
+        answerB = "Zebra",
+        answerC = "Gnu",
+        answerD = "Impala",
+        correctAnswer = 1,
+        explanation = "Zebras sind für ihr schwarz-weißes Streifenmuster bekannt. Jedes Zebra hat ein einzigartiges Streifenmuster, ähnlich wie menschliche Fingerabdrücke.",
+        difficulty = 1,
+        funFact = "Forscher diskutieren noch, ob Zebras schwarze Tiere mit weißen Streifen oder weiße mit schwarzen Streifen sind."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist ein Oktopus?",
+        answerA = "Ein Fisch",
+        answerB = "Ein Weichtier",
+        answerC = "Ein Krebstier",
+        answerD = "Ein Stachelhäuter",
+        correctAnswer = 1,
+        explanation = "Der Oktopus (Krake) ist ein Weichtier aus der Klasse der Kopffüßer. Er ist eng mit Tintenfischen und Nautilussen verwandt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welcher Vogel kann nicht fliegen und ist der größte lebende Vogel?",
+        answerA = "Pinguin",
+        answerB = "Kiwi",
+        answerC = "Strauß",
+        answerD = "Nandu",
+        correctAnswer = 2,
+        explanation = "Der Strauß ist der größte lebende Vogel und kann nicht fliegen. Er kann jedoch bis zu 70 km/h rennen.",
+        difficulty = 1,
+        funFact = "Strauße haben die größten Augen aller Landtiere – größer als ihr eigenes Gehirn."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Insekt verwandelt sich von einer Raupe zu einem Schmetterling?",
+        answerA = "Motte",
+        answerB = "Tagfalter",
+        answerC = "Beide (A und B)",
+        answerD = "Libelle",
+        correctAnswer = 2,
+        explanation = "Sowohl Tagfalter als auch Motten durchlaufen eine vollständige Verwandlung (Metamorphose): Ei → Raupe → Puppe → Falter.",
+        difficulty = 1,
+        funFact = "Die Puppe des Schmetterlings heißt Chrysalis. In ihr löst sich die Raupe fast vollständig auf, bevor der Falter entsteht."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man eine Gruppe von Wölfen?",
+        answerA = "Rudel",
+        answerB = "Herde",
+        answerC = "Schwarm",
+        answerD = "Meute",
+        correctAnswer = 0,
+        explanation = "Eine Gruppe von Wölfen heißt Rudel. Ein Rudel besteht meist aus einem Elternpaar (Alphapaar) und ihren Nachkommen.",
+        difficulty = 1,
+        funFact = "Wölfe kommunizieren durch Heulen, um ihr Rudel zusammenzuhalten und ihr Revier zu markieren."
+    ),
+
+    // ── NEW MEDIUM (difficulty = 2) ── 20 questions ───────────────────────────
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Organ nutzen Fledermäuse zur Navigation?",
+        answerA = "Infrarotwahrnehmung",
+        answerB = "Echoortung (Ultraschall)",
+        answerC = "Elektrorezeption",
+        answerD = "Magnetrezeptoren in der Schnauze",
+        correctAnswer = 1,
+        explanation = "Fledermäuse senden Ultraschallwellen aus und hören deren Echo. So können sie Insekten und Hindernisse in totaler Dunkelheit präzise orten.",
+        difficulty = 2,
+        funFact = "Einige Fledermausarten senden Rufe mit bis zu 120 Dezibel – lauter als ein Presslufthammer."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie schläft ein Delfin?",
+        answerA = "Auf dem Meeresgrund liegend",
+        answerB = "Mit einer Gehirnhälfte schlafen, die andere bleibt wach",
+        answerC = "Schwimmend an der Oberfläche für maximal 2 Stunden",
+        answerD = "In Höhlen am Meeresgrund",
+        correctAnswer = 1,
+        explanation = "Delfine praktizieren den unihemisphärischen Schlaf: Eine Gehirnhälfte schläft, die andere bleibt aktiv. So können sie weiter schwimmen und atmen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist ein Marsupial?",
+        answerA = "Ein Raubtier aus Australien",
+        answerB = "Ein Beuteltier",
+        answerC = "Ein flugunfähiger Vogel",
+        answerD = "Ein wasserbewohnendes Säugetier",
+        correctAnswer = 1,
+        explanation = "Marsupialier (Beuteltiere) sind Säugetiere, deren Jungtiere unreif geboren werden und sich im Beutel der Mutter weiterentwickeln.",
+        difficulty = 2,
+        funFact = "Fast alle Beuteltiere leben auf der Südhalbkugel – vor allem in Australien und Südamerika."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat das größte Herz (absolut) aller Lebewesen?",
+        answerA = "Afrikanischer Elefant",
+        answerB = "Blauwal",
+        answerC = "Riesenschildkröte",
+        answerD = "Buckelwal",
+        correctAnswer = 1,
+        explanation = "Das Herz des Blauwals ist das größte aller lebenden Tiere – es wiegt etwa 180 kg und ist so groß wie ein kleines Auto.",
+        difficulty = 2,
+        funFact = "Durch die Aorta des Blauwals könnte ein kleines Kind hindurchkrabbeln."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist der Unterschied zwischen Schmetterlingslarven (Raupen) und Maden?",
+        answerA = "Raupen haben Beine, Maden nicht",
+        answerB = "Maden haben Beine, Raupen nicht",
+        answerC = "Es gibt keinen Unterschied",
+        answerD = "Raupen leben im Wasser, Maden an Land",
+        correctAnswer = 0,
+        explanation = "Schmetterlingsraupen haben echte Beine (3 Paar Thoraxbeine) und Bauchfüße (Prolegs). Fliegenlarven (Maden) sind beinlos.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat kein natürliches Fressfeind in seiner Heimat?",
+        answerA = "Kaninchen",
+        answerB = "Nilkrokodil",
+        answerC = "Eisbär",
+        answerD = "Polarfuchs",
+        correctAnswer = 2,
+        explanation = "Erwachsene Eisbären haben in der Arktis keine natürlichen Fressfeinde. Sie stehen an der Spitze der arktischen Nahrungskette.",
+        difficulty = 2,
+        funFact = "Eisbären haben keine weißen Haare – ihre Haare sind farblos und hohl. Die Fellfarbe entsteht durch Lichtbrechung."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man den Vorgang, wenn eine Schlange ihre Haut abstreift?",
+        answerA = "Häutung",
+        answerB = "Metamorphose",
+        answerC = "Mauserung",
+        answerD = "Exuviation",
+        correctAnswer = 0,
+        explanation = "Das Abstreifen der alten Haut bei Schlangen und anderen Reptilien heißt Häutung. Schlangen häuten sich mehrmals im Jahr.",
+        difficulty = 2,
+        funFact = "Kurz vor der Häutung trüben sich die Augen der Schlange milchig – ein Zeichen, dass die alte Haut sich löst."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier produziert die giftigste bekannte Substanz in der Tierwelt?",
+        answerA = "Kobra",
+        answerB = "Würfelqualle",
+        answerC = "Pfeilgiftfrosch",
+        answerD = "Schwarze Witwe",
+        correctAnswer = 1,
+        explanation = "Die Würfelqualle (Chironex fleckeri) gilt als eines der giftigsten Tiere der Welt. Ihr Gift kann in weniger als 5 Minuten töten.",
+        difficulty = 2,
+        funFact = "Würfelquallen haben 24 Augen in 4 Gruppen, aber kein zentrales Gehirn."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man Tiere, die sowohl an Land als auch im Wasser leben?",
+        answerA = "Reptilien",
+        answerB = "Amphibien",
+        answerC = "Aquatische Säugetiere",
+        answerD = "Semiaquatische Tiere",
+        correctAnswer = 1,
+        explanation = "Amphibien (Lurche) leben typischerweise im Wasser (Larvalstadium) und an Land (Erwachsenenstadium). Dazu gehören Frösche, Kröten, Molche und Salamander.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welcher Vogel hat die größte Flügelspannweite aller lebenden Vögel?",
+        answerA = "Kondor",
+        answerB = "Wanderalbatros",
+        answerC = "Pelikan",
+        answerD = "Marabu",
+        correctAnswer = 1,
+        explanation = "Der Wanderalbatros hat mit bis zu 3,7 m die größte Flügelspannweite aller lebenden Vögel.",
+        difficulty = 2,
+        funFact = "Wanderalbatrosse schlafen im Gleitflug und legen jährlich bis zu 120.000 km zurück."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist ein Raubtier (Karnivore)?",
+        answerA = "Ein Tier, das nur Pflanzen frisst",
+        answerB = "Ein Tier, das sich hauptsächlich von anderen Tieren ernährt",
+        answerC = "Ein Tier, das Aas frisst",
+        answerD = "Ein Tier, das Insekten frisst",
+        correctAnswer = 1,
+        explanation = "Karnivore sind Tiere, die sich hauptsächlich von anderen Tieren (Fleisch) ernähren. Dazu gehören Löwen, Adler, Haie und viele andere.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier ist bekannt für seine Echolokation im Wasser?",
+        answerA = "Seehund",
+        answerB = "Wal",
+        answerC = "Walross",
+        answerD = "Seelöwe",
+        correctAnswer = 1,
+        explanation = "Zahnwale wie Delfine und Pottwale nutzen Echolokation: Sie senden Klicks aus und orten Objekte anhand des zurückkehrenden Echos.",
+        difficulty = 2,
+        funFact = "Pottwale produzieren die lautesten Laute aller Tiere – bis zu 230 Dezibel."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man Tiere, die nachts aktiv sind?",
+        answerA = "Diurnal",
+        answerB = "Nokturnal",
+        answerC = "Krepuskulär",
+        answerD = "Arrhythmisch",
+        correctAnswer = 1,
+        explanation = "Nachtaktive Tiere werden als nokturnal bezeichnet. Dazu gehören Eulen, Fledermäuse und viele Insekten. Tagaktive Tiere nennt man diurnal.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat die längste Zunge im Verhältnis zur Körpergröße?",
+        answerA = "Chamäleon",
+        answerB = "Ameisenbär",
+        answerC = "Specht",
+        answerD = "Chamäleon",
+        correctAnswer = 0,
+        explanation = "Chamäleons können ihre Zunge blitzschnell herausschleudern – sie ist oft länger als ihr gesamter Körper. Ein spezieller Zungenknochen dient als Abschussmechanismus.",
+        difficulty = 2,
+        funFact = "Die Zunge eines Chamäleons schießt mit einer Beschleunigung von bis zu 41 g vor – schneller als ein Kampfjet."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist ein Kaltblüter?",
+        answerA = "Ein Tier, das in kalten Regionen lebt",
+        answerB = "Ein Tier, dessen Körpertemperatur von der Umgebungstemperatur abhängt",
+        answerC = "Ein Tier, das im Winter Winterschlaf hält",
+        answerD = "Ein Tier mit niedriger Herzfrequenz",
+        correctAnswer = 1,
+        explanation = "Kaltblüter (Poikilotherme) regulieren ihre Körpertemperatur nicht selbst – sie nehmen die Temperatur ihrer Umgebung an. Dazu gehören Reptilien, Fische und Amphibien.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat einen einzigartigen Fingerabdruck ähnlich wie Menschen?",
+        answerA = "Gorilla",
+        answerB = "Koala",
+        answerC = "Schimpanse",
+        answerD = "Orang-Utan",
+        correctAnswer = 1,
+        explanation = "Koalas haben Fingerabdrücke, die menschlichen so ähnlich sind, dass sie forensisch kaum zu unterscheiden sind – eine der wenigen nicht-menschlichen Arten mit solchen Merkmalen.",
+        difficulty = 2,
+        funFact = "Auch Gorillas und Schimpansen haben Fingerabdrücke, aber die des Koalas ähneln menschlichen am stärksten."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man Tiere, die sich von Aas ernähren?",
+        answerA = "Herbivore",
+        answerB = "Omnivore",
+        answerC = "Aasfresser (Scavenger)",
+        answerD = "Detritivore",
+        correctAnswer = 2,
+        explanation = "Aasfresser (Scavenger) ernähren sich von toten und verwesenden Tieren. Geier, Hyänen und Krähen sind bekannte Beispiele.",
+        difficulty = 2,
+        funFact = "Geier haben eine hochentwickelte Magensäure, die selbst gefährliche Krankheitserreger wie Milzbrand abtötet."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat die empfindlichste Nase im Tierreich?",
+        answerA = "Hund",
+        answerB = "Bär",
+        answerC = "Elefant",
+        answerD = "Haifisch",
+        correctAnswer = 2,
+        explanation = "Bären haben den schärfsten Geruchssinn aller Landsäugetiere – bis zu 2.100 Mal feiner als beim Menschen. Sie können Nahrungsquellen aus über 30 km Entfernung riechen.",
+        difficulty = 2,
+        funFact = "Der Haifisch gilt dagegen als der empfindlichste Geruchssinn unter den Meerestieren."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist Parthenogenese im Tierreich?",
+        answerA = "Geschlechtliche Fortpflanzung durch externe Befruchtung",
+        answerB = "Ungeschlechtliche Fortpflanzung ohne Befruchtung durch ein Männchen",
+        answerC = "Zweigeschlechtliche Fortpflanzung bei Zwittern",
+        answerD = "Klonierung durch Zellteilung",
+        correctAnswer = 1,
+        explanation = "Parthenogenese ist die Entwicklung eines Organismus aus einer unbefruchteten Eizelle. Komodo-Warane, Haie und einige Insekten können sich so fortpflanzen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welche Tiere bilden die größten Wanderherden der Welt?",
+        answerA = "Elefanten in Botswana",
+        answerB = "Gnus in der Serengeti",
+        answerC = "Rentiere in Kanada",
+        answerD = "Karibu in Sibirien",
+        correctAnswer = 1,
+        explanation = "Die Große Gnu-Wanderung in der Serengeti (Tansania/Kenia) ist die größte Landsäuger-Wanderung der Welt – bis zu 1,5 Millionen Gnus bewegen sich jährlich im Kreis.",
+        difficulty = 2,
+        funFact = "Auf ihrer Wanderung überqueren die Gnus den Krokodil-verseuchten Mara-Fluss – eines der gefährlichsten Naturschauspiele Afrikas."
+    ),
+
+    // ── NEW HARD (difficulty = 3) ── 15 questions ─────────────────────────────
+
+    Question(
+        categoryId = 9,
+        questionText = "Was versteht man unter 'Allopatrie' in der Evolutionsbiologie?",
+        answerA = "Artbildung durch geografische Trennung von Populationen",
+        answerB = "Artbildung innerhalb desselben Lebensraums durch ökologische Nischen",
+        answerC = "Das Aussterben einer Art durch Konkurrenz",
+        answerD = "Die Rückkehr einer Art in ihr ursprüngliches Verbreitungsgebiet",
+        correctAnswer = 0,
+        explanation = "Allopatrische Artbildung entsteht, wenn Populationen geografisch getrennt werden und sich unabhängig voneinander entwickeln, bis sie nicht mehr erfolgreich interbreeden können.",
+        difficulty = 3,
+        funFact = "Die Darwin-Finken auf den Galapagos-Inseln sind ein klassisches Beispiel für allopatrische Artbildung."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man die spezielle Zelle, mit der Nesseltiere (Cnidaria) ihre Beute lähmen?",
+        answerA = "Nesselzelle (Cnidozyt/Nematozyt)",
+        answerB = "Giftdrüsenzelle",
+        answerC = "Phagozyt",
+        answerD = "Chromatophor",
+        correctAnswer = 0,
+        explanation = "Cnidozyten (Nesselzellen) enthalten eine Stechkapsel (Nematocyst). Bei Berührung wird ein giftiger Faden mit bis zu 5 m/s herausgeschossen – der schnellste biologische Mechanismus.",
+        difficulty = 3,
+        funFact = "Eine Qualle löst die Nesseln auch noch nach dem Tod aus – tote Quallen am Strand können noch stechen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Merkmal kennzeichnet Fische der Klasse Chondrichthyes?",
+        answerA = "Knöchernes Skelett",
+        answerB = "Knorpeliges Skelett ohne echte Knochen",
+        answerC = "Keine Kiemen",
+        answerD = "Lungen statt Kiemen",
+        correctAnswer = 1,
+        explanation = "Chondrichthyes (Knorpelfische) wie Haie, Rochen und Chimären haben ein vollständig knorpeliges Skelett. Im Gegensatz dazu haben Osteichthyes (Knochenfische) ein verknöchertes Skelett.",
+        difficulty = 3,
+        funFact = "Haie haben kein Schwimmblasenorgan und müssen ständig schwimmen, um nicht abzusinken."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist das Besondere an der Fortpflanzung des Seepferdchens?",
+        answerA = "Das Weibchen bebrütet die Eier im Mund",
+        answerB = "Das Männchen trägt die Eier in einem Beutel und gebiert die Jungtiere",
+        answerC = "Seepferdchen sind Hermaphroditen",
+        answerD = "Die Eier werden im offenen Wasser abgelegt",
+        correctAnswer = 1,
+        explanation = "Beim Seepferdchen übernimmt das Männchen die Schwangerschaft: Das Weibchen legt Eier in den Beutel des Männchens, wo sie befruchtet und ausgetragen werden.",
+        difficulty = 3,
+        funFact = "Ein Seepferdchen-Männchen kann bis zu 2.000 Jungtiere in einer Geburt auf einmal zur Welt bringen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Gift produziert der Pfeilgiftfrosch selbst nicht – woher kommt es?",
+        answerA = "Aus speziellen Giftdrüsen in der Haut",
+        answerB = "Aus der Nahrung (Insekten mit Alkaloiden)",
+        answerC = "Aus einer Symbiose mit Bakterien",
+        answerD = "Es wird in der Leber produziert",
+        correctAnswer = 1,
+        explanation = "Pfeilgiftfrösche akkumulieren ihr Gift aus ihrer Nahrung – vor allem aus Ameisen, Käfern und Milben, die pflanzliche Alkaloide enthalten. In Gefangenschaft ohne diese Nahrung werden sie ungiftig.",
+        difficulty = 3,
+        funFact = "Indigene Völker Südamerikas nutzten das Batrachotoxin aus Pfeilgiftfröschen für vergiftete Blasrohrpfeile."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist der Unterschied zwischen Homologie und Analogie im Tierreich?",
+        answerA = "Homologe Organe haben gleiche Funktion, analoge haben gemeinsamen Ursprung",
+        answerB = "Homologe Organe haben gemeinsamen evolutionären Ursprung, analoge haben gleiche Funktion durch konvergente Evolution",
+        answerC = "Homologien betreffen Verhaltensweisen, Analogien betreffen körperliche Merkmale",
+        answerD = "Es gibt keinen relevanten Unterschied",
+        correctAnswer = 1,
+        explanation = "Homologe Organe haben den gleichen evolutionären Ursprung (z.B. Menschenhand und Flosse des Wals). Analoge Organe haben durch konvergente Evolution ähnliche Funktion, aber verschiedenen Ursprung (z.B. Insekten- und Vogelflügel).",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welche Vogelart ist bekannt dafür, dass sie komplexe Werkzeuge aus Haken und Haften herstellt?",
+        answerA = "Tannenhäher",
+        answerB = "Neukaledonische Krähe (Corvus moneduloides)",
+        answerC = "Grüner Specht",
+        answerD = "Papagei",
+        correctAnswer = 1,
+        explanation = "Neukaledonische Krähen stellen aus Blättern und Zweigen Haken-Werkzeuge her, um Insektenlarven aus Rindenspalten zu angeln – eine der komplexesten Werkzeugnutzungen im Tierreich.",
+        difficulty = 3,
+        funFact = "Diese Krähen lösen mehrstufige Problemstellungen, die sogar für Kleinkinder herausfordernd sind."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was bezeichnet der Begriff 'Torpor' bei Tieren?",
+        answerA = "Einen tiefen Schlafzustand identisch mit Winterschlaf",
+        answerB = "Einen kurzfristigen Zustand reduzierter Körperfunktionen und Temperatur",
+        answerC = "Einen dauerhaften Ruhezustand bei Wirbellosen",
+        answerD = "Die sommerliche Version des Winterschlafs",
+        correctAnswer = 1,
+        explanation = "Torpor ist ein kurzfristiger Energiesparzustand mit stark reduzierter Körpertemperatur und Stoffwechsel. Er unterscheidet sich vom Winterschlaf durch seine Kürze und Umkehrbarkeit in Minuten.",
+        difficulty = 3,
+        funFact = "Kolibris fallen jede Nacht in Torpor – ohne diesen würden sie ihre Energiereserven über Nacht erschöpfen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie nennt man die Pheromon-Kommunikation bei Ameisen, die Wegmarkierungen hinterlässt?",
+        answerA = "Trophallaxis",
+        answerB = "Tandem Running",
+        answerC = "Pheromonspur (Trail Pheromone)",
+        answerD = "Rekrutierungstanz",
+        correctAnswer = 2,
+        explanation = "Ameisen hinterlassen chemische Duftspuren aus Pheromonen, die andere Arbeiterinnen zur Nahrungsquelle leiten. Je stärker die Spur, desto mehr Ameisen folgen ihr.",
+        difficulty = 3,
+        funFact = "Trophallaxis bezeichnet den Nahrungsaustausch zwischen Ameisen durch Mund-zu-Mund-Weitergabe von verdauten Substanzen."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier hat tatsächlich vier Gehirne (oder das Äquivalent)?",
+        answerA = "Krake (Oktopus)",
+        answerB = "Tintenfisch",
+        answerC = "Blauwal",
+        answerD = "Seestern",
+        correctAnswer = 0,
+        explanation = "Kraken haben ein zentrales Gehirn plus je ein Nervenganglion in jedem der 8 Tentakel – die Tentakel agieren damit weitgehend autonom und verarbeiten Informationen unabhängig vom Zentralgehirn.",
+        difficulty = 3,
+        funFact = "Etwa zwei Drittel der Neuronen eines Krakens befinden sich in seinen Tentakeln, nicht im Gehirn."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist 'Viviparie' in der Zoologie?",
+        answerA = "Lebendgeburt mit Placenta-ähnlicher Nährstoffversorgung",
+        answerB = "Eierlegung mit anschließender Bebrütung",
+        answerC = "Brutpflege im Maul",
+        answerD = "Entwicklung der Jungen im Mutterleib ohne Placenta",
+        correctAnswer = 0,
+        explanation = "Viviparie bezeichnet die echte Lebendgeburt, bei der der Embryo über eine Placenta oder ähnliche Struktur mit Nährstoffen versorgt wird. Die meisten Säugetiere sind vivipar.",
+        difficulty = 3,
+        funFact = "Einige Hai-Arten sind ebenfalls vivipar – der Sandtigerhai zeigt sogar intrauterinen Kannibalismus."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Tier setzt bei Gefahr eine blaue Flüssigkeit aus seinen Poren frei?",
+        answerA = "Krake",
+        answerB = "Blauringkrake",
+        answerC = "Schleimaal",
+        answerD = "Blaue Pfeilgiftfrösche",
+        correctAnswer = 2,
+        explanation = "Der Schleimaal (Myxine) produziert bei Bedrohung enorme Mengen zähen Schleim aus Hunderten von Drüsen. Dieser Schleim kann die Kiemen von Fressfeinden verkleben.",
+        difficulty = 3,
+        funFact = "Aus dem Schleim des Schleimaaals entwickeln Forscher neue Materialien – er ist elastischer als Nylon und zäher als Kevlar."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Wie lange kann ein Grönlandwal (Bowhead Whale) leben?",
+        answerA = "Bis zu 70 Jahre",
+        answerB = "Bis zu 100 Jahre",
+        answerC = "Bis zu 150 Jahre",
+        answerD = "Über 200 Jahre",
+        correctAnswer = 3,
+        explanation = "Grönlandwale sind die ältesten bekannten Säugetiere – Individuen über 200 Jahre wurden dokumentiert. In Walkörpern wurden Harpunenspitzen aus dem 19. Jahrhundert gefunden.",
+        difficulty = 3,
+        funFact = "Grönlandwale haben die dickste Speckschicht aller Wale – bis zu 50 cm Isolierung."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Was ist der Unterschied zwischen einem Horn und einem Geweih?",
+        answerA = "Hörner sind aus Knochen, Geweihe aus Keratin",
+        answerB = "Hörner wachsen nicht nach, Geweihe werden jährlich abgeworfen und neu gebildet",
+        answerC = "Geweihe haben keine Knochenbasis, Hörner schon",
+        answerD = "Nur Männchen haben Hörner, nur Weibchen Geweihe",
+        correctAnswer = 1,
+        explanation = "Hörner (z.B. bei Rindern) bestehen aus einem Knochenzapfen mit einer Keratinhülle und wachsen lebenslang. Geweihe (z.B. bei Hirschen) sind reine Knochengebilde, werden jährlich abgeworfen und neu gebildet.",
+        difficulty = 3,
+        funFact = "Geweihe sind das am schnellsten wachsende Körpergewebe bei Säugetieren – bis zu 2,5 cm pro Tag."
+    ),
+
+    Question(
+        categoryId = 9,
+        questionText = "Welches Phänomen beschreibt den 'Müller'schen Körper' bei Ameisenpflanzen?",
+        answerA = "Giftstoff zur Abwehr von Insekten",
+        answerB = "Nährstoffreiche Körper als Nahrung für Symbiose-Ameisen",
+        answerC = "Extrafloreale Nektarien an den Blättern",
+        answerD = "Hohlräume als Nestplatz für Ameisenkolonien",
+        correctAnswer = 1,
+        explanation = "Müller'sche Körper sind eiweißreiche Strukturen an bestimmten Pflanzen (z.B. Cecropia), die als Nahrung für Schutzameisen dienen. Die Ameisen verteidigen im Gegenzug die Pflanze vor Herbivoren.",
+        difficulty = 3,
+        funFact = "Diese Wechselbeziehung ist ein klassisches Beispiel für Mutualismus – beide Partner profitieren voneinander."
     )
 )
