@@ -662,5 +662,661 @@ fun historyQuestions(): List<Question> = listOf(
         explanation = "Józef Piłsudski verfolgte eine 'Politique d'équilibre', die Polen durch Nichtangriffspakte mit beiden mächtigen Nachbarn (Deutschland 1934, UdSSR 1932) schützen sollte.",
         difficulty = 5,
         funFact = "Nach Piłsudskis Tod 1935 brach diese Strategie zusammen, was Polen anfälliger für die spätere Doppelbedrohung machte."
+    ),
+
+    // --- NEW EASY (15 questions) ---
+
+    Question(
+        categoryId = 3,
+        questionText = "In welchem Jahr wurde die Berliner Mauer gebaut?",
+        answerA = "1955",
+        answerB = "1958",
+        answerC = "1961",
+        answerD = "1963",
+        correctAnswer = 2,
+        explanation = "Die Berliner Mauer wurde in der Nacht vom 12. auf den 13. August 1961 von der DDR errichtet, um die Massenflucht in den Westen zu stoppen.",
+        difficulty = 1,
+        funFact = "In den zwölf Jahren vor dem Mauerbau flohen rund 2,6 Millionen Menschen aus der DDR in den Westen."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher deutsche Reformator löste 1517 die Reformation aus?",
+        answerA = "Johannes Calvin",
+        answerB = "Ulrich Zwingli",
+        answerC = "Martin Luther",
+        answerD = "Thomas Müntzer",
+        correctAnswer = 2,
+        explanation = "Martin Luther veröffentlichte 1517 seine 95 Thesen gegen den Ablasshandel und löste damit die Reformation der christlichen Kirche aus.",
+        difficulty = 1,
+        funFact = "Luther übersetzte die Bibel ins Deutsche und prägte damit maßgeblich die deutsche Schriftsprache."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welches antike Weltwunder stand in Alexandria?",
+        answerA = "Der Koloss von Rhodos",
+        answerB = "Der Leuchtturm von Alexandria",
+        answerC = "Der Artemistempel von Ephesos",
+        answerD = "Die hängenden Gärten von Babylon",
+        correctAnswer = 1,
+        explanation = "Der Leuchtturm von Alexandria war eines der Sieben Weltwunder der Antike und stand auf der Insel Pharos vor Alexandria.",
+        difficulty = 1,
+        funFact = "Der Leuchtturm war über 100 Meter hoch und diente jahrhundertelang als Seezeichen für Schiffe im Mittelmeer."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wie nannte man den Zeitraum von 1933 bis 1945 in Deutschland?",
+        answerA = "Die Weimarer Republik",
+        answerB = "Das Zweite Reich",
+        answerC = "Das Dritte Reich",
+        answerD = "Die Bundesrepublik",
+        correctAnswer = 2,
+        explanation = "Der Zeitraum der nationalsozialistischen Herrschaft unter Adolf Hitler von 1933 bis 1945 wird als Drittes Reich oder NS-Zeit bezeichnet.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welches Schiff sank 1912 auf seiner Jungfernfahrt?",
+        answerA = "RMS Lusitania",
+        answerB = "SS Olympic",
+        answerC = "HMS Britannic",
+        answerD = "RMS Titanic",
+        correctAnswer = 3,
+        explanation = "Die RMS Titanic sank in der Nacht vom 14. auf den 15. April 1912 nach einer Kollision mit einem Eisberg im Nordatlantik.",
+        difficulty = 1,
+        funFact = "Beim Untergang der Titanic starben rund 1.500 Menschen — etwa zwei Drittel der Passagiere und Besatzungsmitglieder."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wann wurde die Bundesrepublik Deutschland gegründet?",
+        answerA = "1945",
+        answerB = "1947",
+        answerC = "1949",
+        answerD = "1951",
+        correctAnswer = 2,
+        explanation = "Die Bundesrepublik Deutschland wurde am 23. Mai 1949 gegründet, als das Grundgesetz in Kraft trat.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wer war die erste Frau auf dem englischen Thron?",
+        answerA = "Elisabeth I.",
+        answerB = "Maria I.",
+        answerC = "Viktoria",
+        answerD = "Anna",
+        correctAnswer = 1,
+        explanation = "Maria I. (auch 'Bloody Mary' genannt) war 1553 die erste Königin von England und regierte bis 1558.",
+        difficulty = 1,
+        funFact = "Maria I. ließ über 280 Protestanten verbrennen, was ihr den Beinamen 'Bloody Mary' einbrachte."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welches Ereignis begann am 6. Juni 1944?",
+        answerA = "Die Kapitulation Deutschlands",
+        answerB = "Der D-Day – die allierte Landung in der Normandie",
+        answerC = "Die Befreiung Roms durch die Alliierten",
+        answerD = "Die Ardennenoffensive",
+        correctAnswer = 1,
+        explanation = "Am 6. Juni 1944 (D-Day) landeten alliierte Truppen in der Normandie in Frankreich – der größte amphibische Angriff der Geschichte.",
+        difficulty = 1,
+        funFact = "An der Landung waren über 156.000 Soldaten, 5.000 Schiffe und 13.000 Flugzeuge beteiligt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Stadt war das Zentrum des antiken Griechenlands?",
+        answerA = "Sparta",
+        answerB = "Korinth",
+        answerC = "Theben",
+        answerD = "Athen",
+        correctAnswer = 3,
+        explanation = "Athen war das kulturelle und politische Zentrum des antiken Griechenlands und Geburtsort der Demokratie.",
+        difficulty = 1,
+        funFact = "Die Akropolis von Athen mit dem Parthenon-Tempel wurde um 447 v. Chr. unter Perikles erbaut."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher Krieg fand von 1950 bis 1953 statt?",
+        answerA = "Vietnamkrieg",
+        answerB = "Koreakrieg",
+        answerC = "Falklandkrieg",
+        answerD = "Golfkrieg",
+        correctAnswer = 1,
+        explanation = "Der Koreakrieg dauerte von 1950 bis 1953 und endete mit einem Waffenstillstand, der die Halbinsel an der 38. Breitengrade teilte.",
+        difficulty = 1,
+        funFact = "Der Koreakrieg gilt als 'vergessener Krieg', obwohl über 5 Millionen Menschen dabei ihr Leben verloren."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die erste Hauptstadt des vereinten Deutschen Reiches nach 1871?",
+        answerA = "Frankfurt",
+        answerB = "München",
+        answerC = "Hamburg",
+        answerD = "Berlin",
+        correctAnswer = 3,
+        explanation = "Berlin war die Hauptstadt des Deutschen Kaiserreichs, das am 18. Januar 1871 im Spiegelsaal von Versailles ausgerufen wurde.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wer war Kleopatra?",
+        answerA = "Eine griechische Göttin",
+        answerB = "Die letzte Pharaonin des antiken Ägyptens",
+        answerC = "Eine römische Kaiserin",
+        answerD = "Eine karthagische Feldherrin",
+        correctAnswer = 1,
+        explanation = "Kleopatra VII. war die letzte Herrscherin aus der ptolemäischen Dynastien und die letzte Pharaonin des antiken Ägyptens.",
+        difficulty = 1,
+        funFact = "Kleopatra war nicht ägyptisch, sondern griechisch-makedonischer Herkunft und die erste der Ptolemäer, die Ägyptisch sprach."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welches Land führte als erstes die Todesstrafe in Friedenszeiten ab?",
+        answerA = "Frankreich",
+        answerB = "Schweden",
+        answerC = "San Marino",
+        answerD = "Portugal",
+        correctAnswer = 2,
+        explanation = "San Marino schaffte die Todesstrafe bereits 1865 ab und war damit weltweit eines der ersten Länder, die dies taten.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wie hieß der erste Mensch im Weltall?",
+        answerA = "Neil Armstrong",
+        answerB = "Buzz Aldrin",
+        answerC = "Juri Gagarin",
+        answerD = "Alan Shepard",
+        correctAnswer = 2,
+        explanation = "Juri Gagarin war am 12. April 1961 der erste Mensch im Weltall und umkreiste die Erde in 108 Minuten.",
+        difficulty = 1,
+        funFact = "Gagarin war Pilot der sowjetischen Luftwaffe und wurde nach seinem Flug weltweit als Held gefeiert."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "In welchem Jahr fand die amerikanische Unabhängigkeitserklärung statt?",
+        answerA = "1770",
+        answerB = "1776",
+        answerC = "1783",
+        answerD = "1789",
+        correctAnswer = 1,
+        explanation = "Die amerikanische Unabhängigkeitserklärung wurde am 4. Juli 1776 vom Kontinentalkongress verabschiedet.",
+        difficulty = 1,
+        funFact = "Der 4. Juli wird in den USA als 'Independence Day' gefeiert — einer der wichtigsten Nationalfeiertage des Landes."
+    ),
+
+    // --- NEW MEDIUM (20 questions) ---
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Schwarze Freitag' von 1929?",
+        answerA = "Der Tag, an dem die Weimarer Republik zusammenbrach",
+        answerB = "Der Beginn der Weltwirtschaftskrise durch den Börsencrash in New York",
+        answerC = "Der größte Streik in der deutschen Geschichte",
+        answerD = "Der Tag, an dem Hindenburg die Notstandsgesetze unterzeichnete",
+        correctAnswer = 1,
+        explanation = "Am 24. Oktober 1929 (in den USA der 'Black Thursday') brach die New Yorker Börse zusammen und löste die Weltwirtschaftskrise aus.",
+        difficulty = 2,
+        funFact = "In Deutschland sprach man vom 'Schwarzen Freitag' (25. Oktober), weil der Crash erst mit Zeitverzögerung die europäischen Märkte traf."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher chinesische Kaiser ließ die Große Mauer in ihrer heutigen Form ausbauen?",
+        answerA = "Qin Shi Huangdi",
+        answerB = "Han Wudi",
+        answerC = "Kaiser Yongle",
+        answerD = "Wanli",
+        correctAnswer = 3,
+        explanation = "Die meisten heute noch sichtbaren Abschnitte der Chinesischen Mauer wurden unter Kaiser Wanli der Ming-Dynastie (16./17. Jh.) errichtet.",
+        difficulty = 2,
+        funFact = "Die Große Mauer ist über 21.000 km lang und wurde über viele Dynastien hinweg gebaut und erweitert."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Anschluss' von 1938?",
+        answerA = "Die Eingliederung des Sudetenlandes ins Deutsche Reich",
+        answerB = "Die Annexion Österreichs durch das nationalsozialistische Deutschland",
+        answerC = "Der Beitritt Deutschlands zum Völkerbund",
+        answerD = "Die Vereinigung von Preußen und Bayern",
+        correctAnswer = 1,
+        explanation = "Der 'Anschluss' bezeichnete die Annexion Österreichs durch das Deutsche Reich am 12./13. März 1938.",
+        difficulty = 2,
+        funFact = "Österreich blieb bis 1945 Teil des Deutschen Reichs und wurde erst nach dem Zweiten Weltkrieg wieder ein eigenständiger Staat."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Konferenz legte 1945 die Nachkriegsordnung Europas fest?",
+        answerA = "Konferenz von Teheran",
+        answerB = "Konferenz von Casablanca",
+        answerC = "Potsdamer Konferenz",
+        answerD = "Konferenz von Jalta",
+        correctAnswer = 2,
+        explanation = "Auf der Potsdamer Konferenz (Juli/August 1945) einigten sich die Siegermächte USA, UdSSR und Großbritannien auf die Grundzüge der Nachkriegsordnung Deutschlands.",
+        difficulty = 2,
+        funFact = "In Potsdam wurde u.a. die Aufteilung Deutschlands in vier Besatzungszonen und die Entnazifizierung beschlossen."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wer war Otto von Bismarck?",
+        answerA = "Der erste Kaiser des Deutschen Reiches",
+        answerB = "Der erste Bundeskanzler der Weimarer Republik",
+        answerC = "Der preußische Ministerpräsident und erste Reichskanzler, der Deutschland einigte",
+        answerD = "Ein preußischer General, der Frankreich besiegte",
+        correctAnswer = 2,
+        explanation = "Otto von Bismarck war preußischer Ministerpräsident und erster Reichskanzler, der durch drei Kriege die deutschen Staaten 1871 zum Kaiserreich einte.",
+        difficulty = 2,
+        funFact = "Bismarck führte als erster Staatsmann eine Kranken- und Rentenversicherung ein und gilt als Vater des modernen Sozialstaats."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Kristallnacht' (Novemberpogrome) von 1938?",
+        answerA = "Ein Bombenangriff auf jüdische Viertel in Berlin",
+        answerB = "Ein landesweites Pogrom gegen Juden in Deutschland und Österreich",
+        answerC = "Die erste staatliche Deportation von Juden",
+        answerD = "Die Einführung der Nürnberger Rassegesetze",
+        correctAnswer = 1,
+        explanation = "In der Nacht vom 9. auf den 10. November 1938 wurden jüdische Geschäfte, Synagogen und Wohnungen zerstört. Dabei wurden ca. 400 Menschen getötet und 30.000 verhaftet.",
+        difficulty = 2,
+        funFact = "Der Name 'Kristallnacht' bezieht sich auf die zersplitterten Schaufensterscheiben, verniedlicht aber das tatsächliche Ausmaß der Gewalt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher Herrscher ließ den Petersdom in Rom im 16. Jahrhundert neu errichten?",
+        answerA = "Papst Leo X.",
+        answerB = "Papst Julius II.",
+        answerC = "Kaiser Karl V.",
+        answerD = "Papst Paul III.",
+        correctAnswer = 1,
+        explanation = "Papst Julius II. beauftragte 1506 den Neubau des Petersdoms und legte den Grundstein. Der Bau dauerte über 100 Jahre.",
+        difficulty = 2,
+        funFact = "Die Finanzierung des Petersdoms durch den Ablasshandel war ein Hauptauslöser für Luthers Kritik und die Reformation."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der NATO-Doppelbeschluss von 1979?",
+        answerA = "Ein Vertrag zur nuklearen Abrüstung zwischen NATO und Warschauer Pakt",
+        answerB = "Die Entscheidung, neue US-Mittelstreckenraketen in Europa zu stationieren, verbunden mit einem Verhandlungsangebot",
+        answerC = "Ein Verteidigungsplan gegen eine sowjetische Invasion Westeuropas",
+        answerD = "Der Beitritt Spaniens und Portugals zur NATO",
+        correctAnswer = 1,
+        explanation = "Der NATO-Doppelbeschluss (1979) sah die Stationierung von Pershing-II-Raketen in Europa vor, falls die UdSSR ihre SS-20-Raketen nicht abrüsten würde.",
+        difficulty = 2,
+        funFact = "Der Beschluss löste in Deutschland die größte Friedensbewegung der Nachkriegsgeschichte aus, mit bis zu 300.000 Demonstranten."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Zivilisation errichtete Machu Picchu?",
+        answerA = "Die Azteken",
+        answerB = "Die Maya",
+        answerC = "Die Olmeken",
+        answerD = "Die Inka",
+        correctAnswer = 3,
+        explanation = "Machu Picchu wurde von den Inka im 15. Jahrhundert auf einem Bergrücken in den peruanischen Anden errichtet.",
+        difficulty = 2,
+        funFact = "Machu Picchu war wahrscheinlich eine Sommerresidenz des Inka-Herrschers Pachacuti und wurde von den Spaniern nie entdeckt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Prager Frühling' von 1968?",
+        answerA = "Ein Studentenaufstand gegen die kommunistische Regierung der CSSR",
+        answerB = "Eine Reformbewegung unter Alexander Dubček, die durch sowjetische Truppen beendet wurde",
+        answerC = "Die Gründung der Tschechoslowakei als demokratischer Staat",
+        answerD = "Ein diplomatischer Annäherungsversuch zwischen der CSSR und Westdeutschland",
+        correctAnswer = 1,
+        explanation = "Der Prager Frühling war eine Reformbewegung unter KP-Chef Dubček (Sozialismus mit menschlichem Antlitz), die im August 1968 durch Truppen des Warschauer Pakts beendet wurde.",
+        difficulty = 2,
+        funFact = "In der Nacht vom 20. auf den 21. August 1968 marschierten 200.000 Soldaten aus fünf Ostblockstaaten in die CSSR ein."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher Pharao ließ den Tempel von Abu Simbel erbauen?",
+        answerA = "Tutanchamun",
+        answerB = "Echnaton",
+        answerC = "Ramses II.",
+        answerD = "Thutmosis III.",
+        correctAnswer = 2,
+        explanation = "Ramses II. ließ den Großen Tempel von Abu Simbel um 1264 v. Chr. in den Nubischen Sandstein hauen – als Monument seiner eigenen Vergöttlichung.",
+        difficulty = 2,
+        funFact = "1968 wurde der Tempel aufwändig versetzt, um ihn vor dem steigenden Wasser des Assuan-Staudamms zu retten."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welches Ereignis löste die Kuba-Krise 1962 aus?",
+        answerA = "Die gescheiterte Invasion in der Schweinebucht",
+        answerB = "Die Entdeckung sowjetischer Raketenbasen auf Kuba durch US-Aufklärungsflugzeuge",
+        answerC = "Fidel Castros Machtergreifung auf Kuba",
+        answerD = "Ein sowjetisches Ultimatum zur Räumung Westberlins",
+        correctAnswer = 1,
+        explanation = "Am 14. Oktober 1962 fotografierten US-Aufklärungsflugzeuge sowjetische Raketenbasen auf Kuba und lösten damit die Kuba-Krise aus.",
+        difficulty = 2,
+        funFact = "Die 13-tägige Kuba-Krise gilt als der Moment, in dem die Welt einem Atomkrieg am nächsten war."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die Weimarer Republik?",
+        answerA = "Das Deutsche Reich unter Kaiser Wilhelm II.",
+        answerB = "Die erste parlamentarische Demokratie in Deutschland von 1919 bis 1933",
+        answerC = "Ein Stadtstaatenbund mit Weimar als Hauptstadt",
+        answerD = "Die Übergangsregierung nach dem Zweiten Weltkrieg",
+        correctAnswer = 1,
+        explanation = "Die Weimarer Republik war die erste deutsche Demokratie, die von 1919 bis zur Machtergreifung der Nationalsozialisten 1933 bestand.",
+        difficulty = 2,
+        funFact = "Die Verfassung wurde in Weimar beschlossen, weil die Hauptstadt Berlin nach der Novemberrevolution als zu unruhig galt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Bedeutung hatte der Wiener Kongress von 1814/15?",
+        answerA = "Er beendete den Krimkrieg und regelte die Nachfolge des Osmanischen Reiches",
+        answerB = "Er stellte nach den Napoleonischen Kriegen die politische Ordnung Europas neu auf",
+        answerC = "Er gründete den Deutschen Bund als Vorläufer des Deutschen Reiches",
+        answerD = "Er besiegelte die Aufteilung Polens unter Russland, Preußen und Österreich",
+        correctAnswer = 1,
+        explanation = "Der Wiener Kongress (1814/15) schuf nach Napoleons Niederlagen eine neue europäische Ordnung auf Basis von Restauration und Gleichgewicht der Mächte.",
+        difficulty = 2,
+        funFact = "Der österreichische Außenminister Metternich war der dominierende Gestalter des Kongresses und der europäischen Politik danach."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Kalte Krieg'?",
+        answerA = "Ein Krieg zwischen Russland und Finnland im Winter 1939/40",
+        answerB = "Die militärische Konfrontation zwischen NATO und Warschauer Pakt in Mitteleuropa",
+        answerC = "Der ideologische und geopolitische Konflikt zwischen den USA und der UdSSR von 1947 bis 1991",
+        answerD = "Ein Konflikt um arktische Territorien zwischen Russland und Kanada",
+        correctAnswer = 2,
+        explanation = "Der Kalte Krieg war die Systemkonfrontation zwischen den kapitalistischen USA und dem kommunistischen Sowjetblock von ca. 1947 bis zum Zerfall der UdSSR 1991.",
+        difficulty = 2,
+        funFact = "Der Begriff 'Kalter Krieg' wurde 1947 vom US-Berater Bernard Baruch geprägt, um den Konflikt ohne direkten militärischen Zusammenstoß zu beschreiben."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Stadt wurde durch den Vesuv-Ausbruch 79 n. Chr. begraben?",
+        answerA = "Neapel",
+        answerB = "Herculaneum",
+        answerC = "Sorrent",
+        answerD = "Pompeji",
+        correctAnswer = 3,
+        explanation = "Pompeji wurde beim Ausbruch des Vesuvs am 24. August 79 n. Chr. unter Asche und Bimsstein begraben und dadurch für die Nachwelt konserviert.",
+        difficulty = 2,
+        funFact = "Auch die Stadt Herculaneum wurde beim gleichen Ausbruch zerstört, allerdings durch einen pyroklastischen Strom statt durch Asche."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Wann begann der Vietnamkrieg für die USA?",
+        answerA = "1950",
+        answerB = "1955",
+        answerC = "1964",
+        answerD = "1968",
+        correctAnswer = 2,
+        explanation = "Die direkte US-Kriegsbeteiligung begann nach dem Tonkin-Zwischenfall im August 1964, als der Kongress Präsident Johnson weitreichende Kriegsvollmachten erteilte.",
+        difficulty = 2,
+        funFact = "Der Vietnamkrieg kostete über 58.000 US-Soldaten das Leben und endete 1975 mit dem Sieg Nordvietnams."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Entdeckung machte Howard Carter 1922?",
+        answerA = "Das Grab des Pharaos Ramses II. im Tal der Könige",
+        answerB = "Das nahezu unberührte Grab des Pharaos Tutanchamun",
+        answerC = "Die Überreste der versunkenen Stadt Theben",
+        answerD = "Die erste vollständige Hieroglyphen-Inschrift",
+        correctAnswer = 1,
+        explanation = "Howard Carter entdeckte am 4. November 1922 das fast unberührte Grab des Pharaos Tutanchamun im Tal der Könige in Ägypten.",
+        difficulty = 2,
+        funFact = "Der Fund der goldenen Totenmaske Tutanchamuns gilt als einer der bedeutendsten archäologischen Funde des 20. Jahrhunderts."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der Sputnik-Schock von 1957?",
+        answerA = "Der Absturz eines sowjetischen Satelliten über den USA",
+        answerB = "Die Erschütterung des westlichen Selbstverständnisses durch den ersten Satelliten der UdSSR im Orbit",
+        answerC = "Ein sowjetischer Atomtest, der die US-Raketenabwehr überlistete",
+        answerD = "Die erste Mondlandung der Sowjetunion",
+        correctAnswer = 1,
+        explanation = "Als die Sowjetunion am 4. Oktober 1957 mit Sputnik 1 den ersten Satelliten ins All schoss, erschütterte dies die USA und löste das Wettrennen ins All aus.",
+        difficulty = 2,
+        funFact = "Als Reaktion auf den Sputnik-Schock gründeten die USA 1958 die NASA und verstärkten massiv Bildungsinvestitionen in Naturwissenschaften."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welcher Vertrag beendete den Siebenjährigen Krieg?",
+        answerA = "Friede von Basel",
+        answerB = "Vertrag von Hubertusburg",
+        answerC = "Friede von Rijswijk",
+        answerD = "Vertrag von Fontainebleau",
+        correctAnswer = 1,
+        explanation = "Der Siebenjährige Krieg (1756–1763) endete mit dem Frieden von Hubertusburg (zwischen Preußen, Österreich und Sachsen) sowie dem Pariser Frieden (Kolonialkrieg).",
+        difficulty = 2,
+        funFact = "Der Siebenjährige Krieg gilt als erster 'Weltkrieg', da er auf mehreren Kontinenten gleichzeitig geführt wurde."
+    ),
+
+    // --- NEW HARD (15 questions) ---
+
+    Question(
+        categoryId = 3,
+        questionText = "Was verstand man unter dem 'Kulturkampf' im Deutschen Kaiserreich?",
+        answerA = "Bismarcks Konflikt mit der katholischen Kirche und dem Zentrum in den 1870er Jahren",
+        answerB = "Der Streit zwischen Konservativen und Liberalen über die deutsche Nationalliteratur",
+        answerC = "Ein Konflikt zwischen dem Kaiser und dem Reichstag über Pressefreiheit",
+        answerD = "Die Auseinandersetzung zwischen preußischen und bayerischen Kulturtraditionen",
+        correctAnswer = 0,
+        explanation = "Bismarcks Kulturkampf (1871–1878) war ein Machtkampf gegen den politischen Katholizismus und die Ultramontanen, der u.a. Jesuiten verbot und Kirchengesetze einführte.",
+        difficulty = 3,
+        funFact = "Bismarck beendete den Kulturkampf schließlich, als er die Unterstützung des Zentrums gegen die Sozialdemokraten benötigte."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die Bedeutung der 'Emser Depesche' und welche Konsequenz hatte sie?",
+        answerA = "Sie war eine diplomatische Note, die den Deutsch-Dänischen Krieg 1864 einleitete",
+        answerB = "Bismarck kürzte und verschärfte eine königliche Depesche, um Frankreich zu einer Kriegserklärung zu verleiten",
+        answerC = "Sie war das erste Telegramm, das eine Kaiserproklamation ankündigte",
+        answerD = "Sie enthielt Preußens Forderungen nach dem Sieg über Österreich 1866",
+        correctAnswer = 1,
+        explanation = "Bismarck redigierte König Wilhelms I. Bericht über sein Treffen mit dem französischen Botschafter so, dass es wie eine gegenseitige Beleidigung wirkte – was Frankreich zur Kriegserklärung provozierte.",
+        difficulty = 3,
+        funFact = "Bismarck gab später zu, er habe den 'roten Lumpen vor dem gallischen Stier' geschwenkt, um den gewünschten Krieg auszulösen."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Ribbentrop-Molotow-Pakt' von 1939?",
+        answerA = "Ein Handelsabkommen zwischen Deutschland und der Sowjetunion über Rohstoffe",
+        answerB = "Ein geheimer Nichtangriffspakt zwischen Deutschland und der UdSSR mit geheimem Protokoll zur Aufteilung Osteuropas",
+        answerC = "Ein Waffenstillstandsabkommen nach dem Winterkrieg",
+        answerD = "Eine gegenseitige Verteidigungsgarantie zwischen dem Deutschen Reich und der Sowjetunion",
+        correctAnswer = 1,
+        explanation = "Der Ribbentrop-Molotow-Pakt (August 1939) war ein Nichtangriffspakt mit geheimem Zusatzprotokoll, das Osteuropa in deutsche und sowjetische Einflusszonen aufteilte.",
+        difficulty = 3,
+        funFact = "Das geheime Protokoll wurde von der Sowjetunion bis 1989 offiziell geleugnet."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die historische Bedeutung der 'Wannsee-Konferenz' vom Januar 1942?",
+        answerA = "Die Planung der Invasion der Sowjetunion durch SS und Wehrmacht",
+        answerB = "Die bürokratische Koordination der 'Endlösung der Judenfrage' – des systematischen Völkermords",
+        answerC = "Die Entscheidung zur Einführung des Judensterns im besetzten Europa",
+        answerD = "Die Abstimmung über die Deportation von Juden in Arbeitslager",
+        correctAnswer = 1,
+        explanation = "Auf der Wannsee-Konferenz (20. Januar 1942) koordinierten hochrangige NS-Beamte die systematische Vernichtung der europäischen Juden.",
+        difficulty = 3,
+        funFact = "Das Protokoll der Konferenz ist eines der erschreckendsten historischen Dokumente, da es den Massenmord in bürokratischer Sprache beschreibt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was bezeichnete man als 'Scramble for Africa' im 19. Jahrhundert?",
+        answerA = "Die Sklavenhandelsrouten zwischen Afrika und Amerika",
+        answerB = "Das Wetteifern europäischer Mächte um die Kolonisierung Afrikas in den 1880er–1900ern",
+        answerC = "Den Widerstand afrikanischer Völker gegen europäische Kolonialherrschaft",
+        answerD = "Die Suche nach dem Ursprung des Nils durch europäische Entdecker",
+        correctAnswer = 1,
+        explanation = "Als 'Scramble for Africa' bezeichnet man den intensiven Wettbewerb europäischer Mächte um afrikanische Kolonien, der Afrika bis 1914 fast vollständig aufgeteilt hatte.",
+        difficulty = 3,
+        funFact = "1880 kontrollierten Europäer nur 10 % Afrikas — bis 1914 waren es 90 %."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Lebensraum'-Politik im Nationalsozialismus?",
+        answerA = "Ein Programm zur Umsiedlung von Deutschen in Südamerika",
+        answerB = "Hitlers Konzept der Eroberung osteuropäischer Gebiete zur deutschen Besiedlung und Ausbeutung",
+        answerC = "Eine Stadtplanung zur Entlastung überfüllter Großstädte",
+        answerD = "Ein Naturschutzprogramm zur Renaturierung deutscher Wälder",
+        correctAnswer = 1,
+        explanation = "Hitlers 'Lebensraum im Osten'-Konzept sah die Eroberung slawischer Gebiete vor, um dort Deutsche anzusiedeln und die einheimische Bevölkerung zu versklagen oder zu vernichten.",
+        difficulty = 3,
+        funFact = "Dieses Konzept war ein zentrales Motiv für den Überfall auf die Sowjetunion 1941 und eng mit der Vernichtungspolitik verbunden."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Gunboat Diplomacy' im 19./frühen 20. Jahrhundert?",
+        answerA = "Eine britische Strategie zur Kontrolle der Handelsrouten im Mittelmeer",
+        answerB = "Die Nutzung militärischer Überlegenheit (oft Kriegsschiffe) durch Großmächte, um schwächere Staaten zu Konzessionen zu zwingen",
+        answerC = "Ein Abkommen zwischen europäischen Mächten über Flottengrößen",
+        answerD = "Die erste internationale Konvention zum Schutz ziviler Schiffe in Kriegen",
+        correctAnswer = 1,
+        explanation = "Gunboat Diplomacy bezeichnete die Drohung oder den Einsatz militärischer Macht — oft durch Kriegsschiffe — als diplomatisches Druckmittel gegenüber schwächeren Staaten.",
+        difficulty = 3,
+        funFact = "Ein bekanntes Beispiel ist die 'Venezuelakrise' 1902/03, als Deutschland und Großbritannien Venezuela mit Kriegsschiffen blockierten, um Schulden einzutreiben."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Welche Bedeutung hatte die 'Reichsgründung von unten' 1848/49?",
+        answerA = "Sie war die erste gelungene demokratische Revolution in Deutschland",
+        answerB = "Die Frankfurter Nationalversammlung versuchte, Deutschland von unten durch Volkssouveränität zu einigen, scheiterte aber",
+        answerC = "Sie führte zur Eingliederung Österreichs in den Deutschen Bund",
+        answerD = "Sie war der Ursprung des norddeutschen Bundes unter preußischer Führung",
+        correctAnswer = 1,
+        explanation = "Die Frankfurter Nationalversammlung (Paulskirchenparlament) versuchte 1848/49, Deutschland demokratisch von unten zu einigen. Das Scheitern führte zur Reaktion und späteren Einigung von oben durch Bismarck.",
+        difficulty = 3,
+        funFact = "Die Nationalversammlung bot dem preußischen König Friedrich Wilhelm IV. die Kaiserkrone an, den er aber als 'von der Revolution beschmutzt' ablehnte."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Sonderweg'-Begriff in der deutschen Geschichtsschreibung?",
+        answerA = "Deutschlands besondere Leistungen in Wissenschaft und Kultur im 19. Jahrhundert",
+        answerB = "Die These, dass Deutschlands historische Entwicklung von einem 'normalen' westlichen Pfad abwich und zum Nationalsozialismus führte",
+        answerC = "Bismarcksdeutsche Außenpolitik der Bündnisse und Gleichgewichtspolitik",
+        answerD = "Die These, dass Deutschland einen eigenen Weg zwischen Kapitalismus und Kommunismus gesucht hat",
+        correctAnswer = 1,
+        explanation = "Die 'Sonderweg'-These besagt, dass Deutschland keine vollständige bürgerliche Revolution erlebte und daher einen Sonderweg zur Moderne nahm, der in den Nationalsozialismus mündete.",
+        difficulty = 3,
+        funFact = "Die These ist umstritten — Kritiker wie David Blackbourn und Geoff Eley argumentierten, der deutsche Weg sei nicht wirklich 'besonders' gewesen."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Aktion T4' im nationalsozialistischen Deutschland?",
+        answerA = "Ein Geheimplan zur Deportation aller Juden aus dem Deutschen Reich",
+        answerB = "Das NS-Programm zur systematischen Ermordung von Menschen mit Behinderungen",
+        answerC = "Eine Geheimoperation zur Sabotage feindlicher Infrastruktur",
+        answerD = "Die Geheimdienstoperation zur Überwachung von Regimegegnern",
+        correctAnswer = 1,
+        explanation = "Die 'Aktion T4' war das NS-Vernichtungsprogramm für Menschen mit körperlichen oder geistigen Behinderungen, bei dem ca. 200.000 Menschen ermordet wurden.",
+        difficulty = 3,
+        funFact = "Die dabei entwickelten Methoden der Massentötung (Gaswagen, Vergasungsanlagen) wurden später bei der Judenvernichtung eingesetzt."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Balfour-Deklaration' von 1917?",
+        answerA = "Großbritanniens Kriegserklärung an das Osmanische Reich",
+        answerB = "Ein britisches Dokument, das die Errichtung einer jüdischen Heimstätte in Palästina befürwortete",
+        answerC = "Ein Friedensangebot Großbritanniens an Deutschland im Ersten Weltkrieg",
+        answerD = "Der britische Plan zur Neugestaltung des Nahen Ostens nach dem Krieg",
+        correctAnswer = 1,
+        explanation = "Die Balfour-Deklaration (November 1917) war ein Brief des britischen Außenministers Balfour, in dem Großbritannien die Errichtung einer nationalen Heimstätte für das jüdische Volk in Palästina befürwortete.",
+        difficulty = 3,
+        funFact = "Die Deklaration ist bis heute ein zentrales Dokument im israelisch-palästinensischen Konflikt, da sie zugleich die Rechte der arabischen Bevölkerung sichern sollte."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was verstand man unter 'Appeasement-Politik' in den 1930er Jahren?",
+        answerA = "Eine aggressive Außenpolitik Großbritanniens gegen Hitler-Deutschland",
+        answerB = "Die Beschwichtigungspolitik westlicher Mächte gegenüber Hitler, symbolisiert durch das Münchener Abkommen 1938",
+        answerC = "Die Isolationspolitik der USA gegenüber europäischen Konflikten",
+        answerD = "Frankreichs Annäherungsversuche an die Sowjetunion als Gegengewicht zu Deutschland",
+        correctAnswer = 1,
+        explanation = "Die Appeasement-Politik (bes. unter Neville Chamberlain) versuchte, Hitler durch Zugeständnisse — wie die Abtretung des Sudetenlandes 1938 — zu besänftigen.",
+        difficulty = 3,
+        funFact = "Chamberlain kehrte aus München mit dem Versprechen von 'Frieden für unsere Zeit' zurück — ein Jahr später begann der Zweite Weltkrieg."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Koloniale Schuldlüge' im Deutschen Reich nach dem WWI?",
+        answerA = "Deutschlands Weigerung, Kriegsreparationen an seine ehemaligen Kolonien zu zahlen",
+        answerB = "Die NS-Propaganda, die deutschen Kolonialismus als Wohltat für die Einheimischen darstellte",
+        answerC = "Die deutsche Ablehnung des Versailler Mandatssystems mit dem Argument, Deutschlands Kolonialverwaltung sei besser als die der Konkurrenten",
+        answerD = "Bismarcks Argumentation, Deutschland brauche keine Kolonien",
+        correctAnswer = 2,
+        explanation = "Nach Verlust der Kolonien 1919 propagierte Deutschland die 'Koloniale Schuldlüge': die Behauptung, Deutschland sei ein guter Kolonialherr gewesen und müsse die Kolonien zurückbekommen.",
+        difficulty = 3,
+        funFact = "Tatsächlich hatte Deutschland im Herero- und Nama-Aufstand 1904–08 einen der ersten Völkermorde des 20. Jahrhunderts begangen."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war die 'Containment-Politik' und wer formulierte sie?",
+        answerA = "General MacArthurs Plan zur militärischen Eindämmung Chinas im Koreakrieg",
+        answerB = "George Kennans Strategie zur politischen und wirtschaftlichen Eindämmung der sowjetischen Expansion",
+        answerC = "Präsident Trumans Plan zur nuklearen Abschreckung der Sowjetunion",
+        answerD = "Dwight Eisenhowers Verteidigungsstrategie der massiven Vergeltung",
+        correctAnswer = 1,
+        explanation = "George Kennan formulierte 1946/47 die Containment-Strategie: Die UdSSR solle nicht militärisch besiegt, sondern durch politische und wirtschaftliche Mittel eingedämmt werden.",
+        difficulty = 3,
+        funFact = "Kennans 'Long Telegram' von 1946 und sein anonymer 'X-Artikel' von 1947 sind zwei der einflussreichsten außenpolitischen Dokumente des 20. Jahrhunderts."
+    ),
+
+    Question(
+        categoryId = 3,
+        questionText = "Was war der 'Generalplan Ost' des NS-Regimes?",
+        answerA = "Hitlers strategischer Operationsplan für den Überfall auf die Sowjetunion",
+        answerB = "Ein SS-Plan zur Germanisierung Osteuropas durch Vertreibung und Vernichtung der einheimischen Bevölkerung",
+        answerC = "Der Plan zur Errichtung eines Ostwall-Verteidigungssystems an der Oder",
+        answerD = "Ein Wirtschaftsprogramm zur Ausbeutung besetzter Ostgebiete",
+        correctAnswer = 1,
+        explanation = "Der Generalplan Ost war ein geheimer SS-Plan (1941–1942) zur Germanisierung Osteuropas durch Massenmord, Vertreibung und Versklavung von 30–50 Millionen Menschen.",
+        difficulty = 3,
+        funFact = "Der Plan sah vor, innerhalb von 25–30 Jahren 80 % der polnischen, 75 % der weißrussischen und 64 % der ukrainischen Bevölkerung zu vernichten oder zu vertreiben."
     )
 )
