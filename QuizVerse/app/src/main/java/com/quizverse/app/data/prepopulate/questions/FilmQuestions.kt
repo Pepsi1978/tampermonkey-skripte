@@ -1318,5 +1318,202 @@ fun filmQuestions(): List<Question> = listOf(
         explanation = "Die Berlinale (Internationale Filmfestspiele Berlin) verleiht den Goldenen Bären als höchste Auszeichnung – analog zur Goldenen Palme in Cannes und dem Goldenen Löwen in Venedig.",
         difficulty = 3,
         funFact = "Die Berlinale wurde 1951 gegründet und ist eines der ältesten und bedeutendsten Filmfestivals der Welt."
+    ),
+
+    // ─── EXTRA MEDIUM (15 questions, difficulty=2) ────────────────────────────
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Schauspieler spielt den Piraten Jack Sparrow in der Filmreihe 'Fluch der Karibik'?",
+        answerA = "Orlando Bloom",
+        answerB = "Geoffrey Rush",
+        answerC = "Johnny Depp",
+        answerD = "Keira Knightley",
+        correctAnswer = 2,
+        explanation = "Johnny Depp verkörpert den exzentrischen Piraten Captain Jack Sparrow in allen fünf Teilen der 'Fluch der Karibik'-Reihe.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "In welchem Film von 2010 spielt Leonardo DiCaprio einen Traumdieb, der Ideen aus Unterbewusstsein stiehlt?",
+        answerA = "Shutter Island",
+        answerB = "The Departed",
+        answerC = "Catch Me If You Can",
+        answerD = "Inception",
+        correctAnswer = 3,
+        explanation = "'Inception' (2010) von Christopher Nolan handelt von Dom Cobb, der mit seinem Team in die Träume anderer eindringt, um Geheimnisse zu stehlen oder zu pflanzen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welche Schauspielerin spielt die Hauptrolle in der Serie 'The Handmaid's Tale'?",
+        answerA = "Winona Ryder",
+        answerB = "Elisabeth Moss",
+        answerC = "Claire Danes",
+        answerD = "Robin Wright",
+        correctAnswer = 1,
+        explanation = "Elisabeth Moss spielt Offred (June Osborne) in 'The Handmaid's Tale' (seit 2017), einer dystopischen Serie basierend auf Margaret Atwoods Roman.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Film von Ang Lee aus dem Jahr 2000 gewann vier Oscars und ist ein Wuxia-Martial-Arts-Epos?",
+        answerA = "Hero",
+        answerB = "The House of Flying Daggers",
+        answerC = "Crouching Tiger, Hidden Dragon",
+        answerD = "Ip Man",
+        correctAnswer = 2,
+        explanation = "'Crouching Tiger, Hidden Dragon' (Tiger & Dragon, 2000) von Ang Lee gewann vier Oscars, darunter Bester fremdsprachiger Film, und machte Wuxia-Kino weltweit populär.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welche Figur stirbt in 'Avengers: Infinity War' durch einen Fingerschnipp von Thanos zuerst auf der Leinwand?",
+        answerA = "Black Panther",
+        answerB = "Spider-Man",
+        answerC = "Doctor Strange",
+        answerD = "Bucky Barnes",
+        correctAnswer = 3,
+        explanation = "Bucky Barnes (Winter Soldier) ist die erste Figur, die nach Thanos' Snap auf der Leinwand zu Staub zerfällt, direkt vor den Augen von Steve Rogers.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Wer spielte die Hauptrolle in dem Biopic 'The Social Network' (2010) über die Gründung von Facebook?",
+        answerA = "Ashton Kutcher",
+        answerB = "Jesse Eisenberg",
+        answerC = "Joseph Gordon-Levitt",
+        answerD = "Michael Cera",
+        correctAnswer = 1,
+        explanation = "Jesse Eisenberg spielt Mark Zuckerberg in David Finchers 'The Social Network' (2010), das Drehbuch schrieb Aaron Sorkin.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "In welchem Land wurde die Serie 'Squid Game' produziert, die 2021 zum weltweiten Netflix-Hit wurde?",
+        answerA = "Japan",
+        answerB = "China",
+        answerC = "Südkorea",
+        answerD = "Thailand",
+        correctAnswer = 2,
+        explanation = "'Squid Game' (2021) ist eine südkoreanische Netflix-Serie von Hwang Dong-hyuk über verschuldete Menschen, die tödliche Kinderspiele spielen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Regisseur führte bei dem Sci-Fi-Film 'Arrival' (2016) Regie?",
+        answerA = "J.J. Abrams",
+        answerB = "Alex Garland",
+        answerC = "Denis Villeneuve",
+        answerD = "Gareth Edwards",
+        correctAnswer = 2,
+        explanation = "'Arrival' (2016) wurde von Denis Villeneuve inszeniert und handelt von einer Linguistin, die die Sprache außerirdischer Besucher entschlüsseln soll.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Film von David Fincher aus dem Jahr 1999 dreht sich um einen Protagonisten, der eine Untergrundkampfgruppe gründet?",
+        answerA = "Se7en",
+        answerB = "The Game",
+        answerC = "Zodiac",
+        answerD = "Fight Club",
+        correctAnswer = 3,
+        explanation = "'Fight Club' (1999) von David Fincher mit Brad Pitt und Edward Norton handelt von einem schlaflosen Büroangestellten, der mit Tyler Durden einen illegalen Kampfclub aufbaut.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welche Schauspielerin spielt in der HBO-Serie 'Succession' die Rolle der Siobhan 'Shiv' Roy?",
+        answerA = "Sarah Snook",
+        answerB = "Kieran Culkin",
+        answerC = "J. Smith-Cameron",
+        answerD = "Natalie Gold",
+        correctAnswer = 0,
+        explanation = "Sarah Snook spielt Siobhan 'Shiv' Roy, die einzige Tochter des Medienimperiums-Gründers Logan Roy, in der preisgekrönten HBO-Serie 'Succession'.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Regisseur schuf die Science-Fiction-Trilogie 'District 9', 'Elysium' und 'Chappie'?",
+        answerA = "Gareth Edwards",
+        answerB = "Neill Blomkamp",
+        answerC = "Duncan Jones",
+        answerD = "Rupert Wyatt",
+        correctAnswer = 1,
+        explanation = "Neill Blomkamp, südafrikanischer Regisseur, schuf alle drei gesellschaftskritischen Science-Fiction-Filme: 'District 9' (2009), 'Elysium' (2013) und 'Chappie' (2015).",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "In welcher US-amerikanischen Stadt spielt die Serie 'The Wire' hauptsächlich?",
+        answerA = "New York",
+        answerB = "Chicago",
+        answerC = "Philadelphia",
+        answerD = "Baltimore",
+        correctAnswer = 3,
+        explanation = "'The Wire' (HBO, 2002–2008) von David Simon spielt in Baltimore, Maryland, und zeigt verschiedene Schichten der Stadt aus Sicht von Polizei und Verbrechern.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Film von Bong Joon-ho aus dem Jahr 2013 handelt von den letzten Überlebenden der Menschheit in einem endlosen Zug?",
+        answerA = "Okja",
+        answerB = "Memories of Murder",
+        answerC = "Snowpiercer",
+        answerD = "The Host",
+        correctAnswer = 2,
+        explanation = "'Snowpiercer' (2013) von Bong Joon-ho zeigt eine Zukunft, in der die letzten Menschen nach einer Eiszeit in einem nicht endenden Zug leben, der die Erde umrundet.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welcher Schauspieler gewann für seine Rolle in 'Dallas Buyers Club' (2013) den Oscar als bester Hauptdarsteller?",
+        answerA = "Jared Leto",
+        answerB = "Chiwetel Ejiofor",
+        answerC = "Bruce Dern",
+        answerD = "Matthew McConaughey",
+        correctAnswer = 3,
+        explanation = "Matthew McConaughey gewann den Oscar als bester Hauptdarsteller für seine Darstellung von Ron Woodroof, einem AIDS-Patienten im Texas der 1980er.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 4,
+        questionText = "Welche Fernsehserie von AMC zeigt die Zombie-Apokalypse und basiert auf einem Comic von Robert Kirkman?",
+        answerA = "Fear the Walking Dead",
+        answerB = "iZombie",
+        answerC = "Z Nation",
+        answerD = "The Walking Dead",
+        correctAnswer = 3,
+        explanation = "'The Walking Dead' (AMC, 2010–2022) basiert auf den Comics von Robert Kirkman und Frank Darabont und zeigt eine Gruppe von Überlebenden in einer von Zombies bevölkerten Welt.",
+        difficulty = 2,
+        funFact = null
     )
 )
