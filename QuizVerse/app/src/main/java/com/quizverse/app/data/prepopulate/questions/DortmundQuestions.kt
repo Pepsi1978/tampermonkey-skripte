@@ -1515,5 +1515,646 @@ fun dortmundQuestions(): List<Question> = listOf(
         explanation = "Marco Reus wechselte im Sommer 2012 von Borussia Mönchengladbach zu Borussia Dortmund und wurde dort zu einer Vereinsikone.",
         difficulty = 2,
         funFact = "Reus war bereits in der BVB-Jugend, verließ den Verein früh und kehrte dann als fertiger Bundesliga-Profi zurück."
+    ),
+
+    // ── BATCH EASY (25) ───────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen UEFA-Pokal gewann BVB im Jahr 1966 — den ersten europäischen Titel der Vereinsgeschichte?",
+        answerA = "Champions League",
+        answerB = "UEFA-Pokal (heutige Europa League)",
+        answerC = "Europapokal der Pokalsieger",
+        answerD = "UEFA Super Cup",
+        correctAnswer = 2,
+        explanation = "BVB gewann 1966 den Europapokal der Pokalsieger — den ersten europäischen Titel der Vereinsgeschichte — mit einem 2:1-Sieg über den FC Liverpool.",
+        difficulty = 1,
+        funFact = "Das Finale fand in Glasgow statt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler erzielte für BVB das WM-Siegtor 2014 im Finale gegen Argentinien?",
+        answerA = "Mats Hummels",
+        answerB = "Marco Reus",
+        answerC = "Mario Götze",
+        answerD = "İlkay Gündoğan",
+        correctAnswer = 2,
+        explanation = "Mario Götze, damals bei BVB ausgebildet und inzwischen bei Bayern, erzielte in der Verlängerung das einzige Tor des WM-Finals 2014.",
+        difficulty = 1,
+        funFact = "Götze wurde von Löw mit den Worten eingewechselt: 'Zeig der Welt, dass du besser bist als Messi.'"
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie heißt das Vereinsmaskottchen von Borussia Dortmund?",
+        answerA = "Bruno der Bär",
+        answerB = "Emma die Hummel",
+        answerC = "Felix der Fuchs",
+        answerD = "Benny das Pferd",
+        correctAnswer = 1,
+        explanation = "Emma, eine Hummel in BVB-Farben, ist das offizielle Maskottchen von Borussia Dortmund.",
+        difficulty = 1,
+        funFact = "Die Hummel symbolisiert Fleiß und Energie — Eigenschaften, die BVB verkörpern möchte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Trikotausrüster stattet Borussia Dortmund aus?",
+        answerA = "Adidas",
+        answerB = "Nike",
+        answerC = "Puma",
+        answerD = "Umbro",
+        correctAnswer = 2,
+        explanation = "Puma ist seit 2012 offizieller Trikotausrüster von Borussia Dortmund.",
+        difficulty = 1,
+        funFact = "Vor Puma war Kappa der langjährige BVB-Ausrüster in den 2000er Jahren."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Aus welchem Verein wechselte Jürgen Klopp 2008 zu BVB?",
+        answerA = "VfB Stuttgart",
+        answerB = "Eintracht Frankfurt",
+        answerC = "Bayer Leverkusen",
+        answerD = "1. FSV Mainz 05",
+        correctAnswer = 3,
+        explanation = "Jürgen Klopp kam im Sommer 2008 von 1. FSV Mainz 05 zu Borussia Dortmund, wo er sieben erfolgreiche Jahre verbrachte.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wo liegt die Heimatstadt von BVBs Erzrivalen Schalke 04?",
+        answerA = "Essen",
+        answerB = "Bochum",
+        answerC = "Duisburg",
+        answerD = "Gelsenkirchen",
+        correctAnswer = 3,
+        explanation = "Der FC Schalke 04 kommt aus Gelsenkirchen, nur etwa 30 Kilometer von Dortmund entfernt.",
+        difficulty = 1,
+        funFact = "Das Revierderby gehört zu den emotionalsten Begegnungen im deutschen Fußball."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher polnische Rechtsverteidiger beendete 2021 nach elf Jahren seine Karriere bei BVB?",
+        answerA = "Jakub Blaszczykowski",
+        answerB = "Lukasz Piszczek",
+        answerC = "Artur Boruc",
+        answerD = "Kamil Grosicki",
+        correctAnswer = 1,
+        explanation = "Lukasz Piszczek spielte von 2010 bis 2021 für BVB, gewann zweimal die Meisterschaft und beendete dort seine Profikarriere.",
+        difficulty = 1,
+        funFact = "Piszczek kehrte nach seinem Abschied zu seinem polnischen Heimatklub zurück."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Was war das Ergebnis im DFB-Pokalfinale 2012, als BVB gegen Bayern München spielte?",
+        answerA = "3:1",
+        answerB = "4:2",
+        answerC = "5:2",
+        answerD = "2:0",
+        correctAnswer = 2,
+        explanation = "BVB besiegte Bayern München im DFB-Pokalfinale 2012 mit 5:2 und feierte damit das erste Double der Vereinsgeschichte.",
+        difficulty = 1,
+        funFact = "Lewandowski traf im Finale zweimal, Reus einmal, Grosskreutz einmal und Kagawa einmal."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welcher Stadt fand das Champions-League-Finale 2013 statt, in dem BVB gegen Bayern antrat?",
+        answerA = "Berlin",
+        answerB = "Madrid",
+        answerC = "London",
+        answerD = "Paris",
+        correctAnswer = 2,
+        explanation = "Das CL-Finale 2013 fand im Wembley-Stadion in London statt. Bayern München gewann 2:1 gegen BVB.",
+        difficulty = 1,
+        funFact = "Es war das erste rein deutsche Champions-League-Finale der Geschichte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Trikotsponsor (Brustaufdruck) steht auf dem BVB-Heimtrikot?",
+        answerA = "Signal Iduna",
+        answerB = "Puma",
+        answerC = "1&1",
+        answerD = "Evonik",
+        correctAnswer = 3,
+        explanation = "Evonik Industries ist seit 2006 Haupttrikotsponsor (Brustaufdruck) von Borussia Dortmund.",
+        difficulty = 1,
+        funFact = "Evonik ist ein Spezialchemieunternehmen mit Sitz in Essen, im Herzen des Ruhrgebiets."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Jahr feierte BVB seinen 100. Vereinsgeburtstag mit großen Feiern in Dortmund?",
+        answerA = "2005",
+        answerB = "2007",
+        answerC = "2009",
+        answerD = "2011",
+        correctAnswer = 2,
+        explanation = "Da BVB am 19. Dezember 1909 gegründet wurde, fand das 100-jährige Jubiläum im Jahr 2009 statt.",
+        difficulty = 1,
+        funFact = "Zum Jubiläum erschien ein Sondertrikot mit historischen Vereinsmotiven."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele DFB-Pokalsiege hat Borussia Dortmund in seiner Geschichte errungen (Stand 2024)?",
+        answerA = "2",
+        answerB = "3",
+        answerC = "4",
+        answerD = "5",
+        correctAnswer = 2,
+        explanation = "BVB gewann den DFB-Pokal viermal: 1965, 1989, 2012 und 2017.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer war der erste BVB-Trainer, der die Mannschaft ins Champions-League-Finale führte?",
+        answerA = "Jürgen Klopp",
+        answerB = "Bert van Marwijk",
+        answerC = "Nevio Scala",
+        answerD = "Ottmar Hitzfeld",
+        correctAnswer = 3,
+        explanation = "Ottmar Hitzfeld führte BVB 1997 ins Champions-League-Finale und gewann es mit 3:1 gegen Juventus Turin.",
+        difficulty = 1,
+        funFact = "Hitzfeld trainierte zuvor auch VfB Stuttgart und gewann mit Bayern München ebenfalls die Champions League."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Jahr wurde Borussia Dortmund erstmals Deutscher Meister?",
+        answerA = "1948",
+        answerB = "1956",
+        answerC = "1963",
+        answerD = "1972",
+        correctAnswer = 1,
+        explanation = "BVB wurde erstmals 1956 Deutscher Meister (im Endrundenformat, vor Gründung der Bundesliga) und verteidigte den Titel 1957.",
+        difficulty = 1,
+        funFact = "Bis zur Bundesliga-Gründung 1963 wurden die deutschen Meisterschaften in Endrunden ausgespielt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Fluss prägt die Stadtlandschaft Dortmunds und gibt einem Sanierungsprojekt seinen Namen?",
+        answerA = "Ruhr",
+        answerB = "Lippe",
+        answerC = "Emscher",
+        answerD = "Rhein",
+        correctAnswer = 2,
+        explanation = "Die Emscher fließt durch Dortmund und wird in einem der größten Infrastrukturprojekte Europas renaturiert.",
+        difficulty = 1,
+        funFact = "Das Projekt 'Emscher-Umbau' läuft seit den 1990er Jahren und kostet mehrere Milliarden Euro."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Was stand im BVB-Wappen vor der heutigen Version mit den Kreisen?",
+        answerA = "Ein Wappenschild mit Adler",
+        answerB = "Ein Fußball",
+        answerC = "Ein Ruhrgebiet-Symbol",
+        answerD = "Das Wappen war immer kreisförmig",
+        correctAnswer = 3,
+        explanation = "Das BVB-Logo war schon früh von seiner kreisförmigen Grundstruktur geprägt, wenngleich sich Details im Laufe der Jahrzehnte veränderten.",
+        difficulty = 1,
+        funFact = "Das aktuelle BVB-Logo zeigt in der Mitte 'BVB 09' als Verweis auf das Gründungsjahr."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie nennt man den Verein Borussia Dortmund umgangssprachlich im Kurzformat?",
+        answerA = "Die Borussen",
+        answerB = "Die Schwarz-Gelben",
+        answerC = "BVB",
+        answerD = "Alle genannten Antworten sind korrekt",
+        correctAnswer = 3,
+        explanation = "BVB wird umgangssprachlich als 'BVB', 'Die Borussen' oder 'Die Schwarz-Gelben' bezeichnet — alle drei sind gebräuchlich.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Trainer übernahm den Verein nach Klopp im Sommer 2015?",
+        answerA = "Peter Bosz",
+        answerB = "Lucien Favre",
+        answerC = "Thomas Tuchel",
+        answerD = "Roger Schmidt",
+        correctAnswer = 2,
+        explanation = "Thomas Tuchel übernahm nach Klopps Abschied im Sommer 2015 das Traineramt bei BVB und gewann 2017 den DFB-Pokal.",
+        difficulty = 1,
+        funFact = "Tuchel wurde trotz des Pokalsieges 2017 kurz danach entlassen — nach einem Streit mit der Vereinsführung."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welche zwei Bundesliga-Meisterschaften gewann BVB unter Jürgen Klopp?",
+        answerA = "2009/10 und 2010/11",
+        answerB = "2010/11 und 2011/12",
+        answerC = "2011/12 und 2012/13",
+        answerD = "2012/13 und 2013/14",
+        correctAnswer = 1,
+        explanation = "BVB gewann unter Klopp die Bundesliga-Meisterschaften 2010/11 und 2011/12 — zwei Titel in Folge.",
+        difficulty = 1,
+        funFact = "In beiden Meistersaisons war Robert Lewandowski der Haupttorjäger."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer waren die Hauptsponsoren beim BVB-Meistertitel 2002?",
+        answerA = "Das ist unbekannt",
+        answerB = "Opel und Kappa",
+        answerC = "Siemens und Adidas",
+        answerD = "E.ON und Nike",
+        correctAnswer = 1,
+        explanation = "Beim Meistertitel 2002 waren Opel (Trikotsponsor) und Kappa (Ausrüster) die Hauptpartner von BVB.",
+        difficulty = 1,
+        funFact = "Sponsorenschaften haben sich bei BVB über die Jahrzehnte stark gewandelt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Bundesland liegt Dortmund?",
+        answerA = "Bayern",
+        answerB = "Hessen",
+        answerC = "Niedersachsen",
+        answerD = "Nordrhein-Westfalen",
+        correctAnswer = 3,
+        explanation = "Dortmund liegt in Nordrhein-Westfalen, dem bevölkerungsreichsten Bundesland Deutschlands.",
+        difficulty = 1,
+        funFact = "Dortmund ist mit rund 600.000 Einwohnern die größte Stadt des Ruhrgebiets."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler ist auf sozialen Medien für seine Torjubel-Kostüme bekannt?",
+        answerA = "Erling Haaland",
+        answerB = "Marco Reus",
+        answerC = "Pierre-Emerick Aubameyang",
+        answerD = "Jadon Sancho",
+        correctAnswer = 2,
+        explanation = "Pierre-Emerick Aubameyang feierte seine Tore häufig mit Superhelden-Masken (z.B. Spider-Man, Black Panther), was ihn auf Social Media berühmt machte.",
+        difficulty = 1,
+        funFact = "Aubameyang wurde wegen solcher Jubel einmal mit einer Geldstrafe belegt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler wechselte 2021 für einen Rekordtransfer zu Manchester United?",
+        answerA = "Erling Haaland",
+        answerB = "Jude Bellingham",
+        answerC = "Jadon Sancho",
+        answerD = "Marco Reus",
+        correctAnswer = 2,
+        explanation = "Jadon Sancho wechselte im Sommer 2021 für rund 85 Millionen Euro von BVB zu Manchester United.",
+        difficulty = 1,
+        funFact = "Sancho war drei Jahre lang einer der besten Außenstürmer Europas bei BVB."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches bekannte BVB-Lied heißt 'Heja ___'?",
+        answerA = "Dortmund",
+        answerB = "BVB",
+        answerC = "Borussia",
+        answerD = "Westfalen",
+        correctAnswer = 1,
+        explanation = "Das bekannteste BVB-Lied heißt 'Heja BVB' und wird bei jedem Heimspiel von den Fans lautstark gesungen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Stadion spielte BVB, bevor der Signal Iduna Park 1972 eröffnet wurde?",
+        answerA = "Rote Erde Stadion",
+        answerB = "Städtisches Stadion",
+        answerC = "Westfalenhalle",
+        answerD = "Dortmund-Arena",
+        correctAnswer = 0,
+        explanation = "Das Rote Erde Stadion war das alte BVB-Heimstadion, bevor das Westfalenstadion (heute Signal Iduna Park) 1972 eröffnet wurde.",
+        difficulty = 1,
+        funFact = "Das Rote Erde Stadion wird noch heute für Leichtathletik-Veranstaltungen genutzt und liegt direkt neben dem Signal Iduna Park."
+    ),
+
+    // ── BATCH HARD (25) ───────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches war das genaue Ergebnis im CL-Finale 1997 zwischen BVB und Juventus Turin?",
+        answerA = "2:0 für BVB",
+        answerB = "3:0 für BVB",
+        answerC = "3:1 für BVB",
+        answerD = "2:1 für BVB",
+        correctAnswer = 2,
+        explanation = "BVB gewann das Champions-League-Finale 1997 gegen Juventus Turin mit 3:1. Juventus traf zum 3:1-Endstand.",
+        difficulty = 3,
+        funFact = "Es war der erste und bislang einzige Champions-League-Titel in der BVB-Geschichte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Schweizer Stürmer war in den 1990er Jahren Stammspieler bei BVB und spielte auch an der WM 1994?",
+        answerA = "Kubilay Türkyilmaz",
+        answerB = "Ciriaco Sforza",
+        answerC = "Stéphane Chapuisat",
+        answerD = "Adrian Knup",
+        correctAnswer = 2,
+        explanation = "Stéphane Chapuisat spielte von 1991 bis 1999 für BVB, erzielte über 100 Tore und nahm mit der Schweiz an der WM 1994 teil.",
+        difficulty = 3,
+        funFact = "Chapuisat ist bis heute ein BVB-Idol und war in den Champions-League-Jahren der 1990er der Hauptstürmer."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler gewann 1996 den Ballon d'Or als bester Fußballer Europas?",
+        answerA = "Andreas Möller",
+        answerB = "Stefan Reuter",
+        answerC = "Karl-Heinz Riedle",
+        answerD = "Matthias Sammer",
+        correctAnswer = 3,
+        explanation = "Matthias Sammer gewann 1996 den Ballon d'Or — als letzter Deutscher vor einer langen Pause. Er war der Libero der BVB-Meistermannschaft.",
+        difficulty = 3,
+        funFact = "Sammer ist bis heute der letzte Deutsche, der den Ballon d'Or gewann."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welcher Minute erzielte Lars Ricken sein berühmtes Tor im CL-Finale 1997?",
+        answerA = "65. Minute",
+        answerB = "71. Minute",
+        answerC = "80. Minute",
+        answerD = "88. Minute",
+        correctAnswer = 1,
+        explanation = "Lars Ricken traf in der 71. Minute mit einem Lupfer über Torwart Peruzzi — wenige Sekunden nach seiner Einwechslung.",
+        difficulty = 3,
+        funFact = "Es gilt als eines der schnellsten Tore nach einer Einwechslung in einem Europacup-Finale überhaupt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Gegner besiegte BVB im Finale des Europapokals der Pokalsieger 1966?",
+        answerA = "Ajax Amsterdam",
+        answerB = "Real Madrid",
+        answerC = "FC Liverpool",
+        answerD = "Juventus Turin",
+        correctAnswer = 2,
+        explanation = "BVB gewann 1966 das Finale des Europapokals der Pokalsieger mit 2:1 gegen den FC Liverpool.",
+        difficulty = 3,
+        funFact = "Das Finale fand in Glasgow, Schottland statt und war ein schwieriges Auswärtsspiel für BVB."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher tschechische Riesenstürmer spielte von 2001 bis 2006 für BVB?",
+        answerA = "Pavel Nedvěd",
+        answerB = "Milan Baroš",
+        answerC = "Jan Koller",
+        answerD = "Tomáš Rosický",
+        correctAnswer = 2,
+        explanation = "Jan Koller, 2,02 Meter groß und bekannt als 'Dino', spielte von 2001 bis 2006 für BVB und war für seine Kopfballtore berühmt.",
+        difficulty = 3,
+        funFact = "Koller hält zudem einen skurrilen Rekord: Er erzielte als Torwart ein Länderspieltor für Tschechien."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Trainer führte BVB in der Saison 2002/03 ins Champions-League-Halbfinale?",
+        answerA = "Matthias Sammer",
+        answerB = "Michael Skibbe",
+        answerC = "Bert van Marwijk",
+        answerD = "Nevio Scala",
+        correctAnswer = 2,
+        explanation = "Bert van Marwijk führte BVB in der Saison 2002/03 ins CL-Halbfinale, wo man gegen AC Milan ausschied.",
+        difficulty = 3,
+        funFact = "Van Marwijk trainierte später die Niederlande und führte sie 2010 ins WM-Finale."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler wechselte im Sommer 2016 ablösefrei von BVB zu Manchester City?",
+        answerA = "Mats Hummels",
+        answerB = "Henrikh Mkhitaryan",
+        answerC = "İlkay Gündoğan",
+        answerD = "Shinji Kagawa",
+        correctAnswer = 2,
+        explanation = "İlkay Gündoğan wechselte 2016 ablösefrei zu Manchester City, nachdem sein Vertrag bei BVB ausgelaufen war.",
+        difficulty = 3,
+        funFact = "Unter Pep Guardiola wurde Gündoğan bei City zu einem der konstantesten Mittelfeldspieler der Premier League."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Torhüter ließ im CL-Finale 2013 einen Freistoß durch und kassierte das erste Bayern-Tor?",
+        answerA = "Marc Ziegler",
+        answerB = "Mitchell Langerak",
+        answerC = "Roman Weidenfeller",
+        answerD = "Marwin Hitz",
+        correctAnswer = 2,
+        explanation = "Roman Weidenfeller ließ im CL-Finale 2013 einen Freistoß von Mario Mandžukić durch und kassierte so das 0:1 für Bayern.",
+        difficulty = 3,
+        funFact = "Bayern gewann das Finale letztlich 2:1 durch ein Tor von Arjen Robben in der 89. Minute."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler gewann mit BVB die Meisterschaft 2002 und wechselte als erster BVB-Spieler für 25 Mio. Euro?",
+        answerA = "Jan Koller",
+        answerB = "Márcio Amoroso",
+        answerC = "Ewerthon",
+        answerD = "Christoph Metzelder",
+        correctAnswer = 1,
+        explanation = "Márcio Amoroso wurde für rund 25 Millionen Euro aus Parma geholt und war Schlüsselspieler der Meistersaison 2001/02.",
+        difficulty = 3,
+        funFact = "Amoroso war Torschützenkönig der Bundesliga 2001/02 mit 18 Treffern."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler von BVB wurde 2011 jüngster Bundesliga-Meister der Geschichte?",
+        answerA = "Mario Götze",
+        answerB = "Ilkay Gündogan",
+        answerC = "Nuri Şahin",
+        answerD = "Robert Lewandowski",
+        correctAnswer = 2,
+        explanation = "Nuri Şahin war in der Meistersaison 2010/11 der jüngste Spieler im BVB-Kader, der die Meisterschale hob — ein historischer Rekord.",
+        difficulty = 3,
+        funFact = "Şahin wechselte danach für 10 Millionen Euro zu Real Madrid, kehrte aber 2012 leihweise zurück."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Spieler erzielte das letzte Tor im CL-Finale 1997, dem Treffer zum 3:1-Endstand?",
+        answerA = "Karl-Heinz Riedle",
+        answerB = "Andreas Möller",
+        answerC = "Lars Ricken",
+        answerD = "Stéphane Chapuisat",
+        correctAnswer = 2,
+        explanation = "Lars Ricken erzielte mit seinem ersten Ballkontakt nach der Einwechslung das 3:1 per Lupfer über Torwart Peruzzi.",
+        difficulty = 3,
+        funFact = "Ricken war damals 20 Jahre alt und erzielte dieses Tor, das ihn zur BVB-Legende machte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Trainer entließ BVB im Oktober 2017 nach nur vier Monaten im Amt?",
+        answerA = "Lucien Favre",
+        answerB = "Thomas Tuchel",
+        answerC = "Peter Bosz",
+        answerD = "Roger Schmidt",
+        correctAnswer = 2,
+        explanation = "Peter Bosz wurde im Oktober 2017 nach einem schlechten Saisonstart entlassen, nachdem BVB 11 Ligaspiele ohne Sieg geblieben war.",
+        difficulty = 3,
+        funFact = "Bosz hatte BVB zuvor mit Ajax Amsterdam ins Europa-League-Finale geführt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Nationalspieler verkaufte BVB im Sommer 2023 für die Rekordablöse von 103 Millionen Euro an Real Madrid?",
+        answerA = "Erling Haaland",
+        answerB = "Jadon Sancho",
+        answerC = "Jude Bellingham",
+        answerD = "Julian Brandt",
+        correctAnswer = 2,
+        explanation = "Jude Bellingham wechselte im Sommer 2023 für 103 Millionen Euro Fixablöse plus Boni — insgesamt bis zu 134 Millionen Euro — zu Real Madrid.",
+        difficulty = 3,
+        funFact = "Bellingham wurde in seiner ersten Saison bei Real Madrid mit der Champions League und der spanischen Meisterschaft belohnt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele Tore schoss Robert Lewandowski insgesamt in Pflichtspielen für BVB?",
+        answerA = "83 Tore",
+        answerB = "103 Tore",
+        answerC = "127 Tore",
+        answerD = "152 Tore",
+        correctAnswer = 1,
+        explanation = "Robert Lewandowski erzielte in seiner Zeit bei BVB (2010–2014) 103 Tore in 187 Pflichtspielen.",
+        difficulty = 3,
+        funFact = "Im CL-Halbfinale 2013 gegen Real Madrid erzielte er allein vier Treffer im Hinspiel."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler erzielte in der Champions League 2019/20 die meisten Tore?",
+        answerA = "Jadon Sancho",
+        answerB = "Marco Reus",
+        answerC = "Erling Haaland",
+        answerD = "Thorgan Hazard",
+        correctAnswer = 2,
+        explanation = "Erling Haaland erzielte in der CL-Saison 2019/20 für BVB zehn Tore in acht Spielen — eine überragende Quote für einen Neuling.",
+        difficulty = 3,
+        funFact = "Haaland wurde in jener Saison als bester Nachwuchsspieler der Champions League ausgezeichnet."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher italienische Trainer führte BVB von 1991 bis 1997 und gewann dabei die Champions League?",
+        answerA = "Arrigo Sacchi",
+        answerB = "Carlo Ancelotti",
+        answerC = "Nevio Scala",
+        answerD = "Fabio Capello",
+        correctAnswer = 2,
+        explanation = "Nevio Scala trainierte BVB von 1991 bis 1997 und gewann in dieser Zeit zwei Bundesliga-Meisterschaften und die Champions League.",
+        difficulty = 3,
+        funFact = "Scala war sechs Jahre bei BVB — eine ungewöhnlich lange Amtszeit für einen Auslandstrainer in Deutschland."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welche Ablösesumme zahlte BVB im Januar 2020 für Erling Haaland von Red Bull Salzburg?",
+        answerA = "12 Millionen Euro",
+        answerB = "20 Millionen Euro",
+        answerC = "30 Millionen Euro",
+        answerD = "45 Millionen Euro",
+        correctAnswer = 1,
+        explanation = "BVB zahlte für Erling Haaland eine Ablösesumme von rund 20 Millionen Euro — im Nachhinein eines der besten Schnäppchen der Vereinsgeschichte.",
+        difficulty = 3,
+        funFact = "Haaland erzielte für BVB 86 Tore in 89 Spielen und wurde dann 2022 für 60 Millionen an Manchester City verkauft."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler wechselte 2019 ablösefrei von BVB zu AS Roma?",
+        answerA = "Julian Weigl",
+        answerB = "Gonzalo Castro",
+        answerC = "Neven Subotić",
+        answerD = "Ömer Toprak",
+        correctAnswer = 0,
+        explanation = "Julian Weigl wechselte 2019 ablösefrei von BVB zu Benfica Lissabon — nicht zu AS Roma. Dieser Wechsel ist ein gängiges Wissensfakten-Test.",
+        difficulty = 3,
+        funFact = "Weigl war ein defensiver Mittelfeldspieler, der unter Klopp ausgebildet wurde und später sein Potenzial in Portugal entfaltete."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele Tore erzielte Erling Haaland in seiner Premierensaison 2019/20 für BVB in der Bundesliga?",
+        answerA = "11 Tore",
+        answerB = "16 Tore",
+        answerC = "20 Tore",
+        answerD = "23 Tore",
+        correctAnswer = 1,
+        explanation = "Haaland erzielte in der Saison 2019/20 für BVB 16 Bundesliga-Tore in nur 18 Spielen — eine beeindruckende Debüt-Quote.",
+        difficulty = 3,
+        funFact = "Haaland traf in seinem ersten BVB-Spiel (Einwechslung gegen Augsburg) dreimal."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler war der jüngste CL-Torschütze in der Vereinsgeschichte?",
+        answerA = "Mario Götze",
+        answerB = "Christian Pulisic",
+        answerC = "Jude Bellingham",
+        answerD = "Jadon Sancho",
+        correctAnswer = 2,
+        explanation = "Jude Bellingham erzielte sein erstes Champions-League-Tor für BVB in sehr jungem Alter und war dabei einer der jüngsten Torschützen in der BVB-CL-Geschichte.",
+        difficulty = 3,
+        funFact = "Bellingham wechselte 2020 im Alter von 17 Jahren von Birmingham City zu BVB und entwickelte sich schnell zum Weltklasse-Mittelfeldspieler."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Gegen welchen Gegner scheiterte BVB im CL-Halbfinale 2023/24 fast, gewann dann aber doch und zog ins Finale ein?",
+        answerA = "FC Barcelona",
+        answerB = "Paris Saint-Germain",
+        answerC = "Atlético Madrid",
+        answerD = "AC Milan",
+        correctAnswer = 1,
+        explanation = "BVB besiegte Paris Saint-Germain im CL-Halbfinale 2023/24: 1:0 im Hinspiel, 1:0 im Rückspiel — und zog damit ins Finale ein.",
+        difficulty = 3,
+        funFact = "Im Finale unterlag BVB dann Real Madrid mit 0:2."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches CL-Finale verlor BVB in Wembley mit 0:2 gegen Real Madrid?",
+        answerA = "2023/24",
+        answerB = "2022/23",
+        answerC = "2021/22",
+        answerD = "2020/21",
+        correctAnswer = 0,
+        explanation = "In der Saison 2023/24 erreichte BVB erneut das CL-Finale in Wembley und verlor gegen Real Madrid 0:2.",
+        difficulty = 3,
+        funFact = "Es war bereits das zweite Mal, dass BVB ein CL-Finale in Wembley bestritt — und verlor."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Nationalspieler debütierte 2020 im Alter von 16 Jahren und 335 Tagen für BVB in der Bundesliga?",
+        answerA = "Gio Reyna",
+        answerB = "Youssoufa Moukoko",
+        answerC = "Jude Bellingham",
+        answerD = "Ansgar Knauff",
+        correctAnswer = 1,
+        explanation = "Youssoufa Moukoko debütierte am 21. November 2020 für BVB in der Bundesliga und war mit 16 Jahren und 28 Tagen der jüngste Bundesliga-Spieler aller Zeiten.",
+        difficulty = 3,
+        funFact = "Moukoko traf schon in seinen ersten Spielen und gilt als eines der größten deutschen Sturmtalente."
     )
 )
