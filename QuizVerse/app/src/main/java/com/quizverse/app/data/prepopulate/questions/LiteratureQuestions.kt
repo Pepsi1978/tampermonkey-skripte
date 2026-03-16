@@ -1318,5 +1318,830 @@ fun literatureQuestions(): List<Question> = listOf(
         explanation = "Die starke Sapir-Whorf-Hypothese behauptet sprachlichen Determinismus. Empirische Studien (z.B. Eleanor Roschs Farbwahrnehmungsforschung, Studien zu mathematischem Denken bei sprachlosen Taubstummen) zeigen, dass konzeptuelles Denken ohne sprachliche Kodierung möglich ist.",
         difficulty = 5,
         funFact = "Die schwache Version – Sprache beeinflusst (nicht determiniert) das Denken – wird von modernen Kognitionswissenschaftlern wie Lera Boroditsky noch aktiv erforscht."
+    ),
+
+    // ── ADDITIONAL EASY (difficulty = 1) ── 25 new questions ─────────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Die Schatzinsel'?",
+        answerA = "Mark Twain",
+        answerB = "Jules Verne",
+        answerC = "Robert Louis Stevenson",
+        answerD = "Daniel Defoe",
+        correctAnswer = 2,
+        explanation = "'Die Schatzinsel' (1883) ist ein Abenteuerroman des schottischen Autors Robert Louis Stevenson. Er erzählt von Jim Hawkins, der eine Schatzkarte findet und auf einer Insel nach verstecktem Piratengold sucht.",
+        difficulty = 1,
+        funFact = "Stevenson erfand die Geschichte ursprünglich als Unterhaltung für seinen Stiefsohn Lloyd Osbourne, der an einer selbst gemalten Schatzkarte bastelte."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer ist der Autor von 'Moby Dick' (1851)?",
+        answerA = "Mark Twain",
+        answerB = "Herman Melville",
+        answerC = "Nathaniel Hawthorne",
+        answerD = "Edgar Allan Poe",
+        correctAnswer = 1,
+        explanation = "'Moby Dick oder Der Wal' ist ein Roman des amerikanischen Autors Herman Melville. Er handelt von Kapitän Ahabs obsessiver Jagd auf den weißen Wal Moby Dick.",
+        difficulty = 1,
+        funFact = "Das Buch war zu Melvilles Lebzeiten ein kommerzieller Misserfolg — es wurde erst Jahrzehnte nach seinem Tod als Meisterwerk anerkannt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Epos' in der Literatur?",
+        answerA = "Ein kurzes lyrisches Gedicht",
+        answerB = "Ein langes, erzählendes Gedicht über Helden und ihre Taten",
+        answerC = "Ein dramatisches Theaterstück in Versen",
+        answerD = "Ein philosophischer Dialog in Prosaform",
+        correctAnswer = 1,
+        explanation = "Ein Epos ist eine lange, erzählende Dichtung, die heroische Taten und Abenteuer schildert. Bekannte Beispiele: Homers Ilias und Odyssee, Vergils Aeneis, das Nibelungenlied.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Von wem stammt das berühmte Zitat 'Sein oder Nichtsein, das ist hier die Frage'?",
+        answerA = "Aus Goethes Faust",
+        answerB = "Aus Schillers Wilhelm Tell",
+        answerC = "Aus Shakespeares Hamlet",
+        answerD = "Aus Cervantes' Don Quijote",
+        correctAnswer = 2,
+        explanation = "Das Zitat stammt aus William Shakespeares Tragödie 'Hamlet' (um 1600). Es ist der Beginn eines berühmten Monologs, in dem Hamlet über Leben, Tod und das Leiden nachdenkt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was versteht man unter einem 'Pseudonym' in der Literatur?",
+        answerA = "Den Originaltitel eines übersetzten Buches",
+        answerB = "Einen Decknamen, unter dem ein Autor veröffentlicht",
+        answerC = "Eine veraltete Schreibweise eines Autorennamens",
+        answerD = "Den Spitznamen einer Romanfigur",
+        correctAnswer = 1,
+        explanation = "Ein Pseudonym ist ein angenommener Name, unter dem ein Schriftsteller publiziert. Bekannte Beispiele: George Orwell (eigentlich Eric Blair), Mark Twain (Samuel Clemens), George Eliot (Mary Ann Evans).",
+        difficulty = 1,
+        funFact = "Mary Ann Evans schrieb als 'George Eliot', weil sie befürchtete, als Frau nicht ernst genommen zu werden."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Roman von Jules Verne handelt von einer Reise um die Erde in 80 Tagen?",
+        answerA = "Reise zum Mittelpunkt der Erde",
+        answerB = "20.000 Meilen unter dem Meer",
+        answerC = "In 80 Tagen um die Welt",
+        answerD = "Die geheimnisvolle Insel",
+        correctAnswer = 2,
+        explanation = "'In 80 Tagen um die Welt' (1872) ist ein Roman von Jules Verne. Phileas Fogg wettet, dass er in genau 80 Tagen die Welt umrunden kann.",
+        difficulty = 1,
+        funFact = "Nellie Bly, eine Journalistin, brach 1889 Foggs Rekord und umrundete die Welt tatsächlich in 72 Tagen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wie heißt die Hauptfigur in Miguel de Cervantes' Roman 'Don Quijote'?",
+        answerA = "Sancho Pansa",
+        answerB = "Alonso Quijano alias Don Quijote de la Mancha",
+        answerC = "Rodrigo Díaz",
+        answerD = "Lazarillo de Tormes",
+        correctAnswer = 1,
+        explanation = "Die Hauptfigur ist Alonso Quijano, ein verarmter Landadliger, der sich nach dem Lesen von Ritterromanen für einen Ritter hält und sich Don Quijote de la Mancha nennt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Vers' in der Lyrik?",
+        answerA = "Eine Strophe aus mindestens zehn Zeilen",
+        answerB = "Eine einzelne Zeile eines Gedichts",
+        answerC = "Der Refrain eines Gedichts",
+        answerD = "Ein Gedicht ohne Reimschema",
+        correctAnswer = 1,
+        explanation = "Ein Vers ist eine einzelne Zeile in einem Gedicht. Mehrere Verse bilden eine Strophe. Der Begriff kommt vom lateinischen 'versus' (Zeile, wörtlich: Wende).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb 'Hänsel und Gretel'?",
+        answerA = "Charles Perrault",
+        answerB = "Hans Christian Andersen",
+        answerC = "Die Gebrüder Grimm",
+        answerD = "Ludwig Tieck",
+        correctAnswer = 2,
+        explanation = "'Hänsel und Gretel' ist eines der bekanntesten Märchen aus der Sammlung 'Kinder- und Hausmärchen' der Gebrüder Grimm (1812). Es handelt von zwei Geschwistern, die eine Hexe im Lebkuchenhaus überlisten.",
+        difficulty = 1,
+        funFact = "Die Hexe im Lebkuchenhaus ist eines der ältesten Motive der europäischen Volksmärchen — ähnliche Geschichten gibt es in vielen Kulturen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist das bekannteste Werk von Charles Dickens?",
+        answerA = "Jane Eyre",
+        answerB = "Oliver Twist oder Eine Weihnachtsgeschichte",
+        answerC = "Stolz und Vorurteil",
+        answerD = "Wuthering Heights",
+        correctAnswer = 1,
+        explanation = "Charles Dickens (1812–1870) ist vor allem für 'Oliver Twist' (1837) und 'Eine Weihnachtsgeschichte' (1843) bekannt. Er schilderte eindringlich das Leben der Armen im viktorianischen England.",
+        difficulty = 1,
+        funFact = "Dickens veröffentlichte seine Romane zunächst in monatlichen oder wöchentlichen Fortsetzungen in Zeitschriften — eine damals sehr beliebte Form."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Strophe' in der Lyrik?",
+        answerA = "Ein einzelnes Wort mit besonderer Bedeutung",
+        answerB = "Eine Gruppe zusammengehöriger Verse in einem Gedicht",
+        answerC = "Das Reimschema eines gesamten Gedichts",
+        answerD = "Der Titel eines Gedichts",
+        correctAnswer = 1,
+        explanation = "Eine Strophe ist eine Gruppe von Versen, die durch einen Zeilenabstand von anderen Versgruppen getrennt wird. Gedichte bestehen oft aus mehreren gleichartigen Strophen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb den Klassiker der Kinder- und Jugendliteratur 'Alice im Wunderland'?",
+        answerA = "Rudyard Kipling",
+        answerB = "Charles Dickens",
+        answerC = "Lewis Carroll",
+        answerD = "Jonathan Swift",
+        correctAnswer = 2,
+        explanation = "'Alice im Wunderland' (1865) wurde von Lewis Carroll (eigentlich Charles Lutwidge Dodgson) geschrieben. Es erzählt von Alices Abenteuer in einer surrealen Unterwelt.",
+        difficulty = 1,
+        funFact = "Lewis Carroll war Mathematikprofessor in Oxford. Er schrieb die Geschichte ursprünglich für Alice Liddell, die Tochter seines Kollegen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bedeutet 'Fiktion' in der Literatur?",
+        answerA = "Sachbücher und Berichte über reale Ereignisse",
+        answerB = "Erdachte, nicht reale Geschichten und Figuren",
+        answerC = "Historische Romane über echte Personen",
+        answerD = "Biografien berühmter Persönlichkeiten",
+        correctAnswer = 1,
+        explanation = "Fiktion bezeichnet erdachte, nicht reale literarische Inhalte — Figuren, Handlungen und Welten, die der Autor erfunden hat. Das Gegenteil ist Non-Fiktion (Sachbücher, Dokumentationen, Biografien).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Dichter schrieb die Hymne 'Deutschland über alles'?",
+        answerA = "Ernst Moritz Arndt",
+        answerB = "August Heinrich Hoffmann von Fallersleben",
+        answerC = "Theodor Körner",
+        answerD = "Max von Schenkendorf",
+        correctAnswer = 1,
+        explanation = "August Heinrich Hoffmann von Fallersleben schrieb 1841 das 'Lied der Deutschen', dessen dritte Strophe ('Einigkeit und Recht und Freiheit') heute die Nationalhymne der Bundesrepublik ist.",
+        difficulty = 1,
+        funFact = "Die erste Strophe mit 'Deutschland über alles' war ursprünglich kein Nationalismus, sondern ein Aufruf zur Einheit der 39 deutschen Kleinstaaten unter einem gemeinsamen Deutschland."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Briefroman'?",
+        answerA = "Ein Roman über das Leben eines Briefträgers",
+        answerB = "Ein Roman, der in Form von Briefen zwischen den Figuren erzählt wird",
+        answerC = "Ein kurzer Brief in Romanform",
+        answerD = "Ein Roman, in dem der Hauptcharakter ein Schriftsteller ist",
+        correctAnswer = 1,
+        explanation = "Ein Briefroman (Epistolarroman) ist eine Erzählung, die aus Briefen der Figuren besteht. Das bekannteste deutsche Beispiel ist Goethes 'Die Leiden des jungen Werthers'. Die Form war im 18. Jahrhundert sehr beliebt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welches Tier taucht im Titel von Franz Kafkas berühmter Erzählung auf?",
+        answerA = "Der Hund",
+        answerB = "Die Ameise",
+        answerC = "Das Ungeziefer (Verwandlung)",
+        answerD = "Der Adler",
+        correctAnswer = 2,
+        explanation = "In 'Die Verwandlung' (1915) erwacht Gregor Samsa als riesiges Ungeziefer. Kafka bezeichnete das Tier nie genauer — die häufigste Interpretation ist ein Käfer oder eine Kakerlake.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb 'Die Odyssee'?",
+        answerA = "Vergil",
+        answerB = "Sophokles",
+        answerC = "Homer",
+        answerD = "Ovid",
+        correctAnswer = 2,
+        explanation = "Die 'Odyssee' wird dem antiken griechischen Dichter Homer zugeschrieben (ca. 8. Jh. v. Chr.). Sie erzählt die zehnjährige Heimreise des Odysseus nach dem Trojanischen Krieg.",
+        difficulty = 1,
+        funFact = "Ob Homer eine historische Person war oder ob die Epen von mehreren Dichtern zusammengestellt wurden, ist unter Wissenschaftlern bis heute umstritten — die sogenannte 'Homerische Frage'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Komma' in der Literatursprache (Stilistik)?",
+        answerA = "Eine kurze Pause im Satz, markiert durch ein Satzzeichen",
+        answerB = "Ein Satzgefüge aus Haupt- und Nebensatz",
+        answerC = "Eine Strophe mit vier Versen",
+        answerD = "Ein Gedicht ohne Interpunktion",
+        correctAnswer = 0,
+        explanation = "In der Stilistik bezeichnet ein Komma eine kurze Sprechpause, die durch das gleichnamige Satzzeichen (,) angezeigt wird. Satzzeichen sind wichtige Mittel zur Steuerung von Rhythmus und Bedeutung in literarischen Texten.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Pinocchio'?",
+        answerA = "Giovanni Boccaccio",
+        answerB = "Carlo Collodi",
+        answerC = "Italo Calvino",
+        answerD = "Umberto Eco",
+        correctAnswer = 1,
+        explanation = "'Le avventure di Pinocchio' (1883) wurde von Carlo Collodi (eigentlich Carlo Lorenzini) geschrieben. Es erzählt von einer hölzernen Marionette, die lebendig wird und ein richtiger Junge werden möchte.",
+        difficulty = 1,
+        funFact = "In der Originalgeschichte ist Pinocchio weitaus dunkler als in der Disney-Version — er tötet die sprechende Grille und wird mehrfach gehängt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wie lautet der vollständige Titel von Goethes bekanntestem Drama?",
+        answerA = "Faust — Eine Tragödie",
+        answerB = "Faust der Zauberer",
+        answerC = "Doktor Faustus",
+        answerD = "Faust und Mephisto",
+        correctAnswer = 0,
+        explanation = "Der vollständige Titel lautet 'Faust. Eine Tragödie' (Teil I, 1808). Goethes Werk besteht aus zwei Teilen — Teil II erschien 1832 posthum.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb den Roman 'Schachnovelle' (1942)?",
+        answerA = "Thomas Mann",
+        answerB = "Stefan Zweig",
+        answerC = "Arthur Schnitzler",
+        answerD = "Joseph Roth",
+        correctAnswer = 1,
+        explanation = "'Schachnovelle' (1942) ist das letzte Werk des österreichischen Autors Stefan Zweig. Es erzählt von einem Schachduell auf einem Schiff und von einem Mann, der durch Schachspielen in Gestapo-Einzelhaft seine Geisteskraft erhielt.",
+        difficulty = 1,
+        funFact = "Stefan Zweig schrieb die 'Schachnovelle' kurz vor seinem Freitod 1942 in Petrópolis, Brasilien, wo er im Exil lebte."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Drama' in der Literatur?",
+        answerA = "Ein langer Prosatext mit vielen Charakteren",
+        answerB = "Ein für die Bühne bestimmter Text, der aus Dialogen und Regieanweisungen besteht",
+        answerC = "Ein lyrisches Werk in mehreren Akten",
+        answerD = "Eine Erzählung ohne Figurenrede",
+        correctAnswer = 1,
+        explanation = "Ein Drama ist ein literarisches Werk, das für die Aufführung auf einer Bühne geschrieben wurde. Es besteht aus Dialogen der Figuren und Regieanweisungen. Klassische Einteilung: Tragödie, Komödie, Tragikomödie.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher französische Autor schrieb 'Les Misérables' (Die Elenden)?",
+        answerA = "Honoré de Balzac",
+        answerB = "Gustave Flaubert",
+        answerC = "Émile Zola",
+        answerD = "Victor Hugo",
+        correctAnswer = 3,
+        explanation = "'Les Misérables' (1862) von Victor Hugo ist eines der bekanntesten Werke der französischen Literatur. Es folgt dem entlassenen Sträfling Jean Valjean auf seinem Weg zur Erlösung im Paris des frühen 19. Jahrhunderts.",
+        difficulty = 1,
+        funFact = "Victor Hugo schrieb den kürzesten Brief der Geschichte: Er schrieb '?' an seinen Verleger, um zu fragen, wie das Buch ankam. Die Antwort war '!'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Protagonist' in einem literarischen Werk?",
+        answerA = "Der Bösewicht einer Geschichte",
+        answerB = "Die Hauptfigur, um die sich die Handlung dreht",
+        answerC = "Der Erzähler eines Romans",
+        answerD = "Eine Nebenfigur, die dem Helden hilft",
+        correctAnswer = 1,
+        explanation = "Der Protagonist ist die Hauptfigur eines literarischen Werkes, um den sich die zentrale Handlung dreht. Das Wort kommt aus dem Griechischen: 'protos' (erster) + 'agonistes' (Kämpfer/Akteur).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer schrieb das Theaterstück 'Nathan der Weise' (1779)?",
+        answerA = "Friedrich Schiller",
+        answerB = "Johann Wolfgang von Goethe",
+        answerC = "Gotthold Ephraim Lessing",
+        answerD = "Christian Friedrich Hebbel",
+        correctAnswer = 2,
+        explanation = "'Nathan der Weise' (1779) von Gotthold Ephraim Lessing ist ein Plädoyer für religiöse Toleranz. Die berühmte Ringparabel zeigt, dass keine Religion von sich behaupten kann, die einzig wahre zu sein.",
+        difficulty = 1,
+        funFact = "Lessing konnte das Stück nicht veröffentlichen, weil ihm die kirchliche Zensur drohte — er wandte sich stattdessen dem Theater zu, das er für freier hielt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die bekannteste Erzählung von Edgar Allan Poe?",
+        answerA = "Der Rabe (Gedicht) oder Der Untergang des Hauses Usher",
+        answerB = "Die Schatzinsel",
+        answerC = "Das Bildnis des Dorian Gray",
+        answerD = "Der Hund der Baskervilles",
+        correctAnswer = 0,
+        explanation = "Edgar Allan Poe (1809–1849) ist vor allem für sein Gedicht 'Der Rabe' (1845) und seine Horrorerzählungen wie 'Der Untergang des Hauses Usher' bekannt. Er gilt als Begründer des modernen Horrorgenres und der Detektivgeschichte.",
+        difficulty = 1,
+        funFact = "Poe ist auch als Erfinder der Detektivgeschichte bekannt — sein Detektiv C. Auguste Dupin war das Vorbild für Sherlock Holmes."
+    ),
+
+    // ── ADDITIONAL MEDIUM (difficulty = 2) ── 15 new questions ───────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet die literarische Epoche des 'Realismus' in Deutschland (ca. 1848–1890)?",
+        answerA = "Eine Bewegung, die märchenhafte und romantische Elemente betont",
+        answerB = "Eine Epoche, die das wirkliche Leben sachlich und ohne Verklärung darstellt, aber Details harmonisch auswählt (poetischer Realismus)",
+        answerC = "Eine naturalistische Darstellung des Elends der Arbeiterschicht",
+        answerD = "Eine idealistische Bewegung der deutschen Klassik",
+        correctAnswer = 1,
+        explanation = "Der deutsche Realismus (1848–1890) — auch 'poetischer Realismus' — schildert das bürgerliche Leben mit Genauigkeit, aber auch mit ästhetischer Verklärung. Wichtige Vertreter: Theodor Fontane, Gottfried Keller, Theodor Storm.",
+        difficulty = 2,
+        funFact = "Der Begriff 'poetischer Realismus' wurde von Otto Ludwig geprägt, um den deutschen Realismus vom harten französischen Naturalismus à la Zola zu unterscheiden."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Kabale und Liebe' (1784)?",
+        answerA = "Johann Wolfgang von Goethe",
+        answerB = "Friedrich Schiller",
+        answerC = "Heinrich von Kleist",
+        answerD = "Gotthold Ephraim Lessing",
+        correctAnswer = 1,
+        explanation = "'Kabale und Liebe' (1784) ist ein bürgerliches Trauerspiel von Friedrich Schiller. Es zeigt den tragischen Liebeskonflikt zwischen dem Adligen Ferdinand und der bürgerlichen Luise, die von höfischen Intrigen zerstört werden.",
+        difficulty = 2,
+        funFact = "Schiller schrieb das Stück als Kritik an der feudalen Willkürherrschaft — inspiriert von Erlebnissen am württembergischen Hof unter Herzog Carl Eugen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'innerer Monolog' als Erzähltechnik?",
+        answerA = "Ein Gespräch einer Figur mit sich selbst, das andere Figuren hören können",
+        answerB = "Die direkte, ungefilterte Wiedergabe der Gedanken einer Figur ohne Erzählereinmischung",
+        answerC = "Eine lange Rede der Hauptfigur an das Publikum",
+        answerD = "Eine Erzähltechnik, bei der die Zeit rückwärts läuft",
+        correctAnswer = 1,
+        explanation = "Der innere Monolog gibt direkt die Gedanken einer Figur wieder, ohne Erzählerkommentar. Er ist eng verwandt mit dem 'Stream of Consciousness', aber strukturierter. Arthur Schnitzler war ein früher Meister dieser Technik.",
+        difficulty = 2,
+        funFact = "Arthur Schnitzlers 'Leutnant Gustl' (1900) gilt als erster innerer Monolog der deutschsprachigen Literatur."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Romanfigur gilt als Inbegriff des ehrgeizigen gesellschaftlichen Aufsteigers in der französischen Literatur?",
+        answerA = "Jean Valjean (Hugo)",
+        answerB = "Julien Sorel aus 'Rot und Schwarz' von Stendhal",
+        answerC = "Rastignac aus Balzacs 'Vater Goriot'",
+        answerD = "Emma Bovary aus Flauberts 'Madame Bovary'",
+        correctAnswer = 1,
+        explanation = "Julien Sorel in Stendhals 'Rot und Schwarz' (1830) ist der Prototyp des ehrgeizigen jungen Mannes aus niederem Stand, der mit allen Mitteln in die Pariser Gesellschaft aufsteigen will — und scheitert.",
+        difficulty = 2,
+        funFact = "Stendhal schrieb den Roman, als er in einer Uniform einen Knopf hatte — 'Rot' symbolisiert das Militär, 'Schwarz' die Kirche als Aufstiegswege."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Epigramm' als literarische Form?",
+        answerA = "Ein langes Lehrgedicht über philosophische Themen",
+        answerB = "Ein kurzes, geistreiches Gedicht oder Prosastück mit pointiertem Schluss",
+        answerC = "Die Schlussverse eines Dramas",
+        answerD = "Ein Gedicht, das auf einem Grabstein steht",
+        correctAnswer = 1,
+        explanation = "Das Epigramm ist ein kurzes, pointiertes Gedicht oder Prosawerk mit überraschendem, witzig-treffendem Schluss. Es hat Tradition seit der Antike. Friedrich Schiller und Goethe schrieben gemeinsam die 'Xenien' — eine Sammlung kritischer Epigramme.",
+        difficulty = 2,
+        funFact = "Das Wort 'Epigramm' kommt vom griechischen 'epigramma' — ursprünglich bedeutete es einfach 'Aufschrift' (z.B. auf Denkmälern)."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Roman von Gustave Flaubert gilt als Inbegriff des französischen Realismus?",
+        answerA = "Les Misérables",
+        answerB = "Germinal",
+        answerC = "Madame Bovary",
+        answerD = "Nana",
+        correctAnswer = 2,
+        explanation = "'Madame Bovary' (1857) von Gustave Flaubert erzählt von Emma Bovary, einer Landarztfrau, die durch Romanzen und Träumereien dem grauen Alltag zu entfliehen sucht und scheitert.",
+        difficulty = 2,
+        funFact = "Flaubert wurde wegen 'Madame Bovary' wegen Verletzung der öffentlichen Moral angeklagt — und freigesprochen. Der Skandal machte das Buch berühmt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist das Besondere an E.T.A. Hoffmanns literarischem Werk 'Der Sandmann' (1816)?",
+        answerA = "Es ist eine Kindergeschichte über einen freundlichen Schlafbringer",
+        answerB = "Es ist eine Schauergeschichte, die gezielt die Grenze zwischen Wahn und Wirklichkeit verwischt (das Unheimliche)",
+        answerC = "Es ist ein realistischer Roman über einen Uhrmacher",
+        answerD = "Es ist ein romantisches Liebesdrama mit Happy End",
+        correctAnswer = 1,
+        explanation = "'Der Sandmann' von E.T.A. Hoffmann ist eine Erzählung der Schwarzen Romantik, in der der Protagonist Nathanael in paranoide Angst vor dem Sandmann verfällt. Sigmund Freud analysierte den Text als Paradebeispiel des 'Unheimlichen'.",
+        difficulty = 2,
+        funFact = "Freud schrieb 1919 seinen Essay 'Das Unheimliche' und nutzte 'Der Sandmann' als Hauptbeispiel — das Unheimliche entsteht, wenn Vertrautes plötzlich fremd und bedrohlich wirkt."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb den Roman 'Siddharta' (1922)?",
+        answerA = "Rainer Maria Rilke",
+        answerB = "Stefan Zweig",
+        answerC = "Hermann Hesse",
+        answerD = "Hugo von Hofmannsthal",
+        correctAnswer = 2,
+        explanation = "'Siddhartha' (1922) von Hermann Hesse erzählt die spirituelle Suche eines jungen Brahmanen im alten Indien. Das Buch wurde besonders in den 1960ern ein Kultbuch der Hippie-Bewegung.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet der Begriff 'Barock' als Literaturepoche (ca. 1600–1720)?",
+        answerA = "Eine nüchterne, rationale Schreibweise der frühen Neuzeit",
+        answerB = "Eine Epoche zwischen Prunk und Vanitas, geprägt von Überfluss, Ornamentik und dem Bewusstsein der Vergänglichkeit",
+        answerC = "Eine mittelalterliche Minneliteratur",
+        answerD = "Eine aufklärerische Bewegung gegen kirchliche Dogmen",
+        correctAnswer = 1,
+        explanation = "Die Barockliteratur (ca. 1600–1720) ist geprägt von Gegensätzen: Prunk und Vergänglichkeit (Vanitas), Diesseits und Jenseits. Typisches Motiv: 'Memento mori'. Vertreter: Andreas Gryphius, Hans Jakob Christoffel von Grimmelshausen.",
+        difficulty = 2,
+        funFact = "Das Wort 'Barock' kommt vom portugiesischen 'barroco' (unregelmäßige Perle) — ursprünglich ein abwertender Begriff für übertriebenen Prunk."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Prolog' im Drama?",
+        answerA = "Das letzte Wort einer dramatischen Figur",
+        answerB = "Eine einleitende Textpassage vor dem eigentlichen Stück, die Kontext oder Thema vorstellt",
+        answerC = "Die Zusammenfassung aller Akte am Ende",
+        answerD = "Eine Regieanweisung für den Bühnenaufbau",
+        correctAnswer = 1,
+        explanation = "Ein Prolog ist eine Einleitung vor dem eigentlichen Drama, die das Publikum über Kontext, Thema oder Vorgeschichte informiert. Goethes 'Faust' beginnt z.B. mit einem 'Prolog im Himmel'.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welches Werk von Heinrich von Kleist gilt als eine der besten deutschen Novellen?",
+        answerA = "Das Erdbeben in Chili",
+        answerB = "Der Zerbrochene Krug",
+        answerC = "Michael Kohlhaas",
+        answerD = "Penthesilea",
+        correctAnswer = 2,
+        explanation = "'Michael Kohlhaas' (1810) von Heinrich von Kleist gilt als Meisterwerk der deutschen Novelle. Ein Pferdehändler wird durch Willkür eines Junkers um sein Recht gebracht und beginnt einen blutigen Rachefeldzug.",
+        difficulty = 2,
+        funFact = "Die Geschichte basiert auf einem realen Fall: Hans Kohlhase, ein märkischer Kaufmann, der im 16. Jahrhundert Brandenburgs Dörfer plünderte und 1540 hingerichtet wurde."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Antagonist' in einem literarischen Werk?",
+        answerA = "Der Erzähler, der nie sichtbar wird",
+        answerB = "Eine Figur, die dem Protagonisten entgegensteht und seine Ziele blockiert",
+        answerC = "Ein Charakter, der sich im Laufe der Handlung positiv verändert",
+        answerD = "Die weibliche Hauptrolle in einem Drama",
+        correctAnswer = 1,
+        explanation = "Der Antagonist ist die Gegenfigur zum Protagonisten — er blockiert oder bekämpft dessen Ziele. Das kann ein Bösewicht sein, aber auch eine Naturgewalt, eine gesellschaftliche Macht oder ein innerer Konflikt.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Schriftsteller begründete die Gattung der Detektivgeschichte mit Figuren wie Auguste Dupin?",
+        answerA = "Arthur Conan Doyle",
+        answerB = "Agatha Christie",
+        answerC = "Edgar Allan Poe",
+        answerD = "Wilkie Collins",
+        correctAnswer = 2,
+        explanation = "Edgar Allan Poe gilt als Erfinder der Detektivgeschichte mit seinem Charakter C. Auguste Dupin ('Die Morde in der Rue Morgue', 1841). Dupin war das direkte Vorbild für Sherlock Holmes.",
+        difficulty = 2,
+        funFact = "Arthur Conan Doyle bezeichnete Poe ausdrücklich als Vorbild für Sherlock Holmes. Holmes bedankt sich in einer Geschichte sogar bei 'dem französischen Detektiv Dupin'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die 'Ballade' als literarische Gattung?",
+        answerA = "Ein gesungenes Liebeslied aus der Troubadour-Tradition",
+        answerB = "Ein erzählendes Gedicht, das dramatische Ereignisse in lyrischer Form schildert",
+        answerC = "Ein kurzes Theaterstück in Versform",
+        answerD = "Ein mittelalterliches Volksepos ohne Reim",
+        correctAnswer = 1,
+        explanation = "Die Ballade ist ein erzählendes Gedicht mit dramatisch-lyrischem Charakter. Sie verbindet Epik, Lyrik und Dramatik. Bekannte Beispiele: Goethes 'Erlkönig', Schillers 'Die Bürgschaft', Uhlands 'Des Sängers Fluch'.",
+        difficulty = 2,
+        funFact = "Goethe und Schiller veranstalteten 1797 gemeinsam einen 'Balladenwettbewerb' — das Jahr gilt seitdem als das 'Balladenjahr' der deutschen Literatur."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Autorin schrieb 'Stolz und Vorurteil' (Pride and Prejudice, 1813)?",
+        answerA = "Charlotte Brontë",
+        answerB = "Emily Brontë",
+        answerC = "Mary Shelley",
+        answerD = "Jane Austen",
+        correctAnswer = 3,
+        explanation = "'Stolz und Vorurteil' (1813) ist der bekannteste Roman der englischen Autorin Jane Austen. Er erzählt von der Liebesgeschichte zwischen Elizabeth Bennet und dem stolzen Mr. Darcy.",
+        difficulty = 2,
+        funFact = "Jane Austen veröffentlichte ihre Romane anonym — auf den Titelblättern stand nur 'By a Lady' oder 'By the Author of...'. Ihr Name erschien erst posthum auf ihren Büchern."
+    ),
+
+    // ── ADDITIONAL HARD (difficulty = 3) ── 23 new questions ─────────────────
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet die 'Neue Sachlichkeit' als literarische Bewegung (ca. 1920–1933)?",
+        answerA = "Eine Bewegung zur Rückkehr zu klassischen Formen nach dem Expressionismus",
+        answerB = "Eine nüchterne, reportagehafte Schreibweise, die soziale Realität ohne Romantisierung darstellt",
+        answerC = "Eine surreale Bewegung mit traumartigen Bildern",
+        answerD = "Eine politische Lyrik der Weimarer Republik",
+        correctAnswer = 1,
+        explanation = "Die Neue Sachlichkeit (1920–1933) reagierte auf den expressionistischen Überschwang mit nüchterner, journalistischer Prosa. Vertreter: Erich Maria Remarque ('Im Westen nichts Neues'), Irmgard Keun, Hans Fallada.",
+        difficulty = 3,
+        funFact = "Der Begriff 'Neue Sachlichkeit' wurde 1923 vom Kunsthistoriker Gustav Friedrich Hartlaub geprägt — zunächst für die bildende Kunst, dann auf Literatur übertragen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Petrarkismus' in der Lyrik?",
+        answerA = "Eine Nachahmung Dantes in der Epik",
+        answerB = "Ein europäischer Liebeslyrik-Stil nach dem Vorbild Petrarcas, mit idealisierten Frauenbildern und Gegensatzpaaren",
+        answerC = "Eine antike Odenform des Horaz",
+        answerD = "Ein stilistisches Prinzip der Kürze und Prägnanz",
+        correctAnswer = 1,
+        explanation = "Petrarkismus bezeichnet die Nachahmung des italienischen Dichters Francesco Petrarca (1304–1374) in der europäischen Liebeslyrik des 15.–17. Jh. Typisch: Antithesen (Feuer/Eis), Idealisierung der geliebten Frau, unerwiderte Liebe.",
+        difficulty = 3,
+        funFact = "Petrarcas 'Canzoniere' — 366 Gedichte an die unerreichbare Laura — wurde über 200 Jahre lang in ganz Europa imitiert."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb den Roman 'Die Leiden des jungen Werthers' und welche gesellschaftliche Wirkung hatte er?",
+        answerA = "Schiller — er löste eine Debatte über Selbstmord aus",
+        answerB = "Goethe — er löste eine europaweite Nachahmungswelle von Selbstmorden aus (Werther-Effekt)",
+        answerC = "Hölderlin — er wurde verboten und vom Klerus verbrannt",
+        answerD = "Novalis — er führte zur Romantik-Bewegung in Europa",
+        correctAnswer = 1,
+        explanation = "Goethes 'Die Leiden des jungen Werthers' (1774) löste als erster bekannter Fall den sogenannten 'Werther-Effekt' aus: Nachahmungssuizide junger Männer in Europa, die wie Werther gekleidet starben. Das Buch wurde in einigen Ländern verboten.",
+        difficulty = 3,
+        funFact = "Der 'Werther-Effekt' ist bis heute ein anerkanntes soziologisches Phänomen — Medien berichten bei Prominenten-Suiziden deshalb nach bestimmten Richtlinien."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Anapher' als Stilmittel?",
+        answerA = "Die Wiederholung desselben Wortes oder Ausdrucks am Ende aufeinanderfolgender Sätze",
+        answerB = "Die Wiederholung desselben Wortes oder Ausdrucks am Anfang aufeinanderfolgender Sätze oder Verse",
+        answerC = "Ein Vergleich mit metaphorischer Übertragung",
+        answerD = "Die Weglassung eines erwarteten Satzgliedes",
+        correctAnswer = 1,
+        explanation = "Die Anapher ist eine Wiederholung desselben Wortes oder derselben Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse. Beispiel: 'Ich rief. Ich schrie. Ich flehte.' Sie erzeugt Rhythmus und Nachdruck.",
+        difficulty = 3,
+        funFact = "Martin Luther Kings berühmteste Rede 'I Have a Dream' (1963) ist ein Musterbeispiel für die Anapher — die Phrase 'I have a dream' wiederholt sich acht Mal in Folge."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Wer war Walther von der Vogelweide und welche literarische Bedeutung hatte er?",
+        answerA = "Ein Minnesänger des 12./13. Jahrhunderts, der bedeutendste Vertreter des mittelhochdeutschen Minnegesangs",
+        answerB = "Ein Hofchronist Kaiser Barbarossas",
+        answerC = "Der Verfasser des Nibelungenlieds",
+        answerD = "Ein frühmittelhochdeutscher Bibelübersetzer",
+        correctAnswer = 0,
+        explanation = "Walther von der Vogelweide (ca. 1170–1230) gilt als der bedeutendste Minnesänger des deutschen Mittelalters. Er erweiterte den Minnegesang durch politische Spruchdichtung und realistischere Frauenbilder.",
+        difficulty = 3,
+        funFact = "Walther von der Vogelweide gehörte zum fahrenden Volk der Spielleute — er hatte keinen festen Wohnsitz und lebte vom Mäzenatentum verschiedener Fürsten."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist das literarische Konzept der 'Katharsis' nach Aristoteles?",
+        answerA = "Die moralische Lehre, die am Ende eines Theaterstücks gezogen wird",
+        answerB = "Die emotionale Reinigung des Zuschauers durch Mitleid und Schrecken im Verlauf der Tragödie",
+        answerC = "Die Reinigung der Sprache von Fremdwörtern",
+        answerD = "Die Auflösung aller Konflikte am Ende eines Dramas",
+        correctAnswer = 1,
+        explanation = "Aristoteles beschrieb in seiner 'Poetik' die Katharsis als Reinigung (kathársis) der Gefühle des Zuschauers durch Mitleid (eleos) und Schrecken (phobos) im Verlauf der Tragödie.",
+        difficulty = 3,
+        funFact = "Die genaue Bedeutung von Aristoteles' Katharsis ist bis heute umstritten — es gibt medizinische, moralische und ästhetische Deutungen des Begriffs."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Emilia Galotti' (1772) und gilt als Begründer des bürgerlichen Trauerspiels?",
+        answerA = "Friedrich Schiller",
+        answerB = "Gotthold Ephraim Lessing",
+        answerC = "Johann Wolfgang von Goethe",
+        answerD = "Andreas Gryphius",
+        correctAnswer = 1,
+        explanation = "'Emilia Galotti' (1772) von Gotthold Ephraim Lessing ist neben 'Miss Sara Sampson' (1755) ein Meilenstein des bürgerlichen Trauerspiels: Bürger — nicht Könige — als tragische Helden auf der Bühne.",
+        difficulty = 3,
+        funFact = "Lessing war auch einer der ersten professionellen Theaterkritiker Deutschlands — seine 'Hamburgische Dramaturgie' (1767–69) beeinflusste das deutschsprachige Theater grundlegend."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet 'Poetik' als Wissenschaft?",
+        answerA = "Die Geschichte der deutschen Dichtung",
+        answerB = "Die Theorie und Lehre von den Regeln, Formen und Prinzipien literarischer Gestaltung",
+        answerC = "Die Analyse von Versmaßen in Gedichten",
+        answerD = "Die Biografie großer Dichter",
+        correctAnswer = 1,
+        explanation = "Die Poetik ist die Wissenschaft von den Regeln, Gattungen und Wirkungsweisen der Literatur. Aristoteles' 'Poetik' (ca. 335 v. Chr.) ist das älteste erhaltene Werk dieser Art und prägte die abendländische Literaturtheorie.",
+        difficulty = 3,
+        funFact = "Aristoteles' 'Poetik' ist unvollständig überliefert — der zweite Teil über die Komödie ist verloren. Umberto Eco machte daraus den Mittelpunkt seines Romans 'Der Name der Rose'."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was versteht man unter 'Erlebter Rede' als Erzähltechnik?",
+        answerA = "Direkte Rede einer Figur, die vom Erzähler kommentiert wird",
+        answerB = "Eine Mischform zwischen direkter und indirekter Rede, bei der Figuren-Gedanken in Erzählerperspektive erscheinen ohne Anführungszeichen",
+        answerC = "Die Technik, Dialoge möglichst realistisch wiederzugeben",
+        answerD = "Ein auktorialer Kommentar über die Gefühle einer Figur",
+        correctAnswer = 1,
+        explanation = "Erlebte Rede (auch 'freie indirekte Rede') ist eine Mischform: Die Innenperspektive einer Figur wird in der Erzählerstimme wiedergegeben — ohne Anführungszeichen, meist in Präteritum. Sie erzeugt Intimität mit der Figur.",
+        difficulty = 3,
+        funFact = "Jane Austen gilt als frühe Meisterin der erlebten Rede — in 'Emma' (1815) ist es oft nicht klar, ob der Erzähler oder Emma selbst spricht."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher japanische Autor schrieb den Roman 'Naokos Lächeln' (Norwegian Wood, 1987)?",
+        answerA = "Kenzaburo Oe",
+        answerB = "Yasunari Kawabata",
+        answerC = "Yukio Mishima",
+        answerD = "Haruki Murakami",
+        correctAnswer = 3,
+        explanation = "'Naokos Lächeln' (japanisch: Noruwei no Mori, 1987) ist ein Liebesroman von Haruki Murakami. Er verhalf Murakami zum Durchbruch und verkaufte sich in Japan über zwei Millionen Mal innerhalb eines Jahres.",
+        difficulty = 3,
+        funFact = "Der Titel ist ein Beatles-Song: 'Norwegian Wood (This Bird Has Flown)' — im Roman hört die Hauptfigur Naoko es auf einer Schallplatte."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Litotes' als Stilmittel?",
+        answerA = "Eine dreifache Wiederholung zur Betonung",
+        answerB = "Eine Untertreibung, oft durch doppelte Verneinung ('nicht schlecht' für 'gut')",
+        answerC = "Ein Vergleich zwischen gegensätzlichen Dingen",
+        answerD = "Die Verwendung eines Abstraktums für ein Konkretes",
+        correctAnswer = 1,
+        explanation = "Die Litotes ist eine Untertreibung durch Verneinung des Gegenteils. 'Das ist nicht schlecht' bedeutet 'Das ist gut'. Sie erzeugt ironische Distanz oder betont durch Understatement.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Aspekt macht Günter Grass' Roman 'Die Blechtrommel' so bedeutend in der Nachkriegsliteratur?",
+        answerA = "Er war der erste Roman, der die Bombardierung Dresdens literarisch verarbeitete",
+        answerB = "Er brach das Schweigen über den Nationalsozialismus durch einen provokant-grotesken Blick eines kindlichen Außenseiters",
+        answerC = "Er führte die Technik des magischen Realismus erstmals in die deutsche Literatur ein",
+        answerD = "Er war das erste Werk der Gruppe 47, das einen Nobelpreis erhielt",
+        correctAnswer = 1,
+        explanation = "'Die Blechtrommel' (1959) war nach dem Krieg und dem Schweigen der Adenauer-Ära ein Schock: Grass zeigte den Nationalsozialismus durch die Augen des absurden Oskar Matzerath — grotesk, satirisch, anklagend.",
+        difficulty = 3,
+        funFact = "Grass selbst gehörte zur Gruppe 47, dem wichtigsten literarischen Zirkel der Nachkriegszeit, der Autoren wie Heinrich Böll, Ingeborg Bachmann und Ilse Aichinger umfasste."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet die 'Topos'-Forschung in der Literaturwissenschaft?",
+        answerA = "Die geographische Verortung von Handlungsorten in Romanen",
+        answerB = "Die Untersuchung wiederkehrender literarischer Motive, Bilder und Formeln (topoi) durch Epochen und Kulturen hindurch",
+        answerC = "Die Analyse von Ortsnamen in mittelhochdeutscher Literatur",
+        answerD = "Die Erforschung antiker Theaterbühnen",
+        correctAnswer = 1,
+        explanation = "Die Toposforschung (begründet von Ernst Robert Curtius in 'Europäische Literatur und lateinisches Mittelalter', 1948) untersucht wiederkehrende literarische Konventionen (topoi) wie 'puer senex' (alter Knabe), 'locus amoenus' (lieblicher Ort) durch die Literaturgeschichte.",
+        difficulty = 3,
+        funFact = "Ernst Robert Curtius' Werk ist bis heute ein Standardwerk der Komparatistik und Mediävistik."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb 'Der Steppenwolf' (1927) und was ist das zentrale Thema?",
+        answerA = "Thomas Mann — die Dekadenz des Bürgertums",
+        answerB = "Hermann Hesse — die gespaltene Natur des modernen Intellektuellen zwischen bürgerlicher Welt und Wolfsnatur",
+        answerC = "Robert Musil — die Identitätskrise des österreichischen Intellektuellen",
+        answerD = "Stefan Zweig — der Verfall der europäischen Kulturtradition",
+        correctAnswer = 1,
+        explanation = "'Der Steppenwolf' (1927) von Hermann Hesse handelt von Harry Haller, der zwischen seiner bürgerlichen Seite und seiner wilden 'Wolfsnatur' zerrissen ist. Das Buch wurde in den 1960ern ein Kultbuch der Gegenkultur.",
+        difficulty = 3,
+        funFact = "Die amerikanische Rockband 'Steppenwolf' ('Born to be Wild', 1968) benannte sich nach Hesses Roman."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist eine 'Chiasmus' als Stilfigur?",
+        answerA = "Die Wiederholung eines Begriffs in spiegelverkehrter Reihenfolge (ABBA-Struktur)",
+        answerB = "Die Verschachtelung von Nebensätzen ohne erkennbare Struktur",
+        answerC = "Die Anhäufung von Synonymen zur Verstärkung",
+        answerD = "Die Umstellung des Subjekts an das Satzende",
+        correctAnswer = 0,
+        explanation = "Der Chiasmus ist eine Überkreuzstellung von Satzgliedern nach dem ABBA-Muster. Beispiel: 'Man lebt nicht um zu essen, sondern isst, um zu leben.' Die Elemente werden gespiegelt angeordnet.",
+        difficulty = 3,
+        funFact = "Der Begriff kommt vom griechischen Buchstaben Chi (X) — das Muster ähnelt einem Kreuz oder X."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die 'Exilliteratur' im Kontext der deutschen Literatur?",
+        answerA = "Literatur, die während des Mittelalters von verbannten Rittern verfasst wurde",
+        answerB = "Literatur deutschsprachiger Autoren, die während der NS-Zeit (1933–1945) ins Ausland fliehen mussten",
+        answerC = "DDR-Literatur, die im Westen verboten war",
+        answerD = "Literatur von Migranten in Deutschland nach 1990",
+        correctAnswer = 1,
+        explanation = "Exilliteratur bezeichnet die Werke deutschsprachiger Autoren, die vor den Nationalsozialisten ins Ausland flohen (1933–1945). Bedeutende Exilautoren: Thomas Mann (USA), Bertolt Brecht (USA/Dänemark), Anna Seghers, Heinrich Mann.",
+        difficulty = 3,
+        funFact = "Thomas Mann hielt nach seiner Emigration in die USA regelmäßige Radiobotschaften ('Deutsche Hörer!') an die deutsche Bevölkerung — die BBC sendete sie nach Deutschland."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was bezeichnet der Begriff 'Hyperbel' als Stilmittel?",
+        answerA = "Eine Untertreibung zur ironischen Distanzierung",
+        answerB = "Eine maßlose Übertreibung zur Verstärkung des Ausdrucks",
+        answerC = "Ein Vergleich zweier ungleicher Dinge",
+        answerD = "Die Umstellung der Satzglieder zur Betonung",
+        correctAnswer = 1,
+        explanation = "Die Hyperbel (griech.: Übertreibung) ist eine maßlose Übertreibung als Stilmittel. Beispiele: 'Ich habe dir das tausendmal gesagt', 'Ich sterbe vor Lachen'. Sie dient zur Verstärkung von Aussagen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welcher Autor schrieb das Drama 'Penthesilea' (1808) und gilt als Meister der Extrempsychologie?",
+        answerA = "Friedrich Schiller",
+        answerB = "Johann Wolfgang von Goethe",
+        answerC = "Heinrich von Kleist",
+        answerD = "Georg Büchner",
+        correctAnswer = 2,
+        explanation = "'Penthesilea' (1808) von Heinrich von Kleist zeigt die Amazonenkönigin, die ihren Geliebten Achilles in rasender Leidenschaft tötet und zerfleischt. Das Stück gilt als Extremfall der Emotionsdarstellung in der deutschen Literatur.",
+        difficulty = 3,
+        funFact = "Goethe lehnte 'Penthesilea' ab und bezeichnete das Stück als 'zu exzentrisch' — er konnte mit Kleists extremer Emotionalität nichts anfangen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist ein 'Oxymoron' als Stilmittel?",
+        answerA = "Die Verbindung zweier synonymer Begriffe zur Verstärkung",
+        answerB = "Die Verbindung zweier sich widersprechender Begriffe zu einem sinnvollen Ausdruck",
+        answerC = "Die ironische Verkehrung der eigentlichen Bedeutung",
+        answerD = "Eine dreifache Wiederholung zur Klimax",
+        correctAnswer = 1,
+        explanation = "Das Oxymoron verbindet zwei scheinbar widersprüchliche Begriffe: 'beredtes Schweigen', 'brennendes Eis', 'lebendiger Tod'. Es erzeugt paradoxe, intensive Ausdruckskraft.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist 'Trümmer- oder Kahlschlagliteratur' im deutschen Nachkriegskontext?",
+        answerA = "Literatur über die physische Zerstörung deutscher Städte",
+        answerB = "Eine literarische Bewegung nach 1945, die mit der Nazi-Sprache brach und in nüchterner, reduzierten Sprache neu anfangen wollte",
+        answerC = "Expressionistische Gedichte über den Ersten Weltkrieg",
+        answerD = "DDR-Literatur der 1950er Jahre über den Wiederaufbau",
+        correctAnswer = 1,
+        explanation = "Die 'Trümmerliteratur' (auch 'Kahlschlagliteratur') nach 1945 wollte mit der verlogenen NS-Sprache brechen. Sie nutzte einfache, direkte Sprache und schilderte die Kriegswirklichkeit nüchtern. Vertreter: Wolfgang Borchert, Heinrich Böll.",
+        difficulty = 3,
+        funFact = "Wolfgang Borcherts Heimkehrerdrama 'Draußen vor der Tür' (1947) wurde einen Tag vor seinem Tod mit 26 Jahren uraufgeführt — er starb an den Spätfolgen seiner Kriegsverletzungen."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Welche Besonderheit hat die Schreibweise in Thomas Manns Roman 'Der Zauberberg' (1924)?",
+        answerA = "Er ist komplett in Dialektsprache verfasst",
+        answerB = "Er spielt auf einem Schweizer Sanatorium und nutzt die Zeitillusion als zentrales Thema — Zeit dehnt sich oder vergeht je nach Erfahrung",
+        answerC = "Er ist ausschließlich in Briefform geschrieben",
+        answerD = "Er enthält keinen einzigen Dialog zwischen den Figuren",
+        correctAnswer = 1,
+        explanation = "'Der Zauberberg' (1924) spielt auf einem Tuberkulose-Sanatorium in Davos. Thomas Mann untersucht darin das Wesen der Zeit: Im Sanatorium verliert die Zeit ihre normale Struktur — sieben Jahre vergehen für den Helden Hans Castorp wie im Rausch.",
+        difficulty = 3,
+        funFact = "Mann selbst besuchte seine Frau in einem Davoser Sanatorium — ursprünglich nur für drei Wochen geplant, sammelte er Material für das Buch. Aus dem Besuch wurden drei Wochen Inspiration."
+    ),
+
+    Question(
+        categoryId = 10,
+        questionText = "Was ist die 'Gruppe 47' in der deutschen Literaturgeschichte?",
+        answerA = "Eine Autorengruppe der DDR, die 1947 gegründet wurde",
+        answerB = "Ein einflussreicher Zusammenschluss westdeutscher Schriftsteller (1947–1977), der die Nachkriegsliteratur prägte",
+        answerC = "Eine Verlegervereinigung für Nachkriegsliteratur",
+        answerD = "Eine staatliche Förderinstanz für junge Autoren nach 1945",
+        correctAnswer = 1,
+        explanation = "Die Gruppe 47 (1947–1977) war ein informeller Zusammenschluss deutschsprachiger Autoren um Hans Werner Richter. Mitglieder lasen unveröffentlichte Texte vor und erhielten sofortige Kritik. Mitglieder: Böll, Grass, Bachmann, Celan.",
+        difficulty = 3,
+        funFact = "Paul Celan las 1952 bei der Gruppe 47 seine 'Todesfuge' vor — und wurde dafür kritisiert, zu 'artistisch' zu sein. Heute gilt das Gedicht als eines der bedeutendsten der deutschen Nachkriegsliteratur."
     )
 )
