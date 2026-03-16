@@ -12,6 +12,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -658,6 +659,16 @@ private fun AnimatedHomeCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .border(
+                    width = 1.5.dp,
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.White.copy(alpha = 0.5f),
+                            card.gradientEnd.copy(alpha = 0.7f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                )
                 .clip(RoundedCornerShape(16.dp))
                 .background(
                     Brush.horizontalGradient(
