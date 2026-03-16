@@ -657,5 +657,658 @@ fun foodQuestions(): List<Question> = listOf(
         explanation = "Transglutaminase (oft 'Fleischkleber' genannt) ist ein Enzym, das Glutamin- und Lysin-Reste in Proteinen vernetzt und so Fleischstücke oder Proteine zusammenklebt. Es wird für 'restructured meat'-Produkte verwendet.",
         difficulty = 5,
         funFact = "Transglutaminase kommt natürlich in menschlichen Blutzellen vor und spielt eine Rolle bei der Blutgerinnung."
+    ),
+
+    // NEW EASY (15)
+    Question(
+        categoryId = 8,
+        questionText = "Welche Frucht ist die Hauptzutat von Apfelstrudel?",
+        answerA = "Birne",
+        answerB = "Pflaume",
+        answerC = "Apfel",
+        answerD = "Kirsche",
+        correctAnswer = 2,
+        explanation = "Apfelstrudel wird aus einem hauchdünnen Strudelteig mit einer Füllung aus Äpfeln, Zucker, Rosinen und Zimt hergestellt.",
+        difficulty = 1,
+        funFact = "Der Wiener Apfelstrudel ist seit 2008 als immaterielles Kulturerbe Österreichs anerkannt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Wie nennt man das Einmachen von Lebensmitteln in Salz oder Salzlake?",
+        answerA = "Räuchern",
+        answerB = "Pökeln",
+        answerC = "Marinieren",
+        answerD = "Blanchieren",
+        correctAnswer = 1,
+        explanation = "Pökeln ist eine Konservierungsmethode, bei der Fleisch oder Fisch durch Salz, manchmal mit Nitritpökelsalz, haltbar gemacht wird.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welches Getränk wird aus gepressten Äpfeln hergestellt?",
+        answerA = "Traubensaft",
+        answerB = "Orangensaft",
+        answerC = "Apfelsaft",
+        answerD = "Birnensaft",
+        correctAnswer = 2,
+        explanation = "Apfelsaft wird durch Pressen von Äpfeln gewonnen. Je nach Verarbeitung entsteht naturtrüber oder geklärter Apfelsaft.",
+        difficulty = 1,
+        funFact = "Deutschland ist einer der größten Apfelsaft-Produzenten weltweit."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Tofu?",
+        answerA = "Ein fermentiertes Reisprodukt",
+        answerB = "Geronnene und gepresste Sojamilch",
+        answerC = "Getrocknete Meeresfrüchte",
+        answerD = "Ein Weizenprodukt",
+        correctAnswer = 1,
+        explanation = "Tofu wird hergestellt, indem Sojamilch zum Gerinnen gebracht und die entstehende Masse gepresst wird – ähnlich wie Käse aus Kuhmilch.",
+        difficulty = 1,
+        funFact = "Tofu enthält alle neun essentiellen Aminosäuren und ist eine wichtige Proteinquelle in der asiatischen Küche."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Wie heißt die bekannteste deutsche Bratwurst aus Thüringen?",
+        answerA = "Nürnberger Rostbratwurst",
+        answerB = "Currywurst",
+        answerC = "Thüringer Rostbratwurst",
+        answerD = "Weißwurst",
+        correctAnswer = 2,
+        explanation = "Die Thüringer Rostbratwurst ist eine der ältesten und bekanntesten deutschen Bratwürste, gewürzt u. a. mit Majoran und Kümmel.",
+        difficulty = 1,
+        funFact = "Das älteste bekannte Rezept der Thüringer Rostbratwurst stammt aus dem Jahr 1404."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welche Milch wird für die Herstellung von Butter verwendet?",
+        answerA = "Kokosmilch",
+        answerB = "Sojamilch",
+        answerC = "Mandelmilch",
+        answerD = "Kuhmilch (Rahm)",
+        correctAnswer = 3,
+        explanation = "Butter wird durch Aufrahmen und Verbuttern von Kuhmilch hergestellt. Der Rahm (Sahne) enthält den hohen Fettanteil, der für Butter nötig ist.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Pesto alla Genovese?",
+        answerA = "Eine Tomatensauce aus Genua",
+        answerB = "Eine Sauce aus Basilikum, Pinienkernen, Parmesan, Knoblauch und Olivenöl",
+        answerC = "Ein Nudelteig mit Spinat",
+        answerD = "Eine Fleischsauce aus Norditalien",
+        correctAnswer = 1,
+        explanation = "Pesto alla Genovese ist eine unerhitzte Sauce aus frischem Basilikum, Pinienkernen, Parmigiano Reggiano, Knoblauch und nativem Olivenöl extra.",
+        difficulty = 1,
+        funFact = "Der Name 'Pesto' leitet sich vom Verb 'pestare' (zerstampfen) ab – traditionell wird Pesto im Mörser zubereitet."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welche Farbe hat reifer Emmentaler Käse?",
+        answerA = "Weiß",
+        answerB = "Blau",
+        answerC = "Hellgelb",
+        answerD = "Orange",
+        correctAnswer = 2,
+        explanation = "Emmentaler hat eine hellgelbe bis elfenbeinfarbene Masse und ist bekannt für seine charakteristischen Löcher (Augen), die durch CO₂-produzierende Bakterien entstehen.",
+        difficulty = 1,
+        funFact = "Die Löcher im Emmentaler entstehen durch Propionsäurebakterien, die CO₂ produzieren."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was versteht man unter 'Pasteurisieren'?",
+        answerA = "Lebensmittel einfrieren",
+        answerB = "Lebensmittel kurz stark erhitzen um Keime abzutöten",
+        answerC = "Lebensmittel mit Salz konservieren",
+        answerD = "Lebensmittel vakuumieren",
+        correctAnswer = 1,
+        explanation = "Pasteurisieren ist ein Verfahren, bei dem Lebensmittel kurzzeitig auf 72–85 °C erhitzt werden, um Krankheitserreger abzutöten und die Haltbarkeit zu verlängern.",
+        difficulty = 1,
+        funFact = "Das Verfahren wurde nach Louis Pasteur benannt, der es im 19. Jahrhundert entwickelte."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welches Gewürz wird aus getrocknetem Chili gewonnen?",
+        answerA = "Kreuzkümmel",
+        answerB = "Paprikapulver",
+        answerC = "Cayennepfeffer",
+        answerD = "Koriander",
+        correctAnswer = 2,
+        explanation = "Cayennepfeffer wird aus getrockneten und gemahlenen Cayennechilis hergestellt und ist für seine starke Schärfe bekannt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist ein Croissant?",
+        answerA = "Ein italienisches Gebäck aus Brandteig",
+        answerB = "Ein französisches Plundergebäck aus Blätterteig mit Butter",
+        answerC = "Ein deutsches Hefegebäck",
+        answerD = "Ein Schweizer Waffeln-Gebäck",
+        correctAnswer = 1,
+        explanation = "Das Croissant ist ein französisches Gebäck aus einem mit viel Butter tourtierten Hefeteig, das seinen charakteristischen Blätterteig-Charakter durch mehrfaches Falten erhält.",
+        difficulty = 1,
+        funFact = "Das Croissant hat seinen Ursprung im österreichischen Kipferl und kam über Wiener Bäcker nach Paris."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welcher Käse schmilzt am besten und wird klassisch für Käsespätzle verwendet?",
+        answerA = "Parmesan",
+        answerB = "Bergkäse / Allgäuer Emmentaler",
+        answerC = "Feta",
+        answerD = "Ricotta",
+        correctAnswer = 1,
+        explanation = "Für Käsespätzle wird traditionell Allgäuer Bergkäse oder Emmentaler verwendet, da diese gut schmelzen und ein kräftiges Aroma haben.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Aus welcher Pflanze wird Zimt gewonnen?",
+        answerA = "Aus der Rinde eines Zimtbaums",
+        answerB = "Aus den Blüten einer Orchidee",
+        answerC = "Aus den Samen einer Grassorte",
+        answerD = "Aus den Früchten eines Strauches",
+        correctAnswer = 0,
+        explanation = "Zimt wird aus der inneren Rinde von Zimtbäumen (Gattung Cinnamomum) gewonnen. Die Rinde wird abgeschält, getrocknet und rollt sich dabei zu Zimtstangen auf.",
+        difficulty = 1,
+        funFact = "Ceylon-Zimt aus Sri Lanka gilt als der hochwertigere 'echte' Zimt im Vergleich zum günstigeren Cassia-Zimt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Risotto?",
+        answerA = "Ein italienisches Reisgericht, das durch schrittweises Zugeben von Brühe cremig wird",
+        answerB = "Eine spanische Paella-Variante",
+        answerC = "Ein griechisches Nudelgericht",
+        answerD = "Ein französisches Kartoffelgericht",
+        correctAnswer = 0,
+        explanation = "Risotto ist ein norditalienisches Gericht, bei dem Rundkornreis (z. B. Arborio) durch schrittweises Einrühren von heißer Brühe cremig gegart wird.",
+        difficulty = 1,
+        funFact = "Das Stärke-Protein des Rundkornreises gibt Risotto seine charakteristische cremige Konsistenz."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist der Unterschied zwischen Sahne und Crème fraîche?",
+        answerA = "Crème fraîche ist fermentiert und säuerlicher als Sahne",
+        answerB = "Sahne ist fermentiert, Crème fraîche nicht",
+        answerC = "Beide sind identisch",
+        answerD = "Crème fraîche enthält mehr Wasser",
+        correctAnswer = 0,
+        explanation = "Crème fraîche ist eine fermentierte Sahne mit mindestens 30 % Fett und einem leicht säuerlichen Geschmack. Sahne ist nicht fermentiert.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // NEW MEDIUM (20)
+    Question(
+        categoryId = 8,
+        questionText = "Welche Temperatur sollte Rindfleisch mindestens erreichen, um 'medium' gebraten zu sein?",
+        answerA = "45 °C",
+        answerB = "55–60 °C",
+        answerC = "70 °C",
+        answerD = "80 °C",
+        correctAnswer = 1,
+        explanation = "Ein 'medium' gebratenes Steak hat eine Kerntemperatur von etwa 55–60 °C. Das Fleisch ist innen noch rosa und saftig.",
+        difficulty = 2,
+        funFact = "Bei 'well done' liegt die Kerntemperatur über 70 °C – das Fleisch verliert dann deutlich mehr Saft."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist der Unterschied zwischen Béchamel- und Velouté-Sauce?",
+        answerA = "Beide sind identisch – nur der Name unterscheidet sich regional",
+        answerB = "Béchamel wird mit Milch, Velouté mit hellem Fond (Kalb/Geflügel) hergestellt",
+        answerC = "Béchamel enthält Tomaten, Velouté nicht",
+        answerD = "Velouté wird mit Rotwein zubereitet",
+        correctAnswer = 1,
+        explanation = "Beide sind klassische Grundsaucen (Mère-Saucen) auf Mehlschwitze-Basis: Béchamel verwendet Milch als Flüssigkeit, Velouté hellen Geflügel- oder Kalbsfond.",
+        difficulty = 2,
+        funFact = "Auguste Escoffier definierte fünf klassische Grundsaucen der französischen Küche, die sogenannten 'Mère-Saucen'."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welches Land gilt als Ursprungsland des Hummus?",
+        answerA = "Ägypten",
+        answerB = "Griechenland",
+        answerC = "Levante (Naher Osten – Libanon, Israel, Syrien)",
+        answerD = "Türkei",
+        correctAnswer = 2,
+        explanation = "Hummus (arabisch für 'Kichererbsen') stammt aus der Levante-Region und wird aus Kichererbsen, Tahini, Zitronensaft und Knoblauch hergestellt.",
+        difficulty = 2,
+        funFact = "Libanon und Israel streiten seit Jahren diplomatisch über die 'Erfindung' des Hummus."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Tahini?",
+        answerA = "Eine türkische Joghurtsauce",
+        answerB = "Eine Paste aus gemahlenen Sesamsamen",
+        answerC = "Ein arabisches Fladenbrot",
+        answerD = "Eine nordafrikanische Gewürzmischung",
+        correctAnswer = 1,
+        explanation = "Tahini ist eine Paste aus geschälten, gerösteten und gemahlenen Sesamsamen. Sie ist Bestandteil von Hummus, Baba Ganoush und vielen anderen Gerichten.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was sind Capers (Kapern)?",
+        answerA = "Eingelegte unreife Blütenknospen des Kapernstrauchs",
+        answerB = "Kleine grüne Oliven",
+        answerC = "Getrocknete Tomaten",
+        answerD = "Eingelegte Gurkenfrüchte",
+        correctAnswer = 0,
+        explanation = "Kapern sind die eingelegten, unreifen Blütenknospen des Kapernstrauchs (Capparis spinosa). Sie haben einen salzigen, leicht bitteren Geschmack.",
+        difficulty = 2,
+        funFact = "Kapern werden traditionell in Salzlake oder Salz eingelegt und sind ein typisches Mittelmeer-Produkt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welches Lebensmittel hat den höchsten Eiweißgehalt pro 100 g?",
+        answerA = "Hähnchenbrust",
+        answerB = "Thunfisch (Dose)",
+        answerC = "Parmesan",
+        answerD = "Linsen (gekocht)",
+        correctAnswer = 2,
+        explanation = "Parmesan (Parmigiano Reggiano) hat mit etwa 36 g Eiweiß pro 100 g einen außergewöhnlich hohen Proteingehalt, der durch den langen Reifungsprozess entsteht.",
+        difficulty = 2,
+        funFact = "Parmesan reift mindestens 12 Monate – DOP-Produkte reifen 24 bis 36 Monate oder länger."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist ein Consommé?",
+        answerA = "Ein dick eingekochtes Fleischragout",
+        answerB = "Eine geklärte, klare Fleischbrühe",
+        answerC = "Eine Cremesuppe mit Sahne",
+        answerD = "Ein Kaltaufschnitt",
+        correctAnswer = 1,
+        explanation = "Consommé ist eine durch Klärfleisch (Hackfleisch, Eiweiß, Gemüse) geklärte, glasklare Kraftbrühe – ein Grundpfeiler der klassischen französischen Küche.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welche Reissorte wird für Sushi verwendet?",
+        answerA = "Basmati",
+        answerB = "Wildreis",
+        answerC = "Jasminreis",
+        answerD = "Japanischer Rundkornreis (Shari)",
+        correctAnswer = 3,
+        explanation = "Für Sushi wird japanischer Rundkornreis (Koshihikari oder ähnliche Sorten) verwendet, der nach dem Kochen mit einer Mischung aus Reisessig, Zucker und Salz gewürzt wird.",
+        difficulty = 2,
+        funFact = "Der gewürzte Sushi-Reis heißt 'Shari' oder 'Sumeshi' (Essig-Reis)."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Miso?",
+        answerA = "Ein japanisches Reiswein-Getränk",
+        answerB = "Eine fermentierte Paste aus Sojabohnen",
+        answerC = "Ein chinesisches Nudelgericht",
+        answerD = "Eine koreanische Chilipaste",
+        correctAnswer = 1,
+        explanation = "Miso ist eine japanische Würzpaste aus fermentierten Sojabohnen, Salz und Koji-Pilz. Es gibt helles (shiro), rotes (aka) und gemischtes (awase) Miso.",
+        difficulty = 2,
+        funFact = "Misosuppe wird in Japan täglich von Millionen Menschen zum Frühstück gegessen."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was macht den Unterschied zwischen Joghurt und Kefir?",
+        answerA = "Kefir enthält sowohl Milchsäurebakterien als auch Hefen und ist leicht alkoholisch",
+        answerB = "Joghurt ist flüssiger als Kefir",
+        answerC = "Kefir wird aus Ziegenmilch hergestellt",
+        answerD = "Beide sind identisch – nur der Name unterscheidet sich",
+        correctAnswer = 0,
+        explanation = "Kefir entsteht durch eine gemischte Fermentation mit Milchsäurebakterien UND Hefen, was zu einer leicht prickelnden, minimal alkoholischen Konsistenz führt. Joghurt wird nur durch Milchsäurebakterien fermentiert.",
+        difficulty = 2,
+        funFact = "Kefirkörner sind Zooglea – eine Symbiose aus Bakterien und Hefen in einer Polysaccharid-Matrix."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welches Gewürz wird aus den Staubfäden der Krokusblüte gewonnen?",
+        answerA = "Kardamom",
+        answerB = "Muskatnuss",
+        answerC = "Safran",
+        answerD = "Piment",
+        correctAnswer = 2,
+        explanation = "Safran wird aus den Narben der Safran-Krokusblüte (Crocus sativus) gewonnen. Pro Blüte gibt es nur drei Narben, die von Hand geerntet werden müssen.",
+        difficulty = 2,
+        funFact = "Für 1 kg Safran werden etwa 150.000 bis 200.000 Blüten und bis zu 400 Arbeitsstunden benötigt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Tapioka?",
+        answerA = "Ein Verdickungsmittel aus Maniokwurzel-Stärke",
+        answerB = "Ein japanisches Fischprodukt",
+        answerC = "Eine afrikanische Hülsenfrucht",
+        answerD = "Ein Zuckerersatzstoff aus Mais",
+        correctAnswer = 0,
+        explanation = "Tapioka ist eine Stärke, die aus der Maniokwurzel (Cassava) gewonnen wird. Es wird als Verdickungsmittel und für Bubble-Tea-Perlen verwendet.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Buttermilch'?",
+        answerA = "Milch mit extra Butterfett",
+        answerB = "Das flüssige Nebenprodukt der Butterherstellung",
+        answerC = "Aufgeschlagene Sahne",
+        answerD = "Mit Butter angereicherte Vollmilch",
+        correctAnswer = 1,
+        explanation = "Buttermilch ist die Flüssigkeit, die beim Verbuttern von Rahm übrig bleibt. Sie hat einen niedrigen Fettgehalt und einen leicht säuerlichen Geschmack.",
+        difficulty = 2,
+        funFact = "Handelsübliche Buttermilch ist oft fermentierterte Magermilch – kein echtes Nebenprodukt der Butterherstellung."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welcher Pilz wird in der europäischen Küche als teuerster einheimischer Pilz gehandelt?",
+        answerA = "Champignon",
+        answerB = "Shiitake",
+        answerC = "Pfifferling",
+        answerD = "Trüffel",
+        correctAnswer = 3,
+        explanation = "Trüffel, besonders der weiße Alba-Trüffel (Tuber magnatum) und der schwarze Périgord-Trüffel (Tuber melanosporum), gehören zu den teuersten Lebensmitteln weltweit.",
+        difficulty = 2,
+        funFact = "Weiße Trüffel aus Alba können bis zu 5.000 Euro pro Kilogramm kosten."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was bedeutet 'Blanchieren' in der Kochkunst?",
+        answerA = "Lebensmittel in Öl frittieren",
+        answerB = "Lebensmittel kurz in kochendes Wasser tauchen und dann sofort in Eiswasser abschrecken",
+        answerC = "Lebensmittel langsam im Ofen garen",
+        answerD = "Lebensmittel in Sahne einkochen",
+        correctAnswer = 1,
+        explanation = "Blanchieren ist ein kurzes Überbrühen von Lebensmitteln in kochendem Salzwasser mit anschließendem schnellen Abschrecken in Eiswasser, um Farbe, Biss und Nährstoffe zu erhalten.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist Rucola?",
+        answerA = "Eine Kräutersorte der Minzfamilie",
+        answerB = "Ein Blattsalat mit pfeffrig-nussigem Geschmack aus der Raketenfamilie",
+        answerC = "Eine Kresseart",
+        answerD = "Ein in Deutschland heimischer Feldsalat",
+        correctAnswer = 1,
+        explanation = "Rucola (auch Rauke oder Rocket) ist ein Kreuzblütler mit würzig-pfeffrigem Geschmack. Er stammt aus dem Mittelmeerraum und ist eine typische Zutat der italienischen Küche.",
+        difficulty = 2,
+        funFact = "Rucola war in der Antike bekannt und wurde auch als Aphrodisiakum verwendet."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist das Besondere an Wagyu-Rindfleisch?",
+        answerA = "Es kommt aus Wagyu, einer Region in Südkorea",
+        answerB = "Es hat eine außergewöhnlich starke intramuskuläre Fettmarmorierung",
+        answerC = "Es stammt von einer wild lebenden Rinderrasse",
+        answerD = "Es hat einen niedrigeren Fettgehalt als normales Rindfleisch",
+        correctAnswer = 1,
+        explanation = "Wagyu-Rinder (japanisch: 'japanisches Rind') produzieren Fleisch mit extrem feiner intramuskulärer Fettmarmorierung, die für einen außergewöhnlich buttrigen Geschmack und zarte Textur sorgt.",
+        difficulty = 2,
+        funFact = "Echtes Kobe-Beef ist eine spezielle Wagyu-Untersorte und darf nur in der Präfektur Hyōgo produziert werden."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist der Unterschied zwischen Mehl Type 405 und Type 1050?",
+        answerA = "Type 405 enthält mehr Mineralstoffe und ist dunkler",
+        answerB = "Type 1050 enthält mehr Mineralstoffe aus Randschichten des Korns und ist dunkler",
+        answerC = "Beide sind identisch – die Zahl bezeichnet nur den Hersteller",
+        answerD = "Type 405 eignet sich besser für Brot, Type 1050 für Kuchen",
+        correctAnswer = 1,
+        explanation = "Die Type-Zahl gibt den Mineralstoffgehalt in mg pro 100 g Trockenmasse an. Type 1050 enthält mehr Randschichten des Korns, ist dunkler und nährstoffreicher als das helle Type 405.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist ein Tapenade?",
+        answerA = "Ein provenzalischer Brotaufstrich aus Oliven, Kapern und Sardellen",
+        answerB = "Ein spanisches Olivenöl",
+        answerC = "Eine griechische Vorspeise aus Joghurt",
+        answerD = "Ein französischer Käse",
+        correctAnswer = 0,
+        explanation = "Tapenade ist eine provenzalische Paste aus gehackten Oliven, Kapern, Sardellen und Olivenöl. Das Wort leitet sich vom provenzalischen 'tapéno' (Kapern) ab.",
+        difficulty = 2,
+        funFact = "Tapenade stammt aus der Provence und wurde erstmals 1880 im Restaurant La Maison Dorée in Marseille erwähnt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist das traditionelle mexikanische Gericht 'Mole'?",
+        answerA = "Eine scharfe Tomaten-Salsa",
+        answerB = "Eine komplexe Sauce aus Chili, Schokolade, Gewürzen und oft Hühnchen",
+        answerC = "Ein gefüllter Maistortilla",
+        answerD = "Ein Maisbrei",
+        correctAnswer = 1,
+        explanation = "Mole ist eine mexikanische Sauce mit bis zu 30 Zutaten, darunter verschiedene Chilis, Schokolade, Nüsse, Gewürze und Tomatillos. Mole negro aus Oaxaca gilt als eines der komplexesten Gerichte der Welt.",
+        difficulty = 2,
+        funFact = "Ein traditionelles Mole-Rezept kann 2–3 Tage Zubereitungszeit erfordern."
+    ),
+
+    // NEW HARD (15)
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Osmose' in Bezug auf das Salzen von Fleisch und Gemüse?",
+        answerA = "Salz zieht durch die Zellmembran Wasser aus dem Lebensmittel heraus",
+        answerB = "Salz verteilt sich gleichmäßig durch aktiven Transport",
+        answerC = "Osmose beschreibt das Einziehen von Salz in die Zelle",
+        answerD = "Salz zerstört die Zellmembran durch chemische Reaktion",
+        correctAnswer = 0,
+        explanation = "Wenn Salz auf Lebensmittel gegeben wird, entsteht außen eine höhere Salzkonzentration. Durch Osmose wandert Wasser aus dem Zellinneren (niedrigerer Salzgehalt) durch die semipermeable Membran nach außen.",
+        difficulty = 3,
+        funFact = "Dieses Prinzip nutzt man beim Entwässern von Gurken oder Zucchini mit Salz vor dem Braten."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Welche Aromastoffe entstehen beim Rösten von Kaffeebohnen hauptsächlich?",
+        answerA = "Nur Koffein und Tannine",
+        answerB = "Furanone, Pyrazine und Thiole durch Maillard-Reaktion und Karamellisierung",
+        answerC = "Ausschließlich Chlorogensäuren",
+        answerD = "Ätherische Öle aus der Kaffeekirsche",
+        correctAnswer = 1,
+        explanation = "Beim Rösten entstehen durch Maillard-Reaktion und Karamellisierung über 800 flüchtige Aromaverbindungen, darunter Furanone (karamellartig), Pyrazine (nussig-röstartig) und Thiole (kaffeetypisch).",
+        difficulty = 3,
+        funFact = "Grüner Kaffee ist geschmacksneutral – erst das Rösten erzeugt das charakteristische Kaffeearoma."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Deglacieren' beim Kochen?",
+        answerA = "Einen Fond durch Zugabe von Flüssigkeit (Wein, Brühe) vom Bratensatz lösen",
+        answerB = "Eine Sauce durch Reduktion eindicken",
+        answerC = "Tiefgefrorene Lebensmittel schonend auftauen",
+        answerD = "Zucker in einer Pfanne karamellisieren",
+        correctAnswer = 0,
+        explanation = "Beim Deglacieren gibt man nach dem Anbraten Flüssigkeit (Wein, Cognac, Brühe) in die heiße Pfanne, um den karamellisierten Bratensatz (der voller Aromen steckt) zu lösen und in die Sauce zu integrieren.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Winterspeck' bei einer Gans und warum ist er kulinarisch bedeutsam?",
+        answerA = "Das ist intramuskuläres Fett, das die Gans für den Winter einlagert und für einen besonderen Geschmack sorgt",
+        answerB = "Eine spezielle Fettschicht unter der Gänsehaut, die beim Braten wichtige Aromen freisetzt und die Haut knusprig macht",
+        answerC = "Ein Begriff für das Fett älterer Gänse im Dezember",
+        answerD = "Das Bauchfett der Gans, das entfernt werden muss",
+        correctAnswer = 1,
+        explanation = "Die dicke Unterhautfettschicht der Martinsgans dient dem Tier als Energiereserve. Beim langen, langsamen Garen schmilzt dieses Fett durch die Haut und macht sie außen knusprig, während das Fleisch saftig bleibt.",
+        difficulty = 3,
+        funFact = "Eine Martinsgans sollte traditionell nach dem 11. November (Martinstag) verzehrt werden."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was beschreibt die 'Hydrolyse von Kollagen' beim langen Schmoren von Fleisch?",
+        answerA = "Kollagen (Bindegewebe) wird durch Säure aufgespalten",
+        answerB = "Kollagen wandelt sich durch lang anhaltende Hitze und Wasser in Gelatine um",
+        answerC = "Proteinketten werden durch Enzyme zersetzt",
+        answerD = "Fett wird in das Kollagengerüst eingelagert",
+        correctAnswer = 1,
+        explanation = "Bei Temperaturen über 70 °C und langer Garzeit hydrolysiert Kollagen (Bindegewebsprotein) und wandelt sich in lösliche Gelatine um. Das macht zähes Fleisch (Schulter, Haxe) nach stundenlangem Schmoren zart und saftig.",
+        difficulty = 3,
+        funFact = "Dieser Vorgang ist der Grund, warum Schmorgerichte mit viel Bindegewebe (Ossobuco, Boeuf Bourguignon) so reichhaltige Saucen entwickeln."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Lactobacillus bulgaricus' und welche Rolle spielt er?",
+        answerA = "Ein Schimmelpilz für Käsereifung",
+        answerB = "Ein Milchsäurebakterium, das essenziell für die Joghurtherstellung ist",
+        answerC = "Ein Hefestamm für Brotbacken",
+        answerD = "Ein Konservierungsmittel in Wurstwaren",
+        correctAnswer = 1,
+        explanation = "Lactobacillus delbrueckii subsp. bulgaricus ist eines der beiden Bakterien (neben Streptococcus thermophilus), die für die Joghurtfermentation notwendig sind. Es wandelt Laktose in Milchsäure um und sorgt für den sauren Geschmack.",
+        difficulty = 3,
+        funFact = "Echter bulgarischer Joghurt nutzt Stämme aus Bulgarien, die sich von anderen Joghurt-Stämmen unterscheiden."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Schockfrosten' und warum ist es besser als langsames Einfrieren?",
+        answerA = "Durch langsames Einfrieren entstehen größere Eiskristalle, die Zellstrukturen zerstören; Schockfrosten erzeugt kleinere Kristalle",
+        answerB = "Schockfrosten tötet mehr Bakterien ab",
+        answerC = "Schockfrosten spart mehr Energie",
+        answerD = "Beide Methoden sind gleichwertig für die Lebensmittelqualität",
+        correctAnswer = 0,
+        explanation = "Beim langsamen Einfrieren bilden sich große Eiskristalle, die Zellwände durchstechen und beim Auftauen zu Qualitätsverlust führen. Schockfrosten (-40 °C oder kälter) erzeugt sehr kleine Kristalle, die Zellstrukturen intakt lassen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Guanciale' und worin unterscheidet es sich von Pancetta?",
+        answerA = "Guanciale wird aus der Schweinewange hergestellt, Pancetta aus dem Bauch",
+        answerB = "Beide sind identisch – regionale Namen für dasselbe Produkt",
+        answerC = "Guanciale ist geräuchert, Pancetta nicht",
+        answerD = "Pancetta stammt aus dem Kopf, Guanciale aus dem Bauch",
+        correctAnswer = 0,
+        explanation = "Guanciale (von 'guancia' = Wange) ist gepökeltes, luftgetrocknetes Schweinebackenfleisch mit höherem Fettanteil. Pancetta wird aus dem Schweinebauch hergestellt. Für authentische Carbonara und Amatriciana wird Guanciale verwendet.",
+        difficulty = 3,
+        funFact = "In Rom gilt die Verwendung von Speck oder Pancetta in Carbonara als Ketzerei – nur Guanciale ist akzeptiert."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was beschreibt der Begriff 'Gluten' in Bezug auf Mehl?",
+        answerA = "Ein natürlicher Zucker in Getreide",
+        answerB = "Ein Kleberprotein aus Gliadin und Glutenin, das Teig elastisch und dehnbar macht",
+        answerC = "Ein Ballaststoff in Weizenkleie",
+        answerD = "Ein Stärkepolysaccharid",
+        correctAnswer = 1,
+        explanation = "Gluten entsteht wenn Wasser zu Mehl gegeben wird und sich die Proteine Gliadin und Glutenin verbinden. Das entstehende Glutennetzwerk gibt Teig Elastizität und hält Gärgase beim Backen zurück.",
+        difficulty = 3,
+        funFact = "Bei Zöliakie löst Gluten eine Autoimmunreaktion aus, die die Dünndarmschleimhaut schädigt."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Mirepoix' in der klassischen Küche?",
+        answerA = "Eine Würzmischung aus Kräutern",
+        answerB = "Ein aromatisches Gemüsebett aus Zwiebeln, Karotten und Sellerie (2:1:1) als Geschmacksbasis",
+        answerC = "Eine Schneidetechnik für Brunoise",
+        answerD = "Ein französischer Fond aus Gemüse",
+        correctAnswer = 1,
+        explanation = "Mirepoix ist die klassische aromatische Gemüsebasis der französischen Küche: 2 Teile Zwiebeln, 1 Teil Karotten, 1 Teil Sellerie. Es bildet die Geschmacksgrundlage für Fonds, Saucen und Schmorgerichte.",
+        difficulty = 3,
+        funFact = "Mirepoix wurde nach dem Duc de Lévis-Mirepoix benannt, einem Höfling Ludwigs XV."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Prosciutto di Parma' und wie unterscheidet er sich von normalem Schinken?",
+        answerA = "Er ist geräuchert und hat einen starken Rauchgeschmack",
+        answerB = "Er ist luftgetrockneter Rohschinken aus der Region Parma, der nur mit Salz – ohne Nitrite – gereift wird",
+        answerC = "Er wird aus Wildschwein hergestellt",
+        answerD = "Er ist gekochter Schinken mit einer speziellen Würzung",
+        correctAnswer = 1,
+        explanation = "Prosciutto di Parma ist ein DOP-geschützter, luftgetrockneter Rohschinken aus Parma. Er wird ausschließlich mit Meersalz ohne weitere Zusatzstoffe oder Nitrite mindestens 12 Monate gereift.",
+        difficulty = 3,
+        funFact = "Die Schweine für Prosciutto di Parma werden mit Molke aus der Parmesankäseherstellung gefüttert."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Homogenisierung' bei Milch?",
+        answerA = "Das Pasteurisieren bei hohen Temperaturen",
+        answerB = "Das mechanische Zerstören der Fettkügelchen, damit Sahne sich nicht mehr absetzt",
+        answerC = "Das Anreichern von Milch mit Vitaminen",
+        answerD = "Das Entfernen von Laktose aus der Milch",
+        correctAnswer = 1,
+        explanation = "Bei der Homogenisierung wird Milch unter hohem Druck durch feine Düsen gepresst, wodurch die Fettkügelchen so klein werden, dass sie gleichmäßig verteilt bleiben und sich keine Rahmschicht mehr bildet.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Dashi' in der japanischen Küche?",
+        answerA = "Ein Reisweinessig",
+        answerB = "Ein heller Fond aus Kombu-Algen und Bonitoflocken (Katsuobushi)",
+        answerC = "Eine Sojasaucenvariation",
+        answerD = "Ein fermentiertes Gemüsegericht",
+        correctAnswer = 1,
+        explanation = "Dashi ist der grundlegende Kochfond der japanischen Küche, hergestellt aus Kombu-Algen und getrockneten Bonitoflocken (Katsuobushi). Er bildet die Basis für Misosuppe, Ramen und viele Saucen.",
+        difficulty = 3,
+        funFact = "Dashi enthält natürlich Glutaminsäure und Inosinsäure – beide lösen den Umami-Geschmack aus."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Sauerteig' und was bewirken die Mikroorganismen darin?",
+        answerA = "Sauerteig ist nur ein anderer Name für Hefe",
+        answerB = "Sauerteig enthält wild vorkommende Hefen und Milchsäurebakterien, die Teig lockern und sauer machen",
+        answerC = "Sauerteig ist ein chemisches Backtriebmittel wie Backpulver",
+        answerD = "Sauerteig enthält ausschließlich Essigsäurebakterien",
+        correctAnswer = 1,
+        explanation = "Sauerteig ist eine Symbiose aus wilden Hefen (Triebkraft) und Milchsäurebakterien (Aroma, Säure, Konservierung). Die Hefen produzieren CO₂ für die Lockerung, die Bakterien erzeugen Milch- und Essigsäure.",
+        difficulty = 3,
+        funFact = "Ein gut gepflegter Sauerteigstarter kann Jahrzehnte oder sogar Jahrhunderte alt werden."
+    ),
+
+    Question(
+        categoryId = 8,
+        questionText = "Was ist 'Agar-Agar' und woher stammt es?",
+        answerA = "Ein tierisches Geliermittel aus Knochen wie Gelatine",
+        answerB = "Ein pflanzliches Geliermittel aus Rotalgen, das auch für vegane Desserts geeignet ist",
+        answerC = "Ein synthetisches Verdickungsmittel aus der Lebensmittelindustrie",
+        answerD = "Ein Stärkeprodukt aus Tapioka",
+        correctAnswer = 1,
+        explanation = "Agar-Agar (E 406) ist ein Polysaccharid aus Rotalgen (v. a. Gelidium, Gracilaria). Es geliert stärker als Gelatine und ist bei Raumtemperatur stabil – ideal als vegane Alternative zu tierischer Gelatine.",
+        difficulty = 3,
+        funFact = "Agar-Agar wird auch in der Mikrobiologie als Nährboden für Bakterienkulturen verwendet."
     )
 )

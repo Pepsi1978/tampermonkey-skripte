@@ -662,5 +662,661 @@ fun dortmundQuestions(): List<Question> = listOf(
         explanation = "Matthias Sammer spielte vor der Wiedervereinigung für die DDR-Nationalmannschaft und danach für die gesamtdeutsche Nationalelf.",
         difficulty = 5,
         funFact = "Sammer ist damit einer der wenigen Spieler, der sowohl für die DDR als auch für Deutschland spielte."
+    ),
+
+    // ── NEW EASY (15) ──────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Titel trägt der BVB-Cheftrainer, der im Volksmund auch als 'Vereinsikone' bezeichnet wird und seit 2021 mehrfach als Interimstrainer einsprang?",
+        answerA = "Edin Terzic",
+        answerB = "Niko Kovač",
+        answerC = "Hansi Flick",
+        answerD = "Rudi Völler",
+        correctAnswer = 0,
+        explanation = "Edin Terzic gewann mit BVB 2021 den DFB-Pokal als Interimstrainer und wurde danach Cheftrainer. Er ist ein überzeugter BVB-Fan seit Kindheitstagen.",
+        difficulty = 1,
+        funFact = "Terzic wuchs als BVB-Fan auf und arbeitete sich vom Co-Trainer bis zum Cheftrainer vor."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Was bedeutet das Kürzel 'BVB'?",
+        answerA = "Berliner Verkehrsbetriebe Borussia",
+        answerB = "Ballspiel-Verein Borussia",
+        answerC = "Bundesliga-Verein Borussia",
+        answerD = "Bürgerlicher Verein Borussia",
+        correctAnswer = 1,
+        explanation = "BVB steht für Ballspiel-Verein Borussia e.V. Dortmund — der vollständige offizielle Vereinsname.",
+        difficulty = 1,
+        funFact = "Das Wort 'Borussia' ist der lateinische Name für Preußen."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welche Bundesliga-Meisterschaften gewann BVB in den Jahren 2010-2012?",
+        answerA = "Nur eine Meisterschaft 2011",
+        answerB = "Zwei Meisterschaften in Folge (2011 und 2012)",
+        answerC = "Drei Meisterschaften in Folge",
+        answerD = "Keine, BVB war Vizemeister",
+        correctAnswer = 1,
+        explanation = "Unter Trainer Jürgen Klopp gewann BVB zwei Bundesliga-Meisterschaften in Folge: 2010/11 und 2011/12.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie heißt der norwegische Torjäger, der von 2020 bis 2022 für BVB spielte und für seine zahlreichen Tore bekannt wurde?",
+        answerA = "Martin Ødegaard",
+        answerB = "Joshua King",
+        answerC = "Erling Haaland",
+        answerD = "Alexander Sørloth",
+        correctAnswer = 2,
+        explanation = "Erling Haaland spielte von Januar 2020 bis Sommer 2022 für BVB und erzielte dabei 86 Tore in 89 Pflichtspielen.",
+        difficulty = 1,
+        funFact = "Haaland wechselte für eine festgeschriebene Ablösesumme von 60 Millionen Euro zu Manchester City."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Bundesland liegt die Stadt Dortmund?",
+        answerA = "Bayern",
+        answerB = "Hessen",
+        answerC = "Sachsen",
+        answerD = "Nordrhein-Westfalen",
+        correctAnswer = 3,
+        explanation = "Dortmund liegt im Ruhrgebiet in Nordrhein-Westfalen, dem bevölkerungsreichsten Bundesland Deutschlands.",
+        difficulty = 1,
+        funFact = "Dortmund ist mit rund 600.000 Einwohnern die größte Stadt im Ruhrgebiet."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches Vereinsmotto verwendet Borussia Dortmund?",
+        answerA = "Für immer Schwarz-Gelb",
+        answerB = "Echte Liebe",
+        answerC = "Immer wieder BVB",
+        answerD = "Mit Herz und Leidenschaft",
+        correctAnswer = 1,
+        explanation = "Das offizielle Vereinsmotto von Borussia Dortmund lautet 'Echte Liebe' — ein Ausdruck der tiefen Verbundenheit zwischen Verein und Fans.",
+        difficulty = 1,
+        funFact = "Das Motto 'Echte Liebe' wurde zu einem der bekanntesten Markenslogans im deutschen Fußball."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer war der langjährige Vereinspräsident von Borussia Dortmund, der den Verein nach der Insolvenz-Krise rettete?",
+        answerA = "Hans-Joachim Watzke",
+        answerB = "Gerd Niebaum",
+        answerC = "Reinhard Rauball",
+        answerD = "Thomas Treß",
+        correctAnswer = 0,
+        explanation = "Hans-Joachim Watzke übernahm 2005 als Geschäftsführer und stabilisierte den Verein nach der Finanzkrise. Er ist noch heute CEO des BVB.",
+        difficulty = 1,
+        funFact = "Watzke ist seit 2005 Geschäftsführer bei BVB und damit einer der dienstältesten Chefs im deutschen Profifußball."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welcher Liga spielt Borussia Dortmund?",
+        answerA = "2. Bundesliga",
+        answerB = "Bundesliga (1. Liga)",
+        answerC = "Champions League (ohne Bundesliga)",
+        answerD = "Regionalliga West",
+        correctAnswer = 1,
+        explanation = "Borussia Dortmund spielt in der Bundesliga, der höchsten deutschen Fußballliga.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler ist bekannt als 'Mister BVB' und spielte von 2012 bis 2024 für den Verein?",
+        answerA = "Lukasz Piszczek",
+        answerB = "Sven Bender",
+        answerC = "Marco Reus",
+        answerD = "Mats Hummels",
+        correctAnswer = 2,
+        explanation = "Marco Reus spielte von 2012 bis 2024 für BVB, war Vereinskapitän und wird als 'Mister BVB' bezeichnet.",
+        difficulty = 1,
+        funFact = "Reus lehnte mehrere lukrative Angebote von anderen Topvereinen ab, um BVB treu zu bleiben."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welche Farbe hat das Auswärtstrikot von Borussia Dortmund traditionell?",
+        answerA = "Rot",
+        answerB = "Blau",
+        answerC = "Schwarz",
+        answerD = "Weiß",
+        correctAnswer = 2,
+        explanation = "Das klassische Auswärtstrikot von BVB ist schwarz — die zweite Vereinsfarbe neben Gelb.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wann feierte Borussia Dortmund seinen 100. Geburtstag?",
+        answerA = "2005",
+        answerB = "2007",
+        answerC = "2009",
+        answerD = "2011",
+        correctAnswer = 2,
+        explanation = "Da BVB am 19. Dezember 1909 gegründet wurde, feierte der Verein im Jahr 2009 seinen 100. Geburtstag.",
+        difficulty = 1,
+        funFact = "Zum 100. Jubiläum wurde ein Sondertrikot herausgegeben und es gab große Feierlichkeiten in der Stadt."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Gabrizio ist berühmt als BVB-Ikone der 1990er Jahre mit seiner unverwechselbaren Haarpracht?",
+        answerA = "Júlio César",
+        answerB = "Paolo Sousa",
+        answerC = "Paulo Sousa",
+        answerD = "Júlio Cruz",
+        correctAnswer = 1,
+        explanation = "Paolo Sousa, der portugiesische Mittelfeldspieler, spielte in den erfolgreichen BVB-Jahren der 1990er und war Teil des Champions-League-Sieger-Kaders 1997.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie nennt man Fans von Borussia Dortmund umgangssprachlich?",
+        answerA = "Schwarz-Rote",
+        answerB = "Borussen",
+        answerC = "Westfalen",
+        answerD = "Ruhrpottler",
+        correctAnswer = 1,
+        explanation = "BVB-Fans werden oft als 'Borussen' bezeichnet — abgeleitet vom Vereinsnamen Borussia Dortmund.",
+        difficulty = 1,
+        funFact = "BVB hat eine der treuesten und lautesten Fangemeinden Europas."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches Spiel gilt als das wichtigste Derby für BVB?",
+        answerA = "BVB gegen Bayern München",
+        answerB = "BVB gegen Bayer Leverkusen",
+        answerC = "Revierderby gegen Schalke 04",
+        answerD = "BVB gegen Hamburger SV",
+        correctAnswer = 2,
+        explanation = "Das Revierderby zwischen BVB und dem FC Schalke 04 ist das wichtigste Derby für BVB-Fans.",
+        difficulty = 1,
+        funFact = "Zwischen Dortmund und Gelsenkirchen (Schalkes Heimatstadt) liegen nur etwa 30 Kilometer."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele DFB-Pokaltitel hat Borussia Dortmund gewonnen?",
+        answerA = "2",
+        answerB = "4",
+        answerC = "6",
+        answerD = "8",
+        correctAnswer = 1,
+        explanation = "Borussia Dortmund hat bislang 4 DFB-Pokaltitel gewonnen (1965, 1989, 2012, 2017, Stand 2024).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // ── NEW MEDIUM (20) ────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer erzielte beim DFB-Pokalfinale 2012 gegen Bayern München das erste Tor für BVB?",
+        answerA = "Robert Lewandowski",
+        answerB = "Marco Reus",
+        answerC = "Ilkay Gündogan",
+        answerD = "Shinji Kagawa",
+        correctAnswer = 0,
+        explanation = "Robert Lewandowski erzielte im DFB-Pokalfinale 2012 das erste Tor für BVB beim 5:2-Sieg gegen Bayern München.",
+        difficulty = 2,
+        funFact = "Lewandowski traf in diesem Finale gleich zweimal."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher japanische Mittelfeldspieler spielte unter Klopp für BVB und wurde dort Bundesliga-Meister?",
+        answerA = "Keisuke Honda",
+        answerB = "Shinji Kagawa",
+        answerC = "Takumi Minamino",
+        answerD = "Hiroshi Kiyotake",
+        correctAnswer = 1,
+        explanation = "Shinji Kagawa spielte von 2010 bis 2012 und erneut von 2014 bis 2019 für BVB und wurde zweifacher Bundesliga-Meister.",
+        difficulty = 2,
+        funFact = "Kagawa war der erste Japaner, der in der Bundesliga zum Meister wurde."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Spitznamen hat Pierre-Emerick Aubameyang erhalten, weil er auf dem Platz wie ein Gepard sprintete?",
+        answerA = "Der Panther",
+        answerB = "Der Blitz",
+        answerC = "Auba",
+        answerD = "Der Falke",
+        correctAnswer = 2,
+        explanation = "Pierre-Emerick Aubameyang wurde bei BVB schlicht 'Auba' genannt. Er spielte von 2013 bis 2018 für den Verein und war bekannt für seine Schnelligkeit.",
+        difficulty = 2,
+        funFact = "Aubameyang war in der Saison 2016/17 Bundesliga-Torschützenkönig mit 31 Toren."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler gewann in der Saison 2010/11 die Bundesliga-Torjägerkrone?",
+        answerA = "Mario Götze",
+        answerB = "Lucas Barrios",
+        answerC = "Robert Lewandowski",
+        answerD = "Kevin Großkreutz",
+        correctAnswer = 2,
+        explanation = "Robert Lewandowski war in der Meistersaison 2010/11 einer der gefährlichsten Stürmer der Liga und trug maßgeblich zur Meisterschaft bei.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Gegen welchen Verein gewann BVB das DFB-Pokalfinale 2021 unter Edin Terzic?",
+        answerA = "RB Leipzig",
+        answerB = "Eintracht Frankfurt",
+        answerC = "Bayer Leverkusen",
+        answerD = "Bayern München",
+        correctAnswer = 0,
+        explanation = "BVB gewann unter Edin Terzic im Mai 2021 das DFB-Pokalfinale gegen RB Leipzig mit 4:1.",
+        difficulty = 2,
+        funFact = "Erling Haaland erzielte dabei einen Hattrick."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Verteidiger wechselte 2016 zu Bayern München und kehrte 2023 wieder zu BVB zurück?",
+        answerA = "Neven Subotić",
+        answerB = "Ömer Toprak",
+        answerC = "Mats Hummels",
+        answerD = "Sokratis Papastathopoulos",
+        correctAnswer = 2,
+        explanation = "Mats Hummels wechselte 2016 zu Bayern München und kehrte 2019 (nicht 2023) zu BVB zurück, bevor er 2024 den Verein verließ.",
+        difficulty = 2,
+        funFact = "Hummels gilt als einer der besten Innenverteidiger seiner Generation."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer war der erste BVB-Trainer in der Bundesliga-Geschichte des Vereins?",
+        answerA = "Hermann Eppenhoff",
+        answerB = "Heinz Murach",
+        answerC = "Horst Witzler",
+        answerD = "Willi Multhaup",
+        correctAnswer = 0,
+        explanation = "Hermann Eppenhoff war einer der frühen BVB-Trainer und führte den Verein in der frühen Bundesliga-Ära.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welcher Saison erreichte BVB unter Trainer Lucien Favre die Champions League-Gruppenphase mit dem besten Bundesliga-Start aller Zeiten?",
+        answerA = "2017/18",
+        answerB = "2018/19",
+        answerC = "2019/20",
+        answerD = "2020/21",
+        correctAnswer = 1,
+        explanation = "In der Saison 2018/19 startete BVB unter Favre mit einer Serie von Siegen hervorragend und führte zeitweise die Bundesliga-Tabelle an.",
+        difficulty = 2,
+        funFact = "BVB gewann die ersten sieben Bundesligaspiele der Saison 2018/19 in Folge."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer ist der englische Mittelfeldspieler, der 2011 unter Klopp von Real Madrid zu BVB wechselte?",
+        answerA = "Joe Hart",
+        answerB = "Nuri Şahin",
+        answerC = "Kevin De Bruyne",
+        answerD = "İlkay Gündoğan",
+        correctAnswer = 1,
+        explanation = "Nuri Şahin wechselte 2011 zu Real Madrid, kam aber dann leihweise zurück. Er war zuvor schon als BVB-Talent bekannt und wurde 2012 Bundesliga-Meister.",
+        difficulty = 2,
+        funFact = "Şahin war 2010/11 der jüngste Bundesliga-Meister der Geschichte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welches Transferrekord stellte BVB auf, als sie Jadon Sancho 2021 an Manchester United verkauften?",
+        answerA = "65 Millionen Euro",
+        answerB = "73 Millionen Euro",
+        answerC = "85 Millionen Euro",
+        answerD = "100 Millionen Euro",
+        correctAnswer = 2,
+        explanation = "Jadon Sancho wurde 2021 für rund 85 Millionen Euro von BVB zu Manchester United verkauft — der teuerste BVB-Abgang zum damaligen Zeitpunkt.",
+        difficulty = 2,
+        funFact = "Sancho hatte zuvor 3 Jahre für BVB gespielt und war zu einem der besten Außenstürmer Europas gereift."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welche Rückennummer trägt traditionell der BVB-Torwart?",
+        answerA = "Nummer 1",
+        answerB = "Nummer 12",
+        answerC = "Nummer 16",
+        answerD = "Keine feste Nummer",
+        correctAnswer = 0,
+        explanation = "Wie im Fußball üblich trägt der Stammtorwart die Nummer 1. Bei BVB war dies z.B. Roman Weidenfeller und später Gregor Kobel.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer erzielte im Champions-League-Halbfinale 2013 gegen Real Madrid das entscheidende Tor für BVB?",
+        answerA = "Robert Lewandowski",
+        answerB = "Marco Reus",
+        answerC = "İlkay Gündoğan",
+        answerD = "Mario Götze",
+        correctAnswer = 0,
+        explanation = "Robert Lewandowski erzielte im Halbfinale gegen Real Madrid alle vier BVB-Tore beim 4:1-Sieg im Hinspiel.",
+        difficulty = 2,
+        funFact = "Lewandowski traf viermal in einem einzigen Champions-League-Spiel — eine außergewöhnliche Leistung."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher langjährige BVB-Innenverteidiger bildete mit Mats Hummels ein legendäres Verteidigungsduo?",
+        answerA = "Lukasz Piszczek",
+        answerB = "Marcel Schmelzer",
+        answerC = "Neven Subotić",
+        answerD = "Felipe Santana",
+        correctAnswer = 2,
+        explanation = "Neven Subotić und Mats Hummels bildeten unter Jürgen Klopp eines der stärksten Innenverteidiger-Duos der Bundesliga.",
+        difficulty = 2,
+        funFact = "Subotić wurde in Bosnien geboren, wuchs in den USA auf und spielte für die serbische Nationalmannschaft."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher englische Außenstürmer verstärkte BVB ab der Saison 2017/18 und beeindruckte durch Tempo und Dribblings?",
+        answerA = "Raheem Sterling",
+        answerB = "Marcus Rashford",
+        answerC = "Jadon Sancho",
+        answerD = "Dele Alli",
+        correctAnswer = 2,
+        explanation = "Jadon Sancho wechselte 2017 im Alter von 17 Jahren von Manchester City zu BVB und entwickelte sich dort zum Weltklasse-Außenstürmer.",
+        difficulty = 2,
+        funFact = "Sancho erzielte in drei BVB-Saisons insgesamt 50 Tore und 64 Assists."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler war im Champions-League-Finale 2013 trotz Verletzung im Kader und galt als Leistungsträger der Saison?",
+        answerA = "Marco Reus",
+        answerB = "Ilkay Gündogan",
+        answerC = "Jakub Blaszczykowski",
+        answerD = "Kevin Großkreutz",
+        correctAnswer = 1,
+        explanation = "İlkay Gündoğan war ein zentraler Spieler für BVB in der CL-Saison 2012/13, fiel aber kurz vor dem Finale durch eine Verletzung aus.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer trug bei BVB die Rückennummer 9 in der Meistersaison 2011/12?",
+        answerA = "Lucas Barrios",
+        answerB = "Robert Lewandowski",
+        answerC = "Kevin Großkreutz",
+        answerD = "Shinji Kagawa",
+        correctAnswer = 1,
+        explanation = "Robert Lewandowski trug in der Meistersaison 2011/12 die Rückennummer 9 und war der Haupttorjäger von BVB.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Trainer folgte auf Jürgen Klopp nach dessen Abschied 2015?",
+        answerA = "Thomas Tuchel",
+        answerB = "Peter Bosz",
+        answerC = "Lucien Favre",
+        answerD = "Roger Schmidt",
+        correctAnswer = 0,
+        explanation = "Thomas Tuchel übernahm nach Klopps Abgang im Sommer 2015 das Traineramt bei BVB und gewann 2017 den DFB-Pokal.",
+        difficulty = 2,
+        funFact = "Tuchel wurde nach einem Streit mit der Vereinsführung im Mai 2017 entlassen, obwohl er kurz zuvor den DFB-Pokal gewonnen hatte."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele Tore erzielte Erling Haaland in seinen ersten drei Bundesliga-Spielen für BVB?",
+        answerA = "3 Tore",
+        answerB = "4 Tore",
+        answerC = "5 Tore",
+        answerD = "6 Tore",
+        correctAnswer = 2,
+        explanation = "Erling Haaland erzielte in seinen ersten drei Bundesliga-Spielen für BVB fünf Tore und beeindruckte sofort nach seinem Wechsel aus Salzburg.",
+        difficulty = 2,
+        funFact = "Haaland debütierte für BVB am 18. Januar 2020 gegen FC Augsburg und traf dreimal als Einwechselspieler."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher ghanaische Mittelfeldspieler spielte von 2006 bis 2012 für BVB und war ein Stammspieler unter Klopp?",
+        answerA = "Michael Essien",
+        answerB = "Sulley Muntari",
+        answerC = "Kevin-Prince Boateng",
+        answerD = "Mohamed Zidan",
+        correctAnswer = 3,
+        explanation = "Mohamed Zidan, ein ägyptisch-ghanaischer Stürmer, spielte für BVB in der frühen Klopp-Ära.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Jahr wurde der Signal Iduna Park auf seine heutige Kapazität von über 80.000 Plätzen erweitert?",
+        answerA = "1995",
+        answerB = "2002",
+        answerC = "2006",
+        answerD = "2010",
+        correctAnswer = 1,
+        explanation = "Das Westfalenstadion wurde im Zuge der Vorbereitung auf die WM 2006 mehrfach ausgebaut. Die letzte große Erweiterung auf die heutige Kapazität erfolgte rund um 2002.",
+        difficulty = 2,
+        funFact = "Das Stadion wurde in mehreren Phasen seit 1974 stetig vergrößert."
+    ),
+
+    // ── NEW HARD (15) ──────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer erzielte das 1:0 für BVB im Champions-League-Finale 1997 gegen Juventus Turin?",
+        answerA = "Andreas Möller",
+        answerB = "Lars Ricken",
+        answerC = "Karl-Heinz Riedle",
+        answerD = "Stéphane Chapuisat",
+        correctAnswer = 2,
+        explanation = "Karl-Heinz Riedle erzielte in der 29. Minute das 1:0 für BVB im Finale gegen Juventus Turin.",
+        difficulty = 3,
+        funFact = "Riedle traf auch das 2:0 kurz darauf — es war ein überragender Abend für den deutschen Stürmer."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler wurde in der Saison 2016/17 Bundesliga-Torschützenkönig?",
+        answerA = "Marco Reus",
+        answerB = "Ousmane Dembélé",
+        answerC = "Pierre-Emerick Aubameyang",
+        answerD = "André Schürrle",
+        correctAnswer = 2,
+        explanation = "Pierre-Emerick Aubameyang wurde in der Saison 2016/17 mit 31 Bundesliga-Toren Torschützenkönig.",
+        difficulty = 3,
+        funFact = "Aubameyang war in dieser Saison auch der Bundesliga-Spieler mit den meisten Toren in der Vereinsgeschichte innerhalb einer Saison."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Für welche Ablösesumme wechselte Ousmane Dembélé 2017 vom BVB zum FC Barcelona?",
+        answerA = "105 Millionen Euro Fixablöse",
+        answerB = "135 Millionen Euro Fixablöse",
+        answerC = "80 Millionen Euro Fixablöse",
+        answerD = "150 Millionen Euro Fixablöse",
+        correctAnswer = 1,
+        explanation = "Ousmane Dembélé wechselte 2017 für eine Fixablöse von 105 Millionen Euro plus bis zu 40 Millionen Euro Bonuszahlungen — insgesamt bis zu 145 Millionen Euro — zum FC Barcelona.",
+        difficulty = 3,
+        funFact = "Dembélé spielte nur eine Saison für BVB, beeindruckte aber mit 10 Toren und 21 Assists."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Torhüter war in der Meistersaison 2010/11 Stammtorwart?",
+        answerA = "Marc Ziegler",
+        answerB = "Roman Weidenfeller",
+        answerC = "Mitchell Langerak",
+        answerD = "Marwin Hitz",
+        correctAnswer = 1,
+        explanation = "Roman Weidenfeller war in den Meisterjahren unter Klopp der Stammtorwart von BVB und einer der besten Torleute der Liga.",
+        difficulty = 3,
+        funFact = "Weidenfeller wurde 2014 mit Deutschland Weltmeister und war Teil des deutschen WM-Kaders."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Was war der genaue Punktestand von BVB in der Meistersaison 2011/12 — dem Rekord in der Bundesligageschichte bis dahin?",
+        answerA = "75 Punkte",
+        answerB = "78 Punkte",
+        answerC = "81 Punkte",
+        answerD = "84 Punkte",
+        correctAnswer = 2,
+        explanation = "BVB holte in der Bundesliga-Saison 2011/12 exakt 81 Punkte — damals ein Bundesliga-Rekord.",
+        difficulty = 3,
+        funFact = "Dieser Rekord wurde wenige Jahre später von Bayern München mit 90 Punkten in der Saison 2012/13 übertroffen."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welchen Vertrag hatte BVB mit einem Hauptsponsor, dessen Name das Stadion trägt, bis 2026 verlängert?",
+        answerA = "Allianz",
+        answerB = "ERGO",
+        answerC = "Signal Iduna",
+        answerD = "Generali",
+        correctAnswer = 2,
+        explanation = "Der Versicherungskonzern Signal Iduna ist Namenssponsor des Stadions. Der Vertrag wurde mehrfach verlängert, zuletzt bis 2026.",
+        difficulty = 3,
+        funFact = "Signal Iduna hat seinen Hauptsitz ebenfalls in Dortmund — ein lokales Unternehmen als Namenssponsor."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer war BVBs Kapitän im Champions-League-Finale 2013 gegen Bayern München in Wembley?",
+        answerA = "Roman Weidenfeller",
+        answerB = "Mats Hummels",
+        answerC = "Sebastian Kehl",
+        answerD = "Lukasz Piszczek",
+        correctAnswer = 2,
+        explanation = "Sebastian Kehl war Kapitän von Borussia Dortmund im Champions-League-Finale 2013 in Wembley.",
+        difficulty = 3,
+        funFact = "Kehl wurde später Sportdirektor bei BVB und folgte damit in die Fußstapfen von Michael Zorc."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler erzielte in der Bundesliga-Saison 2020/21 die meisten Tore für den Verein?",
+        answerA = "Jadon Sancho",
+        answerB = "Erling Haaland",
+        answerC = "Marco Reus",
+        answerD = "Thomas Meunier",
+        correctAnswer = 1,
+        explanation = "Erling Haaland erzielte in der Saison 2020/21 für BVB 27 Bundesliga-Tore in 28 Spielen.",
+        difficulty = 3,
+        funFact = "Haaland war in dieser Saison trotz mehrerer Verletzungspausen der treffsicherste BVB-Spieler."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Gegen welchen Gegner erzielte Lars Ricken seinen berühmten Treffer in der Champions League 1997 neben dem Finale?",
+        answerA = "Er traf nur im Finale",
+        answerB = "Manchester United",
+        answerC = "Ajax Amsterdam",
+        answerD = "Atletico Madrid",
+        correctAnswer = 0,
+        explanation = "Lars Rickens bekanntester Treffer war sein Lupfer im Finale gegen Juventus Turin. Er ist vor allem für dieses eine Tor in Erinnerung geblieben.",
+        difficulty = 3,
+        funFact = "Ricken spielte viele Jahre für BVB, wurde aber nie so bekannt wie für seinen Finaltor 1997."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer ist der Rekordspieler von Borussia Dortmund in Bezug auf die meisten Pflichtspiele?",
+        answerA = "Michael Zorc",
+        answerB = "Stefan Reuter",
+        answerC = "Karl-Heinz Riedle",
+        answerD = "Norbert Dickel",
+        correctAnswer = 0,
+        explanation = "Michael Zorc absolvierte in seiner Karriere bei BVB 572 Pflichtspiele und ist damit Rekordspieler des Vereins.",
+        difficulty = 3,
+        funFact = "Zorc spielte von 1981 bis 1998 für BVB — insgesamt 17 Jahre als Profi beim selben Verein."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "In welchem Jahr gewann BVB den Europapokal der Landesmeister (Vorgänger der Champions League)?",
+        answerA = "1994",
+        answerB = "1995",
+        answerC = "1997",
+        answerD = "BVB hat nie den Landesmeister-Pokal gewonnen",
+        correctAnswer = 3,
+        explanation = "BVB gewann nie den 'Europapokal der Landesmeister' im alten Format. Der Sieg 1997 war bereits in der reformierten Champions League.",
+        difficulty = 3,
+        funFact = "Der Europapokal der Landesmeister wurde zur Saison 1992/93 zur UEFA Champions League reformiert."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher Trainer holte BVB in der Saison 1994/95 zur Bundesliga-Meisterschaft?",
+        answerA = "Nevio Scala",
+        answerB = "Matthias Sammer",
+        answerC = "Ottmar Hitzfeld",
+        answerD = "Karl-Heinz Feldkamp",
+        correctAnswer = 2,
+        explanation = "Ottmar Hitzfeld gewann mit BVB die Bundesliga-Meisterschaften 1994/95 und 1995/96 bevor er zum FC Bayern wechselte.",
+        difficulty = 3,
+        funFact = "Hitzfeld gewann später auch die Champions League mit Bayern München und gilt als einer der erfolgreichsten deutschen Trainer."
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wie viele Zuschauer verfolgten das Champions-League-Finale 2013 zwischen BVB und Bayern München live in Wembley?",
+        answerA = "79.959 Zuschauer",
+        answerB = "86.298 Zuschauer",
+        answerC = "72.455 Zuschauer",
+        answerD = "90.000 Zuschauer",
+        correctAnswer = 0,
+        explanation = "Das erste rein deutsche Champions-League-Finale 2013 in Wembley verfolgten 86.298 Zuschauer live vor Ort.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Welcher BVB-Spieler wurde bei der WM 2014 in Brasilien zum besten Spieler des Turniers gewählt?",
+        answerA = "Marco Reus",
+        answerB = "Mats Hummels",
+        answerC = "Mario Götze",
+        answerD = "Kevin Großkreutz",
+        correctAnswer = 2,
+        explanation = "Mario Götze wurde bei der WM 2014 zwar nicht offiziell zum besten Spieler gewählt, sein Goldtor im Finale machte ihn jedoch zur Symbolfigur des Turniers. Der offizielle Goldene Ball ging an Messi.",
+        difficulty = 3,
+        funFact = "Mario Götze wurde von Bundestrainer Löw mit den Worten eingewechselt: 'Zeig der Welt, dass du besser bist als Messi.'"
+    ),
+
+    Question(
+        categoryId = 14,
+        questionText = "Wer war BVBs Trainer beim zweiten Bundesliga-Meistertitel in Folge in der Saison 1995/96?",
+        answerA = "Nevio Scala",
+        answerB = "Jupp Heynckes",
+        answerC = "Ottmar Hitzfeld",
+        answerD = "Bernd Krauss",
+        correctAnswer = 2,
+        explanation = "Ottmar Hitzfeld gewann mit BVB zwei Bundesliga-Meisterschaften in Folge: 1994/95 und 1995/96, bevor er den Verein verließ.",
+        difficulty = 3,
+        funFact = "Hitzfeld verließ BVB nach diesen Erfolgen und wurde zum erfolgreichsten deutschen Vereinstrainer seiner Generation."
     )
 )

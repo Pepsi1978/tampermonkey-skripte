@@ -349,6 +349,36 @@ fun HomeScreen(navController: NavHostController) {
                 drawPath(createStarPath(s7, 6.dp.toPx(), 3.dp.toPx(), 6), color = Primary.copy(alpha = 0.08f))
             }
 
+            // Star 8 — top far-left
+            val s8 = Offset(w * 0.08f + d3x, h * 0.08f + f3y)
+            rotate(starRotation.value * 0.9f, pivot = s8) {
+                drawPath(createStarPath(s8, 11.dp.toPx(), 5.dp.toPx(), 5), color = Color(0xFFA855F7).copy(alpha = 0.14f))
+            }
+
+            // Star 9 — right mid-upper
+            val s9 = Offset(w * 0.95f + d1x, h * 0.28f + f1y)
+            rotate(-starRotation.value * 0.55f, pivot = s9) {
+                drawPath(createStarPath(s9, 8.dp.toPx(), 4.dp.toPx(), 4), color = Accent.copy(alpha = 0.13f))
+            }
+
+            // Star 10 — bottom center
+            val s10 = Offset(w * 0.55f + d2x, h * 0.92f + f2y)
+            rotate(starRotation.value * 0.65f, pivot = s10) {
+                drawPath(createStarPath(s10, 13.dp.toPx(), 6.dp.toPx(), 5), color = Color(0xFFF59E0B).copy(alpha = 0.12f))
+            }
+
+            // Star 11 — left mid-lower
+            val s11 = Offset(w * 0.12f + d3x, h * 0.58f + f3y)
+            rotate(-starRotation.value * 0.45f, pivot = s11) {
+                drawPath(createStarPath(s11, 7.dp.toPx(), 3.dp.toPx(), 6), color = Secondary.copy(alpha = 0.11f))
+            }
+
+            // Star 12 — center upper
+            val s12 = Offset(w * 0.38f + d1x, h * 0.25f + f1y)
+            rotate(starRotation.value * 0.35f, pivot = s12) {
+                drawPath(createStarPath(s12, 10.dp.toPx(), 5.dp.toPx(), 4), color = Primary.copy(alpha = 0.10f))
+            }
+
             // Floating dots
             drawCircle(color = Primary.copy(alpha = 0.12f), radius = 4.dp.toPx(),
                 center = Offset(w * 0.4f + d3x, 120.dp.toPx() + f3y))
@@ -415,7 +445,7 @@ fun HomeScreen(navController: NavHostController) {
                 // Brain emoji — pulses and floats
                 Text(
                     text = "🧠",
-                    fontSize = 64.sp,
+                    fontSize = 96.sp,
                     modifier = Modifier
                         .scale(logoScale.value * brainScale.value)
                         .alpha(logoAlpha.value)

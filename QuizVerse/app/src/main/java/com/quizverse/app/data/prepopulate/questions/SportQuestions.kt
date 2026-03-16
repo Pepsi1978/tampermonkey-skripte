@@ -662,5 +662,661 @@ fun sportQuestions(): List<Question> = listOf(
         explanation = "Gunda Niemann (heute Niemann-Stirnemann) ist eine der erfolgreichsten deutschen Eisschnellläuferinnen, gewann aber nicht fünf Goldmedaillen bei einem einzigen Olympia. Kein Deutscher gewann je fünf bei einer Winterolympiade.",
         difficulty = 5,
         funFact = null
+    ),
+
+    // --- NEW EASY (difficulty = 1) ---
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Spieler stehen bei einem Volleyballspiel auf dem Feld?",
+        answerA = "4",
+        answerB = "5",
+        answerC = "6",
+        answerD = "7",
+        correctAnswer = 2,
+        explanation = "Jede Volleyballmannschaft stellt sechs Spieler auf dem Feld auf.",
+        difficulty = 1,
+        funFact = "Volleyball wurde 1895 in den USA von William G. Morgan erfunden und hieß ursprünglich 'Mintonette'."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Farbe hat das Trikot des Führenden bei der Tour de France?",
+        answerA = "Rot",
+        answerB = "Blau",
+        answerC = "Gelb",
+        answerD = "Grün",
+        correctAnswer = 2,
+        explanation = "Der Gesamtführende trägt bei der Tour de France das Gelbe Trikot (Maillot Jaune).",
+        difficulty = 1,
+        funFact = "Das Gelbe Trikot gibt es seit 1919. Die Farbe wurde gewählt, weil die Zeitung L'Auto auf gelbem Papier gedruckt wurde."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Ringe hat das olympische Symbol?",
+        answerA = "4",
+        answerB = "5",
+        answerC = "6",
+        answerD = "7",
+        correctAnswer = 1,
+        explanation = "Das olympische Symbol besteht aus fünf ineinandergreifenden Ringen in den Farben Blau, Gelb, Schwarz, Grün und Rot.",
+        difficulty = 1,
+        funFact = "Die fünf Ringe symbolisieren die fünf Kontinente der Welt, die durch die olympische Bewegung vereint sind."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "In welchem Sport wird der Davis Cup ausgetragen?",
+        answerA = "Golf",
+        answerB = "Squash",
+        answerC = "Tennis",
+        answerD = "Badminton",
+        correctAnswer = 2,
+        explanation = "Der Davis Cup ist der wichtigste Mannschaftswettbewerb im Herrentennis.",
+        difficulty = 1,
+        funFact = "Der Davis Cup wurde erstmals 1900 ausgetragen und ist damit einer der ältesten Mannschaftswettbewerbe im Sport."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Punkte bringt ein Touchdown im American Football?",
+        answerA = "3",
+        answerB = "5",
+        answerC = "6",
+        answerD = "7",
+        correctAnswer = 2,
+        explanation = "Ein Touchdown im American Football bringt dem Team 6 Punkte, danach folgt ein Extrapunkt-Versuch.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Sportart wird in der Allianz Arena in München gespielt?",
+        answerA = "Basketball",
+        answerB = "Eishockey",
+        answerC = "Fußball",
+        answerD = "Rugby",
+        correctAnswer = 2,
+        explanation = "Die Allianz Arena ist das Fußballstadion des FC Bayern München und des TSV 1860 München.",
+        difficulty = 1,
+        funFact = "Die Allianz Arena wurde 2005 eröffnet und fasst rund 75.000 Zuschauer."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Meter beträgt die Standarddistanz beim 100-Meter-Lauf?",
+        answerA = "50 m",
+        answerB = "100 m",
+        answerC = "200 m",
+        answerD = "400 m",
+        correctAnswer = 1,
+        explanation = "Der 100-Meter-Lauf ist exakt 100 Meter lang und gilt als das Prestige-Event der Leichtathletik.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Was ist ein 'Birdie' beim Golf?",
+        answerA = "Ein Schlag über Par",
+        answerB = "Ein Schlag unter Par",
+        answerC = "Zwei Schläge unter Par",
+        answerD = "Ein Ball im Wasser",
+        correctAnswer = 1,
+        explanation = "Ein Birdie bedeutet, das Loch mit einem Schlag weniger als Par abzuschließen.",
+        difficulty = 1,
+        funFact = "Der Begriff 'Birdie' stammt aus dem amerikanischen Slang, wo 'bird' umgangssprachlich für etwas Tolles oder Außergewöhnliches steht."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Sportart betreibt man beim Reiten auf einem Pferd mit Hindernissen?",
+        answerA = "Dressur",
+        answerB = "Springen",
+        answerC = "Vielseitigkeit",
+        answerD = "Polo",
+        correctAnswer = 1,
+        explanation = "Das Springreiten ist eine Reitsportdisziplin, bei der Reiter und Pferd einen Parcours mit Hindernissen überwinden müssen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie nennt man den Startschuss beim Schwimmen?",
+        answerA = "Go-Signal",
+        answerB = "Startschuss",
+        answerC = "Startsignal",
+        answerD = "Startkommando",
+        correctAnswer = 1,
+        explanation = "Der Startschuss ist das akustische Signal, das den Beginn eines Schwimmwettbewerbs anzeigt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Disziplin gehört NICHT zur Leichtathletik?",
+        answerA = "Hochsprung",
+        answerB = "Speerwurf",
+        answerC = "Turmspringen",
+        answerD = "Weitsprung",
+        correctAnswer = 2,
+        explanation = "Turmspringen ist eine Wassersportart und gehört zur Sportart Wasserspringen, nicht zur Leichtathletik.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Spieler hat eine Hockeymannschaft auf dem Feld?",
+        answerA = "9",
+        answerB = "10",
+        answerC = "11",
+        answerD = "12",
+        correctAnswer = 2,
+        explanation = "Eine Feldhockeymannschaft besteht aus 11 Spielern auf dem Feld, inklusive Torwart.",
+        difficulty = 1,
+        funFact = "Hockey ist eine der ältesten Mannschaftssportarten der Welt und wird seit über 4000 Jahren gespielt."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "In welchem Sport trägt man Klingenschützer und kämpft mit einem Florett?",
+        answerA = "Boxen",
+        answerB = "Judo",
+        answerC = "Fechten",
+        answerD = "Karate",
+        correctAnswer = 2,
+        explanation = "Fechten mit dem Florett ist eine olympische Disziplin. Das Florett ist die leichteste der drei Fechtwaffen.",
+        difficulty = 1,
+        funFact = "Fechten gehört zu den wenigen Sportarten, die bei allen modernen Olympischen Spielen seit 1896 vertreten waren."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Sport wird auf einem Eisfeld mit einem Puck gespielt?",
+        answerA = "Curling",
+        answerB = "Bandy",
+        answerC = "Eishockey",
+        answerD = "Eisstockschießen",
+        correctAnswer = 2,
+        explanation = "Eishockey wird auf einem Eisfeld gespielt, und der Puck ist die flache Gummischeibe, die als Spielgerät dient.",
+        difficulty = 1,
+        funFact = "Ein Eishockey-Puck wiegt zwischen 156 und 170 Gramm und kann im Spiel auf über 160 km/h beschleunigt werden."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie heißt der Staffelstab im Leichtathletik-Staffellauf?",
+        answerA = "Stab",
+        answerB = "Stange",
+        answerC = "Wechsel",
+        answerD = "Baton",
+        correctAnswer = 3,
+        explanation = "Der Staffelstab im Leichtathletik-Staffellauf wird auf Englisch 'Baton' genannt und muss zwischen den Läufern übergeben werden.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // --- NEW MEDIUM (difficulty = 2) ---
+
+    Question(
+        categoryId = 6,
+        questionText = "In welchem Jahr fand die erste Fußball-Weltmeisterschaft statt?",
+        answerA = "1924",
+        answerB = "1926",
+        answerC = "1930",
+        answerD = "1934",
+        correctAnswer = 2,
+        explanation = "Die erste FIFA Fußball-Weltmeisterschaft fand 1930 in Uruguay statt. Uruguay gewann das Turnier.",
+        difficulty = 2,
+        funFact = "Nur 13 Mannschaften nahmen an der ersten WM teil, da viele europäische Länder die lange Schiffsreise scheuten."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Tennisspieler wird 'King of Clay' (König der Asche) genannt?",
+        answerA = "Roger Federer",
+        answerB = "Novak Djokovic",
+        answerC = "Rafael Nadal",
+        answerD = "Andre Agassi",
+        correctAnswer = 2,
+        explanation = "Rafael Nadal wird 'König der Asche' genannt, weil er das French Open auf Sand (roter Asche) unglaubliche 14 Mal gewann.",
+        difficulty = 2,
+        funFact = "Nadal verlor auf dem Sandplatz des Roland Garros nur dreimal in seiner gesamten Karriere."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie nennt man den Bereich direkt vor dem Tor beim Fußball, in dem der Torwart den Ball mit der Hand berühren darf?",
+        answerA = "Strafraum",
+        answerB = "Torraum",
+        answerC = "Freizone",
+        answerD = "Spielfeld",
+        correctAnswer = 0,
+        explanation = "Im Strafraum darf der Torwart den Ball mit der Hand berühren. Außerdem werden Fouls im Strafraum mit einem Elfmeter bestraft.",
+        difficulty = 2,
+        funFact = "Der Strafraum ist 40,32 Meter breit und 16,5 Meter tief."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wer gewann die Formel-1-Weltmeisterschaft 2023?",
+        answerA = "Lewis Hamilton",
+        answerB = "Charles Leclerc",
+        answerC = "Max Verstappen",
+        answerD = "Fernando Alonso",
+        correctAnswer = 2,
+        explanation = "Max Verstappen gewann die Formel-1-Weltmeisterschaft 2023 mit einem dominanten dritten Titel in Folge.",
+        difficulty = 2,
+        funFact = "Verstappen gewann 2023 saisonübergreifend 19 von 22 Rennen – eine der dominantesten Saisons in der F1-Geschichte."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "In welcher Stadt wurden die Olympischen Sommerspiele 2012 ausgetragen?",
+        answerA = "Berlin",
+        answerB = "Paris",
+        answerC = "London",
+        answerD = "Sydney",
+        correctAnswer = 2,
+        explanation = "Die Olympischen Sommerspiele 2012 fanden in London, Großbritannien statt.",
+        difficulty = 2,
+        funFact = "London war die erste Stadt, die die Olympischen Sommerspiele dreimal ausrichtete (1908, 1948, 2012)."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Spieler hat eine Rugbymannschaft auf dem Feld beim Rugby Union?",
+        answerA = "13",
+        answerB = "14",
+        answerC = "15",
+        answerD = "16",
+        correctAnswer = 2,
+        explanation = "Beim Rugby Union stellt jede Mannschaft 15 Spieler auf dem Feld auf.",
+        difficulty = 2,
+        funFact = "Beim Rugby League sind es dagegen nur 13 Spieler pro Mannschaft."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welches Land gewann bei der Fußball-WM 2018 den Titel?",
+        answerA = "Kroatien",
+        answerB = "Belgien",
+        answerC = "Frankreich",
+        answerD = "England",
+        correctAnswer = 2,
+        explanation = "Frankreich gewann die Fußball-Weltmeisterschaft 2018 in Russland mit einem 4:2-Sieg über Kroatien im Finale.",
+        difficulty = 2,
+        funFact = "Frankreich wurde 1998 erstmals Weltmeister und konnte den Titel 2018 zum zweiten Mal gewinnen."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Leichtathlet hält den Weltrekord im Stabhochsprung der Männer?",
+        answerA = "Sergey Bubka",
+        answerB = "Renaud Lavillenie",
+        answerC = "Armand Duplantis",
+        answerD = "Sam Kendricks",
+        correctAnswer = 2,
+        explanation = "Armand Duplantis ('Mondo') hält den Stabhochsprung-Weltrekord und brach ihn mehrfach, zuletzt 2024.",
+        difficulty = 2,
+        funFact = "Duplantis ist schwedisch-amerikanischer Herkunft und begann bereits als Kind mit dem Stabhochsprung unter Anleitung seines Vaters."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Meter beträgt die Olympische 100m-Freistilstrecke beim Schwimmen?",
+        answerA = "25 m",
+        answerB = "50 m",
+        answerC = "100 m",
+        answerD = "200 m",
+        correctAnswer = 2,
+        explanation = "Das 100m-Freistilrennen bei Olympia wird in einem 50-Meter-Becken mit zwei Bahnen (Hin und Rück) geschwommen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Was bedeutet 'Grand Slam' im Tennis?",
+        answerA = "Ein Sieg ohne Punktverlust",
+        answerB = "Der Gewinn aller vier Major-Turniere in einem Jahr",
+        answerC = "Ein Turniersieg mit 6:0 in jedem Satz",
+        answerD = "Der Gewinn von drei Grand-Slam-Titeln in Folge",
+        correctAnswer = 1,
+        explanation = "Ein Grand Slam bedeutet, alle vier Major-Turniere (Australian Open, French Open, Wimbledon, US Open) in einem Kalenderjahr zu gewinnen.",
+        difficulty = 2,
+        funFact = "Im Herrenbereich gelang ein Kalender-Grand-Slam zuletzt Rod Laver 1969. Im Damenbereich schaffte es Steffi Graf 1988."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wer ist der Rekordtorschütze der Fußball-Weltmeisterschaften?",
+        answerA = "Pelé",
+        answerB = "Gerd Müller",
+        answerC = "Ronaldo (Brasilien)",
+        answerD = "Miroslav Klose",
+        correctAnswer = 3,
+        explanation = "Miroslav Klose erzielte bei vier WM-Turnieren insgesamt 16 Tore und ist damit WM-Rekordtorschütze.",
+        difficulty = 2,
+        funFact = "Klose spielte für Deutschland bei den WM-Turnieren 2002, 2006, 2010 und 2014."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Schwimmstil wird bei der ersten Bahn einer Lagenstaffel geschwommen?",
+        answerA = "Brust",
+        answerB = "Freistil",
+        answerC = "Rücken",
+        answerD = "Schmetterling",
+        correctAnswer = 2,
+        explanation = "Bei der Lagenstaffel wird in der Reihenfolge Rücken, Brust, Schmetterling, Freistil geschwommen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Olympischen Spiele wurden wegen des Zweiten Weltkriegs nicht ausgetragen?",
+        answerA = "1936 und 1940",
+        answerB = "1940 und 1944",
+        answerC = "1944 und 1948",
+        answerD = "1932 und 1936",
+        correctAnswer = 1,
+        explanation = "Die Olympischen Spiele 1940 (Tokyo/Helsinki) und 1944 (London/Cortina d'Ampezzo) wurden wegen des Zweiten Weltkriegs abgesagt.",
+        difficulty = 2,
+        funFact = "Auch die Spiele 1916 wurden wegen des Ersten Weltkriegs nicht ausgetragen."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie nennt man im Fußball den Bereich zwischen Strafraum und Torauslinie?",
+        answerA = "Eckfeld",
+        answerB = "Flankenraum",
+        answerC = "Torraum",
+        answerD = "Halbfeld",
+        correctAnswer = 2,
+        explanation = "Der Torraum ist das kleine rechteckige Feld direkt vor dem Tor und liegt innerhalb des Strafraums.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher deutsche Tennisspieler gewann 1991 die Wimbledon-Championships?",
+        answerA = "Boris Becker",
+        answerB = "Michael Stich",
+        answerC = "Nicolas Kiefer",
+        answerD = "Tommy Haas",
+        correctAnswer = 1,
+        explanation = "Michael Stich gewann 1991 das Wimbledon-Finale überraschend gegen Boris Becker.",
+        difficulty = 2,
+        funFact = "Michael Stich und Boris Becker stehen als einzige Deutsche im Wimbledon-Sieger-Finale gegeneinander."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Formel-1-Fahrer gewann dreimal in Folge den Weltmeistertitel von 2019 bis 2021?",
+        answerA = "Lewis Hamilton",
+        answerB = "Sebastian Vettel",
+        answerC = "Nur zweimal in Folge, nicht dreimal",
+        answerD = "Max Verstappen",
+        correctAnswer = 0,
+        explanation = "Lewis Hamilton gewann die F1-Weltmeisterschaft 2019, 2020 – dann gewann Verstappen 2021. Hamilton gewann von 2017 bis 2020 viermal in Folge.",
+        difficulty = 2,
+        funFact = "Hamilton gewann 2019 und 2020 mit Mercedes, bevor Verstappen 2021 den Titel holte."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele Disziplinen umfasst der Siebenkampf der Frauen in der Leichtathletik?",
+        answerA = "5",
+        answerB = "7",
+        answerC = "9",
+        answerD = "10",
+        correctAnswer = 1,
+        explanation = "Der Siebenkampf der Frauen umfasst 7 Disziplinen: 100m Hürden, Hochsprung, Kugelstoß, 200m, Weitsprung, Speerwurf und 800m.",
+        difficulty = 2,
+        funFact = "Das männliche Äquivalent ist der Zehnkampf mit 10 Disziplinen über zwei Tage."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Nation gewann bei der Fußball-WM 2022 in Katar den Titel?",
+        answerA = "Frankreich",
+        answerB = "Kroatien",
+        answerC = "Marokko",
+        answerD = "Argentinien",
+        correctAnswer = 3,
+        explanation = "Argentinien gewann die Fußball-Weltmeisterschaft 2022 in Katar nach einem dramatischen Elfmeterschießen gegen Frankreich.",
+        difficulty = 2,
+        funFact = "Es war Lionel Messis erster Weltmeistertitel, womit er seinen Status als einer der besten Spieler aller Zeiten zementierte."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Was ist der Unterschied zwischen einer gelben und einer roten Karte im Fußball?",
+        answerA = "Gelb = Platzverweis, Rot = Verwarnung",
+        answerB = "Gelb = Verwarnung, Rot = Platzverweis",
+        answerC = "Beide bedeuten dasselbe",
+        answerD = "Gelb = 5 Minuten Auszeit, Rot = Platzverweis",
+        correctAnswer = 1,
+        explanation = "Eine gelbe Karte ist eine Verwarnung, eine rote Karte bedeutet den sofortigen Platzverweis. Zwei gelbe Karten ergeben eine rote.",
+        difficulty = 2,
+        funFact = "Das Karten-System wurde 1970 bei der Fußball-WM in Mexiko eingeführt."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie heißt das bekannteste Radrennen in Italien?",
+        answerA = "Tour de France",
+        answerB = "Vuelta a España",
+        answerC = "Giro d'Italia",
+        answerD = "Tour de Suisse",
+        correctAnswer = 2,
+        explanation = "Der Giro d'Italia ist das wichtigste Radrennen Italiens und neben Tour de France und Vuelta a España eines der drei Grand Tours.",
+        difficulty = 2,
+        funFact = "Der Giro d'Italia wird seit 1909 jährlich ausgetragen und die Gesamtführenden tragen das Rosa Trikot (Maglia Rosa)."
+    ),
+
+    // --- NEW HARD (difficulty = 3) ---
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Schwimmer brach 2009 in Rom Michael Phelps' Weltrekord über 400m Freistil?",
+        answerA = "Grant Hackett",
+        answerB = "Sun Yang",
+        answerC = "Paul Biedermann",
+        answerD = "Larsen Jensen",
+        correctAnswer = 2,
+        explanation = "Paul Biedermann schlug 2009 bei den Weltmeisterschaften in Rom Michael Phelps und stellte den Weltrekord über 400m Freistil auf.",
+        difficulty = 3,
+        funFact = "Biedermanns Rekorde wurden im umstrittenen Polyurethan-Ganzkörperanzug geschwommen, der 2010 verboten wurde."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welches Land gewann die erste UEFA-Europameisterschaft 1960?",
+        answerA = "Deutschland",
+        answerB = "Spanien",
+        answerC = "Sowjetunion",
+        answerD = "Frankreich",
+        correctAnswer = 2,
+        explanation = "Die Sowjetunion gewann die erste UEFA-Europameisterschaft 1960 in Frankreich durch einen 2:1-Sieg über Jugoslawien.",
+        difficulty = 3,
+        funFact = "Das Turnier hieß damals noch 'Europapokal der Nationalmannschaften' und nahmen nur vier Teams teil."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "In welchem Jahr gewann Katarina Witt ihre zweite Olympia-Goldmedaille im Eiskunstlauf?",
+        answerA = "1984",
+        answerB = "1988",
+        answerC = "1992",
+        answerD = "1994",
+        correctAnswer = 1,
+        explanation = "Katarina Witt gewann Olympia-Gold 1984 in Sarajevo und 1988 in Calgary – als erste Eiskunstläuferin seit Sonja Henie, die zweimal Gold gewann.",
+        difficulty = 3,
+        funFact = "Witt gilt als eine der populärsten Sportlerinnen der DDR und zählt zu den besten Eiskunstläuferinnen der Geschichte."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie lautet der Spitzname von Bayern Münchens legendärem Stürmer Gerd Müller?",
+        answerA = "Der Bomber der Nation",
+        answerB = "Der Torjäger",
+        answerC = "Der Goalgetter",
+        answerD = "Der Kannibale",
+        correctAnswer = 0,
+        explanation = "Gerd Müller wurde 'Der Bomber der Nation' genannt und erzielte in 62 Länderspielen 68 Tore – ein außergewöhnliches Verhältnis.",
+        difficulty = 3,
+        funFact = "Gerd Müller erzielte 1972 in einer einzigen Bundesligasaison 40 Tore – ein Rekord, der erst 2021/22 von Robert Lewandowski mit 41 Toren übertroffen wurde."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Bei welcher Fußball-WM erzielte Deutschland den historischen 7:1-Sieg gegen Brasilien?",
+        answerA = "2010 in Südafrika",
+        answerB = "2014 in Brasilien",
+        answerC = "2018 in Russland",
+        answerD = "2006 in Deutschland",
+        correctAnswer = 1,
+        explanation = "Das Halbfinale der WM 2014 in Brasilien endete 7:1 für Deutschland – das 'Mineirazo' gilt als größte Niederlage in der Geschichte des brasilianischen Fußballs.",
+        difficulty = 3,
+        funFact = "Deutschland traf innerhalb von 6 Minuten (24. bis 29. Minute) viermal – ein historischer Rekord."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher F1-Fahrer gewann mit 19 Jahren seinen ersten Grand Prix und wurde damit zum jüngsten Sieger in der Geschichte der Formel 1?",
+        answerA = "Fernando Alonso",
+        answerB = "Sebastian Vettel",
+        answerC = "Max Verstappen",
+        answerD = "Charles Leclerc",
+        correctAnswer = 2,
+        explanation = "Max Verstappen gewann 2016 in Barcelona seinen ersten Grand Prix und wurde mit 18 Jahren und 228 Tagen jüngster F1-Sieger der Geschichte.",
+        difficulty = 3,
+        funFact = "Verstappen debütierte bereits mit 17 Jahren in der Formel 1 und brach damit mehrere Altersrekorde."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Wie viele olympische Goldmedaillen gewann Carl Lewis insgesamt in seiner Karriere?",
+        answerA = "7",
+        answerB = "8",
+        answerC = "9",
+        answerD = "10",
+        correctAnswer = 2,
+        explanation = "Carl Lewis gewann insgesamt 9 olympische Goldmedaillen (1984, 1988, 1992, 1996) in Sprint und Weitsprung.",
+        difficulty = 3,
+        funFact = "Lewis gewann viermal olympisches Gold im Weitsprung – sein letzter Sieg 1996 in Atlanta gilt als einer der größten Sportmomente aller Zeiten."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Formel-1-Fahrer hält den Rekord für die meisten Pole Positions?",
+        answerA = "Michael Schumacher",
+        answerB = "Ayrton Senna",
+        answerC = "Lewis Hamilton",
+        answerD = "Sebastian Vettel",
+        correctAnswer = 2,
+        explanation = "Lewis Hamilton hält mit über 100 Pole Positions den Rekord für die meisten Startplätze aus der ersten Reihe in der F1-Geschichte.",
+        difficulty = 3,
+        funFact = "Ayrton Senna hatte lange mit 65 Pole Positions den Rekord, bis Hamilton diesen 2006 übertraf."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "In welchem Jahr fanden die ersten Olympischen Winterspiele statt?",
+        answerA = "1920",
+        answerB = "1924",
+        answerC = "1928",
+        answerD = "1932",
+        correctAnswer = 1,
+        explanation = "Die ersten Olympischen Winterspiele fanden 1924 in Chamonix, Frankreich statt.",
+        difficulty = 3,
+        funFact = "Ursprünglich hießen die Veranstaltungen 'Internationale Sportwoche' und wurden erst nachträglich als erste Olympische Winterspiele anerkannt."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Hochspringer stellte 1993 mit 2,45 Metern den bis heute gültigen Weltrekord auf?",
+        answerA = "Patrik Sjöberg",
+        answerB = "Mutaz Essa Barshim",
+        answerC = "Javier Sotomayor",
+        answerD = "Stefan Holm",
+        correctAnswer = 2,
+        explanation = "Javier Sotomayor (Kuba) sprang am 27. Juli 1993 in Salamanca 2,45 Meter und hält damit seit über 30 Jahren den Weltrekord im Hochsprung.",
+        difficulty = 3,
+        funFact = "Sotomayor ist der einzige Mensch, der je die 2,40-Meter-Marke im Hochsprung überwunden hat."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher deutsche Skispringer hat die Vierschanzentournee 2017/2018 gewonnen?",
+        answerA = "Richard Freitag",
+        answerB = "Markus Eisenbichler",
+        answerC = "Andreas Wellinger",
+        answerD = "Severin Freund",
+        correctAnswer = 2,
+        explanation = "Andreas Wellinger gewann die Vierschanzentournee 2017/2018 als erster Deutscher nach Sven Hannawald.",
+        difficulty = 3,
+        funFact = "Wellinger war beim Sieg erst 22 Jahre alt und galt damals als großes Talent des deutschen Skispringens."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Nation gewann bei den Leichtathletik-Weltmeisterschaften 2023 in Budapest die meisten Goldmedaillen?",
+        answerA = "Kenia",
+        answerB = "Jamaika",
+        answerC = "USA",
+        answerD = "Äthiopien",
+        correctAnswer = 2,
+        explanation = "Die USA gewannen bei den Weltmeisterschaften 2023 in Budapest die meisten Goldmedaillen in der Leichtathletik.",
+        difficulty = 3,
+        funFact = "Budapest war damit die erste osteuropäische Stadt, die Leichtathletik-Weltmeisterschaften ausrichtete."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welche Schwimmdisziplin wird beim Triathlon zusätzlich zu Radfahren und Laufen absolviert?",
+        answerA = "Brustschwimmen",
+        answerB = "Rückenschwimmen",
+        answerC = "Freistilschwimmen",
+        answerD = "Lagenschwimmen",
+        correctAnswer = 2,
+        explanation = "Beim Triathlon wird Freistilschwimmen (Kraulen) eingesetzt, da es der schnellste Schwimmstil ist.",
+        difficulty = 3,
+        funFact = "Beim Ironman-Triathlon beträgt die Schwimmstrecke 3,86 km, gefolgt von 180,25 km Radfahren und 42,195 km Laufen."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Boxer verlor 1990 überraschend seinen WBC-Schwergewichtstitel gegen Buster Douglas?",
+        answerA = "Evander Holyfield",
+        answerB = "Lennox Lewis",
+        answerC = "Mike Tyson",
+        answerD = "George Foreman",
+        correctAnswer = 2,
+        explanation = "Mike Tyson verlor am 11. Februar 1990 überraschend durch K.o. in Runde 10 gegen James 'Buster' Douglas in Tokio.",
+        difficulty = 3,
+        funFact = "Douglas galt vor dem Kampf mit Quoten von 42:1 als klarer Außenseiter. Es gilt als eine der größten Überraschungen in der Boxgeschichte."
+    ),
+
+    Question(
+        categoryId = 6,
+        questionText = "Welcher Fußballverein gewann die erste FIFA Klub-Weltmeisterschaft im Jahr 2000?",
+        answerA = "Real Madrid",
+        answerB = "Corinthians",
+        answerC = "Manchester United",
+        answerD = "Bayern München",
+        correctAnswer = 1,
+        explanation = "Corinthians aus Brasilien gewann die erste FIFA Klub-Weltmeisterschaft im Jahr 2000 in Brasilien.",
+        difficulty = 3,
+        funFact = "Das Turnier 2000 war das erste seiner Art und wurde von der FIFA als offizieller Weltklub-Wettbewerb ausgerichtet."
     )
 )
