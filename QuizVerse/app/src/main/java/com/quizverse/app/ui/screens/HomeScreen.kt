@@ -595,6 +595,38 @@ private fun AnimatedHomeCard(
     val offsetY = remember { Animatable(40f) }
     val alpha = remember { Animatable(0f) }
 
+    // Continuous breathing scale animation
+    val cardTransition = rememberInfiniteTransition(label = "card_${card.title}")
+    val breathScale = cardTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.02f,
+        animationSpec = infiniteRepeatable(
+            tween(2500 + delayMillis % 500, easing = FastOutSlowInEasing),
+            RepeatMode.Reverse
+        ),
+        label = "card_breath_${card.title}"
+    )
+    // Shimmer gradient offset
+    val shimmer = cardTransition.animateFloat(
+        initialValue = -0.3f,
+        targetValue = 1.3f,
+        animationSpec = infiniteRepeatable(
+            tween(3000 + delayMillis % 700, easing = LinearEasing),
+            RepeatMode.Restart
+        ),
+        label = "card_shimmer_${card.title}"
+    )
+    // Subtle emoji bounce
+    val emojiBounce = cardTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = -6f,
+        animationSpec = infiniteRepeatable(
+            tween(1200 + delayMillis % 400, easing = FastOutSlowInEasing),
+            RepeatMode.Reverse
+        ),
+        label = "card_emoji_${card.title}"
+    )
+
     LaunchedEffect(Unit) {
         delay(delayMillis.toLong())
         offsetY.animateTo(
@@ -611,7 +643,11 @@ private fun AnimatedHomeCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .alpha(alpha.value),
+            .alpha(alpha.value)
+            .graphicsLayer {
+                scaleX = breathScale.value
+                scaleY = breathScale.value
+            },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp,
@@ -628,18 +664,32 @@ private fun AnimatedHomeCard(
                         colors = listOf(card.gradientStart, card.gradientEnd)
                     )
                 )
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.White.copy(alpha = 0.15f),
+                            Color.Transparent
+                        ),
+                        startX = shimmer.value * 1000f - 300f,
+                        endX = shimmer.value * 1000f + 100f
+                    )
+                )
                 .padding(horizontal = 20.dp, vertical = 18.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Category emoji in a semi-transparent circle
+                // Category emoji in a semi-transparent circle with bounce
                 Box(
                     modifier = Modifier
                         .size(52.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(Color.White.copy(alpha = 0.2f)),
+                        .background(Color.White.copy(alpha = 0.2f))
+                        .graphicsLayer {
+                            translationY = emojiBounce.value.dp.toPx()
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
