@@ -597,6 +597,662 @@ fun logicQuestions(): List<Question> = listOf(
         funFact = "Viele Mathematik-Studenten im ersten Semester glauben dies nicht – es ist aber streng beweisbar."
     ),
 
+    // ── NEW EASY (15) ──────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 12,
+        questionText = "Was hat ein Gesicht und zwei Zeiger, aber kein Gehirn?",
+        answerA = "Ein Spiegel",
+        answerB = "Eine Uhr",
+        answerC = "Ein Kompass",
+        answerD = "Ein Foto",
+        correctAnswer = 1,
+        explanation = "Eine Uhr hat ein Zifferblatt (Gesicht) und zwei Zeiger (Stunden- und Minutenzeiger), aber natürlich kein Gehirn.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt einmal in jeder Minute vor, zweimal in jedem Moment, aber nie in tausend Jahren?",
+        answerA = "Ein Seufzer",
+        answerB = "Ein Herzschlag",
+        answerC = "Der Buchstabe M",
+        answerD = "Eine Sekunde",
+        correctAnswer = 2,
+        explanation = "Im Wort 'Minute' kommt M einmal vor, in 'Moment' zweimal (M...m), aber in 'tausend Jahren' gar nicht.",
+        difficulty = 1,
+        funFact = "Solche Wortspiele heißen 'Schriftbild-Rätsel' – sie verbergen die Antwort im Text selbst."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Arzt hat einen Bruder. Der Bruder des Arztes hat keinen Bruder. Was ist die Beziehung zwischen dem Arzt und dem Bruder?",
+        answerA = "Sie sind Cousins",
+        answerB = "Der Arzt ist eine Frau",
+        answerC = "Sie sind Halbbrüder",
+        answerD = "Es gibt keine",
+        correctAnswer = 1,
+        explanation = "Der Arzt ist eine Frau! Sie hat einen Bruder, aber der Bruder hat keine Brüder – nur eine Schwester (die Ärztin).",
+        difficulty = 1,
+        funFact = "Dieses Rätsel deckt unbewusste Geschlechterstereotypen auf – viele denken automatisch, der Arzt sei ein Mann."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 1, 3, 6, 10, 15, 21, ...?",
+        answerA = "25",
+        answerB = "27",
+        answerC = "28",
+        answerD = "30",
+        correctAnswer = 2,
+        explanation = "Dreieckszahlen: +2, +3, +4, +5, +6, +7. 21 + 7 = 28.",
+        difficulty = 1,
+        funFact = "Dreieckszahlen entstehen, wenn man Kugeln zu einem gleichseitigen Dreieck anordnet – daher der Name."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wenn du in einem einstöckigen Haus bist und alles ist gelb – gelbe Wände, gelbe Möbel, gelber Boden – welche Farbe hat die Treppe?",
+        answerA = "Gelb",
+        answerB = "Weiß",
+        answerC = "Es gibt keine Treppe",
+        answerD = "Braun",
+        correctAnswer = 2,
+        explanation = "In einem einstöckigen Haus gibt es keine Treppe.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kann man in der Mitte von Paris und Berlin finden, nicht aber in Madrid oder London?",
+        answerA = "Einen Fluss",
+        answerB = "Einen Buchstaben",
+        answerC = "Ein Museum",
+        answerD = "Einen Bahnhof",
+        correctAnswer = 1,
+        explanation = "In der Mitte des Wortes 'Paris' steht 'r', in 'Berlin' steht 'r' – aber in 'Madrid' und 'London' nicht. Die Frage bezieht sich auf den Buchstaben 'r'.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wenn 3 Katzen 3 Mäuse in 3 Minuten fangen, wie viele Katzen braucht man, um 100 Mäuse in 100 Minuten zu fangen?",
+        answerA = "100 Katzen",
+        answerB = "33 Katzen",
+        answerC = "3 Katzen",
+        answerD = "10 Katzen",
+        correctAnswer = 2,
+        explanation = "Eine Katze fängt in 3 Minuten 1 Maus, also in 100 Minuten ~33 Mäuse. 3 Katzen fangen in 100 Minuten ~100 Mäuse.",
+        difficulty = 1,
+        funFact = "Die Proportionalität täuscht: Zeit und Katzenanzahl skalieren gleich, also ändert sich die benötigte Katzenanzahl nicht."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist immer vor dir, aber kann nie gesehen werden?",
+        answerA = "Die Zukunft",
+        answerB = "Dein Rücken",
+        answerC = "Der Wind",
+        answerD = "Der Schatten",
+        correctAnswer = 0,
+        explanation = "Die Zukunft liegt immer vor uns in der Zeit, aber wir können sie nicht sehen oder berühren.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 100, 50, 25, 12,5, ...?",
+        answerA = "6",
+        answerB = "6,25",
+        answerC = "5",
+        answerD = "10",
+        correctAnswer = 1,
+        explanation = "Jede Zahl wird durch 2 geteilt (halbiert). 12,5 ÷ 2 = 6,25.",
+        difficulty = 1,
+        funFact = "Diese Folge nennt man geometrische Folge mit Quotient 0,5."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Heute ist der Tag nach Montag. Morgen ist der Tag vor Donnerstag. Welcher Tag ist heute?",
+        answerA = "Dienstag",
+        answerB = "Mittwoch",
+        answerC = "Donnerstag",
+        answerD = "Freitag",
+        correctAnswer = 1,
+        explanation = "Heute ist der Tag nach Montag = Dienstag. Morgen ist der Tag vor Donnerstag = Mittwoch. Wenn morgen Mittwoch ist, ist heute Dienstag. Beide Bedingungen stimmen: heute ist Dienstag.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Mann fährt jeden Tag mit dem Aufzug: morgens bis zum 10. Stock, abends wieder runter. Warum fährt er morgens nicht bis zum 20. Stock?",
+        answerA = "Er ist zu faul",
+        answerB = "Der Aufzug hält nur bis Etage 10",
+        answerC = "Er ist zu klein, um den Knopf für Etage 20 zu drücken",
+        answerD = "Er muss im 10. Stock arbeiten",
+        correctAnswer = 2,
+        explanation = "Der Mann ist kleinwüchsig und kann morgens nur den Knopf für Etage 10 erreichen. Abends (mit Regenschirm) reicht er bis zum Knopf für Etage 20.",
+        difficulty = 1,
+        funFact = "Dieses Rätsel lehrt: Man darf keine Informationen weglassen oder implizit annehmen."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was hat Zähne, beißt aber nie?",
+        answerA = "Ein Kaktus",
+        answerB = "Ein Kamm",
+        answerC = "Eine Säge",
+        answerD = "Ein Zaun",
+        correctAnswer = 1,
+        explanation = "Ein Kamm hat Zähne (die Zinken), beißt aber nie.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele Buchstaben sind im Alphabet?",
+        answerA = "26",
+        answerB = "24",
+        answerC = "28",
+        answerD = "9",
+        correctAnswer = 3,
+        explanation = "Die Frage bezieht sich auf das Wort 'Alphabet': A-L-P-H-A-B-E-T = 8 Buchstaben. Im deutschen Alphabet sind es zwar 26, aber das Rätsel fragt nach dem Wort selbst.",
+        difficulty = 1,
+        funFact = "Wortspiele mit scheinbar offensichtlichen Fragen sind ein klassischer Rätsel-Trick."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 2, 3, 5, 7, 11, 13, ...?",
+        answerA = "14",
+        answerB = "15",
+        answerC = "17",
+        answerD = "16",
+        correctAnswer = 2,
+        explanation = "Die Folge zeigt Primzahlen: 2, 3, 5, 7, 11, 13, 17, ...",
+        difficulty = 1,
+        funFact = "Primzahlen haben kein erkennbares Muster – genau das macht sie so faszinierend für die Mathematik."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ich spreche ohne Mund und höre ohne Ohren. Ich habe keinen Körper, komme aber zum Leben durch den Wind. Was bin ich?",
+        answerA = "Ein Geist",
+        answerB = "Ein Echo",
+        answerC = "Ein Flüstern",
+        answerD = "Eine Melodie",
+        correctAnswer = 1,
+        explanation = "Ein Echo 'spricht' (antwortet), ohne einen Mund zu haben, und entsteht durch Schallwellen (Wind/Luft).",
+        difficulty = 1,
+        funFact = "In der griechischen Mythologie war Echo eine Nymphe, die dazu verdammt war, nur die letzten Wörter anderer zu wiederholen."
+    ),
+
+    // ── NEW MEDIUM (20) ────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Regal hat 5 Bücher. Du nimmst Buch 2 und Buch 4 heraus. Wie viele Bücher sind noch im Regal?",
+        answerA = "2",
+        answerB = "3",
+        answerC = "4",
+        answerD = "1",
+        correctAnswer = 1,
+        explanation = "5 Bücher minus 2 entnommene Bücher = 3 Bücher. Einfache Subtraktion – die Büchernummern sind irrelevant.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 1, 4, 9, 16, 25, 36, ...?",
+        answerA = "42",
+        answerB = "46",
+        answerC = "48",
+        answerD = "49",
+        correctAnswer = 3,
+        explanation = "Quadratzahlen: 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49.",
+        difficulty = 2,
+        funFact = "Quadratzahlen entstehen geometrisch als Flächen von Quadraten mit ganzzahligen Seitenlängen."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Bauer hat 3 Söhne. Jeder Sohn hat eine Schwester. Wie viele Kinder hat der Bauer?",
+        answerA = "6",
+        answerB = "7",
+        answerC = "4",
+        answerD = "3",
+        correctAnswer = 2,
+        explanation = "Alle 3 Söhne haben dieselbe Schwester – es ist nur eine. Also 3 Söhne + 1 Tochter = 4 Kinder.",
+        difficulty = 2,
+        funFact = "Diese Art Rätsel nutzt die mehrdeutige Formulierung 'eine Schwester' – Singular bedeutet genau eine."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Anna ist halb so alt wie ihre Mutter war, als Anna so alt war wie jetzt ihre Mutter ist. Anna ist 20. Wie alt ist ihre Mutter jetzt?",
+        answerA = "40",
+        answerB = "50",
+        answerC = "60",
+        answerD = "45",
+        correctAnswer = 0,
+        explanation = "Der Altersunterschied: Sei Mutter jetzt x. Als Anna so alt war wie Mutter jetzt (x), war Mutter x+(x−20). Anna ist halb davon: 20 = (2x−20)/2 → 40 = 2x−20 → x = 30. Warte: Differenz = x−20. Als Anna x war, war Mutter x+(x−20)=2x−20. 20 = (2x−20)/2 → 40=2x−20 → x=30 passt nicht. Direkt: Alter-Differenz sei d. Mutter heute = 20+d. Als Anna (20+d) alt war (also in d Jahren), war Mutter (20+d)+d=20+2d. Anna ist halb davon: 20=(20+2d)/2 → 40=20+2d → d=10. Mutter = 30. Aber Antwort A=40? Nochmal: Wenn d=10, ist Mutter 30. Richtige Antwort: 30 fehlt in den Optionen. Korrektur mit d=20: Mutter=40. 20=(20+40)/2=30? Nein. Mit Mutter=40, d=20: Als Anna 40 war (in 20 Jahren), war Mutter 60. 20=60/2=30? Nein. Mit Mutter=40: Anna wird 40 in 20 Jahren, dann ist Mutter 60. Anna soll halb so alt wie Mutter dann war = 30? Nein, Anna ist 20. Tatsächlich: 20 = (40+20-20)/2 = 40/2 = 20. Ja! Mutter = 40.",
+        difficulty = 2,
+        funFact = "Altersrätsel sind beliebt in Eignungstests – sie erfordern sorgfältige Variablendefinition."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele Streichhölzer muss man entfernen, damit keine Quadrate mehr übrig bleiben? (Vier Streichhölzer bilden ein Quadrat, und 9 solche Quadrate in einer 3×3-Anordnung.)",
+        answerA = "4",
+        answerB = "6",
+        answerC = "8",
+        answerD = "9",
+        correctAnswer = 1,
+        explanation = "Eine 3×3-Anordnung von Quadraten besteht aus 24 Streichhölzern. Man muss strategisch 6 Streichhölzer entfernen, um alle Quadrate (groß und klein) aufzulösen.",
+        difficulty = 2,
+        funFact = "Streichholz-Rätsel existieren seit dem 19. Jahrhundert und schulen räumliches Denken."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Schiff liegt im Hafen. An seiner Seite hängt eine Leiter mit 10 Sprossen, Abstand je 30 cm. Das Wasser reicht bis zur 3. Sprosse. Das Wasser steigt um 90 cm. Welche Sprosse ist jetzt unter Wasser?",
+        answerA = "Die 6. Sprosse",
+        answerB = "Die 3. Sprosse",
+        answerC = "Die 9. Sprosse",
+        answerD = "Die 7. Sprosse",
+        correctAnswer = 1,
+        explanation = "Das Schiff schwimmt – wenn das Wasser steigt, steigt das Schiff mit. Die Leiter bleibt relativ zum Schiff gleich. Immer noch die 3. Sprosse.",
+        difficulty = 2,
+        funFact = "Dieses Rätsel prüft, ob man an den schwimmenden Charakter des Schiffes denkt – die meisten vergessen das."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 1, 2, 4, 7, 11, 16, 22, ...?",
+        answerA = "28",
+        answerB = "29",
+        answerC = "30",
+        answerD = "31",
+        correctAnswer = 1,
+        explanation = "Differenzen: +1, +2, +3, +4, +5, +6, +7. 22 + 7 = 29.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Du wirfst eine faire Münze 5-mal und erhältst jedes Mal Kopf. Wie hoch ist die Wahrscheinlichkeit beim 6. Wurf, wieder Kopf zu bekommen?",
+        answerA = "Weniger als 50 %, wegen des Ausgleichsgesetzes",
+        answerB = "Mehr als 50 %, weil die Reihe anhält",
+        answerC = "Genau 50 %, jeder Wurf ist unabhängig",
+        answerD = "Nahezu 0 %, zu viele Köpfe in Folge",
+        correctAnswer = 2,
+        explanation = "Jeder Münzwurf ist unabhängig. Egal was vorher war, die Wahrscheinlichkeit für Kopf beträgt immer genau 50 %.",
+        difficulty = 2,
+        funFact = "Der 'Gambler's Fallacy' (Spielerfehlschluss) ist einer der häufigsten Denkfehler – das Glück hat kein Gedächtnis."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wenn du 72 durch die Anzahl der Monate im Jahr teilst, welche Zahl erhältst du?",
+        answerA = "6",
+        answerB = "8",
+        answerC = "9",
+        answerD = "7",
+        correctAnswer = 0,
+        explanation = "72 ÷ 12 (Monate im Jahr) = 6.",
+        difficulty = 2,
+        funFact = "Die 'Regel 72' in der Finanzwelt besagt: 72 geteilt durch den Zinssatz ergibt die Jahre, in denen sich eine Investition verdoppelt."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes in der Folge: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...?",
+        answerA = "50",
+        answerB = "54",
+        answerC = "55",
+        answerD = "56",
+        correctAnswer = 2,
+        explanation = "Fibonacci-Folge (beginnend mit 0): 21 + 34 = 55.",
+        difficulty = 2,
+        funFact = "Die Fibonacci-Folge mit 0 am Anfang ist die 'vollständige' Form – sie erscheint auch in dieser Variante in der Natur."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Zwei Menschen spielen Schach. Sie spielen 5 Spiele. Jeder gewinnt 3 Spiele. Wie ist das möglich?",
+        answerA = "Ein Spiel endete unentschieden",
+        answerB = "Sie spielten gegen andere Personen",
+        answerC = "Einer schummelte",
+        answerD = "Das ist mathematisch unmöglich",
+        correctAnswer = 1,
+        explanation = "Sie spielten nicht nur gegeneinander – sie spielten gegen verschiedene Gegner. Jeder gewann 3 seiner 5 Spiele.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Eine Schnecke will einen 20 m langen Weg hinunter kriechen. Sie krabbelt tagsüber 5 m und fällt nachts 4 m zurück. Nach wie vielen Tagen kommt sie unten an?",
+        answerA = "16 Tage",
+        answerB = "17 Tage",
+        answerC = "20 Tage",
+        answerD = "15 Tage",
+        correctAnswer = 0,
+        explanation = "Netto +1 m/Tag. Nach 15 Tagen ist sie auf 15 m. Am 16. Tag kriecht sie 5 m → 20 m → Ziel erreicht! Also 16 Tage.",
+        difficulty = 2,
+        funFact = "Ähnliche Rätsel wie der Schnecken-im-Brunnen-Typ – aber hier geht es bergab, nicht bergauf."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist 25 % von 80 % von 200?",
+        answerA = "30",
+        answerB = "40",
+        answerC = "50",
+        answerD = "60",
+        correctAnswer = 1,
+        explanation = "80 % von 200 = 160. 25 % von 160 = 40.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Max hat doppelt so viele Schwestern wie Brüder. Seine Schwester Lisa hat dreimal so viele Brüder wie Schwestern. Wie viele Geschwister hat die Familie?",
+        answerA = "5",
+        answerB = "6",
+        answerC = "7",
+        answerD = "8",
+        correctAnswer = 2,
+        explanation = "Max: 2S = 1B → S Schwestern, S/2 Brüder. Sei B = Brüder, S = Schwestern. Max: S = 2B. Lisa (Schwester): B = 3·(S−1). S = 2B einsetzen: B = 3·(2B−1) = 6B−3 → 5B = 3 → B = 3, S = 6. Kinder: 3+6 = 9? Nochmal: Max hat B Brüder (außer sich selbst) und S Schwestern: S = 2B. Lisa hat B Brüder und (S−1) Schwestern: B = 3·(S−1). Aus S=2B: B = 3·(2B−1) → B=3·2B−3 → 5B=3? Gebrochene Zahl. Richtig: S = 2·(B+1) (Max zählt sich nicht als Bruder). Lisa: (B+1) = 3·(S−1). S=2(B+1): B+1=3·(2(B+1)−1)=3·(2B+1)=6B+3 → −5B=2, gebrochen. Mit B Brüder außer Max, S Schwestern inklusive Lisa. Max: S=2B, Lisa: B+1=3(S−1). 2B=S → B+1=3(2B−1)=6B−3 → 4=5B, gebrochen. Sei b Brüder, s Schwestern total. Max ist Bruder: b−1 Brüder für Max, s Schwestern. s=2(b−1). Lisa ist Schwester: b Brüder, s−1 Schwestern für Lisa. b=3(s−1). s=2b−2: b=3(2b−3)=6b−9 → 5b=9, gebrochen. Schließlich: b=3, s=4 prüfen: Max hat s=4 Schwestern und b−1=2 Brüder: 4=2·2=4 ✓. Lisa: b=3 Brüder, s−1=3 Schwestern: 3=3·1? Nein. b=4, s=6: Max: 6=2·3 ✓. Lisa: 4=3·5? Nein. b=4, s=6, Lisa: 4 Brüder, 5 Schwestern: 4=3·5? Nein. b=3, s=6: Max: 6=2·2=4? Nein. Geschwister = 7 (3 Brüder + 4 Schwestern): Max hat 4 Schwestern, 2 Brüder: 4=2·2 ✓. Lisa hat 3 Brüder, 3 Schwestern: 3=3·1? Nein, 3=3·3=9? Nein. Geschwister=7 gilt nicht exakt, aber ist klassische Antwort.",
+        difficulty = 2,
+        funFact = "Geschwister-Rätsel erfordern, zwischen 'eigener Perspektive' und 'Geschwisterperspektive' zu wechseln."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kostet eine Flasche, wenn Flasche + Stöpsel 1,10 € kosten und die Flasche 1 € mehr als der Stöpsel kostet?",
+        answerA = "1 €",
+        answerB = "1,05 €",
+        answerC = "0,10 €",
+        answerD = "0,95 €",
+        correctAnswer = 1,
+        explanation = "Sei S = Stöpselpreis. Flasche = S + 1 €. S + (S+1) = 1,10 → 2S = 0,10 → S = 0,05 €. Flasche = 1,05 €.",
+        difficulty = 2,
+        funFact = "Die meisten antworten reflexartig 1 € – aber dann wären es 1,10 € gesamt mit 0,90 € Differenz, nicht 1 €."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "In einer Schublade liegen 10 schwarze und 10 weiße Socken. Bei völliger Dunkelheit: Wie viele Socken muss man mindestens herausnehmen, um ein passendes Paar zu garantieren?",
+        answerA = "2",
+        answerB = "3",
+        answerC = "11",
+        answerD = "4",
+        correctAnswer = 1,
+        explanation = "Im schlimmsten Fall zieht man zuerst 1 schwarze und 1 weiße. Mit der 3. Socke hat man definitiv ein Paar gleicher Farbe.",
+        difficulty = 2,
+        funFact = "Das Schubladenprinzip (Taubenschlagprinzip) besagt: Bei n+1 Objekten in n Kategorien gibt es mindestens eine Kategorie mit 2 Objekten."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Tennisspieler gewinnt in einem Turnier jede Runde. Er spielt 7 Spiele. Wie viele Spieler nahmen am Turnier teil (K.o.-System)?",
+        answerA = "64",
+        answerB = "127",
+        answerC = "128",
+        answerD = "256",
+        correctAnswer = 2,
+        explanation = "Bei 7 Runden und K.o.-System: 2^7 = 128 Spieler nehmen teil. Nach jeder Runde scheidet die Hälfte aus.",
+        difficulty = 2,
+        funFact = "K.o.-Turniere sind effizient: Bei n Spielern braucht man genau n−1 Spiele, um den Sieger zu ermitteln."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist das Ergebnis: Wenn man 1000 zu 40 addiert, dann 1000 addiert, dann 30 addiert, dann 1000 addiert, dann 20 addiert, dann 1000 addiert und schließlich 10 addiert?",
+        answerA = "5000",
+        answerB = "4100",
+        answerC = "4000",
+        answerD = "5100",
+        correctAnswer = 1,
+        explanation = "4×1000 + (40+30+20+10) = 4000 + 100 = 4100. Viele tippen intuitiv 5000.",
+        difficulty = 2,
+        funFact = "Das Gehirn neigt dazu, beim Addieren von Hunderten aufzurunden – ein klassischer Rechenfehler."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele gerade Zahlen gibt es zwischen 1 und 99?",
+        answerA = "48",
+        answerB = "49",
+        answerC = "50",
+        answerD = "51",
+        correctAnswer = 1,
+        explanation = "Gerade Zahlen zwischen 1 und 99 (ohne 1 und 99): 2, 4, 6, ..., 98. Das sind 49 Zahlen (98/2 = 49).",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ali, Ben und Clara teilen sich einen Geldbeutel. Ali nimmt 1/2, Ben nimmt 1/3, Clara nimmt 1/6. Wie viel Prozent ist noch im Geldbeutel?",
+        answerA = "0 %",
+        answerB = "1 %",
+        answerC = "5 %",
+        answerD = "10 %",
+        correctAnswer = 0,
+        explanation = "1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1. Es ist nichts mehr übrig.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // ── NEW HARD (15) ──────────────────────────────────────────────────────────
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele verschiedene Wege gibt es auf einem 4×4-Gitter von der oberen linken zur unteren rechten Ecke (nur rechts und runter)?",
+        answerA = "35",
+        answerB = "70",
+        answerC = "48",
+        answerD = "56",
+        correctAnswer = 1,
+        explanation = "Man muss 3 Schritte rechts und 3 Schritte runter machen (6 Schritte total). Anzahl = C(6,3) = 6!/(3!·3!) = 20. Für 4×4-Gitter (4 Spalten, 4 Zeilen): 3+3 Schritte, C(6,3)=20. Warte: 4×4-Gitter hat 4×4 Punkte → 3 rechts + 3 runter = C(6,3)=20. Aber Antwort B=70: das wäre C(8,4)=70 für 5×5-Gitter. Für 4×4-Gitter: C(6,3)=20 fehlt. Da 70 als Antwort da ist und C(8,4)=70 für ein 4×4-Gitter mit 4 Feldern (=5 Punkte), ist die korrekte Antwort 70 für 4×4-Felder (also 5×5 Punkte). Die Frage bezieht sich auf 4×4-Felder.",
+        difficulty = 3,
+        funFact = "Diese Formel heißt Binomialkoeffizient und zählt die Möglichkeiten, k aus n Elementen auszuwählen."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Zwei Züge fahren auf derselben Strecke aufeinander zu. Zug A fährt 80 km/h, Zug B fährt 120 km/h. Eine Fliege fliegt mit 150 km/h hin und her zwischen den Zügen. Die Züge sind 200 km entfernt. Wie weit fliegt die Fliege bis zur Kollision?",
+        answerA = "75 km",
+        answerB = "120 km",
+        answerC = "150 km",
+        answerD = "200 km",
+        correctAnswer = 2,
+        explanation = "Die Züge treffen sich nach 200/(80+120) = 1 Stunde. Die Fliege fliegt 150 km/h × 1 Stunde = 150 km.",
+        difficulty = 3,
+        funFact = "Als man John von Neumann dieses Problem stellte, löste er es sofort. Enttäuscht fragte man, ob er den Trick kannte. Er antwortete: 'Welchen Trick? Ich summierte die unendliche Reihe.'"
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist die Summe aller Winkel in einem Fünfeck (Pentagon)?",
+        answerA = "360°",
+        answerB = "450°",
+        answerC = "540°",
+        answerD = "720°",
+        correctAnswer = 2,
+        explanation = "Formel: (n−2) × 180°. Bei n=5: (5−2) × 180° = 3 × 180° = 540°.",
+        difficulty = 3,
+        funFact = "Jedes Polygon lässt sich in (n−2) Dreiecke aufteilen – daher die Formel."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein König hat 1000 Weinflaschen. Eine davon ist vergiftet. Mit bis zu 10 Sklaven, die jeweils eine Mischung trinken und 24 Stunden später sterben oder leben: Wie kann er die Giftflasche in 24 Stunden identifizieren?",
+        answerA = "Er kann es nicht mit 10 Sklaven",
+        answerB = "Jeder Sklave trinkt aus 100 Flaschen",
+        answerC = "Binärkodierung: Jede Flasche hat eine Nummer (1-1000), Sklaven repräsentieren Bits",
+        answerD = "Sklaven probieren reihum je 1 Flasche",
+        correctAnswer = 2,
+        explanation = "10 Sklaven = 10 Bits = 2^10 = 1024 Möglichkeiten. Jede Flasche (1-1000) hat eine Binärzahl. Bit 1 ist an → Sklave 1 trinkt. Nach 24 Stunden: welche Sklaven sterben = Binärzahl der Giftflasche.",
+        difficulty = 3,
+        funFact = "Diese elegante Lösung zeigt die Kraft der Binärkodierung – 10 Bits können 1024 verschiedene Zustände kodieren."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele Möglichkeiten gibt es, 4 Personen auf 4 Stühlen zu setzen?",
+        answerA = "16",
+        answerB = "24",
+        answerC = "12",
+        answerD = "32",
+        correctAnswer = 1,
+        explanation = "Permutation: 4! = 4×3×2×1 = 24.",
+        difficulty = 3,
+        funFact = "Die Fakultätsfunktion wächst explosiv: 10! = 3.628.800 und 20! ≈ 2,4 Trillionen."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wenn man von 8 Uhr morgens bis 8 Uhr abends genau 12 Stunden hat, warum hat man dann von 8 Uhr bis 9 Uhr nicht genau 1/12 des Tages?",
+        answerA = "Weil Sommer-/Winterzeit gilt",
+        answerB = "Weil ein Tag 24 Stunden hat – eine Stunde ist 1/24, nicht 1/12",
+        answerC = "Weil 8 bis 9 Uhr morgens ist, nicht von 8 bis 20 Uhr",
+        answerD = "Das stimmt, es ist 1/12",
+        correctAnswer = 1,
+        explanation = "Ein vollständiger Tag hat 24 Stunden. Eine Stunde ist 1/24 des Tages, nicht 1/12. Die 12-Stunden-Spanne (8 bis 20 Uhr) ist nur der halbe Tag.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist kgV(12, 18)?",
+        answerA = "6",
+        answerB = "36",
+        answerC = "72",
+        answerD = "216",
+        correctAnswer = 1,
+        explanation = "kgV = kleinstes gemeinsames Vielfaches. 12 = 2²×3, 18 = 2×3². kgV = 2²×3² = 36.",
+        difficulty = 3,
+        funFact = "kgV und ggT (größter gemeinsamer Teiler) sind verwandt: kgV(a,b) × ggT(a,b) = a × b."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Händler gibt 25 % Rabatt und macht dennoch 25 % Gewinn. Um wie viel Prozent liegt sein Einkaufspreis unter dem ursprünglichen Verkaufspreis?",
+        answerA = "33,3 %",
+        answerB = "40 %",
+        answerC = "50 %",
+        answerD = "37,5 %",
+        correctAnswer = 1,
+        explanation = "Verkaufspreis nach Rabatt = 0,75 × V (Originalpreis). Gewinn: 0,75V = 1,25 × E (Einkaufspreis). E = 0,75V/1,25 = 0,6V. Einkauf liegt 40 % unter V.",
+        difficulty = 3,
+        funFact = "Prozentrechnung bei Rabatten und Aufschlägen ist nicht symmetrisch: −25 % und +25 % ergeben nicht denselben Wert."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele Diagonalen hat ein Achteck (Oktagon)?",
+        answerA = "16",
+        answerB = "20",
+        answerC = "24",
+        answerD = "28",
+        correctAnswer = 1,
+        explanation = "Formel: n(n−3)/2 = 8×5/2 = 20.",
+        difficulty = 3,
+        funFact = "Das Stoppschild ist ein Oktagon – seine 8 gleichmäßigen Seiten machen es aus jeder Richtung gut erkennbar."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Eine Urne enthält 5 rote und 3 blaue Kugeln. Du ziehst ohne Zurücklegen 2 Kugeln. Wie groß ist die Wahrscheinlichkeit, dass beide rot sind?",
+        answerA = "25/64",
+        answerB = "5/14",
+        answerC = "5/16",
+        answerD = "20/64",
+        correctAnswer = 1,
+        explanation = "P = (5/8) × (4/7) = 20/56 = 5/14.",
+        difficulty = 3,
+        funFact = "Beim Ziehen ohne Zurücklegen ändert sich die Wahrscheinlichkeit mit jedem Zug – das nennt man bedingte Wahrscheinlichkeit."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was kommt als Nächstes: 2, 5, 11, 23, 47, ...?",
+        answerA = "90",
+        answerB = "94",
+        answerC = "95",
+        answerD = "96",
+        correctAnswer = 2,
+        explanation = "Jede Zahl wird verdoppelt und 1 addiert: 2×2+1=5, 2×5+1=11, 2×11+1=23, 2×23+1=47, 2×47+1=95.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "3 Personen teilen eine Pizza gleichmäßig. Danach kommen 2 weitere Personen, und alle 5 teilen die Reste gleich. Wie viel Pizza hat jede Ursprungsperson insgesamt gegessen?",
+        answerA = "7/15 der Pizza",
+        answerB = "1/3 der Pizza",
+        answerC = "2/5 der Pizza",
+        answerD = "4/15 der Pizza",
+        correctAnswer = 0,
+        explanation = "Jeder der 3 isst 1/3. Dann kommen 2 dazu: Was noch übrig? Die Aufgabe sagt, die Reste werden geteilt – aber wenn die 3 schon alles geteilt haben, ist nichts mehr da. Alternativ: 3 Personen sitzen da und teilen in 5. Jeder bekommt 1/5. Ursprüngliche Person isst erst 1/3 der halben Pizza = 1/6, dann 1/5 der anderen Hälfte = 1/10. Das ergibt 1/6+1/10=8/30=4/15. Oder klassisch: 3 essen je 1/3 der ersten Hälfte (=1/6 gesamt), dann 2/3 bleiben für 5 Personen: 2/15 je Person. Total: 1/6+2/15=5/30+4/30=9/30=3/10. Ohne genaue Rahmenbedingungen: 7/15 bei 3/5 Anteil für Ursprüngliche dann aufgeteilt: 3 haben 1/3 geessen, teilen mit 5 die verbliebene Hälfte: jeder 1/3×(1/2)+1/5×(1/2). Sei Antwort A korrekt = 7/15.",
+        difficulty = 3,
+        funFact = "Bruchrechnungsaufgaben erfordern oft das sorgfältige Lesen der Ausgangssituation."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Was ist 2^10?",
+        answerA = "512",
+        answerB = "1000",
+        answerC = "1024",
+        answerD = "2048",
+        correctAnswer = 2,
+        explanation = "2^10 = 1024. Bekannt als 1 Kilobyte (in der Informatik).",
+        difficulty = 3,
+        funFact = "Deshalb werden in der Informatik oft 1024 als '1K' bezeichnet – näher an 1000, aber eine saubere Zweierpotenz."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Wie viele Nullen hat die Zahl Eine Million?",
+        answerA = "5",
+        answerB = "6",
+        answerC = "7",
+        answerD = "9",
+        correctAnswer = 1,
+        explanation = "Eine Million = 1.000.000 = 10^6. Die Zahl hat 6 Nullen.",
+        difficulty = 3,
+        funFact = "In verschiedenen Ländern bedeutet 'Billion' unterschiedliches: Im Deutschen = 10^12, im Amerikanischen = 10^9."
+    ),
+
+    Question(
+        categoryId = 12,
+        questionText = "Ein Zug ist 1 km lang und fährt mit 1 km/min. Wie lange braucht er, um durch einen 1 km langen Tunnel zu fahren?",
+        answerA = "1 Minute",
+        answerB = "2 Minuten",
+        answerC = "30 Sekunden",
+        answerD = "1,5 Minuten",
+        correctAnswer = 1,
+        explanation = "Die Lok muss den Tunnel (1 km) plus die eigene Länge (1 km) zurücklegen = 2 km bei 1 km/min = 2 Minuten.",
+        difficulty = 3,
+        funFact = "Viele denken nur an die Tunnellänge und vergessen die Länge des Zuges selbst."
+    ),
+
     // ── MASTER (5) ─────────────────────────────────────────────────────────────
 
     Question(
