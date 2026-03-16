@@ -491,6 +491,662 @@ fun musicQuestions(): List<Question> = listOf(
         funFact = "Haydn arbeitete 30 Jahre als Hofkapellmeister für die Familie Esterházy und schrieb in dieser Zeit über 100 Sinfonien."
     ),
 
+    // ── EASY NEW (1) ── 15 new questions ───────────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt die bekannteste Sängerin, die für den Hit 'Rolling in the Deep' bekannt ist?",
+        answerA = "Rihanna",
+        answerB = "Adele",
+        answerC = "Beyoncé",
+        answerD = "Amy Winehouse",
+        correctAnswer = 1,
+        explanation = "Adele veröffentlichte 'Rolling in the Deep' im Jahr 2010 auf ihrem Album '21'. Der Song wurde ein weltweiter Nummer-1-Hit.",
+        difficulty = 1,
+        funFact = "Adeles Album '21' ist eines der meistverkauften Alben des 21. Jahrhunderts mit über 31 Millionen verkauften Exemplaren."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument ist ein Tasteninstrument mit Orgelpfeifen?",
+        answerA = "Cembalo",
+        answerB = "Akkordeon",
+        answerC = "Orgel",
+        answerD = "Synthesizer",
+        correctAnswer = 2,
+        explanation = "Die Orgel erzeugt ihren Klang durch Pfeifen, die mit Luft durchströmt werden. Die Tasten steuern, welche Pfeifen klingen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt der bekannteste Song von Queen-Sänger Freddie Mercury als Soloartist?",
+        answerA = "I Was Born to Love You",
+        answerB = "Living on My Own",
+        answerC = "Barcelona",
+        answerD = "The Great Pretender",
+        correctAnswer = 0,
+        explanation = "'I Was Born to Love You' (1985) ist Freddie Mercurys bekanntester Solo-Hit, der auch von Queen neu aufgenommen wurde.",
+        difficulty = 1,
+        funFact = "Freddie Mercury nahm 'Barcelona' als Duett mit der Opernsängerin Montserrat Caballé auf – ein außergewöhnliches Crossover-Projekt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Beat' in der Musik?",
+        answerA = "Ein einzelner Ton",
+        answerB = "Der rhythmische Grundpuls eines Musikstücks",
+        answerC = "Eine Melodiephrase",
+        answerD = "Ein Akkord",
+        correctAnswer = 1,
+        explanation = "Der Beat ist der gleichmäßige Grundpuls, auf den man beim Musikhören mit dem Fuß wippt oder klatscht.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Band sang den Hit 'Highway to Hell'?",
+        answerA = "Metallica",
+        answerB = "AC/DC",
+        answerC = "Guns N' Roses",
+        answerD = "Bon Jovi",
+        correctAnswer = 1,
+        explanation = "'Highway to Hell' (1979) ist einer der bekanntesten Songs von AC/DC aus Australien. Es war das letzte Album mit Sänger Bon Scott vor seinem Tod.",
+        difficulty = 1,
+        funFact = "AC/DC wurde 1973 in Sydney, Australien, von den Brüdern Malcolm und Angus Young gegründet."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie nennt man die Kombination mehrerer gleichzeitig gespielter Töne?",
+        answerA = "Melodie",
+        answerB = "Rhythmus",
+        answerC = "Akkord",
+        answerD = "Harmonie",
+        correctAnswer = 2,
+        explanation = "Ein Akkord entsteht, wenn mindestens drei Töne gleichzeitig erklingen. Der einfachste Akkord ist ein Dreiklang (z.B. C-E-G).",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Sänger ist für 'Purple Rain' bekannt?",
+        answerA = "David Bowie",
+        answerB = "Prince",
+        answerC = "Stevie Wonder",
+        answerD = "Marvin Gaye",
+        correctAnswer = 1,
+        explanation = "'Purple Rain' (1984) ist das bekannteste Werk von Prince. Das Album und der gleichnamige Film machten ihn weltberühmt.",
+        difficulty = 1,
+        funFact = "Prince spielte auf dem Album 'Purple Rain' nahezu alle Instrumente selbst ein."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt die Linie, auf der Noten geschrieben werden?",
+        answerA = "Taktlinie",
+        answerB = "Notenlinie",
+        answerC = "Notenzeile (Notensystem)",
+        answerD = "Maßlinie",
+        correctAnswer = 2,
+        explanation = "Das Notensystem (auch Notenzeile) besteht aus fünf horizontalen Linien, auf und zwischen denen Noten geschrieben werden.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher deutsche Künstler ist bekannt für den Hit 'Über den Wolken'?",
+        answerA = "Udo Jürgens",
+        answerB = "Peter Maffay",
+        answerC = "Reinhard Mey",
+        answerD = "Hannes Wader",
+        correctAnswer = 2,
+        explanation = "'Über den Wolken' (1974) ist das bekannteste Lied des deutschen Liedermachlers Reinhard Mey und handelt vom Fliegen als Befreiung.",
+        difficulty = 1,
+        funFact = "Das Lied inspirierte Generationen von Piloten und ist bis heute bei der Luftwaffe sehr beliebt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Land ist die Heimat des Flamenco?",
+        answerA = "Portugal",
+        answerB = "Italien",
+        answerC = "Spanien",
+        answerD = "Mexiko",
+        correctAnswer = 2,
+        explanation = "Flamenco ist eine andalusische Kunstform aus Südspanien, die Gesang (Cante), Gitarrenspiel (Toque) und Tanz (Baile) vereint.",
+        difficulty = 1,
+        funFact = "2010 wurde Flamenco von der UNESCO als immaterielles Kulturerbe der Menschheit anerkannt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Sängerin ist für 'Like a Virgin' bekannt?",
+        answerA = "Whitney Houston",
+        answerB = "Madonna",
+        answerC = "Cyndi Lauper",
+        answerD = "Tina Turner",
+        correctAnswer = 1,
+        explanation = "'Like a Virgin' (1984) war Madonnas erster weltweiter Nummer-1-Hit. Ihr gleichnamiges Album verkaufte sich über 21 Millionen Mal.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt das Schlaginstrument, das mit Schlegeln auf einem Resonanzkasten gespielt wird?",
+        answerA = "Marimba",
+        answerB = "Xylophon",
+        answerC = "Glockenspiel",
+        answerD = "Vibraphon",
+        correctAnswer = 1,
+        explanation = "Das Xylophon besteht aus Holzstäben unterschiedlicher Länge, die auf einem Gestell liegen und mit Schlägeln angeschlagen werden.",
+        difficulty = 1,
+        funFact = "Der Unterschied zwischen Xylophon und Marimba: Die Marimba hat Metallresonatoren unter den Holzstäben und klingt wärmer und voller."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie nennt man ein langsames, feierliches Musikstück?",
+        answerA = "Scherzo",
+        answerB = "Allegro",
+        answerC = "Adagio",
+        answerD = "Presto",
+        correctAnswer = 2,
+        explanation = "Adagio ist eine musikalische Tempoangabe und bedeutet 'langsam, gemächlich' – langsamer als Andante, aber schneller als Largo.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Band ist bekannt für den Song 'Fiesta Mexicana'?",
+        answerA = "Santana",
+        answerB = "Los Lobos",
+        answerC = "Klaus & Klaus",
+        answerD = "Olé Olé",
+        correctAnswer = 2,
+        explanation = "'Fiesta Mexicana' ist ein Schlagerhit des deutschen Duos Klaus & Klaus aus dem Jahr 1987.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was macht ein DJ bei einem Konzert oder einer Party hauptsächlich?",
+        answerA = "Er singt live",
+        answerB = "Er spielt ein Instrument",
+        answerC = "Er wählt und mixt Musikstücke",
+        answerD = "Er dirigiert das Orchester",
+        correctAnswer = 2,
+        explanation = "Ein DJ (Disc Jockey) wählt Musikstücke aus und mixt sie zu einem kontinuierlichen Musikfluss, oft mit Übergängen und Effekten.",
+        difficulty = 1,
+        funFact = "Der erste DJ der Welt war Jimmy Savile, der 1943 in England erstmals zwei Plattenspieler für nahtlose Übergänge nutzte."
+    ),
+
+    // ── MEDIUM NEW (2) ── 20 new questions ─────────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Gitarrist gilt als einer der einflussreichsten Blues-Rockgitarristen und starb 1970 im Alter von 27 Jahren?",
+        answerA = "Eric Clapton",
+        answerB = "Jimmy Page",
+        answerC = "Jimi Hendrix",
+        answerD = "Carlos Santana",
+        correctAnswer = 2,
+        explanation = "Jimi Hendrix revolutionierte das Gitarrenspiel mit innovativer Feedback-Technik, Whammy-Bar-Einsatz und seinem psychedelischen Stil. Er starb 1970 mit 27 Jahren.",
+        difficulty = 2,
+        funFact = "Hendrix spielte seine Gitarre linkshändig, aber auf einer für Rechtshänder umgedrehten Gitarre – die Saiten waren entsprechend umgekehrt aufgezogen."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Musikform besteht aus einem Thema, das mehrfach in verschiedenen Abwandlungen wiederholt wird?",
+        answerA = "Fuge",
+        answerB = "Suite",
+        answerC = "Variationsform",
+        answerD = "Sonate",
+        correctAnswer = 2,
+        explanation = "In der Variationsform wird ein musikalisches Thema mehrfach wiederholt, aber jedes Mal verändert – in Rhythmus, Tempo, Tonart oder Besetzung.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Genre ist eine Mischung aus Jazz und klassischer Musik, die Mitte des 20. Jahrhunderts entstand?",
+        answerA = "Soul",
+        answerB = "Third Stream",
+        answerC = "Bebop",
+        answerD = "Cool Jazz",
+        correctAnswer = 1,
+        explanation = "Third Stream (Dritter Strom) ist ein von Gunther Schuller 1957 geprägter Begriff für Musik, die Jazz-Improvisation mit klassischer Kompositionstechnik verbindet.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher österreichische Komponist schrieb die 'Unvollendete Sinfonie'?",
+        answerA = "Joseph Haydn",
+        answerB = "Wolfgang Amadeus Mozart",
+        answerC = "Anton Bruckner",
+        answerD = "Franz Schubert",
+        correctAnswer = 3,
+        explanation = "Franz Schuberts 8. Sinfonie h-Moll (D 759) heißt 'Die Unvollendete', weil nur zwei der geplanten vier Sätze fertiggestellt wurden.",
+        difficulty = 2,
+        funFact = "Schubert schrieb die Unvollendete 1822, sie wurde aber erst 1865 – 43 Jahre nach seiner Komposition – uraufgeführt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bedeutet 'a cappella' in der Musik?",
+        answerA = "Sehr laut singen",
+        answerB = "Gesang ohne Instrumentalbegleitung",
+        answerC = "Gesang mit Kirchenorgel",
+        answerD = "Ein Chor mit mehr als 100 Personen",
+        correctAnswer = 1,
+        explanation = "A cappella (ital. 'nach Kapellen-Art') bezeichnet Vokalmusik, die ohne Instrumentalbegleitung gesungen wird.",
+        difficulty = 2,
+        funFact = "In der Renaissance war a cappella die normale Aufführungsart für geistliche Chormusik in Kirchen."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Berliner Band gilt als Vorreiter des Neuen Deutschen Härteklang und ist bekannt für den Hit 'Engel'?",
+        answerA = "In Extremo",
+        answerB = "Schandmaul",
+        answerC = "Rammstein",
+        answerD = "Oomph!",
+        correctAnswer = 2,
+        explanation = "'Engel' (1997) ist einer der bekanntesten Songs von Rammstein und erschien auf dem Album 'Sehnsucht'.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument wird als 'Königin der Instrumente' in der Kammermusik oft als melodieführendes Instrument eingesetzt?",
+        answerA = "Cello",
+        answerB = "Viola",
+        answerC = "Geige (Violine)",
+        answerD = "Kontrabass",
+        correctAnswer = 2,
+        explanation = "Die Violine (Geige) übernimmt in Kammermusik und Orchestern meist die Hauptmelodie dank ihres hellen, durchdringenden Klangs.",
+        difficulty = 2,
+        funFact = "Die bekanntesten Violinen der Welt wurden von Antonio Stradivari (1644–1737) gebaut – eine echte Stradivari ist heute mehrere Millionen Euro wert."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "In welchem Jahr fand das berühmte Woodstock-Festival statt?",
+        answerA = "1967",
+        answerB = "1969",
+        answerC = "1971",
+        answerD = "1973",
+        correctAnswer = 1,
+        explanation = "Das Woodstock Music & Art Festival fand vom 15. bis 18. August 1969 in Bethel, New York, statt. Über 400.000 Menschen besuchten das Festival.",
+        difficulty = 2,
+        funFact = "Jimi Hendrix spielte als letzter Act bei Woodstock am frühen Montagmorgen – da waren nur noch etwa 30.000 Besucher übrig."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Musikstil aus den USA prägte die 1950er Jahre mit Künstlern wie Elvis Presley und Chuck Berry?",
+        answerA = "Swing",
+        answerB = "Rock 'n' Roll",
+        answerC = "Rhythm and Blues",
+        answerD = "Country",
+        correctAnswer = 1,
+        explanation = "Rock 'n' Roll entstand Mitte der 1950er Jahre in den USA als Fusion aus Rhythm and Blues, Gospel und Country. Chuck Berry und Elvis Presley waren die Pioniere.",
+        difficulty = 2,
+        funFact = "Der Begriff 'Rock 'n' Roll' wurde vom DJ Alan Freed geprägt, der die Musik erstmals 1951 unter diesem Namen im Radio spielte."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Leitmotiv' in der Musik?",
+        answerA = "Das Hauptthema einer Sinfonie",
+        answerB = "Ein wiederkehrendes musikalisches Motiv, das eine Person, ein Gefühl oder eine Idee symbolisiert",
+        answerC = "Die Hauptmelodie eines Volkslieds",
+        answerD = "Das erste Thema in einer Sonate",
+        correctAnswer = 1,
+        explanation = "Ein Leitmotiv ist ein kurzes, prägnantes musikalisches Motiv, das mit einer Person, Idee oder Emotion verknüpft ist. Richard Wagner verwendete es systematisch in seinen Opern.",
+        difficulty = 2,
+        funFact = "John Williams nutzte Leitmotive meisterhaft in Star Wars: Das Darth-Vader-Thema (Imperial March) ist eines der bekanntesten Filmleitmotive."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Band veröffentlichte das Album 'Dark Side of the Moon' (1973)?",
+        answerA = "Led Zeppelin",
+        answerB = "The Who",
+        answerC = "Pink Floyd",
+        answerD = "The Rolling Stones",
+        correctAnswer = 2,
+        explanation = "'The Dark Side of the Moon' von Pink Floyd erschien 1973 und war über 14 Jahre in den Charts – eines der meistverkauften Alben der Musikgeschichte.",
+        difficulty = 2,
+        funFact = "Das Album blieb 741 Wochen – das entspricht über 14 Jahren – in den Billboard 200 Charts."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnet man als 'Modulation' in der Musik?",
+        answerA = "Ein Lautstärkeregler am Synthesizer",
+        answerB = "Den Wechsel von einer Tonart in eine andere innerhalb eines Musikstücks",
+        answerC = "Die Stimmung eines Instruments",
+        answerD = "Eine Spieltechnik auf der Gitarre",
+        correctAnswer = 1,
+        explanation = "Modulation ist der gezielte Wechsel der Tonart während eines Musikstücks. Dies erzeugt harmonische Spannung und Abwechslung.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Hamburger Musikclub gilt als Keimzelle des Erfolgs der Beatles in den frühen 1960er Jahren?",
+        answerA = "Fabrik",
+        answerB = "Star-Club",
+        answerC = "Docks",
+        answerD = "Markthalle",
+        correctAnswer = 1,
+        explanation = "Der Hamburger Star-Club war zwischen 1962 und 1969 einer der wichtigsten Livemusik-Clubs Europas. Die Beatles spielten dort über 800 Konzerte und entwickelten ihren Bühnenstil.",
+        difficulty = 2,
+        funFact = "Die Beatles spielten so intensiv im Star-Club, dass sie täglich bis zu acht Stunden auf der Bühne standen – das formte ihren unvergleichlichen Live-Sound."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument ist das tiefste reguläre Streichinstrument im Orchester?",
+        answerA = "Viola",
+        answerB = "Cello",
+        answerC = "Kontrabass",
+        answerD = "Viola da gamba",
+        correctAnswer = 2,
+        explanation = "Der Kontrabass ist das tiefste und größte Streichinstrument im Orchester. Er bildet die harmonische und rhythmische Grundlage der Streichergruppe.",
+        difficulty = 2,
+        funFact = "In der Jazzmusik wird der Kontrabass meist gezupft (pizzicato) und nicht gestrichen, was ihm einen warmen, runden Klang verleiht."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wer ist der Komponist der Oper 'La Traviata'?",
+        answerA = "Giacomo Puccini",
+        answerB = "Wolfgang Amadeus Mozart",
+        answerC = "Georges Bizet",
+        answerD = "Giuseppe Verdi",
+        correctAnswer = 3,
+        explanation = "'La Traviata' (Die Verirrte) wurde 1853 von Giuseppe Verdi komponiert und uraufgeführt. Sie gehört zu den meistgespielten Opern der Welt.",
+        difficulty = 2,
+        funFact = "Die Uraufführung von La Traviata war ein Misserfolg – erst ein Jahr später, mit einer überarbeiteten Besetzung, wurde die Oper ein Triumph."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Musikgenre entstand in den 1980ern in Chicago mit vier-auf-die-vier Bassdrum und schnellen Synthesizer-Melodien?",
+        answerA = "Techno",
+        answerB = "Trance",
+        answerC = "House",
+        answerD = "Drum and Bass",
+        correctAnswer = 2,
+        explanation = "House-Musik entstand ca. 1983 im Chicagoer Club 'The Warehouse' (daher der Name). DJ Frankie Knuckles gilt als 'Godfather of House Music'.",
+        difficulty = 2,
+        funFact = "Der Chicagoer DJ Larry Heard (Mr. Fingers) produzierte 1986 den Track 'Can You Feel It', der als einer der ersten Deep-House-Songs gilt."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie nennt man in der Musik eine kurze, prägnante Melodiephrase?",
+        answerA = "Phrase",
+        answerB = "Motiv",
+        answerC = "Periode",
+        answerD = "Thema",
+        correctAnswer = 1,
+        explanation = "Ein Motiv ist die kleinste bedeutungstragende melodische oder rhythmische Einheit in der Musik – oft nur 2–4 Töne. Aus Motiven werden Themen aufgebaut.",
+        difficulty = 2,
+        funFact = "Das berühmteste Motiv der Musikgeschichte sind die vier Noten des Schicksalsthemas aus Beethovens 5. Sinfonie: drei Achtel und eine Halbe (kurz-kurz-kurz-lang)."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welche Stadt gilt als Geburtsort des Techno-Sounds in Deutschland?",
+        answerA = "Hamburg",
+        answerB = "Berlin",
+        answerC = "Köln",
+        answerD = "Frankfurt am Main",
+        correctAnswer = 3,
+        explanation = "Frankfurt am Main gilt als Wiege des deutschen Techno. DJs wie Sven Väth und das Label Eye Q Records prägten in den frühen 1990ern den Frankfurter Techno-Sound.",
+        difficulty = 2,
+        funFact = "Der Frankfurter Club 'Omen' (1988–1998) war neben dem Berliner Tresor einer der einflussreichsten Techno-Clubs Europas."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Refrain' in einem Popsong?",
+        answerA = "Das langsame Intro des Songs",
+        answerB = "Der sich wiederholende Teil des Songs, der den Höhepunkt enthält",
+        answerC = "Die Instrumentalpassage in der Mitte",
+        answerD = "Der abschließende Ausklang des Songs",
+        correctAnswer = 1,
+        explanation = "Der Refrain (Chorus) ist der sich wiederholende Hauptteil eines Songs. Er enthält meist die eingängigste Melodie und die Hauptbotschaft des Textes.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Sänger ist bekannt als 'The Boss' und für das Album 'Born in the U.S.A.'?",
+        answerA = "Tom Petty",
+        answerB = "John Mellencamp",
+        answerC = "Bruce Springsteen",
+        answerD = "Bob Seger",
+        correctAnswer = 2,
+        explanation = "Bruce Springsteen trägt den Spitznamen 'The Boss'. Sein Album 'Born in the U.S.A.' (1984) wurde mit über 30 Millionen Exemplaren eines der meistverkauften Alben weltweit.",
+        difficulty = 2,
+        funFact = "Obwohl 'Born in the U.S.A.' wie eine patriotische Hymne klingt, handelt der Text von einem zurückgekehrten Vietnam-Veteranen, der in seiner Heimat keinen Halt findet."
+    ),
+
+    // ── HARD NEW (3) ── 15 new questions ───────────────────────────────────────
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnet der Begriff 'Kontrapunkt' in der Musiktheorie?",
+        answerA = "Ein gegentaktiger Rhythmus",
+        answerB = "Die Kunst, zwei oder mehr melodisch selbstständige Stimmen zu kombinieren",
+        answerC = "Ein Akkord, der dem Grundakkord entgegengesetzt ist",
+        answerD = "Ein Instrument, das gegen den Takt spielt",
+        correctAnswer = 1,
+        explanation = "Kontrapunkt (lat. 'punctus contra punctum' = Note gegen Note) ist die Technik, mehrere melodisch eigenständige Stimmlinien so zu kombinieren, dass sie harmonisch zusammenpassen.",
+        difficulty = 3,
+        funFact = "Johann Sebastian Bach gilt als Meister des Kontrapunkts. Seine Fugen gelten bis heute als Paradebeispiele kontrapunktischer Kompositionskunst."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Dirigent und Komponist leitete von 1958 bis 1969 die New York Philharmonic und ist für seine Bernstein-West Side Story bekannt?",
+        answerA = "Aaron Copland",
+        answerB = "Leonard Bernstein",
+        answerC = "George Gershwin",
+        answerD = "Samuel Barber",
+        correctAnswer = 1,
+        explanation = "Leonard Bernstein war Chefdirigent der New York Philharmonic und komponierte die Musical-Adaption 'West Side Story' (1957), die Shakespeare's Romeo und Julia in das New York der 1950er Jahre überträgt.",
+        difficulty = 3,
+        funFact = "Bernstein war der erste amerikanisch geborene Dirigent, der von einem führenden amerikanischen Orchester dauerhaft als Chefdirigent berufen wurde."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Instrument stand im Zentrum von Niccolò Paganinis virtuosen Konzerten und machte ihn zu einer Legende?",
+        answerA = "Cello",
+        answerB = "Klavier",
+        answerC = "Gitarre",
+        answerD = "Violine",
+        correctAnswer = 3,
+        explanation = "Niccolò Paganini (1782–1840) war ein italienischer Violinvirtuose, dessen Technik als so außergewöhnlich galt, dass Zeitgenossen übernatürliche Fähigkeiten vermuteten.",
+        difficulty = 3,
+        funFact = "Paganinis '24 Capricen für Solovioline' sind bis heute einige der technisch anspruchsvollsten Werke des Violinrepertoires."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist ein 'Ostinato' in der Musik?",
+        answerA = "Eine langsame, getragene Tempoangabe",
+        answerB = "Ein beharrlich wiederholtes rhythmisches oder melodisches Muster",
+        answerC = "Eine Form der Stimmführung in Chören",
+        answerD = "Ein Schlaginstrument aus Ostafrika",
+        correctAnswer = 1,
+        explanation = "Ostinato (ital. 'hartnäckig') ist ein kurzes melodisches, rhythmisches oder harmonisches Muster, das im Lauf eines Stücks unverändert wiederholt wird.",
+        difficulty = 3,
+        funFact = "Ravels 'Boléro' (1928) ist das berühmteste Beispiel eines Ostinatos: Das gleiche Thema wird 18 Minuten lang wiederholt, nur die Instrumentation ändert sich."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Begriff beschreibt in der Harmonielehre die Stufe V7 (Dominant-Septakkord), die zur Stufe I auflöst?",
+        answerA = "Subdominante",
+        answerB = "Doppeldominate",
+        answerC = "Dominante",
+        answerD = "Mediante",
+        correctAnswer = 2,
+        explanation = "Die Dominante (V) hat die stärkste Spannung zur Tonika (I). Der Dominant-Septakkord (V7) enthält einen Tritonus, der nach Auflösung zur Tonika drängt.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was versteht man unter 'Polyrhythmik'?",
+        answerA = "Viele verschiedene Melodien gleichzeitig",
+        answerB = "Das gleichzeitige Erklingen von zwei oder mehr verschiedenen Rhythmen",
+        answerC = "Einen Rhythmuswechsel innerhalb eines Takts",
+        answerD = "Rhythmen aus vielen Kulturen gemischt",
+        correctAnswer = 1,
+        explanation = "Polyrhythmik ist das simultane Erklingen zweier oder mehr verschiedener Rhythmen. In westafrikanischer Musik und Jazz ist sie ein zentrales Gestaltungsmittel.",
+        difficulty = 3,
+        funFact = "Steve Reich erforschte in seinen minimalistischen Werken wie 'Drumming' (1971) systematisch, was passiert, wenn gleiche Rhythmen leicht versetzt gespielt werden (Phasing)."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Komponist schrieb die Oper 'La Bohème' (1896)?",
+        answerA = "Georges Bizet",
+        answerB = "Giuseppe Verdi",
+        answerC = "Gaetano Donizetti",
+        answerD = "Giacomo Puccini",
+        correctAnswer = 3,
+        explanation = "'La Bohème' (1896) von Giacomo Puccini ist eine der meistgespielten Opern der Welt. Sie schildert das Leben armer Künstler im Paris des 19. Jahrhunderts.",
+        difficulty = 3,
+        funFact = "Jonathan Larson übertrug La Bohème ins Off-Broadway-Musical 'Rent' (1996), in dem HIV/AIDS statt Tuberkulose die tödliche Krankheit ist."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was bezeichnet der Begriff 'Chromatik' in der Musiktheorie?",
+        answerA = "Die Verwendung von Farben in der Notation",
+        answerB = "Die Verwendung aller 12 Halbtöne der temperierten Stimmung in einer Melodie oder Harmonik",
+        answerC = "Ein Intervall von einer kleinen Terz",
+        answerD = "Die Stimmtechnik bei Blasinstrumenten",
+        correctAnswer = 1,
+        explanation = "Chromatik (griech. 'chroma' = Farbe) bezeichnet in der Musik die Verwendung von Tönen außerhalb der Diatonik – also die halbtonweise Bewegung durch alle 12 Töne.",
+        difficulty = 3,
+        funFact = "Wagners Tristan-Akkord aus 'Tristan und Isolde' (1859) ist eines der bekanntesten Beispiele für extreme Chromatik in der Romanik."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Jazz-Saxofonist ist bekannt für den revolutionären Stil des 'Bebop' und den Album 'Ko-Ko' (1945)?",
+        answerA = "John Coltrane",
+        answerB = "Charlie Parker",
+        answerC = "Sonny Rollins",
+        answerD = "Coleman Hawkins",
+        correctAnswer = 1,
+        explanation = "Charlie Parker (genannt 'Bird') gilt als Vater des Bebop. Er revolutionierte den Jazz mit extrem schnellen Läufen, komplexen Harmonien und ungewöhnlichen Phrasierungen.",
+        difficulty = 3,
+        funFact = "Charlie Parker war für seinen enormen Appetit bekannt – sein Spitzname 'Yardbird' (kurz 'Bird') soll daher stammen, dass er auf Tournee einen Hühnerhof überfuhr und das Tier dann gekocht verlangte."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was versteht man unter einer 'Kadenz' in der Harmonielehre?",
+        answerA = "Ein Soloabschnitt im Konzert",
+        answerB = "Eine Akkordfolge, die ein tonales Zentrum bestätigt oder abschließt",
+        answerC = "Eine Tonleiter mit kleinen Intervallen",
+        answerD = "Eine langsame Schlusspassage",
+        correctAnswer = 1,
+        explanation = "Eine Kadenz ist eine harmonische Folge (meist IV-V-I oder II-V-I), die das tonale Zentrum bestätigt. Sie wirkt wie ein 'Punkt' oder 'Komma' in der musikalischen Syntax.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welches Kompositionsprinzip beschreibt das gleichzeitige Erklingen verschiedener Tonarten?",
+        answerA = "Bitonalität / Polytonalität",
+        answerB = "Atonalität",
+        answerC = "Pantonalität",
+        answerD = "Modalität",
+        correctAnswer = 0,
+        explanation = "Bitonalität (zwei Tonarten) oder Polytonalität (mehrere Tonarten) bezeichnet das gleichzeitige Erklingen in verschiedenen Tonarten, ein Merkmal von Strawinsky und Bartók.",
+        difficulty = 3,
+        funFact = "Igor Strawinskys 'Petruschka' (1911) ist ein berühmtes Beispiel für Bitonalität: Die gleichzeitig erklingenden Akkorde C-Dur und Fis-Dur ergeben den sogenannten 'Petruschka-Akkord'."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wie heißt die Technik, bei der Bläser ohne Atemunterbrechung kontinuierlich spielen können?",
+        answerA = "Luftdruck-Kreislauf",
+        answerB = "Zirkuläratmung",
+        answerC = "Dauerpfeifen-Technik",
+        answerD = "Vibrato-Atmung",
+        correctAnswer = 1,
+        explanation = "Zirkuläratmung ermöglicht das gleichzeitige Ein- und Ausatmen: Während Luft aus den Wangen ausgestoßen wird, atmet der Musiker durch die Nase ein – ein endloser Ton entsteht.",
+        difficulty = 3,
+        funFact = "Der australische Didgeridoo-Spieler David Hudson hält einen Guinness-Weltrekord: Er spielte mit Zirkuläratmung über 50 Minuten einen ununterbrochenen Ton."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Wer komponierte das Requiem KV 626, das er unvollendet hinterließ?",
+        answerA = "Franz Schubert",
+        answerB = "Ludwig van Beethoven",
+        answerC = "Wolfgang Amadeus Mozart",
+        answerD = "Johannes Brahms",
+        correctAnswer = 2,
+        explanation = "Mozarts Requiem KV 626 (1791) blieb unvollendet, da er während der Komposition starb. Sein Schüler Franz Xaver Süßmayr vollendete das Werk nach Mozarts Aufzeichnungen.",
+        difficulty = 3,
+        funFact = "Die mysteriösen Umstände der Auftragserteilung durch einen anonymen Boten und Mozarts Tod während der Komposition inspirierten zahlreiche Legenden und den Film 'Amadeus' (1984)."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Was ist das charakteristische Merkmal des Genres 'Minimal Music' (Minimalismus)?",
+        answerA = "Sehr wenige Instrumente, maximal drei",
+        answerB = "Langsame, schrittweise Veränderung einfacher, sich wiederholender Muster",
+        answerC = "Nur natürliche Töne ohne Akkorde",
+        answerD = "Kurze Stücke unter drei Minuten",
+        correctAnswer = 1,
+        explanation = "Minimal Music (entstanden ca. 1960, Vertreter: Steve Reich, Philip Glass, Terry Riley) verwendet einfache, wiederholte Muster, die sich nur langsam und graduell verändern.",
+        difficulty = 3,
+        funFact = "Philip Glass komponierte die Oper 'Einstein on the Beach' (1976) als fünfstündiges Werk ohne Pause und Handlung – reine Klang- und Bildstruktur."
+    ),
+
+    Question(
+        categoryId = 5,
+        questionText = "Welcher Komponist schuf die symphonischen Dichtungen 'Also sprach Zarathustra' und 'Till Eulenspiegels lustige Streiche'?",
+        answerA = "Gustav Mahler",
+        answerB = "Anton Bruckner",
+        answerC = "Richard Strauss",
+        answerD = "Max Reger",
+        correctAnswer = 2,
+        explanation = "Richard Strauss (1864–1949) schuf mit seinen Tondichtungen neue Standards für programmatische Orchestermusik. 'Also sprach Zarathustra' op. 30 wurde durch Stanley Kubricks '2001' weltberühmt.",
+        difficulty = 3,
+        funFact = "Die Eröffnung von 'Also sprach Zarathustra' (C-G-C-Akkorde) wurde durch Kubricks Film so ikonisch, dass sie heute reflexartig mit dem Weltall assoziiert wird."
+    ),
+
     // ── EXPERT (4) ── ~8 questions ─────────────────────────────────────────────
 
     Question(
