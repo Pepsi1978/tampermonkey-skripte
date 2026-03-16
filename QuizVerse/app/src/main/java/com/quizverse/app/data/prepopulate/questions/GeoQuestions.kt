@@ -1318,5 +1318,830 @@ fun geoQuestions(): List<Question> = listOf(
         explanation = "Östlich der Arabischen Halbinsel liegt der Persische Golf (im Norden) und das Arabische Meer (im Süden), das Teil des Indischen Ozeans ist.",
         difficulty = 3,
         funFact = "Der Persische Golf enthält etwa 55 % der weltweiten nachgewiesenen Ölreserven."
+    ),
+
+    // ── ADDITIONAL EASY (difficulty = 1) ── 25 questions ─────────────────────
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Portugal?",
+        answerA = "Porto",
+        answerB = "Braga",
+        answerC = "Lissabon",
+        answerD = "Faro",
+        correctAnswer = 2,
+        explanation = "Lissabon ist die Hauptstadt Portugals und mit rund 500.000 Einwohnern (Metropolregion 2,9 Mio.) die größte Stadt des Landes.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Mexiko?",
+        answerA = "Guadalajara",
+        answerB = "Cancún",
+        answerC = "Monterrey",
+        answerD = "Mexiko-Stadt",
+        correctAnswer = 3,
+        explanation = "Mexiko-Stadt (Ciudad de México) ist die Hauptstadt Mexikos und mit über 9 Millionen Einwohnern im Stadtgebiet eine der größten Städte Lateinamerikas.",
+        difficulty = 1,
+        funFact = "Mexiko-Stadt liegt auf einem ehemaligen Seebett auf 2.240 m Höhe und sinkt jährlich einige Zentimeter ab."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Nil?",
+        answerA = "Nur in Ägypten",
+        answerB = "Nur im Sudan",
+        answerC = "In mehreren afrikanischen Ländern",
+        answerD = "Nur in Äthiopien",
+        correctAnswer = 2,
+        explanation = "Der Nil durchfließt mehrere afrikanische Länder, darunter Burundi, Ruanda, Tansania, Uganda, Südsudan, Sudan und Ägypten.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte Kontinent nach Einwohnerzahl?",
+        answerA = "Afrika",
+        answerB = "Europa",
+        answerC = "Asien",
+        answerD = "Nordamerika",
+        correctAnswer = 2,
+        explanation = "Asien ist nicht nur der flächenmäßig größte Kontinent, sondern beherbergt auch über 4,7 Milliarden Menschen – mehr als 60 % der Weltbevölkerung.",
+        difficulty = 1,
+        funFact = "Allein Indien und China zusammen machen fast 3 Milliarden Menschen aus – mehr als alle anderen Kontinente außer Asien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Indien?",
+        answerA = "Mumbai",
+        answerB = "Kolkata",
+        answerC = "Neu-Delhi",
+        answerD = "Chennai",
+        correctAnswer = 2,
+        explanation = "Neu-Delhi ist die Hauptstadt Indiens. Es ist Teil der Hauptstadtregion Delhi, die insgesamt über 30 Millionen Einwohner hat.",
+        difficulty = 1,
+        funFact = "Delhi ist die zweitgrößte Metropolregion der Welt nach Tokio."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Ägypten?",
+        answerA = "Alexandria",
+        answerB = "Kairo",
+        answerC = "Luxor",
+        answerD = "Assuan",
+        correctAnswer = 1,
+        explanation = "Kairo ist die Hauptstadt Ägyptens und die größte Stadt Afrikas mit über 20 Millionen Einwohnern in der Metropolregion.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Kontinent liegt die Sahara?",
+        answerA = "Asien",
+        answerB = "Australien",
+        answerC = "Südamerika",
+        answerD = "Afrika",
+        correctAnswer = 3,
+        explanation = "Die Sahara ist die größte Heißwüste der Erde und liegt im Norden Afrikas. Sie erstreckt sich über rund 9 Millionen km².",
+        difficulty = 1,
+        funFact = "Vor etwa 5.000–11.000 Jahren war die Sahara grün und bewohnt – ein Phänomen, das als Afrikanisches Feuchtzeitoptimum bekannt ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt der USA?",
+        answerA = "New York City",
+        answerB = "Los Angeles",
+        answerC = "Chicago",
+        answerD = "Washington, D.C.",
+        correctAnswer = 3,
+        explanation = "Washington, D.C. ist die Hauptstadt der Vereinigten Staaten. Die Abkürzung D.C. steht für District of Columbia.",
+        difficulty = 1,
+        funFact = "Washington, D.C. ist kein Bundesstaat, sondern ein eigener Bundesdistirkt – damit hat die Bundesregierung die volle Kontrolle über die Hauptstadt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Ozean liegt Hawaii?",
+        answerA = "Atlantischer Ozean",
+        answerB = "Indischer Ozean",
+        answerC = "Pazifischer Ozean",
+        answerD = "Arktischer Ozean",
+        correctAnswer = 2,
+        explanation = "Der US-Bundesstaat Hawaii liegt im zentralen Nordpazifik, rund 3.800 km von der US-Westküste entfernt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt direkt südlich von Deutschland?",
+        answerA = "Frankreich",
+        answerB = "Polen",
+        answerC = "Österreich",
+        answerD = "Belgien",
+        correctAnswer = 2,
+        explanation = "Österreich grenzt direkt südlich an Deutschland. Deutschland teilt seine Südgrenze hauptsächlich mit Österreich und der Schweiz.",
+        difficulty = 1,
+        funFact = "Deutschland hat insgesamt neun Nachbarländer – mehr als jedes andere europäische Land."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Südkorea?",
+        answerA = "Busan",
+        answerB = "Incheon",
+        answerC = "Seoul",
+        answerD = "Daegu",
+        correctAnswer = 2,
+        explanation = "Seoul ist die Hauptstadt Südkoreas und mit über 9,7 Millionen Einwohnern die größte Stadt des Landes.",
+        difficulty = 1,
+        funFact = "Seoul bedeutet auf Koreanisch einfach 'Hauptstadt'."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Russland?",
+        answerA = "Sankt Petersburg",
+        answerB = "Moskau",
+        answerC = "Nowosibirsk",
+        answerD = "Jekaterinburg",
+        correctAnswer = 1,
+        explanation = "Moskau ist die Hauptstadt Russlands und mit über 12 Millionen Einwohnern die größte Stadt Europas.",
+        difficulty = 1,
+        funFact = "Der Kreml in Moskau war ursprünglich eine mittelalterliche Festung und ist heute der Sitz der russischen Regierung."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Kontinent liegt Neuseeland?",
+        answerA = "Asien",
+        answerB = "Australien",
+        answerC = "Ozeanien",
+        answerD = "Antarktis",
+        correctAnswer = 2,
+        explanation = "Neuseeland liegt in Ozeanien im südwestlichen Pazifik und besteht aus zwei Hauptinseln sowie mehreren kleineren Inseln.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der längste Fluss Deutschlands?",
+        answerA = "Elbe",
+        answerB = "Rhein",
+        answerC = "Donau",
+        answerD = "Main",
+        correctAnswer = 1,
+        explanation = "Der Rhein ist mit rund 865 km Länge auf deutschem Gebiet (Gesamtlänge 1.230 km) der längste Fluss Deutschlands.",
+        difficulty = 1,
+        funFact = "Das Rheintal ist das meistbefahrene Binnenwasserstraßennetz der Welt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt die Sahara am größten?",
+        answerA = "Sudan",
+        answerB = "Libyen",
+        answerC = "Algerien",
+        answerD = "Ägypten",
+        correctAnswer = 2,
+        explanation = "Algerien ist das Land, in dem die Sahara flächenmäßig am größten vertreten ist – über 80 % des algerischen Staatsgebiets sind Wüste.",
+        difficulty = 1,
+        funFact = "Algerien ist mit 2,38 Millionen km² das größte Land Afrikas."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Griechenland?",
+        answerA = "Thessaloniki",
+        answerB = "Patras",
+        answerC = "Heraklion",
+        answerD = "Athen",
+        correctAnswer = 3,
+        explanation = "Athen ist die Hauptstadt Griechenlands und eine der ältesten Städte der Welt mit einer Geschichte von über 3.000 Jahren.",
+        difficulty = 1,
+        funFact = "Die Akropolis in Athen wurde hauptsächlich im 5. Jahrhundert v. Chr. unter Perikles erbaut."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Kontinent liegt Argentinien?",
+        answerA = "Nordamerika",
+        answerB = "Afrika",
+        answerC = "Südamerika",
+        answerD = "Ozeanien",
+        correctAnswer = 2,
+        explanation = "Argentinien liegt im südlichen Teil Südamerikas und ist mit 2,78 Millionen km² das zweitgrößte Land des Kontinents.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt der Türkei?",
+        answerA = "Istanbul",
+        answerB = "Izmir",
+        answerC = "Antalya",
+        answerD = "Ankara",
+        correctAnswer = 3,
+        explanation = "Ankara ist die Hauptstadt der Türkei seit 1923. Istanbul ist zwar die größte Stadt, aber Ankara ist der Regierungssitz.",
+        difficulty = 1,
+        funFact = "Istanbul ist die einzige Millionenstadt der Welt, die auf zwei Kontinenten liegt – Europa und Asien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen Italien und dem Balkan?",
+        answerA = "Tyrrhenisches Meer",
+        answerB = "Ligurisches Meer",
+        answerC = "Adriatisches Meer",
+        answerD = "Ionisches Meer",
+        correctAnswer = 2,
+        explanation = "Das Adriatische Meer liegt zwischen der italienischen Halbinsel im Westen und der Balkanhalbinsel (Kroatien, Bosnien, Montenegro, Albanien) im Osten.",
+        difficulty = 1,
+        funFact = "Venedig liegt direkt am Adriatischen Meer und sinkt jährlich etwa 2 mm ab."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Polen?",
+        answerA = "Krakau",
+        answerB = "Danzig",
+        answerC = "Warschau",
+        answerD = "Lodz",
+        correctAnswer = 2,
+        explanation = "Warschau (Warszawa) ist die Hauptstadt Polens und mit über 1,8 Millionen Einwohnern die größte Stadt des Landes.",
+        difficulty = 1,
+        funFact = "Warschau wurde im Zweiten Weltkrieg fast vollständig zerstört – die heutige Altstadt ist eine originalgetreue Rekonstruktion und UNESCO-Welterbe."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Mont Blanc?",
+        answerA = "Schweiz",
+        answerB = "Österreich",
+        answerC = "Frankreich und Italien",
+        answerD = "Nur in Frankreich",
+        correctAnswer = 2,
+        explanation = "Der Mont Blanc liegt auf der Grenze zwischen Frankreich und Italien und ist mit 4.808 m der höchste Berg der Alpen und Westeuropas.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Schweden?",
+        answerA = "Göteborg",
+        answerB = "Malmö",
+        answerC = "Uppsala",
+        answerD = "Stockholm",
+        correctAnswer = 3,
+        explanation = "Stockholm ist die Hauptstadt Schwedens und liegt auf 14 Inseln, wo der Mälarsee auf die Ostsee trifft.",
+        difficulty = 1,
+        funFact = "Stockholm wurde 1252 gegründet und ist die Hauptstadt, die am meisten Inseln besitzt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Kontinent liegt Marokko?",
+        answerA = "Asien",
+        answerB = "Europa",
+        answerC = "Afrika",
+        answerD = "Naher Osten",
+        correctAnswer = 2,
+        explanation = "Marokko liegt im Nordwesten Afrikas und grenzt an den Atlantischen Ozean und das Mittelmeer.",
+        difficulty = 1,
+        funFact = "Marokko und Spanien sind nur 14 km voneinander entfernt – durch die Straße von Gibraltar getrennt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Norwegen?",
+        answerA = "Bergen",
+        answerB = "Trondheim",
+        answerC = "Stavanger",
+        answerD = "Oslo",
+        correctAnswer = 3,
+        explanation = "Oslo ist die Hauptstadt Norwegens und liegt am Ende des Oslofjords. Mit rund 700.000 Einwohnern ist es die größte Stadt Norwegens.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Hauptstadt von Saudi-Arabien?",
+        answerA = "Dschidda",
+        answerB = "Mekka",
+        answerC = "Riad",
+        answerD = "Medina",
+        correctAnswer = 2,
+        explanation = "Riad ist die Hauptstadt Saudi-Arabiens und mit über 7 Millionen Einwohnern die größte Stadt des Landes.",
+        difficulty = 1,
+        funFact = "Riad liegt im Zentrum der Arabischen Halbinsel in der Najd-Region und ist eine der am schnellsten wachsenden Städte der Welt."
+    ),
+
+    // ── ADDITIONAL MEDIUM (difficulty = 2) ── 15 questions ───────────────────
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge liegt zwischen Spanien und Frankreich?",
+        answerA = "Alpen",
+        answerB = "Pyrenäen",
+        answerC = "Kantabrisches Gebirge",
+        answerD = "Sierra Nevada",
+        correctAnswer = 1,
+        explanation = "Die Pyrenäen bilden die natürliche Grenze zwischen Spanien und Frankreich und erstrecken sich über 430 km von der Atlantikküste bis zum Mittelmeer.",
+        difficulty = 2,
+        funFact = "Der höchste Gipfel der Pyrenäen ist der Pico d'Aneto in Spanien mit 3.404 m."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt der größte See Afrikas?",
+        answerA = "Tanganjikasee",
+        answerB = "Malawisee",
+        answerC = "Tschadsee",
+        answerD = "Viktoriasee",
+        correctAnswer = 3,
+        explanation = "Der Viktoriasee ist mit rund 68.800 km² der größte See Afrikas und der zweitgrößte Süßwassersee der Welt.",
+        difficulty = 2,
+        funFact = "Der Viktoriasee wurde 1858 vom britischen Entdecker John Hanning Speke als erster Europäer gesichtet und nach Königin Victoria benannt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat sowohl Atlantik- als auch Mittelmeerküste?",
+        answerA = "Frankreich",
+        answerB = "Portugal",
+        answerC = "Marokko",
+        answerD = "Griechenland",
+        correctAnswer = 0,
+        explanation = "Frankreich hat sowohl eine Atlantikküste (Bretagne, Biskaya) als auch eine Mittelmeerküste (Côte d'Azur) und ist damit eines der wenigen Länder mit Zugang zu beiden Gewässern.",
+        difficulty = 2,
+        funFact = "Auch Spanien, Marokko, Algerien und Tunesien haben sowohl Atlantik- als auch Mittelmeerküste."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der höchste Vulkan Europas?",
+        answerA = "Vesuv",
+        answerB = "Stromboli",
+        answerC = "Ätna",
+        answerD = "Teide",
+        correctAnswer = 2,
+        explanation = "Der Ätna auf Sizilien ist mit über 3.350 m (Höhe variiert nach Ausbrüchen) der höchste aktive Vulkan Europas.",
+        difficulty = 2,
+        funFact = "Der Ätna ist einer der aktivsten Vulkane der Welt und bricht fast jedes Jahr aus."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche zwei Länder teilen sich die Halbinsel Korea?",
+        answerA = "China und Japan",
+        answerB = "Nordkorea und Südkorea",
+        answerC = "Japan und Russland",
+        answerD = "China und Südkorea",
+        correctAnswer = 1,
+        explanation = "Die koreanische Halbinsel ist seit 1945 in Nordkorea (Demokratische Volksrepublik Korea) und Südkorea (Republik Korea) geteilt.",
+        difficulty = 2,
+        funFact = "Der Grenzstreifen zwischen Nord- und Südkorea (DMZ) ist trotz seiner Sperrung zu einem unbeabsichtigten Naturschutzgebiet geworden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt das Okavangodelta?",
+        answerA = "Simbabwe",
+        answerB = "Sambia",
+        answerC = "Namibia",
+        answerD = "Botsuana",
+        correctAnswer = 3,
+        explanation = "Das Okavangodelta liegt im Norden Botsuanas und ist eines der größten Binnendelta-Systeme der Welt – ein UNESCO-Weltnaturerbe.",
+        difficulty = 2,
+        funFact = "Der Okavango-Fluss fließt ins Landesinnere und versickert in der Kalahari-Wüste, ohne das Meer zu erreichen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge liegt in Marokko?",
+        answerA = "Atlasgebirge",
+        answerB = "Drachenberge",
+        answerC = "Ruwenzori",
+        answerD = "Ahaggar-Gebirge",
+        correctAnswer = 0,
+        explanation = "Das Atlasgebirge durchzieht Marokko, Algerien und Tunesien. Der höchste Gipfel in Marokko ist der Toubkal mit 4.167 m.",
+        difficulty = 2,
+        funFact = "Das Atlasgebirge trägt seinen Namen nach dem Titan Atlas aus der griechischen Mythologie."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige Land, das von Italien vollständig umschlossen wird?",
+        answerA = "Vatikanstadt",
+        answerB = "Monaco",
+        answerC = "San Marino",
+        answerD = "Andorra",
+        correctAnswer = 2,
+        explanation = "San Marino liegt vollständig im Inneren Italiens (auf dem Berg Titano) und ist damit der einzige Staat, der vollständig von einem anderen Land umschlossen wird – außer dem Vatikan.",
+        difficulty = 2,
+        funFact = "San Marino ist die älteste Republik der Welt und wurde laut Überlieferung im Jahr 301 n. Chr. gegründet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss bildet die Grenze zwischen Deutschland und Polen?",
+        answerA = "Elbe",
+        answerB = "Oder",
+        answerC = "Weichsel",
+        answerD = "Rhein",
+        correctAnswer = 1,
+        explanation = "Die Oder (zusammen mit der Neiße) bildet die Grenze zwischen Deutschland und Polen, festgelegt nach dem Zweiten Weltkrieg.",
+        difficulty = 2,
+        funFact = "Die Oder-Neiße-Grenze wurde 1990 im Zwei-plus-Vier-Vertrag von Deutschland endgültig anerkannt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt Angkor Wat?",
+        answerA = "Thailand",
+        answerB = "Myanmar",
+        answerC = "Kambodscha",
+        answerD = "Laos",
+        correctAnswer = 2,
+        explanation = "Angkor Wat liegt in Kambodscha und ist der größte Tempelbau der Welt. Es wurde im 12. Jahrhundert von König Suryavarman II. erbaut.",
+        difficulty = 2,
+        funFact = "Angkor Wat ist auf der kambodschanischen Nationalflagge abgebildet – eines von wenigen Gebäuden, das auf einer Landesflagge erscheint."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss fließt durch Budapest?",
+        answerA = "Donau",
+        answerB = "Theiß",
+        answerC = "Save",
+        answerD = "Drau",
+        correctAnswer = 0,
+        explanation = "Die Donau teilt Budapest in zwei Hälften: das westliche Buda (hügelig) und das östliche Pest (flach). Budapest entstand 1873 durch den Zusammenschluss beider Städte.",
+        difficulty = 2,
+        funFact = "Budapest hat mehr Thermalquellen als jede andere Hauptstadt der Welt – über 100 heiße Quellen befinden sich unter der Stadt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land in Ostafrika hat keinen Zugang zum Meer?",
+        answerA = "Kenia",
+        answerB = "Tansania",
+        answerC = "Uganda",
+        answerD = "Mosambik",
+        correctAnswer = 2,
+        explanation = "Uganda ist ein Binnenstaat in Ostafrika ohne Meereszugang. Es grenzt an Kenia, Tansania, Ruanda, DR Kongo und Südsudan.",
+        difficulty = 2,
+        funFact = "Uganda liegt am Viktoriasee – dem größten See Afrikas – und hat damit Zugang zu Süßwasser, aber keinen zum Meer."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen Griechenland und der Türkei?",
+        answerA = "Schwarzes Meer",
+        answerB = "Adriatisches Meer",
+        answerC = "Ägäisches Meer",
+        answerD = "Ionisches Meer",
+        correctAnswer = 2,
+        explanation = "Das Ägäische Meer liegt zwischen Griechenland und der Türkei und ist Teil des Mittelmeers. Es enthält Tausende von Inseln, darunter die griechischen Kykladen und Dodekanes.",
+        difficulty = 2,
+        funFact = "Der Name 'Ägäis' geht auf den mythologischen König Ägeus zurück, der sich laut Legende in das Meer stürzte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat die längste Grenze mit Brasilien?",
+        answerA = "Argentinien",
+        answerB = "Peru",
+        answerC = "Bolivien",
+        answerD = "Kolumbien",
+        correctAnswer = 1,
+        explanation = "Peru teilt mit Brasilien eine Grenze von rund 2.995 km – die längste Grenze Brasiliens nach der mit Bolivien (3.423 km). Bolivien ist tatsächlich länger.",
+        difficulty = 2,
+        funFact = "Brasilien grenzt an 10 der 12 südamerikanischen Länder – nur Ecuador und Chile haben keine gemeinsame Grenze mit Brasilien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Fuji?",
+        answerA = "China",
+        answerB = "Südkorea",
+        answerC = "Japan",
+        answerD = "Taiwan",
+        correctAnswer = 2,
+        explanation = "Der Fuji (Fujisan) in Japan ist mit 3.776 m der höchste Berg Japans und ein aktiver Vulkan, der zuletzt 1707 ausbrach.",
+        difficulty = 2,
+        funFact = "Der Fuji ist ein heiliger Berg in Japan und wird von ca. 300.000 Menschen jährlich bestiegen."
+    ),
+
+    // ── ADDITIONAL HARD (difficulty = 3) ── 23 questions ─────────────────────
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land ist der einzige Staat der Welt, der vollständig von einem anderen Staat umgeben ist (außer dem Vatikan)?",
+        answerA = "Monaco",
+        answerB = "Andorra",
+        answerC = "San Marino",
+        answerD = "Lesotho",
+        correctAnswer = 3,
+        explanation = "Lesotho ist das einzige souveräne Land außer dem Vatikan, das vollständig von einem einzigen anderen Land umschlossen wird – nämlich von Südafrika.",
+        difficulty = 3,
+        funFact = "Lesotho ist auch bekannt als 'Königreich im Himmel', weil es vollständig auf einem Hochplateau liegt – der niedrigste Punkt liegt noch über 1.400 m."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das dünn besiedelste Land der Welt (nach Bevölkerungsdichte)?",
+        answerA = "Australien",
+        answerB = "Grönland",
+        answerC = "Island",
+        answerD = "Mongolei",
+        correctAnswer = 3,
+        explanation = "Die Mongolei hat mit rund 2 Einwohnern pro km² eine der niedrigsten Bevölkerungsdichten der Welt unter souveränen Staaten.",
+        difficulty = 3,
+        funFact = "In der Mongolei gibt es mehr Pferde als Menschen – Pferde sind kulturell tief verwurzelt und übersteigen die Menschenzahl bei weitem."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Gebirgspass verbindet Afghanistan mit Pakistan historisch?",
+        answerA = "Salang-Pass",
+        answerB = "Khyber-Pass",
+        answerC = "Wakhan-Korridor",
+        answerD = "Hindukusch-Pass",
+        correctAnswer = 1,
+        explanation = "Der Khyber-Pass ist ein historisch bedeutsamer Gebirgspass im Hindukusch, der Afghanistan und Pakistan verbindet und seit Jahrtausenden als Handels- und Invasionsroute genutzt wird.",
+        difficulty = 3,
+        funFact = "Alexander der Große, Dschingis Khan und die britische Kolonialarmee nutzten alle den Khyber-Pass als Durchgangsroute."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat die höchste durchschnittliche Meereshöhe (mittlere Elevation)?",
+        answerA = "Nepal",
+        answerB = "Tibet (China)",
+        answerC = "Bhutan",
+        answerD = "Lesotho",
+        correctAnswer = 1,
+        explanation = "Tibet hat die höchste durchschnittliche Elevation aller Regionen der Welt – rund 4.500 m – und wird daher auch 'Dach der Welt' genannt.",
+        difficulty = 3,
+        funFact = "Auf dem tibetischen Plateau liegt der Brahmaputra-Fluss, der in seinem Oberlauf als Yarlung Tsangpo bekannt ist und den tiefsten Canyon der Welt bildet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das flächenmäßig größte Land Südamerikas nach Brasilien?",
+        answerA = "Kolumbien",
+        answerB = "Peru",
+        answerC = "Argentinien",
+        answerD = "Venezuela",
+        correctAnswer = 2,
+        explanation = "Argentinien ist mit rund 2,78 Millionen km² das zweitgrößte Land Südamerikas, nach Brasilien mit 8,5 Millionen km².",
+        difficulty = 3,
+        funFact = "Argentinien hat Ansprüche auf einen Teil der Antarktis erhoben und betreibt dort mehrere Forschungsstationen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Meer liegt die Insel Madagaskar?",
+        answerA = "Atlantischer Ozean",
+        answerB = "Rotes Meer",
+        answerC = "Arabisches Meer",
+        answerD = "Indischer Ozean",
+        correctAnswer = 3,
+        explanation = "Madagaskar liegt im westlichen Indischen Ozean vor der Ostküste Afrikas (Mosambik). Der Kanal zwischen Madagaskar und dem Festland heißt Mosambikkanal.",
+        difficulty = 3,
+        funFact = "Madagaskar hat sich vor rund 88 Millionen Jahren von Indien getrennt – was erklärt, warum 90 % der Tier- und Pflanzenarten endemisch sind."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt zwischen dem Iran und Pakistan?",
+        answerA = "Irak",
+        answerB = "Türkei",
+        answerC = "Afghanistan",
+        answerD = "Usbekistan",
+        correctAnswer = 2,
+        explanation = "Afghanistan liegt zwischen dem Iran im Westen und Pakistan im Osten. Es ist ein Binnenstaat im Herzen Asiens.",
+        difficulty = 3,
+        funFact = "Afghanistan grenzt auch an China – über den schmalen Wakhan-Korridor, ein Streifen Land im Nordosten des Landes."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss bildet einen Teil der Grenze zwischen den USA und Mexiko?",
+        answerA = "Colorado River",
+        answerB = "Missouri River",
+        answerC = "Arkansas River",
+        answerD = "Rio Grande",
+        correctAnswer = 3,
+        explanation = "Der Rio Grande (in Mexiko: Río Bravo del Norte) bildet auf rund 2.000 km die natürliche Grenze zwischen den USA (Texas) und Mexiko.",
+        difficulty = 3,
+        funFact = "Der Rio Grande beginnt in den Rocky Mountains in Colorado und mündet im Golf von Mexiko."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches europäische Land hat die meisten aktiven Vulkane?",
+        answerA = "Griechenland",
+        answerB = "Island",
+        answerC = "Italien",
+        answerD = "Norwegen",
+        correctAnswer = 1,
+        explanation = "Island hat die höchste Dichte an aktiven Vulkanen in Europa. Das Land liegt auf dem Mittelatlantischen Rücken und ist vulkanisch sehr aktiv.",
+        difficulty = 3,
+        funFact = "Island produziert rund 30 % seines Stroms aus geothermischer Energie dank seiner vulkanischen Aktivität."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die Halbinsel, auf der sich die iberischen Länder Spanien und Portugal befinden?",
+        answerA = "Balkanhalbinsel",
+        answerB = "Apenninische Halbinsel",
+        answerC = "Skandinavische Halbinsel",
+        answerD = "Iberische Halbinsel",
+        correctAnswer = 3,
+        explanation = "Spanien und Portugal befinden sich auf der Iberischen Halbinsel im Südwesten Europas, die durch die Pyrenäen von Frankreich getrennt wird.",
+        difficulty = 3,
+        funFact = "Der Name 'Iberia' stammt vom Fluss Ebro (lateinisch: Hiberus/Iberus), dem längsten Fluss Spaniens."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land besitzt das größte zusammenhängende Wüstengebiet Asiens – die Gobi?",
+        answerA = "China und Mongolei",
+        answerB = "Nur China",
+        answerC = "Nur Mongolei",
+        answerD = "China und Kasachstan",
+        correctAnswer = 0,
+        explanation = "Die Gobi-Wüste erstreckt sich über Teile Chinas und der Mongolei. Mit rund 1,3 Millionen km² ist sie die größte Wüste Asiens.",
+        difficulty = 3,
+        funFact = "Die Gobi ist eine der wenigen Wüsten, in der Dinosaurierfossilien massenhaft gefunden wurden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss fließt durch Kairo?",
+        answerA = "Euphrat",
+        answerB = "Jordan",
+        answerC = "Nil",
+        answerD = "Tigris",
+        correctAnswer = 2,
+        explanation = "Der Nil fließt durch Kairo, bevor er im Nildelta in das Mittelmeer mündet. Die Stadt liegt am Übergang zwischen dem Nil-Tal und dem Delta.",
+        difficulty = 3,
+        funFact = "Das Nildelta ist einer der fruchtbarsten Landstriche der Welt – hier lebten schon die alten Ägypter vor über 5.000 Jahren."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige Land der Welt, das auf vier Kontinenten liegt (durch Überseegebiete)?",
+        answerA = "Großbritannien",
+        answerB = "USA",
+        answerC = "Frankreich",
+        answerD = "Spanien",
+        correctAnswer = 2,
+        explanation = "Frankreich erstreckt sich durch seine Überseegebiete über Europa, Amerika (Martinique, Guadeloupe, Guyana), Ozeanien (Neukaledonien, Französisch-Polynesien) und Antarktika.",
+        difficulty = 3,
+        funFact = "Französisch-Guayana in Südamerika beherbergt das europäische Raumfahrtzentrum Kourou, von wo Ariane-Raketen gestartet werden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat mehr Nachbarländer als jedes andere in Asien?",
+        answerA = "Indien",
+        answerB = "Iran",
+        answerC = "China",
+        answerD = "Russland",
+        correctAnswer = 2,
+        explanation = "China grenzt an 14 Länder: Afghanistan, Bhutan, Indien, Kasachstan, Kirgisistan, Laos, Mongolei, Myanmar, Nepal, Nordkorea, Pakistan, Russland, Tadschikistan und Vietnam.",
+        difficulty = 3,
+        funFact = "Russland teilt sich mit China den Rekord der meisten Nachbarländer – beide haben jeweils 14."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die Hauptstadt von Weißrussland (Belarus)?",
+        answerA = "Minsk",
+        answerB = "Kiew",
+        answerC = "Riga",
+        answerD = "Vilnius",
+        correctAnswer = 0,
+        explanation = "Minsk ist die Hauptstadt von Belarus (Weißrussland) und mit über 2 Millionen Einwohnern die größte Stadt des Landes.",
+        difficulty = 3,
+        funFact = "Minsk wurde im Zweiten Weltkrieg fast vollständig zerstört und danach im stalinistischen Stil neu aufgebaut – die Stadtarchitektur ist heute ein historisches Dokument dieser Epoche."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer verbindet das Schwarze Meer mit dem Mittelmeer?",
+        answerA = "Ägäisches Meer über Bosporus und Dardanellen",
+        answerB = "Rotes Meer",
+        answerC = "Kaspisches Meer",
+        answerD = "Ionisches Meer",
+        correctAnswer = 0,
+        explanation = "Das Schwarze Meer ist über den Bosporus mit dem Marmarameer verbunden, das wiederum über die Dardanellen in das Ägäische Meer mündet, welches Teil des Mittelmeers ist.",
+        difficulty = 3,
+        funFact = "Durch den Bosporus in Istanbul fährt täglich mehr Schiffsverkehr als durch den Suezkanal."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt die Stadt Timbuktu?",
+        answerA = "Niger",
+        answerB = "Mali",
+        answerC = "Mauretanien",
+        answerD = "Senegal",
+        correctAnswer = 1,
+        explanation = "Timbuktu liegt in Mali, Westafrika, am Rande der Sahara nahe dem Niger-Fluss. Es war im Mittelalter ein bedeutendes Handels- und Gelehrtenzentrum.",
+        difficulty = 3,
+        funFact = "Timbuktu war im 15. und 16. Jahrhundert eines der wichtigsten Zentren islamischer Gelehrsamkeit – die Sankore-Universität zählte bis zu 25.000 Studenten."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Meerenge trennt Europa (Spanien) von Afrika (Marokko)?",
+        answerA = "Straße von Messina",
+        answerB = "Straße von Dover",
+        answerC = "Straße von Hormuz",
+        answerD = "Straße von Gibraltar",
+        correctAnswer = 3,
+        explanation = "Die Straße von Gibraltar, nur 14 km breit an der engsten Stelle, trennt den europäischen Kontinent (Spanien) vom afrikanischen (Marokko).",
+        difficulty = 3,
+        funFact = "Gibraltar selbst ist ein britisches Überseegebiet auf spanischem Territorium – ein historischer Streitpunkt zwischen Großbritannien und Spanien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat Grönland als autonomes Territorium?",
+        answerA = "Norwegen",
+        answerB = "Kanada",
+        answerC = "Dänemark",
+        answerD = "Island",
+        correctAnswer = 2,
+        explanation = "Grönland ist ein autonomes Territorium Dänemarks. Obwohl Grönland geografisch zu Nordamerika gehört, ist es politisch mit Dänemark verbunden.",
+        difficulty = 3,
+        funFact = "Grönland hat rund 56.000 Einwohner auf einer Fläche von 2,16 Millionen km² – das macht es zum am dünnsten besiedelten Territorium der Welt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss bildet die Grenze zwischen Sambia und Simbabwe?",
+        answerA = "Limpopo",
+        answerB = "Sambesi",
+        answerC = "Kongo",
+        answerD = "Okavango",
+        correctAnswer = 1,
+        explanation = "Der Sambesi bildet auf weiten Teilen die Grenze zwischen Sambia (nördlich) und Simbabwe (südlich) und ist Heimat der Viktoriafälle.",
+        difficulty = 3,
+        funFact = "Der Sambesi ist der viertlängste Fluss Afrikas und mündet in den Indischen Ozean."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches zentralasiatische Land hat weder Zugang zum Meer noch zum Ozean und ist von Binnenstaaten umgeben?",
+        answerA = "Kasachstan",
+        answerB = "Kirgisistan",
+        answerC = "Usbekistan",
+        answerD = "Tadschikistan",
+        correctAnswer = 2,
+        explanation = "Usbekistan ist eines der seltenen doppelt eingeschlossenen Länder: Es hat keinen Meereszugang und ist ausschließlich von anderen Binnenstaaten umgeben (Kasachstan, Kirgisistan, Tadschikistan, Afghanistan, Turkmenistan – alle ohne direkten Meerzugang).",
+        difficulty = 3,
+        funFact = "Das Aralmeer, das einst in Usbekistan und Kasachstan lag, ist durch Wasserentnahme zur Bewässerung auf ein Zehntel seiner ursprünglichen Größe geschrumpft."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge in Südafrika trägt den Namen 'Drachenberge'?",
+        answerA = "Kap-Faltengebirge",
+        answerB = "Drakensberg",
+        answerC = "Atlas-Ausläufer",
+        answerD = "Nuba-Gebirge",
+        correctAnswer = 1,
+        explanation = "Der Drakensberg (afrikaans: 'Drachenberg') ist das höchste Gebirge Südafrikas und erstreckt sich über Südafrika, Lesotho und Swasiland. Der höchste Gipfel, Thabana Ntlenyana, liegt in Lesotho auf 3.482 m.",
+        difficulty = 3,
+        funFact = "Im Drakensberg befinden sich über 35.000 Felsmalereien der San-Buschmänner, die teils über 3.000 Jahre alt sind."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige Land Südostasiens, das nie europäisch kolonisiert wurde?",
+        answerA = "Vietnam",
+        answerB = "Indonesien",
+        answerC = "Malaysia",
+        answerD = "Thailand",
+        correctAnswer = 3,
+        explanation = "Thailand (früher Siam) ist das einzige Land Südostasiens, das während der Kolonialzeit nie von einer europäischen Macht dauerhaft besetzt wurde.",
+        difficulty = 3,
+        funFact = "Thailand nutzte seine geografische Lage zwischen britisch-Burma und französisch-Indochina diplomatisch geschickt aus, um seine Unabhängigkeit zu bewahren."
     )
 )
