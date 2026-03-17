@@ -1321,4 +1321,722 @@ fun geoQuestionsHard(): List<Question> = listOf(
         funFact = "2002 ergoss sich Lava des Nyiragongo direkt durch die Stadt Goma bis in den Kivu-See. Über 100.000 Menschen mussten evakuiert werden."
     ),
 
+    // ── HARD (difficulty = 3) ── 50 additional questions (batch 3) ───────────
+
+    Question(
+        categoryId = 1,
+        questionText = "Durch welchen geologischen Prozess entstanden die Kanarischen Inseln?",
+        answerA = "Subduktion der Afrikanischen Platte",
+        answerB = "Spreizung des Mittelatlantischen Rückens",
+        answerC = "Vulkanismus über einem Mantelplume (Hotspot)",
+        answerD = "Abtrennung vom afrikanischen Festland durch Erosion",
+        correctAnswer = 2,
+        explanation = "Die Kanarischen Inseln entstanden durch einen Hotspot – einen stationären Mantelplume – unter der Afrikanischen Platte. Die Inseln werden durch Aufsteigen von Magma durch die Plattenkruste gebildet.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meeresströmungssystem transportiert Wärme vom tropischen Atlantik nach Nordeuropa?",
+        answerA = "Benguela-Strom",
+        answerB = "Humboldtstrom",
+        answerC = "Atlantische Umwälzzirkulation (AMOC)",
+        answerD = "Agulhasstrom",
+        correctAnswer = 2,
+        explanation = "Die Atlantische Umwälzzirkulation (Atlantic Meridional Overturning Circulation, AMOC) transportiert warmes Oberflächenwasser nach Norden und kaltes Tiefenwasser nach Süden. Sie ist entscheidend für das milde Klima Nordwesteuropas.",
+        difficulty = 3,
+        funFact = "Wissenschaftliche Studien zeigen, dass die AMOC durch den Klimawandel deutlich schwächer geworden ist – mit potenziell gravierenden Folgen für das europäische Klima."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Karstgebiet in Vietnam ist UNESCO-Weltnaturerbe und bekannt für seine Tausenden von Kalksteininseln?",
+        answerA = "Ha Long Bucht",
+        answerB = "Phong Nha-Ke Bang",
+        answerC = "Ninh Binh",
+        answerD = "Cat Ba-Archipel",
+        correctAnswer = 0,
+        explanation = "Die Ha Long Bucht im Golf von Tonkin, Vietnam, ist ein klassisches Karstgebiet mit über 1.600 Kalksteininseln und -felsen. Sie ist seit 1994 UNESCO-Weltnaturerbe und eines der bekanntesten Karstlandschafts-Beispiele Asiens.",
+        difficulty = 3,
+        funFact = "Die Kalksteinformationen der Ha Long Bucht entstanden vor ca. 500 Millionen Jahren und wurden über Jahrmillionen durch Meerwasser und Regen zu ihren heutigen Formen herausgearbeitet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches war das erste wissenschaftlich dokumentierte Beweismittel für die Kontinentaldrift-Theorie von Alfred Wegener?",
+        answerA = "Identische Fossilien auf verschiedenen Kontinenten",
+        answerB = "Passung der Küstenlinien von Afrika und Südamerika",
+        answerC = "Gleiche Gesteinsformationen auf getrennten Kontinenten",
+        answerD = "Paläomagnetische Streifen am Meeresboden",
+        correctAnswer = 1,
+        explanation = "Alfred Wegener nutzte als primäres Argument die auffällige geometrische Passung der Küstenlinien Afrikas und Südamerikas, die er 1912 beschrieb. Später kamen Fossilübereinstimmungen und Gesteinsanalysen hinzu.",
+        difficulty = 3,
+        funFact = "Wegeners Theorie der Kontinentaldrift wurde zu Lebzeiten von der Wissenschaft abgelehnt. Erst in den 1950er–60er Jahren, nach Entdeckung der paläomagnetischen Streifenmuster am Meeresboden, wurde sie akzeptiert."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welcher Epoche der Erdgeschichte war der Superkontinent Pangäa vollständig vereint?",
+        answerA = "Ordovizium (ca. 470 Ma)",
+        answerB = "Perm bis frühe Trias (ca. 300–200 Ma)",
+        answerC = "Kreide (ca. 100 Ma)",
+        answerD = "Jura (ca. 180 Ma)",
+        correctAnswer = 1,
+        explanation = "Pangäa war vor etwa 300 Millionen Jahren (Perm) vollständig vereint. Im frühen Jura (ca. 175 Ma) begann er sich zu trennen: zunächst in Laurasia (Norden) und Gondwana (Süden).",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist Paläoklimatologie und welcher Indikator liefert die detailliertesten Klimadaten der vergangenen 800.000 Jahre?",
+        answerA = "Studie fossiler Meeressedimente; Foraminiferenschalen",
+        answerB = "Analyse von Baumringen; Dendrochronologie-Rekonstruktionen",
+        answerC = "Studie von Eisbohrkernen; CO₂- und Temperaturaufzeichnungen",
+        answerD = "Analyse von Tropfsteinen; Stalagmit-Isotopenprofile",
+        correctAnswer = 2,
+        explanation = "Eisbohrkerne aus der Antarktis (z.B. vom Vostok-See oder dem EPICA-Projekt) enthalten eingeschlossene Luftblasen, die CO₂-Konzentration und Temperatur über die letzten 800.000 Jahre direkt messbar machen.",
+        difficulty = 3,
+        funFact = "Der EPICA-Bohrkern aus der Antarktis reicht 3.270 m tief und deckt acht vollständige Eis- und Warmzeiten ab – ein einzigartiges Klimaarchiv der Erde."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Gletscher auf Neuseeland ist einer der am schnellsten zugänglichen Gletscher der Welt, der fast bis ins Regenwaltniveau reicht?",
+        answerA = "Tasman-Gletscher",
+        answerB = "Fox-Gletscher",
+        answerC = "Godley-Gletscher",
+        answerD = "Murchison-Gletscher",
+        correctAnswer = 1,
+        explanation = "Der Fox-Gletscher (Te Moeka o Tuawe) auf der Südinsel Neuseelands ist für seinen steilen Abstieg von den Neuseeländischen Alpen bis auf nur 300 m über dem Meeresspiegel bekannt und liegt nahe am Regenwald.",
+        difficulty = 3,
+        funFact = "Der nahe gelegene Franz-Josef-Gletscher ist ähnlich berühmt. Beide Gletscher zogen sich in den letzten Jahrzehnten durch den Klimawandel erheblich zurück."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Kratersee in Oregon, USA, gilt als tiefster See Nordamerikas?",
+        answerA = "Crater Lake (Oregon)",
+        answerB = "Lake Tahoe (Kalifornien/Nevada)",
+        answerC = "Great Slave Lake (Kanada)",
+        answerD = "Flathead Lake (Montana)",
+        correctAnswer = 0,
+        explanation = "Der Crater Lake im Bundesstaat Oregon ist mit 594 m Tiefe der tiefste See der USA und der neunttiefste See der Welt. Er entstand im Caldera-Krater des erloschenen Vulkans Mount Mazama.",
+        difficulty = 3,
+        funFact = "Der Crater Lake hat keinen Zu- oder Abfluss – sein Wasserstand wird ausschließlich durch Niederschlag und Verdunstung reguliert. Das Wasser ist von außerordentlicher Klarheit und Reinheit."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Sodasee in Tansania ist so stark alkalisch, dass er die meisten Lebewesen tötet, aber Millionen Flamingos anzieht?",
+        answerA = "Natron-See",
+        answerB = "Eyasi-See",
+        answerC = "Manyara-See",
+        answerD = "Rukwa-See",
+        correctAnswer = 0,
+        explanation = "Der Natron-See in Tansania hat einen pH-Wert von bis zu 10,5 und Temperaturen über 60°C in manchen Bereichen. Der extrem hohe Sodagehalt zieht Millionen Flamingos an, für die die Cyanobakterien des Sees eine Hauptnahrungsquelle darstellen.",
+        difficulty = 3,
+        funFact = "Tiere, die in den Natron-See geraten und verenden, werden durch Natriumcarbonat chemisch konserviert und verkalken – ein bizarrer natürlicher Vorgang."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher der größten Untergrundseen der Welt befindet sich unter dem Antarktischen Eisschild?",
+        answerA = "Lake Whillans",
+        answerB = "Lake Ellsworth",
+        answerC = "Vostok-See",
+        answerD = "Lake CECs",
+        correctAnswer = 2,
+        explanation = "Der Vostok-See unter dem Antarktischen Eisschild ist mit einer Fläche von ca. 15.690 km² der größte bekannte Untersee-See unter dem Eis. Er liegt unter bis zu 4 km dickem Eis.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Phänomen beschreibt die Ausbreitung von Wüstengebieten durch Übernutzung und Klimawandel vor allem in der Sahelzone?",
+        answerA = "Lateritisierung",
+        answerB = "Desertifikation",
+        answerC = "Deflation",
+        answerD = "Erosion",
+        correctAnswer = 1,
+        explanation = "Desertifikation bezeichnet die Degradierung von fruchtbarem Land in Wüste oder wüstenähnliche Gebiete, verursacht durch Klimawandel, Überweidung, Abholzung und intensive Landwirtschaft. Die Sahelzone in Afrika ist besonders betroffen.",
+        difficulty = 3,
+        funFact = "Die Große Grüne Mauer ist ein afrikanisches Projekt, das durch Aufforstung eines 8.000 km langen Gürtels quer durch den Sahel die Desertifikation aufhalten soll."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Aral-See, der durch die Umlenkung seiner Zuflüsse fast vollständig ausgetrocknet ist?",
+        answerA = "Nur in Kasachstan",
+        answerB = "Nur in Usbekistan",
+        answerC = "An der Grenze zwischen Kasachstan und Usbekistan",
+        answerD = "In Turkmenistan",
+        correctAnswer = 2,
+        explanation = "Der Aral-See liegt an der Grenze zwischen Kasachstan und Usbekistan. Durch die Umlenkung der Zuflüsse Amudarja und Syrdarja für Bewässerungsprojekte schrumpfte er ab den 1960ern auf einen Bruchteil seiner ursprünglichen Größe.",
+        difficulty = 3,
+        funFact = "Der Aral-See war einst der viertgrößte See der Welt. Heute sind nur noch Restgewässer übrig – ein Mahnmal menschlicher Eingriffe in das natürliche Wassersystem."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Ozeanstrom fließt entlang der Westküste Südafrikas nordwärts und kühlt das dortige Klima erheblich ab?",
+        answerA = "Agulhas-Strom",
+        answerB = "Benguela-Strom",
+        answerC = "Moçambique-Strom",
+        answerD = "Atlantischer Nordäquatorialstrom",
+        correctAnswer = 1,
+        explanation = "Der Benguela-Strom ist ein kalter Meeresauftriebsstrom, der entlang der Westküste Südafrikas und Namibias nach Norden fließt. Er kühlt die Küstenregion und ist mitverantwortlich für die Entstehung der Namib-Wüste.",
+        difficulty = 3,
+        funFact = "Der Benguela-Strom bringt nährstoffreiches Tiefenwasser an die Oberfläche – eine der produktivsten Fischereizonen der Welt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt gilt als bevölkerungsreichste Metropolregion der Welt (Stand 2020er)?",
+        answerA = "Peking",
+        answerB = "Tokio",
+        answerC = "Shanghai",
+        answerD = "Delhi",
+        correctAnswer = 1,
+        explanation = "Die Metropolregion Tokio-Yokohama ist mit über 37–38 Millionen Einwohnern die bevölkerungsreichste Stadtregion der Welt. Zum Vergleich: Delhi folgt mit ca. 32–33 Millionen.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Karstphänomen sind unterirdische Höhlen und Hohlräume, die durch Auflösung von Kalkstein entstehen?",
+        answerA = "Dolinen",
+        answerB = "Polje",
+        answerC = "Karren",
+        answerD = "Schachtkarst",
+        correctAnswer = 0,
+        explanation = "Dolinen sind kesselförmige Hohlformen in Karstlandschaften, die durch chemische Auflösung von Kalkstein und/oder Einsturz von Hohlräumen entstehen. Sie sind eines der charakteristischsten Merkmale von Karstlandschaften.",
+        difficulty = 3,
+        funFact = "In Florida (USA) treten häufig plötzliche Dolinen-Einbrüche auf, die Häuser und Straßen verschlucken – ein direktes Ergebnis des Karstphänomens."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Insel vulkanischen Ursprungs ist die am dünnsten besiedelte Insel Europas und entstand erst 1963 durch einen Vulkanausbruch?",
+        answerA = "Fayal (Azoren)",
+        answerB = "Surtsey (Island)",
+        answerC = "Stromboli (Italien)",
+        answerD = "Pantelleria (Italien)",
+        correctAnswer = 1,
+        explanation = "Surtsey entstand von 1963 bis 1967 durch Unterwasservulkanismus vor der isländischen Küste. Sie ist eine der jüngsten Inseln der Welt und ein Naturreservat, das die primäre Besiedlung neuen Landes dokumentiert.",
+        difficulty = 3,
+        funFact = "Surtsey wurde 2008 zum UNESCO-Weltnaturerbe ernannt, weil sie einzigartige Einblicke in die Besiedlung neu entstandenen Lebensraums durch Pflanzen und Tiere bietet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher antarktische Gletscher gilt als der 'Weltuntergangsgletcher', weil sein Kollaps den Meeresspiegel um mehrere Meter anheben könnte?",
+        answerA = "Lambert-Gletscher",
+        answerB = "Pine-Island-Gletscher",
+        answerC = "Thwaites-Gletscher",
+        answerD = "Byrd-Gletscher",
+        correctAnswer = 2,
+        explanation = "Der Thwaites-Gletscher in der Westantarktis enthält so viel Eis, dass sein vollständiges Abschmelzen den globalen Meeresspiegel um etwa 65 cm anheben würde. Er gilt als ein wichtiger Kipppunkt im Klimasystem.",
+        difficulty = 3,
+        funFact = "Der Thwaites-Gletscher hat die Größe des gesamten US-Bundesstaats Florida und verliert jährlich Milliarden Tonnen Eis an das Meer."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Meeresgraben im Pazifik entstand durch die Subduktion der Philippinischen Platte unter die Eurasische Platte?",
+        answerA = "Marianengraben",
+        answerB = "Philippinengraben",
+        answerC = "Izu-Bonin-Graben",
+        answerD = "Japan-Graben",
+        correctAnswer = 1,
+        explanation = "Der Philippinengraben (Philippine Trench) liegt östlich der Philippinen und entstand durch Subduktion der Philippinischen Platte. Er erreicht eine maximale Tiefe von etwa 10.540 m.",
+        difficulty = 3,
+        funFact = "Der Philippinengraben verläuft parallel zur philippinischen Küste und ist geologisch mitverantwortlich für die hohe seismische und vulkanische Aktivität des Inselarchipels."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Region gilt als der am stärksten von Desertifikation betroffene Großraum Chinas?",
+        answerA = "Lösshochland (Huang-He-Becken)",
+        answerB = "Innere Mongolei und Ordos-Plateau",
+        answerC = "Sichuan-Becken",
+        answerD = "Manchurische Ebene",
+        correctAnswer = 1,
+        explanation = "Die Innere Mongolei und das Ordos-Plateau in Nordchina sind am stärksten von Desertifikation betroffen. Die Ausbreitung der Gobi-Wüste durch Übernutzung und Klimawandel führt zu Sandstürmen, die bis Peking reichen.",
+        difficulty = 3,
+        funFact = "China hat das größte Aufforstungsprogramm der Welt gestartet ('Grüne Mauer') um die Ausbreitung der Wüste aufzuhalten – mit gemischten Ergebnissen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt der weltweit größte Gletscher nach Ausdehnung, der sich in der Antarktis befindet?",
+        answerA = "Thwaites-Gletscher",
+        answerB = "Lambert-Gletscher",
+        answerC = "Beardmore-Gletscher",
+        answerD = "Mertz-Gletscher",
+        correctAnswer = 1,
+        explanation = "Der Lambert-Gletscher in der Ostantarktis ist mit einer Länge von ca. 400 km und einer Breite von bis zu 100 km der flächenmäßig größte Gletscher der Welt.",
+        difficulty = 3,
+        funFact = "Der Lambert-Gletscher mündet in das Amery-Schelfeis und transportiert jährlich riesige Eismengen in den südlichen Ozean."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche der folgenden Städte hat die höchste Bevölkerungsdichte und gilt als eine der am dichtesten besiedelten Städte der Welt?",
+        answerA = "Hongkong",
+        answerB = "Manila",
+        answerC = "Dhaka",
+        answerD = "Mumbai",
+        correctAnswer = 2,
+        explanation = "Dhaka, die Hauptstadt Bangladeschs, gilt als eine der am dichtesten besiedelten Städte der Welt mit über 44.500 Einwohnern pro km². Die Metropolregion wächst weiterhin rasant.",
+        difficulty = 3,
+        funFact = "Manila auf den Philippinen hält den Rekord für die höchste Dichte in einem einzelnen Stadtbezirk – Mandaluyong mit über 100.000 Einwohnern/km²."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Golfstrom-Ableger fließt entlang der Westküste Europas nach Norden und beeinflusst das Klima Skandinaviens?",
+        answerA = "Kanarenstrom",
+        answerB = "Irmingersstrom",
+        answerC = "Norwegischer Strom",
+        answerD = "Nordatlantikstrom",
+        correctAnswer = 3,
+        explanation = "Der Nordatlantikstrom (North Atlantic Current) ist der nordöstliche Ausläufer des Golfstroms. Er transportiert warmes Wasser nach Nordeuropa und macht das Klima Norwegens, Islands und Großbritanniens deutlich milder als es der Breitengrad erwarten ließe.",
+        difficulty = 3,
+        funFact = "Dank des Nordatlantikstroms ist der Hafen von Murmansk in Russland (nördlich des Polarkreises) das ganze Jahr eisfrei – ungewöhnlich für diese Breite."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Phänomen der Paläoklimatologie belegt, dass die Erde vor ca. 700 Millionen Jahren fast vollständig vereist war?",
+        answerA = "Großes Sterben (Permian Extinction)",
+        answerB = "Schneeball-Erde-Hypothese (Snowball Earth)",
+        answerC = "Kambrium-Explosion",
+        answerD = "Ordovizische Vereisung",
+        correctAnswer = 1,
+        explanation = "Die Schneeball-Erde-Hypothese besagt, dass die Erde in der Neoproterozoischen Ära (ca. 700–635 Ma) mehrmals fast vollständig bis in tropische Breiten vereist war. Beweise liefern glaziale Ablagerungen nahe dem damaligen Äquator.",
+        difficulty = 3,
+        funFact = "Paradoxerweise könnte die Schneeball-Erde die kambrische Explosion des Lebens ausgelöst haben – Organismen, die die extremen Bedingungen überlebten, entwickelten sich rasch zu neuen Formen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher See in der Türkei ist der größte Sodasee der Welt und liegt 1.648 m über dem Meeresspiegel?",
+        answerA = "Vansee",
+        answerB = "Tuz-See",
+        answerC = "Beyşehirsee",
+        answerD = "Eğirdursee",
+        correctAnswer = 0,
+        explanation = "Der Vansee (Van Gölü) in der Osttürkei ist der größte Sodasee der Welt mit einem pH-Wert von etwa 9,7–9,8. Er liegt 1.648 m über dem Meeresspiegel und hat eine Fläche von ca. 3.574 km².",
+        difficulty = 3,
+        funFact = "Der Vansee hat keinen Abfluss – Salze und Mineralien sammeln sich über Jahrtausende an. Trotz des hohen Sodaanteils gedeihen dort spezielle alkaliphile Organismen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Meeresströmungskreislauf transportiert Tiefenwasser global und wird als 'ozeanisches Förderband' bezeichnet?",
+        answerA = "Thermohaline Zirkulation",
+        answerB = "Nordpazifik-Gyre",
+        answerC = "Äquatorialer Gegenstrom",
+        answerD = "Antarctic Circumpolar Current",
+        correctAnswer = 0,
+        explanation = "Die thermohaline Zirkulation (auch 'global ocean conveyor belt') ist ein weltumspannendes Strömungssystem, das durch Dichte-Unterschiede (Temperatur und Salzgehalt) angetrieben wird und Wärme und Nährstoffe global verteilt.",
+        difficulty = 3,
+        funFact = "Ein vollständiger Umlauf des ozeanischen Förderbandes dauert schätzungsweise 1.000 Jahre. Es verbindet alle Ozeane miteinander."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Jahr tauchte vor Island durch Vulkanismus die neue Insel Surtsey aus dem Meer auf?",
+        answerA = "1957",
+        answerB = "1963",
+        answerC = "1971",
+        answerD = "1946",
+        correctAnswer = 1,
+        explanation = "Surtsey entstand zwischen November 1963 und Juni 1967 durch Unterwasservulkanismus. Der Ausbruch begann 130 m unter dem Meeresspiegel, bevor die Insel die Wasseroberfläche durchbrach.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die extremste bekannte Desertifikations-Hotspot-Zone Afrikas mit jährlichem Flächenverlust an fruchtbarem Land?",
+        answerA = "Sahel-Zone (südlich der Sahara)",
+        answerB = "Namib-Küstenstreifen",
+        answerC = "Kalahari-Becken",
+        answerD = "Ogaden-Halbwüste (Somalia/Äthiopien)",
+        correctAnswer = 0,
+        explanation = "Die Sahel-Zone, die sich quer durch Afrika von Senegal bis Eritrea erstreckt, ist der gravierendste Desertifikations-Hotspot des Kontinents. Jährlich gehen Millionen Hektar fruchtbares Land durch Übernutzung, Dürre und Klimawandel verloren.",
+        difficulty = 3,
+        funFact = "Zwischen 1960 und 1980 trocknete der Tschadsee, der einst einer der größten Seen Afrikas war, auf weniger als 1/20 seiner ursprünglichen Fläche aus – ein Symbol der Sahel-Krise."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Küstenformation in Norwegen ist ein klassisches Beispiel für übertiefte glaziale Täler, die nach der Eiszeit vom Meer geflutet wurden?",
+        answerA = "Ria",
+        answerB = "Liman",
+        answerC = "Fjord",
+        answerD = "Calanque",
+        correctAnswer = 2,
+        explanation = "Fjorde sind eiszeitlich übervertiefte U-Täler, die nach dem Abschmelzen der Gletscher vom Meer überflutet wurden. Sie sind charakteristisch für Norwegen, Grönland, Island, Chile und Neuseeland.",
+        difficulty = 3,
+        funFact = "Der Sognefjord in Norwegen ist mit 1.308 m der tiefste Fjord der Welt – an manchen Stellen liegt sein Boden tiefer als der umliegende Meeresboden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Kaltzungenstrom im Pazifik ist mit verantwortlich für die Trockenheit der Atacama-Wüste?",
+        answerA = "El-Niño-Strom",
+        answerB = "Humboldtstrom (Peruanischer Strom)",
+        answerC = "Äquatorialer Gegenstrom",
+        answerD = "Südpazifischer Gyre",
+        correctAnswer = 1,
+        explanation = "Der Humboldtstrom (auch Peruanischer Strom) ist ein kalter Auftriebsstrom vor der Westküste Südamerikas. Die kalte Meeresluft hemmt Wolkenbildung und Niederschlag und trägt so zur extremen Trockenheit der Atacama bei.",
+        difficulty = 3,
+        funFact = "Wenn El Niño den Humboldtstrom schwächt, kann es in der Atacama zu extremen Regenfällen kommen – die Wüste blüht dann binnen weniger Tage auf."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Siachen-Gletscher, über den Indien und Pakistan seit Jahrzehnten einen militärischen Grenzkonflikt führen?",
+        answerA = "Nur in Indien",
+        answerB = "Nur in Pakistan",
+        answerC = "Im umstrittenen Kaschmir-Gebiet zwischen Indien und Pakistan",
+        answerD = "In China (Tibet)",
+        correctAnswer = 2,
+        explanation = "Der Siachen-Gletscher liegt im nördlichen Kaschmir im Karakoram-Gebirge und ist das höchste Schlachtfeld der Welt. Sowohl Indien als auch Pakistan haben Militärposten auf dem Gletscher und beanspruchen das Gebiet.",
+        difficulty = 3,
+        funFact = "Der Siachen-Gletscher ist mit 76 km Länge einer der größten Nichtpolargletscher der Welt. Der Konflikt dort kostet beide Länder jährlich Milliarden Dollar."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt gilt als 'Stadt auf zwei Kontinenten' und ist Hauptstadt des Landes mit der drittgrößten Landfläche Afrikas?",
+        answerA = "Khartoum (Sudan)",
+        answerB = "Kairo (Ägypten)",
+        answerC = "Algier (Algerien)",
+        answerD = "Nairobi (Kenia)",
+        correctAnswer = 2,
+        explanation = "Algier ist die Hauptstadt Algeriens, dem flächenmäßig größten Land Afrikas (und dem größten der Welt, das vollständig im afrikanischen Kontinent liegt). Algerien hat eine Fläche von 2,38 Mio. km².",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Ozeanstrom fließt als wärmster Strom des Indischen Ozeans entlang der Ostküste Südafrikas südwärts?",
+        answerA = "Mozambique-Strom",
+        answerB = "Agulhas-Strom",
+        answerC = "Somali-Strom",
+        answerD = "West Australian Current",
+        correctAnswer = 1,
+        explanation = "Der Agulhas-Strom fließt südwärts entlang der Ostküste Südafrikas und ist einer der stärksten Meeresströme der Welt. An seinem Südende treffen warme und kalte Wassermassen aufeinander.",
+        difficulty = 3,
+        funFact = "Der Agulhas-Strom ist bekannt für gigantische Freak-Wellen, die für Schiffe extrem gefährlich sind. Diese entstehen, wenn Strömungsrichtung und Windwellen aufeinanderprallen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Hochgebirgsregion Zentralasiens wird als 'Pamir' bezeichnet und warum ist sie geologisch bedeutend?",
+        answerA = "Schnittpunkt von drei tektonischen Platten (Indisch, Eurasisch, Arabisch)",
+        answerB = "Kollisionspunkt von fünf tektonischen Platten (Indisch, Eurasisch, Arabisch, Iranisch, Chinesisch)",
+        answerC = "Aktivste Spreizungszone Asiens",
+        answerD = "Größtes Hochplateau Asiens mit aktiver Vulkantätigkeit",
+        correctAnswer = 1,
+        explanation = "Das Pamir-Hochland in Zentralasien ist ein einzigartiger Kollisionspunkt mehrerer tektonischer Einheiten, wo die Indische, Eurasische, Arabische, Iranische und weitere Mikro-Platten aufeinandertreffen. Dies macht es zu einer der seismisch aktivsten Regionen der Welt.",
+        difficulty = 3,
+        funFact = "Das Pamir wird als 'Dach der Welt' bezeichnet (gemeinsam mit Tibet) und ist der Ausgangspunkt der großen Gebirgssysteme Karakoram, Hindukusch, Kunlun und Tian Shan."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Insel im Indischen Ozean entstand durch Hotspot-Vulkanismus und ist bekannt für ihren aktiven Piton de la Fournaise?",
+        answerA = "Mauritius",
+        answerB = "Réunion",
+        answerC = "Mayotte",
+        answerD = "Rodrigues",
+        correctAnswer = 1,
+        explanation = "Réunion (Frankreich) ist eine vulkanische Insel über dem Réunion-Hotspot im Indischen Ozean. Der Piton de la Fournaise ist einer der aktivsten Vulkane der Welt mit mehreren Ausbrüchen pro Jahr.",
+        difficulty = 3,
+        funFact = "Die Insel Mauritius entstand aus demselben Hotspot wie Réunion – sie ist jedoch älter und geologisch inaktiv, da die Platte sich weiterbewegt hat."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das größte bekannte Lavafeld (Lavaplateau) auf dem europäischen Festland?",
+        answerA = "Massif Central (Frankreich)",
+        answerB = "Hochlandplateau Island",
+        answerC = "Deccan-Traps (Indien)",
+        answerD = "Eifel-Vulkanfeld (Deutschland)",
+        correctAnswer = 0,
+        explanation = "Das Massif Central in Frankreich ist das größte Vulkangebiet des europäischen Festlandes mit erloschenen Vulkankegeln (Puys), Lavafeldern und vulkanischen Hochplateaus. Es entstand durch Vulkanismus im Tertiär und Quartär.",
+        difficulty = 3,
+        funFact = "Die Auvergne-Vulkane im Massif Central – die Chaîne des Puys – wurden 2018 UNESCO-Weltnaturerbe. Der letzte Ausbruch dort ereignete sich vor nur ca. 6.000 Jahren."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt in Peru gilt als höchstgelegene Großstadt der Welt mit über 100.000 Einwohnern?",
+        answerA = "Cuzco",
+        answerB = "La Paz (Bolivien)",
+        answerC = "Puno",
+        answerD = "Juliaca",
+        correctAnswer = 3,
+        explanation = "Juliaca in Peru liegt auf 3.824 m Höhe und ist mit über 300.000 Einwohnern eine der höchstgelegenen Großstädte der Welt. La Paz in Bolivien (Regierungssitz) liegt auf ca. 3.640 m, ist aber ein anderes Land.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches geologische Fossil gilt als 'Leitsteinarten'-Beleg für die frühere Verbindung der Kontinente Gondwana?",
+        answerA = "Archaeopteryx",
+        answerB = "Glossopteris (Pflanzenfossil)",
+        answerC = "Ammonit",
+        answerD = "Trilobit",
+        correctAnswer = 1,
+        explanation = "Glossopteris ist ein ausgestorbener Farnbaum, dessen Fossilien auf allen Südkontinenten (Afrika, Südamerika, Antarktis, Australien, Indien) gefunden wurden. Dies war einer der stärksten Belege für die frühere Verbindung dieser Kontinente zu Gondwana.",
+        difficulty = 3,
+        funFact = "Auch das Reptil Mesosaurus, dessen Fossilien nur in Südamerika und Südafrika vorkommen, gilt als Beweis für die Kontinentaldrift – es konnte den Atlantik nicht überschwimmen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Ozeanstrom ist der stärkste der Welt nach Volumendurchsatz?",
+        answerA = "Golfstrom",
+        answerB = "Kuroshio-Strom",
+        answerC = "Antarctic Circumpolar Current",
+        answerD = "Agulhas-Strom",
+        correctAnswer = 2,
+        explanation = "Der Antarctic Circumpolar Current (ACC, auch Südpolarstrom) ist mit einem Durchsatz von ca. 130–140 Sverdrup der stärkste Meeresströmung der Welt. Er umrundet die Antarktis ohne Unterbrechung durch Landmassen.",
+        difficulty = 3,
+        funFact = "Der ACC verbindet Atlantischen, Pazifischen und Indischen Ozean und spielt eine entscheidende Rolle bei der Regulierung des globalen Wärmehaushalts."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Salzseegebiet in Iran ist einer der größten Salzpfannen der Welt und Teil eines ausgetrockneten Binnenmeeres?",
+        answerA = "Dascht-e Kawir",
+        answerB = "Dascht-e Lut",
+        answerC = "Hamoun-See",
+        answerD = "Urmia-See",
+        correctAnswer = 0,
+        explanation = "Der Dascht-e Kawir (Große Salzwüste) in Iran ist eine riesige Salzpfanne im zentralen Iran, die Überrest eines ausgetrockneten Binnenmeeres ist. Er bedeckt ca. 77.000 km² und ist eine der heißesten und unwirtlichsten Regionen der Welt.",
+        difficulty = 3,
+        funFact = "Der benachbarte Dascht-e Lut hält den Rekord für die höchste je auf Landoberfläche gemessene Temperatur: 70,7°C wurden per Satellitenmessung registriert."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Ozean befindet sich die weltweit tiefste Tiefseesenke außerhalb des Pazifiks nach dem Marianengraben und Tonga-Graben?",
+        answerA = "Philippinengraben (Pazifik)",
+        answerB = "Puerto-Rico-Graben (Atlantik)",
+        answerC = "South-Sandwich-Graben (Südatlantik)",
+        answerD = "Java-Graben (Indischer Ozean)",
+        correctAnswer = 1,
+        explanation = "Der Puerto-Rico-Graben im Nordatlantik ist mit ca. 8.376 m der tiefste Punkt des Atlantischen Ozeans und insgesamt der siebttiefste bekannte Meeresgraben der Erde.",
+        difficulty = 3,
+        funFact = "Im Puerto-Rico-Graben wird die Karibische Platte unter die Nordamerikanische Platte subduziert. Die Region ist tektonisch aktiv und für starke Erdbeben bekannt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt hat als erste der Welt eine Bevölkerung von über einer Million Einwohnern erreicht?",
+        answerA = "London (ca. 1810)",
+        answerB = "Peking (ca. 1700)",
+        answerC = "Rom (ca. 1. Jh. v. Chr.)",
+        answerD = "Paris (ca. 1850)",
+        correctAnswer = 2,
+        explanation = "Rom soll zur Zeit des Augustus (1. Jh. n. Chr.) nach manchen Schätzungen bis zu einer Million Einwohner gehabt haben – womit es die erste bekannte Millionenstadt der Geschichte wäre. London überschritt die Million um ca. 1810.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das längste Gletschersystem der Welt auf einem Nicht-Polarkontinent?",
+        answerA = "Fedtschenko-Gletscher (Tadschikistan, 77 km)",
+        answerB = "Baltoro-Gletscher (Pakistan, 63 km)",
+        answerC = "Tasman-Gletscher (Neuseeland, 29 km)",
+        answerD = "Gangotri-Gletscher (Indien, 30 km)",
+        correctAnswer = 0,
+        explanation = "Der Fedtschenko-Gletscher im Pamirgebirge Tadschikistans ist mit ca. 77 km Länge der längste Gletscher außerhalb der Polarregionen. Er liegt auf über 3.800 m Höhe.",
+        difficulty = 3,
+        funFact = "Der Baltoro-Gletscher in Pakistan ist zwar kürzer, liegt aber in einem der steilsten und höchsten Gebirgsterrains der Welt – umgeben von vier der vierzehn Achttausender (K2, Broad Peak, Gasherbrum I & II)."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Karstmassiv in Slowenien gilt als 'Urform' des Karst-Phänomens und gab ihm seinen Namen?",
+        answerA = "Škocjan-Schlucht",
+        answerB = "Karst-Hochebene (Kras)",
+        answerC = "Postojna-Höhle",
+        answerD = "Triglav-Massiv",
+        correctAnswer = 1,
+        explanation = "Das Kras-Hochplateau im Südwesten Sloweniens (und dem angrenzenden Italien) gab dem Karstphänomen seinen wissenschaftlichen Namen. Es ist eine klassische Karstlandschaft mit Dolinen, Poljen und Höhlensystemen.",
+        difficulty = 3,
+        funFact = "Die Postojna-Höhle im slowenischen Karst ist eines der größten Höhlensysteme Europas mit 24 km zugänglichen Gängen. Sie beherbergt den Olm (Proteus anguinus), eine völlig blinde Höhlensalamanderart."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Vulkantyp entsteht typischerweise auf ozeanischen Inseln über Hotspots und bildet die charakteristischen Schildvulkane?",
+        answerA = "Stratovulkan (Schichtvulkan)",
+        answerB = "Schildvulkan",
+        answerC = "Aschekegel",
+        answerD = "Caldeira",
+        correctAnswer = 1,
+        explanation = "Schildvulkane entstehen durch dünnflüssige Basaltlava mit geringem Gasgehalt, die sich breit ausbreitet und flache, schildförmige Berge bildet. Hawaii ist das klassische Beispiel – Mauna Loa und Kilauea sind Schildvulkane.",
+        difficulty = 3,
+        funFact = "Mauna Loa ist mit einem Volumen von ca. 75.000 km³ der massereichste Vulkan der Erde – deutlich mehr als der Everest."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt in China hat die meisten Einwohner in der eigentlichen Stadtgemeinde (nicht Metropolregion)?",
+        answerA = "Peking",
+        answerB = "Shanghai",
+        answerC = "Chongqing",
+        answerD = "Guangzhou",
+        correctAnswer = 2,
+        explanation = "Chongqing ist nach Fläche und Verwaltungsgebiet die größte Stadtgemeinde Chinas und gilt als eine der bevölkerungsreichsten administrativen Einheiten der Welt. Die Kernstadtfläche umfasst aber auch ländliche Gebiete.",
+        difficulty = 3,
+        funFact = "Chongqing ist eine der vier regierungsunmittelbaren Städte Chinas (neben Peking, Shanghai und Tianjin) und wirtschaftliches Zentrum des inneren Westchinas."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss bildet die größte unterirdische Flusshöhle der Welt auf den Philippinen?",
+        answerA = "Puerto-Princesa-Untergrundfluss",
+        answerB = "Son-Doong-Fluss (Vietnam)",
+        answerC = "Cheddar-Fluss (England)",
+        answerD = "Trebbia-Fluss (Italien)",
+        correctAnswer = 0,
+        explanation = "Der Puerto-Princesa Subterranean River National Park auf Palawan (Philippinen) enthält einen schiffbaren Untergrundfluss von ca. 8,2 km Länge. Er ist UNESCO-Weltnaturerbe und gilt als eine der 'New 7 Wonders of Nature'.",
+        difficulty = 3,
+        funFact = "Die Kalksteinhöhle des Puerto-Princesa-Flusses beherbergt beeindruckende Stalaktiten und Stalagmiten und mündet direkt ins Südchinesische Meer."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Art von tektonischer Grenze liegt vor der Westküste Nordamerikas und hat die Cascade-Vulkankette und den Mount St. Helens gebildet?",
+        answerA = "Transformstörung",
+        answerB = "Kontinentale Spreizungszone",
+        answerC = "Subduktionszone (ozeanisch unter kontinental)",
+        answerD = "Kontinentale Kollisionszone",
+        correctAnswer = 2,
+        explanation = "Die Cascadia-Subduktionszone liegt vor der Nordwestküste Nordamerikas, wo die Juan-de-Fuca-Platte unter die Nordamerikanische Platte taucht. Diese Subduktion schuf die Cascade Range mit aktiven Vulkanen wie Mount St. Helens, Mount Rainier und Mount Shasta.",
+        difficulty = 3,
+        funFact = "Die Cascadia-Subduktionszone gilt als Quelle eines potenziell katastrophalen Megathrust-Erdbebens der Stärke 9+. Der letzte große Ausbruch ereignete sich 1700."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt ist die höchstgelegene Hauptstadt der Welt?",
+        answerA = "Quito (Ecuador)",
+        answerB = "Bogotá (Kolumbien)",
+        answerC = "La Paz (Bolivien)",
+        answerD = "Thimphu (Bhutan)",
+        correctAnswer = 2,
+        explanation = "La Paz in Bolivien liegt auf etwa 3.640 m (Regierungssitz) bis 4.100 m (Stadtteile El Alto) über dem Meeresspiegel und ist damit die höchstgelegene Hauptstadt der Welt. Sucre ist zwar formelle Hauptstadt Boliviens, liegt aber tiefer.",
+        difficulty = 3,
+        funFact = "In La Paz kocht Wasser bei nur ca. 86°C statt 100°C, weil der atmosphärische Druck auf dieser Höhe deutlich geringer ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was sind paläomagnetische Streifen am Meeresboden und was beweisen sie?",
+        answerA = "Fossile Magnetit-Ablagerungen; beweisen frühere Verschiebungen des magnetischen Nordpols",
+        answerB = "Symmetrische Magnetisierungsstreifen; beweisen Meeresbodenausbreitung und Plattentektonik",
+        answerC = "Radioaktive Minerale; beweisen das Alter des Meeresbodens durch Zerfall",
+        answerD = "Magnetische Anomalien; beweisen unterirdische Vulkankammern",
+        correctAnswer = 1,
+        explanation = "Symmetrische paläomagnetische Streifen beiderseits von Mittelozeanischen Rücken zeigen, dass sich der Meeresboden ausbreitet. Magma erstarrt und zeichnet die Ausrichtung des damaligen Erdmagnetfelds auf – dieser Beweis war entscheidend für die Akzeptanz der Plattentektonik.",
+        difficulty = 3,
+        funFact = "Das Erdmagnetfeld hat sich in der Geschichte vielfach umgekehrt – sogenannte Polumkehrungen. Diese Umkehrungen sind als Streifen im Meeresboden 'eingefroren' und wie ein geologischer Kassettenrekorder lesbar."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss transportiert das meiste Wasser (nach Durchfluss) aller Flüsse der Welt?",
+        answerA = "Nil",
+        answerB = "Ganges",
+        answerC = "Amazonas",
+        answerD = "Kongo",
+        correctAnswer = 2,
+        explanation = "Der Amazonas transportiert mit einem durchschnittlichen Durchfluss von etwa 209.000 m³/s mehr Wasser als die sieben nächstgrößten Flüsse zusammen. Er macht ca. 20 % des gesamten Süßwasserabflusses aller Flüsse weltweit aus.",
+        difficulty = 3,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Phänomen erklärt die periodische Erschlaffung des Humboldtstroms, verbunden mit Erwärmung des ostpazifischen Ozeans?",
+        answerA = "La Niña",
+        answerB = "El Niño (ENSO-Warmphase)",
+        answerC = "Pazifische Dekadische Oszillation",
+        answerD = "Dipol-Effekt",
+        correctAnswer = 1,
+        explanation = "El Niño (ENSO: El Niño–Southern Oscillation) ist eine periodische Erwärmung des östlichen tropischen Pazifiks, verursacht durch Abschwächung der Passatwinde und des Humboldtstroms. Dies hat weltweite Auswirkungen auf Niederschlag und Temperaturen.",
+        difficulty = 3,
+        funFact = "Die Gegenseite von El Niño ist La Niña – eine ungewöhnliche Abkühlung des östlichen Pazifiks. Beide Phänomene wechseln sich alle 2–7 Jahre ab."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Insel im Südatlantik gilt als einer der entlegensten bewohnten Orte der Welt und liegt 2.816 km von der nächsten Küste entfernt?",
+        answerA = "Ascension Island",
+        answerB = "St. Helena",
+        answerC = "Tristan da Cunha",
+        answerD = "Bouvetinsel",
+        correctAnswer = 2,
+        explanation = "Tristan da Cunha im Südatlantik ist mit 2.816 km Entfernung zur nächsten bewohnten Küste (St. Helena) die entlegenste bewohnte Insel der Welt. Sie gehört zu Großbritannien und hat etwa 250 Einwohner.",
+        difficulty = 3,
+        funFact = "Tristan da Cunha ist ein aktiver Vulkan – 1961 mussten alle Bewohner evakuiert werden, kehrten aber 1963 nach Ende des Ausbruchs zurück."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt ist die am schnellsten wachsende Megastadt der Welt nach Bevölkerungszuwachs (Stand 2020er)?",
+        answerA = "Lagos (Nigeria)",
+        answerB = "Kinshasa (DR Kongo)",
+        answerC = "Dhaka (Bangladesch)",
+        answerD = "Karachi (Pakistan)",
+        correctAnswer = 0,
+        explanation = "Lagos in Nigeria wächst mit einem der höchsten Raten weltweit und könnte bis 2100 zur bevölkerungsreichsten Stadt der Welt werden. Der Zuzug aus ländlichen Gebieten Westafrikas ist enorm.",
+        difficulty = 3,
+        funFact = "Kinshasa (Kongo) und Lagos (Nigeria) liegen nur wenige hundert Kilometer voneinander entfernt und bilden zusammen das einzige Stadtpaar der Welt, dessen Bevölkerung möglicherweise beide die 100-Millionen-Marke überschreiten wird."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das größte Binnengewässer Afrikas nach Oberfläche?",
+        answerA = "Tanganjikasee",
+        answerB = "Tschadsee",
+        answerC = "Victoriasee",
+        answerD = "Malawisee",
+        correctAnswer = 2,
+        explanation = "Der Victoriasee mit einer Oberfläche von ca. 68.800 km² ist der größte See Afrikas und der zweitgrößte Süßwassersee der Welt nach Fläche (nach dem Huronsee in Nordamerika). Er liegt an der Grenze von Uganda, Tansania und Kenia.",
+        difficulty = 3,
+        funFact = "Der Victoriasee ist zwar riesig, aber mit maximal 84 m Tiefe relativ flach. Der viel kleinere Tanganjikasee enthält wegen seiner enormen Tiefe mehr Wasservolumen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Vulkaninsel entstand durch Plattensubduktion im westlichen Pazifik und bildet den Archetypus eines Inselbogen-Vulkans?",
+        answerA = "Hawaii (Hotspot-Vulkanism)",
+        answerB = "Krakatau (Subduktionszone, Sunda-Bogen)",
+        answerC = "Réunion (Hotspot)",
+        answerD = "Canary Islands (Hotspot)",
+        correctAnswer = 1,
+        explanation = "Krakatau liegt im Sunda-Bogen (Indonesien), wo die Indo-Australische Platte unter die Eurasische Platte subduziert. Er ist das klassische Beispiel für einen Subduktionszonen-Vulkan mit explosivem Ausbruchscharakter.",
+        difficulty = 3,
+        funFact = "Nach dem katastrophalen Ausbruch 1883 kollabierte Krakatau teilweise. 1927 entstand in der Caldera der Nachfolgevulkan 'Anak Krakatau' (Kind des Krakatau), der noch heute aktiv ist."
+    ),
+
 )
+
