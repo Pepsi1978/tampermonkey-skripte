@@ -1412,4 +1412,709 @@ fun geoQuestionsExpert(): List<Question> = listOf(
         funFact = "Das Asowsche Meer wird regelmäßig im Winter vollständig zugefroren – das einzige Meer Europas, das dies tut. Im Sommer dagegen erwärmt es sich aufgrund der geringen Tiefe sehr schnell auf bis zu 30°C."
     ),
 
+    // ── EXPERT BATCH 3 (difficulty = 4) ── 50 additional questions ───────────
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen exakten GPS-Koordinaten liegt die Kuppe des Machu Picchu (Huayna Picchu-Gipfel)?",
+        answerA = "13°09'23\"S, 72°32'44\"W",
+        answerB = "13°09'47\"S, 72°34'38\"W",
+        answerC = "12°58'22\"S, 73°10'11\"W",
+        answerD = "13°31'09\"S, 71°58'32\"W",
+        correctAnswer = 1, // B
+        explanation = "Der Gipfel des Huayna Picchu, der imposante Felsturm über der Inka-Stätte Machu Picchu, liegt bei ca. 13°09'47\"S, 72°34'38\"W auf 2.693 m Höhe. Machu Picchu selbst (die Ruinenanlage) liegt bei etwa 13°09'47\"S, 72°32'44\"W. Die Koordinaten sind ein wichtiger Referenzpunkt für Archäologen und GPS-Vermessungen.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche zwei Länder streiten sich um die ausschließliche Wirtschaftszone (AWZ) rund um die Falklandinseln?",
+        answerA = "Argentinien und Brasilien",
+        answerB = "Argentinien und Großbritannien",
+        answerC = "Chile und Großbritannien",
+        answerD = "Argentinien, Chile und Großbritannien",
+        correctAnswer = 1, // B
+        explanation = "Die ausschließliche Wirtschaftszone rund um die Falklandinseln (Malvinas) ist Gegenstand eines langjährigen Streits zwischen Argentinien und Großbritannien. Großbritannien beansprucht eine 200-Seemeilen-AWZ um die Falklands; Argentinien erkennt dies nicht an und besteht auf seiner Souveränität über die Inseln. Die AWZ enthält potenzielle Öl- und Gasvorkommen.",
+        difficulty = 4,
+        funFact = "Im Falklandkrieg 1982 kämpften Argentinien und Großbritannien um die Inseln. Seitdem unterhält Großbritannien eine bedeutende Militärgarnison dort – die permanente britische Präsenz sichert de facto die AWZ-Kontrolle."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen mittleren Abfluss (m³/s) hat der Kongo – der wasserreichste Fluss Afrikas?",
+        answerA = "ca. 12.000 m³/s",
+        answerB = "ca. 21.000 m³/s",
+        answerC = "ca. 41.000 m³/s",
+        answerD = "ca. 57.000 m³/s",
+        correctAnswer = 2, // C
+        explanation = "Der Kongo hat einen mittleren Abfluss von ca. 41.000 m³/s und ist damit der wasserreichste Fluss Afrikas und der zweitgrößte der Welt nach dem Amazonas (ca. 209.000 m³/s). Seine Wasserführung ist wegen der symmetrischen Lage um den Äquator relativ gleichmäßig – beide Flusshälften haben gegenläufige Regenzeiten.",
+        difficulty = 4,
+        funFact = "Der Kongograben (Congo Canyon) vor der Küste Kongos ist einer der tiefsten Unterwassercanyon der Erde und wird direkt durch den enormen Sedimenteintrag des Flusses geformt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das größte Eisfeld außerhalb der Polargebiete (Patagonien)?",
+        answerA = "Perito-Moreno-Gletscher",
+        answerB = "Campo de Hielo Sur (Südpatagonisches Eisfeld)",
+        answerC = "Hubbard-Gletscher (Alaska)",
+        answerD = "Vatnajökull (Island)",
+        correctAnswer = 1, // B
+        explanation = "Das Campo de Hielo Sur (Südpatagonisches Eisfeld) an der Grenze zwischen Argentinien und Chile umfasst ca. 12.363 km² und ist das größte zusammenhängende Eisfeld außerhalb der Polargebiete. Es speist zahlreiche Gletscher, darunter den berühmten Perito Moreno.",
+        difficulty = 4,
+        funFact = "Das südpatagonische Eisfeld schmilzt messbar: Satellitendaten zeigen einen Massenverlust von etwa 24 Gigatonnen pro Jahr. Es gilt als einer der empfindlichsten Klimaindikatoren der südlichen Hemisphäre."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Rang liegt die Tokio-Metropolregion (Greater Tokyo Area) in der weltweiten Rangliste der Stadtregionen nach Einwohnerzahl (Stand 2024)?",
+        answerA = "Rang 2",
+        answerB = "Rang 3",
+        answerC = "Rang 1",
+        answerD = "Rang 4",
+        correctAnswer = 2, // C
+        explanation = "Die Greater Tokyo Area (Tokio, Yokohama, Saitama, Chiba etc.) ist mit ca. 37–38 Millionen Einwohnern nach wie vor die größte Stadtregion (Urban Agglomeration) der Welt. Delhi (ca. 33 Mio.) liegt auf Rang 2, gefolgt von Shanghai. Tokio hält diesen Spitzenwert seit Jahrzehnten.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie alt ist das Skandinavische Kaledonische Gebirge (Gebirgsbildung) in Millionen Jahren?",
+        answerA = "ca. 65 Millionen Jahre",
+        answerB = "ca. 490–390 Millionen Jahre",
+        answerC = "ca. 250 Millionen Jahre",
+        answerD = "ca. 1.000 Millionen Jahre",
+        correctAnswer = 1, // B
+        explanation = "Die kaledonische Gebirgsbildung in Skandinavien und Britischen Inseln fand vor ca. 490–390 Millionen Jahren (Ordovizium bis Devon) statt. Die heutigen skandinavischen Berge sind stark erodierte Reste dieses einst himalayahohen Gebirges. Das Appalachische Gebirge in Nordamerika entstand in der gleichen Kollision.",
+        difficulty = 4,
+        funFact = "Die Appalachians in Nordamerika und das Skandinavische Gebirge waren einst ein einziger Gebirgszug – bevor der Atlantik durch die Kontinentaldrift auseinanderbrach. Gleiche Fossilien auf beiden Seiten belegen dies."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen Vulkanexplosivitätsindex (VEI) hatte der Ausbruch des Krakatau im Jahr 1883?",
+        answerA = "VEI 5",
+        answerB = "VEI 7",
+        answerC = "VEI 6",
+        answerD = "VEI 8",
+        correctAnswer = 2, // C
+        explanation = "Der Krakatau-Ausbruch von 1883 erreichte VEI 6 (colossal). Er schleuderte ca. 21 km³ Material aus und verursachte einen Tsunamie, der über 36.000 Menschen tötete. Die Druckwelle umrundete die Erde mehrfach. Der Tambora-Ausbruch 1815 (VEI 7) war jedoch deutlich größer.",
+        difficulty = 4,
+        funFact = "Der Krakatau-Ausbruch war so laut, dass er 4.800 km entfernt auf der Insel Rodrigues (Mauritius) gehört wurde – das lauteste je von Menschen aufgezeichnete Ereignis. Die Druckwelle wurde weltweit von Barometern registriert."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte Stausee der Welt nach Wasservolumen (Speicherkapazität)?",
+        answerA = "Drei-Schluchten-Staudamm (China)",
+        answerB = "Kariba-Stausee (Sambia/Simbabwe)",
+        answerC = "Owen-Falls-Stausee (Uganda)",
+        answerD = "Bratsk-Stausee (Russland)",
+        correctAnswer = 1, // B
+        explanation = "Der Kariba-Stausee an der Grenze zwischen Sambia und Simbabwe hat eine Speicherkapazität von ca. 180 km³ und ist damit der größte Stausee der Welt nach Volumen. Er wurde durch den Kariba-Damm am Sambesi geschaffen (1959). Der Drei-Schluchten-Damm hat ca. 39 km³.",
+        difficulty = 4,
+        funFact = "Bei der Flutung des Kariba-Stausees in den späten 1950ern mussten ca. 57.000 Tonga-Menschen umgesiedelt werden – eine der größten Zwangsumsiedlungen im subsaharischen Afrika des 20. Jahrhunderts."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebiet erzeugt eine 'Datumsgrenz-Anomalie', weil Samoa 2011 die Datumsgrenze wechselte?",
+        answerA = "Samoa liegt nun westlich der Datumsgrenze, obwohl es östlich davon liegt",
+        answerB = "Samoa liegt nun östlich der Datumsgrenze, obwohl es geografisch westlich liegt",
+        answerC = "Amerikanisch-Samoa und Samoa teilen nun die gleiche Zeitzone",
+        answerD = "Samoa und Tonga liegen auf verschiedenen Seiten der Datumsgrenze",
+        correctAnswer = 0, // A
+        explanation = "Samoa wechselte am 29. Dezember 2011 von östlich nach westlich der Datumsgrenze – indem es den 30. Dezember 2011 übersprungen wurde. Geografisch liegt Samoa östlich von 180°, aber politisch-wirtschaftlich (Handel mit Australien und Neuseeland) erschien es sinnvoll, auf deren Seite zu sein. Amerikanisch-Samoa liegt nun auf der entgegengesetzten Seite.",
+        difficulty = 4,
+        funFact = "Durch den Zeitzonenwechsel erlebten die Samoaner Silvester 2011 zuerst (noch vor Neuseeland und Australien), obwohl sie ihn zuvor als eine der letzten Nationen gefeiert hatten. Das kleine Samoa lag nun zeitlich auf dem neuesten Stand."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen exakten Koordinaten liegt der Punkt Nemo – der ozeanische Pol der Unzugänglichkeit?",
+        answerA = "45°52'S, 123°23'W",
+        answerB = "48°52'S, 123°23'W",
+        answerC = "49°27'S, 119°42'W",
+        answerD = "51°12'S, 131°15'W",
+        correctAnswer = 1, // B
+        explanation = "Punkt Nemo liegt bei ca. 48°52.6'S, 123°23.6'W im Südpazifik und ist der am weitesten von jeder Küste entfernte Punkt im Ozean – ca. 2.688 km von der nächsten Küste entfernt (Inseln Ducie, Motu Nui und die Antarktis). Er liegt in der South Pacific Gyre, einem fast leblosen Meeresbereich.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen mittleren Abfluss hat der Ganges an seiner Mündung ins Bengalische Meer?",
+        answerA = "ca. 11.000 m³/s",
+        answerB = "ca. 35.000 m³/s",
+        answerC = "ca. 5.500 m³/s",
+        answerD = "ca. 19.000 m³/s",
+        correctAnswer = 0, // A
+        explanation = "Der Ganges hat an seiner Mündung (gemeinsam mit dem Brahmaputra als Ganges-Brahmaputra-System) einen kombinierten Abfluss von ca. 38.000 m³/s. Der Ganges allein hat etwa 11.000–12.000 m³/s mittleren Abfluss. Das gemeinsame Delta ist das größte der Welt (Sundarbans).",
+        difficulty = 4,
+        funFact = "Das Ganges-Brahmaputra-Delta (Sundarbans) ist das größte Mangrovenwaldgebiet der Erde und Heimat des Bengal-Tigers. Jährlich lagert das System ca. 1 Milliarde Tonnen Sediment im Bengalischen Golf ab."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das geologisch älteste Gebirge Deutschlands?",
+        answerA = "Schwarzwald (ca. 340 Mio. Jahre)",
+        answerB = "Erzgebirge (ca. 380 Mio. Jahre)",
+        answerC = "Harz (ca. 350 Mio. Jahre)",
+        answerD = "Bayerischer Wald / Böhmerwald (ca. 500–600 Mio. Jahre)",
+        correctAnswer = 3, // D
+        explanation = "Der Bayerische Wald und der angrenzende Böhmerwald gehören zum Böhmischen Massiv, dessen kristallines Grundgebirge aus dem Proterozoikum stammt und ca. 500–600 Millionen Jahre alt ist. Das Erzgebirge (variszische Faltung, ca. 380 Mio. Jahre) ist jünger. Diese alten Granite und Gneise bilden eines der ältesten Gebirgsreste Mitteleuropas.",
+        difficulty = 4,
+        funFact = "Obwohl der Bayerische Wald geologisch uralt ist, sind seine heutigen Erhebungen (max. 1.456 m) bescheiden – nach Hunderten Millionen Jahren Erosion. Einst war er wohl himalayahoch."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen VEI (Vulkanexplosivitätsindex) hatte der Ausbruch des Tambora (1815) – der stärkste in der aufgezeichneten Geschichte?",
+        answerA = "VEI 6",
+        answerB = "VEI 8",
+        answerC = "VEI 7",
+        answerD = "VEI 9",
+        correctAnswer = 2, // C
+        explanation = "Der Tambora-Ausbruch auf Sumbawa (Indonesien) am 10./11. April 1815 erreichte VEI 7 (super-colossal) und schleuderte ca. 160 km³ Material aus. Er tötete direkt ca. 71.000 Menschen und verursachte das 'Jahr ohne Sommer' 1816, das weltweit zu Ernteausfällen und Hungersnöten führte.",
+        difficulty = 4,
+        funFact = "Das 'Jahr ohne Sommer' 1816 durch den Tambora-Ausschuss trieb Mary Shelley dazu, an einem regnerischen, kalten Sommer am Genfer See das Buch 'Frankenstein' zu schreiben – ein direktes kulturelles Erbe eines Vulkanausbruchs."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie hoch ist die Staumauer des Drei-Schluchten-Damms am Jangtse (China)?",
+        answerA = "128 m",
+        answerB = "185 m",
+        answerC = "221 m",
+        answerD = "163 m",
+        correctAnswer = 1, // B
+        explanation = "Die Staumauer des Drei-Schluchten-Damms ist 185 m hoch und 2.335 m lang. Mit einer installierten Leistung von ca. 22.500 MW ist er das größte Wasserkraftwerk der Welt nach installierter Leistung. Der Stausee streckt sich ca. 660 km entlang des Jangtse.",
+        difficulty = 4,
+        funFact = "Für den Drei-Schluchten-Stausee mussten ca. 1,3 Millionen Menschen umgesiedelt werden – die größte Zwangsumsiedlung durch ein Bauprojekt in der Geschichte. Über 1.300 archäologische Stätten wurden geflutet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land streitet mit Japan um die AWZ-Kontrolle der Senkaku/Diaoyu-Inseln im Ostchinesischen Meer?",
+        answerA = "Nordkorea und China",
+        answerB = "China und Taiwan (beide beanspruchen die Inseln)",
+        answerC = "Südkorea und China",
+        answerD = "China, Taiwan und Südkorea",
+        correctAnswer = 1, // B
+        explanation = "Sowohl China (Volksrepublik) als auch Taiwan (Republik China) beanspruchen die Senkaku/Diaoyu-Inseln, die von Japan verwaltet werden. Der Streit betrifft nicht nur die unbewohnten Inseln, sondern vor allem die dadurch entstehenden AWZ-Ansprüche im ressourcenreichen Ostchinesischen Meer.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Gletscher ist der schnellste der Welt (höchste Fließgeschwindigkeit)?",
+        answerA = "Jakobshavn-Gletscher (Grönland)",
+        answerB = "Lambert-Gletscher (Antarktis)",
+        answerC = "Hubbard-Gletscher (Alaska)",
+        answerD = "Fedtschenko-Gletscher (Tadschikistan)",
+        correctAnswer = 0, // A
+        explanation = "Der Jakobshavn-Gletscher (Sermeq Kujalleq) in Westgrönland gilt als der schnellste Gletscher der Welt mit einer Fließgeschwindigkeit von über 40–46 m pro Tag (ca. 17 km pro Jahr). Er ist auch einer der Hauptverursacher des grönländischen Massenverlusts und eines der schnellsten Kälber für Eisberge.",
+        difficulty = 4,
+        funFact = "Der Eisberg, der 1912 die Titanic versenkte, stammete wahrscheinlich vom Jakobshavn-Gletscher. Die Reise eines solchen Eisbergs von Grönland in den Nordatlantik dauert typischerweise zwei bis drei Jahre."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Breitengrad liegt der nördlichste Punkt des afrikanischen Kontinents?",
+        answerA = "38°47'N (Kap Blanc, Tunesien)",
+        answerB = "37°21'N (Ras ben Sakka, Tunesien)",
+        answerC = "35°55'N (Kap Serrat, Tunesien)",
+        answerD = "40°04'N (Kap Bon, Tunesien)",
+        correctAnswer = 1, // B
+        explanation = "Ras ben Sakka (auch Ras Angela) in Tunesien bei 37°21'N ist der nördlichste Punkt des afrikanischen Festlandes. Er liegt auf der Halbinsel Cap Blanc, nur ca. 137 km von der sizilianischen Küste entfernt. Viele Quellen nennen fälschlicherweise Kap Blanc (Ras Enghela) als nördlichsten Punkt.",
+        difficulty = 4,
+        funFact = "An der engsten Stelle zwischen Afrika und Europa – zwischen Tunesien und Sizilien – liegt das Kap Bon Peninsula. Diese Route nutzten Millionen afrikanischer Migranten und historisch die Armeen Hannibals und der Vandalen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der drittgrößte Stausee der Welt nach Oberfläche (Wasserfläche)?",
+        answerA = "Aswan-Stausee (Nassersee, Ägypten/Sudan)",
+        answerB = "Manicouagan-Stausee (Kanada)",
+        answerC = "Volta-Stausee (Ghana)",
+        answerD = "Superior-See (Nordamerika – Naturgewässer, kein Stausee)",
+        correctAnswer = 2, // C
+        explanation = "Der Volta-Stausee (Lake Volta) in Ghana, entstanden durch den Akosombo-Damm (1965), hat eine Oberfläche von ca. 8.502 km² und ist der drittgrößte Stausee nach Fläche. Nach dem Nassersee (ca. 5.248 km²) und dem Kainji-Stausee folgt er in manchen Rankings noch vor dem Bratsk-Stausee.",
+        difficulty = 4,
+        funFact = "Der Volta-Stausee überflutete ca. 15 % der Landesfläche Ghanas und zwang über 78.000 Menschen zur Umsiedlung. Der Akosombo-Damm liefert noch heute den Großteil von Ghanas Strom."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Inseln westlich von Kiribati erlebten durch die Datumsgrenzverschiebung 1995 einen 'verlorenen Tag'?",
+        answerA = "Die Line Islands und Phoenix Islands von Kiribati",
+        answerB = "Tuvalu und Tokelau",
+        answerC = "Amerikanisch-Samoa",
+        answerD = "Jarvis Island und Howland Island",
+        correctAnswer = 0, // A
+        explanation = "Als Kiribati 1995 die Datumsgrenze östlich um seine Inselgruppen herumführte, sprangen die Line Islands (Caroline Island etc.) und Phoenix Islands über eine Datumsgrenze. Für die Bewohner dieser Inseln existierte ein bestimmter Tag praktisch nicht – sie wachten an einem Datum auf und gingen am übernächsten zu Bett.",
+        difficulty = 4,
+        funFact = "Kiribati erstreckt sich nun über fast alle 24 Zeitzonen und ist das Land mit der größten Ost-West-Ausdehnung in der Zeit (UTC+12 bis UTC+14 in den östlichsten Atolls). Caroline Island wurde in 'Millennium Island' umbenannt, um als erste den Jahrtausendwechsel 2000 zu begrüßen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist der mittlere jährliche Abfluss des Mississippi an seiner Mündung in den Golf von Mexiko?",
+        answerA = "ca. 5.100 m³/s",
+        answerB = "ca. 16.800 m³/s",
+        answerC = "ca. 9.800 m³/s",
+        answerD = "ca. 24.500 m³/s",
+        correctAnswer = 1, // B
+        explanation = "Der Mississippi hat an seiner Mündung einen mittleren Abfluss von ca. 16.800 m³/s. Er ist der wasserreichste Fluss Nordamerikas und drainiert ca. 3,2 Millionen km² – etwa 41 % der kontinentalen USA. Im Vergleich dazu: der Amazonas hat ca. 209.000 m³/s.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land beansprucht die Exclusive Economic Zone (AWZ) rund um Rockall – einen einsamen Felsen im Nordatlantik?",
+        answerA = "Irland allein",
+        answerB = "Großbritannien, Irland, Dänemark (Färöer) und Island streiten alle darum",
+        answerC = "Großbritannien (de facto Kontrolle) und Irland",
+        answerD = "Nur Großbritannien unbestritten",
+        correctAnswer = 1, // B
+        explanation = "Rockall ist ein 21 m hoher Granitfels im Nordatlantik, auf den Großbritannien, Irland, Island und Dänemark (für die Färöer) AWZ-Ansprüche anmelden. Großbritannien annektierte Rockall 1955, aber die anderen Länder erkennen daraus resultierende AWZ-Ansprüche nicht an. Kern des Streits sind Fischereirechte und mögliche Erdöl-/Gasvorkommen.",
+        difficulty = 4,
+        funFact = "Rockall ist so klein und felsig, dass es nie dauerhaft bewohnt war. Greenpeace-Aktivisten 'besetzten' die Insel 1997, um gegen Ölbohrungen zu protestieren – eine der kuriosesten Besetzungen in der Geschichte territorialer Streitigkeiten."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge Europas hat das geologisch jüngste Entstehungsalter?",
+        answerA = "Alpen (ca. 34–5 Mio. Jahre)",
+        answerB = "Karpaten (ca. 25 Mio. Jahre)",
+        answerC = "Kaukasus (ca. 25–5 Mio. Jahre)",
+        answerD = "Dinariden (ca. 70 Mio. Jahre)",
+        correctAnswer = 0, // A
+        explanation = "Die Alpen sind eines der geologisch jüngsten Hochgebirge Europas – ihre Haupthebungsphase fand vor etwa 34–5 Millionen Jahren statt (Eozän bis Pliozän). Teile des Himalaya sind ähnlich jung. Die heutigen Alpengipfel entstanden durch Kollision der Afrikanischen und Eurasischen Platte und kontinuierliche Erosion.",
+        difficulty = 4,
+        funFact = "Die Alpen steigen geologisch gesehen noch immer leicht an – die isostatische Hebung durch Erosionsentlastung beträgt etwa 1 mm pro Jahr, was durch den Klimawandel und erhöhte Schmelzwasserabfuhr sich verändert."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist die installierte Leistung des Itaipu-Staudamms zwischen Brasilien und Paraguay?",
+        answerA = "8.370 MW",
+        answerB = "14.000 MW",
+        answerC = "22.500 MW",
+        answerD = "6.960 MW",
+        correctAnswer = 1, // B
+        explanation = "Der Itaipu-Damm am Paraná zwischen Brasilien und Paraguay hat eine installierte Leistung von 14.000 MW (nach einer Erweiterung auf 14.000 MW, mit 20 Generatoren à 700 MW). Er war lange das größte Wasserkraftwerk der Welt nach Erzeugung, bis der Drei-Schluchten-Damm 2012 mehr produzierte.",
+        difficulty = 4,
+        funFact = "Itaipu deckt ca. 15 % des brasilianischen Strombedarfs und ca. 90 % des paraguayischen Stroms. Da Paraguay so wenig Strom verbraucht, verkauft es den Großteil seiner Quote an Brasilien – ein bedeutendes Einnahmemodell für das kleine Binnenland."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das am dichtesten besiedelte Stadtgebiet (Urban Agglomeration) Südamerikas (Stand 2024)?",
+        answerA = "Buenos Aires",
+        answerB = "Rio de Janeiro",
+        answerC = "São Paulo",
+        answerD = "Lima",
+        correctAnswer = 2, // C
+        explanation = "Die Greater São Paulo Area hat ca. 22–23 Millionen Einwohner und ist damit die größte Stadtregion Südamerikas. Buenos Aires folgt mit ca. 16 Millionen. São Paulo ist zugleich die größte Stadt der südlichen Hemisphäre und eines der wichtigsten Wirtschaftszentren der Welt.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen VEI hatte der Ausbruch des Pinatubo auf den Philippinen (1991)?",
+        answerA = "VEI 4",
+        answerB = "VEI 6",
+        answerC = "VEI 5",
+        answerD = "VEI 7",
+        correctAnswer = 1, // B
+        explanation = "Der Pinatubo-Ausbruch vom 15. Juni 1991 erreichte VEI 6 und war der zweitstärkste vulkanische Eruption des 20. Jahrhunderts. Er schleuderte ca. 10 km³ Material aus, tötete ca. 800 Menschen direkt und senkte die globale Durchschnittstemperatur durch Schwefeldioxide um ca. 0,5 °C für zwei Jahre.",
+        difficulty = 4,
+        funFact = "Die NASA nutzte die Pinatubo-Eruption als 'natürliches Experiment', um Klimamodelle zu testen: Der durch den Vulkan verursachte Temperaturabfall bestätigte die Modellvorhersagen und stärkte das Vertrauen in Klimamodelle erheblich."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen GPS-Koordinaten liegt der geografische Mittelpunkt Australiens?",
+        answerA = "25°36'S, 134°21'E (Lambert Center)",
+        answerB = "23°42'S, 133°53'E (in der Nähe von Alice Springs)",
+        answerC = "27°00'S, 133°00'E (in South Australia)",
+        answerD = "20°15'S, 131°45'E (Northern Territory Mitte)",
+        correctAnswer = 0, // A
+        explanation = "Der Lambert Centre of Australia liegt bei 25°36'30\"S, 134°21'17\"E in der Nähe von Finke im Northern Territory – er wurde durch den australischen Vermessungsdienst Geoscience Australia berechnet. Ein Denkmal markiert diesen Mittelpunkt. Alice Springs (23°42'S) liegt etwas nördlicher.",
+        difficulty = 4,
+        funFact = "Der Lambert Centre liegt so abgelegen, dass es keine befestigte Straße dorthin gibt. Touristen, die den exakten Mittelpunkt Australiens besuchen wollen, brauchen ein 4WD-Fahrzeug und GPS-Navigation durch unmarkiertes Buschland."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der längste Gletscher außerhalb der Polargebiete?",
+        answerA = "Fedtschenko-Gletscher (Tadschikistan, 77 km)",
+        answerB = "Siachen-Gletscher (Pakistan/Indien, 76 km)",
+        answerC = "Baltoro-Gletscher (Pakistan, 62 km)",
+        answerD = "Biafo-Gletscher (Pakistan, 63 km)",
+        correctAnswer = 0, // A
+        explanation = "Der Fedtschenko-Gletscher im Pamir-Gebirge (Tadschikistan) ist mit ca. 77 km Länge der längste Gletscher außerhalb der Polargebiete. Er liegt auf über 4.000 m Höhe und hat eine Fläche von ca. 700 km². Der Siachen-Gletscher (76 km, Karakorum) ist der zweitlängste und der höchstgelegene Kriegsschauplatz der Welt.",
+        difficulty = 4,
+        funFact = "Der Siachen-Gletscher ist seit 1984 Schauplatz eines militärischen Konflikts zwischen Indien und Pakistan um Kontrolle des Gletschers in über 6.000 m Höhe – der höchstgelegene militärische Konfliktort der Welt. Die extreme Kälte tötet mehr Soldaten als der Feind."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher AWZ-Streit betrifft das Südchinesische Meer am direktesten zwischen den meisten Ländern gleichzeitig?",
+        answerA = "China, Vietnam, Philippinen, Malaysia, Brunei und Taiwan",
+        answerB = "China, Vietnam und Philippinen",
+        answerC = "China, Indonesien, Malaysia und Singapur",
+        answerD = "China und Vietnam allein (Paracel Islands)",
+        correctAnswer = 0, // A
+        explanation = "Das Südchinesische Meer ist Schauplatz der komplexesten AWZ-Streitigkeiten der Welt: China, Vietnam, die Philippinen, Malaysia, Brunei und Taiwan erheben überlappende Ansprüche auf die Spratly-Inseln und die umliegenden Gewässer. China beansprucht mit seiner 'Neun-Striche-Linie' ca. 90 % des Meeres.",
+        difficulty = 4,
+        funFact = "Der Internationale Schiedsgerichtshof (Haag) entschied 2016, dass Chinas 'Neun-Striche-Linie' keine rechtliche Grundlage im internationalen Seerecht hat. China erkannte das Urteil nicht an und setzt seine Gebietsbeanspruchungen fort."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie alt ist das Gebirge Appalachen (USA) nach seiner Hauptfaltungsphase in Millionen Jahren?",
+        answerA = "ca. 65 Mio. Jahre (Kreidezeit)",
+        answerB = "ca. 480–300 Mio. Jahre (Ordovizium–Karbon)",
+        answerC = "ca. 150 Mio. Jahre (Jura)",
+        answerD = "ca. 1.000 Mio. Jahre (Proterozoikum)",
+        correctAnswer = 1, // B
+        explanation = "Die Appalachen entstanden in drei Hauptphasen: der Taconic-Orogenese (ca. 480–440 Mio. Jahre), der Acadischen Orogenese (ca. 375–325 Mio. Jahre) und der Alleghenischen Orogenese (ca. 325–300 Mio. Jahre). Sie sind daher deutlich älter als die Alpen oder der Himalaya und entsprechen dem skandinavischen Kaledonischen Gebirge.",
+        difficulty = 4,
+        funFact = "Die Appalachen waren in ihrer Blütezeit wahrscheinlich so hoch wie die heutigen Alpen oder der Himalaya – über 400 Millionen Jahre Erosion haben sie auf ihre heutigen bescheidenen Höhen (max. 2.037 m, Mount Mitchell) reduziert."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viel Kubikmeter Wasser pro Sekunde hat der Iguazú-Wasserfall in der Regenzeit durchschnittlich?",
+        answerA = "ca. 1.200 m³/s (Normalbetrieb)",
+        answerB = "ca. 6.500 m³/s (Hochwasser) bis 12.870 m³/s (Rekord)",
+        answerC = "ca. 350 m³/s (Jahresdurchschnitt)",
+        answerD = "ca. 2.700 m³/s (mittlerer Jahresdurchschnitt)",
+        correctAnswer = 3, // D
+        explanation = "Der Iguazú hat einen mittleren Abfluss von ca. 1.500–2.700 m³/s, wobei 2.700 m³/s oft als repräsentativer Jahreswert gilt. Im Hochwasser kann er auf über 12.000 m³/s ansteigen; der Rekord lag bei ca. 12.870 m³/s (1992). Die Fälle sind 2,7 km breit und bestehen aus ca. 275 einzelnen Wasserfällen.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt der magnetische Nordpol im Jahr 2024 ungefähr?",
+        answerA = "ca. 86°N, 162°W (auf arktischem Ozean, Richtung Russland)",
+        answerB = "ca. 80°N, 110°W (Nunavut, Kanada)",
+        answerC = "ca. 90°N (fällt mit dem geografischen Nordpol zusammen)",
+        answerD = "ca. 75°N, 100°W (Queen Elizabeth Islands)",
+        correctAnswer = 0, // A
+        explanation = "Der magnetische Nordpol wandert kontinuierlich. Er befand sich um 2024 bei ca. 86°N, 162°W – also weit nördlich, bereits über dem Arktischen Ozean in Richtung Sibirien. Anfang des 20. Jahrhunderts lag er noch über Kanada. Die Wanderungsgeschwindigkeit betrug zuletzt ca. 50–60 km pro Jahr.",
+        difficulty = 4,
+        funFact = "Der magnetische Nordpol wandert seit seiner ersten Messung 1831 über 2.300 km von der Küste Kanadas in Richtung Sibirien. In den letzten Jahrzehnten hat sich seine Wanderungsgeschwindigkeit stark erhöht – von ca. 10 km/Jahr auf über 50 km/Jahr."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die größte Stadt (nach Stadtgebiet-Fläche) der Erde?",
+        answerA = "Tokio",
+        answerB = "New York",
+        answerC = "Hulunbuir (China)",
+        answerD = "Chongqing (China)",
+        correctAnswer = 3, // D
+        explanation = "Chongqing in Südwestchina gilt nach manchen Definitionen als die flächenmäßig größte Stadt der Welt mit über 82.000 km² Verwaltungsfläche – allerdings umfasst diese Fläche auch ländliche Bezirke und ist eher ein stadtähnlicher Verwaltungsraum. Das Stadtgebiet (urban area) von Chongqing ist deutlich kleiner; Tokio und New York haben größere urbane Zentren.",
+        difficulty = 4,
+        funFact = "Chongqing ist die einzige Großstadt Chinas ohne eigenständige Provinz – sie ist direkt der Zentralregierung unterstellt, wie Peking und Shanghai. Die Stadt wuchs durch den Drei-Schluchten-Damm stark, da viele Umgesiedelte hier angesiedelt wurden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte Gletscher Nordamerikas nach Fläche?",
+        answerA = "Hubbard-Gletscher (Alaska)",
+        answerB = "Bering-Gletscher (Alaska)",
+        answerC = "Columbia-Gletscher (Alaska)",
+        answerD = "Malaspina-Gletscher (Alaska)",
+        correctAnswer = 1, // B
+        explanation = "Der Bering-Gletscher in Alaska ist mit ca. 5.175 km² der größte Gletscher Nordamerikas und einer der größten temperate Gletscher der Welt. Er ist bekannt für periodische 'Surges' – plötzliche Beschleunigungsphasen, bei denen er sich deutlich vorwärtsbewegt. Der Malaspina-Gletscher (ca. 5.000 km²) liegt knapp dahinter.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Vulkan hat den höchsten VEI-Wert in der aufgezeichneten Geschichte der letzten 10.000 Jahre (Holozän)?",
+        answerA = "Toba (Indonesien, ca. 74.000 v. Chr.) – VEI 8",
+        answerB = "Tambora 1815 – VEI 7",
+        answerC = "Yellowstone (letzte Eruption ca. 640.000 v. Chr.) – VEI 8",
+        answerD = "Pinatubo 1991 – VEI 6",
+        correctAnswer = 1, // B
+        explanation = "In der aufgezeichneten Geschichte (historische Quellen) ist Tambora 1815 mit VEI 7 der stärkste Ausbruch. Der Toba-Ausbruch (VEI 8) ist zwar geologisch dokumentiert, aber liegt ca. 74.000 Jahre zurück – weit außerhalb der historischen Aufzeichnungen. Gelológisch betrachtet ist Toba der stärkste bekannte Ausbruch der letzten 2 Millionen Jahre.",
+        difficulty = 4,
+        funFact = "Der Toba-Superausbruch vor ca. 74.000 Jahren war so massiv, dass er möglicherweise einen 'vulkanischen Winter' von mehreren Jahren auslöste und die menschliche Weltbevölkerung auf einige Tausend Individuen reduzierte – bekannt als die 'Toba-Katastrophentheorie', die aber umstritten ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen mittleren Abfluss hat der Jenissej (Sibirien) an seiner Mündung ins Karasee?",
+        answerA = "ca. 9.000 m³/s",
+        answerB = "ca. 19.600 m³/s",
+        answerC = "ca. 29.000 m³/s",
+        answerD = "ca. 36.500 m³/s",
+        correctAnswer = 1, // B
+        explanation = "Der Jenissej hat einen mittleren Abfluss von ca. 19.600 m³/s und ist damit einer der wasserreichsten Flüsse der Welt (Platz 5 weltweit). Zusammen mit seinem Quellfluss Selenga ist er ca. 5.539 km lang. Er ist der größte Flusses, der in den Arktischen Ozean mündet.",
+        difficulty = 4,
+        funFact = "Der Jenissej entwässert ein riesiges Gebiet, das von der Mongolei bis zum Arktischen Ozean reicht. Das Einzugsgebiet von ca. 2,58 Millionen km² enthält ausgedehnte Taiga und Permafrostböden, die bei Klimaerwärmung erhebliche Mengen Kohlenstoff freisetzen könnten."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Insel liegt direkt auf der internationalen Datumsgrenze und wird dadurch in zwei verschiedene Tage gespalten?",
+        answerA = "Diomedes-Inseln (Groß-Diomedes und Klein-Diomedes)",
+        answerB = "Fanning Island (Kiribati)",
+        answerC = "Wakeninsel (USA)",
+        answerD = "Jarvis Island (USA)",
+        correctAnswer = 0, // A
+        explanation = "Die Diomedes-Inseln in der Beringstraße – Groß-Diomedes (Russland) und Klein-Diomedes (USA) – liegen nur 3,8 km voneinander entfernt, aber auf verschiedenen Seiten der internationalen Datumsgrenze. Bei Groß-Diomedes (Russland) ist es einen Tag später als bei Klein-Diomedes (USA) – sie werden manchmal 'Gestern-Insel' und 'Morgen-Insel' genannt.",
+        difficulty = 4,
+        funFact = "Während des Kalten Krieges war die Wasserstraße zwischen den Diomedes-Inseln eine der wenigen Stellen, an denen US-Staatsbürger und sowjetische Staatsbürger sich gegenüberstanden – sie wurde als 'Ice Curtain' (Eiserner Vorhang im Eis) bezeichnet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der Standort des höchsten dauerhaft bewohnten Ortes der Welt?",
+        answerA = "La Rinconada (Peru), ca. 5.100 m",
+        answerB = "Wenzhuan (Tibet), ca. 5.200 m",
+        answerC = "El Alto (Bolivien), ca. 4.150 m",
+        answerD = "Lhasa (Tibet), ca. 3.650 m",
+        correctAnswer = 0, // A
+        explanation = "La Rinconada in den peruanischen Anden liegt auf ca. 5.100 m über dem Meeresspiegel und ist die höchstgelegene dauerhaft bewohnte Siedlung der Welt. Die Goldminenstadt hat ca. 50.000–80.000 Einwohner und bietet extreme Lebensbedingungen durch Sauerstoffmangel und arktische Temperaturen.",
+        difficulty = 4,
+        funFact = "In La Rinconada funktioniert ein altes Lohnsystem: Arbeiter erhalten keinen regulären Lohn, sondern dürfen einmal im Monat so viel Erz mit nach Hause nehmen, wie sie tragen können – das 'Cachorreo'-System. Was sie ausschmilzen, gehört ihnen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie alt sind die Appalachian Mountains im Vergleich zu den Alpen (Entstehungsalter)?",
+        answerA = "Gleich alt – beide entstanden vor ca. 60 Mio. Jahren",
+        answerB = "Appalachen sind ca. 5–7 mal älter als die Alpen",
+        answerC = "Alpen sind älter – sie entstanden vor den Appalachen",
+        answerD = "Appalachen sind doppelt so alt wie die Alpen",
+        correctAnswer = 1, // B
+        explanation = "Die Appalachen entstanden hauptsächlich vor ca. 480–300 Millionen Jahren, die Alpen vor ca. 34–5 Millionen Jahren. Die Appalachen sind damit etwa 5–7 Mal älter. Dieser Unterschied erklärt, warum die Appalachen trotz ursprünglicher Himalaya-Höhe heute nur noch ca. 2.000 m hoch sind.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der längste Unterwassertunnel der Welt (Bahntunnel unter Wasser)?",
+        answerA = "Ärmelkanaltunnel (Eurotunnel), 50 km",
+        answerB = "Seikan-Tunnel (Japan), 53,9 km",
+        answerC = "Marmaray (Istanbul), 13,6 km",
+        answerD = "Øresundbrücke-Tunnel (Dänemark-Schweden), 8 km",
+        correctAnswer = 1, // B
+        explanation = "Der Seikan-Tunnel in Japan verbindet die Inseln Honshū und Hokkaidō unter der Tsugaru-Straße und ist mit 53,9 km Gesamtlänge (davon 23,3 km unter Wasser) der längste Bahntunnel der Welt nach Gesamtlänge. Der Ärmelkanaltunnel (50,5 km, davon 38 km unter Wasser) hat den längsten Unterwasserabschnitt.",
+        difficulty = 4,
+        funFact = "Der Bau des Seikan-Tunnels (1971–1988) kostete das Leben von 34 Arbeitern und dauerte 17 Jahre. Die Tsugaru-Straße ist für ihre extremen Gezeiten und Strömungen bekannt – beim Bau kam es wiederholt zu Überschwemmungen durch eindringendes Meerwasser."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche zwei ozeanischen AWZ-Gebiete überlappen sich im Bereich des Arktischen Ozeans und sind Gegenstand aktueller Diplomatie?",
+        answerA = "USA (Alaska) und Russland",
+        answerB = "Kanada und Dänemark (Grönland)",
+        answerC = "Russland, Kanada, Norwegen, Dänemark und USA (alle fünf arktischen Nationen)",
+        answerD = "Nur Russland und Norwegen (Barentssee)",
+        correctAnswer = 2, // C
+        explanation = "Alle fünf arktischen Küstenstaaten – Russland, Kanada, Norwegen, Dänemark (via Grönland) und die USA – erheben AWZ-Ansprüche auf Teile des Arktischen Ozeans und seines Meeresbodens. Da viel Arktis über 200 Seemeilen von jeder Küste entfernt ist, sind erweiterte Kontinentalschelf-Ansprüche nach UNCLOS-Artikel 76 der eigentliche Streitpunkt.",
+        difficulty = 4,
+        funFact = "Russland hat einen U-Bootagenten 2007 eine Titanflagge am Nordpol verankern lassen – ein symbolischer Akt für seinen Anspruch auf den arktischen Schelf. Kanada und Dänemark protestierten. Heute reichen alle fünf Arktis-Nationen formale Ansprüche bei der UN-Kommission ein."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte Staudamm der Welt nach der Höhe (Dammhöhe)?",
+        answerA = "Nurek-Damm (Tadschikistan), 300 m",
+        answerB = "Drei-Schluchten-Damm (China), 185 m",
+        answerC = "Rogun-Damm (Tadschikistan, im Bau), 335 m",
+        answerD = "Grand Coulee (USA), 168 m",
+        correctAnswer = 2, // C
+        explanation = "Der Rogun-Damm in Tadschikistan (am Fluss Wachsh) ist nach seiner geplanten Fertigstellung mit 335 m Höhe der höchste Staudamm der Welt. Derzeit (2024) ist der Nurek-Damm (ebenfalls in Tadschikistan, 300 m) der höchste fertiggestellte Erdschüttdamm der Welt. Der Rogun-Damm befindet sich noch im Bau.",
+        difficulty = 4,
+        funFact = "Tadschikistan besitzt die zwei höchsten Staudämme der Welt – Nurek und Rogun – beide am gleichen Fluss Wachsh. Das kleine Binnenland in Zentralasien ist wasserkraftreich und hofft, durch den Rogun-Damm zu einem bedeutenden Stromexporteur zu werden."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchem Kontinent liegt die Stadt mit dem weltweit höchsten Bevölkerungswachstum unter den Megastädten (Stand 2024)?",
+        answerA = "Asien (Dhaka, Bangladesch)",
+        answerB = "Afrika (Kinshasa, DR Kongo)",
+        answerC = "Asien (Karatschi, Pakistan)",
+        answerD = "Afrika (Lagos, Nigeria)",
+        correctAnswer = 1, // B
+        explanation = "Kinshasa in der Demokratischen Republik Kongo gehört laut UN-Prognosen zu den am schnellsten wachsenden Megastädten der Welt und könnte bis 2050 zu den drei bevölkerungsreichsten Städten gehören. Das Wachstum liegt bei über 4–5 % jährlich – ein Rekordwert unter Städten über 10 Millionen Einwohner.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Archipel liegt auf der Datumsgrenze und gehört daher teilweise zum 'heutigen' und teilweise zum 'gestrigen' Tag?",
+        answerA = "Tonga-Inseln",
+        answerB = "Fidschi-Inseln",
+        answerC = "Chatham-Inseln (Neuseeland)",
+        answerD = "Fiji und Tonga (die Datumsgrenze verläuft zwischen beiden)",
+        correctAnswer = 3, // D
+        explanation = "Die internationale Datumsgrenze verläuft zwischen den Fidschi-Inseln und Tonga – sie macht eine Ausbuchtung, um beide Inselgruppen auf der gleichen Seite zu halten. Historisch führte dies dazu, dass Fidschi und Tonga zeitlich 'einen Tag auseinander' lagen, obwohl sie eng benachbart sind. Beide liegen jetzt westlich der Linie.",
+        difficulty = 4,
+        funFact = "Tonga war das erste Land, das das Jahr 2000 feierte, weil es westlich der Datumsgrenze liegt. Samoa war damals noch östlich (und feierte als eines der letzten) – bevor es 2011 die Seiten wechselte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viel Prozent des gesamten Süßwassers der Erde sind in Gletschern und Eisschilden gespeichert?",
+        answerA = "ca. 20 %",
+        answerB = "ca. 50 %",
+        answerC = "ca. 69 %",
+        answerD = "ca. 85 %",
+        correctAnswer = 2, // C
+        explanation = "Ca. 68–69 % des gesamten Süßwassers der Erde sind in Gletschern und Eisschilden (v.a. Antarktis und Grönland) gebunden. Grundwasser macht etwa 30 % aus. Seen, Flüsse und der Atmosphäre enthalten zusammen nur ca. 1 % des Süßwassers. Der globale Gletscherschwund verändert dieses Gleichgewicht.",
+        difficulty = 4,
+        funFact = "Würde das gesamte Eis der Antarktis schmelzen, würde der Meeresspiegel um ca. 58 Meter steigen – genug, um die meisten Küstenstädte der Welt zu überfluten. Allein das grönländische Eisschild würde den Meeresspiegel um ca. 7 Meter erhöhen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen exakten Koordinaten liegt die Basis der Christusstatue (Cristo Redentor) in Rio de Janeiro?",
+        answerA = "22°57'06\"S, 43°12'38\"W",
+        answerB = "22°55'00\"S, 43°14'00\"W",
+        answerC = "23°00'32\"S, 43°10'15\"W",
+        answerD = "22°53'18\"S, 43°09'44\"W",
+        correctAnswer = 0, // A
+        explanation = "Die Christusstatue auf dem Corcovado-Berg in Rio de Janeiro steht bei 22°57'06\"S, 43°12'38\"W auf 710 m Höhe. Sie ist 38 m hoch (ohne Sockel) und öffnet ihre Arme 28 m weit. Die Statue wurde 1931 eingeweiht und ist eine der bekanntesten Landmarken der Welt.",
+        difficulty = 4,
+        funFact = "Der Corcovado ist ein 710 m hoher Granitfels, der aus dem Atlantischen Regenwald (Mata Atlântica) aufragt. Der Wald um den Berg ist Teil des Tijuca-Nationalparks – dem größten Stadtwald der Welt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Stausee hat die größte Oberfläche (Fläche) in Afrika?",
+        answerA = "Nassersee / Nubischer See (Ägypten/Sudan)",
+        answerB = "Volta-Stausee (Ghana)",
+        answerC = "Kariba-Stausee (Sambia/Simbabwe)",
+        answerD = "Tanganjikasee (kein Stausee – Natursee)",
+        correctAnswer = 1, // B
+        explanation = "Der Volta-Stausee (Lake Volta) in Ghana mit ca. 8.502 km² ist der flächenmäßig größte künstliche Stausee Afrikas und einer der größten weltweit. Der Nassersee ist mit ca. 5.248 km² kleiner, aber hat ein erheblich größeres Volumen. Kariba hat die größte Kapazität nach Volumen (ca. 180 km³).",
+        difficulty = 4,
+        funFact = "Der Volta-Stausee entstand durch den Bau des Akosombo-Damms 1961–1965. Der erste Präsident Ghanas, Kwame Nkrumah, initiierte das Projekt mit Weltbank-Finanzierung, um Energie für die aufstrebende Aluminiumindustrie zu liefern."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge ist das geologisch jüngste auf dem Festland Australiens?",
+        answerA = "Great Dividing Range (ca. 300 Mio. Jahre)",
+        answerB = "Flinders Ranges (ca. 500 Mio. Jahre)",
+        answerC = "MacDonnell Ranges (ca. 300 Mio. Jahre)",
+        answerD = "Australian Alps (Snowy Mountains, ca. 90–80 Mio. Jahre)",
+        correctAnswer = 3, // D
+        explanation = "Die Snowy Mountains (Teil der Australian Alps) sind mit einer Haupthebungsphase vor ca. 90–80 Millionen Jahren (Kreide) die geologisch jüngsten Hochlagen Australiens. Die Great Dividing Range begann vor ca. 300 Millionen Jahren. Die Flinders und MacDonnell Ranges sind über 500 Millionen Jahre alt.",
+        difficulty = 4,
+        funFact = "Australiens höchster Gipfel, der Mount Kosciuszko (2.228 m), liegt in den Snowy Mountains. Trotz des bescheidenen Namens 'Snowy' lieferten diese Berge die Grundlage für das Snowy Mountains Scheme – eines der größten Wasserkraft- und Bewässerungsprojekte der südlichen Hemisphäre."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist der mittlere Abfluss des Orinoko an seiner Mündung (Venezuela)?",
+        answerA = "ca. 3.200 m³/s",
+        answerB = "ca. 30.000 m³/s",
+        answerC = "ca. 10.500 m³/s",
+        answerD = "ca. 16.000 m³/s",
+        correctAnswer = 1, // B
+        explanation = "Der Orinoko hat einen mittleren Abfluss von ca. 30.000 m³/s an seiner Mündung im Atlantik – er ist der drittgrößte Fluss Südamerikas nach dem Amazonas und dem Paraná/Río de la Plata-System. Er entwässert ca. 880.000 km² und ist für Venezuela das wichtigste Süßwassersystem.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Ranking liegt Mumbai (Bombay) unter den weltgrößten Stadtregionen nach Einwohnern (Stand 2024)?",
+        answerA = "Rang 3–4",
+        answerB = "Rang 7–8",
+        answerC = "Rang 5–6",
+        answerD = "Rang 10–12",
+        correctAnswer = 2, // C
+        explanation = "Die Großregion Mumbai liegt nach UN-Schätzungen 2024 auf ca. Rang 5–6 weltweit mit ca. 21–22 Millionen Einwohnern (Urban Agglomeration). Vor Mumbai liegen Tokio, Delhi, Shanghai und São Paulo/Dhaka. Die Rangliste schwankt je nach Berechnungsmethode, aber Mumbai gehört stabil zur Top-10.",
+        difficulty = 4,
+        funFact = "Mumbai ist die wirtschaftlich bedeutendste Stadt Indiens – sie erwirtschaftet ca. 5 % des indischen BIP und ist Sitz der Börse, Bollywood und der größten Konzerne. Gleichzeitig hat die Stadt mit Dharavi eines der größten Slums Asiens."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches VEI hatte der Ausbruch des Hunga Tonga-Hunga Ha'apai 2022, der einen Tsunamie ausgelöst hat?",
+        answerA = "VEI 4",
+        answerB = "VEI 6",
+        answerC = "VEI 5",
+        answerD = "VEI 7",
+        correctAnswer = 2, // C
+        explanation = "Der Hunga Tonga-Hunga Ha'apai-Ausbruch vom 15. Januar 2022 erreichte vorläufige Schätzungen von VEI 5–5,8. Er war der stärkste Vulkanausbruch seit dem Pinatubo 1991 und erzeugte einen Tsunami sowie eine globale Druckwelle, die mehrfach um die Erde wanderte. Satelliten registrierten eine Aschewolke bis ca. 58 km Höhe.",
+        difficulty = 4,
+        funFact = "Der Hunga Tonga-Ausbruch katapultierte Wasser in die Stratosphäre – ca. 150 Millionen Tonnen Wasserdampf, mehr als jeder andere bekannte Vulkanausbruch. Dies erhöhte den Wasserdampfgehalt der Stratosphäre um ca. 10 % und könnte kurzfristig den Klimaeffekt beeinflussen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land betreibt den Aswan-Hochdamm und wie viel Strom produziert er jährlich?",
+        answerA = "Ägypten; ca. 10–12 Milliarden kWh/Jahr",
+        answerB = "Ägypten und Sudan gemeinsam; ca. 25 Milliarden kWh/Jahr",
+        answerC = "Ägypten allein; ca. 50 Milliarden kWh/Jahr",
+        answerD = "Ägypten; ca. 2,6 Milliarden kWh/Jahr",
+        correctAnswer = 0, // A
+        explanation = "Der Aswan-Hochdamm (Sadd el-Aali) in Ägypten erzeugt mit 12 Turbinen eine installierte Leistung von ca. 2.100 MW und produziert ca. 10–12 Milliarden kWh pro Jahr. Er deckte in den 1970er Jahren über 50 % des ägyptischen Stroms, heute (bei stark gewachsenem Bedarf) noch ca. 10–15 %.",
+        difficulty = 4,
+        funFact = "Beim Bau des Aswan-Hochdamms (1960–1970) mussten ca. 100.000 nubische Menschen umgesiedelt werden, und über 20 antike ägyptische Tempel wurden abgetragen und an sichere Standorte versetzt – darunter der berühmte Tempel von Abu Simbel."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt hat nach absoluter Einwohnerzahl des Stadtgebiets den Rang als größte Stadt in Ozeanien (inkl. Australien)?",
+        answerA = "Auckland",
+        answerB = "Brisbane",
+        answerC = "Sydney",
+        answerD = "Melbourne",
+        correctAnswer = 2, // C
+        explanation = "Sydney ist mit ca. 5,3 Millionen Einwohnern (Greater Sydney, 2024) die einwohnerstärkste Stadt Australiens und Ozeaniens. Melbourne (ca. 5,1 Mio.) liegt knapp dahinter. Beide Städte wechseln in den Rankings je nach Berechnungsmethode die Plätze, mit Sydney geringfügig vorn.",
+        difficulty = 4,
+        funFact = "Trotz seiner Dominanz als größte Stadt ist Sydney nicht die Hauptstadt Australiens – das ist Canberra. Canberra wurde bewusst als Kompromisshauptstadt zwischen Sydney und Melbourne gewählt, nachdem beide Städte im Wettbewerb um den Hauptstadtstatus lagen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie dick ist das antarktische Eisschild an seiner dicksten bekannten Stelle (Astrolabe-Subglaziales Becken)?",
+        answerA = "ca. 3.000 m",
+        answerB = "ca. 4.776 m",
+        answerC = "ca. 2.500 m",
+        answerD = "ca. 6.200 m",
+        correctAnswer = 1, // B
+        explanation = "Das antarktische Eisschild erreicht an seiner dicksten Stelle im Bereich der subglazialen Becken Dicken von bis zu 4.776 m. Diese Messung stammt aus Radar-Tiefenmessungen im Bereich des Astrolabe-Subglazialen Beckens/Wilkes-Becken. Die durchschnittliche Dicke des antarktischen Eisschildes beträgt ca. 2.160 m.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat die weltweit größte ausschließliche Wirtschaftszone pro km² Landfläche (prozentual)?",
+        answerA = "Kiribati",
+        answerB = "Nauru",
+        answerC = "Palau",
+        answerD = "Marshallinseln",
+        correctAnswer = 0, // A
+        explanation = "Kiribati hat eine Landfläche von nur ca. 811 km², aber eine AWZ von ca. 3,44 Millionen km² – das ergibt ein AWZ-zu-Land-Verhältnis von über 4.000:1. Kein anderes Land hat eine so dramatisch überproportionale Meereszone im Verhältnis zu seiner Landfläche. Die AWZ enthält wichtige Fischereiressourcen.",
+        difficulty = 4,
+        funFact = "Kiribati ist durch den Klimawandel existenziell bedroht – der Meeresspiegel steigt schneller als die Inseln sich erholen können. Kiribati hat bereits Teile von Fidschi gekauft, um seiner Bevölkerung eine Umsiedlungsoption zu geben – der erste Staat, der 'klimatisches Territorium' im Ausland erwarb."
+    ),
+
 )
+
