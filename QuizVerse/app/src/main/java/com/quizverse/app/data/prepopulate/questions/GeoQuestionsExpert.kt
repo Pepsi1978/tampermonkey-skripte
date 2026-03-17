@@ -2116,5 +2116,673 @@ fun geoQuestionsExpert(): List<Question> = listOf(
         funFact = "Kiribati ist durch den Klimawandel existenziell bedroht – der Meeresspiegel steigt schneller als die Inseln sich erholen können. Kiribati hat bereits Teile von Fidschi gekauft, um seiner Bevölkerung eine Umsiedlungsoption zu geben – der erste Staat, der 'klimatisches Territorium' im Ausland erwarb."
     ),
 
+    // ── EXPERT BATCH 4 (difficulty = 4) ── 50 additional questions ───────────
+    // Topics: island populations, UN geographic features, hydrographic basins,
+    // continental shelf claims, volcanic eruption dates, geyser fields,
+    // submarine canyons, remote island coordinates, permafrost thickness, ocean salinity gradients
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viele ständige Einwohner hat Tristan da Cunha, die entlegenste bewohnte Insel der Welt?",
+        answerA = "ca. 50",
+        answerB = "ca. 250",
+        answerC = "ca. 800",
+        answerD = "ca. 1.500",
+        correctAnswer = 1, // B
+        explanation = "Tristan da Cunha im südlichen Atlantik hat ca. 250 ständige Einwohner, die alle auf die gleichen sieben Familien zurückgehen, die die Insel im frühen 19. Jahrhundert besiedelten. Die Insel liegt ca. 2.800 km von der nächsten Küste (St. Helena) entfernt und ist nur per Schiff erreichbar.",
+        difficulty = 4,
+        funFact = "Alle 250 Bewohner von Tristan da Cunha tragen einen von nur acht Familiennamen. Wegen der Isolation kämpft die Bevölkerung mit bestimmten Erbkrankheiten – Wissenschaftler untersuchen das genetische Profil der Gemeinschaft intensiv."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen genauen Koordinaten liegt die Insel Bouvet (Bouvetøya), die entlegenste Insel Norwegens?",
+        answerA = "51°24'S, 3°21'E",
+        answerB = "54°26'S, 3°24'E",
+        answerC = "48°38'S, 1°57'E",
+        answerD = "56°18'S, 5°42'E",
+        correctAnswer = 1, // B
+        explanation = "Bouvetøya liegt bei 54°26'S, 3°24'E im Südatlantik und ist norwegisches Territorium. Die unbewohnte Vulkaninsel ist die entlegenste Insel der Welt – der nächste bewohnte Ort (Tristan da Cunha) liegt ca. 1.600 km entfernt. Sie ist zu 93 % von Gletschern bedeckt.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie tief ist die Permafrostschicht im jakutischen Tiefland (Ostsibirien) an ihrer tiefsten gemessenen Stelle?",
+        answerA = "ca. 400 m",
+        answerB = "ca. 1.500 m",
+        answerC = "ca. 700 m",
+        answerD = "ca. 250 m",
+        correctAnswer = 1, // B
+        explanation = "Im jakutischen Becken (Sibirien) reicht der Permafrost bis in Tiefen von ca. 1.500 m – das ist die weltweit tiefste gemessene Permafrostschicht. Im Durchschnitt ist die sibirische Permafrostschicht ca. 300–600 m tief. Diese Tiefe erklärt sich durch jahrtausendelange arktische Kälteeinstrahlung ohne Unterbrechung durch Vereisung.",
+        difficulty = 4,
+        funFact = "In den tiefsten Schichten des jakutischen Permafrostes wurden Mammut-Reste gefunden, die so gut erhalten waren, dass Wissenschaftler noch Fleisch und Blut entnehmen konnten – ein natürlicher Tiefkühlschrank seit 30.000 Jahren."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wann genau (Datum) begann die explosive Phase des Eyjafjallajökull, die 2010 den europäischen Luftraum lahmlegte?",
+        answerA = "20. März 2010",
+        answerB = "14. April 2010",
+        answerC = "2. April 2010",
+        answerD = "28. März 2010",
+        correctAnswer = 1, // B
+        explanation = "Die explosive eruptive Phase des Eyjafjallajökull, die den europäischen Luftraum lahmlegte, begann am 14. April 2010 nach einem ersten Ausbruch am 20. März. Die Aschewolke vom 14. April führte zwischen dem 15. und 21. April 2010 zur größten Luftraumsperrung in Europa seit dem Zweiten Weltkrieg.",
+        difficulty = 4,
+        funFact = "Trotz der dramatischen Auswirkungen auf den Luftverkehr gab es beim Eyjafjallajökull 2010 keine direkten Todesopfer durch die Eruption. Der Vulkan trägt seinen komplizierten Namen nach dem isländischen Gletscher, der seinen Gipfel bedeckt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Geyserfeld gilt als das aktivste der Welt mit über 500 aktiven Geysiren?",
+        answerA = "Yellowstone-Nationalpark (USA)",
+        answerB = "Kamtschatka-Halbinsel (Russland, Tal der Geysire)",
+        answerC = "El Tatio (Chile)",
+        answerD = "Wai-O-Tapu (Neuseeland)",
+        correctAnswer = 0, // A
+        explanation = "Der Yellowstone-Nationalpark in Wyoming (USA) beherbergt über 500 aktive Geysire – mehr als die Hälfte aller Geysire der Welt. Das bekannteste ist Old Faithful, das im Abstand von 60–110 Minuten ausbricht. Das gesamte Yellowstone-Gebiet liegt über einem gigantischen Magmareservoir (Supervolkano).",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Unterwassercanyon gilt als der längste der Nordatlantikküste Nordamerikas?",
+        answerA = "Georges-Bank-Canyon",
+        answerB = "Hudson-Canyon",
+        answerC = "Laurentian-Canyon",
+        answerD = "Baltimore-Canyon",
+        correctAnswer = 1, // B
+        explanation = "Der Hudson-Canyon ist mit einer Länge von über 750 km (vom Hudson-Fluss bis in die Tiefsee) einer der längsten Unterwassercanyons der Welt. Er beginnt am Rand des kontinentalen Schelfs vor New York und reicht bis in Tiefen von über 3.500 m. Er ist das direkte Unterwasser-Fortführungssystem des Hudson-Flusses.",
+        difficulty = 4,
+        funFact = "Der Hudson-Canyon entstand, als der Meeresspiegel während der letzten Eiszeit um ca. 120 m absank und der Hudson-Fluss seinen Lauf über den jetzt überfluteten Schelf bis an die Tiefseekante fortsetzte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt der Pol der Unzugänglichkeit des eurasischen Kontinents (Dsunggarei, China)?",
+        answerA = "ca. 46°17'N, 86°40'E",
+        answerB = "ca. 40°00'N, 65°00'E",
+        answerC = "ca. 55°24'N, 84°00'E",
+        answerD = "ca. 50°00'N, 92°00'E",
+        correctAnswer = 0, // A
+        explanation = "Der eurasische Pol der Unzugänglichkeit liegt bei ca. 46°17'N, 86°40'E in der Dsunggarei (Xinjiang, China), ca. 2.645 km von der nächsten Küste entfernt. Er ist der am weitesten von jedem Ozean entfernte Punkt auf dem eurasischen Festland.",
+        difficulty = 4,
+        funFact = "Der Eurasische Pol der Unzugänglichkeit zeigt extreme Kontinentalklimaschwankungen von über 70 °C zwischen Sommer (+40°C) und Winter (−30°C). Niederschläge sind minimal – oft unter 200 mm/Jahr."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie ist der Salinitätsgradient zwischen Mittelmeer und Atlantik an der Straße von Gibraltar?",
+        answerA = "Mittelmeer ca. 38 ‰, Atlantik ca. 35 ‰ (Mittelmeer salziger)",
+        answerB = "Atlantik salziger als Mittelmeer (ca. 40 ‰ vs. 36 ‰)",
+        answerC = "Beide haben identischen Salzgehalt von ca. 35 ‰",
+        answerD = "Mittelmeer ca. 30 ‰, Atlantik ca. 35 ‰ (Atlantik salziger)",
+        correctAnswer = 0, // A
+        explanation = "Das Mittelmeer hat durch starke Verdunstung und geringen Süßwasserzufluss einen Salzgehalt von ca. 38–39 ‰, während der angrenzende Atlantik ca. 35–36 ‰ aufweist. An der Straße von Gibraltar entsteht eine zweischichtige Strömung: Atlantikwasser fließt oben ein, dichtes Mittelmeerwasser fließt tief unten heraus.",
+        difficulty = 4,
+        funFact = "Das ausströmende Mittelmeerwasser (Mediterranean Outflow Water) bleibt als separate Wassermasse im Atlantik erkennbar und beeinflusst die Tiefenzirkulation des gesamten Nordatlantiks bis in Tiefen von 1.000 m."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land hat mehrfach erweiterte Kontinentalschelf-Ansprüche nach UNCLOS Artikel 76 eingereicht, die über 1 Million km² arktischen Meeresbodens umfassen?",
+        answerA = "Australien",
+        answerB = "Russland",
+        answerC = "Brasilien",
+        answerD = "Neuseeland",
+        correctAnswer = 1, // B
+        explanation = "Russland hat mehrfach erweiterte Kontinentalschelf-Ansprüche bei der CLCS eingereicht – der umfassendste umfasst über 1,2 Millionen km² des Arktischen Meeresbodens. Russland beansprucht damit, dass der Lomonosov-Rücken eine Verlängerung des russischen Kontinentalsockels ist.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Heard Island (Australien) mit dem aktiven Vulkan Big Ben im südlichen Indischen Ozean?",
+        answerA = "53°06'S, 73°31'E",
+        answerB = "49°31'S, 69°30'E",
+        answerC = "60°12'S, 78°45'E",
+        answerD = "44°55'S, 68°22'E",
+        correctAnswer = 0, // A
+        explanation = "Heard Island liegt bei ca. 53°06'S, 73°31'E im südlichen Indischen Ozean. Der aktive Vulkan Big Ben (Mawson Peak, 2.745 m) ist der höchste Punkt australischen Territoriums. Die Insel ist UNESCO-Weltnaturerbe und nahezu unberührt von menschlichem Einfluss.",
+        difficulty = 4,
+        funFact = "Heard Island ist so abgelegen, dass es nahezu unberührt von menschlichem Einfluss ist – trotzdem haben Satelliten mehrfach aktive Lavaströme dokumentiert. Rund 80 % der Insel sind von Gletschern bedeckt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das hydrografische Einzugsgebiet des Ob-Irtysch-Systems (Sibirien)?",
+        answerA = "ca. 1,1 Millionen km²",
+        answerB = "ca. 2,99 Millionen km²",
+        answerC = "ca. 1,78 Millionen km²",
+        answerD = "ca. 4,5 Millionen km²",
+        correctAnswer = 1, // B
+        explanation = "Das Ob-Irtysch-Einzugsgebiet umfasst ca. 2,99 Millionen km² und ist damit eines der größten der Welt (Platz 5). Es erstreckt sich von den kasachischen Steppen bis zum Arktischen Ozean und entwässert das westsibirische Tiefland. Der Ob ist ca. 3.650 km lang, das Gesamtsystem mit dem Irtysch ca. 5.410 km.",
+        difficulty = 4,
+        funFact = "Das Ob-Einzugsgebiet enthält das Vasyugan-Moor – das größte Torfmoor der Welt (ca. 53.000 km²). Es speichert mehr Kohlenstoff als ganz Deutschland und ist ein kritischer Klimapuffer, der durch Erdöl-Erschließung und Klimawandel bedroht ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viele Einwohner hat Saint Helena (britisches Überseegebiet) im Südatlantik (Stand 2024)?",
+        answerA = "ca. 500",
+        answerB = "ca. 4.500",
+        answerC = "ca. 12.000",
+        answerD = "ca. 25.000",
+        correctAnswer = 1, // B
+        explanation = "Saint Helena hat ca. 4.500 ständige Einwohner (Stand 2021/2024). Die Insel im südlichen Atlantik ist vor allem als Verbannungsort Napoleon Bonapartes (1815–1821) bekannt. Seit 2016 gibt es einen Flughafen, der die Insel nach Jahrzehnten ausschließlicher Schiffsverbindung öffnete.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Geyserfeld in Island ist Heimat des Namengebers aller Geysire weltweit?",
+        answerA = "Geysir-Geothermalgebiet (Haukadalur)",
+        answerB = "Hengill-Vulkansystem",
+        answerC = "Krafla-Geothermalfeld",
+        answerD = "Nesjavellir-Geothermalgebiet",
+        correctAnswer = 0, // A
+        explanation = "Das Haukadalur-Geothermalgebiet in Südisland ist Heimat des 'Geysir' – dem Namensgeber aller Geysire weltweit. Das Feld hat mehrere aktive Geysire, darunter Strokkur (bricht alle 5–10 Minuten aus) und den historischen Great Geysir (heute seltener aktiv).",
+        difficulty = 4,
+        funFact = "Das englische Wort 'geyser' kommt direkt vom isländischen Geysir, der wiederum vom altnordischen 'gjósa' (hervorbrechen, sprudeln) abstammt. Der große Geysir war zu seiner Blütezeit (1890er Jahre) der berühmteste Geysir der Welt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Unterwassercanyon an der afrikanischen Westküste wird direkt durch den Kongoflusseintrag erodiert?",
+        answerA = "Kongo-Canyon (Congo Canyon)",
+        answerB = "Niger-Canyon",
+        answerC = "Senegal-Canyon",
+        answerD = "Volta-Canyon",
+        correctAnswer = 0, // A
+        explanation = "Der Kongo-Canyon vor der Mündung des Kongo-Flusses ist einer der größten und tiefsten Unterwassercanyons der Welt. Er beginnt direkt an der Flussmündung, erstreckt sich ca. 750 km ins Tiefsee-Abyssal und reicht bis in Tiefen von über 3.000 m. Er wird aktiv durch die enorme Sedimentlast des Kongo-Flusses erodiert.",
+        difficulty = 4,
+        funFact = "Der Kongo-Canyon wird noch heute aktiv durch turbide Strömungen erodiert – die gewaltige Wasserführung des Kongo treibt selbst in der Tiefsee noch Erosionsprozesse an. Wissenschaftler nutzen Unterwasserkabel in diesem Canyon zur seismischen Messung."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie dick ist der Permafrost im Bereich von Jakutsk (Sacha/Jakutien) durchschnittlich?",
+        answerA = "ca. 100–200 m",
+        answerB = "ca. 300–500 m",
+        answerC = "ca. 1.000–1.500 m",
+        answerD = "ca. 50–80 m",
+        correctAnswer = 1, // B
+        explanation = "Im Bereich von Jakutsk (die kälteste Großstadt der Welt) beträgt die Permafrosttiefe durchschnittlich ca. 300–500 m. Jakutsk liegt vollständig auf Permafrostboden – alle Gebäude müssen auf Pfählen errichtet werden, da die Wärme der Häuser den Boden auftauen würde.",
+        difficulty = 4,
+        funFact = "In Jakutsk werden im Winter regulär Temperaturen von −40 bis −50 °C gemessen. Das gesamte Stadtleben (Rohrsysteme, Fundamente, Straßen) muss an den dauerhaft gefrorenen Untergrund angepasst sein – ein einzigartiges ingenieurtechnisches Umfeld."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Ascension Island (britisches Überseegebiet) im Südatlantik?",
+        answerA = "7°56'S, 14°22'W",
+        answerB = "15°56'S, 5°44'W",
+        answerC = "1°30'S, 9°30'E",
+        answerD = "11°32'N, 8°20'W",
+        correctAnswer = 0, // A
+        explanation = "Ascension Island liegt bei 7°56'S, 14°22'W im Südatlantik, ca. 1.600 km nordwestlich von Saint Helena. Die Insel ist strategisch wichtig (britische Militärbasis, NASA-Tracking-Station) und hat ca. 600–800 Einwohner, überwiegend Militär und Verwaltung.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches UN-Koordinatensystem hat seit 1984 den historischen Greenwicher Nullmeridian als globalen Standard ersetzt?",
+        answerA = "ED50 (European Datum 1950)",
+        answerB = "IERS-Referenzmeridian (WGS84, ca. 102 m östlich von Greenwich)",
+        answerC = "Greenwicher Nullmeridian (0° historisches Observatorium)",
+        answerD = "GRS80 (Geodetic Reference System 1980)",
+        correctAnswer = 1, // B
+        explanation = "Seit 1984 definiert das IERS den offiziellen Nullmeridian beim IERS-Referenzmeridian (WGS84), der ca. 102 m östlich des historischen Greenwicher Nullmeridians liegt. GPS-Geräte und alle modernen Koordinatensysteme nutzen diesen Standard. Wer in Greenwich auf der historischen Linie steht, befindet sich laut GPS leicht östlich des modernen Nullmeridians.",
+        difficulty = 4,
+        funFact = "Der Unterschied von ca. 102 m entsteht, weil das historische Greenwich-Observatorium die lokale Vertikale nutzte (beeinflusst durch lokale Schwerkraftanomalien), während WGS84 ein erdzentriertes Ellipsoidmodell verwendet."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das Einzugsgebiet des Amazonas nach Fläche (das größte der Welt)?",
+        answerA = "ca. 4,8 Millionen km²",
+        answerB = "ca. 7,05 Millionen km²",
+        answerC = "ca. 5,9 Millionen km²",
+        answerD = "ca. 3,2 Millionen km²",
+        correctAnswer = 1, // B
+        explanation = "Das Amazonas-Einzugsgebiet umfasst ca. 7,05 Millionen km² – das größte Flusseinzugsgebiet der Welt. Es erstreckt sich über neun südamerikanische Länder und macht ca. 40 % der Fläche Südamerikas aus. Das Einzugsgebiet entspricht ca. 20 % des globalen Süßwasserabflusses.",
+        difficulty = 4,
+        funFact = "Das Amazonas-Einzugsgebiet beherbergt ca. 10 % aller auf der Erde lebenden Arten. Ein einziger Hektar Amazonas-Regenwald kann mehr Baumarten enthalten als ganz Europa. Der Regenwald erzeugt durch Transpiration seinen eigenen Wasserkreislauf – 'fliegende Flüsse' aus Wasserdampf."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wann genau fand die Hauptexplosion des Pinatubo (Philippinen) 1991 statt?",
+        answerA = "3. Juni 1991",
+        answerB = "15. Juni 1991",
+        answerC = "2. April 1991",
+        answerD = "28. Mai 1991",
+        correctAnswer = 1, // B
+        explanation = "Die Hauptexplosion des Pinatubo fand am 15. Juni 1991 statt – der stärkste Ausbruch seit dem Novarupta 1912. Vorläuferausbrüche begannen am 9. und 12. Juni. Der Hauptausbruch am 15. Juni produzierte eine Aschesäule von ca. 34 km Höhe und schleuderte ca. 10 km³ Material aus.",
+        difficulty = 4,
+        funFact = "Der Pinatubo-Ausbruch traf zeitlich mit dem Taifun Yunya zusammen – die Kombination aus Vulkanasche und Regen erzeugte schwere Lahars (Schlammlawinen), die mehr Todesopfer forderten als die Eruption selbst. Das US-amerikanische Clark Air Base wurde dauerhaft aufgegeben."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viele Einwohner hat das Cocos-(Keeling-)Inseln-Territorium (Australien) im Indischen Ozean?",
+        answerA = "ca. 100",
+        answerB = "ca. 600",
+        answerC = "ca. 3.500",
+        answerD = "ca. 15.000",
+        correctAnswer = 1, // B
+        explanation = "Die Cocos (Keeling) Islands haben ca. 550–600 ständige Einwohner auf zwei bewohnten Inseln (Home Island und West Island). Die Bevölkerung setzt sich aus malaiisch-stämmigen Cocos-Malaiern und australischen Beamten zusammen. Das Territorium liegt ca. 2.750 km nordwestlich von Perth.",
+        difficulty = 4,
+        funFact = "Die Cocos (Keeling) Islands wurden von Charles Darwin 1836 während der Beagle-Reise besucht – er entwickelte hier seine Theorie zur Entstehung von Atollen durch das langsame Absinken vulkanischer Inseln."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen Salzgehalt hat das Tote Meer (Israel/Jordanien) an seiner Oberfläche?",
+        answerA = "ca. 15 ‰",
+        answerB = "ca. 33 ‰",
+        answerC = "ca. 340 ‰ (ca. 34 %)",
+        answerD = "ca. 120 ‰ (ca. 12 %)",
+        correctAnswer = 2, // C
+        explanation = "Das Tote Meer hat einen Salzgehalt von ca. 330–342 ‰ (ca. 34 %), was etwa zehnmal höher ist als der durchschnittliche Meeressalzgehalt (35 ‰). Dieser extrem hohe Salzgehalt macht das Baden ohne Ertrinken möglich (erhöhter Auftrieb) und verhindert jegliches tierische Leben.",
+        difficulty = 4,
+        funFact = "Das Tote Meer sinkt jährlich um ca. 1 Meter ab – durch massive Wasserentnahme aus dem Jordan für Bewässerung und Trinkwasser sowie hohe Verdunstung. Seit 1930 hat es bereits ca. ein Drittel seiner Fläche verloren."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Christmas Island (Weihnachtsinsel, Australien) im Indischen Ozean?",
+        answerA = "10°29'S, 105°38'E",
+        answerB = "14°15'S, 89°12'E",
+        answerC = "8°04'S, 115°55'E",
+        answerD = "17°22'S, 102°18'E",
+        correctAnswer = 0, // A
+        explanation = "Christmas Island liegt bei 10°29'S, 105°38'E im Indischen Ozean, ca. 360 km südlich von Java (Indonesien). Die australische Überseegebiet hat ca. 1.500–2.000 Einwohner und ist vor allem für die jährliche Roten Krabben-Wanderung bekannt (ca. 120 Millionen Krabben ziehen vom Inneren zur Küste).",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Geyserfeld auf Kamtschatka (Russland) wurde 2007 durch eine Schlammlawine teilweise zerstört?",
+        answerA = "Uzon-Caldera-Geothermalfeld",
+        answerB = "Tal der Geysire (Dolina Geizerov)",
+        answerC = "Mutnovsky-Geothermalanlage",
+        answerD = "Pauzhetka-Geothermalfeld",
+        correctAnswer = 1, // B
+        explanation = "Das 'Tal der Geysire' (Dolina Geizerov) auf Kamtschatka mit über 200 Geysiren wurde am 3. Juni 2007 durch einen massiven Erdrutsch mit Schlammlawine teilweise verschüttet. Etwa zwei Drittel des Tals wurden begraben. Das Tal ist UNESCO-Weltnaturerbe.",
+        difficulty = 4,
+        funFact = "Kamtschatkas Tal der Geysire ist nur per Hubschrauber zugänglich. Nach dem Erdrutsch 2007 regenerierte sich das Tal überraschend schnell – viele Geysire wurden freigelegt oder öffneten neue Kanäle."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das Einzugsgebiet des Kongo-Flusses?",
+        answerA = "ca. 1,2 Millionen km²",
+        answerB = "ca. 3,69 Millionen km²",
+        answerC = "ca. 2,1 Millionen km²",
+        answerD = "ca. 4,8 Millionen km²",
+        correctAnswer = 1, // B
+        explanation = "Das Einzugsgebiet des Kongo umfasst ca. 3,69 Millionen km² – das zweitgrößte Einzugsgebiet Afrikas und das fünftgrößte der Welt. Es erstreckt sich über neun Länder und umfasst das größte tropische Regenwaldgebiet Afrikas (Kongobecken). Der Fluss überquert zweimal den Äquator.",
+        difficulty = 4,
+        funFact = "Das Kongobecken beherbergt ca. 70 % aller afrikanischen tropischen Regenwälder und ist nach dem Amazonasbecken das zweitwichtigste Kohlenstoffsenke der Erde."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wann fand die Hauptexplosion des Krakatau statt, die 1883 den drittlautesten Knall der aufgezeichneten Geschichte erzeugte?",
+        answerA = "27. August 1883",
+        answerB = "15. September 1883",
+        answerC = "3. Juli 1883",
+        answerD = "12. November 1883",
+        correctAnswer = 0, // A
+        explanation = "Der Haupt-Paroxysmus des Krakatau-Ausbruchs fand am 27. August 1883 statt. Die stärkste Explosion um 10:02 Uhr Ortszeit wurde 4.800 km entfernt auf Rodrigues (Mauritius) als 'Kanonendonner' beschrieben. Die Druckwelle umrundete die Erde mehrfach.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte aktive Geysir der Welt nach Ausbruchshöhe?",
+        answerA = "Old Faithful (Yellowstone, ca. 55 m)",
+        answerB = "Steamboat Geyser (Yellowstone, bis 90 m)",
+        answerC = "Grand Geysir (Island, ca. 70 m historisch)",
+        answerD = "Strokkur (Island, ca. 30 m)",
+        correctAnswer = 1, // B
+        explanation = "Der Steamboat Geyser im Yellowstone-Nationalpark ist der größte aktive Geysir der Welt – bei Hauptausbrüchen kann er Wasser bis zu 90–120 m hoch schleudern. Er bricht jedoch unregelmäßig aus. Old Faithful (ca. 55 m) ist regelmäßiger, aber kleiner.",
+        difficulty = 4,
+        funFact = "Der Steamboat Geyser hatte zwischen 1911 und 1961 eine 50-jährige Ruhephase. Nach jahrelanger Inaktivität begann er 2018 ungewöhnlich häufig auszubrechen – Wissenschaftler diskutieren, ob dies ein Zeichen erhöhter geothermaler Aktivität unter Yellowstone ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher asiatische Salzsee hat nach dem Don Juan Pond einen der höchsten Salzgehalte weltweit?",
+        answerA = "Assal-See (Dschibuti)",
+        answerB = "Totes Meer (Israel/Jordanien)",
+        answerC = "Garabogazköl (Turkmenistan)",
+        answerD = "Tuz Gölü (Türkei)",
+        correctAnswer = 2, // C
+        explanation = "Der Garabogazköl an der Westküste des Kaspischen Meeres in Turkmenistan hat einen Salzgehalt von bis zu 350 ‰ (ca. 35 %) in Trockenzeiten – er gilt nach dem Don Juan Pond als eines der salzhaltigsten natürlichen Gewässer Asiens. Das Kaspische Meer selbst hat nur ca. 13 ‰.",
+        difficulty = 4,
+        funFact = "Der Garabogazköl war von 1980–1992 durch einen Damm vom Kaspischen Meer getrennt und trocknete fast vollständig aus. Nach Öffnung des Dammes füllte er sich wieder. Er ist eine wichtige Quelle für Natriumsulfat (Glaubersalz) für die Chemieindustrie."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Flusssystem hat das größte Einzugsgebiet in Asien?",
+        answerA = "Ob-Irtysch (ca. 3 Mio. km²)",
+        answerB = "Jangtse (ca. 1,8 Mio. km²)",
+        answerC = "Jenissej-Angara (ca. 2,58 Mio. km²)",
+        answerD = "Lena (ca. 2,49 Mio. km²)",
+        correctAnswer = 0, // A
+        explanation = "Das Ob-Irtysch-System hat das größte Einzugsgebiet in Asien mit ca. 2,99 Millionen km². Es übertrifft das Jenissej-Angara-System (ca. 2,58 Mio. km²) und das Lena-System (ca. 2,49 Mio. km²). Alle drei großen sibirischen Flusssysteme enden im Arktischen Ozean.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen Salinitätsunterschied hat der Persische Golf gegenüber dem Arabischen Meer?",
+        answerA = "Persischer Golf ca. 40 ‰, Arabisches Meer ca. 36 ‰ (Differenz ca. 4 ‰)",
+        answerB = "Persischer Golf ca. 55 ‰, Arabisches Meer ca. 35 ‰ (Differenz 20 ‰)",
+        answerC = "Beide haben identischen Salzgehalt von ca. 38 ‰",
+        answerD = "Persischer Golf ca. 70 ‰, Arabisches Meer ca. 40 ‰ (Differenz 30 ‰)",
+        correctAnswer = 0, // A
+        explanation = "Der Persische Golf hat durch extreme Verdunstung einen Salzgehalt von ca. 38–42 ‰ (teilweise bis 45 ‰ in flachen Bereichen), das Arabische Meer liegt bei ca. 36–37 ‰. Der Gradient von ca. 4–5 ‰ erzeugt an der Straße von Hormuz eine dichte Ausströmung von Golfwasser in den Ozean.",
+        difficulty = 4,
+        funFact = "Das aus dem Persischen Golf ausströmende hypersaline Wasser taucht im Arabischen Meer ab und bildet eine eigene Wassermasse (Persian Gulf Water), die über Tausende von Kilometern durch den Indischen Ozean verfolgt werden kann."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher ist der größte Unterwassercanyon im Pazifischen Ozean nach Länge?",
+        answerA = "Monterey-Canyon (Kalifornien, ca. 153 km)",
+        answerB = "Bering-Canyon (Beringmeer, ca. 400 km)",
+        answerC = "Cascadia-Channel (Oregon/Washington)",
+        answerD = "Suruga-Canyon (Japan)",
+        correctAnswer = 1, // B
+        explanation = "Der Bering-Canyon im Beringmeer (Alaska) ist mit einer Länge von ca. 400 km und Tiefen bis 4.000 m einer der größten Unterwassercanyons des Pazifiks. Der Monterey Canyon vor Kalifornien (ca. 153 km) ist tiefer als der Grand Canyon relativ zur umliegenden Fläche, aber kürzer.",
+        difficulty = 4,
+        funFact = "Der Monterey Canyon vor der Küste Kaliforniens ist so zugänglich, dass er eines der meistuntersuchten Unterwasserökosysteme der Welt ist. Das Monterey Bay Aquarium Research Institute (MBARI) betreibt dort seit Jahrzehnten Unterwasserroboter."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Henderson Island (UNESCO-Weltnaturerbe, britisches Pitcairn-Territorium)?",
+        answerA = "24°22'S, 128°19'W",
+        answerB = "31°12'S, 141°45'W",
+        answerC = "18°48'S, 151°20'W",
+        answerD = "27°54'S, 135°08'W",
+        correctAnswer = 0, // A
+        explanation = "Henderson Island liegt bei 24°22'S, 128°19'W im südlichen Pazifik und gehört zum britischen Pitcairn-Territorium. Die unbewohnte Insel ist UNESCO-Weltnaturerbe (seit 1988) wegen ihrer einzigartigen Fauna (4 endemische Vogelarten). Sie liegt ca. 5.000 km von Neuseeland und Südamerika entfernt.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wann begann der stärkste Vulkanausbruch des 20. Jahrhunderts – der Novarupta in Alaska?",
+        answerA = "1.–9. Juni 1912",
+        answerB = "August 1900",
+        answerC = "15. März 1923",
+        answerD = "22. Oktober 1930",
+        correctAnswer = 0, // A
+        explanation = "Der Novarupta-Katmai-Ausbruch fand vom 1.–9. Juni 1912 auf der Alaska-Halbinsel statt und war der stärkste Vulkanausbruch des 20. Jahrhunderts mit VEI 6. Er schleuderte ca. 12,5 km³ Material aus und schuf das 'Tal der 10.000 Rauche' (Valley of Ten Thousand Smokes).",
+        difficulty = 4,
+        funFact = "Obwohl der Novarupta-Ausbruch stärker war als der Pinatubo 1991 und der Krakatau 1883, ist er wenig bekannt – weil er in einer völlig unbewohnten Region Alaskas auftrat. Keine Großstadt lag in der Nähe, und die Nachrichtenkommunikation war 1912 noch sehr beschränkt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das Einzugsgebiet des Mississippi (USA) und welchen Weltrang hat es?",
+        answerA = "ca. 2,1 Mio. km², Rang 8",
+        answerB = "ca. 3,2 Mio. km², Rang 4",
+        answerC = "ca. 1,2 Mio. km², Rang 12",
+        answerD = "ca. 4,5 Mio. km², Rang 3",
+        correctAnswer = 1, // B
+        explanation = "Das Mississippi-Einzugsgebiet umfasst ca. 3,2 Millionen km² – das viertgrößte der Welt. Es entwässert ca. 41 % der kontinentalen USA, von den Rocky Mountains bis zu den Appalachen, und umfasst 31 Bundesstaaten.",
+        difficulty = 4,
+        funFact = "Das Mississippi-Delta ist aktiv wachsend, sinkt aber durch Bodenverdichtung und Sedimentmangel (durch Dämme) schneller als es wächst. New Orleans liegt bereits unter dem Meeresspiegel und ist von Deichen abhängig."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie dick ist der grönländische Eisschild an seiner dicksten Stelle im Zentralbereich?",
+        answerA = "ca. 1.500 m",
+        answerB = "ca. 3.400 m",
+        answerC = "ca. 2.100 m",
+        answerD = "ca. 4.800 m",
+        correctAnswer = 1, // B
+        explanation = "Der grönländische Eisschild erreicht im Zentralbereich Dicken von ca. 3.400–3.500 m. Die durchschnittliche Eisdicke beträgt ca. 1.790 m. Unter dem Gewicht des Eises liegt ein Großteil des Grundgesteins unter dem Meeresspiegel.",
+        difficulty = 4,
+        funFact = "Die Schmelzrate des grönländischen Eisschildes hat sich seit den 1990er Jahren verdreifacht. Zwischen 1992 und 2020 verlor Grönland ca. 4.890 Gigatonnen Eis – genug, um den globalen Meeresspiegel um ca. 13,5 mm zu erhöhen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches UN-Verfahren regelt die Beantragung von erweitertem Festlandsockel über die 200-Seemeilen-AWZ hinaus?",
+        answerA = "Bathymetrische Zonierung nach IOC/UNESCO",
+        answerB = "Artikel-76-Verfahren der UN-Kommission für die Grenzen des Festlandsockels (CLCS)",
+        answerC = "ICES-Schelfkartierung (International Council for the Exploration of the Sea)",
+        answerD = "IMO-Schiffahrtszonenrecht",
+        correctAnswer = 1, // B
+        explanation = "Artikel 76 des UN-Seerechtsübereinkommens (UNCLOS, 1982) regelt, wie Küstenstaaten ihren Festlandsockel über die 200-Seemeilen-AWZ hinaus beanspruchen können. Die UN-Kommission für die Grenzen des Festlandsockels (CLCS) prüft wissenschaftliche Belege. Bis 2024 haben über 80 Länder Anträge eingereicht.",
+        difficulty = 4,
+        funFact = "Der Artikel-76-Prozess ist einer der kompliziertesten Aspekte des Seerechts: Länder müssen detaillierte bathymetrische Messungen, seismische Profile und Sedimentdaten vorlegen, um zu beweisen, dass ein Unterwassergebiet eine 'natürliche Verlängerung' ihres Landes ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie ist der Salinitätsgradient zwischen dem Arktischen Ozean und dem Nordatlantik?",
+        answerA = "Arktis ca. 32 ‰, Nordatlantik ca. 35 ‰ (Arktis salzärmer)",
+        answerB = "Arktis ca. 38 ‰, Nordatlantik ca. 35 ‰ (Arktis salzreicher)",
+        answerC = "Arktis ca. 25 ‰, Nordatlantik ca. 35 ‰ (Arktis deutlich salzärmer)",
+        answerD = "Kein wesentlicher Unterschied (beide ca. 35 ‰)",
+        correctAnswer = 0, // A
+        explanation = "Der Arktische Ozean hat durch starken Süßwasserzufluss (sibirische und nordamerikanische Flüsse) und Schmelzwasser einen Oberflächensalzgehalt von ca. 28–32 ‰ – deutlich niedriger als der Atlantik (ca. 35 ‰). Diese Süßwasserschicht wirkt als Isolationsschicht für den Wärmeaustausch.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Atoll hat die höchste Bevölkerungsdichte unter den Inselgruppen der Marshallinseln?",
+        answerA = "Funafuti-Atoll (Tuvalu), ca. 3.000 Einwohner/km²",
+        answerB = "Tarawa-Atoll (Kiribati), ca. 4.000 Einwohner/km²",
+        answerC = "Majuro (Marshallinseln), ca. 2.500 Einwohner/km²",
+        answerD = "Ebeye (Kwajalein-Atoll, Marshallinseln), ca. 40.000 Einwohner/km²",
+        correctAnswer = 3, // D
+        explanation = "Ebeye im Kwajalein-Atoll (Marshallinseln) hat mit ca. 15.000 Menschen auf 0,36 km² eine Bevölkerungsdichte von über 40.000 Einwohnern/km² – eine der höchsten der Welt. Funafuti (Tuvalu) liegt bei ca. 2.000 Einwohner/km², Tarawa Südatoll (Kiribati) bei ca. 3.000–4.000.",
+        difficulty = 4,
+        funFact = "Ebeye ist die 'Schattenseite' der Marshall-Inseln: Während das nahe Kwajalein-Atoll von der US-Armee als Raketen-Testgelände genutzt wird, leben tausende Marshallesen auf dem winzigen Ebeye in extremer Dichte – das Produkt historischer Umsiedlungen durch US-Atomtests."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen Salzgehalt hat das Schwarze Meer an der Oberfläche im Vergleich zum Mittelmeer?",
+        answerA = "Schwarzes Meer ca. 17–18 ‰, Mittelmeer ca. 38 ‰",
+        answerB = "Beide identisch bei ca. 35 ‰",
+        answerC = "Schwarzes Meer ca. 30 ‰, Mittelmeer ca. 38 ‰",
+        answerD = "Schwarzes Meer ca. 40 ‰ (salziger als Mittelmeer)",
+        correctAnswer = 0, // A
+        explanation = "Das Schwarze Meer hat durch starken Süßwasserzufluss (Donau, Dnjepr, Don) einen Oberflächensalzgehalt von nur ca. 17–18 ‰ – weit unter dem Mittelmeer (ca. 38 ‰). An der Straße von Bosporus entsteht eine zweischichtige Strömung: salzarmes Schwarzmeerwasser fließt oben aus, salzhaltiges Mittelmeerwasser strömt unten ein.",
+        difficulty = 4,
+        funFact = "Unterhalb von ca. 150 m Tiefe ist das Schwarze Meer komplett sauerstofffrei (anoxisch). Dies bewahrt gesunkene Schiffe jahrhundertelang nahezu unversehrt – Archäologen haben dort Holzschiffe aus der Antike in perfektem Erhaltungszustand entdeckt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Jan Mayen (Norwegen) mit dem nördlichsten aktiven Vulkan der Erde?",
+        answerA = "71°00'N, 8°00'W",
+        answerB = "69°30'N, 1°00'W",
+        answerC = "64°00'N, 4°30'W",
+        answerD = "75°15'N, 20°00'W",
+        correctAnswer = 0, // A
+        explanation = "Jan Mayen liegt bei ca. 71°00'N, 8°00'W im Nordatlantik/Arktischen Ozean, ca. 1.000 km westlich von Norwegen. Die Insel ist Heimat des Beerenberg (2.277 m), dem nördlichsten aktiven Vulkan der Erde. Nur eine kleine norwegische Militär- und Wetterstation besteht dort.",
+        difficulty = 4,
+        funFact = "Der Beerenberg auf Jan Mayen brach zuletzt 1985 aus. Die Insel liegt an der Grenze zwischen Europäischer und Amerikanischer Platte, genau auf dem Jan-Mayen-Rücken – einem mittelozeanischen Rücken."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das hydrografische Einzugsgebiet des Nils?",
+        answerA = "ca. 1,9 Millionen km²",
+        answerB = "ca. 3,4 Millionen km²",
+        answerC = "ca. 2,6 Millionen km²",
+        answerD = "ca. 4,2 Millionen km²",
+        correctAnswer = 1, // B
+        explanation = "Das Nil-Einzugsgebiet umfasst ca. 3,4 Millionen km² und erstreckt sich über elf Länder, von Ruanda und Burundi bis zur Nilmündung in Ägypten. Der Nil selbst ist ca. 6.650 km lang und hat an seiner Mündung nur ca. 2.800 m³/s mittleren Abfluss – stark reduziert durch den Aswan-Damm.",
+        difficulty = 4,
+        funFact = "Obwohl der Nil das bekannteste Flusssystem Afrikas ist, hat er weit weniger Abfluss als der Kongo (ca. 41.000 m³/s). Der Nil ist vor allem durch seine extreme Länge und historische Bedeutung für die Menschheitsgeschichte weltberühmt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Unterwassercanyon an der portugiesischen Küste erzeugt die größten surfbaren Wellen der Welt?",
+        answerA = "Tejo-Canyon",
+        answerB = "Nazaré-Canyon",
+        answerC = "Douro-Canyon",
+        answerD = "Setúbal-Canyon",
+        correctAnswer = 1, // B
+        explanation = "Der Nazaré-Canyon vor der portugiesischen Küste ist einer der tiefsten Unterwassercanyons Europas – ca. 170 km lang und bis 5.000 m tief. Er erzeugt durch seine Geometrie außergewöhnlich große Wellen vor dem Ort Nazaré. Wellenreiter-Weltrekorde mit Wellen über 30 m wurden hier aufgestellt.",
+        difficulty = 4,
+        funFact = "Der Nazaré-Canyon wirkt wie ein Wellenamplifizator: Atlantikswells laufen in den Canyon ein, werden gebündelt und an der Oberfläche zu Riesenwellen verstärkt. 2020 surften Wellenreiter Wellen von über 30 m Höhe – ein Weltrekord."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viele ständige Einwohner hat Niue (Pazifik, assoziiert mit Neuseeland) auf der Insel?",
+        answerA = "ca. 200",
+        answerB = "ca. 1.500",
+        answerC = "ca. 8.000",
+        answerD = "ca. 20.000",
+        correctAnswer = 1, // B
+        explanation = "Niue hat ca. 1.500–1.600 ständige Einwohner auf der Insel – nach einem Bevölkerungshöchststand von ca. 5.000 in den 1960ern hat die Abwanderung nach Neuseeland die Bevölkerung stark reduziert. Ca. 30.000 Niueans leben in Neuseeland mit neuseeländischer Staatsbürgerschaft.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Geyserfeld in Neuseeland hat die meisten aktiven Geysire des Landes, darunter den größten der südlichen Hemisphäre?",
+        answerA = "Rotorua-Geothermalgebiet (allgemein)",
+        answerB = "Wai-O-Tapu",
+        answerC = "Whakarewarewa (Te Pūia)",
+        answerD = "Orakei Korako",
+        correctAnswer = 2, // C
+        explanation = "Whakarewarewa (Te Pūia) bei Rotorua hat ca. 65 aktive Geysire – darunter Pōhutu, den größten aktiven Geysir der südlichen Hemisphäre (bricht bis 30 m hoch aus). Das Gebiet liegt auf der Taupo Volcanic Zone, einer der heißesten Geothermalzonen der Erde.",
+        difficulty = 4,
+        funFact = "Pōhutu in Whakarewarewa kann bis zu 20 Mal pro Tag ausbrechen und bis 30 m Höhe erreichen. Er ist verlässlicher als viele andere Geysire der Welt und deshalb eine Hauptattraktion Neuseelands."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Auf welchen Koordinaten liegt Kerguelen (Desolation Islands, Frankreich) im südlichen Indischen Ozean?",
+        answerA = "49°21'S, 70°12'E",
+        answerB = "54°18'S, 68°42'E",
+        answerC = "46°15'S, 72°30'E",
+        answerD = "57°40'S, 61°55'E",
+        correctAnswer = 0, // A
+        explanation = "Kerguelen liegt bei ca. 49°21'S, 70°12'E im südlichen Indischen Ozean, ca. 3.400 km von der nächsten Küste entfernt. Die Inselgruppe gehört zum französischen Überseegebiet TAAF und hat eine permanente Forschungsstation mit ca. 45–110 Personen (saisonal).",
+        difficulty = 4,
+        funFact = "Kerguelen wird auch 'Desolation Islands' genannt – vom britischen Entdecker Cook 1776 so beschrieben wegen seiner extremen Kargheit. Die endemische Pflanze 'Kerguelen-Kohl' (Pringlea antiscorbutica) half Seeleuten gegen Skorbut."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welchen Salinitätsgradienten hat die Ostsee von der Nordseeverbindung (Kattegat) bis zum nördlichsten Bottnischen Meerbusen?",
+        answerA = "Kattegat ca. 25 ‰, Bottnischer Meerbusen ca. 3 ‰ (starker Gradient)",
+        answerB = "Kattegat ca. 15 ‰, Bottnischer Meerbusen ca. 30 ‰ (Norden salzreicher)",
+        answerC = "Homogener Salzgehalt von ca. 10 ‰ in der gesamten Ostsee",
+        answerD = "Kattegat ca. 35 ‰, Bottnischer Meerbusen ca. 8 ‰ (Differenz 27 ‰)",
+        correctAnswer = 0, // A
+        explanation = "In der Ostsee existiert ein ausgeprägter Salinitätsgradient: Im Kattegat ca. 20–25 ‰, in der zentralen Ostsee ca. 8–10 ‰ und im nördlichsten Bottnischen Meerbusen nur ca. 2–3 ‰. Dieser Gradient entsteht durch starken Süßwasserzufluss (ca. 500 km³/Jahr) und den begrenzten Wasseraustausch mit der Nordsee.",
+        difficulty = 4,
+        funFact = "Durch den geringen Salzgehalt der Ostsee gefriert sie bei wesentlich höheren Temperaturen als normale Meeresgebiete. Im Winter ist der nördliche Bottnische Meerbusen regelmäßig mehrere Monate zugefroren – Schiffe benötigen Eisbrecher für die Navigation."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie dick ist der Permafrost in der Hudson-Bay-Tiefebene (Kanada) durchschnittlich?",
+        answerA = "ca. 20–50 m",
+        answerB = "ca. 300–600 m",
+        answerC = "ca. 100–200 m",
+        answerD = "ca. 5–10 m (nur dünner saisonaler Permafrost)",
+        correctAnswer = 2, // C
+        explanation = "In der Hudson-Bay-Tiefebene Kanadas ist der Permafrost ca. 100–200 m tief – im nördlicheren Kanada (Baffin Island, Banks Island) kann er 400–600 m erreichen. Die Hudson-Bay-Region liegt im Bereich des diskontinuierlichen Permafrosts, der nicht überall vorhanden ist und langsam auftaut.",
+        difficulty = 4,
+        funFact = "Die Hudson-Bay-Tiefebene enthält eines der größten Moorflächen Kanadas – ca. 320.000 km² Torfmoor (Muskeg). Der Permafrost hält enorme Mengen organischen Kohlenstoffs gespeichert, der bei Auftauen als CO₂ und Methan freigesetzt wird."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das hydrografische Einzugsgebiet des Niger-Flusses (Westafrika)?",
+        answerA = "ca. 600.000 km²",
+        answerB = "ca. 2,09 Millionen km²",
+        answerC = "ca. 1,1 Millionen km²",
+        answerD = "ca. 3,8 Millionen km²",
+        correctAnswer = 1, // B
+        explanation = "Das Niger-Einzugsgebiet umfasst ca. 2,09 Millionen km² und ist damit das drittgrößte in Afrika (nach dem Kongo mit 3,69 Mio. km² und dem Nil mit 3,4 Mio. km²). Es erstreckt sich von Guinea über Mali, Niger, Benin bis Nigeria. Der Niger ist ca. 4.184 km lang.",
+        difficulty = 4,
+        funFact = "Das Niger-Binnendelta bei Timbuktu ist ein einzigartiges Binnenfeuchtgebiet im Übergang zur Sahara – während der Regenzeit überflutet der Niger ein Gebiet von bis zu 40.000 km² und beherbergt Hunderttausende von Wasservögeln."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wann begann die Holuhraun-Spaltenrupption des Bárðarbunga-Vulkansystems in Island?",
+        answerA = "29. August 2014",
+        answerB = "3. März 2010",
+        answerC = "15. September 2018",
+        answerD = "2. Juli 2021",
+        correctAnswer = 0, // A
+        explanation = "Die Holuhraun-Spaltenrupption begann am 29. August 2014 nach einem Erdbebenschwarm unter dem Bárðarbunga. Die Eruption dauerte bis März 2015 und war die größte Lavaausbruch in Island seit 200 Jahren (ca. 1,6 km³ Lava). Sie produzierte erhebliche SO₂-Emissionen, die über Europa nachgewiesen wurden.",
+        difficulty = 4,
+        funFact = "Die Holuhraun-Eruption 2014–2015 erzeugte ein neues Lavafeld von ca. 85 km² auf dem isländischen Hochland – größer als Manhattan. Die SO₂-Emissionen waren an manchen Tagen so hoch, dass die Luftqualität in weiten Teilen Islands als gefährlich eingestuft wurde."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte Unterwasser-Sedimentfächer des Indischen Ozeans?",
+        answerA = "Indus-Canyon (Arabisches Meer)",
+        answerB = "Bengal-Fächer (Bengalischer Golf)",
+        answerC = "Mozambique-Canyon",
+        answerD = "Sunda-Canyon (Indonesien)",
+        correctAnswer = 1, // B
+        explanation = "Der Bengal-Fächer (Bengal Fan) im Bengalischen Golf ist das größte Unterwasser-Sedimentfächersystem der Welt mit einer Fläche von ca. 3 Millionen km² und einem Sedimentvolumen von über 12 Millionen km³ – aufgebaut durch den Himalaya-Erosionstransport via Ganges-Brahmaputra.",
+        difficulty = 4,
+        funFact = "Der Bengal-Fächer reicht bis zum Südteil des Indischen Ozeans und hat eine Länge von ca. 2.800 km. Wissenschaftler können aus seinen Schichten die vollständige Hebungsgeschichte des Himalayas über die letzten 50 Millionen Jahre rekonstruieren."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie groß ist das Einzugsgebiet des Mekong (Südostasien)?",
+        answerA = "ca. 250.000 km²",
+        answerB = "ca. 795.000 km²",
+        answerC = "ca. 1,4 Millionen km²",
+        answerD = "ca. 450.000 km²",
+        correctAnswer = 1, // B
+        explanation = "Das Mekong-Einzugsgebiet umfasst ca. 795.000 km² und erstreckt sich über sechs Länder (China, Myanmar, Laos, Thailand, Kambodscha, Vietnam). Der Fluss ist ca. 4.909 km lang und entwässert vom tibetischen Hochplateau durch den regenreichen Indochina-Gürtel.",
+        difficulty = 4,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie viele ständige Einwohner hat Svalbard (Spitzbergen, Norwegen) im Arktischen Ozean?",
+        answerA = "ca. 150",
+        answerB = "ca. 2.600",
+        answerC = "ca. 8.000",
+        answerD = "ca. 500",
+        correctAnswer = 1, // B
+        explanation = "Svalbard hat ca. 2.400–2.700 ständige Einwohner, davon ca. 2.000–2.200 in der Hauptsiedlung Longyearbyen und ca. 400–500 in der russischen Siedlung Barentsburg. Der Svalbard-Vertrag (1920) erlaubt Bürgern aller Signatarstaaten die Niederlassung.",
+        difficulty = 4,
+        funFact = "Auf Svalbard ist das Sterben regulatorisch eingeschränkt: Schwerkranke und Sterbende werden auf das norwegische Festland ausgeflogen, da der Permafrostboden Leichen nicht verwesen lässt. Svalbard hat keinen aktiven Friedhof für Neubeerdigungen seit Jahrzehnten."
+    ),
+
 )
 
