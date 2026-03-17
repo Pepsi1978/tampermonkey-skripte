@@ -2102,5 +2102,705 @@ fun geoQuestionsEasy(): List<Question> = listOf(
         explanation = "Ljubljana ist die Hauptstadt und größte Stadt Sloweniens. Das Land grenzt an Österreich, Italien, Ungarn und Kroatien.",
         difficulty = 1,
         funFact = null
+    ),
+
+    // Question 151
+    Question(
+        categoryId = 1,
+        questionText = "Welche karibische Insel ist die größte der Karibik?",
+        answerA = "Jamaika",
+        answerB = "Puerto Rico",
+        answerC = "Kuba",
+        answerD = "Hispaniola",
+        correctAnswer = 2, // C
+        explanation = "Kuba ist die größte Insel der Karibik mit einer Fläche von rund 110.860 km². Sie liegt südlich von Florida und ist für ihre Zigarren, Musik und den Rum bekannt.",
+        difficulty = 1,
+        funFact = "Kuba ist das einzige sozialistische Land der westlichen Hemisphäre und wurde seit 1959 von der Familie Castro regiert."
+    ),
+
+    // Question 152
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Costa Rica?",
+        answerA = "Liberia",
+        answerB = "San José",
+        answerC = "Limón",
+        answerD = "Cartago",
+        correctAnswer = 1, // B
+        explanation = "San José ist die Hauptstadt und größte Stadt Costa Ricas. Das mittelamerikanische Land ist bekannt für seinen Ökotourismus und seine artenreiche Natur.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 153
+    Question(
+        categoryId = 1,
+        questionText = "Auf welcher Insel liegt der Vulkan Krakatau?",
+        answerA = "Borneo",
+        answerB = "Java",
+        answerC = "Sumatra",
+        answerD = "Zwischen Java und Sumatra",
+        correctAnswer = 3, // D
+        explanation = "Der Krakatau liegt in der Sundastraße zwischen den Inseln Java und Sumatra in Indonesien. Er ist einer der bekanntesten aktiven Vulkane der Welt.",
+        difficulty = 1,
+        funFact = "Der Ausbruch des Krakatau im Jahr 1883 war so gewaltig, dass der Knall noch 5.000 km entfernt gehört wurde – es war eine der lautesten Explosionen der Menschheitsgeschichte."
+    ),
+
+    // Question 154
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der größte See Nordamerikas?",
+        answerA = "Michigansee",
+        answerB = "Huronsee",
+        answerC = "Oberer See",
+        answerD = "Eriesee",
+        correctAnswer = 2, // C
+        explanation = "Der Obere See (Lake Superior) ist der größte der fünf Großen Seen Nordamerikas und der flächenmäßig größte Süßwassersee der Welt mit rund 82.100 km².",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 155
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land steht die Golden Gate Bridge?",
+        answerA = "Kanada",
+        answerB = "Mexiko",
+        answerC = "USA",
+        answerD = "Australien",
+        correctAnswer = 2, // C
+        explanation = "Die Golden Gate Bridge steht in San Francisco, USA. Sie überspannt die Golden Gate-Meerenge zwischen San Francisco Bay und dem Pazifischen Ozean.",
+        difficulty = 1,
+        funFact = "Die Golden Gate Bridge wurde 1937 eingeweiht und war damals die längste Hängebrücke der Welt. Ihr charakteristisches Farbe ist offiziell als \"International Orange\" bekannt."
+    ),
+
+    // Question 156
+    Question(
+        categoryId = 1,
+        questionText = "Welcher skandinavische Staat hat keine Landesgrenze zu Russland?",
+        answerA = "Norwegen",
+        answerB = "Dänemark",
+        answerC = "Schweden",
+        answerD = "Finnland",
+        correctAnswer = 1, // B
+        explanation = "Dänemark hat keine gemeinsame Grenze mit Russland. Norwegen und Finnland grenzen direkt an Russland, und Schweden grenzt an Finnland, das wiederum an Russland grenzt.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 157
+    Question(
+        categoryId = 1,
+        questionText = "Welches UNESCO-Welterbe liegt in Jordanien?",
+        answerA = "Angkor Wat",
+        answerB = "Petra",
+        answerC = "Palmyra",
+        answerD = "Jerash",
+        correctAnswer = 1, // B
+        explanation = "Petra ist die bekannteste UNESCO-Welterbestätte Jordaniens. Diese alte Felsstadt der Nabatäer wurde in Sandstein gehauen und ist seit 1985 Weltkulturerbe.",
+        difficulty = 1,
+        funFact = "Petra wird auch \"Rosarote Stadt\" genannt, weil der Sandstein, aus dem sie gehauen wurde, in verschiedenen Rottönen schimmert."
+    ),
+
+    // Question 158
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt auf der Arabischen Halbinsel und grenzt an den Jemen?",
+        answerA = "Jordanien",
+        answerB = "Kuwait",
+        answerC = "Bahrain",
+        answerD = "Saudi-Arabien",
+        correctAnswer = 3, // D
+        explanation = "Saudi-Arabien grenzt im Süden an den Jemen. Das Königreich nimmt den größten Teil der Arabischen Halbinsel ein und liegt am Roten Meer sowie am Persischen Golf.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 159
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Singapur?",
+        answerA = "Singapur-Stadt",
+        answerB = "Changi",
+        answerC = "Jurong",
+        answerD = "Woodlands",
+        correctAnswer = 0, // A
+        explanation = "Singapur ist ein Stadtstaat – das ganze Land ist gleichzeitig die Stadt. Die Hauptstadt heißt Singapur-Stadt und ist identisch mit dem Staat Singapur.",
+        difficulty = 1,
+        funFact = "Singapur ist einer der kleinsten Staaten der Welt, aber einer der reichsten pro Kopf. Es hat keinen Hinterland – praktisch kein Trinkwasser und keine natürlichen Ressourcen."
+    ),
+
+    // Question 160
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Vulkan liegt auf der Insel Hawaii und ist einer der aktivsten der Welt?",
+        answerA = "Mauna Kea",
+        answerB = "Kilauea",
+        answerC = "Mauna Loa",
+        answerD = "Hualalai",
+        correctAnswer = 1, // B
+        explanation = "Der Kilauea auf der großen Insel Hawaii gilt als einer der aktivsten Vulkane der Welt und bricht fast ununterbrochen aus. Er gehört zum Hawaii-Volcanoes-Nationalpark.",
+        difficulty = 1,
+        funFact = "Der Kilauea bricht seit 1983 fast ununterbrochen aus und hat dabei neues Land ins Meer hinein geschaffen – Hawaii wächst dadurch buchstäblich."
+    ),
+
+    // Question 161
+    Question(
+        categoryId = 1,
+        questionText = "Welches mittelamerikanische Land hat keine Armee?",
+        answerA = "Honduras",
+        answerB = "Guatemala",
+        answerC = "Costa Rica",
+        answerD = "Panama",
+        correctAnswer = 2, // C
+        explanation = "Costa Rica hat 1948 als erstes Land der Welt sein Militär abgeschafft. Seitdem gibt es dort keine Armee – das Geld wird in Bildung und Gesundheit investiert.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 162
+    Question(
+        categoryId = 1,
+        questionText = "Welche australische Stadt liegt am südlichsten?",
+        answerA = "Sydney",
+        answerB = "Melbourne",
+        answerC = "Adelaide",
+        answerD = "Hobart",
+        correctAnswer = 3, // D
+        explanation = "Hobart ist die Hauptstadt des australischen Bundesstaates Tasmanien und die südlichste Großstadt Australiens. Sie liegt auf der Insel Tasmanien südlich des australischen Festlands.",
+        difficulty = 1,
+        funFact = "Tasmanien ist von der Roaring Forties umgeben – starken Westwinden in 40-50 Grad südlicher Breite, die das Klima der Insel prägen."
+    ),
+
+    // Question 163
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Guatemala?",
+        answerA = "Belize City",
+        answerB = "Tegucigalpa",
+        answerC = "Managua",
+        answerD = "Guatemala-Stadt",
+        correctAnswer = 3, // D
+        explanation = "Guatemala-Stadt (Ciudad de Guatemala) ist die Hauptstadt Guatemalas und die größte Stadt Mittelamerikas mit rund 3 Millionen Einwohnern in der Metropolregion.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 164
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist der tiefste See der Welt?",
+        answerA = "Tanganjikasee",
+        answerB = "Victoriasee",
+        answerC = "Baikalsee",
+        answerD = "Kaspisches Meer",
+        correctAnswer = 2, // C
+        explanation = "Der Baikalsee in Sibirien, Russland, ist mit einer Tiefe von 1.642 Metern der tiefste See der Welt. Er enthält etwa 20 % des gesamten flüssigen Süßwassers der Erde.",
+        difficulty = 1,
+        funFact = "Der Baikalsee ist so tief und alt (ca. 25 Millionen Jahre), dass er eigene Tier- und Pflanzenarten beherbergt, die es nirgendwo sonst gibt."
+    ),
+
+    // Question 165
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt die Hagia Sophia?",
+        answerA = "Griechenland",
+        answerB = "Syrien",
+        answerC = "Türkei",
+        answerD = "Ägypten",
+        correctAnswer = 2, // C
+        explanation = "Die Hagia Sophia steht in Istanbul, Türkei. Sie wurde 537 n. Chr. als christliche Kirche erbaut, war später Moschee, dann Museum und ist seit 2020 wieder Moschee.",
+        difficulty = 1,
+        funFact = "Die Hagia Sophia war über tausend Jahre lang das größte Kirchengebäude der Welt, bis der Kölner Dom 1880 fertiggestellt wurde."
+    ),
+
+    // Question 166
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt auf der Insel Sri Lanka direkt vor der Südspitze Indiens?",
+        answerA = "Malediven",
+        answerB = "Sri Lanka",
+        answerC = "Lakshadweep",
+        answerD = "Andamanen",
+        correctAnswer = 1, // B
+        explanation = "Sri Lanka ist eine Insel im Indischen Ozean, die durch die Palkstraße vom indischen Subkontinent getrennt ist. Die Hauptstadt ist Sri Jayawardenepura Kotte.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 167
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fjord gilt als der längste Fjord der Welt?",
+        answerA = "Hardangerfjord",
+        answerB = "Geirangerfjord",
+        answerC = "Scoresby-Sund",
+        answerD = "Sognefjord",
+        correctAnswer = 3, // D
+        explanation = "Der Sognefjord in Norwegen ist mit über 200 km Länge der längste und tiefste Fjord Norwegens und der zweitlängste der Welt. Er liegt nördlich von Bergen.",
+        difficulty = 1,
+        funFact = "Der Sognefjord ist an einigen Stellen über 1.300 Meter tief – er ist tiefer als der Atlantische Ozean an vielen Stellen."
+    ),
+
+    // Question 168
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die Hauptstadt der Dominikanischen Republik?",
+        answerA = "Santiago de los Caballeros",
+        answerB = "Santo Domingo",
+        answerC = "Puerto Plata",
+        answerD = "La Romana",
+        correctAnswer = 1, // B
+        explanation = "Santo Domingo ist die Hauptstadt der Dominikanischen Republik und war die erste dauerhaft besiedelte europäische Siedlung in Amerika, gegründet 1496.",
+        difficulty = 1,
+        funFact = "Die Altstadt von Santo Domingo ist UNESCO-Weltkulturerbe und enthält die älteste Kathedrale, das älteste Krankenhaus und die älteste Universität der Neuen Welt."
+    ),
+
+    // Question 169
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land in Asien ist bekannt als \"Land des Lächelns\"?",
+        answerA = "Vietnam",
+        answerB = "Myanmar",
+        answerC = "Thailand",
+        answerD = "Laos",
+        correctAnswer = 2, // C
+        explanation = "Thailand wird oft als \"Land des Lächelns\" bezeichnet, weil die Einheimischen für ihre freundliche und gastfreundliche Art bekannt sind. Das Land empfängt jährlich Millionen Touristen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 170
+    Question(
+        categoryId = 1,
+        questionText = "Wo befindet sich der Uluru (Ayers Rock)?",
+        answerA = "Neuseeland",
+        answerB = "Australien",
+        answerC = "Papua-Neuguinea",
+        answerD = "Fidschi",
+        correctAnswer = 1, // B
+        explanation = "Der Uluru (früher Ayers Rock) ist ein riesiger Sandsteinfelsen im Roten Zentrum Australiens im Northern Territory. Er ist ein heiliger Ort für die Anangu-Aborigines.",
+        difficulty = 1,
+        funFact = "Der Uluru ist der größte Monolith der Welt – er ragt 348 Meter aus dem Boden, aber der sichtbare Teil ist nur ein kleiner Anteil: das Gestein erstreckt sich noch 2,5 km tief in die Erde."
+    ),
+
+    // Question 171
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Honduras?",
+        answerA = "San Pedro Sula",
+        answerB = "La Ceiba",
+        answerC = "Tegucigalpa",
+        answerD = "Choluteca",
+        correctAnswer = 2, // C
+        explanation = "Tegucigalpa ist die Hauptstadt Honduras und liegt im bergigen Zentrum des mittelamerikanischen Landes. Der Name stammt aus der indigenen Nahua-Sprache.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 172
+    Question(
+        categoryId = 1,
+        questionText = "Welcher See liegt an der Grenze zwischen Peru und Bolivien?",
+        answerA = "Maracaibo-See",
+        answerB = "Titicacasee",
+        answerC = "Poopósee",
+        answerD = "Nicaraguasee",
+        correctAnswer = 1, // B
+        explanation = "Der Titicacasee liegt an der Grenze zwischen Peru und Bolivien in den Anden auf 3.812 Metern Höhe. Er gilt als der höchstgelegene schiffbare See der Welt.",
+        difficulty = 1,
+        funFact = "Auf dem Titicacasee leben Menschen auf schwimmenden Inseln aus Totora-Schilfrohr – die Uros-Inseln werden seit Jahrhunderten bewohnt und regelmäßig neu aufgeschichtet."
+    ),
+
+    // Question 173
+    Question(
+        categoryId = 1,
+        questionText = "Welche Brücke verbindet Europa und Asien in Istanbul?",
+        answerA = "Fatih-Sultan-Mehmet-Brücke",
+        answerB = "Yavuz-Sultan-Selim-Brücke",
+        answerC = "Bosporus-Brücke",
+        answerD = "Galata-Brücke",
+        correctAnswer = 2, // C
+        explanation = "Die Bosporus-Brücke (offiziell: 15 Temmuz Şehitler Köprüsü) in Istanbul verbindet den europäischen mit dem asiatischen Teil der Stadt. Sie wurde 1973 eröffnet.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 174
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Tempel Borobudur?",
+        answerA = "Kambodscha",
+        answerB = "Myanmar",
+        answerC = "Thailand",
+        answerD = "Indonesien",
+        correctAnswer = 3, // D
+        explanation = "Borobudur liegt auf der Insel Java in Indonesien. Es ist der größte buddhistische Tempel der Welt und wurde im 8. und 9. Jahrhundert erbaut.",
+        difficulty = 1,
+        funFact = "Borobudur wurde nach seiner Errichtung jahrhundertelang vergessen und im 19. Jahrhundert von Sir Thomas Raffles wiederentdeckt, als der Wald um ihn herum gerodet wurde."
+    ),
+
+    // Question 175
+    Question(
+        categoryId = 1,
+        questionText = "Welcher skandinavische Fjord ist UNESCO-Weltnaturerbe?",
+        answerA = "Oslofjord",
+        answerB = "Hardangerfjord",
+        answerC = "Geirangerfjord",
+        answerD = "Lysefjord",
+        correctAnswer = 2, // C
+        explanation = "Der Geirangerfjord in Norwegen ist seit 2005 UNESCO-Weltnaturerbe. Er ist bekannt für seine spektakulären Wasserfälle und die atemberaubende Landschaft.",
+        difficulty = 1,
+        funFact = "Die Wasserfälle am Geirangerfjord tragen poetische Namen wie \"Sieben Schwestern\" und \"Der Freier\" – laut Legende wirft der Freier seiner Liebsten eine Flasche zu."
+    ),
+
+    // Question 176
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das kleinste Land Mittelamerikas?",
+        answerA = "Costa Rica",
+        answerB = "Honduras",
+        answerC = "El Salvador",
+        answerD = "Belize",
+        correctAnswer = 2, // C
+        explanation = "El Salvador ist das kleinste Land Mittelamerikas mit einer Fläche von nur rund 21.000 km². Es ist auch das einzige mittelamerikanische Land ohne Küste zum Karibischen Meer.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 177
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Vulkan Popocatépetl?",
+        answerA = "Guatemala",
+        answerB = "Costa Rica",
+        answerC = "Mexiko",
+        answerD = "Kolumbien",
+        correctAnswer = 2, // C
+        explanation = "Der Popocatépetl liegt in Mexiko, südöstlich von Mexiko-Stadt. Er ist 5.426 Meter hoch und einer der aktivsten Vulkane Nordamerikas.",
+        difficulty = 1,
+        funFact = "Der Name Popocatépetl kommt aus der Nahuatl-Sprache und bedeutet \"rauchender Berg\" – ein passender Name für den oft dampfenden Vulkan."
+    ),
+
+    // Question 178
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das Wahrzeichen von Sydney, Australien?",
+        answerA = "Harbour Bridge",
+        answerB = "Opera House",
+        answerC = "Bondi Beach",
+        answerD = "Tower of Sydney",
+        correctAnswer = 1, // B
+        explanation = "Das Sydney Opera House ist das bekannteste Wahrzeichen Australiens und seit 2007 UNESCO-Weltkulturerbe. Die charakteristischen Schalenstrukturen wurden vom dänischen Architekten Jørn Utzon entworfen.",
+        difficulty = 1,
+        funFact = "Das Sydney Opera House wurde 1973 eingeweiht, obwohl die Planung 1957 begann. Die Kosten stiegen von 7 Millionen auf 102 Millionen australische Dollar."
+    ),
+
+    // Question 179
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt vollständig innerhalb Südafrikas?",
+        answerA = "Simbabwe",
+        answerB = "Botswana",
+        answerC = "Lesotho",
+        answerD = "Eswatini",
+        correctAnswer = 2, // C
+        explanation = "Lesotho ist ein Binnenstaat, der vollständig von Südafrika umgeben ist. Es ist eines von nur drei Ländern der Welt, die vollständig von einem anderen Land umschlossen sind.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 180
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Myanmar (Burma)?",
+        answerA = "Yangon",
+        answerB = "Mandalay",
+        answerC = "Naypyidaw",
+        answerD = "Bagan",
+        correctAnswer = 2, // C
+        explanation = "Naypyidaw ist die Hauptstadt Myanmars. Sie wurde 2006 eigens als neue Hauptstadt errichtet und ersetzte Yangon (Rangun), das die frühere Hauptstadt war.",
+        difficulty = 1,
+        funFact = "Naypyidaw ist eine der ungewöhnlichsten Hauptstädte der Welt: Sie hat breite Straßen für 20 Spuren, aber kaum Verkehr, riesige Regierungsgebäude und fast keine Einwohner außerhalb der Beamten."
+    ),
+
+    // Question 181
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen Schweden und Finnland?",
+        answerA = "Nordsee",
+        answerB = "Ostsee",
+        answerC = "Bottnischer Meerbusen",
+        answerD = "Barents-See",
+        correctAnswer = 2, // C
+        explanation = "Der Bottnische Meerbusen ist der nördlichste Teil der Ostsee und liegt zwischen Schweden und Finnland. Er friert im Winter oft vollständig zu.",
+        difficulty = 1,
+        funFact = "Der Bottnische Meerbusen ist so flach und salzarm, dass er im Winter regelmäßig zufriert – früher nutzten die Einheimischen das Eis als Straße."
+    ),
+
+    // Question 182
+    Question(
+        categoryId = 1,
+        questionText = "Welche Insel in der Karibik teilen sich zwei Länder?",
+        answerA = "Kuba",
+        answerB = "Jamaika",
+        answerC = "Hispaniola",
+        answerD = "Puerto Rico",
+        correctAnswer = 2, // C
+        explanation = "Die Insel Hispaniola ist zwischen Haiti (westlicher Teil) und der Dominikanischen Republik (östlicher Teil) aufgeteilt. Es ist eine der größten Inseln der Karibik.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 183
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Kambodscha?",
+        answerA = "Siem Reap",
+        answerB = "Battambang",
+        answerC = "Phnom Penh",
+        answerD = "Kompong Cham",
+        correctAnswer = 2, // C
+        explanation = "Phnom Penh ist die Hauptstadt und größte Stadt Kambodschas. Sie liegt am Zusammenfluss von Mekong und Tonlé Sap und ist das politische und wirtschaftliche Zentrum des Landes.",
+        difficulty = 1,
+        funFact = "Phnom Penh bedeutet auf Khmer \"Hügel von Penh\" – benannt nach einer Frau namens Penh, die laut Legende hier Buddhafiguren fand und einen Hügel aufschüttete."
+    ),
+
+    // Question 184
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Tanganjikasee?",
+        answerA = "Nur in Tansania",
+        answerB = "In Tansania, DR Kongo, Burundi und Sambia",
+        answerC = "Nur im Kongo",
+        answerD = "In Kenia und Uganda",
+        correctAnswer = 1, // B
+        explanation = "Der Tanganjikasee liegt an den Grenzen von Tansania, der Demokratischen Republik Kongo, Burundi und Sambia. Er ist der zweittiefste See der Welt nach dem Baikalsee.",
+        difficulty = 1,
+        funFact = "Der Tanganjikasee ist mit 673 km der längste See der Welt – er erstreckt sich wie ein schmaler Streifen durch das Ostafrikanische Grabenbruch-System."
+    ),
+
+    // Question 185
+    Question(
+        categoryId = 1,
+        questionText = "Welche Brücke ist die längste Hängebrücke der Welt?",
+        answerA = "Akashi-Kaikyō-Brücke",
+        answerB = "Golden Gate Bridge",
+        answerC = "Humber Bridge",
+        answerD = "Tsing-Ma-Brücke",
+        correctAnswer = 0, // A
+        explanation = "Die Akashi-Kaikyō-Brücke in Japan verbindet Kobe mit der Insel Awaji und hat eine Hauptspannweite von 1.991 Metern – sie ist die längste Hängebrücke der Welt.",
+        difficulty = 1,
+        funFact = "Die Akashi-Kaikyō-Brücke wurde erdbebensicher gebaut – sie kann Erdbeben der Stärke 8,5 und Windgeschwindigkeiten bis zu 290 km/h standhalten."
+    ),
+
+    // Question 186
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige Land der Welt, das nach einem Kontinent benannt ist?",
+        answerA = "China",
+        answerB = "Australien",
+        answerC = "Brasilien",
+        answerD = "Indien",
+        correctAnswer = 1, // B
+        explanation = "Australien ist das einzige Land der Welt, das einen ganzen Kontinent allein ausfüllt und auch nach diesem benannt ist. Der Kontinent und das Land tragen denselben Namen.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 187
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Laos?",
+        answerA = "Luang Prabang",
+        answerB = "Vientiane",
+        answerC = "Pakse",
+        answerD = "Savannakhet",
+        correctAnswer = 1, // B
+        explanation = "Vientiane ist die Hauptstadt und größte Stadt von Laos. Sie liegt am Mekong-Fluss an der Grenze zu Thailand und ist eine der kleinsten Hauptstädte Asiens.",
+        difficulty = 1,
+        funFact = "Vientiane hat einen Triumphbogen namens Patuxai, der dem Pariser Arc de Triomphe ähnelt – er wurde mit US-amerikanischem Zement gebaut, der eigentlich für einen Flughafen bestimmt war."
+    ),
+
+    // Question 188
+    Question(
+        categoryId = 1,
+        questionText = "Welches UNESCO-Weltkulturerbe liegt in Griechenland?",
+        answerA = "Parthenon auf der Akropolis",
+        answerB = "Kolosseum",
+        answerC = "Sagrada Família",
+        answerD = "Tower of London",
+        correctAnswer = 0, // A
+        explanation = "Der Parthenon auf der Athener Akropolis ist Teil des UNESCO-Weltkulturerbes Griechenlands. Er wurde im 5. Jahrhundert v. Chr. gebaut und ist das bekannteste Symbol der griechischen Antike.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 189
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das größte Land der Arabischen Halbinsel?",
+        answerA = "Jemen",
+        answerB = "Oman",
+        answerC = "Kuwait",
+        answerD = "Saudi-Arabien",
+        correctAnswer = 3, // D
+        explanation = "Saudi-Arabien ist mit über 2,1 Millionen km² das größte Land der Arabischen Halbinsel und das dreizehntgrößte der Welt. Es umfasst etwa 80 % der Halbinsel.",
+        difficulty = 1,
+        funFact = "Saudi-Arabien hat keinen permanenten Fluss – alle Wasserläufe sind temporäre Wadis, die nur nach Regenfällen Wasser führen."
+    ),
+
+    // Question 190
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Nepal?",
+        answerA = "Pokhara",
+        answerB = "Bhaktapur",
+        answerC = "Kathmandu",
+        answerD = "Biratnagar",
+        correctAnswer = 2, // C
+        explanation = "Kathmandu ist die Hauptstadt Nepals und liegt im Kathmandu-Tal auf etwa 1.400 Metern Höhe. Das Kathmandu-Tal mit seinen vielen Tempeln und Stätten ist UNESCO-Welterbe.",
+        difficulty = 1,
+        funFact = "Kathmandu liegt am Fuß des Himalaya und ist der Ausgangspunkt für viele Expeditionen zum Mount Everest, der nur ca. 140 km entfernt liegt."
+    ),
+
+    // Question 191
+    Question(
+        categoryId = 1,
+        questionText = "Welcher See ist der größte in Südamerika?",
+        answerA = "Titicacasee",
+        answerB = "Maracaibo-See",
+        answerC = "Poopósee",
+        answerD = "Argentinischer See",
+        correctAnswer = 1, // B
+        explanation = "Der Maracaibo-See in Venezuela ist mit rund 13.000 km² der größte See Südamerikas. Er ist eigentlich eine Meeresbucht mit Verbindung zum Golf von Venezuela.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 192
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das bevölkerungsreichste Land Südostasiens?",
+        answerA = "Vietnam",
+        answerB = "Thailand",
+        answerC = "Philippinen",
+        answerD = "Indonesien",
+        correctAnswer = 3, // D
+        explanation = "Indonesien ist mit über 270 Millionen Einwohnern das bevölkerungsreichste Land Südostasiens und das viertbevölkerungsreichste Land der Welt.",
+        difficulty = 1,
+        funFact = "Indonesien besteht aus über 17.500 Inseln und ist damit das Land mit den meisten Inseln der Welt. Nur etwa 6.000 dieser Inseln sind bewohnt."
+    ),
+
+    // Question 193
+    Question(
+        categoryId = 1,
+        questionText = "Welche Hauptstadt liegt am höchsten über dem Meeresspiegel?",
+        answerA = "Quito",
+        answerB = "Kathmandu",
+        answerC = "Bogotá",
+        answerD = "La Paz",
+        correctAnswer = 3, // D
+        explanation = "La Paz in Bolivien ist mit rund 3.650 Metern die höchstgelegene Regierungshauptstadt der Welt. (Sucre ist die Verfassungshauptstadt, La Paz die Regierungshauptstadt.)",
+        difficulty = 1,
+        funFact = "In La Paz kocht Wasser bereits bei 87°C statt bei 100°C, weil der Luftdruck in dieser Höhe so niedrig ist – Kochen dauert dort länger als im Flachland."
+    ),
+
+    // Question 194
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt das Schloss Neuschwanstein?",
+        answerA = "Österreich",
+        answerB = "Schweiz",
+        answerC = "Deutschland",
+        answerD = "Liechtenstein",
+        correctAnswer = 2, // C
+        explanation = "Das Schloss Neuschwanstein liegt in Bayern, Deutschland. Es wurde im 19. Jahrhundert von König Ludwig II. erbaut und gilt als Inspiration für das Cinderella-Schloss in Disney-Parks.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 195
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Vulkan brach 1980 in den USA aus und ist seither berühmt?",
+        answerA = "Mount Rainier",
+        answerB = "Mount Shasta",
+        answerC = "Mount St. Helens",
+        answerD = "Mount Hood",
+        correctAnswer = 2, // C
+        explanation = "Der Mount St. Helens im US-Bundesstaat Washington brach am 18. Mai 1980 aus. Der Ausbruch war der verheerendste in der Geschichte der USA und kostete 57 Menschen das Leben.",
+        difficulty = 1,
+        funFact = "Beim Ausbruch des Mount St. Helens im Jahr 1980 kollabierte die Nordseite des Berges, und der Gipfel sank von 2.950 auf 2.549 Meter – der Berg verlor buchstäblich seinen Kopf."
+    ),
+
+    // Question 196
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Hauptstadt von Mongolei?",
+        answerA = "Erdenet",
+        answerB = "Darhan",
+        answerC = "Ulaanbaatar",
+        answerD = "Choibalsan",
+        correctAnswer = 2, // C
+        explanation = "Ulaanbaatar ist die Hauptstadt der Mongolei und mit rund 1,5 Millionen Einwohnern Heimat fast der Hälfte der gesamten mongolischen Bevölkerung.",
+        difficulty = 1,
+        funFact = "Ulaanbaatar ist die kälteste Hauptstadt der Welt mit einer Jahresdurchschnittstemperatur von minus 1,3 Grad Celsius."
+    ),
+
+    // Question 197
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt die alte Inka-Stadt Cusco?",
+        answerA = "Bolivien",
+        answerB = "Ecuador",
+        answerC = "Peru",
+        answerD = "Chile",
+        correctAnswer = 2, // C
+        explanation = "Cusco liegt in den Anden Perus auf etwa 3.400 Metern Höhe. Die Stadt war die Hauptstadt des Inka-Reichs und ist heute UNESCO-Weltkulturerbe.",
+        difficulty = 1,
+        funFact = null
+    ),
+
+    // Question 198
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige Land Südostasiens, das nie kolonialisiert wurde?",
+        answerA = "Vietnam",
+        answerB = "Malaysia",
+        answerC = "Thailand",
+        answerD = "Singapur",
+        correctAnswer = 2, // C
+        explanation = "Thailand (damals Siam) ist das einzige Land Südostasiens, das nie eine europäische Kolonie war. Geschickte Diplomatie ermöglichte dem Land seine Unabhängigkeit.",
+        difficulty = 1,
+        funFact = "\"Thailand\" bedeutet wörtlich \"Land der Freien\" – der Name ist ein Hinweis auf die historische Unabhängigkeit des Landes."
+    ),
+
+    // Question 199
+    Question(
+        categoryId = 1,
+        questionText = "Welche Hauptstadt liegt auf zwei Kontinenten?",
+        answerA = "Athen",
+        answerB = "Istanbul",
+        answerC = "Kairo",
+        answerD = "Moskau",
+        correctAnswer = 1, // B
+        explanation = "Istanbul liegt auf zwei Kontinenten: Ein Teil der Stadt befindet sich in Europa, der andere in Asien. Der Bosporus trennt die beiden Teile der Stadt.",
+        difficulty = 1,
+        funFact = "Istanbul war unter verschiedenen Namen die Hauptstadt von drei Weltreichen: Konstantinopel (Byzantinisches Reich), Konstantinopel (Lateinisches Kaiserreich) und Istanbul (Osmanisches Reich)."
+    ),
+
+    // Question 200
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das bevölkerungsreichste Land Afrikas nördlich der Sahara?",
+        answerA = "Tunesien",
+        answerB = "Libyen",
+        answerC = "Marokko",
+        answerD = "Ägypten",
+        correctAnswer = 3, // D
+        explanation = "Ägypten ist mit über 100 Millionen Einwohnern das bevölkerungsreichste Land Nordafrikas und das zweitbevölkerungsreichste auf dem gesamten afrikanischen Kontinent.",
+        difficulty = 1,
+        funFact = null
     )
 )
