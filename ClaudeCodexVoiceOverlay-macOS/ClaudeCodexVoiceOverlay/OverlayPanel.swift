@@ -370,7 +370,7 @@ final class OverlayPanel: NSPanel {
         self.contentView?.wantsLayer = true
         self.contentView?.layer?.cornerRadius = panelWidth / 2
         self.contentView?.layer?.masksToBounds = true
-        self.contentView?.layer?.backgroundColor = NSColor(white: 0.12, alpha: 0.9).cgColor
+        self.contentView?.layer?.backgroundColor = NSColor(white: 1.0, alpha: 0.3).cgColor
 
         // Layout buttons vertically (in AppKit, y=0 is bottom)
         // Bottom to top: Enter, G, Mic(big), BTW-Mic(big), W, X
