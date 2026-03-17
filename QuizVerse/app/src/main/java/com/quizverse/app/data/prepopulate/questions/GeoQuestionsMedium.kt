@@ -2012,5 +2012,641 @@ fun geoQuestionsMedium(): List<Question> = listOf(
         funFact = "Im Ostafrikanischen Graben entstanden die tiefsten Seen Afrikas: Tanganjikasee (1.470 m) und Malawisee (700 m)."
     ),
 
+    // ── MEDIUM (difficulty = 2) ── questions 158–207 ─────────────────────────
+
+    // --- Rain shadow effect ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Was versteht man unter dem geografischen Begriff 'Regenschatten'?",
+        answerA = "Eine Region, die immer im Schatten von Wolken liegt",
+        answerB = "Eine trockene Zone auf der windabgewandten Seite eines Gebirges",
+        answerC = "Das Gebiet unterhalb eines Wasserfalles",
+        answerD = "Ein Tiefdruckgebiet hinter einem Gebirge",
+        correctAnswer = 1, // B
+        explanation = "Der Regenschatten entsteht, wenn feuchte Luft ein Gebirge übersteigt. An der Luvseite regnet es stark, die Luft trocknet ab. Auf der Leeseite (Regenschatten) sinkt trockene Luft herab und es fällt kaum Niederschlag.",
+        difficulty = 2,
+        funFact = "Die Atacama-Wüste profitiert gleich von zwei Regenschatten: den Anden im Osten und dem kalten Humboldtstrom im Westen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Wüste entstand hauptsächlich durch den Regenschatteneffekt der Sierra Nevada?",
+        answerA = "Mojave-Wüste",
+        answerB = "Sonoran-Wüste",
+        answerC = "Chihuahua-Wüste",
+        answerD = "Great Basin-Wüste",
+        correctAnswer = 3, // D
+        explanation = "Die Great Basin-Wüste im Westen der USA liegt im Regenschatten der Sierra Nevada. Feuchte Luft vom Pazifik wird abgefangen und die östliche Seite bleibt extrem trocken.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt das Thar-Wüstengebiet, das teilweise durch den Regenschatten des Westghats entsteht?",
+        answerA = "Pakistan und Iran",
+        answerB = "Indien und Pakistan",
+        answerC = "Nur in Indien",
+        answerD = "Bangladesh und Indien",
+        correctAnswer = 1, // B
+        explanation = "Die Thar-Wüste erstreckt sich über Nordwestindien (Rajasthan) und Pakistan (Sindh, Punjab). Die Westghats halten einen Teil des Monsunregens zurück, aber die Entfernung vom Meer ist der Hauptfaktor für die Trockenheit.",
+        difficulty = 2,
+        funFact = "Die Thar ist eine der am dichtesten besiedelten Wüsten der Welt – trotz der extremen Trockenheit leben dort über 80 Millionen Menschen."
+    ),
+
+    // --- Island arcs ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist ein 'Inselbogen' (island arc) in der Plattentektonik?",
+        answerA = "Eine Reihe von Vulkaninseln, die durch Subduktion einer ozeanischen Platte entstehen",
+        answerB = "Eine kreisförmige Atoll-Kette im Pazifik",
+        answerC = "Eine durch Erosion geformte Halbmondbucht",
+        answerD = "Ein durch tektonische Hebung entstandenes Gebirge unter Wasser",
+        correctAnswer = 0, // A
+        explanation = "Ein Inselbogen entsteht, wenn eine ozeanische Platte unter eine andere taucht (Subduktion). Dabei schmelzen Gesteine, Magma steigt auf und bildet eine Reihe von Vulkanen – oft als Inselkette sichtbar.",
+        difficulty = 2,
+        funFact = "Die bekanntesten Inselbögen der Welt sind die japanischen Inseln, die Aleuten und die Kurilen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Inselbogen trennt das Karibische Meer vom Atlantischen Ozean?",
+        answerA = "Die Großen Antillen",
+        answerB = "Die Kleinen Antillen",
+        answerC = "Die Bahamas",
+        answerD = "Die Turks-und-Caicos-Inseln",
+        correctAnswer = 1, // B
+        explanation = "Die Kleinen Antillen (Lesser Antilles) bilden einen Inselbogen, der das Karibische Meer vom Atlantischen Ozean trennt. Sie entstanden durch Subduktion der Karibischen Platte.",
+        difficulty = 2,
+        funFact = "Auf den Kleinen Antillen liegt der aktive Vulkan Soufrière Hills auf Montserrat, der 1995 die Hauptstadt Plymouth unter Asche begrub."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Inselbogen liegt zwischen der Banda-See und dem Indischen Ozean östlich von Bali?",
+        answerA = "Philippinischer Inselbogen",
+        answerB = "Sunda-Inselbogen (Java bis Timor)",
+        answerC = "Marianen-Inselbogen",
+        answerD = "Tonga-Inselbogen",
+        correctAnswer = 1, // B
+        explanation = "Der Sunda-Inselbogen erstreckt sich von Sumatra über Java, Bali, Lombok bis Timor. Er entsteht durch Subduktion der Australischen Platte unter die Eurasische Platte und ist durch zahlreiche Vulkane bekannt.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Mediterranean geography details ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die größte Insel im Mittelmeer?",
+        answerA = "Sardinien",
+        answerB = "Zypern",
+        answerC = "Sizilien",
+        answerD = "Korsika",
+        correctAnswer = 2, // C
+        explanation = "Sizilien ist mit einer Fläche von 25.711 km² die größte Insel im Mittelmeer. Sie gehört zu Italien und liegt nur wenige Kilometer von der süditalienischen Halbinsel entfernt.",
+        difficulty = 2,
+        funFact = "Auf Sizilien liegt der Ätna – der höchste und aktivste Vulkan Europas mit einer Höhe von etwa 3.357 Metern."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen Griechenland, der Türkei und dem Nahen Osten?",
+        answerA = "Ionisches Meer",
+        answerB = "Mittelmeer",
+        answerC = "Levantinisches Becken",
+        answerD = "Adriatisches Meer",
+        correctAnswer = 2, // C
+        explanation = "Das Levantinische Becken ist der östlichste Teil des Mittelmeers, umgeben von Griechenland, der Türkei, Syrien, dem Libanon, Israel und Ägypten.",
+        difficulty = 2,
+        funFact = "Das Levantinische Becken ist eines der salzreichsten Teile des Mittelmeers, da die Verdunstung die Niederschläge übersteigt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Mittelmeerland hat die meisten Inseln?",
+        answerA = "Italien",
+        answerB = "Spanien",
+        answerC = "Türkei",
+        answerD = "Griechenland",
+        correctAnswer = 3, // D
+        explanation = "Griechenland hat mit über 6.000 Inseln und Inselchen die meisten Inseln aller Mittelmeerländer, von denen etwa 230 dauerhaft bewohnt sind.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Caucasus region ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche drei Länder bilden den 'Südkaukasus' (Transkaukasien)?",
+        answerA = "Russland, Georgien, Armenien",
+        answerB = "Georgien, Armenien, Aserbaidschan",
+        answerC = "Armenien, Aserbaidschan, Iran",
+        answerD = "Tschetschenien, Dagestan, Inguschetien",
+        correctAnswer = 1, // B
+        explanation = "Der Südkaukasus (Transkaukasien) umfasst die drei unabhängigen Staaten Georgien, Armenien und Aserbaidschan, die südlich des Großen Kaukasusgebirges liegen.",
+        difficulty = 2,
+        funFact = "Armenien gilt als der älteste christliche Staat der Welt – es nahm 301 n. Chr. das Christentum als Staatsreligion an, noch vor dem Römischen Reich."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Stadt ist die Hauptstadt Aserbaidschans und liegt am Kaspischen Meer?",
+        answerA = "Tiflis",
+        answerB = "Jerewan",
+        answerC = "Baku",
+        answerD = "Sumgait",
+        correctAnswer = 2, // C
+        explanation = "Baku ist die Hauptstadt Aserbaidschans und liegt am Westufer des Kaspischen Meeres. Die Stadt ist das wirtschaftliche und kulturelle Zentrum des Landes und bekannt für ihre Öl- und Gasvorkommen.",
+        difficulty = 2,
+        funFact = "Baku liegt unterhalb des Meeresspiegels – die Stadtmitte befindet sich etwa 28 Meter unter dem Meeresspiegel."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge trennt den Großen Kaukasus vom Kleinen Kaukasus?",
+        answerA = "Die Kolchische Tiefebene und das Rioni-Tal",
+        answerB = "Das Talyschgebirge",
+        answerC = "Das Pontische Gebirge",
+        answerD = "Der Zangezur-Rücken",
+        correctAnswer = 0, // A
+        explanation = "Der Große Kaukasus (Hauptkamm) und der Kleine Kaukasus sind durch das Rioni-Tal in Georgien und die Kura-Araxes-Senke getrennt. Dazwischen liegen die Tiefebenen Kolchis und Kura-Araxes.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Central Asian steppes ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die riesige Steppenlandschaft, die sich von der Ukraine bis zur Mongolei erstreckt?",
+        answerA = "Sibirische Taiga",
+        answerB = "Eurasische Steppe (Pontisch-Kasachische Steppe)",
+        answerC = "Anatolisches Plateau",
+        answerD = "Tibetisches Hochplateau",
+        correctAnswer = 1, // B
+        explanation = "Die Eurasische Steppe (auch Pontisch-Kasachische Steppe) erstreckt sich über etwa 8.000 km von der Ukraine und Russland über Kasachstan bis in die Mongolei und China. Sie ist die größte Steppenlandschaft der Welt.",
+        difficulty = 2,
+        funFact = "Die eurasische Steppe war die 'Autobahn' der Geschichte – Nomadenvölker wie die Mongolen nutzten sie für ihre Feldzüge quer durch Eurasien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge bildet die Südgrenze der zentralasiatischen Steppe Kasachstans?",
+        answerA = "Pamir",
+        answerB = "Tianshan",
+        answerC = "Hindukusch",
+        answerD = "Zagros",
+        correctAnswer = 1, // B
+        explanation = "Der Tianshan (Himmelsgebirge) bildet die südliche Grenze der kasachischen Steppe und trennt Zentralasien von Xinjiang (China). Er ist über 2.500 km lang und erreicht Höhen über 7.000 m.",
+        difficulty = 2,
+        funFact = "Im Tianshan liegt der Issyk-Kul, einer der größten Gebirgsseen der Welt – er friert trotz seiner Höhe von 1.606 m nie zu."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer schrumpfte dramatisch durch Bewässerungsprojekte in der zentralasiatischen Steppe?",
+        answerA = "Kaspisches Meer",
+        answerB = "Aralsee",
+        answerC = "Balchaschsee",
+        answerD = "Issyk-Kul",
+        correctAnswer = 1, // B
+        explanation = "Der Aralsee in Kasachstan und Usbekistan schrumpfte seit den 1960er Jahren durch sowjetische Bewässerungsprojekte auf etwa 10 % seiner ursprünglichen Fläche. Er gilt als eine der größten Umweltkatastrophen der Menschheitsgeschichte.",
+        difficulty = 2,
+        funFact = "Im einst fruchtbaren Aralsee-Becken liegen heute verrostete Schiffe mitten in der Wüste – Symbole einer Katastrophe, die ganze Fischerdörfer zerstörte."
+    ),
+
+    // --- Sub-Saharan African geography ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Becken beherbergt den zweitgrößten Regenwald der Erde nach dem Amazonas?",
+        answerA = "Das Nigerdelata-Becken",
+        answerB = "Das Kongobecken",
+        answerC = "Das Sambesi-Becken",
+        answerD = "Das Seengebiet Ostafrikas",
+        correctAnswer = 1, // B
+        explanation = "Das Kongobecken in Zentralafrika beherbergt den zweitgrößten tropischen Regenwald der Welt. Er erstreckt sich über die Demokratische Republik Kongo und angrenzende Länder.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land in Subsahara-Afrika hat die größte Fläche?",
+        answerA = "Demokratische Republik Kongo",
+        answerB = "Sudan",
+        answerC = "Angola",
+        answerD = "Tansania",
+        correctAnswer = 0, // A
+        explanation = "Die Demokratische Republik Kongo (DRK) ist mit einer Fläche von 2,34 Millionen km² das größte Land in Subsahara-Afrika und das zweitgrößte Afrikas insgesamt (nach Algerien).",
+        difficulty = 2,
+        funFact = "Die DRK hat trotz riesiger Mineralvorkommen (Kobalt, Koltan, Diamanten) eine der niedrigsten Lebenserwartungen weltweit."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches geografische Merkmal teilt Subsahara-Afrika in eine semiaride Zone und einen feuchten Süden?",
+        answerA = "Das Atlasgebirge",
+        answerB = "Die Sahelzone",
+        answerC = "Das Ostafrikanische Hochland",
+        answerD = "Die Großen Seen Afrikas",
+        correctAnswer = 1, // B
+        explanation = "Die Sahelzone ist ein semiarides Übergangsgebiet zwischen der Sahara im Norden und den feuchten Savannen im Süden. Sie erstreckt sich von Senegal im Westen bis Eritrea im Osten.",
+        difficulty = 2,
+        funFact = "Schätzungen zufolge könnte bis 2100 ein Drittel der Sahelzone durch Desertifikation zur Wüste werden – was Hunderte Millionen Menschen zur Flucht zwingen könnte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie heißt die größte Savanne Afrikas?",
+        answerA = "Kalahari",
+        answerB = "Serengeti",
+        answerC = "Miombo-Waldland",
+        answerD = "Sudano-Guineische Savanne",
+        correctAnswer = 3, // D
+        explanation = "Die Sudano-Guineische Savanne ist die größte Savannenzone Afrikas und erstreckt sich von der Westküste bis Ostafrika. Die Serengeti ist nur ein bekanntes Teilgebiet der ostafrikanischen Savannen.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Polynesian triangle ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche drei Inseln oder Inselgruppen markieren die Eckpunkte des Polynesischen Dreiecks?",
+        answerA = "Fidschi, Tonga und Samoa",
+        answerB = "Hawaii, Neuseeland und Osterinsel",
+        answerC = "Tahiti, Guam und Palau",
+        answerD = "Cook-Inseln, Tuvalu und Kiribati",
+        correctAnswer = 1, // B
+        explanation = "Das Polynesische Dreieck wird durch Hawaii im Norden, die Osterinsel (Rapa Nui) im Osten und Neuseeland (Aotearoa) im Süden begrenzt. Es umfasst einen Großteil des zentralen und südlichen Pazifiks.",
+        difficulty = 2,
+        funFact = "Die polynesischen Vorfahren bewältigten diese immensen Entfernungen mit bloßen Kanus, Sternennavigation und dem Wissen über Strömungen – eine der beeindruckendsten Leistungen der Menschheitsgeschichte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Volk besiedelte als erstes die Inseln des Polynesischen Dreiecks?",
+        answerA = "Die Melanesier von Papua-Neuguinea",
+        answerB = "Die Lapita-Kultur, Vorfahren der Polynesier",
+        answerC = "Seefahrer aus dem alten China",
+        answerD = "Einwanderer aus Südamerika",
+        correctAnswer = 1, // B
+        explanation = "Die Lapita-Kultur gilt als direkte Vorfahrenkultur der Polynesier. Sie entstand vor etwa 3.500 Jahren in Melanesien und breitete sich von dort über den Pazifik aus.",
+        difficulty = 2,
+        funFact = "Genetische Studien belegen, dass polynesische Vorfahren tatsächlich auch Kontakt zu südamerikanischen Indigenen hatten – eine bemerkenswerte Leistung der alten Seefahrt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist die flächenmäßig größte Inselgruppe innerhalb des Polynesischen Dreiecks?",
+        answerA = "Hawaii",
+        answerB = "Französisch-Polynesien",
+        answerC = "Tonga",
+        answerD = "Samoa",
+        correctAnswer = 1, // B
+        explanation = "Französisch-Polynesien umfasst 118 Inseln und Atolle mit einer Meereszone von ca. 5,5 Millionen km² – das ist fast so groß wie Europa. Die Landfläche selbst beträgt aber nur 4.167 km².",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Arctic geography ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen Russland und der Nordpolregion und ist für seinen breiten Kontinentalschelf bekannt?",
+        answerA = "Karasee",
+        answerB = "Laptewsee",
+        answerC = "Ostsibirische See",
+        answerD = "Barentssee",
+        correctAnswer = 3, // D
+        explanation = "Die Barentssee liegt nördlich von Norwegen und Russland und hat einen sehr breiten, flachen Kontinentalschelf. Sie ist fischreich und war strategisch wichtig im Kalten Krieg.",
+        difficulty = 2,
+        funFact = "Die Barentssee ist nach dem niederländischen Entdecker Willem Barents benannt, der 1596 bei seiner Suche nach der Nordostpassage dort überwinterte."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das einzige arktische Territorium, das zu Dänemark gehört?",
+        answerA = "Spitzbergen",
+        answerB = "Jan Mayen",
+        answerC = "Grönland",
+        answerD = "Bären-Insel",
+        correctAnswer = 2, // C
+        explanation = "Grönland ist ein autonomes Territorium Dänemarks und die größte Insel der Welt (2,17 Millionen km²). Es liegt größtenteils innerhalb des Arktischen Kreises.",
+        difficulty = 2,
+        funFact = "Etwa 80 % Grönlands sind von einem Eisschild bedeckt. Würde dieser vollständig schmelzen, würde der Meeresspiegel weltweit um etwa 7 Meter steigen."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches arktisches Inselarchipel gehört zu Norwegen und beherbergt den Svalbard-Vertrag-Stützpunkt?",
+        answerA = "Franz-Josef-Land",
+        answerB = "Nowaja Semlja",
+        answerC = "Spitzbergen (Svalbard)",
+        answerD = "Severnaya Zemlya",
+        correctAnswer = 2, // C
+        explanation = "Svalbard (Spitzbergen) ist ein norwegisches Archipel in der Arktis. Aufgrund des Svalbard-Vertrages von 1920 dürfen Bürger aller Unterzeichnerstaaten dort ohne Visum leben und arbeiten.",
+        difficulty = 2,
+        funFact = "In der Stadt Longyearbyen auf Svalbard ist es per Gesetz verboten zu sterben – das klingt absurd, hat aber einen praktischen Grund: Leichen können im Permafrost nicht verrotten."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Was ist die Nordwestpassage?",
+        answerA = "Ein Kanal durch den Panamakanal nördlich der Hauptschleuse",
+        answerB = "Eine Schifffahrtsroute durch den Arktischen Ozean nördlich Kanadas",
+        answerC = "Die Beringstraße zwischen Alaska und Russland",
+        answerD = "Eine Eisbrecher-Route durch den Nordpol",
+        correctAnswer = 1, // B
+        explanation = "Die Nordwestpassage ist eine Schifffahrtsroute durch den Arktischen Ozean entlang der Nordküste Kanadas und Alaskas. Sie verbindet den Atlantik mit dem Pazifik. Durch den Klimawandel wird sie immer schiffbarer.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    // --- Antarctic research stations ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land betreibt die Amundsen-Scott-Südpolstation direkt am geografischen Südpol?",
+        answerA = "Norwegen",
+        answerB = "Argentinien",
+        answerC = "USA",
+        answerD = "Australien",
+        correctAnswer = 2, // C
+        explanation = "Die Amundsen-Scott-Südpolstation wird von den USA (NSF – National Science Foundation) betrieben und liegt exakt am geografischen Südpol auf dem antarktischen Eisschild.",
+        difficulty = 2,
+        funFact = "Die Station ist nach Roald Amundsen (Norwegen) und Robert Falcon Scott (Großbritannien) benannt – den ersten zwei Männern, die den Südpol erreichten (1911 und 1912)."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche deutsche Forschungsstation liegt in der Antarktis?",
+        answerA = "Neumayer-Station III",
+        answerB = "Concordia-Station",
+        answerC = "Troll-Station",
+        answerD = "Esperanza-Base",
+        correctAnswer = 0, // A
+        explanation = "Die Neumayer-Station III ist die deutsche Antarktis-Forschungsstation, betrieben vom Alfred-Wegener-Institut. Sie steht auf dem Ekström-Eisschelf in der Atka-Bucht.",
+        difficulty = 2,
+        funFact = "Die Neumayer-Station wird regelmäßig auf Stelzen angehoben, um das jährliche Einsinken durch Schneefälle auszugleichen – ein technisches Meisterstück."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Vertrag regelt die internationale Nutzung der Antarktis und verbietet Militärpräsenz?",
+        answerA = "Genfer Antarktis-Abkommen (1950)",
+        answerB = "Antarktisvertrag (1959, in Kraft 1961)",
+        answerC = "Kyoto-Protokoll für Polargebiete (1997)",
+        answerD = "UN-Seerechtskonvention Antarktis-Zusatz (1982)",
+        correctAnswer = 1, // B
+        explanation = "Der Antarktisvertrag wurde 1959 unterzeichnet und trat 1961 in Kraft. Er erklärt die Antarktis zur militärfreien Zone, schützt sie für wissenschaftliche Forschung und friert alle Gebietsansprüche ein.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Forschungsstation liegt am magnetischen Südpol und wird von Australien betrieben?",
+        answerA = "Mawson-Station",
+        answerB = "Davis-Station",
+        answerC = "Casey-Station",
+        answerD = "Macquarie-Island-Station",
+        correctAnswer = 0, // A
+        explanation = "Die australische Mawson-Station liegt in der Antarktis und war lange dem magnetischen Südpol am nächsten (der sich ständig verschiebt). Sie wurde 1954 eröffnet und ist eine der ältesten noch aktiven Stationen.",
+        difficulty = 2,
+        funFact = "Der magnetische Südpol wandert jedes Jahr – heute liegt er im Indischen Ozean nördlich der Antarktis und entfernt sich zunehmend vom geografischen Südpol."
+    ),
+
+    // --- River confluence points ---
+
+    Question(
+        categoryId = 1,
+        questionText = "In welcher Stadt in Ägypten teilt sich der Nil in den Weißen und den Blauen Nil?",
+        answerA = "Kairo",
+        answerB = "Khartum (Sudan)",
+        answerC = "Assuan",
+        answerD = "Luxor",
+        correctAnswer = 1, // B
+        explanation = "In Khartum (Sudan) fließen der Weiße Nil (aus Uganda) und der Blaue Nil (aus Äthiopien) zusammen. Danach fließt der vereinte Nil durch Ägypten ins Mittelmeer.",
+        difficulty = 2,
+        funFact = "Der Blaue Nil liefert trotz seiner kürzeren Länge etwa 80 % des Nilwassers – besonders nach dem äthiopischen Monsun im Sommer."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wo mündet der Missouri in den Mississippi?",
+        answerA = "Bei New Orleans, Louisiana",
+        answerB = "Bei St. Louis, Missouri",
+        answerC = "Bei Memphis, Tennessee",
+        answerD = "Bei Cairo, Illinois",
+        correctAnswer = 1, // B
+        explanation = "Der Missouri mündet kurz nördlich von St. Louis in den Mississippi. Diese Zusammenfluss-Stelle macht St. Louis zu einem historisch wichtigen Knotenpunkt der amerikanischen Flussschifffahrt.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Zusammenfluss von Euphrat und Tigris, der den Schatt al-Arab bildet?",
+        answerA = "Iran",
+        answerB = "Syrien",
+        answerC = "Türkei",
+        answerD = "Irak",
+        correctAnswer = 3, // D
+        explanation = "Euphrat und Tigris vereinigen sich im südlichen Irak bei Qurna zum Schatt al-Arab, der dann in den Persischen Golf mündet. Diese Region gilt als mögliche Lage des biblischen Garten Eden.",
+        difficulty = 2,
+        funFact = "Der Name Mesopotamien bedeutet auf Griechisch 'Land zwischen den Flüssen' (Euphrat und Tigris) – die Wiege der ersten Hochkulturen der Menschheit."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wo mündet der Rio Negro in den Amazonas in Brasilien?",
+        answerA = "Bei Manaus",
+        answerB = "Bei Belém",
+        answerC = "Bei Iquitos (Peru)",
+        answerD = "Bei Santarém",
+        correctAnswer = 0, // A
+        explanation = "Der Rio Negro mündet bei Manaus in den Amazonas. Die Zusammenfluss-Stelle ist für das Phänomen 'Encontro das Águas' (Begegnung der Gewässer) bekannt – die schwarzen und weißen Wässer fließen kilometerlang nebeneinander ohne sich zu vermischen.",
+        difficulty = 2,
+        funFact = "Das Phänomen entsteht durch unterschiedliche Temperatur, Dichte und Fließgeschwindigkeit der beiden Flüsse – ein beliebtes Touristenziel in Amazonien."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land liegt der Zusammenfluss von Donau und Save, wo die heutige Hauptstadt liegt?",
+        answerA = "Rumänien (Bukarest)",
+        answerB = "Serbien (Belgrad)",
+        answerC = "Kroatien (Zagreb)",
+        answerD = "Bulgarien (Sofia)",
+        correctAnswer = 1, // B
+        explanation = "Belgrad liegt am Zusammenfluss von Donau und Save. Die Lage an diesem strategisch wichtigen Punkt machte die Stadt zu einer der am häufigsten belagerten und zerstörten Städte Europas.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss entsteht durch den Zusammenfluss von Rhône und Saône in Frankreich?",
+        answerA = "Die Rhône setzt sich allein fort",
+        answerB = "Der Loire",
+        answerC = "Der Rhein",
+        answerD = "Die Durance",
+        correctAnswer = 0, // A
+        explanation = "Bei Lyon mündet die Saône in die Rhône. Nach dem Zusammenfluss setzt sich die Rhône als vereinter Strom fort und fließt durch das Rhônetal zum Mittelmeer. Die Saône ist ein linker Nebenfluss der Rhône.",
+        difficulty = 2,
+        funFact = "Lyon liegt genau an diesem Zusammenfluss und war daher schon in der Antike (als Lugdunum) ein wichtiger römischer Knotenpunkt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wo ensteht der Nil durch den Zusammenfluss zweier Quellflüsse – welche sind es?",
+        answerA = "Weißer Nil und Blauer Nil",
+        answerB = "Albert-Nil und Victoria-Nil",
+        answerC = "Kagera und Luvironza",
+        answerD = "Atbara und Weißer Nil",
+        correctAnswer = 0, // A
+        explanation = "Der Nil entsteht in Khartum durch den Zusammenfluss des Weißen Nils (aus Uganda/Viktoriasee-Region) und des Blauen Nils (aus dem Tana-See in Äthiopien). Beide tragen unterschiedliche Wassermengen bei.",
+        difficulty = 2,
+        funFact = "Der längste Zufluss des Nils ist technisch gesehen der Kagera-Fluss in Ruanda/Uganda, der in den Viktoriasee mündet – manche Geografen zählen ihn als 'eigentliche Quelle' des Nils."
+    ),
+
+    // --- Additional mixed topics from the specified themes ---
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Gebirge erzeugt den Regenschatten, der die Patagonische Steppe in Argentinien austrocknet?",
+        answerA = "Die Kordilleren Chiles",
+        answerB = "Die Anden",
+        answerC = "Die Küstenkordillere Chiles",
+        answerD = "Die Drakensberge",
+        correctAnswer = 1, // B
+        explanation = "Die Anden blockieren die feuchten Westwinde vom Pazifik. Westlich (Chile) regnet es stark, östlich (Patagonien/Argentinien) liegt der Regenschatten – es ist trocken und windig.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Wie nennt man den südlichsten Punkt des Polynesischen Dreiecks?",
+        answerA = "Samoa",
+        answerB = "Tonga",
+        answerC = "Neuseeland (Aotearoa)",
+        answerD = "Cookinseln",
+        correctAnswer = 2, // C
+        explanation = "Der südlichste Eckpunkt des Polynesischen Dreiecks ist Neuseeland (Aotearoa), das von den Maori zwischen ca. 1250 und 1300 n. Chr. besiedelt wurde – als letztes großes Landgebiet der Erde.",
+        difficulty = 2,
+        funFact = "Die Maori navigierten über 3.000 km Ozean von der östlichen Polynesien nach Neuseeland – ohne GPS oder Instrumente, nur mit Sternen, Wellen und Vögeln."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Meer liegt zwischen dem Kaukasus im Norden und dem Iran im Süden?",
+        answerA = "Schwarzes Meer",
+        answerB = "Asowsches Meer",
+        answerC = "Kaspisches Meer",
+        answerD = "Aralsee",
+        correctAnswer = 2, // C
+        explanation = "Das Kaspische Meer liegt zwischen Russland und Aserbaidschan im Westen/Norden, Kasachstan und Turkmenistan im Osten sowie dem Iran im Süden. Es ist der größte abflusslose See der Welt.",
+        difficulty = 2,
+        funFact = "Das Kaspische Meer war erdgeschichtlich ein Teil des Urmeeres Tethys – deshalb nennen wir es noch immer 'Meer', obwohl es technisch ein See ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches Land liegt vollständig auf dem Kaukasus-Inselbogen zwischen Schwarzem und Kaspischem Meer und ist seit 1991 unabhängig?",
+        answerA = "Tschetschenien",
+        answerB = "Dagestan",
+        answerC = "Georgien",
+        answerD = "Abchasien",
+        correctAnswer = 2, // C
+        explanation = "Georgien liegt im Südkaukasus, grenzt an Russland, die Türkei, Armenien und Aserbaidschan und wurde 1991 nach dem Zerfall der Sowjetunion unabhängig.",
+        difficulty = 2,
+        funFact = "Georgien ist eine der ältesten Weinbauregionen der Welt – dort wird seit über 8.000 Jahren Wein in Amphoren (Qvevri) hergestellt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welche Forschungsstation liegt auf dem höchsten Punkt des Antarktischen Eisschilds?",
+        answerA = "McMurdo-Station (USA)",
+        answerB = "Concordia-Station (Frankreich/Italien)",
+        answerC = "Vostok-Station (Russland)",
+        answerD = "Halley-Station (Großbritannien)",
+        correctAnswer = 2, // C
+        explanation = "Die russische Wostok-Station (Vostok) liegt auf dem Antarktischen Eisschild und ist für die tiefste jemals auf der Erde gemessene Temperatur bekannt: -89,2 °C (1983).",
+        difficulty = 2,
+        funFact = "Unter der Wostok-Station verbirgt sich der Wostok-See – ein riesiger Süßwassersee, der seit Millionen von Jahren unter dem Eis eingeschlossen ist."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Strom trägt im Arktischen Ozean warmes Atlantikwasser nach Norden?",
+        answerA = "Labradorstrom",
+        answerB = "Nordatlantikstrom / Golfstrom-Ausläufer",
+        answerC = "Kanarenstrom",
+        answerD = "Humboldtstrom",
+        correctAnswer = 1, // B
+        explanation = "Der Nordatlantikstrom (Ausläufer des Golfstroms) trägt warmes Wasser in den Arktischen Ozean und beeinflusst das Klima Europas und der arktischen Randseen erheblich.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches subsaharische Land ist bekannt als 'das Land der tausend Hügel'?",
+        answerA = "Uganda",
+        answerB = "Burundi",
+        answerC = "Ruanda",
+        answerD = "Kamerun",
+        correctAnswer = 2, // C
+        explanation = "Ruanda wird oft als 'Pays des mille collines' (Land der tausend Hügel) bezeichnet. Das kleine, dicht besiedelte Land ist von grünen Hügelketten durchzogen und liegt im Herzen Afrikas.",
+        difficulty = 2,
+        funFact = "Ruanda hat heute weltweit den höchsten Frauenanteil im nationalen Parlament – über 60 % der Sitze sind von Frauen besetzt."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "In welchem Land fließen Euphrat und Tigris zusammen und münden dann als Schatt al-Arab in den Persischen Golf?",
+        answerA = "Kuwait",
+        answerB = "Syrien",
+        answerC = "Iran",
+        answerD = "Irak",
+        correctAnswer = 3, // D
+        explanation = "Im südlichen Irak, bei der Stadt al-Qurna, vereinigen sich Euphrat und Tigris zum Schatt al-Arab. Dieser fließt etwa 190 km bis zum Persischen Golf und bildet die Grenze zwischen Irak und Iran.",
+        difficulty = 2,
+        funFact = "Der Schatt al-Arab war Schauplatz des Iran-Irak-Krieges (1980–1988), der u. a. über die Kontrolle dieser strategischen Wasserstraße geführt wurde."
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welches ist das größte Inselreich im Polynesischen Dreieck nach Bevölkerung?",
+        answerA = "Tonga",
+        answerB = "Samoa",
+        answerC = "Französisch-Polynesien",
+        answerD = "Hawaii (USA)",
+        correctAnswer = 3, // D
+        explanation = "Hawaii ist mit über 1,4 Millionen Einwohnern die bevölkerungsreichste Inselgruppe im Polynesischen Dreieck, auch wenn es als US-Bundesstaat nicht als eigenständiges Reich gilt.",
+        difficulty = 2,
+        funFact = null
+    ),
+
+    Question(
+        categoryId = 1,
+        questionText = "Welcher Fluss bildet die Grenze zwischen Sambia und Simbabwe und beherbergt die Victoriafälle?",
+        answerA = "Kongo",
+        answerB = "Sambesi",
+        answerC = "Limpopo",
+        answerD = "Okavango",
+        correctAnswer = 1, // B
+        explanation = "Der Sambesi bildet die Grenze zwischen Sambia und Simbabwe und stürzt bei den Victoriafällen (Mosi-oa-Tunya) 108 Meter in die Tiefe. Die Fälle sind mit einer Breite von 1.708 m die breitesten der Welt.",
+        difficulty = 2,
+        funFact = "Die Victoriafälle erzeugen eine Wasserwolke, die bei ruhigem Wetter bis zu 30 km weit zu sehen ist – daher der Name 'Mosi-oa-Tunya' auf Kololo: 'Rauch, der donnert'."
+    ),
+
 )
+
 
