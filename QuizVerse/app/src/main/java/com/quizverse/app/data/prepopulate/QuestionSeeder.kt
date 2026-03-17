@@ -28,6 +28,7 @@ import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium3
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard2
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert2
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.sportQuestions
 import com.quizverse.app.data.prepopulate.questions.techQuestions
@@ -55,7 +56,7 @@ object QuestionSeeder {
         // Build list of all 12 categories; questionCount reflects seeded data (50 each).
         val categories = listOf(
             Category(id = 1,  name = "Weltgeographie",      iconName = "\uD83C\uDF0D", gradientStartColor = 0xFF4FACFEL, gradientEndColor = 0xFF00F2FEL, questionCount = 1424, isLocked = false),
-            Category(id = 2,  name = "Wissenschaft & Natur",iconName = "\uD83D\uDD2C", gradientStartColor = 0xFF6C63FFL, gradientEndColor = 0xFFA855F7L, questionCount = 400, isLocked = false),
+            Category(id = 2,  name = "Wissenschaft & Natur",iconName = "\uD83D\uDD2C", gradientStartColor = 0xFF6C63FFL, gradientEndColor = 0xFFA855F7L, questionCount = 450, isLocked = false),
             Category(id = 3,  name = "Geschichte",          iconName = "\uD83D\uDCDC", gradientStartColor = 0xFFF97316L, gradientEndColor = 0xFFFBBF24L, questionCount = 50, isLocked = false),
             Category(id = 4,  name = "Film & Fernsehen",    iconName = "\uD83C\uDFAC", gradientStartColor = 0xFFEC4899L, gradientEndColor = 0xFFF43F5EL, questionCount = 50, isLocked = false),
             Category(id = 5,  name = "Musik",               iconName = "\uD83C\uDFB5", gradientStartColor = 0xFF8B5CF6L, gradientEndColor = 0xFFC084FCL, questionCount = 50, isLocked = false),
@@ -104,6 +105,7 @@ object QuestionSeeder {
             scienceQuestionsHard() +
             scienceQuestionsHard2() +
             scienceQuestionsExpert() +
+            scienceQuestionsExpert2() +
             scienceQuestionsMaster() +
             historyQuestions() +
             filmQuestions() +
