@@ -6,6 +6,14 @@ import com.quizverse.app.data.database.entities.Category
 import com.quizverse.app.data.database.entities.UserProgress
 import com.quizverse.app.data.prepopulate.questions.animalQuestions
 import com.quizverse.app.data.prepopulate.questions.filmQuestions
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsMedium
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsMedium3
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMedium4
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMedium5
 import com.quizverse.app.data.prepopulate.questions.foodQuestions
@@ -201,6 +209,14 @@ object QuestionSeeder {
             historyQuestionsMaster5() +
             historyQuestionsMaster6() +
             filmQuestions() +
+            filmQuestionsEasy() +
+            filmQuestionsEasy2() +
+            filmQuestionsEasy3() +
+            filmQuestionsEasy4() +
+            filmQuestionsEasy5() +
+            filmQuestionsMedium() +
+            filmQuestionsMedium2() +
+            filmQuestionsMedium3() +
             filmQuestionsMedium4() +
             filmQuestionsMedium5() +
             musicQuestions() +
