@@ -136,6 +136,7 @@ import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy3
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy5
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard
@@ -337,6 +338,7 @@ object QuestionSeeder {
             sportQuestionsEasy2() +
             sportQuestionsEasy3() +
             sportQuestionsEasy4() +
+            sportQuestionsEasy5() +
             sportQuestionsExpert() +
             sportQuestionsExpert2() +
             sportQuestionsHard() +
