@@ -208,7 +208,7 @@ object QuestionSeeder {
             Category(id = 14, name = "Borussia Dortmund",   iconName = "\u26BD",       gradientStartColor = 0xFFFDD835L, gradientEndColor = 0xFF212121L, questionCount = 50, isLocked = false),
             // ── Neue Kategorien ───────────────────────────────────────
             Category(id = 15, name = "Fußball",              iconName = "\u26BD",       gradientStartColor = 0xFF059669L, gradientEndColor = 0xFF34D399L, questionCount = 0, isLocked = false),
-            Category(id = 16, name = "Gesundheit & Medizin", iconName = "\uD83C\uDFE5", gradientStartColor = 0xFFEF4444L, gradientEndColor = 0xFFF97316L, questionCount = 0, isLocked = false),
+            Category(id = 16, name = "Gesundheit & Medizin", iconName = "\uD83C\uDFE5", gradientStartColor = 0xFFEF4444L, gradientEndColor = 0xFFF97316L, questionCount = 1500, isLocked = false),
             Category(id = 17, name = "Politik & Gesellschaft",iconName = "\uD83C\uDFDB", gradientStartColor = 0xFF6366F1L, gradientEndColor = 0xFF818CF8L, questionCount = 0, isLocked = false),
         )
 
@@ -394,7 +394,38 @@ object QuestionSeeder {
             mixedQuestions() +
             logicQuestions() +
             herthaBscQuestions() +
-            dortmundQuestions()
+            dortmundQuestions() +
+            // ── Health & Medicine (categoryId = 16) ──────────────────────
+            healthQuestionsEasy1() +
+            healthQuestionsEasy2() +
+            healthQuestionsEasy3() +
+            healthQuestionsEasy4() +
+            healthQuestionsEasy5() +
+            healthQuestionsEasy6() +
+            healthQuestionsMedium1() +
+            healthQuestionsMedium2() +
+            healthQuestionsMedium3() +
+            healthQuestionsMedium4() +
+            healthQuestionsMedium5() +
+            healthQuestionsMedium6() +
+            healthQuestionsHard1() +
+            healthQuestionsHard2() +
+            healthQuestionsHard3() +
+            healthQuestionsHard4() +
+            healthQuestionsHard5() +
+            healthQuestionsHard6() +
+            healthQuestionsExpert1() +
+            healthQuestionsExpert2() +
+            healthQuestionsExpert3() +
+            healthQuestionsExpert4() +
+            healthQuestionsExpert5() +
+            healthQuestionsExpert6() +
+            healthQuestionsMaster1() +
+            healthQuestionsMaster2() +
+            healthQuestionsMaster3() +
+            healthQuestionsMaster4() +
+            healthQuestionsMaster5() +
+            healthQuestionsMaster6()
         dao.insertAll(all)
     }
 
