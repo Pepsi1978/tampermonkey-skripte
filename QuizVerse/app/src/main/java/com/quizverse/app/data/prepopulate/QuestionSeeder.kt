@@ -5,6 +5,9 @@ import com.quizverse.app.data.database.entities.Achievement
 import com.quizverse.app.data.database.entities.Category
 import com.quizverse.app.data.database.entities.UserProgress
 import com.quizverse.app.data.prepopulate.questions.animalQuestions
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium6
 import com.quizverse.app.data.prepopulate.questions.filmQuestions
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy2
@@ -140,11 +143,15 @@ import com.quizverse.app.data.prepopulate.questions.sportQuestionsEasy5
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsExpert6
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard3
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard4
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsHard6
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMedium
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMedium3
@@ -153,6 +160,9 @@ import com.quizverse.app.data.prepopulate.questions.sportQuestionsMedium5
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster2
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster4
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster5
+import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.techQuestions
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestions
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestions
@@ -182,7 +192,7 @@ object QuestionSeeder {
             Category(id = 3,  name = "Geschichte",          iconName = "\uD83D\uDCDC", gradientStartColor = 0xFFF97316L, gradientEndColor = 0xFFFBBF24L, questionCount = 1500, isLocked = false),
             Category(id = 4,  name = "Film & Fernsehen",    iconName = "\uD83C\uDFAC", gradientStartColor = 0xFFEC4899L, gradientEndColor = 0xFFF43F5EL, questionCount = 560, isLocked = false),
             Category(id = 5,  name = "Musik",               iconName = "\uD83C\uDFB5", gradientStartColor = 0xFF8B5CF6L, gradientEndColor = 0xFFC084FCL, questionCount = 350, isLocked = false),
-            Category(id = 6,  name = "Sport",               iconName = "\uD83C\uDFC5", gradientStartColor = 0xFF22C55EL, gradientEndColor = 0xFF10B981L, questionCount = 200, isLocked = false),
+            Category(id = 6,  name = "Sport",               iconName = "\uD83C\uDFC5", gradientStartColor = 0xFF22C55EL, gradientEndColor = 0xFF10B981L, questionCount = 1500, isLocked = false),
             Category(id = 7,  name = "Technologie",         iconName = "\uD83D\uDCBB", gradientStartColor = 0xFF3B82F6L, gradientEndColor = 0xFF6366F1L, questionCount = 50, isLocked = false),
             Category(id = 8,  name = "Essen & Trinken",     iconName = "\uD83C\uDF73", gradientStartColor = 0xFFF59E0BL, gradientEndColor = 0xFFEF4444L, questionCount = 50, isLocked = false),
             Category(id = 9,  name = "Tierwelt",            iconName = "\uD83D\uDC3E", gradientStartColor = 0xFF14B8A6L, gradientEndColor = 0xFF06B6D4L, questionCount = 50, isLocked = false),
@@ -346,11 +356,15 @@ object QuestionSeeder {
             sportQuestionsExpert() +
             sportQuestionsExpert2() +
             sportQuestionsExpert3() +
+            sportQuestionsExpert4() +
+            sportQuestionsExpert5() +
+            sportQuestionsExpert6() +
             sportQuestionsHard() +
             sportQuestionsHard2() +
             sportQuestionsHard3() +
             sportQuestionsHard4() +
             sportQuestionsHard5() +
+            sportQuestionsHard6() +
             sportQuestionsMedium() +
             sportQuestionsMedium2() +
             sportQuestionsMedium3() +
@@ -359,9 +373,15 @@ object QuestionSeeder {
             sportQuestionsMaster() +
             sportQuestionsMaster2() +
             sportQuestionsMaster3() +
+            sportQuestionsMaster4() +
+            sportQuestionsMaster5() +
+            sportQuestionsMaster6() +
             techQuestions() +
             foodQuestions() +
             animalQuestions() +
+            animalQuestionsMedium2() +
+            animalQuestionsMedium3() +
+            animalQuestionsMedium6() +
             literatureQuestions() +
             mixedQuestions() +
             logicQuestions() +
