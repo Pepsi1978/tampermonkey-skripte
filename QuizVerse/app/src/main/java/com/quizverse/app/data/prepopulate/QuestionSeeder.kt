@@ -90,6 +90,7 @@ import com.quizverse.app.data.prepopulate.questions.musicQuestionsHard3
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsHard4
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert3
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster2
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster3
@@ -298,6 +299,7 @@ object QuestionSeeder {
             musicQuestionsHard4() +
             musicQuestionsExpert() +
             musicQuestionsExpert2() +
+            musicQuestionsExpert3() +
             musicQuestionsMaster() +
             musicQuestionsMaster2() +
             musicQuestionsMaster3() +
