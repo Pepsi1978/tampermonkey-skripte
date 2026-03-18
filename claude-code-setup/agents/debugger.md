@@ -2,6 +2,8 @@
 name: debugger
 description: Systematically diagnoses and fixes bugs. Use when something doesn't work and you don't know why.
 model: opus
+effort: high
+maxTurns: 80
 tools:
   - Read
   - Glob

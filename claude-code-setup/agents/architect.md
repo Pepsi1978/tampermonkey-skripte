@@ -2,6 +2,8 @@
 name: architect
 description: Designs the architecture for a new app or feature before any code is written. Use at the start of every new project.
 model: opus
+effort: high
+maxTurns: 80
 tools:
   - Read
   - Glob

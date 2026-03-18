@@ -25,6 +25,12 @@ _No entries yet. The debugger will write root cause patterns here._
 - **2026-03-15**: Android audio development readiness confirmed: NDK r29 with AAudio.h + OpenSL ES headers present.
 - **2026-03-15**: dpconde/claude-android-skill reviewed (SAFE) — recommended for Android Kotlin/Compose development.
 - **2026-03-18**: Full env scan — 15 issues found and fixed. Key fixes: Command Injection in notify.sh, config-guard now blocks effortLevel!=high, safety-gate expanded patterns, session-scorer fixed to parse actual transcript format, auto-sync dead code removed. Installed kotlin-lsp + gopls. Manifest + settings-reference synced to high effort.
+- **2026-03-18 (Self-Improve v5.6 Thorough Run)**: 5 improvements implemented:
+  - NEW `StopFailure` hook — auto-logs API errors (rate limit, auth, network) to FAILURES.md
+  - UPGRADED all 9 Opus agents with `effort: high` + differentiated `maxTurns` (architect/debugger: 80, quality-gate: 150, others: 60)
+  - ENHANCED session-scorer.ts with Two-Phase SPC (Phase 1: simple trend <20 sessions, Phase 2: UCL/LCL + 7-point run >=20 sessions)
+  - CORRECTED memory: Claude Code 2.1.78, Kotlin 2.3.20, Bun 1.3.11, 89 plugins (not 93)
+  - Updated Homebrew packages (uv 0.10.11)
 - **2026-03-18 (Intelligence Run)**: 6 intelligence improvements implemented:
   - NEW `challenger` agent — Devil's Advocate for architecture plans (Multi-Agent Debate pattern)
   - NEW `FAILURES.md` — Failure Pattern Library so bugs are never repeated
@@ -38,3 +44,5 @@ _Patterns detected across multiple sessions will be logged here automatically._
 
 ## Capability Gaps
 _Tasks that required missing agents/skills will be logged here._
+
+- **2026-03-18**: Quality declining: 7.0 → 6.4 (last 5 sessions)

@@ -158,23 +158,64 @@ function detectTrends(currentMetrics: SessionMetrics): void {
     .map((l) => {
       try { return JSON.parse(l) as SessionMetrics; } catch { return null; }
     })
-    .filter(Boolean) as SessionMetrics[];
+    .filter((s): s is SessionMetrics => s !== null && s.total_turns > 0);
 
   if (allScores.length < 5) return;
 
-  const recent = allScores.slice(-5);
-  const avg = recent.reduce((s, m) => s + m.quality_score, 0) / recent.length;
+  const sharedMemory = join(HOME, ".claude", "agent-memory", "shared", "MEMORY.md");
 
-  if (allScores.length >= 10) {
-    const prevAvg = allScores.slice(-10, -5).reduce((s, m) => s + m.quality_score, 0) / 5;
+  // Phase 1: Simple trend check (< 20 real sessions)
+  if (allScores.length < 20) {
+    const recent = allScores.slice(-5);
+    const avg = recent.reduce((s, m) => s + m.quality_score, 0) / recent.length;
 
-    if (avg < prevAvg - 0.5) {
-      const warning = `\n- **${currentMetrics.date.split("T")[0]}**: Quality declining: ${prevAvg.toFixed(1)} → ${avg.toFixed(1)} (last 5 sessions)\n`;
-      const sharedMemory = join(HOME, ".claude", "agent-memory", "shared", "MEMORY.md");
-      if (existsSync(sharedMemory)) {
-        appendFileSync(sharedMemory, warning, "utf-8");
+    if (allScores.length >= 10) {
+      const prevAvg = allScores.slice(-10, -5).reduce((s, m) => s + m.quality_score, 0) / 5;
+      if (avg < prevAvg - 0.5) {
+        const warning = `\n- **${currentMetrics.date.split("T")[0]}**: Quality declining: ${prevAvg.toFixed(1)} → ${avg.toFixed(1)} (simple trend, ${allScores.length}/20 sessions for SPC)\n`;
+        if (existsSync(sharedMemory)) {
+          appendFileSync(sharedMemory, warning, "utf-8");
+        }
       }
     }
+    return;
+  }
+
+  // Phase 2: Statistical Process Control (>= 20 real sessions)
+  const scores = allScores.map(s => s.quality_score);
+  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const stdDev = Math.sqrt(scores.reduce((sum, s) => sum + (s - mean) ** 2, 0) / scores.length);
+  const ucl = mean + 3 * stdDev;
+  const lcl = mean - 3 * stdDev;
+
+  const current = currentMetrics.quality_score;
+  const warnings: string[] = [];
+
+  // Rule 1: Point outside control limits
+  if (current > ucl || current < lcl) {
+    warnings.push(`SPC SIGNAL: Score ${current} outside limits [${lcl.toFixed(1)}, ${ucl.toFixed(1)}]`);
+  }
+
+  // Rule 2: 7-point run below mean (process shift)
+  const last7 = allScores.slice(-7).map(s => s.quality_score);
+  if (last7.length === 7 && last7.every(s => s < mean)) {
+    warnings.push(`SPC SIGNAL: 7 consecutive sessions below mean (${mean.toFixed(1)}) — process shift detected`);
+  }
+
+  // Rule 3: 5-session moving average comparison
+  const recent5 = allScores.slice(-5);
+  const prev5 = allScores.slice(-10, -5);
+  if (prev5.length === 5) {
+    const recentAvg = recent5.reduce((s, m) => s + m.quality_score, 0) / 5;
+    const prevAvg = prev5.reduce((s, m) => s + m.quality_score, 0) / 5;
+    if (recentAvg < prevAvg - 0.5) {
+      warnings.push(`Trend: ${prevAvg.toFixed(1)} → ${recentAvg.toFixed(1)} (declining)`);
+    }
+  }
+
+  if (warnings.length > 0 && existsSync(sharedMemory)) {
+    const entry = `\n- **${currentMetrics.date.split("T")[0]}**: ${warnings.join("; ")} [SPC: μ=${mean.toFixed(1)}, σ=${stdDev.toFixed(2)}, UCL=${ucl.toFixed(1)}, LCL=${lcl.toFixed(1)}, N=${scores.length}]\n`;
+    appendFileSync(sharedMemory, entry, "utf-8");
   }
 }
 

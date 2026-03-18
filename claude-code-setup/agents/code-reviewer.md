@@ -2,6 +2,8 @@
 name: code-reviewer
 description: Reviews code for quality, security, and design. Use after completing a feature or before committing.
 model: opus
+effort: high
+maxTurns: 60
 memory: project
 tools:
   - Read

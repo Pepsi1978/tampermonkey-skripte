@@ -2,6 +2,8 @@
 name: ui-polisher
 description: Reviews and improves UI code to look professional and store-quality. Use after building any user-facing feature.
 model: opus
+effort: high
+maxTurns: 60
 tools:
   - Read
   - Glob

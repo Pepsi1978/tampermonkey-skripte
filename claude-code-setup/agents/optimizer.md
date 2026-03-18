@@ -2,6 +2,8 @@
 name: optimizer
 description: Optimizes code for performance, binary size, and resource usage. Use after a feature works correctly.
 model: opus
+effort: high
+maxTurns: 60
 tools:
   - Read
   - Glob

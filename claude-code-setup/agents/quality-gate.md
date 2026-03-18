@@ -2,6 +2,8 @@
 name: quality-gate
 description: Runs the full quality loop (test + review + optimize) in parallel. Use after completing a feature — spawns 3 sub-agents simultaneously and returns PASS/FAIL.
 model: opus
+effort: high
+maxTurns: 150
 tools:
   - Read
   - Glob

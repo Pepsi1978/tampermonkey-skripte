@@ -2,6 +2,8 @@
 name: evolution-analyst
 description: Analyzes session quality trends, recurring weaknesses, and capability gaps from session-scores.jsonl and the Shared Knowledge Hub. Use for meta-evolution trend analysis.
 model: opus
+effort: high
+maxTurns: 60
 tools:
   - Read
   - Glob
