@@ -27,6 +27,7 @@ import com.quizverse.app.data.prepopulate.questions.filmQuestionsExpert4
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsExpert5
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsExpert6
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsExpert7
+import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster2
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster3
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster4
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster5
@@ -244,6 +245,7 @@ object QuestionSeeder {
             filmQuestionsExpert5() +
             filmQuestionsExpert6() +
             filmQuestionsExpert7() +
+            filmQuestionsMaster2() +
             filmQuestionsMaster3() +
             filmQuestionsMaster4() +
             filmQuestionsMaster5() +
