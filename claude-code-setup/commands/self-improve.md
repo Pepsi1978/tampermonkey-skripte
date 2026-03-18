@@ -208,9 +208,32 @@ Am Ende jedes Laufs: Berechne und zeige den **IQ-Score** (Intelligence Quotient 
 Zeige: `IQ-Score: XX/100 (vorher: YY → Veraenderung: +/-Z)`
 Speichere in `session-scores.jsonl` als neues Feld `iq_score`.
 
+## Stufe 6: FEHLERSUCHE & DAUERHAFTIGKEIT (PFLICHT — NIEMALS UEBERSPRINGEN)
+
+**Aktiv nach Fehlern SUCHEN — nicht warten bis sie gefunden werden. Aus JEDEM Fehler lernen.**
+
+### 6A: Aktive Fehlersuche (3 parallele Scans)
+Spawne 3 Agents parallel — jeder sucht an einer anderen Stelle nach Problemen:
+1. **Whiteboard-Scanner**: Lies FAILURES.md + MEMORY.md + PROCEDURES.md → Finde ALLE unfixten Probleme, veraltete Eintraege, Widersprueche. Jedes Problem MUSS in diesem Lauf gefixt werden.
+2. **Umgebungs-Scanner**: Pruefe Hooks (laufen sie?), Agents (stimmen Prompts?), Rules (sind sie aktuell?), Settings (Drift?), session-scorer (liefert er echte Daten?). Finde AKTUELLE Fehler die noch niemand bemerkt hat.
+3. **Zukunfts-Scanner**: Analysiere die letzten 3 Aenderungen in FAILURES.md — welche NEUEN Fehlertypen koennten in Zukunft auftreten? Fuer jeden potenziellen Fehler: Praeventiven Hook oder Rule vorschlagen.
+
+### 6B: Dauerhaftigkeits-Pruefung (Fixes die HALTEN)
+1. Pruefe die letzten 5 Fixes in FAILURES.md: Ist der Fix noch wirksam? (Hook existiert? Rule geladen? Config unveraendert?)
+2. Wenn ein Fix nicht mehr wirkt: **Sofort reparieren** und Ursache dokumentieren
+3. **REGEL**: Jeder Fix muss DAUERHAFT sein — keine temporaeren Workarounds. Wenn ein Fix nur lokal wirkt, muss er in den Cross-Platform-Sync. Wenn ein Fix Settings braucht, muessen sie in settings-reference.json.
+4. Trage Dauerhaftigkeits-Status in FAILURES.md ein: `✅ DAUERHAFT` oder `⚠️ FRAGIL (Grund)`
+
+### 6C: Lern-Extraktion (Was lehrt uns jeder Fehler?)
+Fuer JEDEN neuen Fehler der in diesem Lauf gefunden wurde:
+1. **Root Cause**: Warum ist er passiert? (Nicht das Symptom, die URSACHE)
+2. **Systemische Lektion**: Was sagt dieser Fehler ueber das SYSTEM? (z.B. "Hooks werden nie getestet" → Test-Hook einfuehren)
+3. **Praevention**: Konkreter Hook, Rule oder Agent-Aenderung die diesen Fehlertyp FUER IMMER verhindert
+4. Trage Lektion in MEMORY.md unter "Systemische Lektionen" ein
+
 ## Focus Mode
 
-Focus adds depth, doesn't skip standard checks. **Stufe 5 laeuft IMMER — auch im Focus-Modus.**
+Focus adds depth, doesn't skip standard checks. **Stufe 5+6 laufen IMMER — auch im Focus-Modus.**
 **Built-in focus topics**: Rust, Android, Security, TypeScript, Performance, Cross-Platform, Self-Improve.
 For any focus: After checklist-based checks, explore BEYOND the checklist.
 
@@ -278,6 +301,7 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - NEVER install Python for visible/GUI. NEVER remove working configs without replacement.
 - Meta-Improve (3D) is MANDATORY every run. NEVER skip.
 - **Stufe 5 (Intelligence Amplification) is MANDATORY every run. NEVER skip — even in Focus mode.**
+- **Stufe 6 (Fehlersuche & Dauerhaftigkeit) is MANDATORY every run. NEVER skip. Fixes must be PERMANENT.**
 - Main file limit: 300 lines. Reference files: no limit but keep lean.
 - Total skill size (main + refs): warn if > 800 lines.
 - Security: All external code must be checked for prompt injection.
@@ -285,4 +309,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - Commit messages: `#NNN - Description` format.
 
 ---
-<!-- Skill Version: v5.5 | Date: 2026-03-18 | Lines: ~275/300 (main) | Ref files: researchers.md (~173), report-and-creative.md (~181) | Total: ~629/800 | Changes: v5.5 — NEW Stufe 5 INTELLIGENCE AMPLIFICATION (mandatory, never skipped, even in Focus mode): 5A Failure-to-Prevention pipeline (1 new hook/rule per run), 5B Correction pattern analysis from transcripts, 5C Cognitive tool discovery (1 new tool per run), 5D Rule quality audit + agent prompt optimization, 5E Creative intelligence proposals (min 3, 1 must be built immediately), 5F IQ-Score metric (0-100) tracked in session-scores.jsonl -->
+<!-- Skill Version: v5.6 | Date: 2026-03-18 | Lines: ~300/300 (main) | Ref files: researchers.md (~173), report-and-creative.md (~181) | Total: ~654/800 | Changes: v5.6 — NEW Stufe 6 ERROR HUNTING & DURABILITY (mandatory): 6A 3 parallel error scanners (whiteboard, environment, future), 6B durability checks for past fixes (PERMANENT tag), 6C root-cause learning extraction with systemic lessons in MEMORY.md -->
