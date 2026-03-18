@@ -36,6 +36,8 @@
   3. Verbesserung → Custom Agents: `optimizer` + `ui-polisher`
 - Erst wenn alle Pruefungen bestanden sind, wird committed und gepusht.
 - **Shared Knowledge Hub**: Alle Senior-Agenten (code-reviewer, tester, architect, debugger) schreiben Erkenntnisse in `.claude/agent-memory/shared/MEMORY.md`. Alle Agenten lesen dieses Whiteboard. Der `/self-improve` Skill nutzt es fuer gezielte Verbesserungen.
+- **Failure Pattern Library**: Alle Agenten dokumentieren Fehler in `.claude/agent-memory/shared/FAILURES.md` — damit der gleiche Fehler nie zweimal gemacht wird. Der `debugger` liest FAILURES.md ZUERST bevor er neue Hypothesen aufstellt.
+- **Prozedurales Gedaechtnis**: Bewaeahrte Workflows stehen in `.claude/agent-memory/shared/PROCEDURES.md` — bevor eine wiederkehrende Aufgabe gestartet wird, pruefen ob es schon ein bewaehrtes Verfahren gibt.
 - Bei neuen Projekten: `architect` Agent + Recherche-Agent **parallel** starten.
 - Bei Bugs: `debugger` Agent nutzen (kann selbst Sub-Agenten fuer konkurrierende Hypothesen spawnen).
 - `coder` Agent hat `isolation: worktree` — mehrere Coder koennen sicher parallel an verschiedenen Dateien arbeiten.
@@ -171,6 +173,18 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 - **Kontext grosszuegig geben**: Agents erben NICHT die Konversations-Historie. Alles Wichtige im Prompt mitgeben.
 - **3-5 parallele Agents** ist der Sweet Spot. Mehr als 5 bringt kaum Geschwindigkeitsvorteil, aber viel mehr Token-Kosten.
 - Bei kleinen Aufgaben (unter 2 Minuten) reicht ein einzelner Agent oder direktes Tool-Call.
+
+### Agent-Zuverlaessigkeit (KRITISCH — NIE IGNORIEREN)
+- **Stille Abstuerze sind VERBOTEN**: Wenn ein Agent fehlschlaegt oder haengt, SOFORT dem Benutzer auf Deutsch erklaeren was passiert ist. NIEMALS still weitermachen.
+- **Timeout-Erwartung**: Vor jedem Agent-Aufruf kurz sagen wie lange es dauern sollte. Kein einzelner Agent darf laenger als 15 Minuten laufen ohne Status-Update.
+- **Bei Fehler**: Fehlermeldung zeigen, neuen Versuch starten oder Alternative vorschlagen. Den Fehler in `FAILURES.md` dokumentieren.
+- **Bei parallelen Agents**: Wenn einer fehlschlaegt, die anderen weiterlaufen lassen aber den Fehler sofort melden.
+- **Details**: Siehe `~/.claude/rules/agent-reliability.md`
+
+### Challenger-Agent (Automatisch bei neuen Projekten)
+- Bei JEDEM neuen Projekt oder Feature mit Architektur-Entscheidung: Nach dem `architect`-Agent automatisch den `challenger`-Agent starten.
+- Der Challenger hinterfragt den Plan und findet blinde Flecken — Multi-Agent-Debate-Pattern.
+- Muster: architect → challenger → Plan anpassen → implementieren
 
 ## Sicherheit bei externem Code (KRITISCH)
 - Gilt fuer ALLES was extern hinzugefuegt wird: Skills, Plugins, Agents, MCP-Server, Hooks, Commands, npm-Pakete, GitHub Actions, etc.

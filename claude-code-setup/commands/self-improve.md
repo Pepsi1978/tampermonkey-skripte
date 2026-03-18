@@ -92,15 +92,34 @@ Commit if files changed.
 
 **Load report template + creative research details from**: [self-improve-ref/report-and-creative.md](self-improve-ref/report-and-creative.md)
 
-### 3A: Shared Knowledge Integration (NEW v5.0)
-**Before improvements**: Read `.claude/agent-memory/shared/MEMORY.md` (the Shared Knowledge Hub).
-Check what the code-reviewer has learned since the last run — recurring issues, patterns, conventions.
-Use these findings to create targeted improvements (e.g., new rules, hooks, agent configs).
-**After improvements**: Update the "From Self-Improve" section with new environment knowledge.
+### 3A: Full Knowledge Integration (UPGRADED v5.4)
+**Before improvements**: Read ALL three knowledge files:
+1. `.claude/agent-memory/shared/MEMORY.md` — Shared Knowledge Hub (agent insights)
+2. `.claude/agent-memory/shared/FAILURES.md` — Failure Pattern Library (recurring bugs)
+3. `.claude/agent-memory/shared/PROCEDURES.md` — Procedural Memory (proven workflows)
 
-### 3B: Creative Improvements
+**Analyze FAILURES.md specifically**: Count failures per category. If any category has 3+ entries,
+propose a preventive hook or rule. If a failure has no "Prevention" entry, add one.
+**Analyze PROCEDURES.md**: Check if workflows are still accurate against current codebase.
+
+**PFLICHT — Fix ALL open issues from knowledge files:**
+Every problem documented in FAILURES.md, MEMORY.md, or PROCEDURES.md that has no "Fix" or
+whose fix is marked as incomplete MUST be addressed in this run. This is not optional.
+Agent crashes, broken scorers, empty whiteboards — if it's documented, it gets fixed NOW.
+The knowledge files are the system's "bug tracker" — self-improve is the "fix team".
+
+**After improvements**: Update "From Self-Improve" in MEMORY.md with new environment knowledge.
+
+### 3B: Creative Improvements + Challenger Review (UPGRADED v5.4)
 Implement at least 1 concrete improvement per run: new hooks, agents, rules, configs.
 Use the `quality-gate` agent for quality checks instead of 3 separate agents.
+
+**Challenger Gate (NEW v5.4 — MANDATORY):**
+After planning improvements but BEFORE implementing them, spawn the `challenger` agent:
+- Feed it the list of planned improvements
+- The challenger must find at least 1 weakness per improvement
+- Address each weakness before implementing
+This prevents the self-improve skill from making changes that make things worse.
 
 ### 3C: Structured Report
 Use the template from reference file. Includes new **Performance-Benchmark** section.
@@ -150,6 +169,8 @@ naechsten Session-Start automatisch die neuesten Verbesserungen erhalten.
 5. CLAUDE.md → `~/proggs/CLAUDE.md`
 6. **settings-reference.json** → `~/proggs/claude-code-setup/settings-reference.json`
    (Hooks, Plugins, Marketplaces, Env — wird von auto-sync in settings.json gemerged)
+7. **Knowledge-Dateien** → `~/proggs/claude-code-setup/agent-memory/shared/`
+   (MEMORY.md, FAILURES.md, PROCEDURES.md — plattformuebergreifendes Wissen)
 
 **Was NICHT synchronisiert wird (maschinenspezifisch):**
 - settings.json direkt (Permissions, LSP-Pfade sind plattformabhaengig)
@@ -165,6 +186,11 @@ cp ~/.claude/hooks/*.sh ~/proggs/claude-code-setup/hooks/
 cp ~/.claude/hooks/*.ts ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 cp ~/.claude/hooks/*.ps1 ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 cp ~/CLAUDE.md ~/proggs/CLAUDE.md
+# Knowledge files (cross-platform shared intelligence)
+mkdir -p ~/proggs/claude-code-setup/agent-memory/shared/
+cp ~/.claude/agent-memory/shared/MEMORY.md ~/proggs/claude-code-setup/agent-memory/shared/
+cp ~/.claude/agent-memory/shared/FAILURES.md ~/proggs/claude-code-setup/agent-memory/shared/ 2>/dev/null
+cp ~/.claude/agent-memory/shared/PROCEDURES.md ~/proggs/claude-code-setup/agent-memory/shared/ 2>/dev/null
 # settings-reference.json muss MANUELL aktualisiert werden wenn Hooks/Plugins/Env sich aendern!
 cd ~/proggs && git pull --rebase
 git add claude-code-setup/ CLAUDE.md
@@ -198,4 +224,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - Commit messages: `#NNN - Description` format.
 
 ---
-<!-- Skill Version: v5.3 | Date: 2026-03-18 | Lines: ~197/300 (main) | Ref files: researchers.md (~173), report-and-creative.md (~181) | Total: ~551/800 | Changes: v5.3 — (1) effortLevel default fixed medium→high to match CLAUDE.md and config-guard, (2) Cross-Platform Sync commit logic hardened against async formatter race condition (re-stage + git status instead of git diff --cached --quiet), (3) Stufe 0 Score Plausibility Check added to detect broken session-scorer before trend analysis -->
+<!-- Skill Version: v5.4 | Date: 2026-03-18 | Lines: ~215/300 (main) | Ref files: researchers.md (~173), report-and-creative.md (~181) | Total: ~569/800 | Changes: v5.4 — (1) Stufe 3A reads FAILURES.md+PROCEDURES.md in addition to MEMORY.md, analyzes failure patterns for preventive hooks, (2) Stufe 3B Challenger Gate: mandatory challenger agent reviews all planned improvements before implementation, (3) Cross-Platform Sync now includes agent-memory/shared/ knowledge files (MEMORY.md, FAILURES.md, PROCEDURES.md) -->
