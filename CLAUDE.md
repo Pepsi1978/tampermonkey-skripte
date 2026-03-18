@@ -54,8 +54,7 @@
 - Claude Code Konfiguration lebt in `~/proggs/claude-code-setup/`.
 - Bei Aenderungen an Regeln, Agents, Commands oder Hooks: Immer auch nach `~/proggs/claude-code-setup/` kopieren und pushen.
 - UI-Design: Modern, poliert, professionell — muss aussehen wie gekaufte Software aus dem Laden.
-- KEIN Python fuer GUIs oder Desktop-Apps. Python so weit wie moeglich vermeiden.
-- Wenn Python unvermeidbar ist (z.B. ML-Backend): IMMER vorher den Benutzer fragen und erklaeren ob der Python-Code sichtbar oder unsichtbar (Backend) ist. Nie stillschweigend Python einsetzen.
+- **Python-Regel**: Python ist ERLAUBT und soll installiert sein — aber NUR fuer unsichtbare Hintergrund-Aufgaben (ML-Backends, Datenverarbeitung, Automatisierungs-Skripte, Build-Tools). NIEMALS Python fuer sichtbare GUIs, Desktop-Apps oder Tools die der Benutzer direkt sieht. Fuer sichtbare Software immer Swift, C#, TypeScript, Rust, Go oder Kotlin verwenden. Python nur dann einsetzen, wenn die Aufgabe mit keiner anderen Sprache besser geloest werden kann.
 - Bevorzugte Sprachen: Swift, C#, TypeScript, Rust, Go. In dieser Reihenfolge.
 - Auslieferung: Eine einzelne .app (macOS) oder .exe (Windows) — keine Installationsabhaengigkeiten fuer den Endnutzer.
 

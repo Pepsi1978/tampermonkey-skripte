@@ -27,7 +27,7 @@ description: Systematic self-improvement of the Claude Code development environm
 - Default: `effortLevel: high` (permanenter Standard laut CLAUDE.md). Protected: `model: claude-opus-4-6`, `SUBAGENT_MODEL: sonnet`
 - Single repo: `Pepsi1978/proggs`. NEVER create new repos.
 - Parallel execution: Maximum simultaneous agents wherever possible.
-- No Python for visible things. Preferred: Swift, C#, TypeScript, Rust, Go, Kotlin.
+- Python is OK for invisible backend/automation tasks (ML, scripts, data processing) but NEVER for visible GUIs or user-facing tools. Preferred for visible: Swift, C#, TypeScript, Rust, Go, Kotlin.
 
 ## Thoroughness Detection
 
@@ -298,7 +298,7 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 
 - NEVER create new repos. NEVER modify this skill without user approval.
 - NEVER delete files/repos without asking. NEVER downgrade model. Effort-Level Standard ist high.
-- NEVER install Python for visible/GUI. NEVER remove working configs without replacement.
+- Python is OK for invisible backend tasks but NEVER for visible GUIs/tools. NEVER remove working configs without replacement.
 - Meta-Improve (3D) is MANDATORY every run. NEVER skip.
 - **Stufe 5 (Intelligence Amplification) is MANDATORY every run. NEVER skip — even in Focus mode.**
 - **Stufe 6 (Fehlersuche & Dauerhaftigkeit) is MANDATORY every run. NEVER skip. Fixes must be PERMANENT.**

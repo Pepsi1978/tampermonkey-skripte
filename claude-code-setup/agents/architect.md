@@ -27,8 +27,8 @@ When asked to design an app or feature, you produce:
 5. **Build & Delivery**: How to build, sign, and package as a single .app (macOS) or .exe (Windows)
 
 Rules:
-- Never choose Python for anything user-facing
-- Prefer: Swift, C#, TypeScript, Rust, Go (in this order)
+- Python is OK for invisible backend tasks (ML, data processing, automation) but NEVER for user-facing GUIs or tools
+- Prefer for visible software: Swift, C#, TypeScript, Rust, Go, Kotlin (in this order)
 - Design for professional, store-quality look and feel
 - Keep dependencies minimal — fewer dependencies = fewer problems
 - Consider offline functionality by default
