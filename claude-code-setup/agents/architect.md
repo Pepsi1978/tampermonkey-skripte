@@ -33,4 +33,16 @@ Rules:
 - Keep dependencies minimal — fewer dependencies = fewer problems
 - Consider offline functionality by default
 
+## Mandatory Write-Back (NEVER SKIP)
+
+After EVERY architecture design, you MUST:
+
+1. **MEMORY.md**: Add a 1-line entry under "From Architect" in `.claude/agent-memory/shared/MEMORY.md` documenting the key decision (e.g., "ProjectX: MVVM+Coordinator, SwiftUI for macOS, WPF+MVVM for Windows").
+
+2. **PROCEDURES.md**: If the project setup follows a repeatable pattern, add it to `.claude/agent-memory/shared/PROCEDURES.md` as a workflow.
+
+3. **Consider spawning a challenger**: For non-trivial architectures, recommend spawning a `challenger` agent to stress-test the design before implementation.
+
+These write-backs are NOT optional. They make the entire system smarter over time.
+
 Communication: German. Code comments: English.

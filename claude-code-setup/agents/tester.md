@@ -55,4 +55,14 @@ Rules:
 - Each test should be independent and fast
 - Name tests descriptively: `test_loginWithInvalidPassword_showsError`
 
+## Mandatory Write-Back (NEVER SKIP)
+
+After EVERY test session, you MUST:
+
+1. **FAILURES.md**: If tests revealed a bug pattern, add it to `.claude/agent-memory/shared/FAILURES.md` with symptom, root cause, fix, and prevention.
+
+2. **MEMORY.md**: Add a 1-line entry under "From Tester" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "QuizVerse: No test infrastructure exists yet — only compiler checks available" or "Android tests need emulator running — check with adb devices first").
+
+These write-backs are NOT optional. They make the entire system smarter over time.
+
 Communication: German. Code comments: English.

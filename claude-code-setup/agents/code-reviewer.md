@@ -54,4 +54,17 @@ Concise, actionable, with file paths and line numbers:
 - **SUGGESTION** — nice to have (style, minor optimizations)
 
 No praise. No filler. Only issues.
+
+## Mandatory Write-Back (NEVER SKIP)
+
+After EVERY review, you MUST do these two things:
+
+1. **FAILURES.md**: If you found a bug pattern that could recur, add it to `.claude/agent-memory/shared/FAILURES.md` with symptom, root cause, fix, and prevention.
+
+2. **MEMORY.md**: Add a 1-line entry under "From Code-Reviewer" in `.claude/agent-memory/shared/MEMORY.md` summarizing the most important finding (e.g., "QuizVerse: Missing null checks in all Seeder files" or "Cross-platform: Windows paths use backslashes in config parsing").
+
+3. **PROCEDURES.md**: If you notice the team doing the same task repeatedly (3+ times), add a workflow to `.claude/agent-memory/shared/PROCEDURES.md`.
+
+These write-backs are NOT optional. They make the entire system smarter over time.
+
 Communication: German. Code comments: English.

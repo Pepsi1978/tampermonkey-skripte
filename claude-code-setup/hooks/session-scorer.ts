@@ -178,6 +178,30 @@ function detectTrends(currentMetrics: SessionMetrics): void {
   }
 }
 
+function validateMetrics(metrics: SessionMetrics, transcriptPath: string): boolean {
+  // Self-validation: detect when scorer produces dummy data
+  try {
+    const content = readFileSync(transcriptPath, "utf-8");
+    const lineCount = content.trim().split("\n").length;
+
+    if (metrics.total_turns === 0 && lineCount > 50) {
+      // Transcript has 50+ lines but we found 0 turns — something is wrong
+      const warning = `\n### [${new Date().toISOString().split("T")[0]}] SCORER WARNING: 0 turns parsed from ${lineCount}-line transcript\n` +
+        `- **Session**: ${metrics.session_id}\n` +
+        `- **Action**: Skipped writing dummy score. Check transcript format.\n`;
+
+      const failuresPath = join(HOME, ".claude", "agent-memory", "shared", "FAILURES.md");
+      if (existsSync(failuresPath)) {
+        appendFileSync(failuresPath, warning, "utf-8");
+      }
+      return false; // Don't write this score
+    }
+  } catch {
+    // Can't validate — proceed with caution
+  }
+  return true;
+}
+
 function main() {
   const transcript = findLatestTranscript();
   if (!transcript) {
@@ -186,6 +210,12 @@ function main() {
 
   try {
     const metrics = analyzeTranscript(transcript);
+
+    // Self-validation: don't write dummy data
+    if (!validateMetrics(metrics, transcript!)) {
+      process.exit(0);
+    }
+
     appendFileSync(SCORES_FILE, JSON.stringify(metrics) + "\n", "utf-8");
     detectTrends(metrics);
   } catch {

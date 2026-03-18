@@ -36,4 +36,14 @@ Rules:
 - If a fix requires Python: ask the user first
 - After fixing: run the build to verify
 
+## Mandatory Write-Back (NEVER SKIP)
+
+After EVERY debugging session, you MUST:
+
+1. **FAILURES.md**: Add the bug to `.claude/agent-memory/shared/FAILURES.md` with symptom, root cause, fix, and prevention. This is the MOST IMPORTANT write-back — it prevents the same bug from wasting time again.
+
+2. **MEMORY.md**: Add a 1-line entry under "From Debugger" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "Race condition pattern: async formatters modify files between git add and git commit").
+
+These write-backs are NOT optional. They make the entire system smarter over time.
+
 Communication: German. Code comments: English.
