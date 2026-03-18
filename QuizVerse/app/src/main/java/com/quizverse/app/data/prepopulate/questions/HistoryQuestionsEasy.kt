@@ -14,6 +14,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Nofretete",
         correctAnswer = 1, // B
         explanation = "Tutanchamun bestieg mit etwa 9 Jahren den Thron und regierte ca. von 1332–1323 v. Chr. Er starb jung mit etwa 19 Jahren. Sein Grab wurde 1922 fast unberührt entdeckt.",
+        difficulty = 1,
         funFact = "Als Howard Carter Tutanchamuns Grab öffnete, soll er gefragt worden sein, ob er etwas sehe. Er antwortete: 'Wunderbare Dinge!'"
     ),
 
@@ -27,6 +28,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Jordan",
         correctAnswer = 2, // C
         explanation = "Der Nil war die Lebensader des alten Ägyptens. Seine jährlichen Überschwemmungen düngten die Felder und machten das Land fruchtbar, mitten in der Wüste.",
+        difficulty = 1,
         funFact = "Mit ca. 6.650 km ist der Nil der längste Fluss der Welt – er fließt von Zentralafrika bis zum Mittelmeer."
     ),
 
@@ -40,6 +42,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Pyramiden",
         correctAnswer = 3, // D
         explanation = "Die Pyramiden wurden als Grabstätten für die Pharaonen erbaut. Die bekanntesten stehen in Gizeh bei Kairo. Die Große Pyramide des Cheops ist eines der sieben Weltwunder der Antike.",
+        difficulty = 1,
         funFact = "Die Große Pyramide besteht aus ca. 2,3 Millionen Steinblöcken, von denen jeder durchschnittlich 2,5 Tonnen wiegt."
     ),
 
@@ -53,6 +56,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Theben",
         correctAnswer = 2, // C
         explanation = "Athen gilt als Geburtsort der Demokratie. Um 508 v. Chr. führte Kleisthenes grundlegende demokratische Reformen ein, die den Bürgern politische Mitsprache ermöglichten.",
+        difficulty = 1,
         funFact = "Das Wort 'Demokratie' kommt aus dem Griechischen: 'demos' (Volk) und 'kratos' (Herrschaft) – also Volksherrschaft."
     ),
 
@@ -66,6 +70,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Perseus",
         correctAnswer = 1, // B
         explanation = "Odysseus soll laut dem Epos 'Ilias' und 'Odyssee' von Homer die Idee des hölzernen Pferds gehabt haben, mit dem die Griechen heimlich in Troja eindringen konnten.",
+        difficulty = 1,
         funFact = "Homers 'Odyssee' beschreibt die zehnjährige Heimreise des Odysseus nach dem Trojanischen Krieg – voller Abenteuer und Hindernisse."
     ),
 
@@ -79,6 +84,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Epikur",
         correctAnswer = 1, // B
         explanation = "Platon war ein Schüler des Sokrates und später Lehrer des Aristoteles. Er gründete die Akademie in Athen und schrieb berühmte philosophische Dialoge wie die 'Politeia'.",
+        difficulty = 1,
         funFact = "Platon war ursprünglich Ringkämpfer – sein eigentlicher Name soll 'Aristokles' gewesen sein, 'Platon' (breite Schultern) war ein Spitzname."
     ),
 
@@ -92,6 +98,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Turniere",
         correctAnswer = 1, // B
         explanation = "Die Olympischen Spiele fanden erstmals 776 v. Chr. in Olympia statt und wurden alle vier Jahre zu Ehren des Gottes Zeus abgehalten. Sie waren das wichtigste sportliche Ereignis der Antike.",
+        difficulty = 1,
         funFact = "Während der Olympischen Spiele in der Antike galt ein Waffenstillstand – Kriege wurden unterbrochen, damit Athleten sicher reisen konnten."
     ),
 
@@ -105,6 +112,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Der Stier",
         correctAnswer = 0, // A
         explanation = "Der Adler (Aquila) war das wichtigste Symbol Roms und wurde auf den Feldzeichen der Legionen getragen. Er symbolisierte Stärke, Macht und die Verbindung zu Jupiter.",
+        difficulty = 1,
         funFact = "Jede römische Legion hatte einen Adler aus vergoldetem Silber, den sogenannten 'Aquilifer' getragen hat – der Verlust des Adlers war die größte Schande für eine Legion."
     ),
 
@@ -118,6 +126,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Republik",
         correctAnswer = 3, // D
         explanation = "Die Römische Republik (lat. 'res publica' = öffentliche Sache) war das politische System Roms von ca. 509 v. Chr. bis 27 v. Chr., mit Senat, Volksversammlung und gewählten Konsuln.",
+        difficulty = 1,
         funFact = "Das Wort 'Republik' kommt vom lateinischen 'res publica' – 'die öffentliche Angelegenheit'. Es wird bis heute für demokratische Staatsformen verwendet."
     ),
 
@@ -131,6 +140,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Das Kolosseum",
         correctAnswer = 1, // B
         explanation = "Kaiser Hadrian ließ ab 122 n. Chr. eine Mauer quer durch Nordengland bauen, um das römische Britannien vor Überfällen der Pikten zu schützen. Sie war ca. 117 km lang.",
+        difficulty = 1,
         funFact = "Die Hadriansmauer ist heute ein UNESCO-Weltkulturerbe und zieht jährlich Hunderttausende Touristen an."
     ),
 
@@ -144,6 +154,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Rom",
         correctAnswer = 3, // D
         explanation = "Rom war die Hauptstadt des Römischen Reiches für Jahrhunderte. Im 5. Jahrhundert wurde die Hauptstadt zeitweise nach Ravenna verlegt, aber Rom blieb das symbolische Zentrum.",
+        difficulty = 1,
         funFact = "'Alle Wege führen nach Rom' – im Mittelalter war das fast wörtlich wahr, da das gesamte Straßennetz des Imperiums auf die Hauptstadt ausgerichtet war."
     ),
 
@@ -157,6 +168,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1066 n. Chr.",
         correctAnswer = 0, // A
         explanation = "Karl der Große wurde am 25. Dezember 800 n. Chr. von Papst Leo III. in Rom zum Kaiser gekrönt. Er herrschte über weite Teile Europas und gilt als 'Vater Europas'.",
+        difficulty = 1,
         funFact = "Karl der Große konnte trotz seiner Bildungsbemühungen sein ganzes Leben lang nicht richtig schreiben – er soll nachts unter seinem Kopfkissen Wachstafeln gehabt haben, um das Schreiben zu üben."
     ),
 
@@ -170,6 +182,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Hundertjährigen Kriege",
         correctAnswer = 1, // B
         explanation = "Die Kreuzzüge (1095–1291) waren militärische Expeditionen europäischer Christen, um das Heilige Land und Jerusalem von muslimischer Herrschaft zu befreien. Es gab insgesamt sieben Hauptkreuzzüge.",
+        difficulty = 1,
         funFact = "Beim Ersten Kreuzzug (1096–1099) zog zunächst ein chaotischer 'Volkskreuzzug' voraus, der fast vollständig aufgerieben wurde."
     ),
 
@@ -183,6 +196,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Influenza",
         correctAnswer = 2, // C
         explanation = "Der Schwarze Tod (Beulenpest) breitete sich von 1347 bis 1353 in Europa aus und tötete schätzungsweise 25–30 Millionen Menschen, ein Drittel bis die Hälfte der europäischen Bevölkerung.",
+        difficulty = 1,
         funFact = "Der Schwarze Tod veränderte die europäische Gesellschaft grundlegend: Arbeitskräftemangel führte zum Ende des Feudalsystems und gab Bauern mehr Verhandlungsmacht."
     ),
 
@@ -196,6 +210,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1348",
         correctAnswer = 0, // A
         explanation = "In der Schlacht von Hastings am 14. Oktober 1066 besiegte Wilhelm der Eroberer den englischen König Harald II. und wurde König von England. Dies veränderte die englische Sprache und Kultur dauerhaft.",
+        difficulty = 1,
         funFact = "Durch die normannische Eroberung kamen tausende französische Wörter ins Englische. Deshalb haben viele englische Wörter heute sowohl germanische als auch französische Varianten."
     ),
 
@@ -209,6 +224,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Bartolomeu Dias",
         correctAnswer = 2, // C
         explanation = "Vasco da Gama umrundete 1497–1498 als erster Europäer Afrika (das Kap der Guten Hoffnung) und erreichte Indien. Dies eröffnete den Portugiesen den direkten Seehandelsweg nach Asien.",
+        difficulty = 1,
         funFact = "Das Kap der Guten Hoffnung heißt so, weil man hoffte, nun den Weg nach Indien gefunden zu haben. Bartolomeu Dias, der es 1488 als erster umsegelte, nannte es ursprünglich 'Kap der Stürme'."
     ),
 
@@ -222,6 +238,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Francis Drake",
         correctAnswer = 1, // B
         explanation = "Ferdinand Magellan brach 1519 mit einer spanischen Flotte auf. Er starb 1521 auf den Philippinen, doch sein Schiff 'Victoria' kehrte 1522 zurück – die erste Weltumsegelung war vollbracht.",
+        difficulty = 1,
         funFact = "Von Magellans ursprünglich 270 Besatzungsmitgliedern und 5 Schiffen überlebte nur eines mit 18 Mann die Weltumsegelung. Die Reise dauerte knapp drei Jahre."
     ),
 
@@ -235,6 +252,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Hernán Cortés",
         correctAnswer = 0, // A
         explanation = "Amerika wurde nach dem florentinischen Seefahrer Amerigo Vespucci benannt, da er erkannte, dass die entdeckten Länder keine Teile Asiens, sondern ein neuer Kontinent waren.",
+        difficulty = 1,
         funFact = "Der Kartograf Martin Waldseemüller schlug 1507 vor, den neuen Kontinent 'America' zu nennen – nach Amerigo Vespucci. Dieser Name setzte sich durch."
     ),
 
@@ -248,6 +266,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1815",
         correctAnswer = 1, // B
         explanation = "Die Französische Revolution begann 1789 mit dem Sturm auf die Bastille am 14. Juli. Sie beendete die Monarchie und führte zur Ausrufung der Republik.",
+        difficulty = 1,
         funFact = "Der 14. Juli (Bastilletag) ist bis heute der französische Nationalfeiertag. Bei der Erstürmung der Bastille befanden sich tatsächlich nur 7 Gefangene in der Festung."
     ),
 
@@ -261,6 +280,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Arbeit, Ordnung, Fortschritt",
         correctAnswer = 1, // B
         explanation = "'Liberté, Égalité, Fraternité' (Freiheit, Gleichheit, Brüderlichkeit) war die Losung der Französischen Revolution und ist bis heute der offizielle Wahlspruch Frankreichs.",
+        difficulty = 1,
         funFact = "Diese drei Werte inspirierten nicht nur Frankreich, sondern wurden zur Grundlage moderner demokratischer Verfassungen weltweit."
     ),
 
@@ -274,6 +294,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Ein preußischer General",
         correctAnswer = 2, // C
         explanation = "Napoleon Bonaparte war ein französischer General, der sich 1804 selbst zum Kaiser der Franzosen krönte. Er eroberte weite Teile Europas, wurde aber 1815 bei Waterloo besiegt.",
+        difficulty = 1,
         funFact = "Das Gerücht, Napoleon sei sehr klein gewesen, ist ein Mythos. Er war mit ca. 1,68–1,70 m für seine Zeit durchschnittlich groß. Die Verwechslung entstand durch einen Übersetzungsfehler mit dem schottischen Zoll-Maß."
     ),
 
@@ -287,6 +308,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "USA",
         correctAnswer = 2, // C
         explanation = "Die Industrielle Revolution begann in der zweiten Hälfte des 18. Jahrhunderts in England. Die Erfindung der Dampfmaschine durch James Watt und neue Textilmaschinen revolutionierten die Produktion.",
+        difficulty = 1,
         funFact = "Die erste Dampflokomotive, die Passagiere transportierte, war 'The Rocket' von George Stephenson – sie fuhr 1829 auf der Strecke zwischen Manchester und Liverpool."
     ),
 
@@ -300,6 +322,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Nikola Tesla",
         correctAnswer = 1, // B
         explanation = "James Watt verbesserte ab 1769 die Dampfmaschine so grundlegend, dass sie für industrielle Zwecke nutzbar wurde. Die Einheit der Leistung 'Watt' wurde ihm zu Ehren benannt.",
+        difficulty = 1,
         funFact = "James Watt führte den Begriff 'Pferdestärke' (PS) ein, um die Leistung seiner Dampfmaschinen vergleichbar zu machen – eine Einheit, die wir beim Auto noch heute kennen."
     ),
 
@@ -313,6 +336,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Eisenbahn",
         correctAnswer = 3, // D
         explanation = "Die Eisenbahn revolutionierte den Transport von Waren und Menschen im 19. Jahrhundert. Sie ermöglichte schnelle, günstige Langstreckentransporte und verband Städte und Industriegebiete.",
+        difficulty = 1,
         funFact = "Die erste Eisenbahn in Deutschland fuhr 1835 zwischen Nürnberg und Fürth – eine Strecke von gerade einmal 7 km, die die Lokomotive 'Adler' in ca. 9 Minuten zurücklegte."
     ),
 
@@ -326,6 +350,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1946",
         correctAnswer = 2, // C
         explanation = "Der Zweite Weltkrieg in Europa endete am 8. Mai 1945 mit der bedingungslosen Kapitulation der deutschen Wehrmacht. Dieser Tag wird als 'Tag der Befreiung' oder 'V-E Day' (Victory in Europe Day) gefeiert.",
+        difficulty = 1,
         funFact = "In Russland wird der 9. Mai als Tag des Sieges gefeiert, weil die Kapitulationsurkunde nach Moskauer Zeit in der Nacht vom 8. auf den 9. Mai unterzeichnet wurde."
     ),
 
@@ -339,6 +364,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Adolf Hitler",
         correctAnswer = 3, // D
         explanation = "Adolf Hitler war von 1933 bis 1945 Diktator Deutschlands. Er führte das Land in den Zweiten Weltkrieg und verantwortete den Holocaust, in dem sechs Millionen Juden ermordet wurden.",
+        difficulty = 1,
         funFact = null
     ),
 
@@ -352,6 +378,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Operation Sea Lion",
         correctAnswer = 2, // C
         explanation = "Die Landung in der Normandie am 6. Juni 1944 (D-Day) war Teil der Operation Overlord. Sie war die größte amphibische Militäroperation der Geschichte und leitete die Befreiung Westeuropas ein.",
+        difficulty = 1,
         funFact = "Über 156.000 alliierte Soldaten landeten am D-Day an fünf verschiedenen Stränden der Normandie. Es war die größte Seeinvasion der Weltgeschichte."
     ),
 
@@ -365,6 +392,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Die Atlantikcharta",
         correctAnswer = 0, // A
         explanation = "Am 7. Dezember 1941 griffen japanische Streitkräfte den amerikanischen Marinestützpunkt Pearl Harbor auf Hawaii an. Tags darauf erklärten die USA Japan den Krieg und traten in den Zweiten Weltkrieg ein.",
+        difficulty = 1,
         funFact = "Präsident Roosevelt bezeichnete den 7. Dezember 1941 als 'a date which will live in infamy' (ein Datum, das in Schande weiterleben wird). Über 2.400 Amerikaner starben beim Angriff."
     ),
 
@@ -378,6 +406,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Deutschland und Amerika",
         correctAnswer = 1, // B
         explanation = "Der Kalte Krieg (1947–1991) war ein politischer und militärischer Konflikt zwischen den USA und der Sowjetunion (UdSSR). Er prägte die Weltpolitik für über 40 Jahre.",
+        difficulty = 1,
         funFact = "Der Begriff 'Kalter Krieg' wurde erstmals 1945 vom Schriftsteller George Orwell verwendet – als Bezeichnung für eine Welt, in der zwei Supermächte sich mit Atomwaffen gegenseitig in Schach halten."
     ),
 
@@ -391,6 +420,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Vostok",
         correctAnswer = 2, // C
         explanation = "Sputnik 1 war der erste von Menschen gebaute Satellit, der am 4. Oktober 1957 von der Sowjetunion ins All geschossen wurde. Er löste das 'Sputnik-Schock' genannte Wettrüsten im Weltraum aus.",
+        difficulty = 1,
         funFact = "Sputnik war nur etwa so groß wie ein Wasserball (58 cm Durchmesser) und übertrug lediglich ein einfaches Funksignal – aber es reichte aus, die USA in tiefe Unruhe zu versetzen."
     ),
 
@@ -404,6 +434,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Michael Collins",
         correctAnswer = 2, // C
         explanation = "Neil Armstrong betrat am 20. Juli 1969 als erster Mensch den Mond. Er sagte die berühmten Worte: 'Das ist ein kleiner Schritt für einen Menschen, aber ein großer Sprung für die Menschheit.'",
+        difficulty = 1,
         funFact = "Buzz Aldrin war der zweite Mensch auf dem Mond, nur wenige Minuten nach Armstrong. Michael Collins blieb im Mondorbit und umkreiste den Mond, während seine Kollegen die Oberfläche erkundeten."
     ),
 
@@ -417,6 +448,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1968",
         correctAnswer = 2, // C
         explanation = "Die Kubakrise fand im Oktober 1962 statt, als die USA entdeckten, dass die Sowjetunion Atomraketen auf Kuba stationierte. Für 13 Tage drohte ein nuklearer Krieg, bevor eine diplomatische Lösung gefunden wurde.",
+        difficulty = 1,
         funFact = "Während der Kubakrise erhielt US-Präsident Kennedy angeblich täglich genaue Berichte über die Positionierung sowjetischer Schiffe – die Welt war dem Atomkrieg so nah wie nie zuvor oder danach."
     ),
 
@@ -430,6 +462,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1955",
         correctAnswer = 2, // C
         explanation = "Die Bundesrepublik Deutschland (BRD) wurde am 23. Mai 1949 mit dem Inkrafttreten des Grundgesetzes gegründet. Die DDR (Ostdeutschland) entstand am 7. Oktober 1949.",
+        difficulty = 1,
         funFact = "Das Grundgesetz war ursprünglich nur als vorläufige Verfassung gedacht, bis Deutschland wiedervereinigt sein würde. Aus diesem Grund hieß es 'Grundgesetz' und nicht 'Verfassung'."
     ),
 
@@ -443,6 +476,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "12. September 1990",
         correctAnswer = 1, // B
         explanation = "Die Deutsche Wiedervereinigung fand am 3. Oktober 1990 statt. Der 3. Oktober ist seitdem der Tag der Deutschen Einheit und wird als Nationalfeiertag begangen.",
+        difficulty = 1,
         funFact = "Deutschland wurde genau 45 Jahre nach dem Ende des Zweiten Weltkriegs wiedervereinigt – ein historisches Datum, das weltweit Beachtung fand."
     ),
 
@@ -456,6 +490,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Helmut Schmidt",
         correctAnswer = 2, // C
         explanation = "Konrad Adenauer war von 1949 bis 1963 der erste Bundeskanzler der BRD. Er führte Deutschland nach dem Krieg in die westliche Gemeinschaft und legte den Grundstein für das Wirtschaftswunder.",
+        difficulty = 1,
         funFact = "Adenauer war bei seiner Wahl zum Bundeskanzler 73 Jahre alt – er ist damit der älteste Regierungschef, den Deutschland je hatte. Er regierte bis ins hohe Alter von 87 Jahren."
     ),
 
@@ -469,6 +504,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Abwehr",
         correctAnswer = 1, // B
         explanation = "Die Stasi (Ministerium für Staatssicherheit) war der Geheimdienst der DDR. Sie überwachte die Bevölkerung massiv, hatte zeitweise ca. 90.000 hauptamtliche Mitarbeiter und 170.000 inoffizielle Informanten.",
+        difficulty = 1,
         funFact = "Auf je 63 DDR-Bürger kam ein Stasi-Spitzel – eine der höchsten Überwachungsdichten in der Geschichte. Die Stasi führte Akten zu etwa 6 Millionen Menschen."
     ),
 
@@ -482,6 +518,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Eine persische Königin",
         correctAnswer = 2, // C
         explanation = "Kleopatra VII. war die letzte Herrscherin des ptolemäischen Ägyptens. Sie war bekannt für ihre Intelligenz und ihre politischen Allianzen mit Julius Caesar und Marcus Antonius.",
+        difficulty = 1,
         funFact = "Kleopatra war ursprünglich griechischer Abstammung (Ptolemäer-Dynastie) und war die erste ihrer Herrscherfamilie, die überhaupt Ägyptisch sprach – neben mehreren anderen Sprachen."
     ),
 
@@ -495,6 +532,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Er schrieb die Bibel",
         correctAnswer = 2, // C
         explanation = "Galileo Galilei verbesserte das Teleskop und nutzte es für astronomische Beobachtungen, die das heliozentrische Weltbild (Erde dreht sich um die Sonne) bestätigten. Die Kirche verurteilte ihn dafür.",
+        difficulty = 1,
         funFact = "Die Legende, Galilei habe nach seinem Widerruf geflüstert 'Und sie bewegt sich doch!' ist vermutlich erfunden – sie taucht erst über 100 Jahre nach seinem Tod in Quellen auf."
     ),
 
@@ -508,6 +546,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Ein Kreuzritter und Erzbischof von Köln",
         correctAnswer = 1, // B
         explanation = "Martin Luther (1483–1546) war ein deutscher Theologe und Augustinermönch, der 1517 seine 95 Thesen veröffentlichte und damit die Reformation der Kirche einleitete. Er übersetzte auch die Bibel ins Deutsche.",
+        difficulty = 1,
         funFact = "Luthers Übersetzung der Bibel ins Deutsche war wegweisend für die Entstehung einer gemeinsamen deutschen Schriftsprache – er benutzte eine Sprache, die von möglichst vielen Deutschen verstanden werden konnte."
     ),
 
@@ -521,6 +560,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Ein venezianischer Opernkomponist",
         correctAnswer = 1, // B
         explanation = "Wolfgang Amadeus Mozart (1756–1791) war ein österreichisches Musikgenie, das bereits im Kindesalter komponierte. Er schrieb über 600 Werke, darunter Symphonien, Opern und Kammermusik.",
+        difficulty = 1,
         funFact = "Mozart spielte bereits mit 3 Jahren Klavier, komponierte mit 5 Jahren erste Stücke und trat mit 6 Jahren am Kaiserlichen Hof in Wien auf. Sein Vater Leopold reiste mit ihm durch ganz Europa."
     ),
 
@@ -534,6 +574,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Eine päpstliche Bulle, die die Kreuzzüge erklärte, 1096",
         correctAnswer = 1, // B
         explanation = "Die Magna Carta (Große Urkunde der Freiheiten) wurde 1215 von König Johann von England unterzeichnet. Sie begrenzte die königliche Macht und gilt als ein Vorläufer moderner Verfassungen.",
+        difficulty = 1,
         funFact = "Von der Magna Carta existieren heute noch vier Originalexemplare aus dem Jahr 1215. Sie werden in der British Library und in den Kathedralen von Salisbury und Lincoln aufbewahrt."
     ),
 
@@ -547,6 +588,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Germanische Stämme aus dem Osten",
         correctAnswer = 1, // B
         explanation = "Die Wikinger waren skandinavische Seefahrer, Händler und Krieger, die vom 8. bis 11. Jahrhundert Europa erkundeten, handelten und überfielen. Sie reichten von Nordamerika bis nach Konstantinopel.",
+        difficulty = 1,
         funFact = "Die Wikinger erreichten Nordamerika (Vinland) etwa 500 Jahre vor Kolumbus. Leif Eriksson gründete um 1000 n. Chr. eine Siedlung in Neufundland, Kanada."
     ),
 
@@ -560,6 +602,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Prätorianer",
         correctAnswer = 2, // C
         explanation = "Gladiatoren waren Kämpfer, die in römischen Amphitheatern wie dem Kolosseum gegeneinander oder gegen Tiere kämpften. Die Kämpfe dienten der Unterhaltung des Volkes.",
+        difficulty = 1,
         funFact = "Nicht alle Gladiatoren waren Sklaven. Manche freie Männer wurden freiwillig Gladiatoren, weil es Ruhm und Geld brachte. Erfolgreiche Gladiatoren waren echte Popstars der Antike."
     ),
 
@@ -573,6 +616,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Er kaufte Louisiana von Frankreich",
         correctAnswer = 2, // C
         explanation = "Abraham Lincoln (1809–1865) war der 16. Präsident der USA. Er führte das Land durch den Amerikanischen Bürgerkrieg und schaffte 1863 mit der Emanzipationsproklamation die Sklaverei ab.",
+        difficulty = 1,
         funFact = "Lincoln wurde am 14. April 1865 im Ford's Theatre in Washington D.C. erschossen – wenige Tage nachdem der Bürgerkrieg mit dem Sieg des Nordens geendet hatte."
     ),
 
@@ -586,6 +630,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Eine Kathedrale – gestürmt wegen Kirchenkritik",
         correctAnswer = 1, // B
         explanation = "Die Bastille war ein königliches Staatsgefängnis in Paris, das als Symbol der königlichen Tyrannei galt. Am 14. Juli 1789 stürmte eine Pariser Volksmenge die Festung – der Beginn der Französischen Revolution.",
+        difficulty = 1,
         funFact = "Bei der Erstürmung der Bastille befanden sich nur 7 Gefangene darin – vier Fälscher, zwei Verrückte und ein Adliger. Die Symbolwirkung war jedoch enorm."
     ),
 
@@ -599,6 +644,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Vladimir Lenin und Karl Marx",
         correctAnswer = 2, // C
         explanation = "Karl Marx und Friedrich Engels verfassten das 'Manifest der Kommunistischen Partei' 1848. Es analysierte die Industriegesellschaft und forderte die Arbeiterklasse auf, gegen das Bürgertum zu kämpfen.",
+        difficulty = 1,
         funFact = "Das Kommunistische Manifest beginnt mit dem berühmten Satz: 'Ein Gespenst geht um in Europa – das Gespenst des Kommunismus.' Es ist eine der meistverbreiteten politischen Schriften der Geschichte."
     ),
 
@@ -612,6 +658,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Operation Dynamo",
         correctAnswer = 1, // B
         explanation = "Operation Barbarossa war der Deckname für den deutschen Angriff auf die Sowjetunion, der am 22. Juni 1941 begann. Es war die größte Militäroperation der Geschichte und kostete Millionen von Menschenleben.",
+        difficulty = 1,
         funFact = "Hitler ließ die Operation nach Kaiser Friedrich Barbarossa benennen – einem mittelalterlichen deutschen Kaiser. Es war ein fataler Fehler: Die UdSSR mobilisierte gewaltigen Widerstand."
     ),
 
@@ -625,6 +672,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Ein Gerichtshof des Kaisers",
         correctAnswer = 1, // B
         explanation = "Der Reichstag war das Parlament des Deutschen Reiches. Das Gebäude in Berlin, in dem der Reichstag tagte, wurde 1933 durch Brand beschädigt. Heute tagt dort der Deutsche Bundestag.",
+        difficulty = 1,
         funFact = "1995 ließen die Künstler Christo und Jeanne-Claude den Reichstag mit silbernem Stoff verhüllen – über 5 Millionen Besucher kamen, um das spektakuläre Kunstwerk zu sehen."
     ),
 
@@ -638,6 +686,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "1993",
         correctAnswer = 2, // C
         explanation = "Die Sowjetunion löste sich am 25. Dezember 1991 offiziell auf. Michail Gorbatschow trat zurück und 15 unabhängige Staaten entstanden, darunter Russland, Ukraine und die baltischen Staaten.",
+        difficulty = 1,
         funFact = "Am Tag der Auflösung der Sowjetunion wurde über dem Kreml die russische Trikolore gehisst und die rote Sowjetflagge eingeholt. Es war das Ende des Kalten Krieges."
     ),
 
@@ -651,6 +700,7 @@ fun historyQuestionsEasy(): List<Question> = listOf(
         answerD = "Ein ghanaischer Anführer der Unabhängigkeitsbewegung",
         correctAnswer = 1, // B
         explanation = "Nelson Mandela (1918–2013) war ein südafrikanischer Freiheitskämpfer, der 27 Jahre im Gefängnis saß. Nach seiner Freilassung wurde er 1994 zum ersten demokratisch gewählten Präsidenten Südafrikas.",
+        difficulty = 1,
         funFact = "Mandela erhielt 1993 den Friedensnobelpreis, zusammen mit dem damaligen Präsidenten Frederik de Klerk. Er ist einer der wenigen Menschen, die gleichzeitig von Freunden und ehemaligen Feinden verehrt werden."
     ),
 

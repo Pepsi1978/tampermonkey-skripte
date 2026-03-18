@@ -111,7 +111,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "Adolphe Thiers",
         answerD = "Léon Gambetta",
         correctAnswer = 1,
-        explanation = "Antoine Agénor, duc de Gramont, war der französische Außenminister, der die Emser Depesche als unerträgliche Demütigung interpretierte und im Ministerrat für die Kriegserklärung warb. Er hatte bereits zuvor durch übermäßige Forderungen an Preußen die Krise verschärft. Premierminister Émile Ollivier erklärte bei der Kriegsabstimmung, Frankreich nehme den Krieg «leichten Herzens» an — ein Satz, der ihn historisch kompromittierte.",
+        explanation = "Antoine Agénor, duc de Gramont, war der französische Außenminister, der die Emser Depesche als unerträgliche Demütigung interpretierte und im Ministerrat für die Kriegserklärung warb. Er hatte bereits zuvor durch übermäßige Forderungen an Preußen die Krise verschärft. Premierminister Émile Ollivier erklärte bei der Kriegsabstimmung, Frankreich nehme den Krieg 'leichten Herzens' an — ein Satz, der ihn historisch kompromittierte.",
         difficulty = 5,
         funFact = "Gramont war sich so sicher, Preußen werde in einem Krieg scheitern, dass er sich über die Stärke der preußischen Armee kaum informiert hatte. Frankreich besaß noch keine Generalstabsplanung, die der preußischen vergleichbar gewesen wäre."
     ),
@@ -156,7 +156,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Tirpitz entwickelte in seinem Memorandum IX (1894) die Risikotheorie (Risikogedanke): Deutschland brauche keine britische Flotte zu übertreffen, sondern nur eine stark genug, dass England im Falle eines Krieges so schwere Verluste riskieren müsste, dass andere Mächte (Frankreich, Russland) eine geschwächte britische Flotte ausnützen könnten. Dadurch sollte England von einem Präventivschlag abgehalten werden.",
         difficulty = 5,
-        funFact = "Tirpitz erkannte selbst das fundamentale Dilemma seiner Theorie: In der Aufbauphase — bevor die deutsche Flotte stark genug war — war Deutschland am verwundbarsten. Diese «Gefahrenzone» zwischen 1900 und 1910 beschäftigte ihn intensiv und führte zu diplomatischen Bemühungen, England durch Verträge zu binden."
+        funFact = "Tirpitz erkannte selbst das fundamentale Dilemma seiner Theorie: In der Aufbauphase — bevor die deutsche Flotte stark genug war — war Deutschland am verwundbarsten. Diese 'Gefahrenzone' zwischen 1900 und 1910 beschäftigte ihn intensiv und führte zu diplomatischen Bemühungen, England durch Verträge zu binden."
     ),
 
     Question(
@@ -182,7 +182,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "3. November 1908",
         answerD = "12. September 1907",
         correctAnswer = 0,
-        explanation = "Das Interview erschien am 28. Oktober 1908 im Daily Telegraph unter dem Titel «The German Emperor and England». Darin äußerte Wilhelm II. unter anderem, die Deutschen seien anglophob, er selbst aber sei Englands Freund, habe England im Burenkrieg strategische Ratschläge gegeben und seine Pläne würden später in Windsor-Castle als korrekt bestätigt werden.",
+        explanation = "Das Interview erschien am 28. Oktober 1908 im Daily Telegraph unter dem Titel 'The German Emperor and England'. Darin äußerte Wilhelm II. unter anderem, die Deutschen seien anglophob, er selbst aber sei Englands Freund, habe England im Burenkrieg strategische Ratschläge gegeben und seine Pläne würden später in Windsor-Castle als korrekt bestätigt werden.",
         difficulty = 5,
         funFact = "Der Artikel war zuvor vom Adjutanten des Kaisers, Eduard von Liebert, und dann von Reichskanzler Bülow zur Zensur vorgelegt worden — doch Bülow las ihn kaum und gab ihn weiter, ohne ihn wirklich zu prüfen. Diese Nachlässigkeit kostete ihn 1909 schließlich das Amt."
     ),
@@ -191,7 +191,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         categoryId = 3,
         questionText = "Welche der Aussagen Wilhelms II. im Daily-Telegraph-Interview beleidigte Japan am meisten und führte zu diplomatischen Protesten?",
         answerA = "Der Kaiser behauptete, sein Flottenplan sei auf Wunsch Englands entwickelt worden, um Japan in Schach zu halten",
-        answerB = "Er bezeichnete Japan als «gelbe Gefahr» für die europäische Zivilisation",
+        answerB = "Er bezeichnete Japan als 'gelbe Gefahr' für die europäische Zivilisation",
         answerC = "Er behauptete, Japan plane heimlich einen Angriff auf Indien",
         answerD = "Er beschrieb die japanische Flottenpolitik als Bedrohung für den Weltfrieden",
         correctAnswer = 0,
@@ -210,7 +210,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "Die Proklamation des Kaisers Wilhelm II. zur Aufstandsniederlegung",
         answerD = "Der Schirmbaumsbefehl des Generals von Schlieffen",
         correctAnswer = 0,
-        explanation = "General Lothar von Trothas Proklamation vom 2. Oktober 1904 («Waterberg-Proklamation») ordnete an, dass jeder bewaffnete oder unbewaffnete Herero, der auf deutschem Boden angetroffen werde, erschossen werde. Frauen und Kinder sollten in die Wüste getrieben werden. Dieser schriftliche Befehl gilt als eines der frühesten dokumentierten Genozid-Dokumente der modernen Geschichte.",
+        explanation = "General Lothar von Trothas Proklamation vom 2. Oktober 1904 ('Waterberg-Proklamation') ordnete an, dass jeder bewaffnete oder unbewaffnete Herero, der auf deutschem Boden angetroffen werde, erschossen werde. Frauen und Kinder sollten in die Wüste getrieben werden. Dieser schriftliche Befehl gilt als eines der frühesten dokumentierten Genozid-Dokumente der modernen Geschichte.",
         difficulty = 5,
         funFact = "Reichskanzler Bülow widerrief Trothas Vernichtungsbefehl im Dezember 1904 auf Druck von Missionen und dem Reichstag — doch zu diesem Zeitpunkt war das Gros der Herero bereits tot oder in der Omaheke-Wüste umgekommen. Die Wasserlöcher waren systematisch vergiftet oder bewacht worden."
     ),
@@ -225,22 +225,22 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Shark Island (Haifischinsel) vor Lüderitzbucht war das berüchtigtste der deutschen Konzentrationslager in Südwestafrika. Die Insassen — hauptsächlich Nama — waren Wind, Kälte und Hunger ausgesetzt, mussten Zwangsarbeit leisten und hatten eine geschätzte Sterblichkeitsrate von über 75 Prozent. Dort arbeitete auch Dr. Eugen Fischer, der Schädelstudien an Gefangenen und Leichen durchführte.",
         difficulty = 5,
-        funFact = "Eugen Fischers Rassenforschungen aus Südwestafrika flossen in sein Werk «Die Rehobother Bastards» (1913) ein, das später von den Nationalsozialisten rezipiert wurde — Fischer selbst wurde 1927 Direktor des Kaiser-Wilhelm-Instituts für Anthropologie."
+        funFact = "Eugen Fischers Rassenforschungen aus Südwestafrika flossen in sein Werk 'Die Rehobother Bastards' (1913) ein, das später von den Nationalsozialisten rezipiert wurde — Fischer selbst wurde 1927 Direktor des Kaiser-Wilhelm-Instituts für Anthropologie."
     ),
 
     // --- Boxeraufstand ---
 
     Question(
         categoryId = 3,
-        questionText = "Welches Ereignis unmittelbar vor Wilhelms II. «Hunnenrede» trieb die internationale Intervention im Boxeraufstand voran?",
+        questionText = "Welches Ereignis unmittelbar vor Wilhelms II. 'Hunnenrede' trieb die internationale Intervention im Boxeraufstand voran?",
         answerA = "Die Ermordung des deutschen Gesandten Klemens von Ketteler in Peking am 20. Juni 1900",
         answerB = "Die Belagerung der Gesandtschaftsviertel ab dem 20. Mai 1900",
         answerC = "Die Eroberung der Taku-Forts durch internationale Truppen",
         answerD = "Die Kriegserklärung der Qing-Regierung an die Kolonialmächte",
         correctAnswer = 0,
-        explanation = "Gesandter Klemens von Ketteler wurde am 20. Juni 1900 auf dem Weg zum Tsungli Yamen von einem kaiserlichen Soldaten erschossen — er war der einzige ausländische Gesandte, der bei dem Aufstand getötet wurde. Sein Tod gab Wilhelm II. den emotionalen Aufhänger für die «Hunnenrede» (27. Juli 1900), in der er die abfahrenden deutschen Truppen aufforderte, keine Gefangenen zu machen.",
+        explanation = "Gesandter Klemens von Ketteler wurde am 20. Juni 1900 auf dem Weg zum Tsungli Yamen von einem kaiserlichen Soldaten erschossen — er war der einzige ausländische Gesandte, der bei dem Aufstand getötet wurde. Sein Tod gab Wilhelm II. den emotionalen Aufhänger für die 'Hunnenrede' (27. Juli 1900), in der er die abfahrenden deutschen Truppen aufforderte, keine Gefangenen zu machen.",
         difficulty = 5,
-        funFact = "Die «Hunnenrede» wurde zwar aus offiziellen deutschen Presseberichten zensiert, aber von ausländischen Journalisten vollständig dokumentiert und verbreitet. Der Begriff «Hunnen» für Deutsche blieb während des gesamten Ersten Weltkriegs in der alliierten Propaganda lebendig."
+        funFact = "Die 'Hunnenrede' wurde zwar aus offiziellen deutschen Presseberichten zensiert, aber von ausländischen Journalisten vollständig dokumentiert und verbreitet. Der Begriff 'Hunnen' für Deutsche blieb während des gesamten Ersten Weltkriegs in der alliierten Propaganda lebendig."
     ),
 
     Question(
@@ -261,12 +261,12 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 3,
         questionText = "Welche operative Entscheidung Admirals Tōgō Heihachirō in der Seeschlacht bei Tsushima gilt als taktisches Meisterstück und wurde in Marineschulen weltweit gelehrt?",
-        answerA = "Das «Crossing the T»: Tōgō wendete seine Schlachtlinie quer vor der russischen Flotte, um maximales Feuer auf deren Führungsschiff zu konzentrieren",
+        answerA = "Das 'Crossing the T': Tōgō wendete seine Schlachtlinie quer vor der russischen Flotte, um maximales Feuer auf deren Führungsschiff zu konzentrieren",
         answerB = "Der Nachtangriff mit Torpedobooten, der die russische Flotte überraschte",
         answerC = "Die Blockade der Koreastraße, die Rozhestvensky zur Umkehr zwang",
         answerD = "Die Staffelung der japanischen Schlachtschiffe in Dreier-Gruppen",
         correctAnswer = 0,
-        explanation = "In der Seeschlacht bei Tsushima (27.–28. Mai 1905) vollzog Tōgō das berühmte «Crossing the T»: Er wendete seine gesamte Flotte in einem Bogen vor dem Kopf der russischen Schlachtlinie und konnte dann mit allen Kanonen auf Rozhestvensky Führungsschiff schießen, während die Russen nur mit ihren Bug-Geschützen antworten konnten. Die russische Flotte wurde fast vollständig vernichtet.",
+        explanation = "In der Seeschlacht bei Tsushima (27.–28. Mai 1905) vollzog Tōgō das berühmte 'Crossing the T': Er wendete seine gesamte Flotte in einem Bogen vor dem Kopf der russischen Schlachtlinie und konnte dann mit allen Kanonen auf Rozhestvensky Führungsschiff schießen, während die Russen nur mit ihren Bug-Geschützen antworten konnten. Die russische Flotte wurde fast vollständig vernichtet.",
         difficulty = 5,
         funFact = "Von 38 russischen Schiffen wurden 21 versenkt, 7 gefangen genommen und 6 neutralisiert — nur 3 Schiffe erreichten Wladiwostok. Für eine Flotte, die 18.000 Seemeilen von der Ostsee gereist war, war es eine katastrophale Niederlage, die Russlands Revolution von 1905 beschleunigte."
     ),
@@ -279,7 +279,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "Japan und Russland teilten Korea an der 38. Breitengrad auf",
         answerD = "Ein Geheimprotokoll sicherte Japan alle russischen Einflussrechte in der Mandschurei",
         correctAnswer = 1,
-        explanation = "Im Portsmouth-Vertrag (5. September 1905) erkannte Russland in Artikel II ausdrücklich und öffentlich «die leitenden politischen, militärischen und wirtschaftlichen Interessen Japans in Korea» an und verpflichtete sich, diesen nicht zu widersprechen. Geheime Klauseln gab es nicht — die Überantwortung Koreas an Japan war explizit verankert. 1910 annektierte Japan Korea offiziell.",
+        explanation = "Im Portsmouth-Vertrag (5. September 1905) erkannte Russland in Artikel II ausdrücklich und öffentlich 'die leitenden politischen, militärischen und wirtschaftlichen Interessen Japans in Korea' an und verpflichtete sich, diesen nicht zu widersprechen. Geheime Klauseln gab es nicht — die Überantwortung Koreas an Japan war explizit verankert. 1910 annektierte Japan Korea offiziell.",
         difficulty = 5,
         funFact = "Vermittler Theodore Roosevelt erhielt für den Portsmouth-Frieden den Friedensnobelpreis 1906 — der erste, den ein US-Präsident erhielt. Beide Seiten waren jedoch unzufrieden: Japan wollte Kriegsentschädigungen, Russland wollte keine territorialen Verluste akzeptieren."
     ),
@@ -316,7 +316,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
 
     Question(
         categoryId = 3,
-        questionText = "Welche fünf Zonen definierte das Sykes-Picot-Abkommen vom 16. Mai 1916 und was war der Status der «Braunen Zone»?",
+        questionText = "Welche fünf Zonen definierte das Sykes-Picot-Abkommen vom 16. Mai 1916 und was war der Status der 'Braunen Zone'?",
         answerA = "Rote Zone (direkte britische Kontrolle: Mesopotamien/Basra-Bagdad), Blaue Zone (direktes französisches Mandatsgebiet: Libanon/Küste), Zone A (französischer Einfluss in Syrien), Zone B (britischer Einfluss in Transjordanien/Irak) und Braune Zone (internationale Verwaltung Palästinas)",
         answerB = "Britische Zone (Arabische Halbinsel), Französische Zone (Nordafrika), Russische Zone (Anatolien), Deutsche Zone (neutralisiert), Internationale Zone (Jerusalem)",
         answerC = "Rote Zone (Ägypten), Blaue Zone (Algerien), Grüne Zone (Palästina), Gelbe Zone (Persien), Braune Zone (Mesopotamien)",
@@ -380,7 +380,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Die Lausanner Konvention über den Bevölkerungsaustausch (Artikel im Hauptvertrag, detailliert in der Sonderkonvention) schuf den ersten vertraglich festgelegten Zwangsbevölkerungsaustausch der Geschichte: Griechisch-orthodoxe Christen aus Anatolien (ca. 1,2 Millionen, größtenteils bereits als Flüchtlinge) wurden gegen muslimische Bewohner Griechenlands (ca. 400.000) ausgetauscht — ethnische Identität wurde dabei allein durch Religionszugehörigkeit definiert.",
         difficulty = 5,
-        funFact = "Griechischsprachige Muslime aus Kreta und Makedonien wurden «ausgetauscht» gegen türkischsprachige Christen aus Anatolien — das Kriterium war allein die Religionszugehörigkeit. Der Nansen-Plan für diesen Austausch wurde von Fridtjof Nansen entwickelt, der dafür 1922 den Friedensnobelpreis erhielt."
+        funFact = "Griechischsprachige Muslime aus Kreta und Makedonien wurden 'ausgetauscht' gegen türkischsprachige Christen aus Anatolien — das Kriterium war allein die Religionszugehörigkeit. Der Nansen-Plan für diesen Austausch wurde von Fridtjof Nansen entwickelt, der dafür 1922 den Friedensnobelpreis erhielt."
     ),
 
     // --- Chanak-Krise ---
@@ -434,22 +434,22 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "Deutschland versprach, keine Bündnisverhandlungen mit Österreich gegen Russland zu führen",
         answerD = "Beide Mächte garantierten sich gegenseitig freien Zugang zum Balkan ohne Konsultationspflicht",
         correctAnswer = 0,
-        explanation = "Das Geheimprotokoll zum Rückversicherungsvertrag (18. Juni 1887) verpflichtete Deutschland zur «wohlwollenden Neutralität» falls Österreich Russland angreife (umgekehrt bei französischem Angriff auf Deutschland), und anerkannte explizit Russlands «vorherrschendes Einflussrecht» in Bulgarien sowie das russische Interesse an der Öffnung der Meerengen — was im Widerspruch zum Zweibund mit Österreich stand.",
+        explanation = "Das Geheimprotokoll zum Rückversicherungsvertrag (18. Juni 1887) verpflichtete Deutschland zur 'wohlwollenden Neutralität' falls Österreich Russland angreife (umgekehrt bei französischem Angriff auf Deutschland), und anerkannte explizit Russlands 'vorherrschendes Einflussrecht' in Bulgarien sowie das russische Interesse an der Öffnung der Meerengen — was im Widerspruch zum Zweibund mit Österreich stand.",
         difficulty = 5,
         funFact = "Als Kaiser Wilhelm II. und Caprivi 1890 den Rückversicherungsvertrag nicht verlängerten, wurde dies erst Jahre später bekannt — und Bismarck ließ ihn 1896 demonstrativ im Hamburger Hamburger Hamburger Hamburger veröffentlichen, um die Unfähigkeit der neuen Führung zu demonstrieren. Der Vertrag enthüllte die fundamentale Inkompatibilität von Zweibund und russischem Bündnis."
     ),
 
     Question(
         categoryId = 3,
-        questionText = "Was genau forderte der Alldeutsche Verband im «September-Programm» von 1914 für den Fall eines deutschen Sieges im Ersten Weltkrieg?",
+        questionText = "Was genau forderte der Alldeutsche Verband im 'September-Programm' von 1914 für den Fall eines deutschen Sieges im Ersten Weltkrieg?",
         answerA = "Annexion Belgiens und des Nordens Frankreichs (Longwy-Briey), Schaffung eines Mitteleuropäischen Wirtschaftsverbandes unter deutscher Führung und eines Mittelafrikanischen Kolonialreichs",
         answerB = "Annexion ganz Frankreichs, der Benelux-Staaten und der Baltischen Provinzen",
         answerC = "Annexion der Pufferstaaten zwischen Deutschland und Russland sowie Kontribution von 40 Milliarden Franc von Frankreich",
         answerD = "Schaffung eines deutschen Kolonialreichs in Afrika und Rückgabe der deutschen Kolonien durch England",
         correctAnswer = 0,
-        explanation = "Bethmann Hollwegs September-Programm (9. September 1914, streng geheim) sah vor: Frankreich verliert Erzbecken Briey-Longwy und zahlt Kontribution, wird wirtschaftlich abhängig; Belgien wird Vasallenstaat; Niederlande werden eng angebunden; es entsteht ein «Mitteleuropa» als Wirtschaftsverband unter deutscher Führung; im Osten wird ein «Oststreifen» polnischer Pufferstaaten abgetrennt; Afrika-Kolonien werden umverteilt. Der Alldeutsche Verband hatte noch weitreichendere Forderungen.",
+        explanation = "Bethmann Hollwegs September-Programm (9. September 1914, streng geheim) sah vor: Frankreich verliert Erzbecken Briey-Longwy und zahlt Kontribution, wird wirtschaftlich abhängig; Belgien wird Vasallenstaat; Niederlande werden eng angebunden; es entsteht ein 'Mitteleuropa' als Wirtschaftsverband unter deutscher Führung; im Osten wird ein 'Oststreifen' polnischer Pufferstaaten abgetrennt; Afrika-Kolonien werden umverteilt. Der Alldeutsche Verband hatte noch weitreichendere Forderungen.",
         difficulty = 5,
-        funFact = "Fritz Fischer enthüllte das September-Programm 1961 in «Griff nach der Weltmacht» — was einen der heftigsten deutschen Historikerkonflikte des 20. Jahrhunderts auslöste. Die «Fischer-Kontroverse» stellte die Frage, ob Deutschland 1914 bewusst einen Angriffskrieg geplant hatte."
+        funFact = "Fritz Fischer enthüllte das September-Programm 1961 in 'Griff nach der Weltmacht' — was einen der heftigsten deutschen Historikerkonflikte des 20. Jahrhunderts auslöste. Die 'Fischer-Kontroverse' stellte die Frage, ob Deutschland 1914 bewusst einen Angriffskrieg geplant hatte."
     ),
 
     Question(
@@ -475,7 +475,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Marian Rejewski, Mathematiker beim polnischen Biuro Szyfrów (Chiffrierbüro), rekonstruierte 1932 die interne Verkabelung der Enigma-Rotoren durch eine Kombination: abgefangene Nachrichten mit ihren Tageswert-Dopplungen (ein Verfahren, bei dem die Schlüsselindikatoren zweimal verschlüsselt übertragen wurden), algebraische Gruppentheorie und ein von Hans-Thilo Schmidt verkauftes Enigma-Handbuch (Geheimverräter für Frankreich). Er übergab die Erkenntnisse 1939 an Großbritannien und Frankreich.",
         difficulty = 5,
-        funFact = "Rejewskis Arbeit war entscheidend für Bletchley Parks spätere Erfolge — Alan Turing baute auf den polnischen «Bomba»-Maschinen auf. Polen erhielt für diese kriegsentscheidende Leistung jahrzehntelang keine offizielle Anerkennung, da das britische Ultra-Programm bis 1974 streng geheim blieb."
+        funFact = "Rejewskis Arbeit war entscheidend für Bletchley Parks spätere Erfolge — Alan Turing baute auf den polnischen 'Bomba'-Maschinen auf. Polen erhielt für diese kriegsentscheidende Leistung jahrzehntelang keine offizielle Anerkennung, da das britische Ultra-Programm bis 1974 streng geheim blieb."
     ),
 
     Question(
@@ -494,12 +494,12 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 3,
         questionText = "Welche spezifische Klausel des Versailler Vertrags veranlasste Deutschland zur Unterzeichnung und war gleichzeitig die umstrittenste in der Weimarer Republik?",
-        answerA = "Artikel 231 («Kriegsschuldklausel») — er legte Deutschland die alleinige Kriegsverantwortung auf und war die rechtliche Grundlage für alle Reparationsforderungen",
+        answerA = "Artikel 231 ('Kriegsschuldklausel') — er legte Deutschland die alleinige Kriegsverantwortung auf und war die rechtliche Grundlage für alle Reparationsforderungen",
         answerB = "Artikel 160 — er begrenzte die Reichswehr auf 100.000 Mann",
         answerC = "Artikel 45 — er übergab das Saargebiet für 15 Jahre an den Völkerbund",
         answerD = "Artikel 119 — er ließ Deutschland alle Kolonien abtreten",
         correctAnswer = 0,
-        explanation = "Artikel 231 des Versailler Vertrags («Kriegsschuldartikel») erklärte Deutschland (und seine Verbündeten) als allein verantwortlich für alle Verluste und Schäden, die die Alliierten durch den von Deutschland aufgezwungenen Krieg erlitten hatten. Er war die juristische Grundlage für Reparationsforderungen und wurde in Deutschland als moralisch unerträgliche Demütigung empfunden — ein zentrales Instrument nationalistischer Agitation bis 1933.",
+        explanation = "Artikel 231 des Versailler Vertrags ('Kriegsschuldartikel') erklärte Deutschland (und seine Verbündeten) als allein verantwortlich für alle Verluste und Schäden, die die Alliierten durch den von Deutschland aufgezwungenen Krieg erlitten hatten. Er war die juristische Grundlage für Reparationsforderungen und wurde in Deutschland als moralisch unerträgliche Demütigung empfunden — ein zentrales Instrument nationalistischer Agitation bis 1933.",
         difficulty = 5,
         funFact = "Ironischerweise hatten die amerikanischen Juristen John Foster Dulles (später Außenminister) und Norman Davis Artikel 231 als juristischen Kompromiss formuliert, um Reparationen ohne Benennung einer Gesamtsumme zu ermöglichen — sie hatten nicht erwartet, dass er als moralisches Urteil interpretiert werden würde."
     ),
@@ -520,14 +520,14 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 3,
         questionText = "Welche konkrete Formulierung der Balfour-Deklaration von 1917 enthielt eine eingebaute Beschränkung, die Zionisten und Araber gleichermaßen unzufrieden ließ?",
-        answerA = "«Es sei klar verstanden, dass nichts unternommen werden soll, was die bürgerlichen und religiösen Rechte bestehender nicht-jüdischer Gemeinschaften in Palästina... beeinträchtigen könnte»",
-        answerB = "«Die Errichtung einer jüdischen Heimstätte in Palästina» — nicht eines jüdischen Staates",
-        answerC = "«Vorbehaltlich der Genehmigung durch den Völkerbund und die arabische Bevölkerung»",
-        answerD = "«In dem Teil Palästinas westlich des Jordan»",
+        answerA = "'Es sei klar verstanden, dass nichts unternommen werden soll, was die bürgerlichen und religiösen Rechte bestehender nicht-jüdischer Gemeinschaften in Palästina... beeinträchtigen könnte'",
+        answerB = "'Die Errichtung einer jüdischen Heimstätte in Palästina' — nicht eines jüdischen Staates",
+        answerC = "'Vorbehaltlich der Genehmigung durch den Völkerbund und die arabische Bevölkerung'",
+        answerD = "'In dem Teil Palästinas westlich des Jordan'",
         correctAnswer = 1,
-        explanation = "Die Balfour-Deklaration sprach von einer «nationalen Heimstätte für das jüdische Volk» (national home) — bewusst nicht von einem Staat — und enthielt zwei einschränkende Klauseln: nichts solle die Rechte der «bestehenden nicht-jüdischen Gemeinschaften» in Palästina noch die Rechte und den politischen Status von Juden in anderen Ländern beeinträchtigen. Zionisten wollten einen Staat, Araber keine jüdische Einwanderung — beide Seiten empfanden die Deklaration als Betrug.",
+        explanation = "Die Balfour-Deklaration sprach von einer 'nationalen Heimstätte für das jüdische Volk' (national home) — bewusst nicht von einem Staat — und enthielt zwei einschränkende Klauseln: nichts solle die Rechte der 'bestehenden nicht-jüdischen Gemeinschaften' in Palästina noch die Rechte und den politischen Status von Juden in anderen Ländern beeinträchtigen. Zionisten wollten einen Staat, Araber keine jüdische Einwanderung — beide Seiten empfanden die Deklaration als Betrug.",
         difficulty = 5,
-        funFact = "Sykes hatte bewusst auf «Staat» verzichtet und «Heimstätte» gewählt, da er befürchtete, dass eine klare Staatsgarantie Frankreich und die arabischen Verbündeten verprellen würde. Der Begriff blieb bis 1948 das Zentrum aller Kontroversen über Palästinas Zukunft."
+        funFact = "Sykes hatte bewusst auf 'Staat' verzichtet und 'Heimstätte' gewählt, da er befürchtete, dass eine klare Staatsgarantie Frankreich und die arabischen Verbündeten verprellen würde. Der Begriff blieb bis 1948 das Zentrum aller Kontroversen über Palästinas Zukunft."
     ),
 
     Question(
@@ -559,27 +559,27 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 3,
         questionText = "Welche militärtechnische Neuerung des Ersten Weltkriegs veranlasste Großbritannien zur Entwicklung des ersten Panzers und wie hieß das Projekt geheimtarnend?",
-        answerA = "Die Sackgasse des Stellungskrieges durch MG und Stacheldraht veranlasste England zum «Landschiff»-Projekt — tarnend «water carrier» (Wasserbehälter/tank) genannt, woraus die Bezeichnung «Tank» entstand",
-        answerB = "Deutsche Gasbomben trieben die Briten zur Entwicklung gepanzerter Fahrzeuge unter dem Codenamen «Tortoise»",
-        answerC = "Der Durchbruch bei der Somme wurde durch den Codenamen «Panther» gesichert",
-        answerD = "Deutschen U-Boot-Angriffen begegnete Großbritannien mit dem Projekt «Iron Duck»",
+        answerA = "Die Sackgasse des Stellungskrieges durch MG und Stacheldraht veranlasste England zum 'Landschiff'-Projekt — tarnend 'water carrier' (Wasserbehälter/tank) genannt, woraus die Bezeichnung 'Tank' entstand",
+        answerB = "Deutsche Gasbomben trieben die Briten zur Entwicklung gepanzerter Fahrzeuge unter dem Codenamen 'Tortoise'",
+        answerC = "Der Durchbruch bei der Somme wurde durch den Codenamen 'Panther' gesichert",
+        answerD = "Deutschen U-Boot-Angriffen begegnete Großbritannien mit dem Projekt 'Iron Duck'",
         correctAnswer = 0,
-        explanation = "Das britische «Landships Committee» (1915), initiiert von Winston Churchill als Erster Lord der Admiralität, entwickelte gepanzerte Kettenfahrzeuge, um Stacheldraht, Schützengräben und Maschinengewehrnester zu überwinden. Das Projekt wurde zur Geheimhaltung als Produktion von «water carriers for Mesopotamia» (Wasserbehälter) bezeichnet — die Arbeiter nannten die Dinger kurz «tanks». Der Name blieb.",
+        explanation = "Das britische 'Landships Committee' (1915), initiiert von Winston Churchill als Erster Lord der Admiralität, entwickelte gepanzerte Kettenfahrzeuge, um Stacheldraht, Schützengräben und Maschinengewehrnester zu überwinden. Das Projekt wurde zur Geheimhaltung als Produktion von 'water carriers for Mesopotamia' (Wasserbehälter) bezeichnet — die Arbeiter nannten die Dinger kurz 'tanks'. Der Name blieb.",
         difficulty = 5,
         funFact = "Die ersten Tanks wurden am 15. September 1916 an der Somme eingesetzt — mit gemischtem Erfolg, da viele ausfielen. Haig setzte sie zu früh ein, bevor genug Fahrzeuge für einen konzentrierten Einsatz vorhanden waren, und verschenkte damit den Überraschungseffekt."
     ),
 
     Question(
         categoryId = 3,
-        questionText = "Was genau meinte Bismarck mit dem Begriff «Saturiertheit» in seiner Außenpolitik und welches konkrete Instrument setzte er ein, um Deutschland als solchen Staat darzustellen?",
-        answerA = "Deutschland sei territorial befriedigt und habe keine Expansionsinteressen mehr — Bismarck nutzte den Berliner Kongress 1878 als Instrument des «ehrlichen Maklers», um Deutschland als friedenserhaltende Macht darzustellen",
+        questionText = "Was genau meinte Bismarck mit dem Begriff 'Saturiertheit' in seiner Außenpolitik und welches konkrete Instrument setzte er ein, um Deutschland als solchen Staat darzustellen?",
+        answerA = "Deutschland sei territorial befriedigt und habe keine Expansionsinteressen mehr — Bismarck nutzte den Berliner Kongress 1878 als Instrument des 'ehrlichen Maklers', um Deutschland als friedenserhaltende Macht darzustellen",
         answerB = "Deutschland sei wirtschaftlich satt und brauche keine Kolonien — Bismarck schloss deshalb alle deutschen Kolonialerwerbe aus",
         answerC = "Das Deutsche Reich sei innenpolitisch stabil und brauche keine sozialen Reformen — deshalb die Sozialistengesetze",
         answerD = "Deutschland habe seine Rüstungsziele erreicht — Bismarck stoppte deshalb den Flottenausbau",
         correctAnswer = 0,
-        explanation = "Bismarck bezeichnete das Deutsche Reich nach 1871 als «saturierten» Staat, der keine weiteren territorialen Ambitionen in Europa hege. Der Berliner Kongress von 1878, auf dem er als «ehrlicher Makler» ohne eigene Interessenansprüche den russisch-osmanischen Konflikt moderierte, war das beste Beispiel: Deutschland gewann politisches Kapital, ohne Territorien zu fordern, und inszenierte sich als Stabilitätsanker Europas.",
+        explanation = "Bismarck bezeichnete das Deutsche Reich nach 1871 als 'saturierten' Staat, der keine weiteren territorialen Ambitionen in Europa hege. Der Berliner Kongress von 1878, auf dem er als 'ehrlicher Makler' ohne eigene Interessenansprüche den russisch-osmanischen Konflikt moderierte, war das beste Beispiel: Deutschland gewann politisches Kapital, ohne Territorien zu fordern, und inszenierte sich als Stabilitätsanker Europas.",
         difficulty = 5,
-        funFact = "Die Ironie der «Saturiertheit»: Gleichzeitig erwarb Deutschland zwischen 1884 und 1885 (Berliner Konferenz) Kolonien in Afrika und im Pazifik — Bismarck mied europäische Expansion, wollte aber außereuropäische Machtpositionen nicht ganz aufgeben, um innenpolitischen Nationalisten zu genügen."
+        funFact = "Die Ironie der 'Saturiertheit': Gleichzeitig erwarb Deutschland zwischen 1884 und 1885 (Berliner Konferenz) Kolonien in Afrika und im Pazifik — Bismarck mied europäische Expansion, wollte aber außereuropäische Machtpositionen nicht ganz aufgeben, um innenpolitischen Nationalisten zu genügen."
     ),
 
     Question(
@@ -597,7 +597,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
 
     Question(
         categoryId = 3,
-        questionText = "Was war das «Schlüsselproblem» der Tanzimat-Reformen im Osmanischen Reich und welcher Reformerlass gilt als Höhepunkt und gleichzeitig als Überdehnungspunkt?",
+        questionText = "Was war das 'Schlüsselproblem' der Tanzimat-Reformen im Osmanischen Reich und welcher Reformerlass gilt als Höhepunkt und gleichzeitig als Überdehnungspunkt?",
         answerA = "Das Gülhane-Edikt (1839) und der Hatt-ı Hümayun (1856) versprachen Gleichheit aller Untertanen ungeachtet der Religion — das Schlüsselproblem war, dass diese Reformen von muslimischer Bevölkerung als Statusverlust empfunden wurden",
         answerB = "Die Tanzimat scheiterten hauptsächlich an unzureichender Militärreform nach dem Vorbild Napoleons III.",
         answerC = "Das Schlüsselproblem war die fehlende finanzielle Basis für Reformen nach dem Krimkrieg",
@@ -605,18 +605,18 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Die Tanzimat-Reformen (1839–1876) versprachen mit dem Gülhane-Edikt (Hatt-ı Şerif) und dem Hatt-ı Hümayun von 1856 volle rechtliche Gleichheit aller osmanischen Untertanen ungeachtet ihrer Religionszugehörigkeit. Das fundamentale Problem: Muslimische Bevölkerung sah darin eine Entwertung des islamischen Vorrangs, während christliche Minderheiten und Großmächte die Umsetzung als unzureichend kritisierten — die Reform befriedigte niemanden vollständig und schuf neue Spannungen.",
         difficulty = 5,
-        funFact = "Der Hatt-ı Hümayun von 1856 war dem Osmanischen Reich von den Westmächten nach dem Krimkrieg faktisch aufgezwungen worden, um die Unabhängigkeit des Reichs zu «garantieren» — ein klassisches Beispiel für erzwungene Reformversprechen, die innenpolitisch kaum umsetzbar waren."
+        funFact = "Der Hatt-ı Hümayun von 1856 war dem Osmanischen Reich von den Westmächten nach dem Krimkrieg faktisch aufgezwungen worden, um die Unabhängigkeit des Reichs zu 'garantieren' — ein klassisches Beispiel für erzwungene Reformversprechen, die innenpolitisch kaum umsetzbar waren."
     ),
 
     Question(
         categoryId = 3,
-        questionText = "Welches war das zentrale Argument der «Fischer-Kontroverse» und warum löste es so heftige Reaktionen in der deutschen Geschichtswissenschaft aus?",
+        questionText = "Welches war das zentrale Argument der 'Fischer-Kontroverse' und warum löste es so heftige Reaktionen in der deutschen Geschichtswissenschaft aus?",
         answerA = "Fritz Fischer argumentierte 1961, Deutschland habe 1914 einen Präventivkrieg geplant und wollte die europäische Hegemonie erlangen — was die Hauptschuld-These der Alliierten (Versailler Vertrag) bestätigte und das Selbstbild der Bundesrepublik erschütterte",
         answerB = "Fischer behauptete, der Kaiser habe persönlich den Kriegsbeginn befohlen, was die Monarchisten in der BRD aufbrachte",
         answerC = "Fischer stellte die Kontinuität zwischen Kaiserreich und Nazideutschland her, was den Nachkriegskonsens über den Sonderweg zerstörte",
         answerD = "Fischer widerlegte die Dolchstoßlegende, was die alten Militärs und ihre Apologeten verärgerte",
         correctAnswer = 0,
-        explanation = "Fritz Fischers «Griff nach der Weltmacht» (1961) argumentierte auf Basis des September-Programms und anderer Dokumente, dass die deutsche Führung 1914 einen Präventivkrieg bewusst provoziert hatte, um Welthegemonie zu erreichen. Dies erschütterte den Nachkriegskonsens, der die Kriegsschuld auf alle Mächte verteilte, und bestätigte implizit die Versailler Kriegsschuldthese — weshalb konservative Historiker wie Gerhard Ritter heftig widersprachen.",
+        explanation = "Fritz Fischers 'Griff nach der Weltmacht' (1961) argumentierte auf Basis des September-Programms und anderer Dokumente, dass die deutsche Führung 1914 einen Präventivkrieg bewusst provoziert hatte, um Welthegemonie zu erreichen. Dies erschütterte den Nachkriegskonsens, der die Kriegsschuld auf alle Mächte verteilte, und bestätigte implizit die Versailler Kriegsschuldthese — weshalb konservative Historiker wie Gerhard Ritter heftig widersprachen.",
         difficulty = 5,
         funFact = "Die Fischer-Kontroverse erreichte ihr ideologisches Maximum, als herausgestellt wurde, dass Fischer selbst NSDAP-Mitglied gewesen war — was seine Kritiker nutzten, um seine Objektivität zu bezweifeln. Doch seine Dokumentenarbeit hielt der Kritik stand und veränderte die Geschichtsschreibung dauerhaft."
     ),
@@ -629,7 +629,7 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         answerC = "Bismarck konfiszierte das Kirchenvermögen und zwang Bischöfe damit zur Unterwerfung",
         answerD = "Bischöfe wurden durch staatliche Gegenbischöfe ersetzt, die das Altkatholizismus-Modell übernahmen",
         correctAnswer = 0,
-        explanation = "Das Expatriierungsgesetz (1874) ermächtigte Preußen, Geistliche, die sich der Staatsaufsicht widersetzten, aus dem Staatsgebiet zu verweisen. Da der Papst gleichzeitig jede staatliche Genehmigung für Ernennungen verbot, entstanden «Sedisvakanz»-Situationen: Bistümer hatten keinen rechtmäßig installierten Bischof mehr. Bis 1876 war ein Großteil der preußischen Bistümer administrativ führungslos — was Bismarck dazu zwang, schrittweise vom Kulturkampf abzurücken.",
+        explanation = "Das Expatriierungsgesetz (1874) ermächtigte Preußen, Geistliche, die sich der Staatsaufsicht widersetzten, aus dem Staatsgebiet zu verweisen. Da der Papst gleichzeitig jede staatliche Genehmigung für Ernennungen verbot, entstanden 'Sedisvakanz'-Situationen: Bistümer hatten keinen rechtmäßig installierten Bischof mehr. Bis 1876 war ein Großteil der preußischen Bistümer administrativ führungslos — was Bismarck dazu zwang, schrittweise vom Kulturkampf abzurücken.",
         difficulty = 5,
         funFact = "Bischof Martin von Paderborn und Erzbischof Ledóchowski von Gnesen wurden inhaftiert — Ledóchowski saß zwei Jahre im Gefängnis. Der Papst erhob ihn zum Kardinal, während er noch eingesperrt war, was Bismarck in eine noch schwierigere diplomatische Lage brachte."
     ),
@@ -637,10 +637,10 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 3,
         questionText = "Welcher Begriff beschrieb die österreichisch-ungarische Balkanpolitik nach dem Berliner Kongress von 1878 und welches konkrete Mandat erhielt Österreich-Ungarn dort?",
-        answerA = "«Okkupationsmandat» — Österreich-Ungarn erhielt das Recht zur Okkupation und Verwaltung Bosnien-Herzegowinas sowie das Recht zur Garnisonierung im Sandschak Novi Pazar",
-        answerB = "«Protektorat» — Österreich-Ungarn übernahm die vollständige Souveränität über Serbien und Montenegro",
-        answerC = "«Interessenzone» — Österreich-Ungarn erhielt den Vorrang bei Handelsverträgen mit allen Balkanstaaten",
-        answerD = "«Verwaltungsmandat» — Österreich-Ungarn kontrollierte den gesamten westlichen Balkan bis zur griechischen Grenze",
+        answerA = "'Okkupationsmandat' — Österreich-Ungarn erhielt das Recht zur Okkupation und Verwaltung Bosnien-Herzegowinas sowie das Recht zur Garnisonierung im Sandschak Novi Pazar",
+        answerB = "'Protektorat' — Österreich-Ungarn übernahm die vollständige Souveränität über Serbien und Montenegro",
+        answerC = "'Interessenzone' — Österreich-Ungarn erhielt den Vorrang bei Handelsverträgen mit allen Balkanstaaten",
+        answerD = "'Verwaltungsmandat' — Österreich-Ungarn kontrollierte den gesamten westlichen Balkan bis zur griechischen Grenze",
         correctAnswer = 0,
         explanation = "Der Berliner Kongress (1878) gestattete Österreich-Ungarn die Okkupation und Verwaltung Bosnien-Herzegowinas (trotz formell weiterhin bestehender osmanischer Souveränität) sowie das Recht, Garnisonen im Sandschak Novi Pazar zu stationieren — einem osmanischen Korridor zwischen Serbien und Montenegro, der deren territorialen Zusammenschluss verhindern sollte. 1908 annektierte Österreich-Ungarn Bosnien-Herzegowina formal.",
         difficulty = 5,
@@ -649,15 +649,15 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
 
     Question(
         categoryId = 3,
-        questionText = "Was genau unterschied die «Erste Marokkokrise» (1905/06) von der «Zweiten Marokkokrise» (1911) in Bezug auf Auslöser, deutschen Akteur und Ausgang?",
-        answerA = "1905: Wilhelms Tangerbesuch und Forderung nach internationaler Konferenz, Scheitern Deutschlands in Algeciras; 1911: Entsendung des Kanonenboots «Panther» nach Agadir durch den Auswärtigen Dienst, Deutschland erhielt Teile des französischen Kongo als Kompensation",
+        questionText = "Was genau unterschied die 'Erste Marokkokrise' (1905/06) von der 'Zweiten Marokkokrise' (1911) in Bezug auf Auslöser, deutschen Akteur und Ausgang?",
+        answerA = "1905: Wilhelms Tangerbesuch und Forderung nach internationaler Konferenz, Scheitern Deutschlands in Algeciras; 1911: Entsendung des Kanonenboots 'Panther' nach Agadir durch den Auswärtigen Dienst, Deutschland erhielt Teile des französischen Kongo als Kompensation",
         answerB = "1905: Deutsche Truppen besetzten Tanger, Frankreich gab Marokko auf; 1911: Deutschland forderte Marokko komplett, erhielt aber nur Sahara-Gebiete",
         answerC = "Beide Krisen hatten identische Ursachen (Wilhelms Einmischung) aber unterschiedliche britische Reaktionen",
         answerD = "1905: Österreich-Ungarn unterstützte Deutschland, 1911: Österreich blieb neutral, was Deutschland schwächte",
         correctAnswer = 0,
-        explanation = "In der Ersten Marokkokrise (1905) landete Wilhelm II. persönlich in Tanger und proklamierte Marokkos Unabhängigkeit — Deutschland forderte eine internationale Konferenz. Die Konferenz von Algeciras (1906) endete mit einer Niederlage Deutschlands: Nur Österreich-Ungarn und Marokko stimmten mit Deutschland, alle anderen Mächte unterstützten Frankreich. Die Zweite Marokkokrise (1911) begann mit der Entsendung des Kanonenboots «Panther» nach Agadir — Deutschland versuchte Kompensation zu erzwingen und erhielt schließlich Teile des französischen Kongos (Neukamerun), was als deutscher Rückzug gewertet wurde.",
+        explanation = "In der Ersten Marokkokrise (1905) landete Wilhelm II. persönlich in Tanger und proklamierte Marokkos Unabhängigkeit — Deutschland forderte eine internationale Konferenz. Die Konferenz von Algeciras (1906) endete mit einer Niederlage Deutschlands: Nur Österreich-Ungarn und Marokko stimmten mit Deutschland, alle anderen Mächte unterstützten Frankreich. Die Zweite Marokkokrise (1911) begann mit der Entsendung des Kanonenboots 'Panther' nach Agadir — Deutschland versuchte Kompensation zu erzwingen und erhielt schließlich Teile des französischen Kongos (Neukamerun), was als deutscher Rückzug gewertet wurde.",
         difficulty = 5,
-        funFact = "Lloyd Georges «Mansion-House-Rede» vom Juli 1911, in der er unmissverständlich erklärte, Großbritannien werde seine vitalen Interessen verteidigen, war ein entscheidender Faktor: Deutschland erkannte, dass England im Ernstfall auf Frankreichs Seite kämpfen würde — ein Schock, der die Kriegsplanung 1914 beeinflusste."
+        funFact = "Lloyd Georges 'Mansion-House-Rede' vom Juli 1911, in der er unmissverständlich erklärte, Großbritannien werde seine vitalen Interessen verteidigen, war ein entscheidender Faktor: Deutschland erkannte, dass England im Ernstfall auf Frankreichs Seite kämpfen würde — ein Schock, der die Kriegsplanung 1914 beeinflusste."
     ),
 
     Question(
@@ -670,18 +670,18 @@ fun historyQuestionsMaster4(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Die Balkankriege (1912/13) demonstrierten, wie schnell moderne Armeen mobilisieren konnten — Bulgarien und Serbien überrannten osmanische Stellungen in Wochen. Für die deutsche Generalstabsplanung bedeutete das: Wer mit der Mobilisierung zögert, verliert. Dieser Zeitdruck prägte 1914 die Entscheidung gegen diplomatische Lösungen: Sobald Russland auch nur teilweise mobilisierte, schien der Schlieffen-Plan nicht mehr ausführbar.",
         difficulty = 5,
-        funFact = "Helmuth von Moltke d. J. schrieb im Dezember 1912 an Außenstaatssekretär Kiderlen-Wächter: «Wir müssen mit dem Krieg anfangen, je eher desto besser» — ein Dokument, das für die Präventivkriegsdebatte um 1914 von zentraler Bedeutung ist und die Fischer-Kontroverse teilweise belegt."
+        funFact = "Helmuth von Moltke d. J. schrieb im Dezember 1912 an Außenstaatssekretär Kiderlen-Wächter: 'Wir müssen mit dem Krieg anfangen, je eher desto besser' — ein Dokument, das für die Präventivkriegsdebatte um 1914 von zentraler Bedeutung ist und die Fischer-Kontroverse teilweise belegt."
     ),
 
     Question(
         categoryId = 3,
         questionText = "Was war der entscheidende verfassungsrechtliche Streit zwischen dem preußischen Abgeordnetenhaus und Bismarck in der Heereskonflikt-Ära von 1862–1866, und wie löste Bismarck ihn faktisch auf?",
-        answerA = "Das Parlament verweigerte die Bewilligung des Kriegsbudgets für die Heeresreform — Bismarck regierte durch die «Lückentheorie» (fehlende Verfassungsbestimmung für Budgetstreits) und löste den Konflikt 1866 durch die Indemnitätsvorlage nach dem Sieg über Österreich",
+        answerA = "Das Parlament verweigerte die Bewilligung des Kriegsbudgets für die Heeresreform — Bismarck regierte durch die 'Lückentheorie' (fehlende Verfassungsbestimmung für Budgetstreits) und löste den Konflikt 1866 durch die Indemnitätsvorlage nach dem Sieg über Österreich",
         answerB = "Das Parlament versuchte, den König abzusetzen, woraufhin Bismarck es durch Notdekret auflöste",
         answerC = "Der Streit betraf die Dauer des Militärdienstes — Bismarck setzte drei Jahre durch, obwohl das Parlament zwei Jahre wollte",
         answerD = "Das Parlament wollte das Heer unter zivile Kontrolle stellen — Bismarck verweigerte das durch Berufung auf das königliche Kommandorecht",
         correctAnswer = 0,
-        explanation = "Das preußische Abgeordnetenhaus, dominiert von Liberalen, verweigerte 1862–1866 die Etats für Roon-Moltkes Heeresreform (Verlängerung der Dienstzeit, Reorganisation). Da die Verfassung keine Regelung für einen dauerhaften Budgetstreit enthielt, regierte Bismarck durch die «Lückentheorie»: Wo die Verfassung schweigt, entscheidet die Exekutive. Nach dem Sieg über Österreich 1866 beantragte er eine Indemnitätsvorlage — das Parlament billigte rückwirkend alle verfassungswidrigen Ausgaben. Die Mehrheit der Liberalen spaltete sich: Nationalliberale stimmten dafür.",
+        explanation = "Das preußische Abgeordnetenhaus, dominiert von Liberalen, verweigerte 1862–1866 die Etats für Roon-Moltkes Heeresreform (Verlängerung der Dienstzeit, Reorganisation). Da die Verfassung keine Regelung für einen dauerhaften Budgetstreit enthielt, regierte Bismarck durch die 'Lückentheorie': Wo die Verfassung schweigt, entscheidet die Exekutive. Nach dem Sieg über Österreich 1866 beantragte er eine Indemnitätsvorlage — das Parlament billigte rückwirkend alle verfassungswidrigen Ausgaben. Die Mehrheit der Liberalen spaltete sich: Nationalliberale stimmten dafür.",
         difficulty = 5,
         funFact = "Die Indemnitätsdebatte spaltete den deutschen Liberalismus dauerhaft: Die Nationalliberalen akzeptierten Bismarcks Machtpolitik als Preis für die nationale Einigung — die Fortschrittspartei (später Freisinnige) beharrte auf parlamentarischen Grundsätzen. Diese Spaltung schwächte den Liberalismus für Jahrzehnte."
     ),

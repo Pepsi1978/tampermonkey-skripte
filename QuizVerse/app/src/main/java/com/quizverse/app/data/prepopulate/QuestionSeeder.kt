@@ -14,6 +14,33 @@ import com.quizverse.app.data.prepopulate.questions.geoQuestionsHard
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsExpert
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.historyQuestions
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMedium
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMedium5
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsHard
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsExpert6
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster2
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster4
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster5
+import com.quizverse.app.data.prepopulate.questions.historyQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.literatureQuestions
 import com.quizverse.app.data.prepopulate.questions.logicQuestions
 import com.quizverse.app.data.prepopulate.questions.mixedQuestions
@@ -22,14 +49,30 @@ import com.quizverse.app.data.prepopulate.questions.scienceQuestions
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsEasy5
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMedium5
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsHard5
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsExpert6
 import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster2
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster4
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster5
+import com.quizverse.app.data.prepopulate.questions.scienceQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.sportQuestions
 import com.quizverse.app.data.prepopulate.questions.techQuestions
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestions
@@ -56,11 +99,11 @@ object QuestionSeeder {
         // Build list of all 12 categories; questionCount reflects seeded data (50 each).
         val categories = listOf(
             Category(id = 1,  name = "Weltgeographie",      iconName = "\uD83C\uDF0D", gradientStartColor = 0xFF4FACFEL, gradientEndColor = 0xFF00F2FEL, questionCount = 1424, isLocked = false),
-            Category(id = 2,  name = "Wissenschaft & Natur",iconName = "\uD83D\uDD2C", gradientStartColor = 0xFF6C63FFL, gradientEndColor = 0xFFA855F7L, questionCount = 450, isLocked = false),
-            Category(id = 3,  name = "Geschichte",          iconName = "\uD83D\uDCDC", gradientStartColor = 0xFFF97316L, gradientEndColor = 0xFFFBBF24L, questionCount = 50, isLocked = false),
+            Category(id = 2,  name = "Wissenschaft & Natur",iconName = "\uD83D\uDD2C", gradientStartColor = 0xFF6C63FFL, gradientEndColor = 0xFFA855F7L, questionCount = 1500, isLocked = false),
+            Category(id = 3,  name = "Geschichte",          iconName = "\uD83D\uDCDC", gradientStartColor = 0xFFF97316L, gradientEndColor = 0xFFFBBF24L, questionCount = 1500, isLocked = false),
             Category(id = 4,  name = "Film & Fernsehen",    iconName = "\uD83C\uDFAC", gradientStartColor = 0xFFEC4899L, gradientEndColor = 0xFFF43F5EL, questionCount = 50, isLocked = false),
             Category(id = 5,  name = "Musik",               iconName = "\uD83C\uDFB5", gradientStartColor = 0xFF8B5CF6L, gradientEndColor = 0xFFC084FCL, questionCount = 50, isLocked = false),
-            Category(id = 6,  name = "Sport",               iconName = "\u26BD",       gradientStartColor = 0xFF22C55EL, gradientEndColor = 0xFF10B981L, questionCount = 50, isLocked = false),
+            Category(id = 6,  name = "Sport",               iconName = "\uD83C\uDFC5", gradientStartColor = 0xFF22C55EL, gradientEndColor = 0xFF10B981L, questionCount = 50, isLocked = false),
             Category(id = 7,  name = "Technologie",         iconName = "\uD83D\uDCBB", gradientStartColor = 0xFF3B82F6L, gradientEndColor = 0xFF6366F1L, questionCount = 50, isLocked = false),
             Category(id = 8,  name = "Essen & Trinken",     iconName = "\uD83C\uDF73", gradientStartColor = 0xFFF59E0BL, gradientEndColor = 0xFFEF4444L, questionCount = 50, isLocked = false),
             Category(id = 9,  name = "Tierwelt",            iconName = "\uD83D\uDC3E", gradientStartColor = 0xFF14B8A6L, gradientEndColor = 0xFF06B6D4L, questionCount = 50, isLocked = false),
@@ -70,6 +113,10 @@ object QuestionSeeder {
             // ── Bundesliga-Vereine (Unterkategorien von Sport) ──────────
             Category(id = 13, name = "Hertha BSC",          iconName = "\u26BD",       gradientStartColor = 0xFF1A5276L, gradientEndColor = 0xFF2E86C1L, questionCount = 50, isLocked = false),
             Category(id = 14, name = "Borussia Dortmund",   iconName = "\u26BD",       gradientStartColor = 0xFFFDD835L, gradientEndColor = 0xFF212121L, questionCount = 50, isLocked = false),
+            // ── Neue Kategorien ───────────────────────────────────────
+            Category(id = 15, name = "Fußball",              iconName = "\u26BD",       gradientStartColor = 0xFF059669L, gradientEndColor = 0xFF34D399L, questionCount = 0, isLocked = false),
+            Category(id = 16, name = "Gesundheit & Medizin", iconName = "\uD83C\uDFE5", gradientStartColor = 0xFFEF4444L, gradientEndColor = 0xFFF97316L, questionCount = 0, isLocked = false),
+            Category(id = 17, name = "Politik & Gesellschaft",iconName = "\uD83C\uDFDB", gradientStartColor = 0xFF6366F1L, gradientEndColor = 0xFF818CF8L, questionCount = 0, isLocked = false),
         )
 
         // Insert categories using raw SQLite through the support DB to avoid a missing CategoryDao.
@@ -99,15 +146,58 @@ object QuestionSeeder {
             scienceQuestionsEasy() +
             scienceQuestionsEasy2() +
             scienceQuestionsEasy3() +
+            scienceQuestionsEasy4() +
+            scienceQuestionsEasy5() +
             scienceQuestionsMedium() +
             scienceQuestionsMedium2() +
             scienceQuestionsMedium3() +
+            scienceQuestionsMedium4() +
+            scienceQuestionsMedium5() +
             scienceQuestionsHard() +
             scienceQuestionsHard2() +
+            scienceQuestionsHard3() +
+            scienceQuestionsHard4() +
+            scienceQuestionsHard5() +
             scienceQuestionsExpert() +
             scienceQuestionsExpert2() +
+            scienceQuestionsExpert3() +
+            scienceQuestionsExpert4() +
+            scienceQuestionsExpert5() +
+            scienceQuestionsExpert6() +
             scienceQuestionsMaster() +
+            scienceQuestionsMaster2() +
+            scienceQuestionsMaster3() +
+            scienceQuestionsMaster4() +
+            scienceQuestionsMaster5() +
+            scienceQuestionsMaster6() +
             historyQuestions() +
+            historyQuestionsEasy() +
+            historyQuestionsEasy2() +
+            historyQuestionsEasy3() +
+            historyQuestionsEasy4() +
+            historyQuestionsEasy5() +
+            historyQuestionsMedium() +
+            historyQuestionsMedium2() +
+            historyQuestionsMedium3() +
+            historyQuestionsMedium4() +
+            historyQuestionsMedium5() +
+            historyQuestionsHard() +
+            historyQuestionsHard2() +
+            historyQuestionsHard3() +
+            historyQuestionsHard4() +
+            historyQuestionsHard5() +
+            historyQuestionsExpert() +
+            historyQuestionsExpert2() +
+            historyQuestionsExpert3() +
+            historyQuestionsExpert4() +
+            historyQuestionsExpert5() +
+            historyQuestionsExpert6() +
+            historyQuestionsMaster() +
+            historyQuestionsMaster2() +
+            historyQuestionsMaster3() +
+            historyQuestionsMaster4() +
+            historyQuestionsMaster5() +
+            historyQuestionsMaster6() +
             filmQuestions() +
             musicQuestions() +
             sportQuestions() +
@@ -181,7 +271,10 @@ object QuestionSeeder {
             Achievement(id = "cat_literature",   nameKey = "Bücherwurm",            descriptionKey = "Schließe 10 Literatur-Quizzes ab",               iconName = "\uD83D\uDCDA", requiredValue = 10,  tier = 1),
             Achievement(id = "cat_mixed",        nameKey = "Allrounder",            descriptionKey = "Schließe 10 Alle-Kategorien-Quizzes ab",         iconName = "\uD83C\uDF1F", requiredValue = 10,  tier = 1),
             Achievement(id = "cat_logic",        nameKey = "Logiker",               descriptionKey = "Schließe 10 Logik-Quizzes ab",                   iconName = "\uD83E\uDDE0", requiredValue = 10,  tier = 1),
-            Achievement(id = "all_cats",         nameKey = "Universalgelehrter",    descriptionKey = "Schließe jede Kategorie mindestens einmal ab",   iconName = "\uD83C\uDF10", requiredValue = 12,  tier = 3),
+            Achievement(id = "cat_football",    nameKey = "Fußball-Experte",       descriptionKey = "Schließe 10 Fußball-Quizzes ab",                 iconName = "\u26BD",       requiredValue = 10,  tier = 1),
+            Achievement(id = "cat_health",      nameKey = "Gesundheitsguru",       descriptionKey = "Schließe 10 Gesundheits-Quizzes ab",              iconName = "\uD83C\uDFE5", requiredValue = 10,  tier = 1),
+            Achievement(id = "cat_politics",    nameKey = "Politikkenner",         descriptionKey = "Schließe 10 Politik-Quizzes ab",                  iconName = "\uD83C\uDFDB", requiredValue = 10,  tier = 1),
+            Achievement(id = "all_cats",         nameKey = "Universalgelehrter",    descriptionKey = "Schließe jede Kategorie mindestens einmal ab",   iconName = "\uD83C\uDF10", requiredValue = 15,  tier = 3),
 
             // ── Tages-Challenge ───────────────────────────────────────────
             Achievement(id = "daily_3",          nameKey = "Dreifach-Tagesquiz",    descriptionKey = "Löse 3 Tages-Challenges",                        iconName = "\uD83D\uDCC5", requiredValue = 3,   tier = 1),

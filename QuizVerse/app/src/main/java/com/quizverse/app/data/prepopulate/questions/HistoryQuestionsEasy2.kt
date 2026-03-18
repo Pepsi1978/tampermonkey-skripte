@@ -42,7 +42,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "Konfuzius (551–479 v. Chr.) war ein chinesischer Philosoph, dessen Lehren über Moral, Familie und Gesellschaft bis heute das chinesische Denken prägen.",
         difficulty = 1,
-        funFact = "Der Name Konfuzius ist die lateinische Schreibweise seines chinesischen Namens Kǒng Fūzǐ, was „Meister Kong" bedeutet."
+        funFact = "Der Name Konfuzius ist die lateinische Schreibweise seines chinesischen Namens Kǒng Fūzǐ, was 'Meister Kong\" bedeutet."
     ),
 
     // --- Ancient India ---
@@ -85,7 +85,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 1,
         explanation = "Mesopotamien lag zwischen den Flüssen Tigris und Euphrat, im Gebiet des heutigen Irak. Es gilt als eine der Wiegen der Zivilisation.",
         difficulty = 1,
-        funFact = "Der Name Mesopotamien stammt aus dem Griechischen und bedeutet „Land zwischen den Flüssen"."
+        funFact = "Der Name Mesopotamien stammt aus dem Griechischen und bedeutet 'Land zwischen den Flüssen\"."
     ),
 
     Question(
@@ -111,7 +111,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 1,
         explanation = "Hammurabi (ca. 1792–1750 v. Chr.) war König von Babylon und schuf eines der ältesten bekannten Gesetzbücher der Geschichte.",
         difficulty = 1,
-        funFact = "Hammurabis Gesetze enthielten das Prinzip „Auge um Auge, Zahn um Zahn" – Vergeltung sollte der Tat entsprechen."
+        funFact = "Hammurabis Gesetze enthielten das Prinzip 'Auge um Auge, Zahn um Zahn\" – Vergeltung sollte der Tat entsprechen."
     ),
 
     // --- Vikings ---
@@ -126,7 +126,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "Die Wikinger stammten aus Skandinavien und waren für ihre Seefahrten, Handelsreisen und Überfälle in Europa bekannt.",
         difficulty = 1,
-        funFact = "Das Wort „Wiking" bedeutete ursprünglich so viel wie „Piratenfahrt" oder „Beutefahrt" – nicht eine Bezeichnung für ein Volk."
+        funFact = "Das Wort 'Wiking\" bedeutete ursprünglich so viel wie 'Piratenfahrt\" oder 'Beutefahrt\" – nicht eine Bezeichnung für ein Volk."
     ),
 
     Question(
@@ -139,7 +139,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 3,
         explanation = "Leif Eriksson segelte um 1000 n. Chr. nach Nordamerika (Vinland) – fast 500 Jahre vor Kolumbus. Grönland und Island wurden ebenfalls von Wikingern besiedelt.",
         difficulty = 1,
-        funFact = "Die Wikinger nannten Nordamerika „Vinland" (Weinland), wohl wegen der wilden Trauben, die sie dort fanden."
+        funFact = "Die Wikinger nannten Nordamerika 'Vinland\" (Weinland), wohl wegen der wilden Trauben, die sie dort fanden."
     ),
 
     Question(
@@ -152,7 +152,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 1,
         explanation = "Odin war der Hauptgott der nordischen Mythologie – Gott der Weisheit, des Krieges und des Todes. Thor (Gott des Donners) war jedoch unter gewöhnlichen Menschen sehr populär.",
         difficulty = 1,
-        funFact = "Unser Wochentag Donnerstag (englisch: Thursday) ist nach Thor benannt – „Thor's Day"."
+        funFact = "Unser Wochentag Donnerstag (englisch: Thursday) ist nach Thor benannt – 'Thor's Day\"."
     ),
 
     // --- Crusades ---
@@ -249,7 +249,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Am 31. Oktober 1517 soll Martin Luther seine 95 Thesen gegen den Ablasshandel an die Tür der Schlosskirche in Wittenberg genagelt haben.",
         difficulty = 1,
-        funFact = "Das „Thesenanschlagen" ist eine Legende – wahrscheinlicher ist, dass Luther seine Thesen als Brief an den Erzbischof schickte."
+        funFact = "Das 'Thesenanschlagen\" ist eine Legende – wahrscheinlicher ist, dass Luther seine Thesen als Brief an den Erzbischof schickte."
     ),
 
     Question(
@@ -288,7 +288,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 1,
         explanation = "Auf dem Reichstag zu Worms 1521 weigerte Luther sich vor Kaiser Karl V., seine Schriften zu widerrufen. Daraufhin wurde er als Ketzer geächtet.",
         difficulty = 1,
-        funFact = "Kurfürst Friedrich der Weise ließ Luther nach dem Reichstag auf die Wartburg „entführen", um ihn zu schützen. Dort übersetzte Luther das Neue Testament."
+        funFact = "Kurfürst Friedrich der Weise ließ Luther nach dem Reichstag auf die Wartburg 'entführen\", um ihn zu schützen. Dort übersetzte Luther das Neue Testament."
     ),
 
     // --- Colonialism ---
@@ -344,7 +344,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 1,
         explanation = "Am 4. Juli 1776 verabschiedeten die 13 amerikanischen Kolonien die Unabhängigkeitserklärung und trennten sich von der britischen Krone.",
         difficulty = 1,
-        funFact = "Der 4. Juli wird in den USA als „Independence Day" gefeiert – mit Feuerwerk, Paraden und Familienfeierlichkeiten."
+        funFact = "Der 4. Juli wird in den USA als 'Independence Day\" gefeiert – mit Feuerwerk, Paraden und Familienfeierlichkeiten."
     ),
 
     Question(
@@ -398,7 +398,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "In der Schlacht bei Waterloo (18. Juni 1815) wurde Napoleon von britischen und preußischen Truppen unter Wellington und Blücher besiegt.",
         difficulty = 1,
-        funFact = "„Mein Waterloo haben" – dieser Ausdruck für eine vernichtende Niederlage geht direkt auf Napoleons Niederlage zurück."
+        funFact = "'Mein Waterloo haben\" – dieser Ausdruck für eine vernichtende Niederlage geht direkt auf Napoleons Niederlage zurück."
     ),
 
     Question(
@@ -411,7 +411,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "Nach Waterloo wurde Napoleon auf die abgelegene Atlantikinsel Sankt Helena verbannt, wo er 1821 starb.",
         difficulty = 1,
-        funFact = "Auf Elba war Napoleon zuvor schon einmal verbannt – doch von dort floh er 1815 und kehrte für die sogenannten „Hundert Tage" an die Macht zurück."
+        funFact = "Auf Elba war Napoleon zuvor schon einmal verbannt – doch von dort floh er 1815 und kehrte für die sogenannten 'Hundert Tage\" an die Macht zurück."
     ),
 
     Question(
@@ -444,13 +444,13 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
 
     Question(
         categoryId = 3,
-        questionText = "Wer war der „Eiserne Kanzler", der die Einigung Deutschlands politisch vorantrieb?",
+        questionText = "Wer war der 'Eiserne Kanzler\", der die Einigung Deutschlands politisch vorantrieb?",
         answerA = "Kaiser Wilhelm II.",
         answerB = "Otto von Bismarck",
         answerC = "Helmuth von Moltke",
         answerD = "Friedrich III.",
         correctAnswer = 1,
-        explanation = "Otto von Bismarck war Ministerpräsident Preußens und später erster Reichskanzler. Er trieb die Einigung Deutschlands durch „Blut und Eisen" (Kriege und Machtpolitik) voran.",
+        explanation = "Otto von Bismarck war Ministerpräsident Preußens und später erster Reichskanzler. Er trieb die Einigung Deutschlands durch 'Blut und Eisen\" (Kriege und Machtpolitik) voran.",
         difficulty = 1,
         funFact = "Bismarck führte in Deutschland das erste staatliche Sozialversicherungssystem der Welt ein – Kranken-, Unfall- und Altersversicherung."
     ),
@@ -493,7 +493,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "James Watt verbesserte die Dampfmaschine 1769 entscheidend und gilt als ihr wichtigster Entwickler. Seine Maschine wurde zum Motor der Industriellen Revolution.",
         difficulty = 1,
-        funFact = "Die Einheit der Leistung „Watt" wurde zu Ehren von James Watt benannt. Auch der Begriff „Pferdestärke" (PS) geht auf ihn zurück."
+        funFact = "Die Einheit der Leistung 'Watt\" wurde zu Ehren von James Watt benannt. Auch der Begriff 'Pferdestärke\" (PS) geht auf ihn zurück."
     ),
 
     Question(
@@ -532,7 +532,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "Alexander Fleming entdeckte 1928 zufällig das Penicillin, als Schimmel auf seiner Bakterienkultur wuchs und die Bakterien abtötete.",
         difficulty = 1,
-        funFact = "Flemings Entdeckung war ein Zufallsfund – er hatte vergessen, eine Petrischale zu verschließen. Dieser „Fehler" rettete spätere Millionen von Leben."
+        funFact = "Flemings Entdeckung war ein Zufallsfund – er hatte vergessen, eine Petrischale zu verschließen. Dieser 'Fehler\" rettete spätere Millionen von Leben."
     ),
 
     Question(
@@ -543,9 +543,9 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         answerC = "Die erste öffentliche Eisenbahn",
         answerD = "Die erste U-Bahn",
         correctAnswer = 2,
-        explanation = "George Stephensons „Locomotion No. 1" fuhr 1825 auf der Linie Stockton–Darlington und war die erste öffentliche dampfbetriebene Eisenbahn der Welt.",
+        explanation = "George Stephensons 'Locomotion No. 1\" fuhr 1825 auf der Linie Stockton–Darlington und war die erste öffentliche dampfbetriebene Eisenbahn der Welt.",
         difficulty = 1,
-        funFact = "Stephensons spätere Lokomotive „Rocket" (Rakete) aus dem Jahr 1829 wurde zur Mutter aller modernen Dampflokomotiven."
+        funFact = "Stephensons spätere Lokomotive 'Rocket\" (Rakete) aus dem Jahr 1829 wurde zur Mutter aller modernen Dampflokomotiven."
     ),
 
     Question(
@@ -625,7 +625,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 0,
         explanation = "Die Französische Revolution begann 1789 mit dem Sturm auf die Bastille am 14. Juli. Sie beendete die absolute Monarchie in Frankreich.",
         difficulty = 1,
-        funFact = "Der 14. Juli (Bastillesturm) ist bis heute der französische Nationalfeiertag – „Quatorze Juillet" wird mit Paraden und Feuerwerk gefeiert."
+        funFact = "Der 14. Juli (Bastillesturm) ist bis heute der französische Nationalfeiertag – 'Quatorze Juillet\" wird mit Paraden und Feuerwerk gefeiert."
     ),
 
     Question(
@@ -664,7 +664,7 @@ fun historyQuestionsEasy2(): List<Question> = listOf(
         correctAnswer = 3,
         explanation = "Historiker nennen mehrere Ereignisse als Zäsur: den Fall Konstantinopels (1453), Gutenbergs Buchdruck (1450) und die Entdeckung Amerikas (1492). Sie alle fallen in dieselbe Epoche.",
         difficulty = 1,
-        funFact = "Die Einteilung in Mittelalter und Neuzeit ist eine nachträgliche Erfindung von Historikern – die Menschen damals wussten nicht, dass sie in einem „Mittelalter" lebten."
+        funFact = "Die Einteilung in Mittelalter und Neuzeit ist eine nachträgliche Erfindung von Historikern – die Menschen damals wussten nicht, dass sie in einem 'Mittelalter\" lebten."
     ),
 
     Question(

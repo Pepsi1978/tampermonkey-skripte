@@ -14,6 +14,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Hadrian",
         correctAnswer = 2, // C
         explanation = "Kaiser Vespasian begann 72 n. Chr. mit dem Bau des Kolosseums. Sein Sohn Titus vollendete es 80 n. Chr. Das Amphitheater fasste etwa 50.000–80.000 Zuschauer.",
+        difficulty = 2,
         funFact = "Der ursprüngliche Name des Kolosseums war 'Amphitheatrum Flavium', benannt nach der flavischen Kaiserdynastie."
     ),
 
@@ -27,6 +28,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "31 v. Chr.",
         correctAnswer = 1, // B
         explanation = "Im Januar 49 v. Chr. überquerte Caesar mit seinen Truppen den Rubikon, einen kleinen Fluss, der als Grenze zwischen der Provinz Cisalpina und Italien galt. Dies war ein Akt des Hochverrats.",
+        difficulty = 2,
         funFact = "Der Ausdruck 'den Rubikon überschreiten' bedeutet heute, eine unwiderrufliche Entscheidung zu treffen."
     ),
 
@@ -40,6 +42,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Cherusker und Verbündete",
         correctAnswer = 3, // D
         explanation = "Arminius, Führer der Cherusker, lockte drei römische Legionen unter Publius Quinctilius Varus in einen Hinterhalt im Teutoburger Wald. Alle drei Legionen wurden vernichtet – über 15.000 Soldaten fielen.",
+        difficulty = 2,
         funFact = "Kaiser Augustus soll nach der Niederlage verzweifelt gerufen haben: 'Varus, gib mir meine Legionen zurück!'"
     ),
 
@@ -53,6 +56,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Gratian",
         correctAnswer = 2, // C
         explanation = "Als Kaiser Theodosius I. im Jahr 395 n. Chr. starb, teilte er das Reich unter seinen beiden Söhnen auf: Honorius erhielt das Westreich, Arcadius das Ostreich. Diese Teilung war endgültig.",
+        difficulty = 2,
         funFact = "Das Oströmische Reich (Byzantinisches Reich) überlebte das Weströmische Reich um fast 1.000 Jahre – bis zur Eroberung Konstantinopels 1453."
     ),
 
@@ -66,6 +70,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Geiserich",
         correctAnswer = 1, // B
         explanation = "Alarich I., König der Westgoten, plünderte 410 n. Chr. drei Tage lang Rom. Dies war das erste Mal seit 800 Jahren, dass eine fremde Macht die Hauptstadt eingenommen hatte. Das Ereignis erschütterte die antike Welt zutiefst.",
+        difficulty = 2,
         funFact = "Alarich starb kurz nach der Plünderung Roms. Er soll in einem umgeleiteten Flussbett mit vielen Schätzen begraben worden sein – sein Grab wurde nie gefunden."
     ),
 
@@ -79,6 +84,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Pythagoras",
         correctAnswer = 1, // B
         explanation = "Aristoteles war 20 Jahre lang Schüler an Platons Akademie in Athen. Platon selbst war Schüler des Sokrates. Diese Kette bildet die drei bedeutendsten Philosophen der Antike.",
+        difficulty = 2,
         funFact = "Aristoteles wurde später der Lehrer Alexanders des Großen, der sein Schüler von etwa 343 bis 340 v. Chr. war."
     ),
 
@@ -92,6 +98,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Monarchie",
         correctAnswer = 2, // C
         explanation = "In seinem Werk 'Politeia' (Der Staat) argumentierte Platon, dass der ideale Staat von Philosophen-Königen regiert werden sollte, da nur sie durch ihre Weisheit das Gemeinwohl erkennen können.",
+        difficulty = 2,
         funFact = "Platon versuchte tatsächlich, seine politischen Ideen in Syrakus (Sizilien) umzusetzen, scheiterte aber und wurde Berichten zufolge als Sklave verkauft."
     ),
 
@@ -105,6 +112,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Mykene und Troja",
         correctAnswer = 2, // C
         explanation = "Der Peloponnesische Krieg war ein fast 30 Jahre andauernder Konflikt zwischen dem Athener Seebund und dem Peloponnesischen Bund unter Spartas Führung. Er endete mit der Niederlage Athens.",
+        difficulty = 2,
         funFact = "Der griechische Historiker Thukydides, selbst athenischer Feldherr, schrieb einen detaillierten Bericht über den Krieg – sein Werk gilt als erstes wissenschaftliches Geschichtswerk der Welt."
     ),
 
@@ -118,6 +126,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1.000",
         correctAnswer = 1, // B
         explanation = "König Leonidas I. von Sparta hielt mit 300 Spartanern (und weiteren griechischen Verbündeten) den Engpass von Thermopylae gegen das riesige persische Heer des Xerxes. Sie kämpften bis zum letzten Mann.",
+        difficulty = 2,
         funFact = "Die Inschrift auf dem Gedenkstein lautete: 'Wanderer, kommst du nach Sparta, verkündige dorten, du habest uns hier liegen gesehn, wie das Gesetz es befahl.'"
     ),
 
@@ -131,6 +140,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Artemision",
         correctAnswer = 1, // B
         explanation = "In der Seeschlacht bei Salamis lockte der athenische Stratege Themistokles die persische Flotte in enge Meeresstraßen und vernichtete sie. Xerxes soll das Desaster von einem Thron auf einem Hügel beobachtet haben.",
+        difficulty = 2,
         funFact = "Xerxes soll nach der Niederlage so bestürzt gewesen sein, dass er noch vom Schlachtfeld aus die Rückreise nach Persien antrat."
     ),
 
@@ -144,6 +154,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Bill of Rights",
         correctAnswer = 2, // C
         explanation = "Die Magna Carta ('Großer Freibrief') wurde König Johann Ohneland von englischen Baronen abgezwungen. Sie enthielt erstmals schriftlich verankerte Rechte der Untertanen gegenüber dem König.",
+        difficulty = 2,
         funFact = "Von den ursprünglichen Bestimmungen der Magna Carta sind in England heute noch genau drei in Kraft – darunter das Recht auf ein faires Gerichtsverfahren."
     ),
 
@@ -157,6 +168,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ludwig der Fromme",
         correctAnswer = 2, // C
         explanation = "Karl der Große (Carolus Magnus), König der Franken, wurde am Weihnachtstag 800 n. Chr. in der Peterskirche in Rom zum Kaiser des Abendlandes gekrönt. Dies begründete das Heilige Römische Reich.",
+        difficulty = 2,
         funFact = "Karl der Große konnte Berichten zufolge nie richtig schreiben lernen, obwohl er selbst die Bildung stark förderte und Schulen im ganzen Reich gründete."
     ),
 
@@ -170,6 +182,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Zensualität",
         correctAnswer = 2, // C
         explanation = "Im Lehnssystem (Feudalismus) gelobte ein Vasall seinem Lehnsherrn Treue und Dienst (besonders Heeresdienst) im Lehnseid. Dafür erhielt er ein Lehen – meist Land – zur Nutzung.",
+        difficulty = 2,
         funFact = "Der Lehnseid wurde durch einen symbolischen Akt vollzogen: Der Vasall kniete vor dem Herrn, legte seine Hände in dessen Hände und schwor seinen Eid."
     ),
 
@@ -183,6 +196,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Eleonore von Aquitanien",
         correctAnswer = 1, // B
         explanation = "Maria Theresia (1717–1780) bestieg 1740 den österreichischen Thron und kämpfte im Österreichischen Erbfolgekrieg gegen Preußen und andere Mächte. Sie gilt als eine der bedeutendsten Herrscherinnen der europäischen Geschichte.",
+        difficulty = 2,
         funFact = "Maria Theresia war Mutter von 16 Kindern, darunter Marie Antoinette, die spätere Königin Frankreichs."
     ),
 
@@ -196,6 +210,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1420",
         correctAnswer = 2, // C
         explanation = "Als offizielles Gründungsjahr der Hanse gilt 1358, als sich verschiedene nordeuropäische Handelsstädte formell zu einem Bündnis zusammenschlossen. Die Wurzeln reichen aber bis 1241 zurück, als Lübeck und Hamburg ein erstes Abkommen schlossen.",
+        difficulty = 2,
         funFact = "Auf dem Höhepunkt ihrer Macht umfasste die Hanse über 200 Städte von London bis Nowgorod – ein riesiges Handelsnetz im mittelalterlichen Europa."
     ),
 
@@ -209,6 +224,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Rostock",
         correctAnswer = 2, // C
         explanation = "Lübeck war die Hauptstadt und führende Stadt der Hanse. Hier tagten die Hansetage, und die Stadt kontrollierte den Handel zwischen Ost- und Nordsee über die Lübecker Bucht.",
+        difficulty = 2,
         funFact = "Die Hanse hatte in verschiedenen Städten 'Kontore' – exklusive Handelsposten. Die bekanntesten waren in London (Stalhof), Brügge, Bergen und Nowgorod."
     ),
 
@@ -222,6 +238,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Holz",
         correctAnswer = 2, // C
         explanation = "Der Skagener Hering war eines der wichtigsten Handelsgüter der Hanse. Der Fisch wurde gesalzen und konserviert und war ein Grundnahrungsmittel im mittelalterlichen Europa, besonders an Fastentagen.",
+        difficulty = 2,
         funFact = "Für die Hanse war Salz genauso wertvoll wie Hering – ohne Salz konnte man keinen Hering konservieren. Daher wurde auch der Salzhandel stark kontrolliert."
     ),
 
@@ -235,6 +252,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1625, dänische Intervention",
         correctAnswer = 0, // A
         explanation = "Der Dreißigjährige Krieg begann 1618 mit dem Zweiten Prager Fenstersturz, bei dem protestantische böhmische Adlige drei kaiserliche Statthalter aus dem Fenster der Prager Burg warfen. Alle drei überlebten, aber der Krieg war entfacht.",
+        difficulty = 2,
         funFact = "Die Überlebenden des Fenstersturzes landeten im Burggraben, vermutlich auf einem Misthaufen. Die Katholiken sahen es als göttliches Wunder; die Protestanten erklärten es durch den Mist."
     ),
 
@@ -248,6 +266,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Friede von Prag",
         correctAnswer = 1, // B
         explanation = "Der Westfälische Friede (1648), geschlossen in Osnabrück und Münster, beendete den Dreißigjährigen Krieg. Er gilt als Grundlage des modernen Staatensystems, da er die Souveränität der Einzelstaaten anerkannte.",
+        difficulty = 2,
         funFact = "Über fünf Jahre dauerten die Verhandlungen zum Westfälischen Frieden. Es war einer der ersten modernen Friedenskongresse in der Geschichte."
     ),
 
@@ -261,6 +280,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Johan Banér",
         correctAnswer = 2, // C
         explanation = "Gustav II. Adolf von Schweden trat 1630 in den Dreißigjährigen Krieg ein und errang zunächst große Erfolge für die protestantische Seite. Er fiel in der siegreichen, aber verlustreichen Schlacht bei Lützen am 16. November 1632.",
+        difficulty = 2,
         funFact = "Gustav Adolf galt als militärisches Genie. Er revolutionierte die Kriegsführung durch den kombinierten Einsatz von Infanterie, Kavallerie und Artillerie – ein Konzept, das bis Napoleon Bestand hatte."
     ),
 
@@ -274,6 +294,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1492",
         correctAnswer = 2, // C
         explanation = "Am 29. Mai 1453 eroberte Sultan Mehmed II. ('der Eroberer') Konstantinopel nach einem 53-tägigen Belagerung. Der letzte byzantinische Kaiser Konstantin XI. fiel im Kampf. Damit endete das über 1.000 Jahre bestehende Byzantinische Reich.",
+        difficulty = 2,
         funFact = "Um schwere Kriegsschiffe in das vom Kettenriegel gesicherte Goldene Horn zu bringen, ließ Mehmed II. über 70 Schiffe auf Holzschienen über Land gezogen – 13 Kilometer weit."
     ),
 
@@ -287,6 +308,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Venedig",
         correctAnswer = 2, // C
         explanation = "Die erste Türkenbelagerung Wiens 1529 unter Süleyman dem Prächtigen scheiterte. Nach knapp drei Wochen Belagerung zog das osmanische Heer ab – wegen Versorgungsproblemen und frühem Wintereinbruch.",
+        difficulty = 2,
         funFact = "Laut Überlieferung hinterließen die abziehenden Osmanen Kaffeesäcke in Wien. Ein polnischer Offizier soll daraufhin das erste Wiener Kaffeehaus eröffnet haben – der Beginn der Wiener Kaffeehauskultur."
     ),
 
@@ -300,6 +322,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Seeschlacht von Navarino",
         correctAnswer = 1, // B
         explanation = "Die Seeschlacht von Lepanto (7. Oktober 1571) war ein Sieg der Heiligen Liga (Spanien, Venedig, Papststaat) über die osmanische Flotte. Es war die letzte große Ruderschlacht der Geschichte und stoppte die osmanische Expansion im Mittelmeer.",
+        difficulty = 2,
         funFact = "Miguel de Cervantes, der spätere Autor des 'Don Quijote', kämpfte als junger Soldat bei Lepanto und verlor dabei die Beweglichkeit seiner linken Hand."
     ),
 
@@ -313,6 +336,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1517",
         correctAnswer = 1, // B
         explanation = "Papst Sixtus IV. erteilte 1478 den Königen Ferdinand II. von Aragon und Isabella I. von Kastilien die Genehmigung zur Einrichtung der Spanischen Inquisition. Sie richtete sich zunächst vor allem gegen konvertierte Juden ('Conversos').",
+        difficulty = 2,
         funFact = "Der erste Großinquisitor Spaniens war Tomás de Torquemada. Unter seiner Leitung wurden bis zu 2.000 Menschen hingerichtet und tausende gefoltert."
     ),
 
@@ -326,6 +350,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Juden und Hugenotten",
         correctAnswer = 2, // C
         explanation = "1492 war für Spanien ein doppelt wichtiges Jahr: Kolumbus entdeckte Amerika, und mit dem Alhambra-Edikt wurden alle Juden ausgewiesen, die sich nicht zum Christentum bekehrten. Muslime folgten 1502 (und endgültig 1609).",
+        difficulty = 2,
         funFact = "Man schätzt, dass 1492 zwischen 100.000 und 200.000 Juden Spanien verließen. Viele flohen ins Osmanische Reich, wo Sultan Bayezid II. sie willkommen hieß."
     ),
 
@@ -339,6 +364,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "'Nach mir die Sintflut.'",
         correctAnswer = 1, // B
         explanation = "Der Ausspruch 'L'État, c'est moi' ('Der Staat bin ich') wird Ludwig XIV. zugeschrieben und symbolisiert den absoluten Herrschaftsanspruch des französischen Sonnenkönigs, der von 1643 bis 1715 regierte.",
+        difficulty = 2,
         funFact = "Ludwig XIV. war mit 72 Jahren Regierungszeit der am längsten amtierende europäische Monarch der Geschichte – länger als jeder andere Herrscher Europas."
     ),
 
@@ -352,6 +378,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Louvre",
         correctAnswer = 2, // C
         explanation = "Ludwig XIV. ließ ab 1661 das Schloss Versailles zum größten Palast Europas ausbauen. Es wurde zur Hauptresidenz und zum politischen Zentrum Frankreichs – ein Symbol des absoluten Herrschaftsanspruchs.",
+        difficulty = 2,
         funFact = "Im Schloss Versailles lebten und arbeiteten zeitweise über 20.000 Menschen, darunter 6.000 Adlige, die der König durch Hofzeremonien unter seiner Kontrolle hielt."
     ),
 
@@ -365,6 +392,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Polnischer Erbfolgekrieg",
         correctAnswer = 1, // B
         explanation = "Im Österreichischen Erbfolgekrieg (1740–1748) fiel Friedrich II. kurz nach Antritt seiner Regierung in das zu Österreich gehörende Schlesien ein. Er behielt die wohlhabende Provinz – ein riesiger Gewinn für Preußen.",
+        difficulty = 2,
         funFact = "Friedrich der Große trat diesen Krieg an, ohne sein Kabinett zu konsultieren. Er soll seinen Ministern erst nach dem Einmarsch davon erzählt haben."
     ),
 
@@ -378,6 +406,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Rousseau und Montesquieu",
         correctAnswer = 1, // B
         explanation = "Friedrich II. korrespondierte intensiv mit Voltaire, der von 1750 bis 1753 sogar am preußischen Hof in Sanssouci lebte. Auch mit d'Alembert, dem Mitherausgeber der Encyclopédie, pflegte er Briefwechsel.",
+        difficulty = 2,
         funFact = "Friedrich der Große schrieb selbst philosophische Werke – auf Französisch, nicht auf Deutsch, das er für eine 'Bauernsprache' hielt."
     ),
 
@@ -391,6 +420,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Kirchliche Herrschaft über weltliche Fürsten",
         correctAnswer = 1, // B
         explanation = "Aufgeklärter Absolutismus bezeichnet Herrschaft, bei der absolute Monarchen Reformen im Sinne der Aufklärung durchführten (Religionstoleranz, Bildung, Justizreform), ohne ihre absolute Macht aufzugeben. Friedrich II. nannte sich 'ersten Diener des Staates'.",
+        difficulty = 2,
         funFact = "Friedrich der Große schaffte in Preußen die Folter ab, gewährte Religionsfreiheit und reformierte das Rechtssystem – gilt aber trotzdem als autokratischer Militärherrscher."
     ),
 
@@ -404,6 +434,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Moesia",
         correctAnswer = 2, // C
         explanation = "Die Römer teilten die linksrheinischen Gebiete in zwei Provinzen: Germania inferior (Niedergermanien, heute Niederlande/Nordrhein) und Germania superior (Obergermanien, heute Elsass/Südwestdeutschland). Der Rhein bildete die Grenze zum freien Germanien.",
+        difficulty = 2,
         funFact = "Die Römer bauten den Limes, eine über 500 km lange Grenzbefestigung, die das Römische Reich von Germanien trennte. Teile davon sind heute UNESCO-Welterbe."
     ),
 
@@ -417,6 +448,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Julian Apostata",
         correctAnswer = 2, // C
         explanation = "Das Edikt von Mailand (313 n. Chr.), erlassen von Konstantin I. und Licinius, gewährte allen Religionen im Römischen Reich Toleranz. Es war ein Wendepunkt für das Christentum, das damit aufhörte, verfolgt zu werden.",
+        difficulty = 2,
         funFact = "Konstantin I. ließ sich erst auf dem Sterbebett taufen – eine Praxis, die damals nicht ungewöhnlich war, da man glaubte, die Taufe wasche alle Sünden ab."
     ),
 
@@ -430,6 +462,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Investiturstreit",
         correctAnswer = 1, // B
         explanation = "Die Zwei-Schwerter-Lehre besagte, dass Gott der Welt zwei 'Schwerter' gegeben hat: das geistliche (dem Papst) und das weltliche (dem Kaiser). Beide stehen im Dienst der Kirche – ein zentrales politisch-theologisches Konzept des Mittelalters.",
+        difficulty = 2,
         funFact = "Der Investiturstreit (1076–1122) war der berühmteste Konflikt zwischen Papst und Kaiser um eben diese Machtfrage – ob der Papst oder der Kaiser Bischöfe einsetzen darf."
     ),
 
@@ -443,6 +476,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Über 50 %",
         correctAnswer = 2, // C
         explanation = "Der Dreißigjährige Krieg war eine demografische Katastrophe für das Heilige Römische Reich. In manchen Regionen starben bis zu 50–60 % der Bevölkerung; im Durchschnitt wird ein Verlust von 25–40 % geschätzt.",
+        difficulty = 2,
         funFact = "Manche Städte und Regionen Deutschlands erholten sich erst nach 100 Jahren wieder von den Bevölkerungsverlusten des Dreißigjährigen Krieges."
     ),
 
@@ -456,6 +490,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Die Kunst der öffentlichen Rede nach Rhetoriken-Prinzipien",
         correctAnswer = 1, // B
         explanation = "Sokrates entwickelte eine dialektische Gesprächsmethode: Er stellte so lange bohrende Fragen, bis sein Gegenüber Widersprüche in seinem Denken erkannte und zu tieferem Verständnis gelangte. Er verglich sich mit einer Hebamme, die Gedanken zur Welt bringt.",
+        difficulty = 2,
         funFact = "Sokrates selbst schrieb nichts auf – all unser Wissen über ihn stammt aus den Schriften seiner Schüler, vor allem Platon und Xenophon."
     ),
 
@@ -469,6 +504,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Leibwache des Sultans aus arabischen Stammesführern",
         correctAnswer = 1, // B
         explanation = "Die Janitscharen (türk. 'yeni çeri' = neue Truppe) wurden durch das Devshirme-System rekrutiert: Christliche Knaben aus den Balkanprovinzen wurden als Tribut abgeführt, zum Islam bekehrt und zu Elitesoldaten ausgebildet.",
+        difficulty = 2,
         funFact = "Die Janitscharen wurden so mächtig, dass sie selbst Sultane einsetzen und absetzen konnten. Sie wurden 1826 von Sultan Mahmud II. in einem Massaker aufgelöst – dem 'Glücklichen Vorfall'."
     ),
 
@@ -482,6 +518,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ius mercatorum",
         correctAnswer = 1, // B
         explanation = "Das Stapelrecht verpflichtete durchreisende Kaufleute, ihre Waren in bestimmten Städten ('Stapelstädte') anzubieten, bevor sie weiterreisen durften. Dies sicherte den hansischen Handelszentren enorme wirtschaftliche Macht.",
+        difficulty = 2,
         funFact = "Köln hatte ein weitgehendes Stapelrecht für den Rheinhandel. Das bedeutete, dass alle Waren, die den Rhein entlangkamen, zuerst in Köln angeboten werden mussten."
     ),
 
@@ -495,6 +532,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Bleda",
         correctAnswer = 2, // C
         explanation = "Attila (reg. 434–453) führte das Hunnenreich zu seiner größten Ausdehnung. Seine Einfälle in das Weströmische und Oströmische Reich verwüsteten weite Landstriche. Er starb jedoch 453 n. Chr., kurz nach seiner Hochzeit, an einem Blutsturz.",
+        difficulty = 2,
         funFact = "Attila starb in der Hochzeitsnacht mit seiner Gemahlin Ildico – wahrscheinlich an einer Hirnblutung infolge von übermäßigem Alkoholkonsum. Er wurde heimlich in einem goldenen, dann silbernen, dann eisernen Sarg bestattet."
     ),
 
@@ -508,6 +546,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ein Bußritual für Angeklagte, die ihre Sünden bereuten",
         correctAnswer = 1, // B
         explanation = "Auto-da-Fé (portugiesisch: 'Akt des Glaubens') war eine öffentliche Zeremonie der Inquisition, bei der Urteile verlesen und vollstreckt wurden. Wer nicht widerrief, wurde auf dem Scheiterhaufen verbrannt. Solche Ereignisse zogen oft tausende Zuschauer an.",
+        difficulty = 2,
         funFact = "Das berühmteste Auto-da-Fé fand 1680 in Madrid statt, bei dem König Karl II. und seine Gemahlin persönlich anwesend waren und über 100 Angeklagte verurteilt wurden."
     ),
 
@@ -521,6 +560,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Zwischen dem Papsttum und Frankreich um die Kirchenhoheit",
         correctAnswer = 1, // B
         explanation = "Der Hundertjährige Krieg war eine Reihe von Konflikten zwischen England und Frankreich, bei denen englische Könige den Anspruch auf die französische Krone geltend machten. Berühmt wurde der Krieg durch Jeanne d'Arc, die Frankreich zur Wende verhalf.",
+        difficulty = 2,
         funFact = "Jeanne d'Arc wurde 1431 von den Engländern als Ketzerin verbrannt. 25 Jahre später rehabilitierte sie die Kirche vollständig – und 1920 wurde sie heiliggesprochen."
     ),
 
@@ -534,6 +574,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Cholera",
         correctAnswer = 1, // B
         explanation = "430 v. Chr. brach in Athen eine verheerende Epidemie aus, die etwa ein Viertel der Bevölkerung dahinraffte. Auch Perikles, der führende Staatsmann Athens, fiel ihr 429 v. Chr. zum Opfer. Die genaue Krankheit ist bis heute nicht eindeutig identifiziert.",
+        difficulty = 2,
         funFact = "Der Historiker Thukydides erkrankte selbst an der Seuche, überlebte aber und beschrieb ihre Symptome so genau, dass Historiker noch heute versuchen, die Krankheit zu identifizieren."
     ),
 
@@ -547,6 +588,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ludwig XIV. einigte sich mit dem Papst auf eine neue Kirchenverfassung",
         correctAnswer = 1, // B
         explanation = "Das Edikt von Nantes (1598) hatte den französischen Protestanten (Hugenotten) Religionsfreiheit gewährt. Ludwig XIV. widerrief es 1685, was zur Verfolgung und Auswanderung von ca. 200.000–400.000 Hugenotten führte – darunter viele qualifizierte Handwerker und Kaufleute.",
+        difficulty = 2,
         funFact = "Brandenburg-Preußen profitierte enorm: Friedrich Wilhelm, der 'Große Kurfürst', lud die vertriebenen Hugenotten ein. Bis zu 20.000 siedelten sich in Berlin an und trugen zum wirtschaftlichen Aufschwung Preußens bei."
     ),
 
@@ -560,6 +602,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ein Handelskrieg zwischen den Hansestädten und dem Kaiser",
         correctAnswer = 1, // B
         explanation = "Der Investiturstreit war ein fundamentaler Machtkampf zwischen Papst Gregor VII. und Kaiser Heinrich IV. um die Frage, wer das Recht hat, Bischöfe und Äbte einzusetzen ('Investitur'). Er endete mit dem Wormser Konkordat 1122.",
+        difficulty = 2,
         funFact = "Heinrich IV. musste 1077 im Büßergewand drei Tage im Schnee vor der Burg Canossa warten, bis Papst Gregor VII. ihn empfing. Dieser 'Gang nach Canossa' ist zum Sprichwort für demütige Unterwerfung geworden."
     ),
 
@@ -573,6 +616,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Murad II.",
         correctAnswer = 2, // C
         explanation = "Süleyman I. (reg. 1520–1566) brachte das Osmanische Reich auf seinen territorialen und kulturellen Höhepunkt. Im Westen bekannt als 'der Prächtige', nannten ihn seine Untertanen 'Kanuni' wegen seiner umfangreichen Gesetzgebung.",
+        difficulty = 2,
         funFact = "Süleyman unterhielt eine geheime, aber innige Beziehung zu Hürrem Sultan (Roxelana), einer ukrainischen Sklavin, die er zur Hauptfrau erhob – ein beispielloser Bruch mit osmanischer Tradition."
     ),
 
@@ -586,6 +630,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Die Niederlage gegen die Hunnen in der Catalaunischen Ebene 451 n. Chr.",
         correctAnswer = 1, // B
         explanation = "476 n. Chr. setzte der germanische Heerführer Odoaker den letzten weströmischen Kaiser Romulus Augustulus ab. Dieses Datum gilt traditionell als Ende des Weströmischen Reiches und Beginn des Mittelalters.",
+        difficulty = 2,
         funFact = "Der Name 'Romulus Augustulus' ('kleiner Augustus') wirkt wie eine Parodie: Der letzte Kaiser trug die Namen des Staatsgründers (Romulus) und des ersten Kaisers (Augustus) – und war doch kaum mehr als eine Marionette."
     ),
 
@@ -599,6 +644,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "1598, als England und Holland die nordeuropäischen Handelswege übernahmen",
         correctAnswer = 1, // B
         explanation = "Der letzte offizielle Hansetag fand 1669 in Lübeck statt. Nur noch neun Städte waren vertreten; viele wichtige Handelsstädte waren längst ausgetreten. Die Hanse löste sich faktisch auf – ohne formellen Beschluss.",
+        difficulty = 2,
         funFact = "Drei Städte – Lübeck, Hamburg und Bremen – bezeichnen sich noch heute als 'Freie und Hansestädte' und führen diesen Titel in ihren offiziellen Namen."
     ),
 
@@ -612,6 +658,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Eine Festungsanlage; bedeutet 'ohne Feinde'",
         correctAnswer = 1, // B
         explanation = "Sanssouci ('ohne Sorgen' auf Französisch) ist ein Sommerschloss in Potsdam, das Friedrich der Große ab 1745 errichten ließ. Es war sein Lieblingsdomizil, wo er Musik, Philosophie und Wissenschaft pflegte.",
+        difficulty = 2,
         funFact = "Friedrich der Große wünschte, ohne kirchliche Zeremonien auf der Terrasse von Sanssouci neben seinen Windhunden begraben zu werden. Diesen Wunsch erfüllte man ihm erst 1991 – 205 Jahre nach seinem Tod."
     ),
 
@@ -625,6 +672,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Eine Belagerungsformation für befestigte Städte",
         correctAnswer = 1, // B
         explanation = "Die Phalanx war eine dichte Kampfformation schwerbewaffneter Fußsoldaten (Hopliten), die Schild an Schild in mehreren Reihen kämpften. Sie dominierte griechische Schlachten und erforderte hohes Training und Disziplin.",
+        difficulty = 2,
         funFact = "Alexander der Große kombinierte die Phalanx mit wendiger Kavallerie zu einer revolutionären taktischen Einheit, die ihm Siege bis nach Indien ermöglichte."
     ),
 
@@ -638,6 +686,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Heiden aus den amerikanischen Kolonien, die getauft wurden",
         correctAnswer = 1, // B
         explanation = "Conversos waren zum Christentum konvertierte Juden ('Neuchristen'). Die Inquisition verdächtigte viele von ihnen, heimlich ('im Verborgenen') weiterhin jüdische Bräuche zu pflegen – als sogenannte 'Marranen'.",
+        difficulty = 2,
         funFact = "Der Begriff 'Limpieza de sangre' ('Reinheit des Blutes') wurde in Spanien zur offiziellen Doktrin: Selbst Urenkel von Conversos konnten von bestimmten Ämtern ausgeschlossen werden."
     ),
 
@@ -651,6 +700,7 @@ fun historyQuestionsMedium(): List<Question> = listOf(
         answerD = "Ein adeliges Gericht zur Schlichtung von Handelsstreitigkeiten",
         correctAnswer = 2, // C
         explanation = "Zünfte waren Berufsverbände, die das Handwerk in mittelalterlichen Städten kontrollierten. Sie regelten die Ausbildung (Lehrling → Geselle → Meister), setzten Qualitätsstandards und schützten Mitglieder vor Konkurrenz.",
+        difficulty = 2,
         funFact = "Die Zunftordnung war streng hierarchisch: Ein Lehrling arbeitete jahrelang ohne Lohn, ein Geselle musste auf 'Wanderschaft' gehen, bevor er sein Meisterstück vorlegen durfte."
     ),
 
