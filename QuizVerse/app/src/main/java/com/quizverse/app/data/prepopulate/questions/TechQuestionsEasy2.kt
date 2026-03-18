@@ -3,616 +3,702 @@ package com.quizverse.app.data.prepopulate.questions
 import com.quizverse.app.data.database.entities.Question
 
 fun techQuestionsEasy2(): List<Question> = listOf(
+
+    // Question 1
     Question(
         categoryId = 7,
-        questionText = "Welche Spielekonsole hat Sony im Jahr 2013 veroeffentlicht?",
-        answerA = "Xbox One",
-        answerB = "Nintendo Switch",
-        answerC = "PlayStation 4",
-        answerD = "Wii U",
-        correctAnswer = 2,
-        explanation = "Sony veroeffentlichte die PlayStation 4 im November 2013 und konkurrierte damit mit Microsofts Xbox One.",
-        difficulty = 1,
-        funFact = "Die PS4 verkaufte sich ueber 117 Millionen Mal und ist eine der meistverkauften Konsolen aller Zeiten."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was bedeutet die Abkuerzung HDMI?",
-        answerA = "High Definition Media Interface",
-        answerB = "High Definition Multimedia Interface",
-        answerC = "High Digital Monitor Interface",
-        answerD = "Hard Drive Media Input",
+        questionText = "Wofuer wird NFC am Smartphone genutzt?",
+        answerA = "Fuer GPS-Navigation",
+        answerB = "Fuer kabelloses Bezahlen und Datenuebertragung auf kurze Distanz",
+        answerC = "Fuer Videotelefonie",
+        answerD = "Fuer WLAN-Verbindungen",
         correctAnswer = 1,
-        explanation = "HDMI steht fuer High Definition Multimedia Interface und uebertraegt Audio- und Videosignale ueber ein einziges Kabel.",
+        explanation = "NFC (Near Field Communication) ermoeglicht kontaktloses Bezahlen (z.B. Google Pay, Apple Pay) und den Austausch kleiner Datenmengen auf wenige Zentimeter Abstand.",
         difficulty = 1,
-        funFact = "HDMI wurde 2002 eingefuehrt und ersetzte nach und nach den aelteren SCART-Anschluss in Heimelektronik."
+        funFact = "NFC basiert auf derselben Technologie wie Chipkarten -- es kann nur auf einer Distanz von maximal 4 cm funktionieren, was Missbrauch erschwert."
     ),
+
+    // Question 2
     Question(
         categoryId = 7,
-        questionText = "Welches Unternehmen stellt den Tesla Model 3 her?",
-        answerA = "BMW",
-        answerB = "Volkswagen",
-        answerC = "Rivian",
-        answerD = "Tesla",
-        correctAnswer = 3,
-        explanation = "Tesla ist ein amerikanischer Elektroautohersteller. Der Model 3 ist eines der meistverkauften Elektroautos weltweit.",
-        difficulty = 1,
-        funFact = "Der Tesla Model 3 war 2021 das weltweit meistverkaufte Elektroauto mit ueber 500.000 Einheiten in diesem Jahr allein."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was misst die Aufloesung einer Digitalkamera?",
-        answerA = "Megapixel",
-        answerB = "Megabyte",
-        answerC = "Megahertz",
-        answerD = "Megawatt",
-        correctAnswer = 0,
-        explanation = "Die Aufloesung einer Digitalkamera wird in Megapixel angegeben. Ein Megapixel entspricht einer Million Bildpunkten.",
-        difficulty = 1,
-        funFact = "Das menschliche Auge kann theoretisch rund 576 Megapixel wahrnehmen – moderne Smartphones liegen bei 12-200 MP."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wie heiSt der populaere Streaming-Dienst von Netflix-Konkurrent Amazon?",
-        answerA = "Amazon Fire TV",
-        answerB = "Amazon Prime Video",
-        answerC = "Amazon Watch",
-        answerD = "Amazon Stream",
+        questionText = "Was macht die App Google Maps?",
+        answerA = "Sie verwaltet Fotos auf dem Smartphone",
+        answerB = "Sie zeigt Karten und hilft bei der Navigation",
+        answerC = "Sie uebertraegt Musik auf Lautsprecher",
+        answerD = "Sie speichert Kontakte",
         correctAnswer = 1,
-        explanation = "Amazon Prime Video ist der Streaming-Dienst von Amazon und bietet Filme, Serien und eigene Produktionen an.",
+        explanation = "Google Maps ist eine Karten- und Navigations-App von Google, mit der man Routen planen, den Nahverkehr suchen und Orte in der Naehe finden kann.",
         difficulty = 1,
-        funFact = "Amazon Prime Video wurde 2006 unter dem Namen 'Amazon Unbox' gestartet und hat heute ueber 200 Millionen Abonnenten."
+        funFact = "Google Maps-Fahrzeuge haben fuer Streetview insgesamt mehr als 16 Millionen Kilometer zurueckgelegt -- das entspricht ueber 400-mal um die Erde."
     ),
+
+    // Question 3
     Question(
         categoryId = 7,
-        questionText = "Welche Farbe haben Recycling-Tonerkartuschen fuer Laserdrucker haeufig?",
-        answerA = "Blau",
-        answerB = "Gruen",
-        answerC = "Schwarz",
-        answerD = "Rot",
-        correctAnswer = 2,
-        explanation = "Schwarze Tonerkartuschen (Schwarz/K fuer Key) sind die haeufigsten, da die meisten Ausdrucke in Schwarz-Weiss erfolgen.",
-        difficulty = 1,
-        funFact = "Ein Standard-Laserdrucker-Toner enthaelt feines Kunststoffpulver, das per Hitze auf das Papier aufgeschmolzen wird."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Smart-TV?",
-        answerA = "Ein Fernseher mit eingebautem Internetanschluss",
-        answerB = "Ein Fernseher mit besonders gro&szlig;em Bildschirm",
-        answerC = "Ein Fernseher der sich automatisch einschaltet",
-        answerD = "Ein Fernseher mit eingebautem DVD-Player",
-        correctAnswer = 0,
-        explanation = "Ein Smart-TV ist ein Fernseher mit integriertem Internetzugang, der Streaming-Apps und Online-Dienste direkt abrufen kann.",
-        difficulty = 1,
-        funFact = "Der Begriff 'Smart TV' wurde um 2010 gepraeegt. Heute sind fast alle neuen Fernseher Smart-TVs."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Konsole hat Nintendo im Jahr 2017 veroeffentlicht?",
-        answerA = "Wii U",
-        answerB = "Nintendo 3DS XL",
-        answerC = "Nintendo Switch",
-        answerD = "Game Boy Advance",
-        correctAnswer = 2,
-        explanation = "Nintendo veroeffentlichte die Switch im Maerz 2017. Sie ist sowohl als Heimkonsole als auch als Handheld nutzbar.",
-        difficulty = 1,
-        funFact = "Die Nintendo Switch ist die erste Konsole von Nintendo, die sowohl am Fernseher als auch unterwegs gespielt werden kann."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was macht ein Navigationssystem?",
-        answerA = "Es steuert das Auto automatisch",
-        answerB = "Es berechnet Routen und gibt Fahranweisungen",
-        answerC = "Es misst die Geschwindigkeit des Fahrzeugs",
-        answerD = "Es zeigt den Reifendruck an",
+        questionText = "Was ist der Apple App Store?",
+        answerA = "Ein Online-Shop fuer Apple-Geraete",
+        answerB = "Ein Marktplatz zum Herunterladen von Apps fuer iPhone und iPad",
+        answerC = "Ein Cloud-Speicher von Apple",
+        answerD = "Ein Musikdienst von Apple",
         correctAnswer = 1,
-        explanation = "Ein Navigationssystem berechnet mithilfe von GPS-Daten die Route zum Zielort und gibt dem Fahrer Schritt-fuer-Schritt-Anweisungen.",
+        explanation = "Der Apple App Store ist der offizielle Marktplatz fuer iPhones und iPads, ueber den man Apps herunterladen und kaufen kann.",
         difficulty = 1,
-        funFact = "Das GPS-System wurde urspruenglich vom US-Militaer entwickelt und erst 1983 fuer die zivile Nutzung freigegeben."
+        funFact = "Der App Store wurde am 10. Juli 2008 mit 500 Apps eroeffnet. Heute sind es ueber 1,8 Millionen verfuegbare Anwendungen."
     ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein USB-Stick?",
-        answerA = "Ein Kabel fuer Drucker",
-        answerB = "Ein kleines tragbares Speichergeraet",
-        answerC = "Ein Adapter fuer Monitore",
-        answerD = "Eine Fernbedienung",
-        correctAnswer = 1,
-        explanation = "Ein USB-Stick ist ein kleines, tragbares Speichergeraet, das ueber einen USB-Anschluss mit Geraeten verbunden wird.",
-        difficulty = 1,
-        funFact = "Der erste USB-Stick wurde im Jahr 2000 von Trek Technology veroeffentlicht und hatte eine Kapazitaet von nur 8 MB."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welcher Streaming-Dienst ist fuer seine rote Farbe und das N-Logo bekannt?",
-        answerA = "Disney+",
-        answerB = "Amazon Prime Video",
-        answerC = "Netflix",
-        answerD = "Apple TV+",
-        correctAnswer = 2,
-        explanation = "Netflix ist weltweit einer der groessten Streaming-Anbieter und wird durch sein rotes N-Logo sofort erkannt.",
-        difficulty = 1,
-        funFact = "Netflix startete 1997 als DVD-Verleih per Post und wechselte erst 2007 zum Streaming-Geschaeft."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Flachbildfernseher?",
-        answerA = "Ein Fernseher ohne Lautsprecher",
-        answerB = "Ein Fernseher mit einem flachen, duennen Bildschirm",
-        answerC = "Ein Fernseher mit gebogenem Bildschirm",
-        answerD = "Ein Fernseher der an die Decke montiert wird",
-        correctAnswer = 1,
-        explanation = "Flachbildfernseher verwenden LCD, OLED oder andere Technologien fuer einen duennen, flachen Bildschirm – im Gegensatz zu alten Roehrenfernsehern.",
-        difficulty = 1,
-        funFact = "Die ersten Flachbildfernseher in den fruehen 2000ern kosteten oft ueber 10.000 Euro. Heute sind sie fuer unter 300 Euro erhaeltlich."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was bedeutet das Wort 'Alexa' im Smart-Home-Bereich?",
-        answerA = "Eine App von Google",
-        answerB = "Ein Sicherheitssystem von Bosch",
-        answerC = "Der Sprachassistent von Amazon",
-        answerD = "Eine Fernbedienung von Samsung",
-        correctAnswer = 2,
-        explanation = "Alexa ist der KI-gestuetzte Sprachassistent von Amazon, der in Echo-Geraeten und vielen Smart-Home-Produkten eingesetzt wird.",
-        difficulty = 1,
-        funFact = "Amazon hat den Namen 'Alexa' gewaehlt, weil das 'x' in der Aussprache gut erkannt wird und selten in normalen Gespaechen vorkommt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Farben verwendet ein Tintenstrahldrucker typischerweise?",
-        answerA = "Rot, Blau, Gelb",
-        answerB = "Cyan, Magenta, Gelb und Schwarz",
-        answerC = "Gruen, Orange, Lila und Weiss",
-        answerD = "Silber, Gold, Bronze und Schwarz",
-        correctAnswer = 1,
-        explanation = "Tintenstrahldrucker verwenden die vier CMYK-Farben: Cyan, Magenta, Yellow (Gelb) und Key (Schwarz), um alle Farben zu mischen.",
-        difficulty = 1,
-        funFact = "Tintenstrahldrucker koennen pro Sekunde Millionen winziger Tropfen auf das Papier spruehen – jeder Tropfen ist kleiner als ein menschliches Haar."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Spielekonsole?",
-        answerA = "Ein Geraet nur zum Musikhoeren",
-        answerB = "Ein speziell fuer Videospiele entwickeltes Elektronikgeraet",
-        answerC = "Ein Geraet zum Programmieren von Apps",
-        answerD = "Ein Drucker fuer Spielkarten",
-        correctAnswer = 1,
-        explanation = "Eine Spielekonsole ist ein speziell fuer Videospiele entwickeltes elektronisches Geraet, das meist an einen Fernseher angeschlossen wird.",
-        difficulty = 1,
-        funFact = "Die erste kommerziell erfolgreiche Spielekonsole war die Magnavox Odyssey aus dem Jahr 1972."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Elektroherd?",
-        answerA = "Ein Herd der mit Strom statt Gas betrieben wird",
-        answerB = "Ein Herd mit eingebautem Kuehlschrank",
-        answerC = "Ein Herd der nur Wasser erhitzen kann",
-        answerD = "Ein Herd mit digitalem Display",
-        correctAnswer = 0,
-        explanation = "Ein Elektroherd bezieht seine Energie aus dem Stromnetz und erhitzt Kochplatten oder nutzt Induktion, anstatt offene Gasflammen zu verwenden.",
-        difficulty = 1,
-        funFact = "Induktionsherde erhitzen nur das Kochgeschirr, nicht die Kochflaeche selbst – deshalb bleibt die Platte relativ kuhl und ist sicherer."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist 4K bei einem Fernseher?",
-        answerA = "Die maximale Lautstaerke des Fernsehers",
-        answerB = "Eine Aufloesung von ca. 4.000 Pixeln Breite",
-        answerC = "Die Anzahl der HDMI-Anschluesse",
-        answerD = "Die Groesse des Bildschirms in Zoll",
-        correctAnswer = 1,
-        explanation = "4K bezeichnet eine Bildaufloesung von etwa 3.840 x 2.160 Pixeln und bietet viermal so viele Pixel wie Full HD (1080p).",
-        difficulty = 1,
-        funFact = "Der Begriff '4K' kommt vom Kino, wo 4.096 Pixel Breite der Standard war. Consumer-4K hat leicht andere Abmessungen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was laed ein Akku-Staubsauger auf?",
-        answerA = "Solarpanele",
-        answerB = "Eine Dockingstation oder Ladestation",
-        answerC = "Benzin",
-        answerD = "Destilliertes Wasser",
-        correctAnswer = 1,
-        explanation = "Akku-Staubsauger werden in einer Dockingstation oder an einer Ladestation wieder aufgeladen, wenn der Akku leer ist.",
-        difficulty = 1,
-        funFact = "Dyson machte den schnurlosen Akku-Staubsauger mit dem DC16 im Jahr 2005 populaer, der nur 20 Minuten Laufzeit hatte."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Scanner?",
-        answerA = "Ein Geraet das digitale Bilder druckt",
-        answerB = "Ein Geraet das physische Dokumente digitalisiert",
-        answerC = "Ein Geraet zum Verschluesseln von Daten",
-        answerD = "Ein Netzwerkgeraet fuer WLAN",
-        correctAnswer = 1,
-        explanation = "Ein Scanner liest physische Dokumente oder Bilder ein und wandelt sie in digitale Dateien um, die auf einem Computer gespeichert werden koennen.",
-        difficulty = 1,
-        funFact = "Der erste Flachbettscanner fuer den Heimgebrauch wurde 1981 von der Firma Microtek eingefuehrt und kostete damals mehrere tausend Dollar."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer steht GPS?",
-        answerA = "Global Position System",
-        answerB = "Global Positioning System",
-        answerC = "General Positioning Satellite",
-        answerD = "Geo Positioning Software",
-        correctAnswer = 1,
-        explanation = "GPS steht fuer Global Positioning System und ist ein satellitengestuetztes Navigationssystem, das den genauen Standort bestimmt.",
-        difficulty = 1,
-        funFact = "Das GPS-System besteht aus 31 aktiven Satelliten, die die Erde in einer Hoeehe von ca. 20.200 km umkreisen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was macht eine Smartwatch?",
-        answerA = "Sie kocht Wasser automatisch",
-        answerB = "Sie steuert Smart-Home-Geraete per Stimme",
-        answerC = "Sie zeigt die Uhrzeit und verbindet sich mit einem Smartphone",
-        answerD = "Sie misst die Raumtemperatur",
-        correctAnswer = 2,
-        explanation = "Eine Smartwatch ist eine digitale Uhr, die sich mit einem Smartphone verbindet und zusaetzliche Funktionen wie Benachrichtigungen oder Fitness-Tracking bietet.",
-        difficulty = 1,
-        funFact = "Die erste moderne Smartwatch war die Pebble aus dem Jahr 2012, die per Crowdfunding finanziert wurde und 10 Millionen Dollar einsammelte."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist Bluetooth?",
-        answerA = "Eine Technik zum kabellosen Uebertragen von Daten ueber kurze Distanzen",
-        answerB = "Ein Kabeltyp fuer Kopfhoerer",
-        answerC = "Ein Streaming-Dienst fuer Musik",
-        answerD = "Eine Art von Speichermedium",
-        correctAnswer = 0,
-        explanation = "Bluetooth ist ein Funkstandard fuer die kabellose Datenuebertragung ueber kurze Distanzen, typischerweise bis etwa 10 Meter.",
-        difficulty = 1,
-        funFact = "Der Name Bluetooth stammt vom daenischen Wikinigkoenig Harald Blaatand ('Bluetooth'), der Staemme vereinte – wie Bluetooth Geraete verbindet."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein E-Auto?",
-        answerA = "Ein Auto mit besonders sparsamem Verbrennungsmotor",
-        answerB = "Ein Auto das ausschliesslich durch Elektrizitaet angetrieben wird",
-        answerC = "Ein Auto mit automatischem Getriebe",
-        answerD = "Ein Auto mit elektronischen Fahrhilfen",
-        correctAnswer = 1,
-        explanation = "Ein Elektroauto (E-Auto) wird ausschliesslich von einem Elektromotor angetrieben, der seine Energie aus wiederaufladbaren Akkus bezieht.",
-        difficulty = 1,
-        funFact = "Das erste Elektroauto wurde bereits 1884 von Thomas Parker in London gebaut – also noch vor dem ersten Benzinfahrzeug von Karl Benz."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Mikrowelle?",
-        answerA = "Ein Geraet das Lebensmittel mit elektromagnetischen Wellen erwaermt",
-        answerB = "Ein sehr kleines Radio",
-        answerC = "Ein Geraet zum Kuehlen von Speisen",
-        answerD = "Ein kleiner Ofen der mit Gas betrieben wird",
-        correctAnswer = 0,
-        explanation = "Eine Mikrowelle erwaermt Speisen durch elektromagnetische Strahlung, die Wassermolekuele in den Lebensmitteln zum Schwingen bringt und so Waerme erzeugt.",
-        difficulty = 1,
-        funFact = "Die Mikrowelle wurde 1945 zufaellig erfunden, als ein Ingenieur bemerkte, dass sein Schokoriegel durch Radarstrahlen geschmolzen war."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer ist der HDMI-Anschluss am Fernseher?",
-        answerA = "Um das Geraet aufzuladen",
-        answerB = "Um Audio und Video von einem Geraet zu uebertragen",
-        answerC = "Um das Internet anzubinden",
-        answerD = "Um Speicherkarten einzulesen",
-        correctAnswer = 1,
-        explanation = "HDMI-Anschluesse werden genutzt, um hochaufloesendes Bild und Ton von Geraeten wie Spielekonsolen, Blu-ray-Playern oder PCs auf den Fernseher zu uebertragen.",
-        difficulty = 1,
-        funFact = "Ein einzelnes HDMI-Kabel kann unkomprimiertes 4K-Video mit 60 Bildern pro Sekunde sowie mehrkanaligen Ton gleichzeitig uebertragen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Saugroboter?",
-        answerA = "Ein Staubsauger der an der Decke faehrt",
-        answerB = "Ein autonomes Geraet das selbststaendig den Boden saugt",
-        answerC = "Ein Staubsauger speziell fuer Treppen",
-        answerD = "Ein Geraet das Fenster reinigt",
-        correctAnswer = 1,
-        explanation = "Ein Saugroboter ist ein autonomes Geraet, das mithilfe von Sensoren selbststaendig durch den Raum faehrt und den Boden saugt.",
-        difficulty = 1,
-        funFact = "iRobot brachte 2002 den Roomba auf den Markt – den ersten weit verbreiteten Saugroboter. Seitdem wurden ueber 40 Millionen Einheiten verkauft."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welcher Knopf startet meist ein Spiel auf einer PlayStation-Konsole?",
-        answerA = "Der Start-Knopf",
-        answerB = "Der X-Knopf (Kreuz)",
-        answerC = "Der Dreiecks-Knopf",
-        answerD = "Der Quadrat-Knopf",
-        correctAnswer = 1,
-        explanation = "Auf PlayStation-Konsolen wird die Auswahl und der Start einer Aktion traditionell mit dem X-Knopf (Kreuz) bestaetigt.",
-        difficulty = 1,
-        funFact = "In Japan steht das O (Kreis) fuer 'Bestaetigen' und X fuer 'Abbrechen' – genau umgekehrt wie in Europa und Amerika."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist Disney+?",
-        answerA = "Ein Spielzeugshop von Disney",
-        answerB = "Ein Videostreaming-Dienst von The Walt Disney Company",
-        answerC = "Eine App fuer Kinderlieder",
-        answerD = "Ein Fernsehsender fuer Kinder",
-        correctAnswer = 1,
-        explanation = "Disney+ ist der Streaming-Dienst von The Walt Disney Company und bietet Inhalte aus dem Disney-, Marvel-, Star-Wars- und Pixar-Universum.",
-        difficulty = 1,
-        funFact = "Disney+ startete im November 2019 und erreichte in nur 5 Jahren ueber 150 Millionen Abonnenten weltweit."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Kuehlschrank?",
-        answerA = "Ein Geraet zum Erwaermen von Speisen",
-        answerB = "Ein Geraet zur Kuehlung und Aufbewahrung von Lebensmitteln",
-        answerC = "Ein Geraet zur Zubereitung von Eis",
-        answerD = "Ein Geraet zum Trocknen von Lebensmitteln",
-        correctAnswer = 1,
-        explanation = "Ein Kuehlschrank haelt Lebensmittel durch Kaelte frisch. Im Inneren herrschen typischerweise Temperaturen zwischen 2 und 8 Grad Celsius.",
-        difficulty = 1,
-        funFact = "Der erste elektrische Haushaltskuehlschrank wurde 1913 in den USA eingefuehrt. Vorher nutzte man Eisboxen mit echtem Eis."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was bedeutet 'Full HD' beim Fernseher?",
-        answerA = "Dass der Fernseher besonders leicht ist",
-        answerB = "Eine Bildaufloesung von 1920x1080 Pixeln",
-        answerC = "Dass der Fernseher alle Streaming-Dienste unterstuetzt",
-        answerD = "Eine Bildschirmdiagonale von 55 Zoll",
-        correctAnswer = 1,
-        explanation = "Full HD (1080p) bezeichnet eine Bildaufloesung von 1920 x 1080 Pixeln. Es war der Standard vor der Einfuehrung von 4K-Fernsehern.",
-        difficulty = 1,
-        funFact = "Full HD wurde 2004 als Standard definiert. Noch 2010 waren Full-HD-Fernseher teure Luxusgeraete, heute ist es der Mindeststandard."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Smart-Home-System?",
-        answerA = "Ein System zur automatischen Steuerung von Geraeten im Haushalt",
-        answerB = "Ein sehr teures Sicherheitssystem",
-        answerC = "Ein Geraet zur Messung des Stromverbrauchs",
-        answerD = "Eine App fuer den Immobilienkauf",
-        correctAnswer = 0,
-        explanation = "Ein Smart-Home-System vernetzt Haushaltsgeraete wie Beleuchtung, Heizung und Sicherheitskameras, die zentral per App oder Sprachbefehl gesteuert werden.",
-        difficulty = 1,
-        funFact = "Der Begriff 'Smart Home' wurde schon 1984 von der American Association of Home Builders gepraegt, lange vor der heutigen Technologie."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein optisches Laufwerk in einem Blu-ray-Player?",
-        answerA = "Eine Festplatte fuer HD-Filme",
-        answerB = "Ein Geraet zum Lesen von Blu-ray-Discs und DVDs",
-        answerC = "Eine WLAN-Antenne",
-        answerD = "Ein Lautsprecher",
-        correctAnswer = 1,
-        explanation = "Ein optisches Laufwerk liest Daten von Blu-ray-Discs oder DVDs per Laserstrahl und gibt Bild und Ton an den Fernseher weiter.",
-        difficulty = 1,
-        funFact = "Blu-ray-Discs nutzen einen blauen Laser (daher der Name) mit kuerzerer Wellenlaenge als DVD-Laser, was eine hoehere Datendichte ermoeglicht."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was zeigt ein Tachometer im Auto an?",
-        answerA = "Den Kraftstoffverbrauch pro 100 km",
-        answerB = "Die aktuelle Fahrgeschwindigkeit",
-        answerC = "Den Reifendruck",
-        answerD = "Die Motortemperatur",
-        correctAnswer = 1,
-        explanation = "Ein Tachometer zeigt dem Fahrer die aktuelle Geschwindigkeit des Fahrzeugs an, typischerweise in km/h oder mph.",
-        difficulty = 1,
-        funFact = "In Deutschland duerfen Tacho-Anzeigen um bis zu 10 % nach oben abweichen – das Auto faehrt also immer etwas langsamer als angezeigt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Spielekassette (Cartridge)?",
-        answerA = "Ein Speichermedium fuer aeltere Spielkonsolen",
-        answerB = "Ein Ladekabel fuer Konsolen",
-        answerC = "Ein Lautsprecher fuer Spielkonsolen",
-        answerD = "Eine Speicherkarte fuer Mobiltelefone",
-        correctAnswer = 0,
-        explanation = "Eine Spielekassette (Game Cartridge) ist ein Steckmodul, das Spieledaten enthielt und in aeltere Konsolen wie den SNES oder N64 eingesteckt wurde.",
-        difficulty = 1,
-        funFact = "Der Nintendo 64 war die letzte grosse Konsole, die auf Kassetten setzte, bevor CDs und DVDs den Markt uebernahmen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Beamer (Projektor)?",
-        answerA = "Ein Geraet das Bilder oder Videos auf eine Flaeche projiziert",
-        answerB = "Ein sehr helles Licht fuer Buehnen",
-        answerC = "Ein Geraet zum Kopieren von Dokumenten",
-        answerD = "Ein Scanner fuer grosse Dokumente",
-        correctAnswer = 0,
-        explanation = "Ein Beamer (Projektor) projiziert Bilder oder Videos von einem Gereat auf eine Leinwand oder Wand und erzeugt so ein groesseres Bild.",
-        difficulty = 1,
-        funFact = "Moderne DLP-Beamer nutzen Millionen winziger Spiegel – bis zu 2 Millionen auf einem Chip – um das Bild zu erzeugen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Dashcam?",
-        answerA = "Eine Kamera die am Armaturenbrett des Autos montiert wird",
-        answerB = "Eine Kamera fuer Sportaufnahmen am Helm",
-        answerC = "Eine Sicherheitskamera fuer Zuhause",
-        answerD = "Eine Kamera die den Innenraum filmt",
-        correctAnswer = 0,
-        explanation = "Eine Dashcam ist eine am Armaturenbrett oder der Windschutzscheibe befestigte Kamera, die die Fahrt aufzeichnet und als Beweismittel dienen kann.",
-        difficulty = 1,
-        funFact = "In Russland ist die Dashcam wegen haeufiger Unfaelle und Betrug so verbreitet, dass fast jedes Auto eine hat. Daher kommen viele Dashcam-Videos aus Russland."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Geschirrspueler?",
-        answerA = "Ein Geraet zum Trocknen von Geschirr",
-        answerB = "Eine Maschine die Geschirr automatisch reinigt",
-        answerC = "Ein Geraet zum Sterilisieren von Babyflaschen",
-        answerD = "Ein Moebelstueck zur Aufbewahrung von Geschirr",
-        correctAnswer = 1,
-        explanation = "Ein Geschirrspueler ist ein Haushaltsgeraet das Geschirr, Besteck und Toepfe automatisch mit heissem Wasser und Reinigungsmittel saeaubert.",
-        difficulty = 1,
-        funFact = "Die erste Geschirrspuelmaschine wurde 1886 von Josephine Cochrane erfunden, weil ihr Dienstpersonal ihr teures Porzellan beim Handabwaschen zerbrach."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Konsolenserie kommt von Microsoft?",
-        answerA = "PlayStation",
-        answerB = "Xbox",
-        answerC = "Nintendo Switch",
-        answerD = "Atari",
-        correctAnswer = 1,
-        explanation = "Xbox ist die Spielekonsolenserie von Microsoft. Die erste Xbox wurde im Jahr 2001 veroeffentlicht.",
-        difficulty = 1,
-        funFact = "Der Name 'Xbox' leitet sich von 'DirectX Box' ab – die Konsole wurde urspruenglich entwickelt, um Microsofts DirectX-Grafiktechnologie zu zeigen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Waschmaschine?",
-        answerA = "Ein Geraet zum Trocknen von Kleidung",
-        answerB = "Eine Maschine die Kleidung mit Wasser und Waschmittel reinigt",
-        answerC = "Ein Buegeleisen mit automatischer Zufuhr",
-        answerD = "Ein Geraet das Kleidung zusammenfaltet",
-        correctAnswer = 1,
-        explanation = "Eine Waschmaschine reinigt Textilien automatisch durch Wasser, Waschmittel und mechanische Bewegung des Trommelzylinders.",
-        difficulty = 1,
-        funFact = "Die erste elektrische Waschmaschine namens 'Thor' wurde 1908 von Alva Fisher erfunden. Sie kostete damals 75 Dollar – etwa 2.500 Dollar in heutigem Geld."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Chromecast?",
-        answerA = "Ein Lautsprecher von Google",
-        answerB = "Ein Streaming-Stick der Inhalte auf den Fernseher uebertraegt",
-        answerC = "Eine Kamera fuer Videotelefonie",
-        answerD = "Ein WLAN-Router von Google",
-        correctAnswer = 1,
-        explanation = "Chromecast ist ein Streaming-Stick von Google der in den HDMI-Anschluss des Fernsehers gesteckt wird und Inhalte vom Smartphone oder Tablet auf den TV uebertraegt.",
-        difficulty = 1,
-        funFact = "Chromecast wurde 2013 fuer nur 35 Dollar eingefuehrt und verkaufte sich in den ersten 24 Stunden so gut, dass Google den Vorrat erschoepfte."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Wlan-Router?",
-        answerA = "Ein Geraet das kabellose Internetverbindungen im Haushalt verteilt",
-        answerB = "Ein Geraet zum Aufzeichnen von Fernsehprogrammen",
-        answerC = "Ein Geraet zum Drucken grossformatiger Bilder",
-        answerD = "Ein Verstaerker fuer Lautsprecher",
-        correctAnswer = 0,
-        explanation = "Ein WLAN-Router empfaengt das Internetsignal (z.B. vom Modem) und verteilt es kabellos per Funk an alle Geraete im Haushalt.",
-        difficulty = 1,
-        funFact = "Das Wort 'WiFi' ist kein Akronym fuer 'Wireless Fidelity' – der Name wurde einfach als klingender Marketingbegriff ohne Bedeutung erfunden."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was macht ein smarter Thermostat?",
-        answerA = "Er misst die Luftfeuchtigkeit im Raum",
-        answerB = "Er regelt die Heizung automatisch und kann per App gesteuert werden",
-        answerC = "Er schaltet alle Geraete im Haus aus",
-        answerD = "Er misst den Stromverbrauch aller Geraete",
-        correctAnswer = 1,
-        explanation = "Ein smarter Thermostat regelt die Raumtemperatur automatisch basierend auf Lernmustern oder Zeitplaenen und kann per Smartphone-App gesteuert werden.",
-        difficulty = 1,
-        funFact = "Nest, der bekannteste smarte Thermostat, wurde 2011 von ehemaligen Apple-Ingenieuren entwickelt und 2014 fuer 3,2 Milliarden Dollar von Google gekauft."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Fernbedienung?",
-        answerA = "Ein Kabel zur Steuerung von Geraeten",
-        answerB = "Ein kabelloses Geraet zur Steuerung von Elektronik wie dem Fernseher",
-        answerC = "Eine App auf dem Smartphone",
-        answerD = "Ein Schalter an der Wand",
-        correctAnswer = 1,
-        explanation = "Eine Fernbedienung ist ein kabelloses Geraet (meist per Infrarot), das Signale an Elektronik wie Fernseher oder HiFi-Geraete sendet, um sie zu steuern.",
-        difficulty = 1,
-        funFact = "Die erste kabellose Fernbedienung hiess 'Flashmatic' (1955) und nutzte Lichtstrahlen – Sonnenlicht konnte den Fernseher versehentlich umschalten."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wie wird ein Elektroauto geladen?",
-        answerA = "Mit normalem Benzin an der Tankstelle",
-        answerB = "Durch Einlegen von Batterien",
-        answerC = "Durch Anschliessen an eine Ladestation oder Steckdose",
-        answerD = "Durch Einfahren in eine spezielle Waschanlage",
-        correctAnswer = 2,
-        explanation = "Elektroautos werden an Ladestationen (oeffentlich oder zuhause) oder an speziellen Haushaltssteckdosen mit Strom aufgeladen.",
-        difficulty = 1,
-        funFact = "Ein Tesla Model 3 kann mit einem Supercharger in etwa 30 Minuten auf 80 % geladen werden – mit einer normalen Haushaltssteckdose dauert es ueber 24 Stunden."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine smarte Gluehbirne?",
-        answerA = "Eine Gluehbirne die besonders hell leuchtet",
-        answerB = "Eine Gluehbirne die per App oder Sprachbefehl gesteuert wird",
-        answerC = "Eine Gluehbirne die sehr lange haelt",
-        answerD = "Eine Gluehbirne die automatisch dunkler wird",
-        correctAnswer = 1,
-        explanation = "Eine smarte Gluehbirne kann per Smartphone-App oder Sprachassistent (z.B. Alexa, Google) ein- und ausgeschaltet sowie in Farbe und Helligkeit angepasst werden.",
-        difficulty = 1,
-        funFact = "Philips Hue, einer der bekanntesten Anbieter smarter Lampen, wurde 2012 eingefuehrt. Eine einzige Birne kostete damals 60 Dollar."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was zeigt der Ladezustand eines E-Autos an?",
-        answerA = "Ein Kraftstoffmesser mit Tanksymbol",
-        answerB = "Ein Akkubalken aehnlich wie beim Smartphone",
-        answerC = "Eine Temperaturanzeige",
-        answerD = "Ein Oelstandsanzeiger",
-        correctAnswer = 1,
-        explanation = "E-Autos zeigen den Ladestand ihres Akkus aehnlich wie ein Smartphone mit einem Prozentwert oder Batteriebalken im Armaturenbrett an.",
-        difficulty = 1,
-        funFact = "Tesla zeigt den Ladestand als Prozentzahl und als verbleibende Reichweite in km an und ermittelt sie basierend auf der aktuellen Fahrweise."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein UHD-Fernseher?",
-        answerA = "Ein Fernseher mit sehr kleinem Bildschirm",
-        answerB = "Ein Fernseher mit ultrahoher Bildaufloesung",
-        answerC = "Ein Fernseher ohne Lautsprecher",
-        answerD = "Ein Fernseher der nur Schwarz-Weiss-Bilder zeigt",
-        correctAnswer = 1,
-        explanation = "UHD steht fuer Ultra High Definition und bezeichnet eine Aufloesung von mindestens 3.840 x 2.160 Pixeln – auch bekannt als 4K.",
-        difficulty = 1,
-        funFact = "8K-UHD-Fernseher (7.680 x 4.320 Pixel) sind bereits erhaeltlich, aber es gibt kaum 8K-Inhalte, die ihre Aufloesung ausnutzen."
-    ),
+
+    // Question 4
     Question(
         categoryId = 7,
         questionText = "Was ist Spotify?",
-        answerA = "Ein Videospiel",
-        answerB = "Ein Musik-Streaming-Dienst",
-        answerC = "Eine Suchmaschine",
-        answerD = "Ein sozialen Netzwerk fuer Musiker",
-        correctAnswer = 1,
+        answerA = "Eine Video-Plattform",
+        answerB = "Ein Online-Supermarkt",
+        answerC = "Ein Musik-Streaming-Dienst",
+        answerD = "Eine Nachrichten-App",
+        correctAnswer = 2,
         explanation = "Spotify ist ein schwedischer Musik-Streaming-Dienst, der Zugang zu Millionen von Songs, Podcasts und Hoerbuechern bietet.",
         difficulty = 1,
-        funFact = "Spotify wurde 2006 in Stockholm gegruendet und hat heute ueber 600 Millionen Nutzer weltweit, davon etwa 240 Millionen zahlende Abonnenten."
+        funFact = "Spotify wurde 2006 in Stockholm gegruendet. Der Name entstand aus einem Missverstaendnis -- ein Teammitglied hatte 'Spotify' als Phantasiename gerufen, und der blieb haengen."
     ),
+
+    // Question 5
     Question(
         categoryId = 7,
-        questionText = "Was ist eine Dashcam typischerweise auf?",
-        answerA = "Auf dem Dach des Autos montiert",
-        answerB = "An der Windschutzscheibe oder am Armaturenbrett befestigt",
-        answerC = "Im Kofferraum versteckt",
-        answerD = "Am Rueckspiegel aussen befestigt",
+        questionText = "Was ist Netflix?",
+        answerA = "Ein sozialer Messenger",
+        answerB = "Ein Videostreaming-Dienst fuer Filme und Serien",
+        answerC = "Eine Gaming-Plattform",
+        answerD = "Ein Cloud-Speicherdienst",
         correctAnswer = 1,
-        explanation = "Dashcams werden typischerweise innen an der Windschutzscheibe oder am Armaturenbrett befestigt, um die Strasse vor dem Fahrzeug aufzuzeichnen.",
+        explanation = "Netflix ist einer der groessten Videostreaming-Dienste der Welt. Gegen eine monatliche Gebuehr kann man tausende Filme, Serien und eigene Produktionen schauen.",
         difficulty = 1,
-        funFact = "Das Wort 'Dashcam' kommt von 'Dashboard Camera' (Armaturenbrett-Kamera). In manchen Laendern wie Polen und Russland ist sie faktisch Pflicht."
+        funFact = "Netflix startete 1997 als DVD-Verleih per Post und wechselte erst 2007 zum Streaming. Heute hat Netflix ueber 260 Millionen zahlende Abonnenten weltweit."
     ),
+
+    // Question 6
     Question(
         categoryId = 7,
-        questionText = "Welcher Kanal auf YouTube hat die meisten Abonnenten weltweit?",
-        answerA = "PewDiePie",
-        answerB = "T-Series",
-        answerC = "MrBeast",
-        answerD = "Justin Bieber",
-        correctAnswer = 2,
-        explanation = "MrBeast (Jimmy Donaldson) ist mit ueber 300 Millionen Abonnenten der meistabonnierte individuelle YouTuber der Welt.",
-        difficulty = 1,
-        funFact = "Der legendaere Kampf zwischen PewDiePie und T-Series um Platz 1 in 2019 brachte YouTube-Abonnenten-Zaehlen erstmals in die oeffentliche Aufmerksamkeit."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Tiefkuehltruhe?",
-        answerA = "Ein Kuehlschrank fuer Getraenke",
-        answerB = "Ein Geraet zum Einfrieren von Lebensmitteln bei sehr niedrigen Temperaturen",
-        answerC = "Ein Geraet zum schnellen Kühlen von Speisen",
-        answerD = "Ein Kuehlschrank speziell fuer Medikamente",
+        questionText = "Was ist WhatsApp?",
+        answerA = "Ein Betriebssystem fuer Smartphones",
+        answerB = "Ein Messenger fuer Nachrichten, Fotos und Anrufe",
+        answerC = "Ein Musikstreaming-Dienst",
+        answerD = "Eine Suchmaschine",
         correctAnswer = 1,
-        explanation = "Eine Tiefkuehltruhe friert Lebensmittel bei Temperaturen von minus 18 Grad Celsius oder kaelter ein und konserviert sie dadurch ueber lange Zeit.",
+        explanation = "WhatsApp ist ein Messenger-Dienst, ueber den man kostenlos Textnachrichten, Fotos, Videos und Sprachnachrichten senden sowie telefonieren kann.",
         difficulty = 1,
-        funFact = "Bei minus 18 Grad Celsius koennen Bakterien und Enzyme, die Lebensmittel verderben, nicht mehr aktiv sein – deshalb ist dies der internationale Standard."
+        funFact = "WhatsApp wurde 2009 gegruendet und 2014 von Facebook (Meta) fuer 19 Milliarden Dollar gekauft -- damals eine der groessten Tech-Uebernahmen der Geschichte."
+    ),
+
+    // Question 7
+    Question(
+        categoryId = 7,
+        questionText = "Was macht die Frontkamera eines Smartphones hauptsaechlich?",
+        answerA = "Sie scannt QR-Codes",
+        answerB = "Sie nimmt Selfies und ermoeglicht Videotelefonie",
+        answerC = "Sie misst die Helligkeit der Umgebung",
+        answerD = "Sie erkennt Fingerabdruecke",
+        correctAnswer = 1,
+        explanation = "Die Frontkamera ist nach vorne (zum Nutzer) gerichtet und wird hauptsaechlich fuer Selfies und Videotelefonie (z.B. FaceTime, WhatsApp-Videoanrufe) genutzt.",
+        difficulty = 1,
+        funFact = "Das erste Smartphone mit einer Frontkamera war das HTC EVO 4G aus dem Jahr 2010 -- heute ist sie bei jedem Smartphone selbstverstaendlich."
+    ),
+
+    // Question 8
+    Question(
+        categoryId = 7,
+        questionText = "Wofuer steht GPS?",
+        answerA = "Global Positioning System",
+        answerB = "General Phone Service",
+        answerC = "Geo Positioning Software",
+        answerD = "Global Phone Signal",
+        correctAnswer = 0,
+        explanation = "GPS steht fuer Global Positioning System -- ein satellitengestuetztes Navigationssystem, das den genauen Standort eines Geraets auf der Erde bestimmt.",
+        difficulty = 1,
+        funFact = "Das GPS-System wurde vom US-Militaer entwickelt und 1983 nach dem Abschuss eines Passagierflugzeugs fuer die zivile Nutzung freigegeben."
+    ),
+
+    // Question 9
+    Question(
+        categoryId = 7,
+        questionText = "Was ist iCloud?",
+        answerA = "Ein Streaming-Dienst von Apple",
+        answerB = "Der Cloud-Speicherdienst von Apple",
+        answerC = "Eine App fuer Wettervorhersage",
+        answerD = "Ein Betriebssystem-Update von Apple",
+        correctAnswer = 1,
+        explanation = "iCloud ist der Cloud-Speicherdienst von Apple, der Fotos, Kontakte, Nachrichten und Dateien automatisch auf Apples Servern sichert und zwischen Geraeten synchronisiert.",
+        difficulty = 1,
+        funFact = "iCloud wurde 2011 eingefuehrt und ersetzte den aelteren MobileMe-Dienst. Apple bietet jeden Nutzer kostenlos 5 GB Speicher -- danach kostet es extra."
+    ),
+
+    // Question 10
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Bluetooth am Smartphone?",
+        answerA = "Eine Technik zur kabellosen Verbindung mit Geraeten in der Naehe",
+        answerB = "Eine Art von Mobilfunkverbindung",
+        answerC = "Ein Sicherheitsfeature gegen Viren",
+        answerD = "Ein Bildschirmfilter fuer Nachtmodus",
+        correctAnswer = 0,
+        explanation = "Bluetooth ermoeglicht die kabellose Verbindung zwischen Smartphone und anderen Geraeten wie Kopfhoerern, Lautsprechern oder Fitness-Trackern -- ueber kurze Distanzen.",
+        difficulty = 1,
+        funFact = "Der Name Bluetooth stammt vom daenischen Wikinigkoenig Harald Blaatand (Blauzahn), der verschiedene Staemme vereinte -- so wie Bluetooth verschiedene Geraete verbindet."
+    ),
+
+    // Question 11
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Google Drive?",
+        answerA = "Ein Navigationsdienst von Google",
+        answerB = "Ein Cloud-Speicherdienst von Google fuer Dateien",
+        answerC = "Ein App-Store fuer Android",
+        answerD = "Ein E-Mail-Dienst von Google",
+        correctAnswer = 1,
+        explanation = "Google Drive ist der Cloud-Speicherdienst von Google. Man kann dort Dateien, Fotos und Dokumente speichern, von ueberall abrufen und mit anderen teilen.",
+        difficulty = 1,
+        funFact = "Google Drive wurde 2012 gestartet und bietet jedem Google-Nutzer kostenlosen 15 GB Speicher -- aufgeteilt zwischen Drive, Gmail und Google Fotos."
+    ),
+
+    // Question 12
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein QR-Code?",
+        answerA = "Ein verschluesseltes Passwort",
+        answerB = "Ein zweidimensionaler Barcode, der mit dem Smartphone gescannt wird",
+        answerC = "Ein Typ von Speicherkarte",
+        answerD = "Ein Sicherheitsprotokoll fuer WLAN",
+        correctAnswer = 1,
+        explanation = "Ein QR-Code ist ein quadratischer, zweidimensionaler Barcode, der mit der Smartphone-Kamera gescannt werden kann und z.B. Links, Texte oder Zahlungsinfos enthaelt.",
+        difficulty = 1,
+        funFact = "QR steht fuer 'Quick Response' -- der Code wurde 1994 von Denso Wave in Japan fuer die Autoproduktion erfunden und war urspruenglich nur fuer Fabrikhallen gedacht."
+    ),
+
+    // Question 13
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Dropbox?",
+        answerA = "Ein E-Mail-Dienst",
+        answerB = "Ein Cloud-Speicherdienst zum Teilen von Dateien",
+        answerC = "Eine App fuer Videotelefonie",
+        answerD = "Ein Antivirenprogramm",
+        correctAnswer = 1,
+        explanation = "Dropbox ist ein Cloud-Speicherdienst, mit dem man Dateien online speichern, von mehreren Geraeten darauf zugreifen und mit anderen Nutzern teilen kann.",
+        difficulty = 1,
+        funFact = "Dropbox-Gruender Drew Houston hatte die Idee 2007, als er seinen USB-Stick zuhause vergessen hatte. Er programmierte die erste Version auf einer Busfahrt."
+    ),
+
+    // Question 14
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Disney+?",
+        answerA = "Ein Kinderspielzeug-Shop",
+        answerB = "Ein Videostreaming-Dienst von The Walt Disney Company",
+        answerC = "Ein Fernsehsender",
+        answerD = "Eine App fuer Kinderlieder",
+        correctAnswer = 1,
+        explanation = "Disney+ ist der Streaming-Dienst von The Walt Disney Company mit Inhalten aus dem Disney-, Marvel-, Star-Wars- und Pixar-Universum.",
+        difficulty = 1,
+        funFact = "Disney+ startete im November 2019 und erreichte in nur 5 Monaten 50 Millionen Abonnenten -- Netflix brauchte dafuer fast 7 Jahre."
+    ),
+
+    // Question 15
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Amazon beim Online-Shopping?",
+        answerA = "Eine Suchmaschine",
+        answerB = "Einer der groessten Online-Marktplaetze der Welt",
+        answerC = "Ein soziales Netzwerk",
+        answerD = "Ein Cloud-Speicher nur fuer Bilder",
+        correctAnswer = 1,
+        explanation = "Amazon ist einer der weltweit groessten Online-Marktplaetze, auf dem man Millionen von Produkten kaufen und auch selbst verkaufen kann.",
+        difficulty = 1,
+        funFact = "Amazon-Gruender Jeff Bezos startete 1994 in seiner Garage -- damals verkaufte Amazon ausschliesslich Buecher. Heute ist es eines der wertvollsten Unternehmen der Welt."
+    ),
+
+    // Question 16
+    Question(
+        categoryId = 7,
+        questionText = "Was ist PayPal?",
+        answerA = "Eine Kreditkarte",
+        answerB = "Ein Online-Zahlungsdienst",
+        answerC = "Eine Banking-App einer Bank",
+        answerD = "Ein Bezahlterminal fuer Geschaefte",
+        correctAnswer = 1,
+        explanation = "PayPal ist ein Online-Zahlungsdienst, mit dem man im Internet sicher bezahlen und Geld an andere Personen senden kann, ohne Bankdaten preiszugeben.",
+        difficulty = 1,
+        funFact = "PayPal wurde 1998 gegruendet und war urspruenglich ein Sicherheits-Software-Unternehmen fuer PDAs. Mitgruender Elon Musk verkaufte es spaeter an eBay fuer 1,5 Milliarden Dollar."
+    ),
+
+    // Question 17
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Smart Speaker?",
+        answerA = "Ein Lautsprecher mit besonders gutem Klang",
+        answerB = "Ein vernetzter Lautsprecher mit eingebautem Sprachassistenten",
+        answerC = "Ein Lautsprecher fuer Smartphones",
+        answerD = "Ein tragbarer Bluetooth-Lautsprecher",
+        correctAnswer = 1,
+        explanation = "Ein Smart Speaker ist ein vernetzter Lautsprecher mit integriertem Sprachassistenten (z.B. Alexa, Google Assistant), der auf Sprachbefehle reagiert.",
+        difficulty = 1,
+        funFact = "Amazon Echo war 2014 der erste Smart Speaker fuer den Massenmarkt. Heute gibt es weltweit ueber 500 Millionen Smart Speaker in privaten Haushalten."
+    ),
+
+    // Question 18
+    Question(
+        categoryId = 7,
+        questionText = "Wer ist der Sprachassistent von Amazon?",
+        answerA = "Cortana",
+        answerB = "Siri",
+        answerC = "Google",
+        answerD = "Alexa",
+        correctAnswer = 3,
+        explanation = "Alexa ist der Sprachassistent von Amazon. Er ist in Echo-Geraeten eingebaut und kann Fragen beantworten, Musik abspielen und Smart-Home-Geraete steuern.",
+        difficulty = 1,
+        funFact = "Amazon waehlete den Namen 'Alexa', weil das Phonem 'x' vom Mikrofon sehr zuverlaessig erkannt wird -- und selten in normalen Alltagsgespraechen vorkommt."
+    ),
+
+    // Question 19
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Google Home?",
+        answerA = "Ein Betriebssystem fuer Smart-TVs",
+        answerB = "Ein Smart Speaker und Sprachassistent von Google",
+        answerC = "Eine App fuer Immobilien",
+        answerD = "Ein Router von Google",
+        correctAnswer = 1,
+        explanation = "Google Home ist eine Produktlinie von Smart Speakern und dem Google Assistant-Sprachassistenten von Google fuer den Heimbereich.",
+        difficulty = 1,
+        funFact = "Google Home wurde 2016 als direkte Konkurrenz zum Amazon Echo eingefuehrt. Der eingebaute Google Assistant kann auf Wissen aus der gesamten Google-Suche zugreifen."
+    ),
+
+    // Question 20
+    Question(
+        categoryId = 7,
+        questionText = "Wie viele Megapixel hat eine typische Hauptkamera eines modernen Mittelklasse-Smartphones ungefaehr?",
+        answerA = "2-4 Megapixel",
+        answerB = "12-50 Megapixel",
+        answerC = "200-500 Megapixel",
+        answerD = "1-2 Megapixel",
+        correctAnswer = 1,
+        explanation = "Moderne Mittelklasse-Smartphones haben typischerweise Hauptkameras mit 12 bis 50 Megapixel -- Flaggschiffe erreichen auch 100-200 MP.",
+        difficulty = 1,
+        funFact = "Das menschliche Auge kann theoretisch etwa 576 Megapixel wahrnehmen -- die meisten Smartphone-Kameras liegen also noch deutlich darunter."
+    ),
+
+    // Question 21
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Online-Banking?",
+        answerA = "Das Einkaufen im Internet",
+        answerB = "Das Verwalten von Bankkonten ueber das Internet oder eine App",
+        answerC = "Das Bezahlen mit Kreditkarte im Geschaeft",
+        answerD = "Das Ueberweisen von Geld per Brief",
+        correctAnswer = 1,
+        explanation = "Online-Banking ermoeglicht es, Bankkonten ueber das Internet oder eine Smartphone-App zu verwalten -- z.B. Ueberweisungen durchfuehren oder den Kontostand pruefen.",
+        difficulty = 1,
+        funFact = "Online-Banking gibt es in Deutschland seit den 1990er Jahren. Heute nutzen ueber 60 Prozent aller Deutschen ihre Bank-App regelmaessig auf dem Smartphone."
+    ),
+
+    // Question 22
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein sicheres Passwort?",
+        answerA = "Der eigene Name als Passwort",
+        answerB = "Eine Kombination aus Gross- und Kleinbuchstaben, Zahlen und Sonderzeichen",
+        answerC = "Das Geburtsdatum",
+        answerD = "Das Wort 'Passwort'",
+        correctAnswer = 1,
+        explanation = "Ein sicheres Passwort besteht aus einer zufaelligen Kombination aus Gross- und Kleinbuchstaben, Zahlen und Sonderzeichen und sollte mindestens 12 Zeichen lang sein.",
+        difficulty = 1,
+        funFact = "Das weltweit haeufigste Passwort ist '123456'. Ein Hacker kann es in weniger als einer Sekunde knacken -- mit einem sicheren Passwort dauert es Milliarden von Jahren."
+    ),
+
+    // Question 23
+    Question(
+        categoryId = 7,
+        questionText = "Warum sind Software-Updates wichtig?",
+        answerA = "Sie machen das Geraet langsamer",
+        answerB = "Sie beheben Sicherheitsluecken und verbessern die Stabilitat",
+        answerC = "Sie loeschen alle gespeicherten Daten",
+        answerD = "Sie erhoehen die Mobilfunkkosten",
+        correctAnswer = 1,
+        explanation = "Software-Updates schliessen Sicherheitsluecken, beheben Fehler und fuegen neue Funktionen hinzu. Nicht aktualisierte Geraete sind anfaelliger fuer Angriffe.",
+        difficulty = 1,
+        funFact = "Viele der groessten Hackerangriffe der Geschichte -- darunter WannaCry 2017 -- waren moeglich, weil Nutzer verfuegbare Sicherheitsupdates nicht eingespielt hatten."
+    ),
+
+    // Question 24
+    Question(
+        categoryId = 7,
+        questionText = "Was macht man mit einem Barcode an der Supermarktkasse?",
+        answerA = "Man scannt ihn, um den Preis des Produkts auszulesen",
+        answerB = "Man fotografiert ihn als Merkzettel",
+        answerC = "Man nutzt ihn als Zahlungsmethode",
+        answerD = "Man liest dort das Ablaufdatum ab",
+        correctAnswer = 0,
+        explanation = "Der Barcode (EAN-Code) an Produkten wird an der Kasse eingescannt, um den Preis aus der Datenbank des Supermarkts abzurufen und die Kasse zu befuellen.",
+        difficulty = 1,
+        funFact = "Der erste Barcode wurde 1974 an einer Packung Kaugummi in Ohio gescannt. Diese Packung ist heute im Smithsonian Museum ausgestellt."
+    ),
+
+    // Question 25
+    Question(
+        categoryId = 7,
+        questionText = "Was ist der Google Play Store?",
+        answerA = "Ein Online-Spielekatalog fuer PCs",
+        answerB = "Der offizielle App-Marktplatz fuer Android-Smartphones",
+        answerC = "Ein Musikdienst von Google",
+        answerD = "Ein Cloud-Speicher von Google",
+        correctAnswer = 1,
+        explanation = "Der Google Play Store ist der offizielle Marktplatz fuer Android-Geraete. Dort kann man Apps, Spiele, Bucher, Filme und Musik herunterladen.",
+        difficulty = 1,
+        funFact = "Der Play Store hatte bei der Einfuehrung 2008 nur wenige Hundert Apps. Heute sind es ueber 3 Millionen verfuegbare Apps -- obwohl Google viele qualitativ schlechte Apps entfernt."
+    ),
+
+    // Question 26
+    Question(
+        categoryId = 7,
+        questionText = "Was ist digitale Fotografie?",
+        answerA = "Fotografieren mit einer analogen Filmkamera",
+        answerB = "Fotografieren, bei dem Bilder als digitale Dateien gespeichert werden",
+        answerC = "Das Drucken von Fotos zu Hause",
+        answerD = "Das Scannen alter Fotoalben",
+        correctAnswer = 1,
+        explanation = "Bei der digitalen Fotografie werden Bilder als digitale Dateien (z.B. JPEG, PNG) auf Speicherkarten oder im Smartphone-Speicher gespeichert -- kein Film noetig.",
+        difficulty = 1,
+        funFact = "Die erste digitale Kamera wurde 1975 von Steve Sasson bei Kodak entwickelt. Sie wog 3,6 kg, hatte 0,01 Megapixel und brauchte 23 Sekunden um ein Bild zu speichern."
+    ),
+
+    // Question 27
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Megapixel in der Fotografie?",
+        answerA = "Die Groesse des Kamerasensors in cm",
+        answerB = "Eine Million Bildpunkte (Pixel)",
+        answerC = "Die Lichtstaerke der Kamera",
+        answerD = "Die Brennweite des Objektivs",
+        correctAnswer = 1,
+        explanation = "Ein Megapixel entspricht einer Million Bildpunkten (Pixel). Je mehr Megapixel eine Kamera hat, desto mehr Details kann sie theoretisch aufnehmen.",
+        difficulty = 1,
+        funFact = "Mehr Megapixel bedeuten nicht automatisch bessere Fotos -- die Groesse der einzelnen Pixel und die Qualitaet der Optik sind genauso wichtig."
+    ),
+
+    // Question 28
+    Question(
+        categoryId = 7,
+        questionText = "Wofuer steht 'JPEG' bei Fotos?",
+        answerA = "Ein Videoformat",
+        answerB = "Ein haeufig genutztes komprimiertes Bilddateiformat",
+        answerC = "Eine Kameramarke",
+        answerD = "Eine Fotobearbeitungssoftware",
+        correctAnswer = 1,
+        explanation = "JPEG (Joint Photographic Experts Group) ist das haeufigste Dateiformat fuer digitale Fotos. Es komprimiert Bilder, um Speicherplatz zu sparen.",
+        difficulty = 1,
+        funFact = "JPEG wurde 1992 als Standard eingefuehrt. Trotz seines Alters ist es noch immer das Format, in dem die meisten Fotos weltweit gespeichert und verschickt werden."
+    ),
+
+    // Question 29
+    Question(
+        categoryId = 7,
+        questionText = "Was bedeutet 'kontaktloses Bezahlen' mit dem Smartphone?",
+        answerA = "Bezahlen ohne Bargeld oder Karte durch Antippen des Terminals mit dem Smartphone",
+        answerB = "Einkaufen ohne persoenlichen Kontakt mit dem Haendler",
+        answerC = "Bezahlen per SMS",
+        answerD = "Bezahlen per E-Mail",
+        correctAnswer = 0,
+        explanation = "Kontaktloses Bezahlen mit dem Smartphone nutzt NFC-Technologie (z.B. Google Pay, Apple Pay) -- man haelt das Smartphone ans Lesegeraet und die Zahlung wird ausgefuehrt.",
+        difficulty = 1,
+        funFact = "Kontaktloses Bezahlen ist in manchen Laendern wie Schweden so verbreitet, dass manche Geschaefte kein Bargeld mehr akzeptieren."
+    ),
+
+    // Question 30
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Zwei-Faktor-Authentifizierung (2FA)?",
+        answerA = "Ein Passwort mit mindestens zwei Zeichen",
+        answerB = "Ein zusaetzlicher Sicherheitsschritt neben dem Passwort, z.B. per SMS-Code",
+        answerC = "Das Einloggen mit zwei verschiedenen Passwoertern",
+        answerD = "Ein Fingerabdruckscan als alleinige Anmeldung",
+        correctAnswer = 1,
+        explanation = "Bei der Zwei-Faktor-Authentifizierung muss man neben dem Passwort noch einen zweiten Beweis liefern -- z.B. einen Code per SMS -- um das Konto zu schuetzen.",
+        difficulty = 1,
+        funFact = "2FA kann einen Angriff auf dein Konto mit 99,9 Prozent Wahrscheinlichkeit verhindern, selbst wenn das Passwort gestohlen wurde -- laut einer Microsoft-Studie."
+    ),
+
+    // Question 31
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Smartphone-Benachrichtigung (Notification)?",
+        answerA = "Eine gespeicherte Erinnerung im Kalender",
+        answerB = "Eine Kurzmeldung einer App, die auf dem Bildschirm erscheint",
+        answerC = "Eine verschluesselte Nachricht",
+        answerD = "Ein automatisches Update",
+        correctAnswer = 1,
+        explanation = "Benachrichtigungen sind Kurzmeldungen, die Apps auf dem Sperrbildschirm oder oben im Display anzeigen -- z.B. neue WhatsApp-Nachrichten oder E-Mails.",
+        difficulty = 1,
+        funFact = "Studien zeigen, dass Smartphone-Nutzer im Durchschnitt 80-mal pro Tag ihr Handy entsperren -- ausgeloest grossteils durch Benachrichtigungen."
+    ),
+
+    // Question 32
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein WLAN-Passwort?",
+        answerA = "Das Passwort fuer das Google-Konto",
+        answerB = "Der geheime Code zum Verbinden mit einem kabellosen Netzwerk",
+        answerC = "Das PIN der SIM-Karte",
+        answerD = "Das Passwort fuer den Router-Neustart",
+        correctAnswer = 1,
+        explanation = "Das WLAN-Passwort (auch WLAN-Schlussel genannt) ist der Sicherheitscode, den man eingeben muss, um sich mit einem kabellosen Heimnetzwerk zu verbinden.",
+        difficulty = 1,
+        funFact = "Auf der Unterseite fast jedes WLAN-Routers steht das Standard-Passwort. Sicherheitsexperten empfehlen dringend, es beim Einrichten durch ein eigenes zu ersetzen."
+    ),
+
+    // Question 33
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Selfie?",
+        answerA = "Ein Foto das man von einem Fremden macht",
+        answerB = "Ein Selbstportrait das man mit der Frontkamera des Smartphones aufnimmt",
+        answerC = "Ein automatisch generiertes Profilbild",
+        answerD = "Ein Foto das per GPS-Standort markiert wird",
+        correctAnswer = 1,
+        explanation = "Ein Selfie ist ein Selbstportrait, das man mit der nach vorne gerichteten Frontkamera des Smartphones aufnimmt -- oft fuer soziale Medien.",
+        difficulty = 1,
+        funFact = "Das Oxford-Woerterbuch kuerte 'Selfie' 2013 zum Wort des Jahres. Tatsaechlich gibt es den Begriff seit 2002 in einem australischen Online-Forum."
+    ),
+
+    // Question 34
+    Question(
+        categoryId = 7,
+        questionText = "Was macht die App Shazam?",
+        answerA = "Sie bearbeitet Fotos automatisch",
+        answerB = "Sie erkennt Musik die gerade gespielt wird",
+        answerC = "Sie uebersetzt Texte in Echtzeit",
+        answerD = "Sie misst den Herzschlag",
+        correctAnswer = 1,
+        explanation = "Shazam ist eine App, die Musik erkennt -- einfach das Mikrofon ans Lied halten und die App zeigt Titel, Kuenstler und Album an.",
+        difficulty = 1,
+        funFact = "Shazam wurde 2002 gegruendet, lange vor dem Smartphone-Zeitalter. Man rief eine Nummer an, hielt das Telefon zur Musik und bekam den Song per SMS zurueck."
+    ),
+
+    // Question 35
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine mobile Datenuebertragung per 4G/LTE?",
+        answerA = "Eine WLAN-Verbindung ueber eine Telefonleitung",
+        answerB = "Schnelles mobiles Internet ueber das Mobilfunknetz",
+        answerC = "Eine Bluetooth-Verbindung ueber grosse Entfernungen",
+        answerD = "Eine Satelliten-Internetverbindung",
+        correctAnswer = 1,
+        explanation = "4G/LTE ist die vierte Generation des Mobilfunkstandards und bietet schnelles mobiles Internet ueber Mobilfunkmasten -- ueberall dort, wo Empfang vorhanden ist.",
+        difficulty = 1,
+        funFact = "4G LTE wurde in Deutschland 2010 eingefuehrt. Der Nachfolger 5G ist bereits in Staedte verfuegbar und ist bis zu 100-mal schneller."
+    ),
+
+    // Question 36
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Emoji?",
+        answerA = "Ein Kurzbefehl auf der Tastatur",
+        answerB = "Ein kleines Bild oder Symbol in digitalen Nachrichten",
+        answerC = "Eine Art Verschluesselung fuer Nachrichten",
+        answerD = "Ein japanisches Schriftzeichen",
+        correctAnswer = 1,
+        explanation = "Emojis sind kleine bunte Symbole oder Bilder, die in Textnachrichten, E-Mails und sozialen Medien verwendet werden, um Gefuehle oder Dinge auszudruecken.",
+        difficulty = 1,
+        funFact = "Das erste Emoji wurde 1999 vom japanischen Designer Shigetaka Kurita fuer eine mobile Internetplattform entworfen -- es war nur 12 x 12 Pixel gross."
+    ),
+
+    // Question 37
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Screenshot?",
+        answerA = "Ein Foto aus der Kamera-App",
+        answerB = "Eine Aufnahme des aktuellen Bildschirminhalts",
+        answerC = "Ein Videoausschnitt",
+        answerD = "Eine Sicherungskopie aller Daten",
+        correctAnswer = 1,
+        explanation = "Ein Screenshot ist ein Bild des aktuellen Bildschirminhalts. Auf den meisten Smartphones macht man ihn durch gleichzeitiges Druecken von Ein- und Lautstaerketaste.",
+        difficulty = 1,
+        funFact = "Screenshots wurden urspruenglich in den 1960er Jahren von Computerprogrammierern genutzt, um Bildschirminhalte fuer Handbuecher zu dokumentieren."
+    ),
+
+    // Question 38
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Fingerabdrucksensor am Smartphone?",
+        answerA = "Ein Sensor zur Messung der Herzfrequenz",
+        answerB = "Ein Sicherheitsfeature zum Entsperren des Geraets per Fingerabdruck",
+        answerC = "Ein Drucksensor fuer das Display",
+        answerD = "Ein Sensor zur Luftqualitaetsmessung",
+        correctAnswer = 1,
+        explanation = "Ein Fingerabdrucksensor erkennt den einzigartigen Fingerabdruck des Nutzers und ermoeglicht damit das sichere Entsperren des Smartphones ohne PIN oder Passwort.",
+        difficulty = 1,
+        funFact = "Das erste Smartphone mit einem eingebauten Fingerabdrucksensor war das Apple iPhone 5S im Jahr 2013 -- es hiess 'Touch ID' und war zu seiner Zeit revolutionaer."
+    ),
+
+    // Question 39
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Sprachnotiz (Voice Memo) auf dem Smartphone?",
+        answerA = "Eine Textnachricht in Grossbuchstaben",
+        answerB = "Eine per Mikrofon aufgenommene Audioaufzeichnung",
+        answerC = "Eine Sprachuebersetzung in Echtzeit",
+        answerD = "Eine automatisch vorgelesene E-Mail",
+        correctAnswer = 1,
+        explanation = "Eine Sprachnotiz ist eine kurze Audioaufnahme, die man mit dem Mikrofon des Smartphones aufzeichnet -- z.B. um sich Dinge zu merken oder lange Texte zu diktieren.",
+        difficulty = 1
+    ),
+
+    // Question 40
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine SIM-Karte im Smartphone?",
+        answerA = "Eine Speicherkarte fuer Fotos",
+        answerB = "Ein kleiner Chip der die Handynummer und Netzwerkdaten speichert",
+        answerC = "Ein Prozessor fuer schnellere Apps",
+        answerD = "Ein Akku-Erweiterungsmodul",
+        correctAnswer = 1,
+        explanation = "Die SIM-Karte (Subscriber Identity Module) ist ein kleiner Chip, der die Handynummer, Netzzugangs-Daten und Kontakte speichert und das Einloggen ins Mobilfunknetz ermoeglicht.",
+        difficulty = 1,
+        funFact = "Die erste SIM-Karte war 1991 noch so gross wie eine Kreditkarte. Heute ist die kleinste Version (Nano-SIM) kleiner als ein Fingernagel."
+    ),
+
+    // Question 41
+    Question(
+        categoryId = 7,
+        questionText = "Was bedeutet 'App aktualisieren' (Update)?",
+        answerA = "Die App loeschen und neu installieren",
+        answerB = "Eine neuere Version der App installieren",
+        answerC = "Die App auf ein anderes Geraet uebertragen",
+        answerD = "Die App-Einstellungen zuruecksetzen",
+        correctAnswer = 1,
+        explanation = "Ein App-Update installiert eine neuere Version der App, die Fehler behebt, Sicherheitsluecken schliesst und neue Funktionen hinzufuegen kann.",
+        difficulty = 1,
+        funFact = "Durchschnittlich veroffentlicht jede groessere App wie WhatsApp oder Instagram alle 2-3 Wochen ein Update -- im Jahr macht das 15-25 Updates pro App."
+    ),
+
+    // Question 42
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Google Assistant?",
+        answerA = "Ein Navigationsdienst",
+        answerB = "Ein KI-gestuetzter Sprachassistent von Google",
+        answerC = "Eine E-Mail-App von Google",
+        answerD = "Ein Sicherheitsprogramm fuer Android",
+        correctAnswer = 1,
+        explanation = "Google Assistant ist ein KI-gestuetzter Sprachassistent von Google, der auf Smartphones und Smart Speakern verfuegbar ist und Fragen beantwortet, Erinnerungen setzt und Geraete steuert.",
+        difficulty = 1,
+        funFact = "Google Assistant wurde 2016 eingefuehrt und versteht Kontextfragen -- man kann also sagen 'Wer ist er?' nach einer vorherigen Frage und er versteht den Bezug."
+    ),
+
+    // Question 43
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein digitales Foto im Vergleich zu einem analogen Foto?",
+        answerA = "Es ist kleiner und weniger detailliert",
+        answerB = "Es wird als Datei gespeichert statt auf Film",
+        answerC = "Es kann nur auf dem Smartphone angesehen werden",
+        answerD = "Es braucht eine Internetverbindung",
+        correctAnswer = 1,
+        explanation = "Digitale Fotos werden als Bilddateien (z.B. JPEG) auf Speichermedien gespeichert. Analoge Fotos entstehen auf lichtempfindlichem Film der chemisch entwickelt werden muss.",
+        difficulty = 1,
+        funFact = "Die Firma Kodak -- einst groesster Filmhersteller der Welt -- erfand selbst die digitale Kamera 1975, verdraengte die Erfindung aber aus Angst vor Gewinnverlusten."
+    ),
+
+    // Question 44
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Einkaufs-App?",
+        answerA = "Eine App die Preise scannt und vergleicht",
+        answerB = "Eine App mit der man Online-Shopping betreiben kann",
+        answerC = "Eine App fuer Rezepte und Kochen",
+        answerD = "Eine App fuer Haushaltsbuch-Fuehrung",
+        correctAnswer = 1,
+        explanation = "Eine Einkaufs-App (wie Amazon, Zalando, Otto) ermoegicht es, Produkte auf dem Smartphone zu suchen, vergleichen und kaufen -- bequem von zuhause.",
+        difficulty = 1,
+        funFact = "Ueber 50 Prozent aller Online-Einkauefe in Deutschland werden bereits ueber ein Mobilgeraet getaetigt -- der Trend nimmt jedes Jahr zu."
+    ),
+
+    // Question 45
+    Question(
+        categoryId = 7,
+        questionText = "Was ist 'Flugmodus' (Airplane Mode) beim Smartphone?",
+        answerA = "Ein Modus der die Helligkeit automatisch anpasst",
+        answerB = "Ein Modus der alle Funkverbindungen des Geraets ausschaltet",
+        answerC = "Ein Energiesparmodus",
+        answerD = "Ein Modus fuer bessere Kamerafotos",
+        correctAnswer = 1,
+        explanation = "Der Flugmodus schaltet alle Funkverbindungen (WLAN, Mobilfunk, Bluetooth) aus -- er ist im Flugzeug vorgeschrieben, kann aber auch zum Energiesparen genutzt werden.",
+        difficulty = 1,
+        funFact = "Trotz des Namens darf man im Flugzeug WLAN nutzen, wenn es das Flugzeug anbietet -- man muss nur zuerst den Flugmodus aktivieren und WLAN danach manuell einschalten."
+    ),
+
+    // Question 46
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Kamera-Zeitlupenfunktion (Slow Motion)?",
+        answerA = "Eine Funktion die Fotos in Schwarz-Weiss umwandelt",
+        answerB = "Eine Funktion die Videos verlangsamt wiedergibt fuer flussigere Bewegungen",
+        answerC = "Eine Funktion fuer Langzeitbelichtungen bei Nacht",
+        answerD = "Eine Funktion um Videos zu beschleunigen",
+        correctAnswer = 1,
+        explanation = "Slow Motion filmt mit sehr vielen Bildern pro Sekunde (z.B. 240 fps statt 30 fps), so dass das Video in der Wiedergabe viel langsamer und fliessender erscheint.",
+        difficulty = 1,
+        funFact = "Hochgeschwindigkeitskameras fuer wissenschaftliche Zwecke koennen ueber eine Million Bilder pro Sekunde aufnehmen -- Tropfen und Explosionen werden so sichtbar."
+    ),
+
+    // Question 47
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Passwort-Manager?",
+        answerA = "Eine Funktion die Passwoerter automatisch aendert",
+        answerB = "Eine App oder Funktion die Passwoerter sicher speichert und eingibt",
+        answerC = "Ein Sicherheitsprogramm das Hacker blockiert",
+        answerD = "Eine Zwei-Faktor-Authentifizierung",
+        correctAnswer = 1,
+        explanation = "Ein Passwort-Manager speichert alle Passwoerter sicher und verschluesselt -- man merkt sich nur ein Hauptpasswort und der Manager fuellt die anderen automatisch aus.",
+        difficulty = 1,
+        funFact = "Sicherheitsexperten empfehlen einen Passwort-Manager, weil der durchschnittliche Nutzer heute ueber 100 Online-Konten hat -- und fuer jedes ein anderes sicheres Passwort braucht."
+    ),
+
+    // Question 48
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Video-Konferenz-App wie Zoom oder Teams?",
+        answerA = "Eine App fuer Videobearbeitung",
+        answerB = "Eine App fuer Videoanrufe mit mehreren Teilnehmern gleichzeitig",
+        answerC = "Eine App fuer Videospiele online",
+        answerD = "Eine App zum Anschauen von YouTube-Videos",
+        correctAnswer = 1,
+        explanation = "Videokonferenz-Apps wie Zoom oder Microsoft Teams ermoeglichen Videoanrufe mit vielen Teilnehmern gleichzeitig -- beliebt fuer Homeoffice und Online-Unterricht.",
+        difficulty = 1,
+        funFact = "Zoom hatte vor der COVID-19-Pandemie 10 Millionen taegliche Nutzer. Im April 2020 waren es 300 Millionen -- ein Wachstum von 3000 Prozent in drei Monaten."
+    ),
+
+    // Question 49
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Wecker-App?",
+        answerA = "Eine App die Lautsprecher fernsteuert",
+        answerB = "Eine App die zu einer eingestellten Zeit einen Alarm auslost",
+        answerC = "Eine App die Schlafmuster aufzeichnet",
+        answerD = "Eine App fuer Stoppuhr und Timer",
+        correctAnswer = 1,
+        explanation = "Eine Wecker-App ermoegicht es, eine oder mehrere Weckzeiten einzustellen. Zum vereinbarten Zeitpunkt gibt das Smartphone einen Ton oder ein Vibrieren ab.",
+        difficulty = 1
+    ),
+
+    // Question 50
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Taschenlampen-Funktion beim Smartphone?",
+        answerA = "Ein Display-Hintergrundlicht fuer den Aussenbereich",
+        answerB = "Die Nutzung des Kamerablitzes als Taschenlampe",
+        answerC = "Eine LED-Statusanzeige fuer Benachrichtigungen",
+        answerD = "Ein Blaulicht-Filter fuer den Bildschirm",
+        correctAnswer = 1,
+        explanation = "Die Taschenlampen-Funktion nutzt die helle LED des Kamerablitzes als dauerhafte Lichtquelle -- praktisch im Dunkeln, ohne extra Taschenlampe.",
+        difficulty = 1,
+        funFact = "Die Taschenlampen-App war lange eine der meistgenutzten Apps ueberhaupt -- bis Apple und Google die Funktion direkt ins Betriebssystem integrierten und keine separate App mehr noetig war."
     )
 )

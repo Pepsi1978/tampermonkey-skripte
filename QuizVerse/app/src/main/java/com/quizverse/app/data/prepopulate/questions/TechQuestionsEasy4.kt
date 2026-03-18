@@ -7,700 +7,700 @@ fun techQuestionsEasy4(): List<Question> = listOf(
     // Question 1
     Question(
         categoryId = 7,
-        questionText = "Was bedeutet KI im Alltag?",
-        answerA = "Ein Computer kann bestimmte Aufgaben selbst erledigen, die sonst Menschen tun",
-        answerB = "Ein Programm, das nur Zahlen berechnet",
-        answerC = "Eine Datenbank mit vielen Bildern",
-        answerD = "Ein schnelles Internet-Netzwerk",
-        correctAnswer = 0,
-        explanation = "Kuenstliche Intelligenz (KI) bedeutet, dass Computer Aufgaben ausfuehren, die normalerweise menschliches Denken erfordern, z.B. Sprache verstehen oder Bilder erkennen.",
+        questionText = "Was ist ein sicheres Passwort?",
+        answerA = "Das eigene Geburtsdatum",
+        answerB = "Eine Kombination aus Buchstaben, Zahlen und Sonderzeichen",
+        answerC = "Der eigene Vorname",
+        answerD = "Das Wort 'Passwort'",
+        correctAnswer = 1,
+        explanation = "Ein sicheres Passwort besteht aus mindestens 12 Zeichen und enthaelt Grossbuchstaben, Kleinbuchstaben, Zahlen und Sonderzeichen.",
         difficulty = 1,
-        funFact = "Schon 1956 wurde der Begriff 'Artificial Intelligence' gepraeagt – damals glaubten Forscher, KI waere in 10 Jahren 'fertig'."
+        funFact = "Das haeufigste Passwort weltweit ist noch immer '123456' -- obwohl es in Sekunden geknackt werden kann."
     ),
 
     // Question 2
     Question(
         categoryId = 7,
-        questionText = "Was ist ChatGPT?",
-        answerA = "Ein sozianes Netzwerk fuer Programmierer",
-        answerB = "Ein KI-Chatbot, der Texte versteht und schreibt",
-        answerC = "Ein Antivirusprogramm von Microsoft",
-        answerD = "Ein Cloud-Speicherdienst von Google",
+        questionText = "Was versteht man unter Phishing?",
+        answerA = "Eine App zum Angeln-Lernen",
+        answerB = "Ein Betrugsversuch per E-Mail oder Nachricht, um Passwoerter zu stehlen",
+        answerC = "Eine Methode zur Datensicherung",
+        answerD = "Ein sicheres Anmeldeverfahren",
         correctAnswer = 1,
-        explanation = "ChatGPT ist ein KI-Chatbot von OpenAI, der natuerliche Sprache versteht und menschenaehnliche Texte generieren kann.",
+        explanation = "Beim Phishing taeuschen Betrueger echte Webseiten oder Unternehmen nach, um Nutzer zur Eingabe ihrer Zugangsdaten zu verleiten.",
         difficulty = 1,
-        funFact = "ChatGPT erreichte innerhalb von 5 Tagen eine Million Nutzer – schneller als jede andere Anwendung in der Geschichte."
+        funFact = "Der Begriff 'Phishing' leitet sich vom englischen 'fishing' (Angeln) ab -- die Betrueger 'fischen' nach Opfern mit einem koederhaften Lockangebot."
     ),
 
     // Question 3
     Question(
         categoryId = 7,
-        questionText = "Wofuer steht 'KI' in der Technik?",
-        answerA = "Kombinierte Intelligenz",
-        answerB = "Kodierte Information",
-        answerC = "Kuenstliche Intelligenz",
-        answerD = "Komplexe Integration",
-        correctAnswer = 2,
-        explanation = "KI steht fuer Kuenstliche Intelligenz. Auf Englisch heisst es AI (Artificial Intelligence). Gemeint sind Computerprogramme, die klug erscheinende Aufgaben erledigen.",
+        questionText = "Was ist die Zweifaktor-Authentifizierung (2FA)?",
+        answerA = "Ein Passwort mit zwei Grossbuchstaben",
+        answerB = "Ein zweiter Sicherheitsschritt zusaetzlich zum Passwort, z.B. ein SMS-Code",
+        answerC = "Zwei verschiedene Passwoerter hintereinander eingeben",
+        answerD = "Ein System, das zwei Nutzer gleichzeitig anmeldet",
+        correctAnswer = 1,
+        explanation = "Die Zweifaktor-Authentifizierung schuetzt ein Konto, indem nach dem Passwort noch ein zweiter Beweis verlangt wird, z.B. ein Code per SMS.",
         difficulty = 1,
-        funFact = "Das Wort 'kuenstlich' bedeutet hier nicht unecht, sondern vom Menschen erschaffen – im Gegensatz zur biologischen Intelligenz."
+        funFact = "Konten mit aktivierter 2FA sind laut Google in 99,9% der Faelle sicher vor automatisierten Hacker-Angriffen."
     ),
 
     // Question 4
     Question(
         categoryId = 7,
-        questionText = "Was macht ein KI-Sprachassistent wie Siri oder Alexa?",
-        answerA = "Er speichert automatisch alle Gespraeche als Audiodateien",
-        answerB = "Er versteht gesprochene Sprache und antwortet darauf",
-        answerC = "Er verbessert automatisch das WLAN-Signal",
-        answerD = "Er uebersetzt nur zwischen zwei Sprachen",
+        questionText = "Was sollte man niemals als Passwort verwenden?",
+        answerA = "Eine zufaellige Buchstaben-Zahlen-Kombination",
+        answerB = "Den eigenen Namen oder das Geburtsdatum",
+        answerC = "Eine lange Buchstabenreihe mit Sonderzeichen",
+        answerD = "Ein Passwort mit mehr als 15 Zeichen",
         correctAnswer = 1,
-        explanation = "KI-Sprachassistenten verarbeiten gesprochene Sprache, verstehen den Inhalt und geben passende Antworten oder fuehren Aktionen aus.",
+        explanation = "Name und Geburtsdatum sind oeffentlich leicht auffindbar und werden von Hackern als erstes ausprobiert -- sie sind deshalb unsichere Passwoerter.",
         difficulty = 1,
-        funFact = "Alexa lernt staendig dazu – je mehr Fragen gestellt werden, desto besser wird das Sprachverstaendnis."
+        funFact = "Hacker nutzen sogenannte 'Woerterbuchangriffe' -- sie probieren automatisch Millionen haeufiger Woerter und Daten durch."
     ),
 
     // Question 5
     Question(
         categoryId = 7,
-        questionText = "Wie heisst die Programmiersprache, die als erstes von Anfaengern gelernt wird?",
-        answerA = "Python",
-        answerB = "Assembler",
-        answerC = "COBOL",
-        answerD = "Fortran",
-        correctAnswer = 0,
-        explanation = "Python gilt als besonders anfaengerfreundlich, weil die Syntax einfach und lesbar ist. Es wird weltweit als erste Programmiersprache empfohlen.",
+        questionText = "Woran erkennt man eine Phishing-E-Mail?",
+        answerA = "Sie hat immer ein Bild von einem Fisch",
+        answerB = "Sie draengt zur Eile, enthaelt Rechtschreibfehler oder fordert Zugangsdaten an",
+        answerC = "Sie kommt immer in der Nacht an",
+        answerD = "Sie ist immer rot markiert",
+        correctAnswer = 1,
+        explanation = "Phishing-Mails erkennnt man oft an Zeitdruck ('Handeln Sie sofort!'), verdaechtigen Links, Rechtschreibfehlern und der Aufforderung, Passwoerter einzugeben.",
         difficulty = 1,
-        funFact = "Python wurde nach der Komikergruppe Monty Python benannt, nicht nach der Schlange."
+        funFact = "Mehr als 3 Milliarden Phishing-E-Mails werden jeden Tag weltweit verschickt -- das sind ueber 34.000 pro Sekunde."
     ),
 
     // Question 6
     Question(
         categoryId = 7,
-        questionText = "Was ist ein 'Bug' in der Programmierung?",
-        answerA = "Ein besonders schnelles Programm",
-        answerB = "Ein Fehler im Programmcode",
-        answerC = "Ein Schutzmechanismus gegen Viren",
-        answerD = "Eine Art von Datenbankabfrage",
+        questionText = "Was sind Cookies auf einer Webseite?",
+        answerA = "Keksrezepte in einer Online-Datenbank",
+        answerB = "Kleine Datendateien, die der Browser speichert, um Einstellungen oder Sitzungen zu merken",
+        answerC = "Programme, die Viren auf den Computer laden",
+        answerD = "Werbebanner auf Webseiten",
         correctAnswer = 1,
-        explanation = "Ein Bug ist ein Fehler im Programmcode, der dazu fuehrt, dass das Programm sich falsch verhaelt oder abstuerzt.",
+        explanation = "Cookies sind kleine Textdateien, die Webseiten im Browser ablegen, um z.B. den Anmeldestatus, Spracheinstellungen oder Warenkorbinhalte zu speichern.",
         difficulty = 1,
-        funFact = "Der Begriff 'Bug' entstand 1947, als Grace Hopper eine echte Motte in einem Computerschaltkreis fand, die eine Stoerung verursacht hatte."
+        funFact = "Der Name 'Cookie' stammt vom Programmierbegriff 'Magic Cookie' -- einem kleinen Datenpaket, das hin- und hergeschickt wird."
     ),
 
     // Question 7
     Question(
         categoryId = 7,
-        questionText = "Was ist HTML?",
-        answerA = "Eine Programmiersprache fuer Videospiele",
-        answerB = "Eine Auszeichnungssprache fuer Webseiten",
-        answerC = "Ein Betriebssystem fuer Webserver",
-        answerD = "Eine Datenbank-Software",
+        questionText = "Was regelt die DSGVO in Europa?",
+        answerA = "Die Preise fuer Internetzugaenge",
+        answerB = "Den Schutz persoenlicher Daten von Buergerinnen und Buergern",
+        answerC = "Die Sicherheit von Flugzeugen",
+        answerD = "Die Lautstaerke von Werbung im Fernsehen",
         correctAnswer = 1,
-        explanation = "HTML steht fuer HyperText Markup Language und ist die Grundsprache, mit der Webseiten strukturiert werden.",
+        explanation = "Die DSGVO (Datenschutz-Grundverordnung) ist ein EU-Gesetz, das festlegt, wie Unternehmen persoenliche Daten von Nutzern erheben, speichern und verwenden duerfen.",
         difficulty = 1,
-        funFact = "Die erste Version von HTML hatte nur 18 Tags – heute gibt es ueber 100 Standard-Tags."
+        funFact = "Die DSGVO trat 2018 in Kraft und ist seitdem das strengste Datenschutzgesetz der Welt -- Verstoesse koennen Bussgelder von bis zu 4% des weltweiten Jahresumsatzes bedeuten."
     ),
 
     // Question 8
     Question(
         categoryId = 7,
-        questionText = "Welches Videospiel gilt als erstes kommerziell erfolgreiches Arcade-Spiel?",
-        answerA = "Space Invaders",
-        answerB = "Tetris",
-        answerC = "Pong",
-        answerD = "Pac-Man",
-        correctAnswer = 2,
-        explanation = "Pong (1972) von Atari gilt als eines der ersten kommerziell erfolgreichen Arcade-Spiele. Es war ein simples Tennis-Spiel fuer zwei Spieler.",
+        questionText = "Was bedeutet es, wenn eine Webseite ein Schloss-Symbol in der Adressleiste zeigt?",
+        answerA = "Die Webseite ist kostenpflichtig",
+        answerB = "Die Verbindung zur Webseite ist verschluesselt (HTTPS)",
+        answerC = "Die Webseite ist gesperrt",
+        answerD = "Der Nutzer ist eingeloggt",
+        correctAnswer = 1,
+        explanation = "Das Schloss-Symbol zeigt an, dass die Daten zwischen Browser und Webseite verschluesselt uebertragen werden -- Dritte koennen sie nicht mitlesen.",
         difficulty = 1,
-        funFact = "Pong-Automaten verdoppelten ihre Aufstellung innerhalb weniger Monate – Spielhallen konnten dem Ansturm kaum standhalten."
+        funFact = "Noch 2016 nutzte weniger als die Haelfte aller Webseiten HTTPS. Heute sind es dank kostenloser Zertifikate ueber 90%."
     ),
 
     // Question 9
     Question(
         categoryId = 7,
-        questionText = "In welchem Jahr wurde Minecraft erstmals veroeffentlicht?",
-        answerA = "2005",
-        answerB = "2011",
-        answerC = "2008",
-        answerD = "2014",
+        questionText = "Wie schuetzt man sein Social-Media-Konto am besten?",
+        answerA = "Mit einem einfachen Passwort, das man sich gut merken kann",
+        answerB = "Mit einem starken Passwort und aktivierter Zweifaktor-Authentifizierung",
+        answerC = "Indem man das Passwort regelmaessig an Freunde weitergibt",
+        answerD = "Mit dem eigenen Namen als Passwort",
         correctAnswer = 1,
-        explanation = "Minecraft wurde 2011 offiziell veroeffentlicht, nachdem es ab 2009 als fruehe Alpha-Version gespielt werden konnte.",
+        explanation = "Ein starkes, einzigartiges Passwort plus 2FA ist die wirksamste Kombination zum Schutz von Social-Media-Konten gegen Hackerangriffe.",
         difficulty = 1,
-        funFact = "Minecraft ist das meistverkaufte Videospiel aller Zeiten mit ueber 300 Millionen verkauften Exemplaren."
+        funFact = "Jedes Jahr werden weltweit Milliarden von Passwoertern bei Datenpannen gestohlen und im Darknet verkauft."
     ),
 
     // Question 10
     Question(
         categoryId = 7,
-        questionText = "Was ist Instagram Stories?",
-        answerA = "Eine Funktion zum Schreiben langer Blogbeitraege",
-        answerB = "Kurze Fotos oder Videos, die nach 24 Stunden verschwinden",
-        answerC = "Ein privater Chat auf Instagram",
-        answerD = "Eine Videocall-Funktion",
+        questionText = "Was ist Cybermobbing?",
+        answerA = "Eine Art Computerspiel",
+        answerB = "Die Belaestigung, Bedrohung oder Demuetigigung von Personen ueber digitale Medien",
+        answerC = "Ein Sicherheitsprogramm fuer Kinder",
+        answerD = "Ein Virus, der soziale Netzwerke angreift",
         correctAnswer = 1,
-        explanation = "Instagram Stories sind kurze Foto- oder Videobeitraege, die 24 Stunden sichtbar sind und danach automatisch geloescht werden.",
+        explanation = "Cybermobbing bezeichnet das gezielte Schuedigen, Beleidigen oder Bedrohen von Personen ueber das Internet, oft anonym und rund um die Uhr.",
         difficulty = 1,
-        funFact = "Instagram kopierte das Stories-Konzept von Snapchat – Snapchat-Gruender Evan Spiegel hatte das Feature 2013 erfunden."
+        funFact = "Laut Studien hat jeder dritte Jugendliche in Deutschland schon Erfahrungen mit Cybermobbing gemacht -- als Opfer oder als Zeuge."
     ),
 
     // Question 11
     Question(
         categoryId = 7,
-        questionText = "Was ist LinkedIn?",
-        answerA = "Ein Netzwerk fuer Beruf und Karriere",
-        answerB = "Ein Musik-Streaming-Dienst",
-        answerC = "Eine Plattform fuer Kochrezepte",
-        answerD = "Ein Videostreaming-Dienst fuer Nachrichten",
-        correctAnswer = 0,
-        explanation = "LinkedIn ist ein soziales Netzwerk fuer berufliche Kontakte, Stellenangebote und den Austausch unter Fachleuten.",
+        questionText = "Was sollte man bei den Datenschutzeinstellungen sozialer Netzwerke tun?",
+        answerA = "Alles auf oeffentlich lassen, damit man mehr Follower bekommt",
+        answerB = "Regelmaessig pruefen und Inhalte nur fuer Freunde sichtbar schalten",
+        answerC = "Gar nichts -- die Werkseinstellungen sind immer sicher",
+        answerD = "Alle Daten oeffentlich teilen, damit man leichter gefunden wird",
+        correctAnswer = 1,
+        explanation = "Die Standard-Datenschutzeinstellungen in sozialen Netzwerken sind oft sehr offen -- es ist wichtig, sie regelmaessig zu pruefen und anzupassen.",
         difficulty = 1,
-        funFact = "LinkedIn wurde 2002 gegruendet und gehoert seit 2016 zu Microsoft, das es fuer 26 Milliarden Dollar kaufte."
+        funFact = "Facebook aendert seine Datenschutzeinstellungen regelmaessig -- Experten empfehlen, sie mindestens einmal im Jahr zu pruefen."
     ),
 
     // Question 12
     Question(
         categoryId = 7,
-        questionText = "Was versteht man unter einem sicheren Passwort?",
-        answerA = "Ein kurzes Wort, das man sich gut merken kann",
-        answerB = "Eine Kombination aus Grossbuchstaben, Kleinbuchstaben, Zahlen und Sonderzeichen",
-        answerC = "Den eigenen Namen",
-        answerD = "Das Geburtsdatum",
+        questionText = "Wofuer steht die Abkuerzung DSGVO?",
+        answerA = "Deutsche Sicherheits-Grundverordnung fuer Organisationen",
+        answerB = "Datenschutz-Grundverordnung",
+        answerC = "Digitale Software-Grundvoraussetzungen fuer den Online-Verkehr",
+        answerD = "Datensicherungs- und Geraeteschutz-Verordnung",
         correctAnswer = 1,
-        explanation = "Ein sicheres Passwort besteht aus mindestens 12 Zeichen mit Grossbuchstaben, Kleinbuchstaben, Zahlen und Sonderzeichen.",
+        explanation = "DSGVO steht fuer Datenschutz-Grundverordnung -- das europaeeische Gesetz zum Schutz persoenlicher Daten.",
         difficulty = 1,
-        funFact = "Ein Passwort wie 'P@ssw0rd!' gilt trotz Sonderzeichen als unsicher, weil es einem bekannten Muster folgt."
+        funFact = "Die DSGVO gilt nicht nur fuer europaeische Unternehmen, sondern fuer alle Firmen weltweit, die Daten von EU-Bueregern verarbeiten."
     ),
 
     // Question 13
     Question(
         categoryId = 7,
-        questionText = "Was ist Phishing?",
-        answerA = "Ein Online-Spiel",
-        answerB = "Ein Betrugsversuch, bei dem man durch gefaelschte Nachrichten zur Eingabe von Daten verleitet wird",
-        answerC = "Eine Methode zur Datensicherung",
-        answerD = "Ein Netzwerkprotokoll",
+        questionText = "Welche Funktion hat eine Mikrowelle?",
+        answerA = "Sie kocht Lebensmittel durch direkten Kontakt mit einer Heizplatte",
+        answerB = "Sie erwaermt Lebensmittel durch Mikrowellenstrahlung, die Wassermolekuele zum Schwingen bringt",
+        answerC = "Sie kuehlt Lebensmittel schnell herunter",
+        answerD = "Sie reinigt Lebensmittel durch UV-Strahlung",
         correctAnswer = 1,
-        explanation = "Phishing ist ein Cyberangriff, bei dem Kriminelle durch gefaelschte E-Mails oder Webseiten versuchen, Passwoerter oder Bankdaten zu stehlen.",
+        explanation = "Eine Mikrowelle erzeugt elektromagnetische Wellen, die die Wassermolekuele in Lebensmitteln zum Schwingen bringen -- dabei entsteht Waerme.",
         difficulty = 1,
-        funFact = "Der Begriff 'Phishing' leitet sich von 'fishing' (Angeln) ab – die Kriminellen 'angeln' nach Opfern mit koederhaften Nachrichten."
+        funFact = "Die Mikrowelle wurde zufeellig 1945 erfunden: Ingenieur Percy Spencer bemerkte, dass ein Radargeraet eine Schokolade in seiner Tasche geschmolzen hatte."
     ),
 
     // Question 14
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Computervirus?",
-        answerA = "Ein Programm, das einen Computer beschleunigt",
-        answerB = "Schadsoftware, die sich selbst verbreitet und Schaden anrichtet",
-        answerC = "Ein Backup-Programm",
-        answerD = "Ein Sicherheitsupdate",
+        questionText = "Was bedeutet das Schleuderprogramm einer Waschmaschine?",
+        answerA = "Die Waschmaschine waescht bei besonders hoher Temperatur",
+        answerB = "Die Trommel dreht sich sehr schnell, um Wasser aus der Waesche zu schleudern",
+        answerC = "Die Waschmaschine macht einen Spuelgang ohne Waschmittel",
+        answerD = "Die Waschmaschine troecknet die Waesche mit Heissluft",
         correctAnswer = 1,
-        explanation = "Ein Computervirus ist eine Schadsoftware, die sich an andere Programme haengt, sich selbst verbreitet und Daten oder Systeme schaedigen kann.",
+        explanation = "Beim Schleuderprogramm dreht sich die Trommel mit hoher Drehzahl (oft 1200-1600 U/min), um durch die Fliehkraft Wasser aus der Waesche zu pressen.",
         difficulty = 1,
-        funFact = "Der erste bekannte Computervirus hiess 'Creeper' (1971) und zeigte nur die Nachricht 'I'm the creeper, catch me if you can!'"
+        funFact = "Je hoeher die Schleuderzahl (U/min), desto weniger Restfeuchte bleibt in der Waesche -- und desto kuerzer muss sie troocknen."
     ),
 
     // Question 15
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Trojaner in der Cybersicherheit?",
-        answerA = "Ein nuetzliches Systemtool",
-        answerB = "Schadsoftware, die sich als nuetzliches Programm tarnt",
-        answerC = "Ein besonders sicherer Virenscanner",
-        answerD = "Ein Protokoll zur Datenverschluesselung",
+        questionText = "Wofuer verwendet man eine Geschirrspuelmaschine?",
+        answerA = "Zum Waschen von Waesche",
+        answerB = "Zum automatischen Reinigen von Geschirr, Glaesern und Besteck",
+        answerC = "Zum Sterilisieren von Lebensmitteln",
+        answerD = "Zum Aufwaermen von Speisen",
         correctAnswer = 1,
-        explanation = "Ein Trojaner ist Schadsoftware, die harmlos aussieht (z.B. als Spiel oder Tool), aber im Hintergrund schaedliche Aktionen ausfuehrt.",
+        explanation = "Eine Geschirrspuelmaschine reinigt Geschirr automatisch durch einen Spuelprozess mit Wasser, Spuelmittel und Waerme.",
         difficulty = 1,
-        funFact = "Der Name kommt vom Trojanischen Pferd aus der griechischen Mythologie – ein versteckter Angriff unter falschem Deckmantel."
+        funFact = "Die erste Geschirrspuelmaschine patentierte Josephine Cochrane 1886 -- weil ihre Diener beim Handabwaschen zu viel Porzellan zerbrachen."
     ),
 
     // Question 16
     Question(
         categoryId = 7,
-        questionText = "Was ist Cloud Computing?",
-        answerA = "Programme und Daten, die ueber das Internet genutzt werden statt lokal auf dem Geraet",
-        answerB = "Eine Technik zur Wolkenbeobachtung per Satellit",
-        answerC = "Ein besonders schneller Internetzugang",
-        answerD = "Eine Verschluesselungsmethode fuer E-Mails",
-        correctAnswer = 0,
-        explanation = "Cloud Computing bedeutet, dass Rechenleistung, Speicher und Programme ueber das Internet bereitgestellt werden, statt lokal installiert zu sein.",
+        questionText = "Was ist eine Lithium-Ionen-Batterie?",
+        answerA = "Eine Einwegbatterie fuer Fernbedienungen",
+        answerB = "Ein wiederaufladbarer Akku, der in Smartphones und Laptops eingesetzt wird",
+        answerC = "Eine Autobatterie aus Blei",
+        answerD = "Eine Batterie aus Salzwasser",
+        correctAnswer = 1,
+        explanation = "Lithium-Ionen-Akkus sind wiederaufladbar, leicht und speichern viel Energie auf kleinem Raum -- deshalb sind sie in nahezu allen mobilen Geraeten verbaut.",
         difficulty = 1,
-        funFact = "Der Begriff 'Cloud' fuer Netzwerke entstand in den 1990ern, weil Netzwerkdiagramme oft eine Wolke als Symbol fuer das Internet verwendeten."
+        funFact = "Die Entwickler des Lithium-Ionen-Akkus, Goodenough, Whittingham und Yoshino, erhielten 2019 den Chemie-Nobelpreis."
     ),
 
     // Question 17
     Question(
         categoryId = 7,
-        questionText = "Was ist Google Drive?",
-        answerA = "Ein Navigationsdienst fuer Autofahrer",
-        answerB = "Ein Cloud-Speicherdienst von Google",
-        answerC = "Ein E-Mail-Programm",
-        answerD = "Ein Videostreaming-Dienst",
+        questionText = "Was ist kabelloses Laden (Wireless Charging)?",
+        answerA = "Laden ueber eine normale Steckdose",
+        answerB = "Laden durch elektromagnetische Induktion, ohne dass ein Kabel angesteckt werden muss",
+        answerC = "Laden ueber das WLAN-Signal",
+        answerD = "Laden durch Sonnenlicht wie bei Solarzellen",
         correctAnswer = 1,
-        explanation = "Google Drive ist ein Cloud-Speicherdienst von Google, mit dem man Dateien online speichern und mit anderen teilen kann.",
+        explanation = "Beim kabellosen Laden liegt das Geraet auf einer Ladeschale -- ein Magnetfeld uebertraegt Energie durch Induktion in den Akku, ganz ohne Kabel.",
         difficulty = 1,
-        funFact = "Jeder Google-Account bekommt 15 GB kostenlosen Speicherplatz auf Google Drive."
+        funFact = "Der Qi-Standard (gesprochen 'Tschii') ist der internationale Standard fuer kabelloses Laden und wird von fast allen modernen Smartphones unterstuetzt."
     ),
 
     // Question 18
     Question(
         categoryId = 7,
-        questionText = "Was ist Online-Shopping?",
-        answerA = "Ein Videospiel mit Kaufsimulation",
-        answerB = "Das Kaufen von Produkten ueber das Internet",
-        answerC = "Eine App fuer Preisvergleiche im Ladengeschaeft",
-        answerD = "Ein Kassensystem fuer Supermaerkte",
+        questionText = "Warum sollte man Akkus nicht dauerhaft auf 100% aufgeladen lassen?",
+        answerA = "Weil das Laden bei 100% automatisch aufhoert und Strom verschwendet wird",
+        answerB = "Weil dauerhafte Vollladung den Akku schneller altern laesst und die Kapazitaet verringert",
+        answerC = "Weil Akkus bei 100% explodieren koennen",
+        answerD = "Es gibt keinen Grund -- Vollladung ist immer ideal",
         correctAnswer = 1,
-        explanation = "Online-Shopping bedeutet, Produkte oder Dienstleistungen ueber Internetplattformen zu kaufen und liefern zu lassen.",
+        explanation = "Lithium-Ionen-Akkus altern schneller, wenn sie dauerhaft bei 100% oder 0% gehalten werden -- ideal ist ein Bereich zwischen 20% und 80%.",
         difficulty = 1,
-        funFact = "Der erste Online-Kauf der Geschichte fand 1994 statt: Phil Brandenberger kaufte eine CD von Sting fuer 12,48 Dollar."
+        funFact = "Viele Smartphone-Hersteller haben deshalb eine 'optimierte Ladefunktion' eingebaut, die den Akku absichtlich bei 80% pausiert."
     ),
 
     // Question 19
     Question(
         categoryId = 7,
-        questionText = "Was ist PayPal?",
-        answerA = "Eine Kreditkarte von Visa",
-        answerB = "Ein Online-Bezahldienst",
-        answerC = "Eine Bank fuer Unternehmen",
-        answerD = "Ein Buchhaltungsprogramm",
+        questionText = "Was bedeutet '4K' bei einem Fernseher?",
+        answerA = "Der Fernseher hat 4 HDMI-Anschluesse",
+        answerB = "Eine Bildaufloesung von ca. 3840 x 2160 Pixeln -- viermal so viel wie Full HD",
+        answerC = "Der Fernseher hat ein 4 Kilogramm schweres Display",
+        answerD = "Ein Fernseher mit 4.000 Kanal-Speicherplaetzen",
         correctAnswer = 1,
-        explanation = "PayPal ist ein Online-Bezahldienst, mit dem man im Internet sicher bezahlen und Geld senden oder empfangen kann.",
+        explanation = "4K bezeichnet eine Bildaufloesung von ca. 3840 x 2160 Pixeln (auch UHD genannt). Das Bild hat viermal mehr Pixel als Full HD (1920 x 1080).",
         difficulty = 1,
-        funFact = "PayPal wurde 1998 gegruendet und war eines der ersten Unternehmen, das das Silicon Valley-Modell schnell wachsender Tech-Firmen praegte."
+        funFact = "Der Begriff '4K' stammt aus dem Kino, wo das Bild rund 4.000 Pixel breit ist -- beim Heim-TV nennt man die gleiche Aufloesung oft auch 'UHD'."
     ),
 
     // Question 20
     Question(
         categoryId = 7,
-        questionText = "Welches Geraet braucht man typischerweise, um sich ins Internet einzuwaehlen?",
-        answerA = "Einen Drucker",
-        answerB = "Einen Router oder ein Modem",
-        answerC = "Eine externe Festplatte",
-        answerD = "Einen Bildschirm mit USB-C",
+        questionText = "Was ist ein Smart TV?",
+        answerA = "Ein Fernseher, der ausschliesslich fuer Videokonferenzen genutzt wird",
+        answerB = "Ein Fernseher mit Internetverbindung, auf dem man Apps nutzen kann",
+        answerC = "Ein Fernseher, der sich automatisch an die Helligkeit anpasst",
+        answerD = "Ein Fernseher mit besonders grossem Bildschirm",
         correctAnswer = 1,
-        explanation = "Ein Router oder Modem empfaengt das Internetsiganl vom Anbieter und macht es im Haushalt nutzbar.",
+        explanation = "Ein Smart TV ist ein Fernseher mit eingebautem Internetzugang und App-System. Man kann darauf Netflix, YouTube und andere Dienste direkt nutzen.",
         difficulty = 1,
-        funFact = "Das erste Modem wurde 1958 entwickelt und diente der Datenuebertragung zwischen Computern ueber Telefonleitungen."
+        funFact = "Ueber 70% der in Deutschland verkauften Fernseher sind heute Smart TVs -- analoge Fernseher ohne Internet sind fast verschwunden."
     ),
 
     // Question 21
     Question(
         categoryId = 7,
-        questionText = "Was ist Super Mario?",
-        answerA = "Eine Figur aus einem japanischen Anime",
-        answerB = "Ein beruemtes Videospiel-Maskottchen von Nintendo",
-        answerC = "Ein Rennspiel von Sony",
-        answerD = "Ein Charakter aus einem American-Comic",
+        questionText = "Was ist der Unterschied zwischen einem LED- und einem OLED-Fernseher?",
+        answerA = "LED ist neuer als OLED",
+        answerB = "OLED leuchtet selbst pro Pixel, LED hat eine Hintergrundbeleuchtung -- OLED hat daher tieferes Schwarz",
+        answerC = "LED hat bessere Farben, OLED ist guenstiger",
+        answerD = "Es gibt keinen Unterschied -- beide Technologien sind identisch",
         correctAnswer = 1,
-        explanation = "Super Mario ist das bekannteste Maskottchen von Nintendo. Der kleine Klempner Mario ist seit 1985 in zahlreichen Videospielen der Star.",
+        explanation = "Bei OLED leuchtet jedes Pixel einzeln und kann komplett ausschalten -- das ergibt perfektes Schwarz. LED-Bildschirme haben eine Hintergrundbeleuchtung, die nie ganz ausgeht.",
         difficulty = 1,
-        funFact = "Mario hiess urspruenglich 'Jumpman' und erschien 1981 in Donkey Kong – sein heutiger Name kam vom Vermieter des Nintendo-Amerika-Bueros: Mario Segale."
+        funFact = "OLED steht fuer 'Organic Light-Emitting Diode' -- das 'Organic' bezieht sich auf organische Kohlenstoffverbindungen in der Leuchtschicht."
     ),
 
     // Question 22
     Question(
         categoryId = 7,
-        questionText = "Was ist ein KI-Bildgenerator?",
-        answerA = "Ein Scanner fuer physische Fotos",
-        answerB = "Ein Programm, das auf Texteingabe hin Bilder erstellt",
-        answerC = "Eine Kamera-App mit Filtern",
-        answerD = "Ein Programm zum Nachbessern von unscharfen Fotos",
+        questionText = "Was ist der Vorteil von Noise-Cancelling-Kopfhoerern?",
+        answerA = "Sie haben eine lautere Musikwiedergabe als normale Kopfhoerer",
+        answerB = "Sie reduzieren aktiv Umgebungsgeraeusche, sodass man in ruhiger Umgebung zuhoeren kann",
+        answerC = "Sie uebersetzen gesprochene Sprache automatisch",
+        answerD = "Sie blockieren Bluetooth-Stoersignale",
         correctAnswer = 1,
-        explanation = "Ein KI-Bildgenerator wie Midjourney oder DALL-E erstellt auf Basis einer Textbeschreibung automatisch Bilder.",
+        explanation = "Noise-Cancelling-Kopfhoerer messen den Umgebungslaerm und erzeugen ein gegenlaeufiges Schallsignal, das Stoergeraeusche aufhebt -- das nennt man aktive Geraeuschangabe.",
         difficulty = 1,
-        funFact = "DALL-E wurde nach dem Surrealist-Kuenstler Salvador Dali und dem Pixar-Film WALL-E benannt."
+        funFact = "Aktives Noise Cancelling wurde urspruenglich fuer Pilotenheadsets entwickelt, um den lauten Triebwerklaerm in Flugzeugcockpits zu reduzieren."
     ),
 
     // Question 23
     Question(
         categoryId = 7,
-        questionText = "Wofuer wird Zweifaktor-Authentifizierung (2FA) verwendet?",
-        answerA = "Um Passwoerter zu verdoppeln",
-        answerB = "Als zusaetzliche Sicherheitsstufe beim Anmelden",
-        answerC = "Um zwei Benutzer gleichzeitig anzumelden",
-        answerD = "Um Passwoerter automatisch zu erstellen",
+        questionText = "Wie uebertraegt ein Bluetooth-Lautsprecher Musik?",
+        answerA = "Ueber ein WLAN-Netzwerk",
+        answerB = "Drahtlos per Funk -- das Smartphone sendet das Audiosignal per Bluetooth",
+        answerC = "Ueber einen USB-Stick",
+        answerD = "Ueber ein Klinkenkabel",
         correctAnswer = 1,
-        explanation = "Die Zweifaktor-Authentifizierung erfordert neben dem Passwort noch einen zweiten Beweis (z.B. einen Code per SMS), um ein Konto zu schuetzen.",
+        explanation = "Bluetooth ist ein Kurzstreckenfunkstandard. Ein Smartphone oder Tablet sendet das Audiosignal als Funksignal an den Lautsprecher, ohne Kabel.",
         difficulty = 1,
-        funFact = "Konten mit 2FA sind laut Google 99,9% sicherer gegen automatisierte Angriffe als Konten ohne 2FA."
+        funFact = "Bluetooth wurde nach dem Wikingerkoening Harald Blaatand (Harald Bluetooth) benannt, der dafuer bekannt war, verfeindete Staemme zu verbinden -- so wie Bluetooth Geraete verbindet."
     ),
 
     // Question 24
     Question(
         categoryId = 7,
-        questionText = "Was versteht man unter 'Malware'?",
-        answerA = "Schlechte oder schaedliche Software",
-        answerB = "Veraltete Software",
-        answerC = "Software fuer Mac-Computer",
-        answerD = "Teure Unternehmenssoftware",
-        correctAnswer = 0,
-        explanation = "Malware (von 'Malicious Software') ist ein Sammelbegriff fuer schaedliche Software wie Viren, Trojaner, Spyware und Ransomware.",
+        questionText = "Was bedeutet 'In-Ear-Kopfhoerer'?",
+        answerA = "Kopfhoerer, die ueber dem Ohr liegen",
+        answerB = "Kleine Kopfhoerer, die direkt in den Gehoergang gesteckt werden",
+        answerC = "Kopfhoerer mit einem bugelartigen Rahmen um den Kopf",
+        answerD = "Kopfhoerer fuer professionelle Tonstudios",
+        correctAnswer = 1,
+        explanation = "In-Ear-Kopfhoerer (auch Ohrstoepsel genannt) werden direkt in den Gehoergang gesteckt und sind besonders kompakt und transportfreundlich.",
         difficulty = 1,
-        funFact = "Weltweit werden taeglich etwa 450.000 neue Malware-Varianten entdeckt – das sind 5 neue Bedrohungen pro Sekunde."
+        funFact = "Die beliebtesten In-Ear-Kopfhoerer der Welt sind Apples AirPods -- seit ihrer Einfuehrung 2016 haben sie das Design kleiner Kopfhoerer global gepraegt."
     ),
 
     // Question 25
     Question(
         categoryId = 7,
-        questionText = "Welches ist das meistverkaufte Videospiel aller Zeiten?",
-        answerA = "Grand Theft Auto V",
-        answerB = "Tetris",
-        answerC = "Minecraft",
-        answerD = "Mario Kart 8",
-        correctAnswer = 2,
-        explanation = "Minecraft ist mit ueber 300 Millionen verkauften Exemplaren das meistverkaufte Videospiel aller Zeiten.",
+        questionText = "Wofuer steht GPS?",
+        answerA = "General Positioning Software",
+        answerB = "Global Positioning System",
+        answerC = "Geographical Precision Scanner",
+        answerD = "Global Pathway Service",
+        correctAnswer = 1,
+        explanation = "GPS steht fuer Global Positioning System -- ein US-amerikanisches Satellitennavigationssystem, das die genaue Position von Geraeten auf der Erde berechnet.",
         difficulty = 1,
-        funFact = "Minecraft wurde von Markus 'Notch' Persson in seiner Freizeit entwickelt. Microsoft kaufte es 2014 fuer 2,5 Milliarden Dollar."
+        funFact = "Das GPS-System besteht aus mindestens 24 Satelliten, die die Erde umkreisen -- mindestens 4 muessen sichtbar sein, damit die Position genau berechnet werden kann."
     ),
 
     // Question 26
     Question(
         categoryId = 7,
-        questionText = "Was ist Snapchat bekannt fuer?",
-        answerA = "Kurze Videos und Bilder, die nach dem Ansehen verschwinden",
-        answerB = "Professionelle Bewerbungsfotos",
-        answerC = "Live-Nachrichten und Politik-Debatten",
-        answerD = "Musik-Uploads fuer Kuenstler",
-        correctAnswer = 0,
-        explanation = "Snapchat ist bekannt fuer kurzlebige Fotos und Videos (Snaps), die nach dem Ansehen automatisch geloescht werden.",
+        questionText = "Wie funktioniert ein Navigationssystem im Auto?",
+        answerA = "Es laedt Kartenbilder aus dem Internet und zeigt die Strassen",
+        answerB = "Es empfaengt Signale von GPS-Satelliten und berechnet daraus die aktuelle Position und Route",
+        answerC = "Es liest den Strassenbelag mit Infrarotsensoren ab",
+        answerD = "Es fragt andere Autos nach der besten Route",
+        correctAnswer = 1,
+        explanation = "Ein Navi empfaengt Signale von mehreren GPS-Satelliten, berechnet daraus den genauen Standort und gleicht diesen mit gespeicherten Kartendaten ab.",
         difficulty = 1,
-        funFact = "Snapchat fuehrte 2013 die 'Stories'-Funktion ein – Instagram und WhatsApp kopierten das Konzept kurz darauf."
+        funFact = "Fruehe Navis kosteten in den 1990ern ueber 2.000 Euro -- heute ist GPS-Navigation in jedem Smartphone kostenlos enthalten."
     ),
 
     // Question 27
     Question(
         categoryId = 7,
-        questionText = "Was ist Ransomware?",
-        answerA = "Software zur sicheren Datensicherung",
-        answerB = "Schadsoftware, die Daten verschluesselt und Loesegeld fordert",
-        answerC = "Ein Programm fuer Online-Banking",
-        answerD = "Eine Art Cloud-Backup",
+        questionText = "Was zeigt die blaue Linie auf Google Maps an?",
+        answerA = "Strassen mit Tempolimit 30",
+        answerB = "Die vorgeschlagene Route von A nach B",
+        answerC = "Wasserstrassen und Kanaele",
+        answerD = "Gesperrte Strassen",
         correctAnswer = 1,
-        explanation = "Ransomware verschluesselt die Daten eines Opfers und fordert eine Zahlung (Loesegeld/Ransom), um sie wieder freizugeben.",
+        explanation = "Die blaue Linie auf Google Maps markiert die empfohlene Navigationsroute von Start zu Ziel.",
         difficulty = 1,
-        funFact = "Der groesste Ransomware-Angriff der Geschichte (WannaCry, 2017) traf ueber 200.000 Computer in 150 Laendern in nur einem Tag."
+        funFact = "Google Maps wurde 2005 veroeffentlicht und ist heute der meistgenutzte Kartendienst der Welt mit ueber 1 Milliarde aktiven Nutzern pro Monat."
     ),
 
     // Question 28
     Question(
         categoryId = 7,
-        questionText = "Was ist iCloud?",
-        answerA = "Ein Cloud-Speicherdienst von Apple",
-        answerB = "Ein Sprachassistent von Apple",
-        answerC = "Ein Musikdienst fuer iPhone",
-        answerD = "Ein Videostreaming-Dienst von Apple",
-        correctAnswer = 0,
-        explanation = "iCloud ist der Cloud-Dienst von Apple, der Fotos, Dokumente, Kontakte und mehr automatisch auf Apple-Geraeten synchronisiert.",
+        questionText = "Was ist Echtzeit-Verkehrsinformation bei einem Navigationssystem?",
+        answerA = "Informationen ueber historische Strassenverlaeufe",
+        answerB = "Aktuelle Daten zu Staus, Unfaellen und Baustellen, die die Route beeinflusst",
+        answerC = "Informationen ueber Busplandaten",
+        answerD = "Die Geschwindigkeit des eigenen Fahrzeugs in Echtzeit",
+        correctAnswer = 1,
+        explanation = "Echtzeit-Verkehrsinformationen werden ueber das Internet bezogen und zeigen aktuelle Staus oder Umleitungen, damit das Navi die schnellste Route berechnen kann.",
         difficulty = 1,
-        funFact = "Jeder Apple-Account bekommt 5 GB kostenlosen iCloud-Speicher – mehr als genug fuer Textnachrichten, aber knapp fuer Fotos."
+        funFact = "Google Maps sammelt anonymisierte Geschwindigkeitsdaten von Millionen Smartphone-Nutzern, um Staus in Echtzeit zu erkennen."
     ),
 
     // Question 29
     Question(
         categoryId = 7,
-        questionText = "Welches Programm wird zum Schreiben von Code verwendet?",
-        answerA = "Microsoft Excel",
-        answerB = "Ein Code-Editor wie Visual Studio Code",
-        answerC = "Adobe Photoshop",
-        answerD = "Ein Browser wie Google Chrome",
+        questionText = "Was ist der Unterschied zwischen einem Tintenstrahl- und einem Laserdrucker?",
+        answerA = "Tintenstrahldrucker sind immer groesser als Laserdrucker",
+        answerB = "Tintenstrahldrucker spritzt fluessige Tinte auf das Papier, Laserdrucker nutzt Hitze und Toner-Pulver",
+        answerC = "Laserdrucker kann nur schwarz-weiss drucken, Tintenstrahldrucker immer farbig",
+        answerD = "Es gibt keinen Unterschied -- beide Verfahren sind identisch",
         correctAnswer = 1,
-        explanation = "Zum Schreiben von Programmiercode verwendet man spezielle Code-Editoren oder Entwicklungsumgebungen wie Visual Studio Code.",
+        explanation = "Tintenstrahldrucker (Inkjet) spritzen winzige Tintenttropfen auf das Papier. Laserdrucker laden Toner-Pulver elektrostatisch auf das Papier und fixieren es mit Hitze.",
         difficulty = 1,
-        funFact = "Visual Studio Code wurde 2015 von Microsoft veroeffentlicht und ist heute der beliebteste Code-Editor weltweit."
+        funFact = "Laserdrucker sind bei haeufigem Drucken pro Seite oft guenstiger als Tintenstrahldrucker, weil Toner laenger haelt als fluessige Tinte."
     ),
 
     // Question 30
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Passwort-Manager?",
-        answerA = "Ein Programm, das alle Passwoerter sicher speichert und verwaltet",
-        answerB = "Eine Funktion zum automatischen Sperren des Bildschirms",
-        answerC = "Ein Programm zum Zuruecksetzen vergessener Passwoerter",
-        answerD = "Ein Sicherheitsprogramm gegen Hacker",
-        correctAnswer = 0,
-        explanation = "Ein Passwort-Manager ist eine App, die alle Passwoerter verschluesselt speichert, sodass man sich nur ein Master-Passwort merken muss.",
+        questionText = "Was druckt ein 3D-Drucker aus?",
+        answerA = "Nur Papier-Dokumente in drei Farben",
+        answerB = "Dreidimensionale Objekte, Schicht fuer Schicht, aus Kunststoff oder anderen Materialien",
+        answerC = "Fotos in besonders hoher Qualitaet",
+        answerD = "Elektronische Schaltkreise auf Platinen",
+        correctAnswer = 1,
+        explanation = "Ein 3D-Drucker baut dreidimensionale Objekte auf, indem er Material (meist Kunststoff) Schicht fuer Schicht auftraegt -- wie eine umgekehrte Sculptur.",
         difficulty = 1,
-        funFact = "Wer einen Passwort-Manager nutzt, hat im Schnitt deutlich staerkere Passwoerter – weil er sich keine merken muss."
+        funFact = "3D-Drucker werden heute in der Medizin eingesetzt, um massgeschneiderte Prothesen, Implantate und sogar Gewebestrukturen herzustellen."
     ),
 
     // Question 31
     Question(
         categoryId = 7,
-        questionText = "Was ist Fortnite?",
-        answerA = "Ein Karten-Browserspiel",
-        answerB = "Ein sehr beliebtes Battle-Royale-Videospiel",
-        answerC = "Eine Smartphone-App fuer Fitness",
-        answerD = "Ein Musik-Streaming-Dienst fuer Gamer",
+        questionText = "Was ist ein Passwort-Manager?",
+        answerA = "Ein Programm, das Passwoerter automatisch zuruecksetzt",
+        answerB = "Eine App, die alle Passwoerter verschluesselt speichert und automatisch eingibt",
+        answerC = "Ein Sicherheitsprogramm gegen Computerviren",
+        answerD = "Eine Funktion im Browser zum Sperren von Webseiten",
         correctAnswer = 1,
-        explanation = "Fortnite ist ein kostenloses Battle-Royale-Spiel von Epic Games, bei dem 100 Spieler gegeneinander antreten, bis nur einer uebrig bleibt.",
+        explanation = "Ein Passwort-Manager speichert alle Passwoerter sicher verschluesselt und fuellet sie automatisch in Anmeldeformulare ein -- man muss sich nur noch ein Master-Passwort merken.",
         difficulty = 1,
-        funFact = "Fortnite generierte 2018 ueber 2,4 Milliarden Dollar Umsatz – hauptsaechlich durch den Verkauf von rein kosmetischen Skins."
+        funFact = "Wer einen Passwort-Manager nutzt, hat im Durchschnitt viel staerkere Passwoerter als ohne -- denn er muss sie sich nicht mehr merken."
     ),
 
     // Question 32
     Question(
         categoryId = 7,
-        questionText = "Was bedeutet 'Dropbox'?",
-        answerA = "Ein Anbieter fuer Postboxen",
-        answerB = "Ein Cloud-Speicher- und Dateifreigabedienst",
-        answerC = "Ein E-Mail-Postfach von Microsoft",
-        answerD = "Ein System zum sicheren Loeschen von Dateien",
+        questionText = "Warum ist es gefaehrlich, dasselbe Passwort fuer mehrere Konten zu nutzen?",
+        answerA = "Weil das Passwort dann schneller vergessen wird",
+        answerB = "Weil bei einem Datenleck eines Dienstes alle anderen Konten ebenfalls gefaehrdet sind",
+        answerC = "Weil gleiche Passwoerter automatisch gesperrt werden",
+        answerD = "Es ist nicht gefaehrlich -- es ist sogar empfohlen",
         correctAnswer = 1,
-        explanation = "Dropbox ist ein Cloud-Dienst, mit dem man Dateien online speichern und einfach mit anderen Personen teilen kann.",
+        explanation = "Wenn Hacker das Passwort eines Dienstes stehlen, probieren sie es sofort bei E-Mail, Bank und anderen Diensten aus -- ein Trick namens 'Credential Stuffing'.",
         difficulty = 1,
-        funFact = "Dropbox-Gruender Drew Houston hatte die Idee, als er seinen USB-Stick vergass und keine Moeglichkeit hatte, von jedem Geraet auf seine Dateien zuzugreifen."
+        funFact = "Nach grossen Datenpannen (z.B. Adobe 2013 mit 153 Mio. Nutzerdaten) werden gestohlene Passwoerter in Listen online gehandelt."
     ),
 
     // Question 33
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Warenkorb beim Online-Shopping?",
-        answerA = "Eine Merkliste fuer spaetere Kaeufe",
-        answerB = "Eine virtuelle Sammlung ausgewaehlter Produkte vor dem Kauf",
-        answerC = "Eine Funktion zum Vergleichen von Preisen",
-        answerD = "Das Konto bei einem Online-Shop",
+        questionText = "Was ist ein Spam-Filter?",
+        answerA = "Ein Programm, das E-Mails uebersetzt",
+        answerB = "Eine Funktion, die unerwuenschte Werbe- und Betrugs-E-Mails automatisch aussortiert",
+        answerC = "Ein Antivirusprogramm fuer Smartphones",
+        answerD = "Ein Programm zum Archivieren alter E-Mails",
         correctAnswer = 1,
-        explanation = "Der Warenkorb bei einem Online-Shop sammelt die ausgewaehlten Produkte, bevor man zur Kasse geht und bezahlt.",
+        explanation = "Ein Spam-Filter analysiert eingehende E-Mails und erkennt Muster von Werbemails oder Betrugsversuchen, die dann automatisch in den Spam-Ordner verschoben werden.",
         difficulty = 1,
-        funFact = "Das Konzept des digitalen Warenkorbs wurde 1992 von Charles Stack entwickelt – fuer den ersten Online-Buchladen der Welt, vor Amazon."
+        funFact = "Etwa 45-50% aller weltweit versendeten E-Mails sind Spam -- das entspricht taeglich rund 160 Milliarden Spam-Nachrichten."
     ),
 
     // Question 34
     Question(
         categoryId = 7,
-        questionText = "Was macht ein KI-Empfehlungsalgorithmus?",
-        answerA = "Er blockiert unerwuenschte Werbung",
-        answerB = "Er schlaegt Inhalte vor, die zum bisherigen Nutzungsverhalten passen",
-        answerC = "Er verschluesselt persoenliche Daten",
-        answerD = "Er ueberwacht den Datenschutz der App",
+        questionText = "Was macht ein Inkognito-Fenster im Browser?",
+        answerA = "Es macht den Nutzer im Internet unsichtbar und anonym",
+        answerB = "Es speichert keine Browserverlauf, Cookies oder eingegebene Daten nach dem Schliessen",
+        answerC = "Es schuetzt vor Viren und Schadsoftware",
+        answerD = "Es ermoeglicht schnelleres Laden von Webseiten",
         correctAnswer = 1,
-        explanation = "Ein KI-Empfehlungsalgorithmus analysiert, was man bisher angeschaut oder gekaoft hat, und schlaegt aehnliche Inhalte oder Produkte vor.",
+        explanation = "Das Inkognito-Fenster speichert nach dem Schliessen keinen Verlauf, keine Cookies und keine Formulardaten auf dem Geraet -- der Internetanbieter kann die Aktivitaet aber trotzdem sehen.",
         difficulty = 1,
-        funFact = "Netflix-Studien zeigen, dass etwa 80% der geschauten Inhalte durch den Empfehlungsalgorithmus entdeckt werden."
+        funFact = "Google wurde 2023 in den USA wegen des Inkognito-Modus verklagt, weil Google weiterhin Daten sammelte, obwohl Nutzer glaubten, sie waeren anonym."
     ),
 
     // Question 35
     Question(
         categoryId = 7,
-        questionText = "Welche Firma entwickelte das Videospiel 'The Legend of Zelda'?",
-        answerA = "Sega",
-        answerB = "Nintendo",
-        answerC = "Sony",
-        answerD = "Atari",
-        correctAnswer = 1,
-        explanation = "The Legend of Zelda ist eine Videospielserie von Nintendo. Der erste Teil erschien 1986 und setzt Link als Helden ein.",
+        questionText = "Was ist 8K bei einem Fernseher?",
+        answerA = "Eine Bildaufloesung von 7680 x 4320 Pixeln -- viermal so viel wie 4K",
+        answerB = "Eine Fernsehtechnologie mit 8 Farbkanaelen",
+        answerC = "Ein Fernseher mit 8 integrierten Lautsprechern",
+        answerD = "Ein Fernseher, der 8.000 Sender empfangen kann",
+        correctAnswer = 0,
+        explanation = "8K bezeichnet eine Bildaufloesung von 7680 x 4320 Pixeln. Das sind viermal so viele Pixel wie 4K und 16-mal so viele wie Full HD.",
         difficulty = 1,
-        funFact = "Viele denken, der Hauptcharakter in Zelda heisst Zelda – tatsaechlich heisst er Link. Zelda ist die Prinzessin."
+        funFact = "8K-Inhalte sind bislang kaum verfuegbar -- die meisten Streaming-Dienste bieten noch kein natives 8K-Material an."
     ),
 
     // Question 36
     Question(
         categoryId = 7,
-        questionText = "Was ist Spyware?",
-        answerA = "Software fuer geheime Regierungsagenten",
-        answerB = "Schadsoftware, die heimlich Informationen ueber einen Nutzer sammelt",
-        answerC = "Ein Programm zum sicheren Surfen im Internet",
-        answerD = "Eine Ueberwachungskamera-Software",
+        questionText = "Wozu dient die Datenschutzerklaerung einer App oder Webseite?",
+        answerA = "Sie beschreibt die Funktionen der App",
+        answerB = "Sie erklaert, welche Daten gesammelt werden, wie sie verwendet und gespeichert werden",
+        answerC = "Sie listet die Preise fuer Premium-Funktionen auf",
+        answerD = "Sie zeigt die technischen Anforderungen fuer die Nutzung",
         correctAnswer = 1,
-        explanation = "Spyware ist Schadsoftware, die unbemerkt auf einem Geraet laeuft und Informationen wie Tastatureingaben oder Passwoerter sammelt und weitersendet.",
+        explanation = "Die Datenschutzerklaerung informiert Nutzer dareuber, welche persoenlichen Daten ein Dienst erfasst, wie er sie verarbeitet und mit wem er sie teilt.",
         difficulty = 1,
-        funFact = "Spyware kann auch auf Smartphones installiert werden – oft verkleidet als harmlose App aus unbekannten Quellen."
+        funFact = "Studien zeigen: Es wuerde ca. 76 Arbeitstage pro Jahr dauern, alle Datenschutzerkaerungen der Dienste zu lesen, die eine Durchschnittsperson nutzt."
     ),
 
     // Question 37
     Question(
         categoryId = 7,
-        questionText = "Was ist eine Firewall?",
-        answerA = "Ein spezieller Bildschirm fuer Computer",
-        answerB = "Ein Sicherheitsprogramm, das unerwuenschten Netzwerkverkehr blockiert",
-        answerC = "Ein Programm zur Datensicherung",
-        answerD = "Ein Zugangsschutz fuer WLAN",
+        questionText = "Was ist eine Waschmaschinenkapazitaet von 8 kg?",
+        answerA = "Das maximale Gewicht der Waschmaschine selbst",
+        answerB = "Das maximale Gewicht der trockenen Waesche, die in einem Waschgang gewaschen werden kann",
+        answerC = "Der Wasserverbrauch pro Waschgang in Litern",
+        answerD = "Die Drehzahl der Trommel in Umdrehungen pro Minute",
         correctAnswer = 1,
-        explanation = "Eine Firewall ist ein Sicherheitssystem, das den Netzwerkverkehr ueberwacht und schaedliche oder unerwuenschte Verbindungen blockiert.",
+        explanation = "Die Kapazitaet einer Waschmaschine (z.B. 8 kg) gibt an, wie viel Kilogramm trockene Waesche maximal in die Trommel geluegt werden duerfen.",
         difficulty = 1,
-        funFact = "Der Begriff Firewall stammt aus der Brandschutzarchitektur – eine Brandschutzmauer, die Feuer daran hindert, sich auszubreiten."
+        funFact = "Fuer eine Person reichen meist 5-6 kg, fuer eine Familie mit Kindern empfehlen Experten mindestens 8-9 kg Kapazitaet."
     ),
 
     // Question 38
     Question(
         categoryId = 7,
-        questionText = "Was ist eBay?",
-        answerA = "Eine Online-Auktions- und Verkaufsplattform",
-        answerB = "Ein Online-Supermarkt",
-        answerC = "Ein Cloud-Speicherdienst",
-        answerD = "Eine Buchungsplattform fuer Reisen",
-        correctAnswer = 0,
-        explanation = "eBay ist eine der aeltesten Online-Handelsplattformen, auf der Private und Unternehmen Waren versteigern oder zu Festpreisen verkaufen koennen.",
+        questionText = "Was bedeutet 'Akku-Kapazitaet in mAh' bei einem Smartphone?",
+        answerA = "Die Lautstearke des Lautsprechers in Milliwatt",
+        answerB = "Die Energiemenge, die der Akku speichern kann -- je hoeher, desto laenger haelt er",
+        answerC = "Die maximale Ladegeschwindigkeit in Milliampere",
+        answerD = "Die Anzahl der Ladezyklen bis zum Akkuaustausch",
+        correctAnswer = 1,
+        explanation = "mAh steht fuer Milliamperestunden -- es ist die Einheit fuer die Kapazitaet eines Akkus. Ein 5000-mAh-Akku haelt bei gleichem Verbrauch laenger als ein 3000-mAh-Akku.",
         difficulty = 1,
-        funFact = "eBay wurde 1995 gegruendet und das erste jemals dort versteigerte Objekt war ein kaputter Laserpointer – der Kaeufer wusste, dass er kaputt war."
+        funFact = "Das erste iPhone (2007) hatte einen 1400-mAh-Akku. Aktuelle Flaggschiff-Smartphones kommen oft auf 5000 mAh oder mehr."
     ),
 
     // Question 39
     Question(
         categoryId = 7,
-        questionText = "Welche Programmiersprache wird hauptsaechlich fuer Webseiten-Interaktivitaet genutzt?",
-        answerA = "HTML",
-        answerB = "JavaScript",
-        answerC = "Python",
-        answerD = "Java",
+        questionText = "Was ist eine Geschirrspuelmaschinen-Reinigertablette?",
+        answerA = "Eine Tablette zum Reinigen des Wasserfilters",
+        answerB = "Ein vorportioniertes Reinigungsmittel fuer den Geschirrspueler, das Fett und Speisereste loest",
+        answerC = "Ein Mittel zur Entkalkung der Wasserleitungen",
+        answerD = "Ein Duftstoff fuer die Spuelmaschine",
         correctAnswer = 1,
-        explanation = "JavaScript ist die Programmiersprache, die Webseiten interaktiv macht – Schaltflaechen, Animationen und dynamische Inhalte basieren darauf.",
+        explanation = "Geschirrspueler-Tabs enthalten Reinigungsmittel, Klarspueler und oft auch Salz in einer Tablette -- sie loesen Fett, Staerke und Eiweiss vom Geschirr.",
         difficulty = 1,
-        funFact = "JavaScript wurde 1995 in nur 10 Tagen von Brendan Eich entwickelt – obwohl es 'Java' im Namen traegt, hat es nichts mit Java zu tun."
+        funFact = "Moderne Geschirrspueler verbrauchen pro Spuelgang oft weniger Wasser als das Handabwaschen -- nur etwa 9-12 Liter statt bis zu 30 Liter."
     ),
 
     // Question 40
     Question(
         categoryId = 7,
-        questionText = "Was ist ein HTTPS-Schloss im Browser?",
-        answerA = "Ein Zeichen, dass die Webseite kostenlos ist",
-        answerB = "Ein Zeichen fuer eine verschluesselte und sichere Verbindung",
-        answerC = "Ein Hinweis, dass man eingeloggt ist",
-        answerD = "Ein Zeichen, dass die Seite einen guten Ruf hat",
+        questionText = "Wie funktioniert ein Inkjetdrucker (Tintenstrahldrucker)?",
+        answerA = "Er verbrennt Tinte auf dem Papier mit einem Laser",
+        answerB = "Er spritzt winzige Tintenttropfen durch Duesenkoepfe auf das Papier",
+        answerC = "Er uebertraegt Farbpulver durch statische Aufladung",
+        answerD = "Er druckt durch mechanischen Druck wie eine Schreibmaschine",
         correctAnswer = 1,
-        explanation = "Das Schlosssymbol im Browser zeigt an, dass die Verbindung zur Webseite verschluesselt ist (HTTPS), sodass Dritte die Daten nicht abhoeren koennen.",
+        explanation = "Tintenstrahldrucker spritzen praeziese Tintenttroepfchen aus winzigen Duesenkoepfen auf das Papier -- der Druckkopf bewegt sich dabei zeilenweise ueber das Blatt.",
         difficulty = 1,
-        funFact = "Noch 2016 nutzte weniger als die Haelfte der Webseiten HTTPS. Heute sind es ueber 90% – dank Druck von Google und gratis SSL-Zertifikaten."
+        funFact = "Die Tintenttroepfchen eines Tintenstrahldruckers sind etwa 100-mal kleiner als ein menschliches Haar -- kleiner als ein Picometer."
     ),
 
     // Question 41
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Avatar in sozialen Netzwerken?",
-        answerA = "Ein Profilbild oder eine digitale Darstellung einer Person",
-        answerB = "Eine animierte Werbung",
-        answerC = "Ein Konto, das von mehreren Personen geteilt wird",
-        answerD = "Eine Sprachaufnahme als Profilbeschreibung",
-        correctAnswer = 0,
-        explanation = "Ein Avatar ist das Bild oder die digitale Figur, die einen Nutzer in sozialen Netzwerken, Foren oder Spielen repraesentiert.",
+        questionText = "Was ist soziales Engineering (Social Engineering) bei Betrugsversuchen?",
+        answerA = "Das Bauen von sozialen Medien-Plattformen",
+        answerB = "Die Manipulation von Menschen durch Tauschung oder Vertrauen, um an sensible Daten zu gelangen",
+        answerC = "Eine Technik zur Verbesserung von Online-Communities",
+        answerD = "Ein Verfahren zur Analyse sozialer Netzwerke",
+        correctAnswer = 1,
+        explanation = "Beim Social Engineering manipulieren Betrueger Menschen psychologisch -- z.B. durch vorgetaeuschte Autoritaet oder Freundlichkeit -- um Passwoerter oder Zugangsdaten zu erschleichen.",
         difficulty = 1,
-        funFact = "Das Wort 'Avatar' stammt aus dem Sanskrit und bedeutet die Herabkunft einer Gottheit – ein Gott, der in menschlicher Form erscheint."
+        funFact = "Bekannte Hacker wie Kevin Mitnick sagen, Social Engineering sei einfacher als technisches Hacking -- ein Anruf reicht oft, um Mitarbeiter zur Herausgabe von Daten zu bewegen."
     ),
 
     // Question 42
     Question(
         categoryId = 7,
-        questionText = "Welches Spiel hat den Begriff 'Easter Egg' (versteckte Ueberraschung) in der Spielebranche populaer gemacht?",
-        answerA = "Tetris",
-        answerB = "Adventure fuer den Atari 2600",
-        answerC = "Space Invaders",
-        answerD = "Doom",
+        questionText = "Was ist der Unterschied zwischen Kopfhoerern und einem Headset?",
+        answerA = "Ein Headset hat groessere Lautsprecher",
+        answerB = "Ein Headset hat zusaetzlich ein Mikrofon fuer Sprachanrufe oder Videokonferenzen",
+        answerC = "Kopfhoerer sind kabellos, Headsets haben immer ein Kabel",
+        answerD = "Es gibt keinen Unterschied -- die Begriffe sind identisch",
         correctAnswer = 1,
-        explanation = "Das Spiel 'Adventure' (1979, Atari 2600) gilt als erstes Videospiel-Easter-Egg: Entwickler Warren Robinett versteckte seinen Namen im Spiel.",
+        explanation = "Kopfhoerer geben nur Ton aus. Ein Headset hat zusaetzlich ein integriertes Mikrofon, damit man gleichzeitig sprechen und zuhoeren kann.",
         difficulty = 1,
-        funFact = "Atari erlaubte damals keine Entwicklerkredite in Spielen – Robinett versteckte seinen Namen als geheimes Protest-Easter-Egg."
+        funFact = "Das erste kommerziell erfolgreiche Headset wurde in den 1960ern von Plantronics entwickelt -- es ermoeglichte Astronaut Gordon Cooper als erstem die freihaendige Kommunikation."
     ),
 
     // Question 43
     Question(
         categoryId = 7,
-        questionText = "Was bedeutet 'Like' auf Facebook oder Instagram?",
-        answerA = "Eine Funktion zum Melden von Inhalten",
-        answerB = "Ein Klick auf das Daumen-hoch-Symbol als Zustimmung oder Gefallen",
-        answerC = "Eine Funktion zum Speichern von Beitraegen",
-        answerD = "Eine Benachrichtigung bei neuen Beitraegen",
+        questionText = "Was bedeutet es, wenn das WLAN-Symbol auf dem Smartphone grau statt blau/weiss ist?",
+        answerA = "Das Smartphone ist mit einem 5G-Netz verbunden",
+        answerB = "Das Smartphone ist nicht mit einem WLAN-Netzwerk verbunden",
+        answerC = "Das WLAN-Signal ist besonders stark",
+        answerD = "Der Datenschutzmodus ist aktiviert",
         correctAnswer = 1,
-        explanation = "Das 'Like' (auf Facebook ein Daumen hoch, auf Instagram ein Herz) ist eine schnelle Moeglichkeit, einem Beitrag Zustimmung zu zeigen.",
+        explanation = "Ein graues WLAN-Symbol bedeutet, dass keine WLAN-Verbindung besteht -- das Geraet nutzt dann mobiles Internet oder hat gar keine Internetverbindung.",
         difficulty = 1,
-        funFact = "Facebook-Gruender Zuckerberg wollte urspruenglich auch einen 'Dislike'-Button – er wurde aus Angst vor negativer Dynamik nie eingefuehrt."
+        funFact = null
     ),
 
     // Question 44
     Question(
         categoryId = 7,
-        questionText = "Was ist Microsoft Azure?",
-        answerA = "Ein Betriebssystem von Microsoft",
-        answerB = "Eine Cloud-Computing-Plattform von Microsoft",
-        answerC = "Ein Officeprogramm von Microsoft",
-        answerD = "Ein E-Mail-Dienst von Microsoft",
+        questionText = "Was ist eine Druckerpatrone?",
+        answerA = "Ein Schutzhuelle fuer einen Drucker beim Transport",
+        answerB = "Ein auswechselbarer Behaelter mit Tinte, der in einem Tintenstrahldrucker eingesetzt wird",
+        answerC = "Der Druckkopf des Laserdruckers",
+        answerD = "Ein Speichermodul fuer Druckauftraege",
         correctAnswer = 1,
-        explanation = "Microsoft Azure ist eine Cloud-Plattform, auf der Unternehmen Programme, Datenbanken und Server im Internet hosten und betreiben koennen.",
+        explanation = "Eine Druckerpatrone (Tintenkartusche) ist ein kleiner, auswechselbarer Tintenbehael ter, der in einen Tintenstrahldrucker eingesetzt wird und Farbe zum Drucken liefert.",
         difficulty = 1,
-        funFact = "Azure ist der zweitgroesste Cloud-Anbieter weltweit – hinter Amazon Web Services (AWS), aber knapp vor Google Cloud."
+        funFact = "Druckerhersteller verdienen oft mehr Geld mit dem Verkauf von Tintenpatronen als mit dem Verkauf der Drucker selbst -- das Razorblade-Modell."
     ),
 
     // Question 45
     Question(
         categoryId = 7,
-        questionText = "Was ist 'Streaming' bei Videospielen?",
-        answerA = "Das Herunterladen von Spielen",
-        answerB = "Das live im Internet uebertragene Spielen, damit andere zuschauen koennen",
-        answerC = "Das Testen von Spielen vor dem Release",
-        answerD = "Das Spielen offline ohne Internet",
+        questionText = "Wofuer steht das 'S' in HTTPS?",
+        answerA = "Speed (Geschwindigkeit)",
+        answerB = "Secure (Sicher) -- die Verbindung ist verschluesselt",
+        answerC = "Standard",
+        answerD = "Server",
         correctAnswer = 1,
-        explanation = "Gaming-Streaming bedeutet, das eigene Spielen live ueber das Internet zu uebertragen, sodass andere Nutzer in Echtzeit zusehen koennen.",
+        explanation = "HTTPS steht fuer HyperText Transfer Protocol Secure. Das 'S' zeigt an, dass die Verbindung mit SSL/TLS verschluesselt ist und Daten sicher uebertragen werden.",
         difficulty = 1,
-        funFact = "Twitch, die groesste Gaming-Streaming-Plattform, uebertraegt taeglich ueber 30 Millionen Stunden Live-Content."
+        funFact = "Ohne HTTPS konnten Angreifer fruehher in offenen WLAN-Netzwerken den gesamten Datenverkehr mitlesen -- das nennt man einen Man-in-the-Middle-Angriff."
     ),
 
     // Question 46
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Software-Update?",
-        answerA = "Das Loeschen alter Programme",
-        answerB = "Eine neue Version einer Software mit Verbesserungen oder Fehlerbehebungen",
-        answerC = "Das Kaufen einer neuen App",
-        answerD = "Das Neustarten des Geraets",
+        questionText = "Was ist eine Smartwatch?",
+        answerA = "Eine besonders genaue analoge Armbanduhr",
+        answerB = "Eine digitale Armbanduhr mit Computereinheit, die Schrittzaehler, Nachrichten und mehr anzeigt",
+        answerC = "Eine Uhr, die sich selbst aufzieht",
+        answerD = "Eine Uhr mit GPS zur reinen Standortbestimmung",
         correctAnswer = 1,
-        explanation = "Ein Software-Update ist eine neue Version eines Programms, das Fehler behebt, Sicherheitsluecken schliesst und neue Funktionen hinzufuegt.",
+        explanation = "Eine Smartwatch ist eine digitale Armbanduhr mit kleinem Computer -- sie zeigt Nachrichten, trackt Fitness, misst den Herzschlag und kann Apps ausfuehren.",
         difficulty = 1,
-        funFact = "Das groesste Sicherheitsrisiko bei Computern sind veraltete Software – die meisten Angriffe nutzen bekannte Sicherheitsluecken aus, fuer die es schon Updates gibt."
+        funFact = "Apple Watch ist die meistverkaufte Uhr der Welt -- Apple verkauft mehr Uhren pro Jahr als alle Schweizer Uhrmacher zusammen."
     ),
 
     // Question 47
     Question(
         categoryId = 7,
-        questionText = "Was ist Pinterest?",
-        answerA = "Ein soziales Netzwerk fuer professionelle Kontakte",
-        answerB = "Eine Plattform fuer das Sammeln und Teilen von Bildern und Ideen",
-        answerC = "Ein Kurzvideo-Dienst wie TikTok",
-        answerD = "Ein Dienst fuer Podcasts",
+        questionText = "Warum sollte man Software-Updates immer zeitnah installieren?",
+        answerA = "Damit der Computer schneller wird",
+        answerB = "Weil Updates oft Sicherheitsluecken schliessen, die Hacker sonst ausnutzen koennten",
+        answerC = "Damit neue Funktionen sofort verfuegbar sind",
+        answerD = "Damit der Hersteller keine Supportkosten berechnet",
         correctAnswer = 1,
-        explanation = "Pinterest ist eine Plattform, auf der Nutzer Bilder und Ideen (Pins) auf sogenannten Pinboards sammeln und teilen koennen.",
+        explanation = "Viele Updates enthalten Sicherheits-Patches, die bekannte Sicherheitsluecken in Software schliessen. Hacker nutzen ungepatchte Luecken gezielt aus.",
         difficulty = 1,
-        funFact = "Pinterest wurde 2010 gegruendet und war das am schnellsten wachsende soziale Netzwerk der Geschichte – es erreichte 10 Millionen Nutzer in nur 9 Monaten."
+        funFact = "Der WannaCry-Ransomware-Angriff 2017 befiel nur Computer mit veraltetem Windows -- auf Computern mit aktuellem Update-Stand hatte er keine Chance."
     ),
 
     // Question 48
     Question(
         categoryId = 7,
-        questionText = "Was bedeutet 'Terabyte' (TB)?",
-        answerA = "Eine Masseinheit fuer Internet-Geschwindigkeit",
-        answerB = "Eine Masseinheit fuer Datenspeicher, etwa 1.000 Gigabyte",
-        answerC = "Eine Einheit fuer Prozessorleistung",
-        answerD = "Eine Masseinheit fuer Bildschirmaufloesung",
+        questionText = "Was ist eine HDMI-Kabel?",
+        answerA = "Ein Kabel zur Stromversorgung von Fernsehern",
+        answerB = "Ein Kabel, das Bild und Ton in hoher Qualitaet von einer Quelle (z.B. Spielkonsole) zum Fernseher uebertraegt",
+        answerC = "Ein Kabel fuer die Internetverbindung",
+        answerD = "Ein Kabel zum Laden von Smartphones",
         correctAnswer = 1,
-        explanation = "Ein Terabyte (TB) ist eine Masseinheit fuer digitalen Speicher und entspricht ungefaehr 1.000 Gigabyte (GB).",
+        explanation = "HDMI (High-Definition Multimedia Interface) ist ein Anschlussstandard, der digitales Bild und Ton in einem einzigen Kabel von Quellen wie Spielkonsolen oder PCs zum Fernseher uebertraegt.",
         difficulty = 1,
-        funFact = "Eine 1-TB-Festplatte kann etwa 250.000 Fotos oder 500 Stunden HD-Video speichern."
+        funFact = "HDMI wurde 2002 einfuehrt und loeste damals viele einzelne Kabel (Scart, Chinch, Audiokabel) durch ein einziges digitales Kabel ab."
     ),
 
     // Question 49
     Question(
         categoryId = 7,
-        questionText = "Was ist Discord?",
-        answerA = "Ein Musikproduktionsprogramm",
-        answerB = "Eine Kommunikationsplattform fuer Text, Sprache und Video, beliebt bei Gamern",
-        answerC = "Ein soziales Netzwerk fuer Fotos",
-        answerD = "Ein Streaming-Dienst fuer eSports-Turniere",
+        questionText = "Was ist ein QR-Code?",
+        answerA = "Ein Barcode auf Lebensmittelverpackungen fuer den Kassenscanner",
+        answerB = "Ein zweidimensionaler Code, den man mit dem Smartphone scannen kann, um eine Webseite oder Information abzurufen",
+        answerC = "Ein Sicherheitscode auf Kreditkarten",
+        answerD = "Ein Passwort fuer WLAN-Netzwerke",
         correctAnswer = 1,
-        explanation = "Discord ist eine Kommunikationsplattform mit Text-, Sprach- und Videochat, die urspruenglich fuer Gamer entwickelt wurde, aber heute viele Zwecke hat.",
+        explanation = "Ein QR-Code (Quick Response Code) ist ein schwarz-weisses Muster, das mit dem Smartphone gescannt werden kann -- es oeffnet dann einen Link, zeigt Text oder startet eine Aktion.",
         difficulty = 1,
-        funFact = "Discord wurde 2015 gegruendet und wurde waehrend der COVID-19-Pandemie auch von Schulen und Universitaeten fuer den Fernunterricht genutzt."
+        funFact = "QR-Codes wurden 1994 in Japan von der Firma Denso Wave erfunden, um Autoteile in Fabriken schneller zu verfolgen -- urspruenglich kein Konsumprodukt."
     ),
 
     // Question 50
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Spam-Ordner im E-Mail-Postfach?",
-        answerA = "Ein Ordner fuer wichtige Geschaeftsmails",
-        answerB = "Ein Ordner, in dem unerwuenschte oder verdaechtige E-Mails automatisch landen",
-        answerC = "Ein Archiv fuer alte E-Mails",
-        answerD = "Ein Bereich fuer sehr grosse E-Mail-Anhaenge",
-        correctAnswer = 1,
-        explanation = "Der Spam-Ordner faengt unerwuenschte Werbemails, Betrugs-Mails und anderen ungebetenen E-Mail-Muell automatisch heraus.",
+        questionText = "Was ist der Unterschied zwischen WLAN und Bluetooth?",
+        answerA = "WLAN ist schneller und hat groessere Reichweite fuer Internetverbindungen, Bluetooth ist fuer kurze Distanzen zwischen Geraeten",
+        answerB = "Bluetooth ist schneller als WLAN",
+        answerC = "WLAN wird nur fuer Telefonate genutzt, Bluetooth fuer das Internet",
+        answerD = "Es gibt keinen Unterschied -- beide Technologien sind austauschbar",
+        correctAnswer = 0,
+        explanation = "WLAN verbindet Geraete mit dem Internet und hat eine Reichweite von ca. 30-100 Metern. Bluetooth verbindet Geraete direkt miteinander (z.B. Kopfhoerer) auf kurze Distanz (ca. 10 Meter).",
         difficulty = 1,
-        funFact = "Der Begriff 'Spam' fuer unerwuenschte E-Mails stammt aus einem Monty-Python-Sketch, in dem immer wieder das Wort SPAM auftaucht und alles andere uebertont."
+        funFact = "Sowohl WLAN als auch Bluetooth nutzen das 2,4-GHz-Funkband -- bei vielen Geraeten gleichzeitig koennen sie sich daher gegenseitig stoeren."
     )
 )

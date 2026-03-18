@@ -3,604 +3,704 @@ package com.quizverse.app.data.prepopulate.questions
 import com.quizverse.app.data.database.entities.Question
 
 fun techQuestionsEasy5(): List<Question> = listOf(
+
+    // Question 1 -- AI basics
     Question(
         categoryId = 7,
-        questionText = "Was bedeutet der Begriff '3D-Druck'?",
-        answerA = "Ein Verfahren das dreidimensionale Objekte schichtweise aufbaut",
-        answerB = "Ein Druckverfahren fuer besonders scharfe Bilder",
-        answerC = "Ein Scanner fuer 3D-Fotos",
-        answerD = "Ein Fernsehformat fuer raeumliche Bilder",
+        questionText = "Was bedeutet der Begriff 'Kuenstliche Intelligenz'?",
+        answerA = "Computer koennen selbst denken und Aufgaben loesen, die sonst Menschen erledigen",
+        answerB = "Ein besonders schnelles Computerprogramm",
+        answerC = "Eine Datenbank mit vielen Bildern",
+        answerD = "Ein Roboter der aussieht wie ein Mensch",
         correctAnswer = 0,
-        explanation = "Beim 3D-Druck wird ein digitales Modell Schicht fuer Schicht in ein koerperliches Objekt umgewandelt.",
+        explanation = "Kuenstliche Intelligenz (KI) bedeutet, dass Computer Aufgaben ausfuehren, die normalerweise menschliche Intelligenz erfordern, z.B. Sprache verstehen oder Bilder erkennen.",
         difficulty = 1,
-        funFact = "Der erste 3D-Drucker wurde 1983 von Chuck Hull erfunden und das Verfahren hiess damals 'Stereolithografie'."
+        funFact = "Der Begriff 'Artificial Intelligence' wurde 1956 vom Informatiker John McCarthy gepraeagt, der auch die erste KI-Konferenz organisierte."
     ),
+
+    // Question 2 -- AI basics: chatbots
     Question(
         categoryId = 7,
-        questionText = "Welches Material wird am haeufigsten im Heim-3D-Druck verwendet?",
-        answerA = "Metall",
-        answerB = "Glas",
-        answerC = "Kunststoff (PLA oder ABS)",
-        answerD = "Holz",
+        questionText = "Was ist ein Chatbot?",
+        answerA = "Ein Roboter der tippen kann",
+        answerB = "Ein Computerprogramm, das automatisch auf Nachrichten antwortet",
+        answerC = "Eine App fuer Gruppenchats",
+        answerD = "Ein Onlinespiel fuer Gesprachspartner",
+        correctAnswer = 1,
+        explanation = "Ein Chatbot ist ein Programm, das Texteingaben versteht und automatisch sinnvolle Antworten liefert, z.B. im Kundenservice oder auf Webseiten.",
+        difficulty = 1,
+        funFact = "Der bekannteste Chatbot der Welt ist ChatGPT von OpenAI, der innerhalb von 5 Tagen nach seinem Start eine Million Nutzer erreichte."
+    ),
+
+    // Question 3 -- AI: Siri
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Siri?",
+        answerA = "Ein sozianes Netzwerk von Apple",
+        answerB = "Ein Sprachassistent von Apple, der Fragen per Stimme beantwortet",
+        answerC = "Eine Navigations-App fuer das iPhone",
+        answerD = "Ein Musik-Streaming-Dienst von Apple",
+        correctAnswer = 1,
+        explanation = "Siri ist Apples KI-gestuetzter Sprachassistent, der auf Spracheingaben reagiert, Fragen beantwortet und Aufgaben auf Apple-Geraeten erledigt.",
+        difficulty = 1,
+        funFact = "Siri wurde 2011 mit dem iPhone 4S eingefuehrt. Der Name 'Siri' bedeutet auf Norwegisch 'schoene Frau, die dich zum Sieg fuehrt'."
+    ),
+
+    // Question 4 -- AI: Alexa
+    Question(
+        categoryId = 7,
+        questionText = "Welches Unternehmen hat den Sprachassistenten Alexa entwickelt?",
+        answerA = "Google",
+        answerB = "Apple",
+        answerC = "Amazon",
+        answerD = "Microsoft",
         correctAnswer = 2,
-        explanation = "PLA (Polymilchsaeure) und ABS (Acrylnitril-Butadien-Styrol) sind die gaengigsten Kunststoffe im Heimbereich.",
+        explanation = "Alexa ist der KI-Sprachassistent von Amazon und ist vor allem auf dem smarten Lautsprecher Amazon Echo zu Hause.",
         difficulty = 1,
-        funFact = "PLA ist biologisch abbaubar und wird aus Maistaerke oder Zuckerrohr hergestellt."
+        funFact = "Alexa wurde nach der Bibliothek von Alexandria benannt, einer der groessten Bibliotheken der Antike -- als Symbol fuer Wissen."
     ),
+
+    // Question 5 -- AI basics: machine learning
     Question(
         categoryId = 7,
-        questionText = "Was ist Virtual Reality (VR)?",
-        answerA = "Ein Videospiel auf dem Smartphone",
-        answerB = "Eine computererzeugte dreidimensionale Umgebung, in die man eintauchen kann",
-        answerC = "Ein Kino mit sehr grosser Leinwand",
-        answerD = "Eine Videokonferenz-Technologie",
+        questionText = "Wie lernt eine KI, Fotos von Katzen zu erkennen?",
+        answerA = "Ein Programmierer beschreibt jede Katze einzeln im Code",
+        answerB = "Die KI sieht sehr viele Katzenfotos und lernt dabei selbst Merkmale zu erkennen",
+        answerC = "Die KI sucht im Internet nach Katzen",
+        answerD = "Ein Mensch tippt die Beschreibung jedes Bildes ein",
         correctAnswer = 1,
-        explanation = "VR erzeugt mithilfe einer Brille eine kuenstliche Welt, in der sich der Nutzer umsehen und bewegen kann.",
+        explanation = "Maschinelles Lernen bedeutet, dass eine KI aus tausenden Beispielbildern selbststaendig lernt, welche Merkmale typisch fuer Katzen sind.",
         difficulty = 1,
-        funFact = "Der Begriff 'Virtual Reality' wurde 1987 vom Computerwissenschaftler Jaron Lanier gepraeagt."
+        funFact = "Google trainierte 2012 eine KI mit 10 Millionen YouTube-Videos, um Katzen zu erkennen -- ohne dass jemand sagte was eine Katze ist."
     ),
+
+    // Question 6 -- VR basics
     Question(
         categoryId = 7,
-        questionText = "Was zieht man auf, um Virtual Reality zu erleben?",
-        answerA = "Spezielle Handschuhe",
-        answerB = "Eine VR-Brille (Headset)",
-        answerC = "Einen besonderen Anzug",
-        answerD = "3D-Brillen wie im Kino",
+        questionText = "Wofuer steht die Abkuerzung 'VR'?",
+        answerA = "Video Recording",
+        answerB = "Virtual Reality",
+        answerC = "Visual Resolution",
+        answerD = "Variable Range",
         correctAnswer = 1,
-        explanation = "Ein VR-Headset bedeckt die Augen und zeigt auf zwei kleinen Bildschirmen unterschiedliche Bilder, was einen Tiefeneindruck erzeugt.",
+        explanation = "VR steht fuer Virtual Reality, zu Deutsch 'Virtuelle Realitaet'. Es bezeichnet computererzeugte, dreidimensionale Welten, in die man eintaucht.",
         difficulty = 1,
-        funFact = "Meta Quest 3 und PlayStation VR2 sind aktuelle Beispiele fuer beliebte VR-Headsets."
+        funFact = "Der Begriff 'Virtual Reality' wurde 1987 vom Informatiker Jaron Lanier gepraeagt, der auch einen der ersten kommerziellen VR-Handschuhe baute."
     ),
+
+    // Question 7 -- VR: headset
     Question(
         categoryId = 7,
-        questionText = "Was ist eine Drohne?",
-        answerA = "Ein bemanntes Kleinflugzeug",
-        answerB = "Ein unbemanntes Fluggeraet, das per Fernsteuerung oder autonom fliegt",
-        answerC = "Ein Satellit im Weltraum",
-        answerD = "Ein ferngesteuertes U-Boot",
+        questionText = "Was benoetigt man, um Virtual Reality zu erleben?",
+        answerA = "Einen grossen Fernseher",
+        answerB = "Eine VR-Brille (Headset) die man aufsetzt",
+        answerC = "Einen speziellen Lautsprecher",
+        answerD = "Eine Hochgeschwindigkeitskamera",
         correctAnswer = 1,
-        explanation = "Drohnen (UAV) sind unbemannte Luftfahrzeuge, die ferngesteuert oder vollautomatisch fliegen.",
+        explanation = "Ein VR-Headset bedeckt die Augen komplett und zeigt auf zwei kleinen Bildschirmen leicht unterschiedliche Bilder, was einen echten Tiefeneindruck erzeugt.",
         difficulty = 1,
-        funFact = "Das Wort 'Drohne' stammt vom englischen 'drone' (Drohne/Brummen) und bezieht sich auf das Summen der Rotoren."
+        funFact = "Meta Quest 3 wiegt nur 515 Gramm und benoetigt keinen angeschlossenen Computer -- man kann damit frei im Zimmer herumgehen."
     ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer werden Drohnen im Alltag haeufig eingesetzt?",
-        answerA = "Als Ersatz fuer Autos",
-        answerB = "Zum Fotografieren und Filmen aus der Luft",
-        answerC = "Als Mobiltelefon-Verstaerker",
-        answerD = "Zum Drucken von Dokumenten",
-        correctAnswer = 1,
-        explanation = "Hobby-Drohnen mit Kamera sind weit verbreitet und werden fuer Luftaufnahmen bei Events, Reisen oder Naturfilmen genutzt.",
-        difficulty = 1,
-        funFact = "Amazon testet seit Jahren die Lieferung von Paketen per Drohne – in einigen US-Regionen ist das bereits moeglich."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Fitness-Tracker?",
-        answerA = "Eine App zum Verwalten von Rezepten",
-        answerB = "Ein tragbares Geraet, das Bewegung und Gesundheitsdaten aufzeichnet",
-        answerC = "Ein Geraet zum Messen des Blutdrucks in der Arztpraxis",
-        answerD = "Ein Programm fuer Ernaehrungsplaene auf dem PC",
-        correctAnswer = 1,
-        explanation = "Fitness-Tracker sind Wearables am Handgelenk, die Schritte, Herzrate, Schlaf und Kalorien messen.",
-        difficulty = 1,
-        funFact = "Fitbit, eines der bekanntesten Fitness-Tracker-Unternehmen, wurde 2007 gegruendet und 2021 von Google uebernommen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was misst ein Fitness-Tracker typischerweise?",
-        answerA = "Den Blutalkohol",
-        answerB = "Den Reifendruck",
-        answerC = "Die Anzahl der Schritte und die Herzrate",
-        answerD = "Die Luftfeuchtigkeit",
-        correctAnswer = 2,
-        explanation = "Die grundlegendsten Funktionen eines Fitness-Trackers sind das Zaehlen von Schritten und das Messen des Herzschlags.",
-        difficulty = 1,
-        funFact = "Die magische Zahl von 10.000 Schritten pro Tag stammt aus einer japanischen Marketingkampagne von 1965 und hat keine wissenschaftliche Grundlage."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Podcast?",
-        answerA = "Eine Musikplayliste auf Spotify",
-        answerB = "Eine Audioaufnahme die als Serie im Internet veroeffentlicht wird",
-        answerC = "Ein Hoerbuch von einer CD",
-        answerD = "Ein Radioprogramm des oeffentlich-rechtlichen Rundfunks",
-        correctAnswer = 1,
-        explanation = "Ein Podcast ist eine digitale Audioserie, die man jederzeit kostenlos im Internet abrufen und abonnieren kann.",
-        difficulty = 1,
-        funFact = "Das Wort 'Podcast' setzt sich aus 'iPod' (Apples Musikplayer) und 'broadcast' (Rundfunk) zusammen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wo kann man Podcasts in der Regel hoeren?",
-        answerA = "Nur im Radio",
-        answerB = "Nur auf einem speziellen Podcastgeraet",
-        answerC = "Auf Smartphones, Computern oder Tablets",
-        answerD = "Nur in der Bibliothek",
-        correctAnswer = 2,
-        explanation = "Podcasts sind ueber Apps wie Spotify, Apple Podcasts oder Google Podcasts auf praktisch jedem internetfaehigen Geraet verfuegbar.",
-        difficulty = 1,
-        funFact = "Es gibt weltweit ueber 5 Millionen aktive Podcasts mit mehr als 70 Millionen Episoden."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein E-Book?",
-        answerA = "Ein Elektronikbuch ueber Computer",
-        answerB = "Ein digitales Buch, das auf einem Geraet gelesen wird",
-        answerC = "Ein Buch mit leuchtenden Seiten",
-        answerD = "Ein Buch das laut vorliest",
-        correctAnswer = 1,
-        explanation = "Ein E-Book ist die digitale Version eines Buches, das auf E-Readern, Tablets, Smartphones oder Computern gelesen werden kann.",
-        difficulty = 1,
-        funFact = "Amazon veroeffentlichte 2007 den Kindle, der die Verbreitung von E-Books entscheidend vorantrieb."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein E-Reader?",
-        answerA = "Ein Drucker fuer E-Books",
-        answerB = "Ein speziell fuer das Lesen von E-Books entwickeltes Geraet",
-        answerC = "Ein Tablet von Amazon",
-        answerD = "Ein Programm zum Schreiben von Buechern",
-        correctAnswer = 1,
-        explanation = "E-Reader wie der Amazon Kindle oder Tolino nutzen E-Ink-Technologie, die das Lesen bei Tageslicht erleichtert und sehr akkuschonend ist.",
-        difficulty = 1,
-        funFact = "Ein vollgeladener E-Reader haelt oft mehrere Wochen, weil das E-Ink-Display nur beim Umschaetzen der Seite Strom verbraucht."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein QR-Code?",
-        answerA = "Ein zweidimensionaler Strichcode der von Smartphones gelesen werden kann",
-        answerB = "Ein Sicherheitsschloss fuer Webseiten",
-        answerC = "Eine Art Fingerabdruck fuer Produkte",
-        answerD = "Ein Code fuer Bankueberweisungen",
-        correctAnswer = 0,
-        explanation = "QR-Codes sind zweidimensionale Barcodes, die Links, Text oder andere Daten enthalten und mit der Smartphone-Kamera gescannt werden.",
-        difficulty = 1,
-        funFact = "QR steht fuer 'Quick Response' und wurde 1994 in Japan vom Unternehmen Denso Wave fuer die Automobilindustrie entwickelt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wie liest man einen QR-Code ein?",
-        answerA = "Mit einem speziellen Scanner-Stift",
-        answerB = "Mit der Kamera eines Smartphones",
-        answerC = "Mit einem Barcode-Lesegeraet an der Kasse",
-        answerD = "Indem man ihn abschreibt",
-        correctAnswer = 1,
-        explanation = "Moderne Smartphones erkennen QR-Codes direkt ueber die Kamera-App und oeffnen automatisch den enthaltenen Link oder die Information.",
-        difficulty = 1,
-        funFact = "Waehrend der Corona-Pandemie 2020-2022 wurden QR-Codes in Deutschland fuer die Luca-App und digitale Speisekarten massenhaft bekannt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Touchscreen?",
-        answerA = "Ein Bildschirm der nur Beruehrungen misst",
-        answerB = "Ein Bildschirm der auf Beruehrungen reagiert und Eingaben per Finger erlaubt",
-        answerC = "Ein Bildschirm mit besonders hoher Aufloesung",
-        answerD = "Ein Bildschirm aus Kunststoff statt Glas",
-        correctAnswer = 1,
-        explanation = "Ein Touchscreen erkennt Beruehrungen und Gesten, sodass man das Geraet direkt mit dem Finger statt mit Maus oder Tastatur bedienen kann.",
-        difficulty = 1,
-        funFact = "Das iPhone (2007) machte den kapazitiven Multitouch-Bildschirm populaer, obwohl es Touchscreens schon seit den 1960er Jahren gab."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Geraete haben heute typischerweise einen Touchscreen?",
-        answerA = "Nur Bankautomate",
-        answerB = "Smartphones, Tablets und viele Bezahlterminals",
-        answerC = "Nur Laptops",
-        answerD = "Nur Spielkonsolen",
-        correctAnswer = 1,
-        explanation = "Touchscreens sind in Smartphones, Tablets, Navigationssystemen, Geldautomaten, Supermarktkassen und vielen anderen Alltagsgeraeten verbaut.",
-        difficulty = 1,
-        funFact = "Weltweit werden jaehrlich mehr als 1,5 Milliarden Touchscreen-Smartphones verkauft."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was bedeutet die Abkuerzung 'LED'?",
-        answerA = "Light Energy Device",
-        answerB = "Low Emission Display",
-        answerC = "Light Emitting Diode (Licht emittierende Diode)",
-        answerD = "Laser Enabled Display",
-        correctAnswer = 2,
-        explanation = "LED steht fuer Light Emitting Diode, auf Deutsch: licht-emittierende Diode. Sie leuchtet wenn Strom hindurchfliesst.",
-        difficulty = 1,
-        funFact = "Blaue LEDs wurden erst 1993 erfunden. Ihre Erfinder Akasaki, Amano und Nakamura erhielten 2014 dafuer den Physik-Nobelpreis."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Vorteil von LED-Lampen gegenueber alten Gluehbirnen?",
-        answerA = "LEDs sind guenstiger in der Herstellung",
-        answerB = "LEDs verbrauchen deutlich weniger Strom und halten laenger",
-        answerC = "LEDs leuchten heller",
-        answerD = "LEDs brauchen kein Glas",
-        correctAnswer = 1,
-        explanation = "LEDs verbrauchen bis zu 90% weniger Strom als herkoemmliche Gluehbirnen und halten bis zu 25.000 Stunden.",
-        difficulty = 1,
-        funFact = "In der EU wurde die klassische Gluehbirne wegen ihres schlechten Wirkungsgrades ab 2012 schrittweise verboten."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Laser?",
-        answerA = "Ein sehr helles Tageslicht",
-        answerB = "Ein buendeliger, konzentrierter Lichtstrahl mit einer einzigen Wellenlaenge",
-        answerC = "Ein Mikrowellen-Sendegeraet",
-        answerD = "Eine Gluehbirne ohne Glas",
-        correctAnswer = 1,
-        explanation = "Laser erzeugen einen sehr gebuendelten Lichtstrahl, der nahezu parallel bleibt und eine einheitliche Farbe (Wellenlaenge) hat.",
-        difficulty = 1,
-        funFact = "Das Wort LASER ist ein Akronym fuer 'Light Amplification by Stimulated Emission of Radiation'."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer werden Laser im Alltag eingesetzt?",
-        answerA = "Nur in der Raumfahrt",
-        answerB = "In Barcode-Scannern, Laserdruckern und Laserpointer",
-        answerC = "Nur in Operationssaelen",
-        answerD = "Nur in Lichtshows",
-        correctAnswer = 1,
-        explanation = "Laser kommen in Supermarkt-Barcode-Scannern, CD/DVD-Laufwerken, Laserdruckern, Laserpointern und der Medizin vor.",
-        difficulty = 1,
-        funFact = "Der erste funktionierende Laser wurde 1960 von Theodore Maiman gebaut. Er nutzte einen synthetischen Rubinkristall."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Barcode?",
-        answerA = "Ein digitales Logo eines Unternehmens",
-        answerB = "Ein Muster aus Strichen das maschinenlesbare Informationen speichert",
-        answerC = "Ein Sicherheitsetikett gegen Diebstahl",
-        answerD = "Ein verschluesselter QR-Code",
-        correctAnswer = 1,
-        explanation = "Ein Barcode besteht aus parallelen Strichen unterschiedlicher Breite, die Zahlen oder Text kodieren und von Laserscannern gelesen werden.",
-        difficulty = 1,
-        funFact = "Das erste mit einem Barcode eingescannte Produkt war am 26. Juni 1974 ein Paket Wrigley-Kaugummis in einem Supermarkt in Ohio, USA."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wo findet man Barcodes im Alltag haeufig?",
-        answerA = "Auf Strassenchildern",
-        answerB = "Auf Produktverpackungen im Supermarkt",
-        answerC = "Auf Banknoten",
-        answerD = "Auf Kreditkarten",
-        correctAnswer = 1,
-        explanation = "Fast alle Produkte im Einzelhandel tragen Barcodes, die an der Kasse eingescannt werden, um Preis und Produktinfo abzurufen.",
-        difficulty = 1,
-        funFact = "Der weltweit bekannteste Barcode-Standard heisst EAN-13 (European Article Number) und enthaelt 13 Ziffern."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welches Prinzip nutzen kabellose Kopfhoerer zum Verbinden mit dem Smartphone?",
-        answerA = "WLAN",
-        answerB = "Bluetooth",
-        answerC = "NFC",
-        answerD = "Infrarot",
-        correctAnswer = 1,
-        explanation = "Drahtlose Kopfhoerer verbinden sich per Bluetooth mit dem Smartphone, was eine kabellose Uebertragung von Audio ermoeglicht.",
-        difficulty = 1,
-        funFact = "Apple entfernte 2016 beim iPhone 7 die 3,5-mm-Klinke und machte damit drahtlose AirPods schlagartig populaer."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was sind Noise-Cancelling-Kopfhoerer?",
-        answerA = "Kopfhoerer mit besonders lauten Lautsprechern",
-        answerB = "Kopfhoerer die Umgebungsgeraeusche aktiv herausfiltern",
-        answerC = "Kopfhoerer mit Mikrofon fuer Telefongespraeche",
-        answerD = "Kopfhoerer mit wasserdichtem Gehaeuse",
-        correctAnswer = 1,
-        explanation = "Aktive Geraeuschunterdrueckung (ANC) analysiert Umgebungsgeraeusche und erzeugt Gegenschall, der diese neutralisiert.",
-        difficulty = 1,
-        funFact = "Bose entwickelte Noise-Cancelling-Technologie urspruenglich fuer Piloten, damit sie in lauten Cockpits besser hoeren koennen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Digitalkamera?",
-        answerA = "Eine Kamera die Fotos auf Film aufnimmt",
-        answerB = "Eine Kamera die Bilder als digitale Datei speichert",
-        answerC = "Eine Kamera nur fuer Videoaufnahmen",
-        answerD = "Eine Kamera ohne Objektiv",
-        correctAnswer = 1,
-        explanation = "Digitalkameras speichern Fotos als elektronische Dateien auf Speicherkarten statt auf analogem Film.",
-        difficulty = 1,
-        funFact = "Die erste Digitalkamera wurde 1975 von Steve Sasson bei Kodak entwickelt. Sie wog 3,6 kg und benoetigt 23 Sekunden fuer ein Foto."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welches Dateiformat wird haeufig fuer Fotos von Digitalkameras und Smartphones verwendet?",
-        answerA = ".mp3",
-        answerB = ".pdf",
-        answerC = ".jpg (JPEG)",
-        answerD = ".txt",
-        correctAnswer = 2,
-        explanation = "JPEG (.jpg) ist das weitverbreitetste Bildformat fuer Fotos, da es eine gute Bildqualitaet bei kleiner Dateigroe bietet.",
-        difficulty = 1,
-        funFact = "Der Name JPEG steht fuer 'Joint Photographic Experts Group', das Komitee das diesen Standard 1992 entwickelte."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was sind Emojis?",
-        answerA = "Kleine Videoclips fuer Chatnachrichten",
-        answerB = "Kleine bunte Bildchen zur Darstellung von Gefuehlen in Textnachrichten",
-        answerC = "Kurze Zeichenketten aus Satzzeichen wie :-)",
-        answerD = "Sticker fuer Social-Media-Stories",
-        correctAnswer = 1,
-        explanation = "Emojis sind standardisierte kleine Bildchen (Symbole) die in digitalen Nachrichten Gefuehle, Objekte oder Ideen visualisieren.",
-        difficulty = 1,
-        funFact = "Das erste Emoji wurde 1999 vom japanischen Designer Shigetaka Kurita fuer den Mobilfunkanbieter NTT DoCoMo erstellt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer steht das Dateiformat '.pdf'?",
-        answerA = "Portable Document File",
-        answerB = "Portable Document Format",
-        answerC = "Personal Data File",
-        answerD = "Printed Document Format",
-        correctAnswer = 1,
-        explanation = "PDF steht fuer Portable Document Format und wurde von Adobe entwickelt. Dateien sehen auf jedem Geraet gleich aus.",
-        difficulty = 1,
-        funFact = "Adobe machte das PDF-Format 2008 zum offenen Standard (ISO 32000). Seitdem gehoert es niemanden mehr allein."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Vorteil des PDF-Formats?",
-        answerA = "PDF-Dateien koennen leicht bearbeitet werden",
-        answerB = "Das Layout bleibt auf jedem Geraet gleich",
-        answerC = "PDF-Dateien sind immer kleiner als Word-Dateien",
-        answerD = "PDF kann nur Text, keine Bilder enthalten",
-        correctAnswer = 1,
-        explanation = "PDFs sehen auf Windows, Mac, iPhone und Android exakt gleich aus, unabhaengig von installierten Schriften oder Programmen.",
-        difficulty = 1,
-        funFact = "Weltweit werden taeglich geschaetzte 2,5 Milliarden PDF-Dokumente geoeffnet."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer steht die Dateiendung '.mp3'?",
-        answerA = "Music Player 3",
-        answerB = "Moving Picture Experts Group Audio Layer III",
-        answerC = "Mobile Phone Record 3",
-        answerD = "Multimedia Player Record 3",
-        correctAnswer = 1,
-        explanation = "MP3 ist ein komprimiertes Audioformat, das die Dateigroesse stark reduziert, ohne dass der Unterschied fuer menschliche Ohren deutlich hoerbar ist.",
-        difficulty = 1,
-        funFact = "MP3 wurde in Deutschland am Fraunhofer-Institut entwickelt. Der erste Song der auf MP3 umgewandelt wurde war 'Tom's Diner' von Suzanne Vega."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wann wurde das erste Emoji paket standardisiert und weltweit verfuegbar gemacht?",
-        answerA = "Im Jahr 1990",
-        answerB = "Im Jahr 2010",
-        answerC = "Im Jahr 2005",
-        answerD = "Im Jahr 2015",
-        correctAnswer = 1,
-        explanation = "Das Unicode Consortium nahm Emojis 2010 offiziell in den Unicode-Standard auf, was ihre systemuebergreifende Verbreitung ermoeglichte.",
-        difficulty = 1,
-        funFact = "Das weinend-lachende Emoji (Traenen der Freude) wurde von Oxford Dictionaries 2015 zum 'Wort des Jahres' gekuert."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Speicherkarte (z.B. microSD)?",
-        answerA = "Ein kleiner Akku fuer Kameras",
-        answerB = "Ein kleines Speichermedium fuer digitale Daten",
-        answerC = "Ein Adapter fuer USB-Kabel",
-        answerD = "Ein Chip zur Steuerung von Kameras",
-        correctAnswer = 1,
-        explanation = "Speicherkarten wie microSD sind kleine, steckbare Datentraeger fuer Fotos, Videos und Dateien in Kameras, Smartphones und anderen Geraeten.",
-        difficulty = 1,
-        funFact = "Eine microSD-Karte ist kleiner als ein Fingernagel, kann aber heute bis zu 2 Terabyte Daten speichern."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was beschreibt der Begriff 'Wearable'?",
-        answerA = "Ein wasserdichtes Elektronikgeraet",
-        answerB = "Ein tragbares elektronisches Geraet das am Koerper getragen wird",
-        answerC = "Ein Kleidungsstueck aus Smart-Textilien",
-        answerD = "Ein ferngesteuertes Geraet",
-        correctAnswer = 1,
-        explanation = "Wearables sind tragbare Technologie-Geraete wie Smartwatches, Fitness-Tracker oder AR-Brillen, die direkt am Koerper getragen werden.",
-        difficulty = 1,
-        funFact = "Brillen mit eingebautem Computer (wie Google Glass) gelten auch als Wearables, setzten sich jedoch bisher im Massenmarkt nicht durch."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was zeigt ein Fitness-Tracker beim Schlafen auf?",
-        answerA = "Den Kalorienbedarf fuer den naechsten Tag",
-        answerB = "Schlafdauer und Schlafphasen",
-        answerC = "Die Temperatur im Schlafzimmer",
-        answerD = "Benachrichtigungen vom Smartphone",
-        correctAnswer = 1,
-        explanation = "Viele Fitness-Tracker messen Bewegung und Herzrate im Schlaf und schluesselns in Leicht-, Tief- und REM-Schlaf auf.",
-        difficulty = 1,
-        funFact = "Erwachsene brauchen laut Schlafforschern im Schnitt 7-9 Stunden Schlaf pro Nacht."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was bedeutet die Dateiendung '.jpg'?",
-        answerA = "Es ist ein Videoformat",
-        answerB = "Es ist ein komprimiertes Bildformat",
-        answerC = "Es ist ein Textdokument",
-        answerD = "Es ist ein Programmformat",
-        correctAnswer = 1,
-        explanation = ".jpg ist die Dateiendung fuer JPEG-Bilder, ein komprimiertes Fotoformat das auf allen Geraeten und im Web unterstuetzt wird.",
-        difficulty = 1,
-        funFact = ".jpg und .jpeg bezeichnen dasselbe Format. Auf aelteren Windows-Systemen waren nur 3 Zeichen als Endung erlaubt, daher '.jpg'."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was passiert, wenn man ein 3D-Modell in einen 3D-Drucker laedt?",
-        answerA = "Der Drucker scannt das Modell mit einem Laser",
-        answerB = "Der Drucker baut das Objekt Schicht fuer Schicht auf",
-        answerC = "Das Modell wird auf eine Leinwand projiziert",
-        answerD = "Der Drucker schneide das Modell aus einem Block heraus",
-        correctAnswer = 1,
-        explanation = "Beim FDM-Druck (haeufigste Methode) schmilzt der Drucker Kunststofffaden und traegt ihn Schicht fuer Schicht auf, bis das Objekt fertig ist.",
-        difficulty = 1,
-        funFact = "Schlaue Ingenieure nutzen 3D-Drucker auch um Ersatzteile zu drucken, die sonst nicht mehr hergestellt werden."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Drohnen-Akku typischerweise?",
-        answerA = "Ein Tankinhalt aus Benzin",
-        answerB = "Ein Lithium-Polymer-Akku (LiPo)",
-        answerC = "Eine Solarenergie-Einheit",
-        answerD = "Ein Alkali-Akku wie in Taschenlampen",
-        correctAnswer = 1,
-        explanation = "Drohnen verwenden LiPo-Akkus (Lithium-Polymer), da sie leicht sind und viel Energie speichern koennen.",
-        difficulty = 1,
-        funFact = "Die Akkulaufzeit einer durchschnittlichen Hobby-Drohne betraegt nur 20-30 Minuten pro Akkuladung."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist die typische Aufgabe eines Podcasts im Vergleich zum Radio?",
-        answerA = "Podcasts senden live, Radio ist aufgezeichnet",
-        answerB = "Podcasts koennen jederzeit auf Abruf gehoert werden, Radio sendet live",
-        answerC = "Podcasts sind teurer als Radio",
-        answerD = "Podcasts senden nur Musik, Radio auch Wortbeitraege",
-        correctAnswer = 1,
-        explanation = "Anders als das Radio sendet ein Podcast nicht live, sondern wird aufgezeichnet und kann dann jederzeit abgerufen werden.",
-        difficulty = 1,
-        funFact = "Der erste Podcast im heutigen Sinne wurde 2003 von Adam Curry und Dave Winer entwickelt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was unterscheidet ein E-Book von einem gedruckten Buch?",
-        answerA = "E-Books haben keine Seiten",
-        answerB = "E-Books existieren nur als digitale Datei",
-        answerC = "E-Books koennen nur auf dem Computer gelesen werden",
-        answerD = "E-Books sind immer kuerzere Texte",
-        correctAnswer = 1,
-        explanation = "Ein E-Book ist ein digitales Dokument ohne physische Form. Es kann auf E-Readern, Tablets oder Smartphones gelesen werden.",
-        difficulty = 1,
-        funFact = "Das erste E-Book der Welt war die US-amerikanische Unabhaengigkeitserklaerung, die 1971 von Michael Hart digitalisiert wurde."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine E-Ink-Technologie bei E-Readern?",
-        answerA = "Tinte die sich elektrisch auftraegt",
-        answerB = "Eine Bildschirmtechnologie die dem Papier aehnlich aussieht",
-        answerC = "Eine unsichtbare Tinte fuer geheime Dokumente",
-        answerD = "Fluessigkristalltechnologie wie in Fernsehern",
-        correctAnswer = 1,
-        explanation = "E-Ink (elektronische Tinte) nutzt winzige schwarze und weisse Kapseln, die sich elektrisch ausrichten. Das Ergebnis sieht aus wie gedrucktes Papier.",
-        difficulty = 1,
-        funFact = "Im Gegensatz zu LCD-Bildschirmen strahlt E-Ink kein eigenes Licht aus und ist deshalb auch bei direktem Sonnenlicht sehr gut lesbar."
-    ),
+
+    // Question 8 -- AR basics
     Question(
         categoryId = 7,
         questionText = "Was ist Augmented Reality (AR)?",
         answerA = "Eine vollstaendig computergenerierte Welt",
-        answerB = "Die Erweiterung der realen Welt durch eingeblendete digitale Informationen",
-        answerC = "Ein Computereffekt fuer Kinofilme",
-        answerD = "Eine Technik zur Bildverbesserung bei Fernsehern",
+        answerB = "Digitale Informationen oder Objekte, die in die echte Welt eingeblendet werden",
+        answerC = "Ein Videoeffekt fuer Kinofilme",
+        answerD = "Eine verbesserte Kamera-Technologie",
         correctAnswer = 1,
-        explanation = "Bei AR (Augmented Reality) wird die echte Umgebung in Echtzeit mit digitalen Inhalten wie Texten oder 3D-Objekten ueberlagert.",
+        explanation = "Bei AR (Augmented Reality) wird die echte Umgebung in Echtzeit mit digitalen Inhalten wie Texten, Bildern oder 3D-Objekten ueberlagert.",
         difficulty = 1,
-        funFact = "Pokemon Go (2016) machte Augmented Reality durch das Einfangen von Pokemon in der echten Welt weltweit bekannt."
+        funFact = "Das Handyspiel Pokemon Go (2016) machte AR weltweit bekannt -- Spieler sahen Pokemon per Kamera in ihrer realen Umgebung."
     ),
+
+    // Question 9 -- Self-driving cars
     Question(
         categoryId = 7,
-        questionText = "Welche Schnittstelle nutzen die meisten modernen Kopfhoerer-Kabel?",
-        answerA = "USB-A",
-        answerB = "HDMI",
-        answerC = "3,5-mm-Klinke oder USB-C",
-        answerD = "Lightning",
+        questionText = "Was ist ein selbstfahrendes Auto?",
+        answerA = "Ein Auto das von einem Roboter gesteuert wird",
+        answerB = "Ein Fahrzeug das mit KI und Sensoren ohne menschlichen Fahrer fahren kann",
+        answerC = "Ein Elektroauto das besonders schnell faehrt",
+        answerD = "Ein Auto mit automatischer Einparkhilfe",
+        correctAnswer = 1,
+        explanation = "Autonome Fahrzeuge nutzen Kameras, Radarsensoren und KI, um Strassen zu erkennen und ohne Eingreifen eines Menschen sicher zu fahren.",
+        difficulty = 1,
+        funFact = "Tesla-Autos sammeln taeglich Millionen Kilometer an Fahrdaten, die zum Training der KI fuer das autonome Fahren genutzt werden."
+    ),
+
+    // Question 10 -- Self-driving: sensors
+    Question(
+        categoryId = 7,
+        questionText = "Welche Sensorart wird bei selbstfahrenden Autos eingesetzt um die Umgebung zu erfassen?",
+        answerA = "Nur Kameras",
+        answerB = "Kameras, Radarsensoren und Lidar",
+        answerC = "Nur GPS",
+        answerD = "Ultraschall und Mikrofone",
+        correctAnswer = 1,
+        explanation = "Selbstfahrende Autos kombinieren Kameras, Radar (fuer Abstands- und Geschwindigkeitsmessung) und Lidar (Laserscan der Umgebung), um zuverlaessig zu navigieren.",
+        difficulty = 1,
+        funFact = "Lidar steht fuer 'Light Detection and Ranging' und funktioniert wie ein Radar, aber mit Laserstrahlen statt Funkwellen."
+    ),
+
+    // Question 11 -- Solar panels basics
+    Question(
+        categoryId = 7,
+        questionText = "Wie erzeugen Solarpanele Strom?",
+        answerA = "Durch Waerme die das Dach aufheizt",
+        answerB = "Durch Sonnenlicht das direkt in elektrischen Strom umgewandelt wird",
+        answerC = "Durch Wind der die Panels bewegt",
+        answerD = "Durch chemische Reaktionen in den Panels",
+        correctAnswer = 1,
+        explanation = "Solarpanele enthalten Solarzellen aus Halbleitermaterial (meist Silizium), die Lichtenergie direkt in elektrische Energie umwandeln.",
+        difficulty = 1,
+        funFact = "Der Wirkungsgrad einer typischen Heim-Solaranlage betraegt etwa 15-22% -- die restliche Sonnenenergie wird als Waerme abgestrahlt."
+    ),
+
+    // Question 12 -- Solar panels: usage
+    Question(
+        categoryId = 7,
+        questionText = "Wozu dienen Solarpanele auf Hausdaechern?",
+        answerA = "Als Waermeschutz fuer das Dach",
+        answerB = "Um eigenen Strom aus Sonnenlicht zu erzeugen und die Stromrechnung zu senken",
+        answerC = "Als Antennen fuer schnelles Internet",
+        answerD = "Um Regenwasser zu sammeln",
+        correctAnswer = 1,
+        explanation = "Hausdach-Solaranlagen (Photovoltaik) erzeugen aus Sonnenlicht Strom fuer den Eigenverbrauch. Ueberschuessiger Strom kann ins Netz eingespeist werden.",
+        difficulty = 1,
+        funFact = "Deutschland ist trotz seines bewoelkten Klimas einer der groessten Solarenergie-Produzenten weltweit und hat zeitweise mehr Strom erzeugt als verbraucht."
+    ),
+
+    // Question 13 -- Wind turbines
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Windrad (Windkraftanlage)?",
+        answerA = "Ein grosser Luefter der kuehle Luft erzeugt",
+        answerB = "Eine Anlage die Windenergie in elektrischen Strom umwandelt",
+        answerC = "Ein Gerat das Windgeschwindigkeit misst",
+        answerD = "Eine Pumpe fuer Wasser die vom Wind angetrieben wird",
+        correctAnswer = 1,
+        explanation = "Windkraftanlagen nutzen den Wind, um grosse Rotorblaetter in Drehbewegung zu versetzen, die einen Generator antreiben und so Strom erzeugen.",
+        difficulty = 1,
+        funFact = "Ein modernes Offshore-Windrad mit 15 MW Leistung kann mit einer einzigen Umdrehung seines Rotors genug Strom fuer eine vierkoepfige Familie fuer einen Tag erzeugen."
+    ),
+
+    // Question 14 -- Renewable energy
+    Question(
+        categoryId = 7,
+        questionText = "Was versteht man unter 'erneuerbaren Energien'?",
+        answerA = "Energie aus Kohle und Erdoel, die sich regeneriert",
+        answerB = "Energiequellen die sich natuerlich erneuern, wie Sonne, Wind und Wasser",
+        answerC = "Strom der aus alten Batterien zurueckgewonnen wird",
+        answerD = "Atomenergie, weil Uran sehr lange haelt",
+        correctAnswer = 1,
+        explanation = "Erneuerbare Energien sind Energiequellen, die sich in der Natur staendig erneuern und daher nicht erschoepft werden -- z.B. Sonne, Wind, Wasser und Erdwaerme.",
+        difficulty = 1,
+        funFact = "Im Jahr 2023 stammten erstmals mehr als 50% des deutschen Stroms aus erneuerbaren Energien -- Windkraft war dabei die staerkste Quelle."
+    ),
+
+    // Question 15 -- Electric cars
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Elektroauto?",
+        answerA = "Ein Auto mit einem besonders starken Benzinmotor",
+        answerB = "Ein Fahrzeug, das ausschliesslich mit Strom aus einem Akku angetrieben wird",
+        answerC = "Ein Auto das sowohl mit Benzin als auch mit Strom faehrt",
+        answerD = "Ein ferngesteuertes Fahrzeug",
+        correctAnswer = 1,
+        explanation = "Ein Elektroauto (E-Auto) hat keinen Verbrennungsmotor sondern einen Elektromotor, der von einem grossen Akku (Batterie) mit Energie versorgt wird.",
+        difficulty = 1,
+        funFact = "Tesla-Gruender Elon Musk sagte, ein Elektroauto sei wie ein Smartphone auf Raedern -- es bekommt neue Funktionen per Software-Update."
+    ),
+
+    // Question 16 -- Electric cars: charging
+    Question(
+        categoryId = 7,
+        questionText = "Wie wird ein Elektroauto 'betankt'?",
+        answerA = "Mit Benzin an der Tankstelle",
+        answerB = "Mit Wasserstoff aus einer Zapfsaeule",
+        answerC = "Mit Strom an einer Ladestation oder Haushaltssteckdose",
+        answerD = "Mit einem speziellen Elektrolyt",
         correctAnswer = 2,
-        explanation = "Kabel-Kopfhoerer verwenden entweder den klassischen 3,5-mm-Klinkenanschluss oder, bei neueren Geraeten, USB-C.",
+        explanation = "Elektroautos werden aufgeladen, indem man sie per Kabel mit einer Ladestation (Wallbox), einer oeffentlichen Schnellladesaeule oder einer Haushaltssteckdose verbindet.",
         difficulty = 1,
-        funFact = "Die 3,5-mm-Klinkenbuchse gibt es seit den 1950er Jahren und stammt urspruenglich von Telefonvermittlungen aus dem 19. Jahrhundert."
+        funFact = "An einer Schnellladesaeule (150 kW) kann man ein Elektroauto in ca. 20 Minuten auf 80% laden -- Kaffee trinken und schon ist man wieder unterwegs."
     ),
+
+    // Question 17 -- E-bikes
     Question(
         categoryId = 7,
-        questionText = "Was kann man mit einem QR-Code auf einer Restaurantspeisekarte tun?",
-        answerA = "Den Kassenbon herunterladen",
-        answerB = "Die digitale Speisekarte auf dem Smartphone oeffnen",
-        answerC = "Den Tisch reservieren",
-        answerD = "Die Rechnung bezahlen",
+        questionText = "Was ist ein E-Bike?",
+        answerA = "Ein Motorrad mit elektrishem Antrieb",
+        answerB = "Ein Fahrrad mit einem eingebauten Elektromotor, der beim Treten unterstuetzt",
+        answerC = "Ein Fahrrad ohne Pedale",
+        answerD = "Ein Elektroauto in Fahrradgroesse",
         correctAnswer = 1,
-        explanation = "Viele Restaurants verlinken per QR-Code ihre digitale Speisekarte, die dann auf dem Smartphone des Gastes angezeigt wird.",
+        explanation = "Ein E-Bike ist ein Fahrrad mit Elektromotor und Akku. Der Motor unterstuetzt den Fahrer beim Treten, macht Bergauffahrten leichter und erhoehe die Reichweite.",
         difficulty = 1,
-        funFact = "Waehrend der Corona-Pandemie wurden QR-Codes in Restaurants zum Standard, um Kontakt durch physische Speisekarten zu vermeiden."
+        funFact = "In Deutschland wurden 2023 mehr E-Bikes als normale Fahrraeder verkauft -- E-Bikes sind das meistgekaufte elektrische Fahrzeug des Landes."
     ),
+
+    // Question 18 -- E-scooters
     Question(
         categoryId = 7,
-        questionText = "Was passiert, wenn man zu viele Emojis in einem Text verwendet?",
-        answerA = "Das Geraet kann abstuerzen",
-        answerB = "Nichts Technisches, aber die Lesbarkeit des Textes kann leiden",
-        answerC = "Die Nachricht wird vom Server geblockt",
-        answerD = "Das Emoji-Limit von 10 pro Nachricht wird ueberschritten",
+        questionText = "Was ist ein E-Scooter?",
+        answerA = "Ein kleiner elektrischer Motorroller fuer Kinder",
+        answerB = "Ein elektrischer Tretroller fuer Erwachsene, der per App geliehen werden kann",
+        answerC = "Ein Rollstuhl mit Elektromotor",
+        answerD = "Ein elektrisches Einrad",
         correctAnswer = 1,
-        explanation = "Technisch gibt es kein festes Limit, aber zu viele Emojis koennen eine Nachricht unleserlich oder kindisch wirken lassen.",
+        explanation = "E-Scooter sind elektrische Tretroller die man oft per App mieten kann. Sie sind beliebt fuer kurze Strecken in Stadten als Alternative zu Bus oder Auto.",
         difficulty = 1,
-        funFact = "Jedes Emoji belegt im Unicode-Standard mindestens 4 Bytes. Manche neuere Emojis wie Familien sind sogar mehrere Dutzend Bytes gross."
+        funFact = "In Berlin gibt es ueber 40.000 Leih-E-Scooter verschiedener Anbieter wie Lime, Tier und Bolt -- das entspricht etwa einem Scooter auf jeden 90. Einwohner."
     ),
+
+    // Question 19 -- E-waste
     Question(
         categoryId = 7,
-        questionText = "Was ist der Unterschied zwischen einem digitalen und einem analogen Foto?",
-        answerA = "Digitale Fotos sind immer schwarz-weiss",
-        answerB = "Digitale Fotos werden als Datei gespeichert, analoge auf Film",
-        answerC = "Analoge Fotos koennen am Computer bearbeitet werden",
-        answerD = "Es gibt keinen Unterschied",
+        questionText = "Was versteht man unter 'Elektroschrott'?",
+        answerA = "Alte Zeitungen und Pappe",
+        answerB = "Ausgediente elektronische Geraete wie alte Handys, Computer oder Fernseher",
+        answerC = "Defekte Steckdosen und Lichtschalter",
+        answerD = "Kabel und Leitungen aus Altbauten",
         correctAnswer = 1,
-        explanation = "Digitale Fotos werden als Bilddateien auf Speichermedien gesichert. Analoge Fotos belichtet werden durch Licht auf chemisch beschichtetem Film.",
+        explanation = "Elektroschrott (E-Waste) umfasst alle entsorgten elektrischen und elektronischen Geraete. Er enthaelt wertvolle Rohstoffe, aber auch gefaehrliche Schadstoffe.",
         difficulty = 1,
-        funFact = "Kodak, einst der groesste Fotounternehmen der Welt, meldete 2012 Insolvenz an, weil der Uebergang von analog zu digital zu spaet erkannt wurde."
+        funFact = "Weltweit fallen jaehrlich ueber 50 Millionen Tonnen Elektroschrott an -- das entspricht dem Gewicht aller kommerziellen Flugzeuge die je gebaut wurden."
     ),
+
+    // Question 20 -- E-waste recycling
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Wearable-Herzfrequenz-Sensor?",
-        answerA = "Ein Stethoskop fuer zuhause",
-        answerB = "Ein Sensor in einer Smartwatch der den Herzschlag per Licht misst",
-        answerC = "Ein EKG-Geraet fuer den Hausarzt",
-        answerD = "Ein Chip der unter die Haut implantiert wird",
+        questionText = "Wo gibt man alte Handys und Computer richtig ab?",
+        answerA = "Im normalen Hausmuell",
+        answerB = "Am Wertstoffhof oder bei Haendlern die Elektroschrott annehmen",
+        answerC = "Im Papiermuelleimer",
+        answerD = "Im Gelben Sack",
         correctAnswer = 1,
-        explanation = "Fitness-Tracker und Smartwatches nutzen optische Sensoren (PPG), die gruenes Licht durch die Haut schicken und den Blutfluss messen.",
+        explanation = "Elektrogeraete duerfen nicht in den Hausmuell, da sie Schadstoffe enthalten. Sie gehoeren zum Wertstoffhof, zu Elektromaerkten oder zu speziellen Sammelstellen.",
         difficulty = 1,
-        funFact = "Die Technik hinter Herzfrequenzmessungen am Handgelenk nennt sich Photoplethysmografie (PPG) und wurde bereits in den 1970ern in Kliniken eingesetzt."
+        funFact = "Ein altes Smartphone enthaelt winzige Mengen Gold, Silber, Kupfer und seltene Erden -- aus einer Tonne alter Handys kann man 300g Gold gewinnen."
     ),
+
+    // Question 21 -- Smartwatch
     Question(
         categoryId = 7,
-        questionText = "Was ist eine 3D-gedruckte Prothese?",
-        answerA = "Ein kuenstliches Koerperteil das im 3D-Druck hergestellt wurde",
-        answerB = "Ein Roboter der Prothesen herstellt",
-        answerC = "Ein Software-Modell einer Prothese",
-        answerD = "Ein Scan eines verletzten Koerperteils",
-        correctAnswer = 0,
-        explanation = "3D-gedruckte Prothesen werden mit einem 3D-Scanner am Koerper angepasst und dann individuell gedruckt. Sie sind oft viel guenstiger als klassische Prothesen.",
-        difficulty = 1,
-        funFact = "In Entwicklungslaendern koennen 3D-gedruckte Armprothesen fuer Kinder schon fuer 50 Dollar hergestellt werden, klassische kosten oft 10.000 Euro."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer wird Augmented Reality (AR) auf Smartphones haeufig genutzt?",
-        answerA = "Um Fotos zu bearbeiten",
-        answerB = "Um Filter und Effekte in der Kamera-App anzuzeigen",
-        answerC = "Um die Akkulaufzeit zu verlaengern",
-        answerD = "Um mit KI zu chatten",
+        questionText = "Was ist eine Smartwatch?",
+        answerA = "Eine Uhr die sehr genau geht",
+        answerB = "Eine Armbanduhr mit Computer-Funktionen wie Benachrichtigungen und Gesundheits-Tracking",
+        answerC = "Eine Uhr mit eingebautem Wecker",
+        answerD = "Eine Uhr die sich automatisch auf Zeitzonenaenderungen einstellt",
         correctAnswer = 1,
-        explanation = "Apps wie Snapchat oder Instagram verwenden AR um lustige Filter (z.B. Hundeohren) in Echtzeit ueber das Kamerabild zu legen.",
+        explanation = "Eine Smartwatch ist mehr als eine Uhr -- sie zeigt Benachrichtigungen vom Smartphone, trackt Sport und Gesundheit und manche koennen sogar telefonieren.",
         difficulty = 1,
-        funFact = "IKEA hat eine AR-App mit der man Moebelstucke virtuell in der eigenen Wohnung platzieren kann, bevor man sie kauft."
+        funFact = "Die Apple Watch ist die meistverkaufte Uhr der Welt -- sie verkauft mehr Exemplare pro Jahr als alle Schweizer Uhrenmarken zusammen."
     ),
+
+    // Question 22 -- Fitness tracker: heart rate
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Balken-Diagramm auf einem Fitness-Tracker typischerweise?",
-        answerA = "Eine Karte der zurueckgelegten Strecke",
-        answerB = "Eine taegliche oder woechentliche Darstellung der Aktivitaetsdaten",
-        answerC = "Eine Liste aller gesundheitlichen Warnsignale",
-        answerD = "Ein Kalender mit Sportterminen",
+        questionText = "Was kann ein Fitness-Tracker am Handgelenk messen?",
+        answerA = "Den Blutalkohol",
+        answerB = "Die Herzfrequenz und die Anzahl der Schritte",
+        answerC = "Den Blutdruck exakt wie beim Arzt",
+        answerD = "Den Sauerstoffgehalt der Luft",
         correctAnswer = 1,
-        explanation = "Fitness-Tracker zeigen Schritte, Kalorien oder Schlaf oft als Balkendiagramm an, damit man den Fortschritt im Tages- oder Wochenvergleich sieht.",
+        explanation = "Fitness-Tracker messen Herzfrequenz per Lichtsensor durch die Haut und zaehlen Schritte ueber einen Bewegungssensor (Beschleunigungsmesser).",
         difficulty = 1,
-        funFact = "Studien zeigen, dass das Sehen von Fortschrittsdaten die Motivation zum Sport deutlich erhoehen kann."
+        funFact = "Die bekanntesten Fitness-Tracker-Marken heissen Fitbit, Garmin und Xiaomi Mi Band -- das guenstigste Modell von Xiaomi kostet weniger als 30 Euro."
     ),
+
+    // Question 23 -- Video calls: Zoom
     Question(
         categoryId = 7,
-        questionText = "Was ist typisch fuer VR-Spiele im Vergleich zu normalen Videospielen?",
-        answerA = "VR-Spiele koennen nur alleine gespielt werden",
-        answerB = "Der Spieler bewegt sich koerperlich und schaut sich um",
-        answerC = "VR-Spiele haben keine Grafik",
-        answerD = "VR-Spiele laufen nur auf Smartphones",
+        questionText = "Wofuer wird Zoom hauptsaechlich genutzt?",
+        answerA = "Fuer Online-Spiele mit vielen Spielern",
+        answerB = "Fuer Videokonferenzen und Videogespraeche ueber das Internet",
+        answerC = "Fuer das Bearbeiten von Videos",
+        answerD = "Als Cloud-Speicher fuer Videos",
         correctAnswer = 1,
-        explanation = "In VR-Spielen dreht der Spieler den Kopf um sich umzuschauen und kann oft mit Handcontrollern Objekte greifen oder Gesten machen.",
+        explanation = "Zoom ist eine Plattform fuer Videoanrufe, bei der bis zu hunderte Teilnehmer gleichzeitig per Video und Audio kommunizieren koennen.",
         difficulty = 1,
-        funFact = "Manche VR-Spiele wie Beat Saber (Schlagen von Blöcken im Takt) gelten als richtiges Fitness-Training und verbrennen aehnlich viele Kalorien wie Tennis."
+        funFact = "Waehrend der Corona-Pandemie 2020 stieg die taegliche Nutzerzahl von Zoom von 10 Millionen auf 300 Millionen -- in nur drei Monaten."
+    ),
+
+    // Question 24 -- Video calls: Teams
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Microsoft Teams?",
+        answerA = "Ein Videospiel von Microsoft",
+        answerB = "Eine Software fuer Chats, Videoanrufe und Zusammenarbeit im Buero",
+        answerC = "Ein E-Mail-Programm",
+        answerD = "Ein Cloud-Speicher fuer Firmendaten",
+        correctAnswer = 1,
+        explanation = "Microsoft Teams ist eine Kommunikationsplattform fuer Unternehmen mit Chat, Videoanrufen, Dateiablage und Integration in Microsoft Office.",
+        difficulty = 1,
+        funFact = "Teams wurde 2017 gestartet und ist heute auf ueber 320 Millionen aktiven Geraeten installiert -- es ist das am schnellsten wachsende Produkt in Microsofts Geschichte."
+    ),
+
+    // Question 25 -- Video calls: FaceTime
+    Question(
+        categoryId = 7,
+        questionText = "Was ist FaceTime?",
+        answerA = "Eine App zum Bearbeiten von Selfies",
+        answerB = "Apples eingebaute App fuer Videoanrufe zwischen Apple-Geraeten",
+        answerC = "Ein sozianes Netzwerk fuer Profilbilder",
+        answerD = "Eine Gesichtserkennungs-App von Apple",
+        correctAnswer = 1,
+        explanation = "FaceTime ist Apples kostenlose App fuer Videoanrufe, die auf iPhones, iPads und Macs vorinstalliert ist und hochwertige Video- und Audioanrufe ermoeglicht.",
+        difficulty = 1,
+        funFact = "FaceTime wurde 2010 mit dem iPhone 4 eingefuehrt. Apple-Gruender Steve Jobs nannte es das 'revolutionaerste iPhone-Feature'."
+    ),
+
+    // Question 26 -- Digital maps: Google Maps
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Google Maps?",
+        answerA = "Ein Erdkunde-Lexikon von Google",
+        answerB = "Ein digitaler Kartendienst von Google mit Navigation und Strassenansichten",
+        answerC = "Ein Programm zum Erstellen von Landkarten",
+        answerD = "Ein Satellit der Karten aufnimmt",
+        correctAnswer = 1,
+        explanation = "Google Maps ist der bekannteste digitale Kartendienst der Welt. Er bietet Navigation, Satellitenbilder, Street View und Informationen zu Orten.",
+        difficulty = 1,
+        funFact = "Google Maps deckt heute ueber 220 Laender ab und hat Street View-Bilder mit einer Gesamtlaenge von ueber 16 Millionen Kilometern Strassenaufnahmen."
+    ),
+
+    // Question 27 -- Digital maps: Street View
+    Question(
+        categoryId = 7,
+        questionText = "Was zeigt die Google-Maps-Funktion 'Street View'?",
+        answerA = "Einen 3D-Grundriss einer Stadt",
+        answerB = "Fotos von Strassen, die man virtuell entlanglaufen kann",
+        answerC = "Live-Bilder von Strassenkameras",
+        answerD = "Satellitenbilder in Echtzeit",
+        correctAnswer = 1,
+        explanation = "Street View zeigt Panoramafotos von Strassen, die von Google-Fahrzeugen mit speziellen 360-Grad-Kameras aufgenommen wurden. Man kann virtuell durch Strassen 'gehen'.",
+        difficulty = 1,
+        funFact = "Google faehrt weltweit mit speziell ausgestatteten Autos und Fahrradern -- sogar Pfade in Nationalparks wurden zu Fuss mit Kamerarucksaecken aufgenommen."
+    ),
+
+    // Question 28 -- Satellite imagery
+    Question(
+        categoryId = 7,
+        questionText = "Womit werden die Satellitenbilder in digitalen Karten aufgenommen?",
+        answerA = "Von Drohnen die ueber Staedte fliegen",
+        answerB = "Von Satelliten die aus dem Weltall die Erdoberflaeche fotografieren",
+        answerC = "Von Flugzeugen die Luftaufnahmen machen",
+        answerD = "Von Hochhaeusern mit Panoramakameras",
+        correctAnswer = 1,
+        explanation = "Erdbeobachtungssatelliten kreisen in grosser Hoehe um die Erde und fotografieren die Oberflaeche mit hochaufloeenden Kameras fuer digitale Kartendienste.",
+        difficulty = 1,
+        funFact = "Google Earth verwendet Satellitenbilder mit einer Aufloesung von bis zu 15 Zentimetern -- man kann einzelne Autos auf Parkplaetzen erkennen."
+    ),
+
+    // Question 29 -- GPS
+    Question(
+        categoryId = 7,
+        questionText = "Was ist GPS?",
+        answerA = "Ein Internetzugang fuer Smartphones",
+        answerB = "Ein Satellitensystem das genaue Standortbestimmung auf der Erde ermoeglicht",
+        answerC = "Ein Kartenprogramm von Google",
+        answerD = "Ein Funknetzwerk fuer Fahrzeuge",
+        correctAnswer = 1,
+        explanation = "GPS (Global Positioning System) ist ein US-amerikanisches Satellitennetzwerk mit 30+ Satelliten, das Smartphones und Navigationssystemen sagt, wo sie sich befinden.",
+        difficulty = 1,
+        funFact = "GPS wurde urspruenglich vom US-Militaer entwickelt und erst 1983 fuer die zivile Nutzung freigegeben -- ausgeloest durch den Abschuss eines koreanischen Passagierflugzeugs."
+    ),
+
+    // Question 30 -- E-learning
+    Question(
+        categoryId = 7,
+        questionText = "Was ist E-Learning?",
+        answerA = "Lernen mit elektronischer Musik",
+        answerB = "Lernen und Unterricht ueber digitale Medien und das Internet",
+        answerC = "Computerprogrammierung als Schulfach",
+        answerD = "Lernen per E-Mail-Kurs",
+        correctAnswer = 1,
+        explanation = "E-Learning bedeutet, Lerninhalte ueber digitale Mittel zu vermitteln -- durch Videos, interaktive Uebungen, Online-Kurse oder virtuelle Klassenzimmer.",
+        difficulty = 1,
+        funFact = "Waehrend der Corona-Pandemie mussten weltweit 1,6 Milliarden Schueler auf E-Learning umsteigen -- das war der groesste Lehrexperiment der Geschichte."
+    ),
+
+    // Question 31 -- Tablets in school
+    Question(
+        categoryId = 7,
+        questionText = "Welchen Vorteil haben Tablets im Schulunterricht?",
+        answerA = "Schueler koennen damit Filme schauen statt zu lernen",
+        answerB = "Digitale Lernmaterialien, interaktive Bucher und schnelle Recherche sind moeglich",
+        answerC = "Tablets ersetzen vollstaendig den Lehrer",
+        answerD = "Schueler brauchen keine Hausaufgaben mehr zu machen",
+        correctAnswer = 1,
+        explanation = "Tablets im Unterricht ermoelichen interaktive Lernbuecher, sofortige Recherche, kreatives Arbeiten und individuell angepasstes Lerntempo fuer jeden Schueler.",
+        difficulty = 1,
+        funFact = "Apple startete 2012 das iPad-fuer-Schueler-Programm. Heute nutzen weltweit ueber 70 Millionen Schueler iPads im Unterricht."
+    ),
+
+    // Question 32 -- Online learning platforms
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Beispiel fuer eine E-Learning-Plattform?",
+        answerA = "Netflix",
+        answerB = "Khan Academy",
+        answerC = "Spotify",
+        answerD = "Instagram",
+        correctAnswer = 1,
+        explanation = "Khan Academy ist eine kostenlose E-Learning-Plattform mit tausenden Lernvideos und Uebungen fuer Mathe, Naturwissenschaften, Geschichte und mehr.",
+        difficulty = 1,
+        funFact = "Khan Academy wurde 2006 gegruendet, nachdem Gruender Salman Khan seiner Cousine Mathematik per Video erklarte. Heute lernen 150 Millionen Menschen darauf."
+    ),
+
+    // Question 33 -- AI: image recognition
+    Question(
+        categoryId = 7,
+        questionText = "Was kann eine KI mit Bilderkennung tun?",
+        answerA = "Bilder ausdrucken",
+        answerB = "Objekte, Gesichter oder Text in Fotos automatisch erkennen",
+        answerC = "Bilder schneller herunterladen",
+        answerD = "Fotos automatisch in bessere Qualitaet umwandeln",
+        correctAnswer = 1,
+        explanation = "Bilderkennungs-KI kann in Fotos Personen, Tiere, Objekte oder Text identifizieren -- das wird z.B. fuer die Fotosuche oder Ueberwachungssysteme genutzt.",
+        difficulty = 1,
+        funFact = "Googles Fotos-App kann automatisch alle Bilder mit deiner Katze, einem bestimmten Freund oder einem bestimmten Ort heraussuchen -- dank KI-Bilderkennung."
+    ),
+
+    // Question 34 -- Renewable energy: advantages
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Vorteil erneuerbarer Energien gegenueber Kohle und Erdoel?",
+        answerA = "Sie erzeugen mehr Strom",
+        answerB = "Sie verursachen keine oder kaum CO2-Emissionen beim Betrieb",
+        answerC = "Sie sind immer guenstiger",
+        answerD = "Sie sind groesser und auffaelliger",
+        correctAnswer = 1,
+        explanation = "Wind, Sonne und Wasser erzeugen Strom ohne CO2 auszustossen. Das verlangsamt den Klimawandel, da kein Treibhausgas in die Atmosphaere gelangt.",
+        difficulty = 1,
+        funFact = "Ein einziges Windrad ersetzt im Laufe seiner 20-jaehrigen Lebensdauer etwa 100.000 Tonnen CO2 -- so viel wie 50.000 Autofahrten rund um die Erde."
+    ),
+
+    // Question 35 -- Electric car: Tesla
+    Question(
+        categoryId = 7,
+        questionText = "Welches Unternehmen ist besonders bekannt fuer seine Elektroautos?",
+        answerA = "Samsung",
+        answerB = "Tesla",
+        answerC = "Sony",
+        answerD = "Apple",
+        correctAnswer = 1,
+        explanation = "Tesla ist das bekannteste Elektroauto-Unternehmen der Welt und wurde von Elon Musk zum Symbol fuer moderne E-Mobilitaet gemacht.",
+        difficulty = 1,
+        funFact = "Tesla wurde 2003 gegruendet und nach dem Erfinder Nikola Tesla benannt, der als Pionier der Wechselstromtechnologie gilt."
+    ),
+
+    // Question 36 -- E-waste: harmful materials
+    Question(
+        categoryId = 7,
+        questionText = "Warum darf Elektroschrott nicht im normalen Hausmuell landen?",
+        answerA = "Weil er zu schwer fuer normale Muellwagen ist",
+        answerB = "Weil er giftige Stoffe wie Blei oder Quecksilber enthaelt, die die Umwelt verschmutzen",
+        answerC = "Weil er sich nicht zersetzt und ewig liegt",
+        answerD = "Weil er Funken erzeugt die Braende verursachen koennen",
+        correctAnswer = 1,
+        explanation = "Elektroschrott enthaelt gefaehrliche Schadstoffe wie Blei, Cadmium oder Quecksilber, die bei falscher Entsorgung ins Grundwasser und den Boden gelangen.",
+        difficulty = 1,
+        funFact = "In vielen Entwicklungslaendern wird Elektroschrott auf offenen Feldern verbrannt, um Metalle zu gewinnen -- die giftigen Rauchgase gefaehrden die Gesundheit der Bewohner."
+    ),
+
+    // Question 37 -- VR: use cases
+    Question(
+        categoryId = 7,
+        questionText = "In welchem Bereich wird VR ausser bei Spielen noch eingesetzt?",
+        answerA = "Zum Waschen von Kleidung",
+        answerB = "In der Medizin fuer Training und Therapie",
+        answerC = "Als Ersatz fuer Sonnenbrillen",
+        answerD = "Zum Programmieren von Webseiten",
+        correctAnswer = 1,
+        explanation = "Aerzte trainieren in VR Operationen, Psychologen behandeln Phobien (Hoehenangst) und Physiotherapeuten nutzen VR fuer Rehabilitationsuebungen.",
+        difficulty = 1,
+        funFact = "Studien zeigen, dass VR-Training von Chirurgen ihre Fehlerrate bei echten Operationen um 40% reduziert -- weil sie vorab hunderte virtuelle Uebungen machen koennen."
+    ),
+
+    // Question 38 -- Self-driving: levels
+    Question(
+        categoryId = 7,
+        questionText = "Was bedeutet 'autonomes Fahren Stufe 2'?",
+        answerA = "Das Auto faehrt vollstaendig ohne Fahrer",
+        answerB = "Das Auto unterstuetzt beim Lenken und Bremsen aber der Fahrer muss aufpassen",
+        answerC = "Das Auto parkt automatisch ein",
+        answerD = "Das Auto hat nur einen Tempomaten",
+        correctAnswer = 1,
+        explanation = "Stufe 2 bedeutet 'Teilautomatisierung': Das Auto kann gleichzeitig lenken und Gas/Bremse steuern, aber der Fahrer muss jederzeit bereit sein einzugreifen.",
+        difficulty = 1,
+        funFact = "Tesla Autopilot und VW Travel Assist sind Stufe-2-Systeme -- der Fahrer muss die Haende nah am Lenkrad halten, damit das System weiterlaeuft."
+    ),
+
+    // Question 39 -- Solar energy: storage
+    Question(
+        categoryId = 7,
+        questionText = "Was passiert mit ueberschuessigem Solarstrom wenn man ihn gerade nicht braucht?",
+        answerA = "Er geht verloren",
+        answerB = "Er kann in einem Batteriespeicher gespeichert oder ins Stromnetz eingespeist werden",
+        answerC = "Er heizt automatisch den Boiler",
+        answerD = "Er wird in Wasserstoff umgewandelt",
+        correctAnswer = 1,
+        explanation = "Ueberschuessiger Solarstrom kann in Hausspeicherbatterien fuer den Abend gespeichert werden oder ins oeffentliche Stromnetz eingespeist werden, wofuer man Verguetung erhaelt.",
+        difficulty = 1,
+        funFact = "Tesla Powerwall ist ein Heimspeicher, der den Strom einer Solaranlage speichert. Er hat die Groesse eines kleinen Koffers und fasst 13,5 kWh."
+    ),
+
+    // Question 40 -- E-bike: range
+    Question(
+        categoryId = 7,
+        questionText = "Wie weit kommt man typischerweise mit einem vollgeladenen E-Bike-Akku?",
+        answerA = "5-10 Kilometer",
+        answerB = "30-120 Kilometer je nach Akku und Unterstuetzungsstufe",
+        answerC = "Mehr als 500 Kilometer",
+        answerD = "Genau 50 Kilometer immer",
+        correctAnswer = 1,
+        explanation = "Die Reichweite eines E-Bikes haengt von Akkugroesse, Motorunterstuetzung, Streckenprofil und Fahrergewicht ab. Typische Alltagsraeder schaffen 50-80 km.",
+        difficulty = 1,
+        funFact = "Bei hoher Unterstuetzungsstufe bergauf faehrt man schneller, der Akku leer sich aber auch schneller -- der Fahrer entscheidet selbst wie viel Hilfe er bekommt."
+    ),
+
+    // Question 41 -- Video call: background
+    Question(
+        categoryId = 7,
+        questionText = "Welche Funktion nutzen viele Menschen bei Videokonferenzen mit Zoom oder Teams?",
+        answerA = "Den Stummschaltknopf dauerhaft aktivieren",
+        answerB = "Den virtuellen Hintergrund um ihr echtes Zimmer zu verbergen",
+        answerC = "Den Bildschirm in Schwarz-Weiss umschalten",
+        answerD = "Die Kamera auf 60 fps umstellen",
+        correctAnswer = 1,
+        explanation = "Virtuelle Hintergruende ersetzen das echte Hintergrundbild durch ein Foto oder Video, damit man im Homeoffice mehr Privatsphaere hat.",
+        difficulty = 1,
+        funFact = "Nach einer Studie von 2021 nutzen ueber 60% der Zoom-Nutzer regelmaessig virtuelle Hintergruende -- haeufig Buerofotos, Strande oder Weltraumbilder."
+    ),
+
+    // Question 42 -- Digital maps: offline
+    Question(
+        categoryId = 7,
+        questionText = "Was kann man in Google Maps herunterladen um offline zu navigieren?",
+        answerA = "Einzelne Routen als PDF",
+        answerB = "Kartengebiete zum Nutzen ohne Internetverbindung",
+        answerC = "Street-View-Videos",
+        answerD = "Echtzeit-Verkehrsdaten",
+        correctAnswer = 1,
+        explanation = "Google Maps erlaubt das Herunterladen von Kartenregionen auf das Smartphone. So kann man auch ohne Internetverbindung navigieren, z.B. im Ausland.",
+        difficulty = 1,
+        funFact = "Eine heruntergeladene Offline-Karte von ganz Deutschland belegt auf dem Smartphone etwa 750 MB Speicher."
+    ),
+
+    // Question 43 -- AI in smartphones
+    Question(
+        categoryId = 7,
+        questionText = "Wo begegnet einem KI auf einem modernen Smartphone?",
+        answerA = "Nur in Spielen",
+        answerB = "In der Kamera, bei Sprachassistenten und in Empfehlungen",
+        answerC = "Nur beim Telefonieren",
+        answerD = "Nur beim Laden des Akkus",
+        correctAnswer = 1,
+        explanation = "KI steckt im Smartphone in der Kamera (Szene-Erkennung, Portrait-Modus), im Sprachassistenten (Siri/Google), in Kurzform-Empfehlungen und bei der Texteingabe.",
+        difficulty = 1,
+        funFact = "Moderne Smartphone-Chips haben einen eigenen KI-Prozessor (Neural Processing Unit) der speziell fuer KI-Aufgaben optimiert ist und kaum Akku verbraucht."
+    ),
+
+    // Question 44 -- Wearable: health monitoring
+    Question(
+        categoryId = 7,
+        questionText = "Was misst eine Apple Watch ausser der Zeit?",
+        answerA = "Die Qualitaet des WLAN-Signals",
+        answerB = "Herzfrequenz, Schritte, Blutsauerstoff und erkennt Stuerze",
+        answerC = "Den Blutdruck exakt",
+        answerD = "Den Blutzuckerspiegel",
+        correctAnswer = 1,
+        explanation = "Die Apple Watch misst Herzfrequenz, Blutsauerstoff (SpO2), Schritte, Kalorien und kann Stuerze erkennen sowie bei unregelmassigem Herzschlag warnen.",
+        difficulty = 1,
+        funFact = "Die Sturzerkennungs-Funktion der Apple Watch hat nachweislich Menschenleben gerettet -- sie rief automatisch den Notruf fuer gestuerzte Senioren."
+    ),
+
+    // Question 45 -- E-learning: advantages
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Vorteil von E-Learning gegenueber einem klassischen Prsenzunterricht?",
+        answerA = "Man lernt schneller wenn man im selben Raum ist",
+        answerB = "Man kann das eigene Lerntempo selbst bestimmen und von ueberall lernen",
+        answerC = "Es gibt keine Tests und Hausaufgaben",
+        answerD = "E-Learning ist immer kostenlos",
+        correctAnswer = 1,
+        explanation = "E-Learning ermoeglicht ortsunabhaengiges Lernen zu beliebigen Zeiten und im eigenen Tempo -- Inhalte koennen jederzeit wiederholt werden.",
+        difficulty = 1,
+        funFact = "Coursera, eine E-Learning-Plattform, bietet Kurse von mehr als 300 Universitaeten weltweit an -- darunter Yale, Google und IBM."
+    ),
+
+    // Question 46 -- Self-driving: safety
+    Question(
+        categoryId = 7,
+        questionText = "Wozu sollen selbstfahrende Autos langfristig beitragen?",
+        answerA = "Zu mehr Verkehr und schnelleren Autos",
+        answerB = "Zur Reduzierung von Unfaellen, weil KI keine mueden oder abgelenkten Fahrfehler macht",
+        answerC = "Zum Abbau von Strassenschildern",
+        answerD = "Zu guenstigeren Autos",
+        correctAnswer = 1,
+        explanation = "Ueber 90% aller Verkehrsunfaelle sind auf menschliches Versagen zurueckzufuehren. Autonome Fahrzeuge ohne Muedigkeit oder Ablenkung koennen das drastisch reduzieren.",
+        difficulty = 1,
+        funFact = "In den USA sterben jaehrlich ueber 40.000 Menschen im Strassenverkehr. Studien schaetzen, dass vollautonome Autos 94% dieser Unfaelle verhindern koennten."
+    ),
+
+    // Question 47 -- Wind energy: offshore
+    Question(
+        categoryId = 7,
+        questionText = "Was sind Offshore-Windparks?",
+        answerA = "Windraeder auf hohen Berggipfeln",
+        answerB = "Windkraftanlagen die im Meer gebaut werden",
+        answerC = "Windraeder auf dem Dach von Buerogebaeuden",
+        answerD = "Mobile Windanlagen die auf LKW transportiert werden",
+        correctAnswer = 1,
+        explanation = "Offshore-Windparks stehen im Meer, wo der Wind staerker und gleichmaessiger weht als an Land. Sie liefern mehr Strom, sind aber teurer zu bauen und zu warten.",
+        difficulty = 1,
+        funFact = "Der weltweit groesste Offshore-Windpark 'Hornsea 3' in der Nordsee hat eine Leistung von 2.852 MW -- genug Strom fuer ueber 3 Millionen britische Haushalte."
+    ),
+
+    // Question 48 -- Video calls: screen sharing
+    Question(
+        categoryId = 7,
+        questionText = "Was bedeutet 'Bildschirm teilen' bei einem Videoanruf?",
+        answerA = "Zwei Personen nutzen denselben Bildschirm gleichzeitig",
+        answerB = "Man zeigt den Inhalt des eigenen Bildschirms fuer andere Teilnehmer",
+        answerC = "Der Bildschirm wird in zwei Haelften geteilt",
+        answerD = "Man schaltet die Kamera aus und zeigt nur den Ton",
+        correctAnswer = 1,
+        explanation = "Beim Bildschirm teilen (Screen Sharing) sehen alle Teilnehmer des Anrufs in Echtzeit was auf dem eigenen Bildschirm zu sehen ist -- ideal fuer Praesentationen.",
+        difficulty = 1,
+        funFact = "Screen Sharing ist laut Microsoft die am haeufigsten genutzte Teams-Funktion -- noch vor dem Videoanruf selbst."
+    ),
+
+    // Question 49 -- E-mobility: charging network
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Problem das viele Menschen vom Kauf eines Elektroautos abhaelt?",
+        answerA = "Elektroautos sind zu leise",
+        answerB = "Zu wenige Ladestationen und lange Ladezeiten im Vergleich zum Tanken",
+        answerC = "Elektroautos koennen nicht im Regen fahren",
+        answerD = "Elektroautos sind zu schnell fuer Stadtstrassen",
+        correctAnswer = 1,
+        explanation = "Reichweitenangst und das noch duennere Ladenetz im Vergleich zu Tankstellen sind die haeufigsten Bedenken von potentiellen Elektroauto-Kauefer.",
+        difficulty = 1,
+        funFact = "In Deutschland gibt es bereits ueber 100.000 oeffentliche Ladepunkte fuer Elektroautos -- die Zahl verdoppelt sich etwa alle zwei Jahre."
+    ),
+
+    // Question 50 -- AI: translation
+    Question(
+        categoryId = 7,
+        questionText = "Was macht ein KI-Uebersetzungsdienst wie DeepL oder Google Translate?",
+        answerA = "Er lernt neue Sprachen von Grund auf per Sprachkurs",
+        answerB = "Er uebersetzt Texte automatisch in andere Sprachen mithilfe von KI",
+        answerC = "Er buchstabiert Woerter in anderen Sprachen",
+        answerD = "Er erkennt die Muttersprache eines Sprechers anhand seines Akzents",
+        correctAnswer = 1,
+        explanation = "KI-Uebersetzungsdienste analysieren Milliarden von Texten in vielen Sprachen und lernen so, Saetze sinngemass und natuerlich zu uebersetzen.",
+        difficulty = 1,
+        funFact = "DeepL wurde in Koeln entwickelt und gilt trotz seiner kleineren Groesse als qualitativ besser als Google Translate -- besonders bei europaeischen Sprachen."
     )
 )

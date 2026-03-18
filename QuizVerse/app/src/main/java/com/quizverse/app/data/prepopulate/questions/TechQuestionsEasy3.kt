@@ -3,604 +3,654 @@ package com.quizverse.app.data.prepopulate.questions
 import com.quizverse.app.data.database.entities.Question
 
 fun techQuestionsEasy3(): List<Question> = listOf(
+    // Question 1
     Question(
         categoryId = 7,
-        questionText = "Wer gilt als Erfinder des Telefons?",
-        answerA = "Thomas Edison",
-        answerB = "Alexander Graham Bell",
-        answerC = "Nikola Tesla",
-        answerD = "Guglielmo Marconi",
-        correctAnswer = 1,
-        explanation = "Alexander Graham Bell meldete 1876 das erste Patent fuer das Telefon an.",
-        difficulty = 1,
-        funFact = "Bell wollte das Telefon urspruenglich 'sprechendes Telegraf' nennen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist die Internationale Raumstation (ISS)?",
-        answerA = "Ein Satellit zur Wetterbeobachtung",
-        answerB = "Ein bemanntes Raumlabor im Erdorbit",
-        answerC = "Eine unbemannte Sonde zum Mars",
-        answerD = "Ein Teleskop im Weltall",
-        correctAnswer = 1,
-        explanation = "Die ISS ist eine bewohnte Raumstation, die seit 2000 dauerhaft von Astronauten bewohnt wird.",
-        difficulty = 1,
-        funFact = "Die ISS ist so gross wie ein Fussballfeld und wiegt ca. 420 Tonnen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welcher Treibstoff wird haeufig in Raketen verwendet?",
-        answerA = "Benzin",
-        answerB = "Diesel",
-        answerC = "Fluessiger Wasserstoff",
-        answerD = "Erdgas",
+        questionText = "Welches Unternehmen hat das iPhone erfunden?",
+        answerA = "Samsung",
+        answerB = "Microsoft",
+        answerC = "Apple",
+        answerD = "Nokia",
         correctAnswer = 2,
-        explanation = "Viele Raketen verbrennen fluessigen Wasserstoff mit fluessigem Sauerstoff als Oxidator.",
+        explanation = "Apple stellte das erste iPhone am 9. Januar 2007 unter Steve Jobs vor und revolutionierte damit die Smartphone-Branche.",
         difficulty = 1,
-        funFact = "Fluessiger Wasserstoff muss auf minus 253 Grad Celsius gekuehlt werden."
+        funFact = "Steve Jobs beschrieb das erste iPhone als 'ein iPod, ein Telefon und ein Internet-Kommunikationsgeraet in einem'."
     ),
+    // Question 2
     Question(
         categoryId = 7,
-        questionText = "Wer erfand die Gluehbirne?",
-        answerA = "Nikola Tesla",
-        answerB = "James Watt",
-        answerC = "Thomas Alva Edison",
-        answerD = "Heinrich Hertz",
+        questionText = "Wer hat Microsoft gegruendet?",
+        answerA = "Steve Jobs",
+        answerB = "Bill Gates",
+        answerC = "Jeff Bezos",
+        answerD = "Mark Zuckerberg",
+        correctAnswer = 1,
+        explanation = "Bill Gates gruendete Microsoft zusammen mit Paul Allen im Jahr 1975 in Albuquerque, New Mexico.",
+        difficulty = 1,
+        funFact = "Bill Gates brach sein Studium in Harvard ab, um sich ganz Microsoft zu widmen -- und wurde damit einer der reichsten Menschen der Welt."
+    ),
+    // Question 3
+    Question(
+        categoryId = 7,
+        questionText = "Wie heisst die bekannteste Suchmaschine der Welt?",
+        answerA = "Bing",
+        answerB = "Yahoo",
+        answerC = "DuckDuckGo",
+        answerD = "Google",
+        correctAnswer = 3,
+        explanation = "Google ist die meistgenutzte Suchmaschine der Welt und verarbeitet taeglich mehrere Milliarden Suchanfragen.",
+        difficulty = 1,
+        funFact = "Das Wort 'googeln' wurde 2004 offiziell in den Duden aufgenommen -- ein Beweis fuer Googles enormen Einfluss auf die Sprache."
+    ),
+    // Question 4
+    Question(
+        categoryId = 7,
+        questionText = "Welches Unternehmen stellt die Spielekonsole PlayStation her?",
+        answerA = "Microsoft",
+        answerB = "Nintendo",
+        answerC = "Sony",
+        answerD = "Sega",
         correctAnswer = 2,
-        explanation = "Thomas Alva Edison entwickelte 1879 eine praktisch nutzbare Gluehbirne mit langer Lebensdauer.",
+        explanation = "Die PlayStation ist eine Konsolenserie des japanischen Unternehmens Sony. Die erste PlayStation erschien 1994 in Japan.",
         difficulty = 1,
-        funFact = "Edison testete mehr als 6000 verschiedene Materialien fuer den Gluehfaden."
+        funFact = "Die PlayStation wurde urspruenglich als Nintendo-Projektpartnerschaft geplant -- als Nintendo absprang, brachte Sony sie alleine heraus."
     ),
+    // Question 5
     Question(
         categoryId = 7,
-        questionText = "Was macht ein Roboter-Arm in einer Fabrik?",
-        answerA = "Er beobachtet Arbeiter",
-        answerB = "Er fuehrt programmierte Bewegungsablaeufe aus, z.B. Schweissen",
-        answerC = "Er liefert Post",
-        answerD = "Er repariert Computer",
-        correctAnswer = 1,
-        explanation = "Industrieroboter-Arme fuehren praezise, wiederholbare Aufgaben wie Schweissen, Montieren oder Lackieren aus.",
+        questionText = "Wer hat Facebook gegruendet?",
+        answerA = "Bill Gates",
+        answerB = "Elon Musk",
+        answerC = "Jack Dorsey",
+        answerD = "Mark Zuckerberg",
+        correctAnswer = 3,
+        explanation = "Mark Zuckerberg gruendete Facebook 2004 als Student an der Harvard University zusammen mit einigen Kommilitonen.",
         difficulty = 1,
-        funFact = "Der erste Industrie-Roboter hiess 'Unimate' und wurde 1961 bei General Motors eingesetzt."
+        funFact = "Facebook hiess urspruenglich 'TheFacebook' und war zunaeachst nur fuer Studenten der Harvard University zugaenglich."
     ),
+    // Question 6
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Satellit?",
-        answerA = "Ein Flugzeug in grosser Hoehe",
-        answerB = "Ein Objekt, das einen Planeten oder die Erde umkreist",
-        answerC = "Eine Unterwasserstation",
-        answerD = "Ein Hochleistungscomputer",
-        correctAnswer = 1,
-        explanation = "Satelliten sind kuenstliche oder natuerliche Objekte, die in einer Umlaufbahn einen Himmelskoerper umkreisen.",
-        difficulty = 1,
-        funFact = "Der erste kuenstliche Satellit 'Sputnik 1' wurde 1957 von der Sowjetunion gestartet."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Energiequelle nutzt Sonnenlicht direkt?",
-        answerA = "Windkraft",
-        answerB = "Wasserkraft",
-        answerC = "Solarzellen",
-        answerD = "Geothermie",
+        questionText = "Welches Betriebssystem stammt von Microsoft?",
+        answerA = "macOS",
+        answerB = "Android",
+        answerC = "Windows",
+        answerD = "Linux",
         correctAnswer = 2,
-        explanation = "Solarzellen wandeln Sonnenlicht direkt durch den photovoltaischen Effekt in elektrischen Strom um.",
+        explanation = "Windows ist das bekannteste Betriebssystem von Microsoft und laeuft auf den meisten PCs und Laptops weltweit.",
         difficulty = 1,
-        funFact = "Eine Solarzelle wurde erstmals 1954 bei Bell Labs entwickelt."
+        funFact = "Windows 95 war so beliebt, dass bei seiner Einfuehrung Menschen Schlange standen -- die Rolling Stones wurden fuer den Werbespot bezahlt."
     ),
+    // Question 7
     Question(
         categoryId = 7,
-        questionText = "Was erfand James Watt im 18. Jahrhundert?",
-        answerA = "Den elektrischen Motor",
-        answerB = "Die verbesserte Dampfmaschine",
-        answerC = "Das Telefon",
-        answerD = "Das Radio",
-        correctAnswer = 1,
-        explanation = "James Watt verbesserte die Dampfmaschine entscheidend, was die Industrielle Revolution antrieb.",
-        difficulty = 1,
-        funFact = "Die Masseinheit fuer Leistung 'Watt' wurde nach James Watt benannt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Farbe haben Solarpanele meistens?",
-        answerA = "Weiss",
-        answerB = "Rot",
-        answerC = "Dunkelblau oder Schwarz",
-        answerD = "Gelb",
+        questionText = "Welches Unternehmen verkauft Produkte unter dem Namen 'Echo' und 'Alexa'?",
+        answerA = "Apple",
+        answerB = "Google",
+        answerC = "Amazon",
+        answerD = "Samsung",
         correctAnswer = 2,
-        explanation = "Solarpanele sind dunkelblau oder schwarz, weil dunkle Farben Licht besser absorbieren.",
+        explanation = "Amazon Echo ist ein smarter Lautsprecher, der den Sprachassistenten Alexa nutzt und von Amazon hergestellt wird.",
         difficulty = 1,
-        funFact = "Neuere Farbsolarzellen koennen auch transparent oder bunt sein."
+        funFact = "Alexa wurde nach der Bibliothek von Alexandria benannt -- ein Ort des Wissens, das fuer alle zuganglich war."
     ),
+    // Question 8
     Question(
         categoryId = 7,
-        questionText = "Was ist der Hauptzweck eines Wettersatelliten?",
-        answerA = "Das Senden von TV-Signalen",
-        answerB = "Das Beobachten und Vorhersagen des Wetters",
-        answerC = "Das Navigieren von Schiffen",
-        answerD = "Das Verbinden von Internetleitungen",
+        questionText = "Wer hat Tesla gegruendet?",
+        answerA = "Elon Musk alleine",
+        answerB = "Martin Eberhard und Marc Tarpenning",
+        answerC = "Jeff Bezos",
+        answerD = "Bill Gates",
         correctAnswer = 1,
-        explanation = "Wettersatelliten fotografieren Wolken und messen Temperaturen, um Wettervorhersagen zu ermoeglichen.",
+        explanation = "Tesla wurde 2003 von Martin Eberhard und Marc Tarpenning gegruendet. Elon Musk stiess 2004 als fruehzeitiger Investor hinzu.",
         difficulty = 1,
-        funFact = "Der erste Wettersatellit TIROS-1 wurde 1960 gestartet."
+        funFact = "Das Unternehmen wurde nach dem Erfinder Nikola Tesla benannt, der bahnbrechende Arbeiten zur Wechselstromtechnik leistete."
     ),
+    // Question 9
     Question(
         categoryId = 7,
-        questionText = "Wer erfand das Radio?",
-        answerA = "Thomas Edison",
-        answerB = "Alexander Graham Bell",
-        answerC = "Guglielmo Marconi",
-        answerD = "Albert Einstein",
+        questionText = "Welche Konsole stellt Nintendo her?",
+        answerA = "Xbox",
+        answerB = "PlayStation",
+        answerC = "Nintendo Switch",
+        answerD = "Atari",
         correctAnswer = 2,
-        explanation = "Guglielmo Marconi entwickelte um 1895 die ersten funktionierenden Funksysteme und gilt als Erfinder des Radios.",
+        explanation = "Nintendo ist ein japanisches Spieleunternehmen, das die Switch sowie fruehe Konsolen wie den Game Boy oder den SNES hergestellt hat.",
         difficulty = 1,
-        funFact = "Marconi sendete 1901 als Erster ein Funksignal ueber den Atlantischen Ozean."
+        funFact = "Nintendo existiert seit 1889 -- urspruenglich als Hersteller von Spielkarten fuer das japanische Kartenspiel Hanafuda."
     ),
+    // Question 10
     Question(
         categoryId = 7,
-        questionText = "Was speichert eine Batterie?",
-        answerA = "Licht",
-        answerB = "Waerme",
-        answerC = "Chemische Energie, die in Strom umgewandelt wird",
-        answerD = "Magnetismus",
+        questionText = "Wofuer ist Jeff Bezos bekannt?",
+        answerA = "Er hat Google gegruendet",
+        answerB = "Er hat Amazon gegruendet",
+        answerC = "Er hat Apple gegruendet",
+        answerD = "Er hat Tesla gegruendet",
+        correctAnswer = 1,
+        explanation = "Jeff Bezos gruendete Amazon 1994 urspruenglich als Online-Buchhandel, der sich zum weltweit groessten Online-Haendler entwickelte.",
+        difficulty = 1,
+        funFact = "Bezos gruendete Amazon in seiner Garage in Seattle und lieferte die ersten Buecher selbst aus -- im eigenen Auto."
+    ),
+    // Question 11
+    Question(
+        categoryId = 7,
+        questionText = "Was ist das Besondere an einem Tesla-Elektroauto?",
+        answerA = "Es wird mit Wasser betrieben",
+        answerB = "Es hat keinen Motor",
+        answerC = "Es wird ausschliesslich mit Elektrizitaet angetrieben",
+        answerD = "Es faehrt nur auf Schienen",
         correctAnswer = 2,
-        explanation = "Batterien speichern Energie in chemischer Form und geben sie als elektrischen Strom ab.",
+        explanation = "Tesla-Fahrzeuge sind reine Elektroautos ohne Verbrennungsmotor und werden an Ladestationen oder der Steckdose aufgeladen.",
         difficulty = 1,
-        funFact = "Die erste Batterie wurde 1800 von Alessandro Volta erfunden."
+        funFact = "Ein Tesla Model S kann mit einer Ladung ueber 600 km weit fahren -- mehr als die meisten anderen Elektroautos."
     ),
+    // Question 12
     Question(
         categoryId = 7,
-        questionText = "Wie heisst die Triebwerksduese einer Rakete?",
-        answerA = "Propeller",
-        answerB = "Turbine",
-        answerC = "Schubduese",
-        answerD = "Kompressor",
+        questionText = "Welches Unternehmen hat die Xbox-Konsole entwickelt?",
+        answerA = "Sony",
+        answerB = "Microsoft",
+        answerC = "Nintendo",
+        answerD = "Apple",
+        correctAnswer = 1,
+        explanation = "Microsoft brachte die erste Xbox im Jahr 2001 auf den Markt und konkurriert seitdem mit Sony und Nintendo im Konsolenmarkt.",
+        difficulty = 1,
+        funFact = "Der Name Xbox leitet sich von 'DirectX Box' ab -- ein Verweis auf Microsofts Grafik-API DirectX, die die Konsole nutzt."
+    ),
+    // Question 13
+    Question(
+        categoryId = 7,
+        questionText = "Wer hat Google gegruendet?",
+        answerA = "Bill Gates und Steve Jobs",
+        answerB = "Elon Musk und Jeff Bezos",
+        answerC = "Larry Page und Sergey Brin",
+        answerD = "Mark Zuckerberg und Jack Dorsey",
         correctAnswer = 2,
-        explanation = "Die Schubduese leitet die Verbrennungsgase nach hinten, wodurch die Rakete nach vorne geschoben wird.",
+        explanation = "Larry Page und Sergey Brin gruendeten Google 1998 als Studenten an der Stanford University in Kalifornien.",
         difficulty = 1,
-        funFact = "Das Prinzip beruht auf Newtons drittem Gesetz: Jede Kraft erzeugt eine gleich grosse Gegenkraft."
+        funFact = "Google entstand aus einem Forschungsprojekt namens 'Backrub', das Webseiten nach der Anzahl eingehender Links bewertete."
     ),
+    // Question 14
     Question(
         categoryId = 7,
-        questionText = "Was versteht man unter erneuerbaren Energien?",
-        answerA = "Energie aus Kohle und Oel",
-        answerB = "Energie aus sich natuerlich erneuerenden Quellen wie Sonne und Wind",
-        answerC = "Energie aus Atomkraftwerken",
-        answerD = "Energie aus Erdgas",
-        correctAnswer = 1,
-        explanation = "Erneuerbare Energien stammen aus Quellen, die sich von Natur aus erneuern, wie Sonne, Wind und Wasser.",
+        questionText = "Welches Unternehmen hat Elon Musk gegruendet, um Raketen zu bauen?",
+        answerA = "Blue Origin",
+        answerB = "Virgin Galactic",
+        answerC = "NASA",
+        answerD = "SpaceX",
+        correctAnswer = 3,
+        explanation = "Elon Musk gruendete SpaceX im Jahr 2002 mit dem Ziel, Raumfahrt guenstiger zu machen und den Mars zu besiedeln.",
         difficulty = 1,
-        funFact = "Deutschland produzierte 2023 mehr als 50% seines Stroms aus erneuerbaren Quellen."
+        funFact = "SpaceX war das erste private Unternehmen, das erfolgreich eine Rakete in den Orbit brachte -- mit der Falcon 1 im Jahr 2008."
     ),
+    // Question 15
     Question(
         categoryId = 7,
-        questionText = "Was ist der Unterschied zwischen einem Roboter und einer Maschine?",
-        answerA = "Roboter sind immer groesser",
-        answerB = "Roboter koennen programmiert werden und sich anpassen",
-        answerC = "Roboter laufen mit Dampf",
-        answerD = "Es gibt keinen Unterschied",
-        correctAnswer = 1,
-        explanation = "Roboter sind programmierbare Maschinen, die Aufgaben selbstaendig ausfuehren und sich an neue Situationen anpassen koennen.",
-        difficulty = 1,
-        funFact = "Das Wort 'Roboter' stammt aus dem Tschechischen und bedeutet 'Zwangsarbeit'."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist der Telegraf?",
-        answerA = "Ein fruehes Funksystem",
-        answerB = "Ein Geraet zur elektrischen Uebertragung von Nachrichten ueber Draehte",
-        answerC = "Eine Art Faxgeraet",
-        answerD = "Ein fruehes Telefon mit Bildschirm",
-        correctAnswer = 1,
-        explanation = "Der Telegraf uebertrug Nachrichten durch elektrische Signale ueber Leitungen, meist im Morsecode.",
-        difficulty = 1,
-        funFact = "Samuel Morse entwickelte 1837 den elektromagnetischen Telegrafen und den Morsecode."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Energie erzeugt ein Windrad?",
-        answerA = "Waermeenergie",
-        answerB = "Chemische Energie",
-        answerC = "Elektrische Energie",
-        answerD = "Kernenergie",
+        questionText = "Was war das erste Produkt von Apple?",
+        answerA = "Das iPhone",
+        answerB = "Der iPod",
+        answerC = "Der Apple I Computer",
+        answerD = "Das MacBook",
         correctAnswer = 2,
-        explanation = "Windraeder wandeln die kinetische Energie des Windes ueber einen Generator in elektrischen Strom um.",
+        explanation = "Der Apple I war ein Bausatz-Computer, den Steve Wozniak entwarf und Steve Jobs 1976 fuer 666 Dollar verkaufte.",
         difficulty = 1,
-        funFact = "Ein modernes Windrad kann bis zu 8 Megawatt Leistung erzeugen."
+        funFact = "Der Apple I hatte keinen Bildschirm, keine Tastatur und kein Gehaeuse -- Kaeufer mussten diese Teile selbst besorgen."
     ),
+    // Question 16
     Question(
         categoryId = 7,
-        questionText = "Wie viele Menschen leben normalerweise gleichzeitig auf der ISS?",
-        answerA = "1 bis 2",
-        answerB = "6 bis 7",
-        answerC = "20 bis 30",
-        answerD = "50 bis 100",
+        questionText = "Welches Unternehmen hat WhatsApp entwickelt?",
+        answerA = "Apple",
+        answerB = "Google",
+        answerC = "Meta (Facebook)",
+        answerD = "Twitter",
+        correctAnswer = 2,
+        explanation = "WhatsApp wurde 2009 von Jan Koum und Brian Acton gegruendet und 2014 von Facebook (heute Meta) fuer 19 Milliarden Dollar gekauft.",
+        difficulty = 1,
+        funFact = "WhatsApp startete als einfache App zum Setzen von Status-Meldungen -- erst spaeter kam die Nachrichten-Funktion hinzu."
+    ),
+    // Question 17
+    Question(
+        categoryId = 7,
+        questionText = "Wie nennt man eine Ladestation fuer Elektroautos von Tesla?",
+        answerA = "Powerwall",
+        answerB = "Supercharger",
+        answerC = "Megacharger",
+        answerD = "Fastplug",
         correctAnswer = 1,
-        explanation = "Die ISS hat Platz fuer in der Regel 6 bis 7 Astronauten gleichzeitig.",
+        explanation = "Das Tesla Supercharger-Netzwerk sind schnelle Ladestationen fuer Tesla-Fahrzeuge, die weltweit an Autobahnraststaetten stehen.",
         difficulty = 1,
-        funFact = "Die laengste Zeit auf der ISS verbrachte Oleg Kononenko mit ueber 1000 Tagen."
+        funFact = "Tesla hat weltweit ueber 50.000 Supercharger-Saeulen installiert -- das groesste Schnellladenetz fuer Elektroautos."
     ),
+    // Question 18
     Question(
         categoryId = 7,
-        questionText = "Was ist eine Lithium-Ionen-Batterie?",
-        answerA = "Eine Batterie aus Salz",
-        answerB = "Ein wiederaufladbarer Akkumulator, der in Handys und Laptops eingesetzt wird",
-        answerC = "Eine Einwegbatterie fuer Taschenlampen",
-        answerD = "Eine Batterie aus Blei",
-        correctAnswer = 1,
-        explanation = "Lithium-Ionen-Akkus sind wiederaufladbar, leicht und energiereich, daher ideal fuer mobile Geraete.",
-        difficulty = 1,
-        funFact = "Der Lithium-Ionen-Akku wurde 2019 mit dem Chemie-Nobelpreis ausgezeichnet."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was erfand Samuel Morse?",
-        answerA = "Das Telefon",
-        answerB = "Den Morsecode und den elektromagnetischen Telegrafen",
-        answerC = "Die Schreibmaschine",
-        answerD = "Das Radio",
-        correctAnswer = 1,
-        explanation = "Samuel Morse entwickelte den Morsecode und den Telegrafen, der Nachrichten elektrisch uebertragen konnte.",
-        difficulty = 1,
-        funFact = "Das bekannteste Morsesignal ist SOS: drei kurze, drei lange, drei kurze Zeichen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Sensor bei einem Roboter?",
-        answerA = "Der Akku des Roboters",
-        answerB = "Ein Bauteil, das Informationen aus der Umgebung aufnimmt",
-        answerC = "Das Gehaeusen des Roboters",
-        answerD = "Die Fernbedienung",
-        correctAnswer = 1,
-        explanation = "Sensoren erfassen Umgebungsdaten wie Licht, Temperatur oder Abstand, die der Roboter dann verarbeitet.",
-        difficulty = 1,
-        funFact = "Moderne Roboter koennen ueber 100 verschiedene Sensoren gleichzeitig nutzen."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Raumfahrtbehoerde schickte zuerst Menschen zum Mond?",
-        answerA = "ESA (Europaeische Weltraumbehoerde)",
-        answerB = "Roskosmos",
-        answerC = "NASA (Amerikanische Luft- und Raumfahrtbehoerde)",
+        questionText = "Welche amerikanische Raumfahrtbehoerde schickte Menschen auf den Mond?",
+        answerA = "ESA",
+        answerB = "NASA",
+        answerC = "SpaceX",
         answerD = "JAXA",
-        correctAnswer = 2,
-        explanation = "Die NASA landete im Rahmen von Apollo 11 am 20. Juli 1969 als erste Raumfahrtagentur Menschen auf dem Mond.",
+        correctAnswer = 1,
+        explanation = "Die NASA schickte mit dem Apollo-Programm zwischen 1969 und 1972 insgesamt 12 Astronauten auf den Mond.",
         difficulty = 1,
-        funFact = "Neil Armstrong war der erste Mensch auf dem Mond und sagte: 'Ein kleiner Schritt fuer einen Menschen...'"
+        funFact = "Neil Armstrong war der erste Mensch, der den Mond betrat -- am 20. Juli 1969, waehrend ueber 600 Millionen Menschen zuschauten."
     ),
+    // Question 19
     Question(
         categoryId = 7,
-        questionText = "Was ist Geothermie?",
-        answerA = "Energie aus der Erdwaerme",
-        answerB = "Energie aus dem Meer",
-        answerC = "Energie aus Biomasse",
-        answerD = "Energie aus dem Wind",
+        questionText = "Was ist ein Smartphone?",
+        answerA = "Ein Telefon mit eingebautem Computer und Internet",
+        answerB = "Ein sehr kleines Laptop",
+        answerC = "Ein Telefon nur fuer Kinder",
+        answerD = "Ein Telefon ohne Bildschirm",
         correctAnswer = 0,
-        explanation = "Geothermie nutzt die Waerme aus dem Erdinneren, um Gebaeude zu heizen oder Strom zu erzeugen.",
+        explanation = "Ein Smartphone kombiniert ein Mobiltelefon mit Computerfunktionen wie Internet, Apps, Kamera und GPS.",
         difficulty = 1,
-        funFact = "Island deckt ueber 25% seines Strombedarfs mit Geothermie."
+        funFact = "Heute gibt es mehr Smartphones als Menschen auf der Erde -- ueber 8 Milliarden aktive Geraete weltweit."
     ),
+    // Question 20
     Question(
         categoryId = 7,
-        questionText = "Wofuer steht das 'R' in 'Roboter' im Englischen (Robot)?",
-        answerA = "Remote (Ferngesteuert)",
-        answerB = "Rapid (Schnell)",
-        answerC = "Es steht fuer das tschechische Wort 'Robota' (Arbeit)",
-        answerD = "Rotating (Drehend)",
-        correctAnswer = 2,
-        explanation = "Das Wort 'Robot' stammt aus dem Tschechischen 'Robota', was Fronarbeit oder Zwangsarbeit bedeutet.",
-        difficulty = 1,
-        funFact = "Der Begriff wurde 1920 vom tschechischen Autor Karel Capek in einem Theaterstueck gepraeagt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welches Material leitet in Solarzellen den Strom am besten?",
-        answerA = "Glas",
-        answerB = "Silizium",
-        answerC = "Aluminium",
-        answerD = "Kunststoff",
-        correctAnswer = 1,
-        explanation = "Silizium ist ein Halbleiter und das am haeufigsten verwendete Material fuer Solarzellen.",
-        difficulty = 1,
-        funFact = "Silizium ist nach Sauerstoff das zweithaeufigste Element in der Erdkruste."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist eine Traegherrakete?",
-        answerA = "Eine Rakete zum Personentransport",
-        answerB = "Eine Rakete, die Satelliten oder Raumschiffe in den Orbit befoerdert",
-        answerC = "Eine Rakete fuer Feuerwerkszwecke",
-        answerD = "Eine militaerische Rakete",
-        correctAnswer = 1,
-        explanation = "Traegerraketen sind Raketen, die Nutzlasten wie Satelliten, Raumsonden oder Raumkapseln in den Weltraum befoerdern.",
-        difficulty = 1,
-        funFact = "SpaceX Falcon 9 kann seinen ersten Raketenstufe landen und wiederverwenden."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wer erfand das World Wide Web (WWW)?",
+        questionText = "Wer war der Mitgruender und langjaeehrige CEO von Apple?",
         answerA = "Bill Gates",
         answerB = "Steve Jobs",
-        answerC = "Tim Berners-Lee",
-        answerD = "Linus Torvalds",
-        correctAnswer = 2,
-        explanation = "Tim Berners-Lee erfand 1989 das World Wide Web als System zum Austausch von Informationen ueber das Internet.",
-        difficulty = 1,
-        funFact = "Tim Berners-Lee stellte seine Erfindung kostenlos und offen fuer alle zur Verfuegung."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist die Aufgabe eines GPS-Satelliten?",
-        answerA = "Bilder aus dem Weltraum aufnehmen",
-        answerB = "Genaue Positions- und Zeitdaten an Empfaenger senden",
-        answerC = "Das Wetter beobachten",
-        answerD = "Telefonate weiterleiten",
+        answerC = "Tim Cook",
+        answerD = "Elon Musk",
         correctAnswer = 1,
-        explanation = "GPS-Satelliten senden Signale aus, mit denen Empfaenger auf der Erde ihren genauen Standort berechnen.",
+        explanation = "Steve Jobs gruendete Apple 1976 zusammen mit Steve Wozniak und Ronald Wayne und pragte das Unternehmen bis zu seinem Tod 2011.",
         difficulty = 1,
-        funFact = "Das GPS-System besteht aus mindestens 24 Satelliten, die die Erde umkreisen."
+        funFact = "Steve Jobs wurde 1985 aus seinem eigenen Unternehmen Apple herausgedreangt -- und kehrte 1997 zurueck, um es vor dem Bankrott zu retten."
     ),
+    // Question 21
     Question(
         categoryId = 7,
-        questionText = "Was ist Windenergie?",
-        answerA = "Energie, die durch die Bewegung von Luft erzeugt wird",
-        answerB = "Energie, die durch Verbrennung von Gas entsteht",
-        answerC = "Energie aus Meereswaerme",
-        answerD = "Energie aus Pflanzenmaterial",
+        questionText = "Was ist die ISS?",
+        answerA = "Ein Unterwasserforschungsstation",
+        answerB = "Die Internationale Raumstation im Erdorbit",
+        answerC = "Ein neues Mobilfunknetz",
+        answerD = "Ein amerikanisches Satelliten-Navigationssystem",
+        correctAnswer = 1,
+        explanation = "Die Internationale Raumstation (ISS) ist eine bewohnte Raumstation, die seit November 2000 dauerhaft von Astronauten bewohnt wird.",
+        difficulty = 1,
+        funFact = "Die ISS ist so gross wie ein Fussballfeld und von der Erde aus bei klarem Himmel mit blossem Auge als heller Punkt sichtbar."
+    ),
+    // Question 22
+    Question(
+        categoryId = 7,
+        questionText = "Welche Spielfigur ist das Maskottchen von Nintendo?",
+        answerA = "Sonic der Igel",
+        answerB = "Master Chief",
+        answerC = "Mario",
+        answerD = "Pikachu von Pokemon",
+        correctAnswer = 2,
+        explanation = "Mario ist ein Klempner-Charakter und das bekannteste Maskottchen von Nintendo, das seit 1981 in Spielen erscheint.",
+        difficulty = 1,
+        funFact = "Mario hiess urspruenglich 'Jumpman' und sein Beruf als Klempner wurde gewaehlt, weil Rohre als Spielelement gut zum Level-Design passten."
+    ),
+    // Question 23
+    Question(
+        categoryId = 7,
+        questionText = "Was erfand Alexander Graham Bell im Jahr 1876?",
+        answerA = "Das Radio",
+        answerB = "Das Telefon",
+        answerC = "Den Computer",
+        answerD = "Den Telegrafen",
+        correctAnswer = 1,
+        explanation = "Alexander Graham Bell meldete 1876 das erste Patent fuer das Telefon an und ermoeglichte damit erstmals Sprachkommunikation ueber grosse Entfernungen.",
+        difficulty = 1,
+        funFact = "Bells erster Satz am Telefon lautete: 'Mr. Watson, come here, I want to see you' -- gesprochen zu seinem Assistenten."
+    ),
+    // Question 24
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Amazon Prime?",
+        answerA = "Eine Kreditkarte von Amazon",
+        answerB = "Ein Mitgliedschaftsprogramm mit schnellem Versand und Video-Streaming",
+        answerC = "Amazons eigene Suchmaschine",
+        answerD = "Ein Rabattsystem fuer Haendler",
+        correctAnswer = 1,
+        explanation = "Amazon Prime ist ein Abonnement-Dienst, der unter anderem kostenlosen Expressversand und Zugang zu Prime Video bietet.",
+        difficulty = 1,
+        funFact = "Amazon Prime wurde 2005 eingefuehrt und hat heute ueber 200 Millionen zahlende Mitglieder weltweit."
+    ),
+    // Question 25
+    Question(
+        categoryId = 7,
+        questionText = "Wie hiess das erste erfolgreiche Videospiel fuer Konsolen?",
+        answerA = "Tetris",
+        answerB = "Pong",
+        answerC = "Space Invaders",
+        answerD = "Pac-Man",
+        correctAnswer = 1,
+        explanation = "Pong war 1972 eines der ersten kommerziell erfolgreichen Arcade-Spiele und simulierte ein einfaches Tennis-Match.",
+        difficulty = 1,
+        funFact = "Das erste Pong-Geraet in einer Bar in Sunnyvale wurde so schnell benutzt, dass es ausfiel -- die Muenzkassette war uebervoll."
+    ),
+    // Question 26
+    Question(
+        categoryId = 7,
+        questionText = "Was ist eine Drohne?",
+        answerA = "Ein ferngesteuertes oder autonomes Fluggeraet ohne Pilot an Bord",
+        answerB = "Ein Unterwasserroboter",
+        answerC = "Eine Art Satellitenschuessel",
+        answerD = "Ein militaerischer Panzer",
         correctAnswer = 0,
-        explanation = "Windenergie entsteht, wenn Windraeder die Bewegungsenergie des Windes in Strom umwandeln.",
+        explanation = "Eine Drohne ist ein unbemanntes Luftfahrzeug, das per Fernsteuerung oder autonom gesteuert wird.",
         difficulty = 1,
-        funFact = "China hat weltweit die groesste installierte Windenergie-Kapazitaet."
+        funFact = "Amazon testet die Lieferung von Paketen per Drohne -- das Paket soll innerhalb von 30 Minuten geliefert werden."
     ),
+    // Question 27
     Question(
         categoryId = 7,
-        questionText = "Was ist die Hauptaufgabe eines Roboterarmes in einer Raumstation?",
-        answerA = "Die Crew zu unterhalten",
-        answerB = "Aussenarbeiten und das Andocken von Raumschiffen",
-        answerC = "Speisen zuzubereiten",
-        answerD = "Den Kurs der Station zu steuern",
+        questionText = "Wie nennt man das System der Punkte auf einem Bildschirm, die ein Bild erzeugen?",
+        answerA = "Bytes",
+        answerB = "Pixel",
+        answerC = "Frames",
+        answerD = "Voxel",
         correctAnswer = 1,
-        explanation = "Roboterarme wie Canadarm2 auf der ISS helfen beim Andocken von Raumschiffen und bei Aussenarbeiten.",
+        explanation = "Pixel (von Picture Element) sind die kleinsten Bildpunkte auf einem Bildschirm. Je mehr Pixel, desto schaerfer das Bild.",
         difficulty = 1,
-        funFact = "Canadarm2 wurde von Kanada gebaut und ist 17 Meter lang."
+        funFact = "Ein modernes 4K-Fernseher hat ueber 8 Millionen Pixel -- das menschliche Auge kann diese Einzelpunkte nicht mehr unterscheiden."
     ),
+    // Question 28
     Question(
         categoryId = 7,
-        questionText = "Wie nennt man die Kraft, die eine Rakete in Bewegung setzt?",
-        answerA = "Schwerkraft",
-        answerB = "Schub",
-        answerC = "Reibung",
-        answerD = "Auftrieb",
-        correctAnswer = 1,
-        explanation = "Der Schub ist die Kraft, die entsteht, wenn heisse Gase nach hinten ausgestossen werden und die Rakete nach vorne treiben.",
-        difficulty = 1,
-        funFact = "Das Saturn-V-Triebwerk erzeugte ueber 3,4 Millionen Kilogramm Schubkraft."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist der Unterschied zwischen Solar- und Windenergie?",
-        answerA = "Beide nutzen das gleiche Prinzip",
-        answerB = "Solarenergie nutzt Sonnenlicht, Windenergie nutzt Luftbewegung",
-        answerC = "Windenergie kommt aus der Erde, Solarenergie aus dem Meer",
-        answerD = "Es gibt keinen Unterschied",
-        correctAnswer = 1,
-        explanation = "Solarzellen wandeln Sonnenlicht in Strom um, waehrend Windraeder die Energie der Luftbewegung nutzen.",
-        difficulty = 1,
-        funFact = "Beide zusammen koennen theoretisch den gesamten Energiebedarf der Welt decken."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wer erfand die Dampfmaschine und revolutionierte damit die Industrie?",
-        answerA = "Nikola Tesla",
-        answerB = "James Watt (Verbesserung) und Thomas Newcomen (Urform)",
-        answerC = "Isaac Newton",
-        answerD = "Benjamin Franklin",
-        correctAnswer = 1,
-        explanation = "Thomas Newcomen baute 1712 die erste praktische Dampfmaschine; James Watt verbesserte sie entscheidend um 1769.",
-        difficulty = 1,
-        funFact = "Die Dampfmaschine laeute das Zeitalter der Industriellen Revolution ein."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Akku?",
-        answerA = "Ein Einwegkondensator",
-        answerB = "Ein wiederaufladbarer Energiespeicher",
-        answerC = "Ein Schalter fuer Strom",
-        answerD = "Ein Stromzaehler",
-        correctAnswer = 1,
-        explanation = "Ein Akku (Akkumulator) ist ein wiederaufladbarer elektrochemischer Energiespeicher.",
-        difficulty = 1,
-        funFact = "Das Wort 'Akku' ist eine Abkuerzung des lateinischen 'Accumulator' (Sammler)."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was macht ein Rover auf einem anderen Planeten?",
-        answerA = "Er baut Haeuser",
-        answerB = "Er faehrt umher und sammelt wissenschaftliche Daten",
-        answerC = "Er sendet Fernsehsignale",
-        answerD = "Er bohrt nach Oel",
-        correctAnswer = 1,
-        explanation = "Planetenrover sind Fahrzeuge, die Oberflaechen anderer Planeten oder Monde erkunden und Messdaten senden.",
-        difficulty = 1,
-        funFact = "Curiosity rollt seit 2012 auf dem Mars und hat bereits ueber 30 km zurueckgelegt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist Biomasse als Energiequelle?",
-        answerA = "Energie aus Kernspaltung",
-        answerB = "Energie aus organischen Materialien wie Holz oder Pflanzenresten",
-        answerC = "Energie aus Meereswaerme",
-        answerD = "Energie aus dem Erdkern",
-        correctAnswer = 1,
-        explanation = "Biomasse nutzt organische Stoffe wie Holz, Stroh oder Biogas als Energietraeger.",
-        difficulty = 1,
-        funFact = "Biomasse ist die aelteste Energiequelle der Menschheit: Feuer wurde schon vor 400.000 Jahren genutzt."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welche Teile einer Rakete werden manchmal wiederverwendet?",
-        answerA = "Die Nutzlast",
-        answerB = "Die erste Raketenstufe",
-        answerC = "Die Treibstofftanks",
-        answerD = "Die Nutzlastverkleidung",
-        correctAnswer = 1,
-        explanation = "SpaceX hat es als erstes Unternehmen geschafft, die erste Raketenstufe zu landen und wiederzuverwenden.",
-        difficulty = 1,
-        funFact = "Ein wiederverwendbarer Raketenstufe kann die Startkosten um bis zu 80% senken."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Wofuer wird Robotik in der Medizin eingesetzt?",
-        answerA = "Nur fuer Verwaltungsaufgaben",
-        answerB = "Fuer praezise Operationen und Rehabilitation",
-        answerC = "Nur fuer Apotheken",
-        answerD = "Fuer die Herstellung von Medikamenten",
-        correctAnswer = 1,
-        explanation = "Medizinische Roboter wie der Da Vinci ermoglichen minimalinvasive Operationen mit grosser Praezision.",
-        difficulty = 1,
-        funFact = "Roboter-Operationssysteme koennen Bewegungen bis auf einen halben Millimeter genau ausfuehren."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Was ist ein Photovoltaik-System?",
-        answerA = "Ein System zur Wasseraufbereitung",
-        answerB = "Eine Anlage, die Sonnenlicht direkt in Strom umwandelt",
-        answerC = "Ein Waermepumpensystem",
-        answerD = "Ein Beleuchtungssystem",
-        correctAnswer = 1,
-        explanation = "Photovoltaik nutzt den photoelektrischen Effekt in Halbleitern (meist Silizium), um Solarstrom zu erzeugen.",
-        difficulty = 1,
-        funFact = "Der Wirkungsgrad moderner Solarzellen liegt bei 20-25%, Forschungsmodelle erreichen ueber 40%."
-    ),
-    Question(
-        categoryId = 7,
-        questionText = "Welcher Wissenschaftler entwickelte die Relativitaetstheorie?",
-        answerA = "Isaac Newton",
-        answerB = "Niels Bohr",
-        answerC = "Albert Einstein",
-        answerD = "Max Planck",
+        questionText = "Welches Unternehmen betreibt den Online-Haendler mit dem Warenkorb-Logo?",
+        answerA = "eBay",
+        answerB = "Alibaba",
+        answerC = "Amazon",
+        answerD = "Walmart",
         correctAnswer = 2,
-        explanation = "Albert Einstein formulierte 1905 die Spezielle und 1915 die Allgemeine Relativitaetstheorie.",
+        explanation = "Amazon ist der groesste Online-Haendler der Welt und wird oft durch sein oranges Laeechaeln-Logo mit dem Pfeil erkannt.",
         difficulty = 1,
-        funFact = "Einsteins beruemteste Formel E=mc² beschreibt die Aequivalenz von Masse und Energie."
+        funFact = "Das Amazon-Logo zeigt einen Pfeil vom A zum Z -- ein Hinweis darauf, dass Amazon alles von A bis Z anbietet."
     ),
+    // Question 29
     Question(
         categoryId = 7,
-        questionText = "Wie heisst das System, das Astronauten auf der ISS atmen laesst?",
-        answerA = "Das Klimasystem",
-        answerB = "Das Lebenserhaltungssystem",
-        answerC = "Das Navigationssystem",
-        answerD = "Das Kommunikationssystem",
+        questionText = "Welche Rakete von SpaceX kann ihre erste Stufe landen und wiederverwenden?",
+        answerA = "Saturn V",
+        answerB = "Falcon 9",
+        answerC = "Atlas V",
+        answerD = "Ariane 5",
         correctAnswer = 1,
-        explanation = "Das Lebenserhaltungssystem (ECLSS) recycelt Luft und Wasser und haelt die Atmosphaere auf der ISS atembar.",
+        explanation = "Die Falcon 9 von SpaceX war die erste Rakete, die ihren ersten Booster nach dem Start automatisch landen konnte und wiederverwendet wird.",
         difficulty = 1,
-        funFact = "Das ECLSS kann sogar Urin zu Trinkwasser aufbereiten."
+        funFact = "Die Falcon 9 landete erstmals erfolgreich am 21. Dezember 2015 -- ein historischer Moment fuer die Raumfahrt."
     ),
+    // Question 30
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Roboter-Exoskelett?",
-        answerA = "Ein Roboter in Tierform",
-        answerB = "Eine tragbare mechanische Huelle, die die Koerperkraft unterstuetzt",
-        answerC = "Ein Schutzanzug fuer Astronauten",
-        answerD = "Ein Roboter-Fahrzeug",
-        correctAnswer = 1,
-        explanation = "Exoskelette sind tragbare Maschinen, die die Koerperkraft verstaerken oder Menschen mit Behinderungen helfen zu gehen.",
+        questionText = "Was war der erste tragbare Musikspieler von Apple?",
+        answerA = "iPhone",
+        answerB = "iPad",
+        answerC = "iPod",
+        answerD = "iMac",
+        correctAnswer = 2,
+        explanation = "Der iPod wurde 2001 von Apple veroeffentlicht und konnte tausende Songs in der Hosentasche speichern.",
         difficulty = 1,
-        funFact = "Exoskelette werden in der Rehabilitation eingesetzt, um Patienten nach Schlaganfall wieder gehen zu lehren."
+        funFact = "Steve Jobs beschrieb den iPod als '1000 Songs in deiner Hosentasche' -- ein Satz, der die Werbung revolutionierte."
     ),
+    // Question 31
     Question(
         categoryId = 7,
-        questionText = "Was ist der photovoltaische Effekt?",
-        answerA = "Die Umwandlung von Strom in Licht",
-        answerB = "Die Erzeugung von elektrischem Strom durch Lichteinfall auf Halbleitermaterial",
-        answerC = "Die Speicherung von Licht als Waerme",
-        answerD = "Die Brechung von Licht durch Linsen",
-        correctAnswer = 1,
-        explanation = "Beim photovolatischen Effekt setzen Photonen Elektronen frei, was einen elektrischen Strom erzeugt.",
+        questionText = "Wer erfand den Telegrafen -- das erste System zur elektrischen Nachrichtenuebertragung?",
+        answerA = "Alexander Graham Bell",
+        answerB = "Guglielmo Marconi",
+        answerC = "Samuel Morse",
+        answerD = "Thomas Edison",
+        correctAnswer = 2,
+        explanation = "Samuel Morse entwickelte 1837 den elektromagnetischen Telegrafen und den dazugehoerigen Morsecode zum Kodieren von Nachrichten.",
         difficulty = 1,
-        funFact = "Albert Einstein erhielt den Nobelpreis 1921 fuer seine Erklaerung des photoelektrischen Effekts."
+        funFact = "Das bekannteste Morsesignal SOS (... --- ...) wurde 1908 als internationales Notsignal festgelegt."
     ),
+    // Question 32
     Question(
         categoryId = 7,
-        questionText = "Wer gilt als Pionier der modernen Raketentechnik?",
-        answerA = "Neil Armstrong",
-        answerB = "Wernher von Braun",
-        answerC = "Yuri Gagarin",
-        answerD = "Buzz Aldrin",
-        correctAnswer = 1,
-        explanation = "Wernher von Braun entwickelte die V-2-Rakete und spaeter die Saturn-V-Rakete fuer die NASA.",
+        questionText = "Welches Unternehmen hat YouTube gegruendet?",
+        answerA = "Google",
+        answerB = "Microsoft",
+        answerC = "Facebook",
+        answerD = "Drei ehemalige PayPal-Mitarbeiter",
+        correctAnswer = 3,
+        explanation = "YouTube wurde 2005 von Chad Hurley, Steve Chen und Jawed Karim -- allesamt ehemalige PayPal-Mitarbeiter -- gegruendet.",
         difficulty = 1,
-        funFact = "Die Saturn-V blieb bis heute die leistungsfaehigste Rakete, die je geflogen ist."
+        funFact = "Das erste Video auf YouTube zeigte Mitgruender Jawed Karim im Zoo -- es heisst 'Me at the zoo' und ist 18 Sekunden lang."
     ),
+    // Question 33
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Kondensator in der Elektronik?",
-        answerA = "Ein Geraet zur Staerkung von Signalen",
-        answerB = "Ein Bauteil zur kurzfristigen Speicherung elektrischer Energie",
-        answerC = "Ein Schalter",
-        answerD = "Ein elektrischer Motor",
-        correctAnswer = 1,
-        explanation = "Kondensatoren speichern elektrische Ladung und koennen sie schnell wieder abgeben.",
+        questionText = "Was ist ein Handy-Akku?",
+        answerA = "Ein wiederaufladbarer Energiespeicher fuer Smartphones",
+        answerB = "Eine Einwegbatterie in Handys",
+        answerC = "Ein Chip, der Anrufe verarbeitet",
+        answerD = "Eine SIM-Karte",
+        correctAnswer = 0,
+        explanation = "Der Akku eines Handys ist ein wiederaufladbarer Lithium-Ionen-Speicher, der den Strom fuer alle Funktionen des Smartphones liefert.",
         difficulty = 1,
-        funFact = "Kondensatoren kommen in fast jedem elektronischen Geraet vor."
+        funFact = "Die Akku-Lebensdauer moderner Smartphones liegt bei 2-4 Jahren, bevor die Kapazitaet merklich abnimmt."
     ),
+    // Question 34
     Question(
         categoryId = 7,
-        questionText = "Wie nennt man das Prinzip, nach dem Windraeder Strom erzeugen?",
-        answerA = "Thermodynamik",
-        answerB = "Elektromagnetische Induktion",
-        answerC = "Kernspaltung",
-        answerD = "Photosynthese",
+        questionText = "Was stellte Apple im Jahr 2010 neu vor, das Tablet-Markt revolutionierte?",
+        answerA = "Das MacBook Air",
+        answerB = "Das iPad",
+        answerC = "Die Apple Watch",
+        answerD = "Den iMac",
         correctAnswer = 1,
-        explanation = "Windraeder drehen Generatoren, in denen sich Magnete in Spulen drehen und durch elektromagnetische Induktion Strom erzeugen.",
+        explanation = "Apple stellte das iPad im Januar 2010 vor und schuf damit praktisch den modernen Tablet-Markt.",
         difficulty = 1,
-        funFact = "Das Prinzip der Induktion wurde 1831 von Michael Faraday entdeckt."
+        funFact = "Steve Jobs stellte das erste iPad als 'magisches und revolutionaeres Geraet' vor -- viele Technikexperten hatten vorher Tablets als nutzlos abgetan."
     ),
+    // Question 35
     Question(
         categoryId = 7,
-        questionText = "Was war die Dampfmaschine hauptsaechlich wichtig fuer?",
-        answerA = "Den Betrieb von Computern",
-        answerB = "Den Antrieb von Lokomotiven, Schiffen und Fabrikmaschinen",
-        answerC = "Die Stromerzeugung in Kernkraftwerken",
-        answerD = "Die Erzeugung von Radiowaellen",
-        correctAnswer = 1,
-        explanation = "Die Dampfmaschine trieb Lokomotiven, Fabrikmaschinen und Schiffe an und war der Motor der Industriellen Revolution.",
+        questionText = "Wie nennt man das kabellose Netzwerk, das Smartphones mit dem Internet verbindet?",
+        answerA = "Bluetooth",
+        answerB = "Infrarot",
+        answerC = "WLAN oder WiFi",
+        answerD = "NFC",
+        correctAnswer = 2,
+        explanation = "WLAN (Wireless Local Area Network), auch WiFi genannt, ermoeglicht die kabellose Verbindung von Geraeten mit dem Internet.",
         difficulty = 1,
-        funFact = "Die erste Dampflokomotive fuhr 1804, entworfen von Richard Trevithick."
+        funFact = "Das Wort WiFi wurde als Marketingbegriff erfunden und hat keine direkte Bedeutung -- es klingt aehnlich wie Hi-Fi (High Fidelity)."
     ),
+    // Question 36
     Question(
         categoryId = 7,
-        questionText = "Was ist ein Solarthermie-Kollektor?",
-        answerA = "Eine Anlage zur Erzeugung von Strom aus Sonnenlicht",
-        answerB = "Eine Anlage zur Erwaermung von Wasser oder Luft durch Sonnenlicht",
-        answerC = "Ein Teleskop fuer die Sonnenbeobachtung",
-        answerD = "Ein Geraet zur Messung von Sonnenstrahlung",
-        correctAnswer = 1,
-        explanation = "Solarthermie-Kollektoren wandeln Sonnenlicht in Waerme um, die fuer Heizung oder Warmwasser genutzt wird.",
+        questionText = "Was ist Elon Musks bekanntes Elektroauto-Unternehmen?",
+        answerA = "Rivian",
+        answerB = "Lucid",
+        answerC = "Tesla",
+        answerD = "BMW",
+        correctAnswer = 2,
+        explanation = "Tesla ist der bekannteste Elektroautohersteller der Welt und wird mit Elon Musk als CEO assoziiert, der seit 2004 investiert ist.",
         difficulty = 1,
-        funFact = "Solarthermie ist oft effizienter als Photovoltaik, da Waerme direkter genutzt werden kann."
+        funFact = "Elon Musk ist der Grosskunde bei Tesla und faehrt selbst mehrere Tesla-Modelle -- er hat erklaert, seinen Cybertruck zu bevorzugen."
     ),
+    // Question 37
     Question(
         categoryId = 7,
-        questionText = "Welchen Beruf hatte Karl Benz, der Erfinder des Automobils?",
-        answerA = "Arzt",
-        answerB = "Ingenieur",
-        answerC = "Lehrer",
-        answerD = "Kaufmann",
-        correctAnswer = 1,
-        explanation = "Karl Benz war Ingenieur und erfand 1885 das erste Automobil mit Benzinmotor, den 'Benz Patent-Motorwagen'.",
+        questionText = "Welches Land schickte als erstes einen Menschen ins All?",
+        answerA = "USA",
+        answerB = "China",
+        answerC = "Sowjetunion",
+        answerD = "Deutschland",
+        correctAnswer = 2,
+        explanation = "Juri Gagarin aus der Sowjetunion war am 12. April 1961 der erste Mensch im Weltraum und umkreiste die Erde einmal.",
         difficulty = 1,
-        funFact = "Bertha Benz, seine Ehefrau, unternahm 1888 die erste Langstreckenfahrt mit dem Auto."
+        funFact = "Gagarins Flug dauerte nur 108 Minuten -- aber er veraenderte die Geschichte der Menschheit fuer immer."
     ),
+    // Question 38
     Question(
         categoryId = 7,
-        questionText = "Was ist die Aufgabe eines Navigationssatelliten?",
-        answerA = "Das Weiterleiten von Telefongespraechen",
-        answerB = "Das Berechnen von genauen Positionen auf der Erde",
-        answerC = "Das Aufnehmen von Wetterbildern",
-        answerD = "Das Uebertragen von Fernsehsignalen",
-        correctAnswer = 1,
-        explanation = "Navigationssatelliten wie GPS oder Galileo senden Signale aus, mit denen Empfaenger ihre genaue Position bestimmen.",
+        questionText = "Was ist ein Touchscreen?",
+        answerA = "Ein Bildschirm, der auf Beruehrungen reagiert",
+        answerB = "Ein Bildschirm, der besonders hell ist",
+        answerC = "Ein Bildschirm fuer Brillen",
+        answerD = "Ein Bildschirm ohne Rahmen",
+        correctAnswer = 0,
+        explanation = "Ein Touchscreen ist ein Bildschirm, der Beruehrungen erkennt und darauf reagiert -- wie bei Smartphones und Tablets.",
         difficulty = 1,
-        funFact = "Das europaeische Galileo-System ist praeziser als das amerikanische GPS."
+        funFact = "Apple brachte den kapazitiven Touchscreen mit dem ersten iPhone 2007 in den Massenmarkt -- seitdem verdraengte er fast alle physischen Tastaturen."
+    ),
+    // Question 39
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Google Maps?",
+        answerA = "Ein Videospiel von Google",
+        answerB = "Ein kostenloses Karten- und Navigationsdienst von Google",
+        answerC = "Eine Suchmaschine nur fuer Orte",
+        answerD = "Ein sozialen Netzwerk fuer Reisende",
+        correctAnswer = 1,
+        explanation = "Google Maps ist ein kostenloser Karten- und Navigationsdienst, der Routen berechnet und Satellitenbilder der Erde zeigt.",
+        difficulty = 1,
+        funFact = "Google Maps startete 2005 und hat seitdem 10 Millionen Meilen Strassen kartiert -- genug, um die Erde 400-mal zu umrunden."
+    ),
+    // Question 40
+    Question(
+        categoryId = 7,
+        questionText = "Wie nennt man den Assistenten von Google, der auf Sprachbefehle reagiert?",
+        answerA = "Alexa",
+        answerB = "Cortana",
+        answerC = "Siri",
+        answerD = "Google Assistant",
+        correctAnswer = 3,
+        explanation = "Der Google Assistant ist Googles KI-basierter Sprachassistent, der auf Android-Geraeten und Google-Home-Lautsprechern laeuft.",
+        difficulty = 1,
+        funFact = "Der Google Assistant versteht ueber 30 Sprachen und kann komplexe Mehrschritt-Aufgaben ausfuehren wie Termine buchen oder Nachrichten vorlesen."
+    ),
+    // Question 41
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein App Store?",
+        answerA = "Ein Laden fuer Elektrogeraete",
+        answerB = "Eine Plattform zum Herunterladen von Apps auf Smartphones",
+        answerC = "Eine Datenbank fuer Programmierer",
+        answerD = "Ein Cloud-Speicherdienst",
+        correctAnswer = 1,
+        explanation = "Ein App Store ist ein digitaler Marktplatz, auf dem Nutzer Anwendungen fuer ihr Smartphone kaufen oder kostenlos herunterladen koennen.",
+        difficulty = 1,
+        funFact = "Apple eroeffnete den App Store 2008 mit 500 Apps -- heute sind es ueber 2 Millionen verfuegbare Anwendungen."
+    ),
+    // Question 42
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Elektroauto-Ladekabel?",
+        answerA = "Ein Kabel, das das Elektroauto mit Strom von einer Ladestation verbindet",
+        answerB = "Ein Kabel fuer den Bordcomputer",
+        answerC = "Ein Kabel fuer das Soundsystem",
+        answerD = "Ein Sicherheitsgurt mit Sensor",
+        correctAnswer = 0,
+        explanation = "Das Ladekabel verbindet ein Elektroauto mit einer Ladestation oder Steckdose und uebertraegt Strom zum Aufladen des Fahrzeugakkus.",
+        difficulty = 1,
+        funFact = "Es gibt verschiedene Steckertypen fuer Elektroautos -- Tesla hat seinen eigenen Standard entwickelt, der sich als NACS-Standard durchsetzt."
+    ),
+    // Question 43
+    Question(
+        categoryId = 7,
+        questionText = "Welcher Konzern besitzt Instagram und WhatsApp?",
+        answerA = "Google",
+        answerB = "Apple",
+        answerC = "Meta",
+        answerD = "Microsoft",
+        correctAnswer = 2,
+        explanation = "Meta (ehemals Facebook) besitzt neben Facebook auch Instagram (gekauft 2012) und WhatsApp (gekauft 2014).",
+        difficulty = 1,
+        funFact = "Instagram hatte eine Milliarde Nutzer in nur 8 Jahren -- schneller als jedes andere Unternehmen in der Geschichte."
+    ),
+    // Question 44
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Minecraft?",
+        answerA = "Ein Rennspiel fuer Konsolen",
+        answerB = "Ein beliebtes Aufbau- und Ueberleben-Videospiel mit Bloecken",
+        answerC = "Eine Simulations-App fuer Bergbau",
+        answerD = "Ein Betriebssystem fuer Kinder",
+        correctAnswer = 1,
+        explanation = "Minecraft ist ein Sandbox-Videospiel, in dem Spieler aus blockfoermigen Elementen Welten bauen und erkunden koennen.",
+        difficulty = 1,
+        funFact = "Minecraft ist das meistverkaufte Videospiel aller Zeiten mit ueber 300 Millionen verkauften Exemplaren auf allen Plattformen."
+    ),
+    // Question 45
+    Question(
+        categoryId = 7,
+        questionText = "Welche Aufgabe hat ein Roboter in der Automobilfabrik?",
+        answerA = "Er verkauft Autos an Kunden",
+        answerB = "Er fuehrt praezise Aufgaben wie Schweissen und Lackieren aus",
+        answerC = "Er testet Autos auf der Rennstrecke",
+        answerD = "Er transportiert Autos per Zug",
+        correctAnswer = 1,
+        explanation = "Industrieroboter in Autofabriken uebernehmen Aufgaben wie Schweissen, Lackieren und Montieren mit hoher Praezision und Geschwindigkeit.",
+        difficulty = 1,
+        funFact = "Der erste Industrieroboter namens Unimate arbeitete 1961 bei General Motors und schweisste Autoteile -- eine Revolution fuer die Fertigung."
+    ),
+    // Question 46
+    Question(
+        categoryId = 7,
+        questionText = "Wann erschien das erste iPhone?",
+        answerA = "Im Jahr 2000",
+        answerB = "Im Jahr 2007",
+        answerC = "Im Jahr 2010",
+        answerD = "Im Jahr 2004",
+        correctAnswer = 1,
+        explanation = "Steve Jobs praesentierte das erste iPhone am 9. Januar 2007 auf der Macworld-Messe in San Francisco.",
+        difficulty = 1,
+        funFact = "Das erste iPhone hatte weder einen App Store noch MMS oder Copy-and-Paste -- und trotzdem standen Menschen tagelang Schlange dafuer."
+    ),
+    // Question 47
+    Question(
+        categoryId = 7,
+        questionText = "Was ist Bluetooth?",
+        answerA = "Eine Methode zum Speichern von Musik",
+        answerB = "Ein Kabeltyp fuer Lautsprecher",
+        answerC = "Ein Funksystem zur kabellosen Datenuebertragung",
+        answerD = "Eine Verbindung zwischen Satelliten",
+        correctAnswer = 2,
+        explanation = "Bluetooth ist ein Kurzstrecken-Funksystem fuer die kabellose Verbindung von Geraeten wie Kopfhoerern, Lautsprechern oder Tastaturen.",
+        difficulty = 1,
+        funFact = "Bluetooth wurde nach dem Wikinigkoenig Harald Blaatand ('Bluetooth') benannt, der verschiedene nordische Staemme vereinte -- genauso wie Bluetooth Geraete verbindet."
+    ),
+    // Question 48
+    Question(
+        categoryId = 7,
+        questionText = "Welcher Konzern hat Windows und Office entwickelt?",
+        answerA = "Apple",
+        answerB = "IBM",
+        answerC = "Microsoft",
+        answerD = "Oracle",
+        correctAnswer = 2,
+        explanation = "Microsoft ist der Hersteller von Windows (Betriebssystem) und Microsoft Office (Burosoftware mit Word, Excel, PowerPoint).",
+        difficulty = 1,
+        funFact = "Microsoft Office gibt es seit 1989 und ist noch heute in fast jedem Buero der Welt im Einsatz -- eine erstaunliche Bestandigkeit."
+    ),
+    // Question 49
+    Question(
+        categoryId = 7,
+        questionText = "Was ist ein Selfie?",
+        answerA = "Ein Foto, das man mit der Frontkamera von sich selbst macht",
+        answerB = "Ein Foto von einer Landschaft",
+        answerC = "Ein Foto, das automatisch bei Nacht aufgenommen wird",
+        answerD = "Ein Selfie ist ein Typ von Videoanruf",
+        correctAnswer = 0,
+        explanation = "Ein Selfie ist ein Selbstportrait, das man mit der nach vorne gerichteten Kamera seines Smartphones aufnimmt.",
+        difficulty = 1,
+        funFact = "Das Wort 'Selfie' wurde 2013 vom Oxford Dictionary zum Wort des Jahres erklaert -- ein Zeichen des Smartphone-Zeitalters."
+    ),
+    // Question 50
+    Question(
+        categoryId = 7,
+        questionText = "Welches Geraet nutzen Astronauten, um ausserhalb der Raumstation zu arbeiten?",
+        answerA = "Einen Taucheranzug",
+        answerB = "Einen Raumanzug (EVA-Anzug)",
+        answerC = "Einen Schutzhelm aus Kevlar",
+        answerD = "Eine Druckkapsel",
+        correctAnswer = 1,
+        explanation = "Bei einem Aussenbordeinsatz (EVA -- Extravehicular Activity) tragen Astronauten speziell entwickelte Raumanzuege, die vor Vakuum und Strahlung schuetzen.",
+        difficulty = 1,
+        funFact = "Ein NASA-Raumanzug kostet ueber 12 Millionen Dollar und hat ein eigenes Lebenserhaltungssystem mit Sauerstoff fuer mehrere Stunden."
     )
 )
