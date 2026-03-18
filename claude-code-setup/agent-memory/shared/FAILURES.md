@@ -73,5 +73,27 @@ _No entries yet. Issues specific to macOS↔Windows differences will be logged h
 - **Symptom**: No agent ever wrote to shared/MEMORY.md despite instructions
 - **Root Cause**: Agent definitions say "update MEMORY.md" but don't enforce it — agents prioritize their main task and skip the write-back
 - **Fix**: Added mandatory write-back sections with explicit triggers to all senior agent definitions
-- **Prevention**: SubagentStop hook could verify if MEMORY.md was updated (future improvement)
+- **Prevention**: Mandatory write-back sections added to all 5 senior agent definitions. Technical verification via SubagentStop hook is NOT yet implemented — write-back relies on agent compliance.
 - **Files**: ~/.claude/agents/code-reviewer.md, tester.md, architect.md, debugger.md
+
+### [2026-03-18] Logic: Session-Scorer correction-detection zaehlt false positives
+- **Symptom**: Fragen wie "was ist wrong damit?" oder Code-Snippets mit "error" im Text zaehlen als Benutzer-Korrekturen
+- **Root Cause**: correctionPatterns matcht auf Woerter-Bag ohne Satzkontext — kein Unterschied zwischen Korrektur und zitiertem Fehlertext oder Fragen
+- **Fix**: ✅ IMPLEMENTIERT (v2, 2026-03-18) — Match nur in ersten 80 Zeichen, kein Match wenn "?" oder Code-Block vorhanden (Zeilen 89-95)
+- **Prevention**: Vor Aenderungen an correction-detection: manuelle Stichprobe von 10 echten User-Turns aus session-scores.jsonl durchfuehren
+- **Files**: ~/.claude/hooks/session-scorer.ts (correctionPatterns, Zeilen 70-74)
+
+### [2026-03-18] Config: Intent-Anker Turn-Counter wurde nie zurueckgesetzt
+- **Symptom**: Session-Goal wurde in neuen Sessions nicht gespeichert, Intent-Drift-Schutz unwirksam
+- **Root Cause**: /tmp/claude-turn-counter.txt ueberlebt Session-Ends — neue Sessions starten mit Counter > 0 statt 1
+- **Fix**: ✅ session-cleanup.sh bereinigt jetzt turn-counter und intent-reminder bei SessionEnd
+- **Prevention**: session-cleanup.sh loescht /tmp/claude-turn-counter.txt und /tmp/claude-intent-reminder.txt bei SessionEnd
+- **Files**: ~/.claude/hooks/session-cleanup.sh, ~/.claude/hooks/intent-anker.sh
+
+### [2026-03-18] API: Session terminated by unknown (13:44:43)
+- **Symptom**: Session ended unexpectedly due to API error
+- **Root Cause**: unknown (auto-detected by StopFailure hook)
+- **Fix**: Automatic retry on next session start
+- **Prevention**: StopFailure hook monitors for recurring patterns
+- **Context**: {}
+- **Status**: AUTO-LOGGED (incomplete context — review manually if recurring)

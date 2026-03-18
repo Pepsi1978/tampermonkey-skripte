@@ -36,9 +36,9 @@ except:
   fi
 fi
 
-# Every 20 turns: write a reminder marker file
-# The intent-tracking.md rule and PreCompact hook use this
-if [ $((TURN % 20)) -eq 0 ] && [ -f "$GOAL_FILE" ]; then
+# Every 5 turns: write a reminder marker file (v2: reduced from 20 to 5 per research — arxiv 2510.07777)
+# Drift onset peaks at turns 4-7, so 5-turn interval catches it early
+if [ $((TURN % 5)) -eq 0 ] && [ -f "$GOAL_FILE" ]; then
   echo "$TURN" > "/tmp/claude-intent-reminder.txt"
 fi
 

@@ -91,6 +91,11 @@ Sessions analyzed: N
 | Improvement | Applied | Before Score | After Score | Effective? |
 ```
 
+## Mandatory Write-Back (NEVER SKIP)
+After completing your analysis, you MUST update these files:
+1. **MEMORY.md** (`~/.claude/agent-memory/shared/MEMORY.md`): Add your trend findings under "From Self-Improve" or "Recurring Patterns"
+2. **FAILURES.md** (`~/.claude/agent-memory/shared/FAILURES.md`): If you detect a new failure pattern, document it with the standard template
+
 ## Important Rules
 - Never modify CLAUDE.md or settings.json directly — only propose changes
 - New agents go to `~/.claude/agents/` as proposals, user approves

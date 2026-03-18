@@ -56,6 +56,11 @@ or
 [FAIL — N issues must be fixed before commit: ...]
 ```
 
+## Mandatory Write-Back (NEVER SKIP)
+After producing your verdict, you MUST update:
+1. **FAILURES.md** (`~/.claude/agent-memory/shared/FAILURES.md`): If FAIL — document the critical issues found with the standard template
+2. **MEMORY.md** (`~/.claude/agent-memory/shared/MEMORY.md`): Add patterns spotted by sub-agents under the appropriate section
+
 ## Rules
 - PASS = no critical issues, build succeeds, tests pass
 - FAIL = any critical issue, build failure, or test failure

@@ -28,9 +28,11 @@ PATTERNS=(
     'git[[:space:]]+reset[[:space:]]+--hard'
     'git[[:space:]]+clean[[:space:]]+-[a-z]*f'
     'git[[:space:]]+checkout[[:space:]]+--[[:space:]]+\.'
-    'DROP[[:space:]]+TABLE'
-    'DROP[[:space:]]+DATABASE'
-    'TRUNCATE[[:space:]]+TABLE'
+    'git[[:space:]]+restore[[:space:]]+\.'
+    'git[[:space:]]+branch[[:space:]]+-D[[:space:]]+'
+    '[Dd][Rr][Oo][Pp][[:space:]]+[Tt][Aa][Bb][Ll][Ee]'
+    '[Dd][Rr][Oo][Pp][[:space:]]+[Dd][Aa][Tt][Aa][Bb][Aa][Ss][Ee]'
+    '[Tt][Rr][Uu][Nn][Cc][Aa][Tt][Ee][[:space:]]+[Tt][Aa][Bb][Ll][Ee]'
 )
 
 for pattern in "${PATTERNS[@]}"; do

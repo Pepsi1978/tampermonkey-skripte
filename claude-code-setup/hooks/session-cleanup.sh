@@ -8,6 +8,9 @@ find "$HOME/.tmp" -type d -empty -delete 2>/dev/null || true
 TMPDIR_ACTUAL="${TMPDIR:-/tmp}"
 find "$TMPDIR_ACTUAL/node-compile-cache" -type f -mtime +1 -delete 2>/dev/null || true
 
+# Reset intent-anker turn counter for next session (CRITICAL: without this, session goals are never saved)
+rm -f /tmp/claude-turn-counter.txt /tmp/claude-intent-reminder.txt 2>/dev/null || true
+
 AVAIL=$(df -h "$HOME" 2>/dev/null | awk 'NR==2{print $4}')
 echo "Session beendet. Speicher: ${AVAIL:-?} frei." >> "$HOME/.claude/session-cleanup.log" 2>/dev/null || true
 

@@ -42,6 +42,17 @@ _No entries yet. The debugger will write root cause patterns here._
   - NEW `intent-tracking.md` rule — Intent Drift Detector (reduces 12.1% correction rate)
   - FIXED session-scorer self-validation — no more dummy data (validates turns>0 when transcript>50 lines)
   - UPGRADED all 4 senior agents with mandatory write-back — Knowledge Hub will no longer stay empty
+- **2026-03-18 (Self-Improve v5.7 Standard Run #2)**: 8 improvements implemented:
+  - **CRITICAL FIX** `intent-anker.sh` — Turn-Counter wurde nie zurueckgesetzt → Session-Goal ging bei neuen Sessions verloren. Fix: session-cleanup.sh loescht Counter bei SessionEnd.
+  - **UPGRADED** `intent-anker.sh` — Reminder-Intervall von 20 auf 5 Turns reduziert (Paper: arxiv 2510.07777 zeigt Drift-Onset bei Turn 4-7)
+  - **UPGRADED** `session-scorer.ts` v2 — Rate-basiertes Scoring statt count-basiert. Alte Formel konnte 4 und 30 Korrekturen nicht unterscheiden (beides = 5.8). Neue Formel: correctionRate = corrections/turns mit 6 Stufen.
+  - **FIXED** `session-scorer.ts` — False-Positive-Reduktion bei Korrektur-Erkennung: Match nur in ersten 80 Zeichen, kein Match bei Fragen (?) oder Code-Bloecken
+  - **FIXED** `session-scorer.ts` — SPC-Trendanalyse schliesst jetzt Kurzsessions (<10 turns) aus (Challenger-Fix: verhindert Baseline-Inflation)
+  - **UPGRADED** `safety-gate.sh` — 3 fehlende Patterns: `git restore .`, `git branch -D`, case-insensitive SQL (DROP/TRUNCATE)
+  - **ADDED** Mandatory Write-Back zu 3 weiteren Agents: evolution-analyst, quality-gate, ui-polisher (jetzt alle 8 Opus-Agents)
+  - **CLEANED** session-scores.jsonl — 25 Dummy-Eintraege (total_turns=0) entfernt, 7 valide behalten
+  - CMake PATH fixiert, npm 11.11.1, icu4c aktualisiert
+  - android-adb MCP-Server `-y` Flag ergaenzt (fehlgeschlagener MCP-Start behoben)
 
 ## Recurring Patterns
 _Patterns detected across multiple sessions will be logged here automatically._
@@ -49,4 +60,5 @@ _Patterns detected across multiple sessions will be logged here automatically._
 ## Capability Gaps
 _Tasks that required missing agents/skills will be logged here._
 
-- **2026-03-18**: Quality declining: 7.0 → 6.4 (last 5 sessions)
+## From Challenger
+- **2026-03-18**: ✅ BEHOBEN — Session-Scorer v2: Kurzzeit-Sessions (< 10 turns) aus SPC ausgeschlossen (Zeile 180), kein Korrektur-Bonus fuer Kurzsessions (Zeile 141). Scoring jetzt rate-basiert statt count-basiert.

@@ -32,3 +32,8 @@ For **C#/WPF** (Windows):
 
 Output specific code improvements with before/after examples.
 Communication: German. Code comments: English.
+
+## Mandatory Write-Back (NEVER SKIP)
+After completing your review, you MUST update:
+1. **MEMORY.md** (`~/.claude/agent-memory/shared/MEMORY.md`): Add discovered UI patterns under "Recurring Patterns"
+2. **FAILURES.md** (`~/.claude/agent-memory/shared/FAILURES.md`): If you find recurring UI anti-patterns, document them

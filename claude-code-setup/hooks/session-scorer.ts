@@ -86,8 +86,13 @@ function analyzeTranscript(path: string): SessionMetrics {
         const text = typeof msg.content === "string"
           ? msg.content
           : JSON.stringify(msg.content);
+        // v2: Context-aware correction detection (Challenger fix: reduce false positives)
+        // Only count as correction if: not a question, no code block, match in first 80 chars
+        const isQuestion = text.includes("?");
+        const hasCodeBlock = text.includes("```");
+        const textStart = text.slice(0, 80);
         for (const pattern of correctionPatterns) {
-          if (pattern.test(text)) {
+          if (pattern.test(textStart) && !isQuestion && !hasCodeBlock) {
             corrections++;
             break;
           }
@@ -115,24 +120,36 @@ function analyzeTranscript(path: string): SessionMetrics {
   }
 
   // Calculate composite quality score (1-10)
-  let score = 7.0;
+  // v2: Rate-based scoring for better granularity (v1 capped at -2, making 4 and 30 corrections identical)
+  let score = 8.0; // Higher base to allow more differentiation
 
-  // Error penalty: -0.5 per error, max -2
-  score -= Math.min(errors * 0.5, 2.0);
-
-  // Correction penalty: -0.8 per correction, max -2
-  score -= Math.min(corrections * 0.8, 2.0);
-
-  // Tool efficiency: fewer errors per tool call is better
+  // Error penalty: rate-based (errors per tool call), max -2
   if (toolCalls > 0) {
     const errorRate = errors / toolCalls;
-    if (errorRate < 0.05) score += 0.5;
-    else if (errorRate > 0.3) score -= 0.5;
+    if (errorRate < 0.02) { /* no penalty */ }
+    else if (errorRate < 0.05) score -= 0.5;
+    else if (errorRate < 0.15) score -= 1.0;
+    else if (errorRate < 0.3) score -= 1.5;
+    else score -= 2.0;
   }
 
-  // Engagement bonus: productive sessions have more tool calls
-  if (toolCalls > 20) score += 0.3;
-  if (totalTurns > 0 && toolCalls / totalTurns > 5) score += 0.2;
+  // Correction penalty: rate-based (corrections per turn), max -5
+  // This is the KEY differentiator — v1 couldn't tell 4 from 30 corrections
+  if (totalTurns > 0) {
+    const correctionRate = corrections / totalTurns;
+    if (correctionRate === 0 && totalTurns >= 10) score += 0.5; // Bonus only for non-trivial sessions
+    else if (correctionRate === 0) { /* short session: no bonus, no penalty */ }
+    else if (correctionRate < 0.03) score -= 0.5;  // Rare corrections
+    else if (correctionRate < 0.07) score -= 1.5;  // Occasional corrections
+    else if (correctionRate < 0.12) score -= 2.5;  // Frequent corrections
+    else if (correctionRate < 0.20) score -= 3.5;  // High correction rate
+    else score -= 5.0;                              // Extreme correction rate (>20%)
+  }
+
+  // Engagement bonus: productive sessions with many tool calls
+  if (toolCalls > 50) score += 0.3;
+  else if (toolCalls > 20) score += 0.15;
+  if (totalTurns > 0 && toolCalls / totalTurns > 3) score += 0.2;
 
   score = Math.max(1.0, Math.min(10.0, Math.round(score * 10) / 10));
 
@@ -158,7 +175,9 @@ function detectTrends(currentMetrics: SessionMetrics): void {
     .map((l) => {
       try { return JSON.parse(l) as SessionMetrics; } catch { return null; }
     })
-    .filter((s): s is SessionMetrics => s !== null && s.total_turns > 0);
+    .filter((s): s is SessionMetrics => s !== null && s.total_turns > 0)
+    // v2 Challenger fix: exclude short sessions (< 10 turns) from SPC to prevent baseline inflation
+    .filter((s) => s.total_turns >= 10);
 
   if (allScores.length < 5) return;
 
