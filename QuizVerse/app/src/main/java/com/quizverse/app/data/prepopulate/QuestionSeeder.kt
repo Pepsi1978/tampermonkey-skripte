@@ -283,6 +283,15 @@ import com.quizverse.app.data.prepopulate.questions.foodQuestionsEasy3
 import com.quizverse.app.data.prepopulate.questions.foodQuestionsEasy4
 import com.quizverse.app.data.prepopulate.questions.foodQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.foodQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsMedium5
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsMedium6
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsHard6
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsEasy1
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsEasy3
@@ -304,6 +313,11 @@ import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium3
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium4
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium5
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium6
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsHard1
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsHard5
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestions
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsEasy3
@@ -320,6 +334,12 @@ import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsHard2
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsHard3
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsHard4
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert1
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsExpert6
 
 /**
  * Seeds the database with initial data (categories, questions, achievements, user progress).
@@ -568,6 +588,15 @@ object QuestionSeeder {
             foodQuestionsEasy4() +
             foodQuestionsMedium2() +
             foodQuestionsHard2() +
+            foodQuestionsEasy5() +
+            foodQuestionsMedium3() +
+            foodQuestionsMedium4() +
+            foodQuestionsMedium5() +
+            foodQuestionsMedium6() +
+            foodQuestionsHard3() +
+            foodQuestionsHard4() +
+            foodQuestionsHard5() +
+            foodQuestionsHard6() +
             animalQuestions() +
             animalQuestionsEasy2() +
             animalQuestionsEasy3() +
@@ -647,6 +676,11 @@ object QuestionSeeder {
             herthaBscQuestionsMedium4() +
             herthaBscQuestionsMedium5() +
             herthaBscQuestionsMedium6() +
+            herthaBscQuestionsHard1() +
+            herthaBscQuestionsHard2() +
+            herthaBscQuestionsHard3() +
+            herthaBscQuestionsHard4() +
+            herthaBscQuestionsHard5() +
             dortmundQuestions() +
             dortmundQuestionsEasy2() +
             dortmundQuestionsEasy3() +
@@ -663,6 +697,12 @@ object QuestionSeeder {
             dortmundQuestionsHard3() +
             dortmundQuestionsHard4() +
             dortmundQuestionsHard5() +
+            dortmundQuestionsExpert1() +
+            dortmundQuestionsExpert2() +
+            dortmundQuestionsExpert3() +
+            dortmundQuestionsExpert4() +
+            dortmundQuestionsExpert5() +
+            dortmundQuestionsExpert6() +
             // ── Health & Medicine (categoryId = 16) ──────────────────────
             healthQuestionsEasy1() +
             healthQuestionsEasy2() +
