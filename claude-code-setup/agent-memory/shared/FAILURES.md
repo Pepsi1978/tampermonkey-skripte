@@ -25,7 +25,12 @@
 
 ## Build & Compilation Failures
 
-_No entries yet. The debugger and tester will add recurring build failures here._
+### [2026-03-19] Performance: Build-Latenzen werden nicht erfasst — strukturelle Luecke
+- **Symptom**: Session-Scorer zeigt 0 errors, 0 corrections — aber tatsaechliche Build-Zeiten (Gradle, dotnet) sind nicht im Scoring. Performance-Probleme koennen "unsichtbar" sein, waehrend Quality-Score trotzdem 8.8 zeigt.
+- **Root Cause**: Session-Scorer misst nur Turns, Tools, Errors, Corrections — keine Zeitstempel fuer Build-Operationen, kein Latenz-Tracking.
+- **Fix**: Kein direkter Fix. Erfordert entweder (a) Build-Zeit-Tracking im Scorer oder (b) separaten Performance-Monitor-Hook.
+- **Prevention**: Bei Performance-Analysen immer explizit nachfragen: "Wurden Build-Zeiten gemessen?" Wenn nein: als Datenlücke benennen, nicht als "keine Probleme" interpretieren.
+- **Files**: ~/.claude/hooks/session-scorer.ts
 
 ## Logic & Runtime Errors
 
@@ -56,7 +61,17 @@ _No entries yet. Agents will add logic errors that recurred or were hard to find
 
 ## Cross-Platform Issues
 
-_No entries yet. Issues specific to macOS↔Windows differences will be logged here._
+### [2026-03-19] Environment: PowerShell-Update waehrend laufender Optimierung zerstoert alle Terminals
+- **Symptom**: Waehrend /self-improve lief, wurde PowerShell 7.5→7.6 aktualisiert. ALLE offenen PowerShell-Fenster des Benutzers wurden sofort geschlossen, stundenlange Arbeit unterbrochen.
+- **Root Cause**: Shell-Updates ersetzen die laufende Executable (pwsh.exe). Windows kann laufende Prozesse nicht nahtlos migrieren wie Unix. Ein Update der Shell-Runtime killt alle Instanzen.
+- **Fix**: Self-Improve Skill v5.8 — Shell/Terminal-Updates werden jetzt in "Deferred Shell Updates" gesammelt und ERST nach Abschluss aller anderen Aufgaben, nach dem Commit, als allerletzter Schritt ausgefuehrt. Benutzer muss vorher explizit bestaetigen.
+- **Prevention**:
+  - Core Rule im Self-Improve Skill (v5.8): Shell-Updates IMMER zuletzt
+  - Benutzer-Bestaetigung PFLICHT vor Shell-Updates
+  - Betroffene Tools-Liste: PowerShell, Git, Git Bash, Node.js, npm, Bun, Deno, Python, Claude Code CLI
+  - Diese Regel gilt fuer ALLE Aufgaben, nicht nur /self-improve
+- **Status**: ✅ DAUERHAFT (Regel in Skill, CLAUDE.md und Memory verankert)
+- **Files**: ~/.claude/commands/self-improve.md, ~/CLAUDE.md, Memory/feedback_shell_updates_last.md
 
 ## Data & Content Quality
 
@@ -90,6 +105,13 @@ _No entries yet. Issues specific to macOS↔Windows differences will be logged h
 - **Prevention**: session-cleanup.sh loescht /tmp/claude-turn-counter.txt und /tmp/claude-intent-reminder.txt bei SessionEnd
 - **Files**: ~/.claude/hooks/session-cleanup.sh, ~/.claude/hooks/intent-anker.sh
 
+### [2026-03-19] Security: Prompt-Injection-Defender False Positive auf eigenem Hook-Code
+- **Symptom**: Defender meldet HIGH SEVERITY bei Lesen von ~/.claude/hooks/session-scorer.ts — "Instruction hidden in code comment"
+- **Root Cause**: JSDoc-Kommentare mit Spiegelstrich-Listen (z.B. `* - total_turns:`) werden als versteckte Anweisungen erkannt
+- **Fix**: Kein Fix noetig fuer diesen Vorfall (False Positive, eigener Code)
+- **Prevention**: Allowlist fuer vertrauenswuerdige Pfade im Defender konfigurieren: ~/.claude/hooks/, ~/.claude/agents/, ~/.claude/commands/. Echte Bedrohungen gehen sonst im Rauschen unter.
+- **Files**: ~/.claude/hooks/prompt-injection-defender/post-tool-defender.py
+
 ### [2026-03-18] API: Session terminated by unknown (13:44:43)
 - **Symptom**: Session ended unexpectedly due to API error
 - **Root Cause**: unknown (auto-detected by StopFailure hook)
@@ -97,3 +119,17 @@ _No entries yet. Issues specific to macOS↔Windows differences will be logged h
 - **Prevention**: StopFailure hook monitors for recurring patterns
 - **Context**: {}
 - **Status**: AUTO-LOGGED (incomplete context — review manually if recurring)
+
+### [2026-03-19] Security: Pfad-basierte Allowlist in Security-Scanners schafft ausnutzbaren Blind Spot
+- **Symptom**: Prompt-Injection-Defender ueberspringt ~/.claude/hooks/ komplett — praeparierte Datei in diesem Pfad wird nicht mehr gescannt
+- **Root Cause**: Pfad-Allowlist loest False-Positive-Problem, aber macht den Annahmen-Fehler, dass Pfad = Vertrauensquelle. Ein Angreifer der Schreibzugriff auf ~/.claude/ hat (z.B. via schadhafter MCP-Server) kann jede Datei dort platzieren.
+- **Fix**: SHA-256-Hash-Whitelist statt Pfad-Allowlist. Bekannte gute Dateien per Hash registrieren. Bei Hash-Mismatch: Scan erzwingen. Bei neuen Dateien im Pfad: Scan erzwingen.
+- **Prevention**: Regel: Niemals Security-Scanner per Pfad deaktivieren. Nur per kryptographischem Hash (SHA-256 minimum) oder per expliziter Inhalts-Signatur.
+- **Files**: ~/.claude/hooks/prompt-injection-defender/post-tool-defender.py
+
+### [2026-03-19] Config: Einzelmessungen als Ground Truth in MEMORY.md persistiert
+- **Symptom**: Latenzwerte (z.B. "700ms", "300ms") werden als absolute Fakten in MEMORY.md gespeichert und von Agents als Ground Truth behandelt
+- **Root Cause**: Messwerte haengen von Netzwerk, RAM-Auslastung, Tageszeit und parallelen Prozessen ab. n=1 Messungen koennen 10x vom Median abweichen.
+- **Fix**: Kein Messwert ohne Messkontext (Datum, Netzwerktyp, Systemlast) in MEMORY.md schreiben. Werte erst nach 5+ Messungen als Durchschnitt eintragen.
+- **Prevention**: Vor MEMORY.md-Eintrag mit Latenzwert: Immer "(n=X, Median: Y, Range: Z-W)" erwaehnen.
+- **Files**: .claude/agent-memory/shared/MEMORY.md

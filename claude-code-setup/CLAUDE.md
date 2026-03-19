@@ -27,6 +27,13 @@
 - Ergebnisse ausfuehrlich erklaeren — der Benutzer ist kein Programmierer und will verstehen, was passiert ist.
 - Terminal-Befehle **immer direkt selbst ausfuehren** (ueber das Bash-Tool), niemals dem Benutzer Zeilen zum Kopieren geben.
 
+## Shell/Terminal-Updates (KRITISCH)
+- Updates von Shell-Umgebungen (PowerShell, Git, Git Bash, Node.js, npm, Bun, Deno, Python, Claude Code CLI) IMMER als ALLERLETZTEN Schritt NACH Abschluss aller anderen Aufgaben ausfuehren.
+- Diese Updates zerstoeren ALLE offenen Terminal-Fenster und killen laufende Prozesse.
+- NIEMALS Shell-Updates waehrend laufender Arbeit oder mitten in einer Aufgabe ausfuehren.
+- VOR Shell-Updates: Benutzer WARNEN und um explizite Bestaetigung bitten.
+- Reihenfolge: Alle Aufgaben erledigen → Ergebnisse committen/pushen → Benutzer warnen → Bestaetigung abwarten → Shell-Updates als letzten Schritt.
+
 ## Qualitaetsschleife (PFLICHT nach jedem Feature/Projekt!)
 - **PFLICHT**: Nach jedem abgeschlossenen Feature oder neuen Projekt MUSS der `quality-gate` Agent gestartet werden. Das ist KEINE Option — es ist wie eine Qualitaetskontrolle in einer Fabrik. KEIN Commit ohne bestandenen quality-gate.
 - **Bevorzugt: `quality-gate` Agent** — startet tester + code-reviewer + optimizer automatisch parallel und gibt PASS/FAIL zurueck. Ein Agent-Aufruf statt drei.
