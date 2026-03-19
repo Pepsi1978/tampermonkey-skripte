@@ -107,6 +107,32 @@ Key changes in v5.7:
 - **R2 self-validates**: Runs `gh api repos/{owner}/{repo}` before recommending plugins.
 - **Spawn ALL active researchers in ONE message block.**
 
+### Researcher-Resilienz (v5.9 — KRITISCH)
+
+Researcher-Agents koennen mit internen Fehlern abstuerzen. Der Gesamt-Lauf darf NIEMALS
+dadurch haengenbleiben. Fuer JEDEN Researcher gilt:
+
+1. **Absturz erkennen**: Wenn ein Agent einen Fehler zurueckgibt, keinen Output liefert,
+   oder nach 5 Minuten nicht antwortet → als GESCHEITERT markieren.
+2. **Sofort weitermachen**: Die anderen Researcher laufen weiter — ein gescheiterter Agent
+   blockiert NICHT den Rest. Stufe 2 wartet nur auf die noch laufenden Agents.
+3. **1x Neustart versuchen**: Den gescheiterten Researcher EINMAL neu starten mit
+   kleinerem Scope (z.B. nur die wichtigste Teilfrage). Wenn auch der Neustart scheitert → ueberspringen.
+4. **Fehler dokumentieren**: Jeden Absturz sofort in `~/.claude/agent-memory/shared/FAILURES.md` eintragen:
+   ```
+   ## [Datum] Researcher R[N] Absturz
+   - **Agent**: R[N] — [Name]
+   - **Fehler**: [Fehlermeldung oder "kein Output nach Timeout"]
+   - **Neustart**: [Erfolgreich / Gescheitert]
+   - **Auswirkung**: [Was fehlt im Report wegen dem Absturz]
+   ```
+5. **Im Final Summary nennen**: Unter "Probleme waehrend des Laufs" jeden Absturz auflisten
+   mit Empfehlung, ob der Researcher beim naechsten Lauf manuell getriggert werden sollte.
+6. **Ursachenanalyse**: Nach Abschluss aller Stufen die FAILURES.md-Eintraege pruefen —
+   wenn ein Researcher 2+ Mal abgestuerzt ist, dessen Prompt vereinfachen oder aufteilen.
+
+**Faustregel**: Lieber ein Researcher-Ergebnis weniger als ein komplett steckengebliebener Lauf.
+
 After researchers return: **mandatory cross-validation table** (Researcher claims vs. scan data).
 For plugin recommendations: **mandatory security review** (spawn researcher per plugin).
 
@@ -369,4 +395,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - **Shell/Terminal-Updates**: Siehe Core Rules oben — IMMER zuletzt, IMMER nach Bestaetigung.
 
 ---
-<!-- Skill Version: v5.9 | Date: 2026-03-19 | Lines: ~370/1000 (main) | Ref files: researchers.md (~165), report-and-creative.md (~181) | Total: ~716/2000 | Changes: v5.9 — Added German triggers + duration to description. Fixed header version v5.0→v5.8. Removed Termux references. Deduplicated Shell-Update-Regel (4x→1x canonical + references). Weakened Fix-ALL to Top 5 + listed remaining. IQ-Score now quality-weighted (not just counting). Resolved R6 cache contradiction in researchers.md. -->
+<!-- Skill Version: v5.10 | Date: 2026-03-19 | Lines: ~390/1000 (main) | Ref files: researchers.md (~165), report-and-creative.md (~181) | Total: ~736/2000 | Changes: v5.10 — Added Researcher-Resilienz section: crashed agents get 1 retry with smaller scope, then skip. Failures documented in FAILURES.md and listed in Final Summary. Prevents entire self-improve run from hanging when a single researcher agent crashes. Previous: v5.9 (triggers, dedup, IQ quality, Termux removal). -->
