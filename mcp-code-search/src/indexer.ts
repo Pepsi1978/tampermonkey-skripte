@@ -64,8 +64,9 @@ const SKIP_DIRS = [
 	".swiftpm",
 ];
 
-const CHUNK_SIZE = 50;
+const CHUNK_SIZE = 40; // Reduced from 50 to stay within embedding context
 const MAX_FILE_SIZE = 100 * 1024; // 100 KB
+const MAX_CHUNK_CHARS = 4000; // nomic-embed-text context ≈ 8192 tokens, conservative limit
 
 /**
  * Walk a directory and find all indexable code files.
@@ -116,8 +117,38 @@ export function detectLanguage(filePath: string): string {
 }
 
 /**
- * Split a file into chunks of ~50 lines.
- * Tries to split at blank lines or function boundaries.
+ * Recursively split lines into chunks that fit within the embedding model context.
+ * If a chunk is too long, it gets halved. Repeats until every piece fits.
+ */
+function splitAndPush(
+	chunkLines: string[],
+	relPath: string,
+	startLine: number,
+	language: string,
+	out: CodeChunk[],
+): void {
+	const content = `File: ${relPath}\n${chunkLines.join("\n")}`;
+
+	if (content.length <= MAX_CHUNK_CHARS || chunkLines.length <= 1) {
+		out.push({
+			filePath: relPath,
+			startLine,
+			endLine: startLine + chunkLines.length - 1,
+			content,
+			language,
+		});
+		return;
+	}
+
+	// Split in half and recurse
+	const mid = Math.floor(chunkLines.length / 2);
+	splitAndPush(chunkLines.slice(0, mid), relPath, startLine, language, out);
+	splitAndPush(chunkLines.slice(mid), relPath, startLine + mid, language, out);
+}
+
+/**
+ * Split a file into chunks of ~40 lines.
+ * Tries to split at blank lines. Oversized chunks are recursively halved.
  */
 export async function chunkFile(
 	filePath: string,
@@ -168,9 +199,9 @@ export async function chunkFile(
 		const endLine = chunkEnd + 1;
 
 		const chunkLines = lines.slice(chunkStart, chunkEnd + 1);
-		const content = `File: ${relPath}\n${chunkLines.join("\n")}`;
 
-		chunks.push({ filePath: relPath, startLine, endLine, content, language });
+		// Recursively split chunks that exceed embedding model context
+		splitAndPush(chunkLines, relPath, startLine, language, chunks);
 
 		// Advance past the chunk; skip leading blank lines of the next chunk
 		chunkStart = chunkEnd + 1;
