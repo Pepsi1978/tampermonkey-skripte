@@ -71,6 +71,7 @@ import com.quizverse.app.data.prepopulate.questions.geoQuestionsExpert2
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMaster2
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.geoQuestionsMaster4
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.historyQuestions
 import com.quizverse.app.data.prepopulate.questions.historyQuestionsEasy
@@ -140,6 +141,7 @@ import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert3
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert4
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert5
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert6
+import com.quizverse.app.data.prepopulate.questions.musicQuestionsExpert7
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster2
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsMaster3
@@ -209,6 +211,7 @@ import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy1
 import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy3
 import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy5
 import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium
 import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium3
@@ -279,7 +282,16 @@ import com.quizverse.app.data.prepopulate.questions.logicQuestionsHard1
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsExpert1
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsMaster1
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestions
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy6
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium5
+import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsMedium6
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestions
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestionsEasy3
@@ -364,6 +376,7 @@ object QuestionSeeder {
             geoQuestionsMaster() +
             geoQuestionsMaster2() +
             geoQuestionsMaster3() +
+            geoQuestionsMaster4() +
             geoQuestionsMedium2() +
             scienceQuestions() +
             scienceQuestionsEasy() +
@@ -471,6 +484,7 @@ object QuestionSeeder {
             musicQuestionsExpert4() +
             musicQuestionsExpert5() +
             musicQuestionsExpert6() +
+            musicQuestionsExpert7() +
             musicQuestionsMaster() +
             musicQuestionsMaster2() +
             musicQuestionsMaster3() +
@@ -512,6 +526,7 @@ object QuestionSeeder {
             techQuestionsEasy2() +
             techQuestionsEasy3() +
             techQuestionsEasy4() +
+            techQuestionsEasy5() +
             techQuestionsMedium() +
             techQuestionsMedium2() +
             techQuestionsMedium3() +
@@ -598,7 +613,16 @@ object QuestionSeeder {
             logicQuestionsExpert1() +
             logicQuestionsMaster1() +
             herthaBscQuestions() +
+            herthaBscQuestionsEasy2() +
+            herthaBscQuestionsEasy3() +
+            herthaBscQuestionsEasy4() +
+            herthaBscQuestionsEasy5() +
+            herthaBscQuestionsEasy6() +
             herthaBscQuestionsMedium2() +
+            herthaBscQuestionsMedium3() +
+            herthaBscQuestionsMedium4() +
+            herthaBscQuestionsMedium5() +
+            herthaBscQuestionsMedium6() +
             dortmundQuestions() +
             dortmundQuestionsEasy2() +
             dortmundQuestionsEasy3() +
