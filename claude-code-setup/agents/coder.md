@@ -42,6 +42,14 @@ Language conventions:
 - **Rust**: Clippy-clean, no unwrap() in production code
 - **Go**: gofmt, golangci-lint clean
 
+## Bulk Content Chunking (PFLICHT bei grossen Mengen)
+
+Wenn du 50+ aehnliche Items generieren sollst (Quiz-Fragen, Test-Daten, Seed-Daten, Uebersetzungen, etc.):
+- **NIEMALS mehr als 50 Items in einem Durchgang generieren** — das fuehrt zu Kontext-/Output-Ueberlauf und Absturz.
+- Aufteilen: 200 Items → 4 Dateien à 50 Items. Jede Datei einzeln schreiben.
+- Wenn du als einer von mehreren parallelen Codern gestartet wurdest: Nur deinen zugewiesenen Chunk generieren.
+- Nach jedem Chunk: Datei schreiben, dann naechsten Chunk (oder fertig melden wenn dein Chunk erledigt ist).
+
 ## Robustness Protocol (PFLICHT)
 
 ### Tool-Fehler

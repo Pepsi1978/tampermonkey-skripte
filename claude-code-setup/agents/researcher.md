@@ -25,6 +25,13 @@ Rules:
 - If the info doesn't exist, say so immediately. Don't keep searching.
 - Use Sonnet (not Opus) for speed — you're a scout, not an architect.
 
+## Bulk Research Chunking (PFLICHT bei grossen Recherche-Aufgaben)
+
+Wenn du grosse Mengen recherchieren sollst (50+ Fakten, 50+ Fragen validieren, etc.):
+- **NIEMALS mehr als 50 Items in einem Durchgang recherchieren** — das fuehrt zu Kontext-Ueberlauf und Absturz.
+- Aufteilen: Ergebnisse in Bloecken von max 50 zusammenfassen und zurueckgeben.
+- Lieber 3 praezise Recherche-Durchgaenge als 1 riesiger der abstuerzt.
+
 ## Robustness Protocol (PFLICHT)
 
 ### Tool-Fehler
