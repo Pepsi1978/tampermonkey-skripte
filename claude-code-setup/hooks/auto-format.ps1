@@ -2,9 +2,8 @@
 
 . "$PSScriptRoot/hook-log.ps1"
 
-$input = $args[0]
-if (-not $input) { $input = [Console]::In.ReadToEnd() }
-$data = $input | ConvertFrom-Json -ErrorAction SilentlyContinue
+$hookInput = [Console]::In.ReadToEnd()
+$data = $hookInput | ConvertFrom-Json -ErrorAction SilentlyContinue
 if (-not $data) { exit 0 }
 
 $filePath = $data.tool_input.file_path

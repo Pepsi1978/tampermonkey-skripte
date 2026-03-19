@@ -20,8 +20,30 @@ import {
 } from "fs";
 import { join } from "path";
 
-const HOME = process.env.HOME || "/Users/frank";
-const PROJECTS_DIR = join(HOME, ".claude", "projects", "-Users-frank");
+const HOME = process.env.USERPROFILE || process.env.HOME || "C:\\Users\\barwa";
+
+// Windows project directory: find dynamically (C--Users-barwa or similar)
+function findProjectsDir(): string {
+  const claudeDir = join(HOME, ".claude", "projects");
+  if (!existsSync(claudeDir)) return "";
+  try {
+    const entries = readdirSync(claudeDir);
+    for (const entry of entries) {
+      const fullPath = join(claudeDir, entry);
+      if (statSync(fullPath).isDirectory() && entry.startsWith("C--")) {
+        return fullPath;
+      }
+    }
+    // Fallback: first directory
+    for (const entry of entries) {
+      const fullPath = join(claudeDir, entry);
+      if (statSync(fullPath).isDirectory()) return fullPath;
+    }
+  } catch { /* ignore */ }
+  return "";
+}
+
+const PROJECTS_DIR = findProjectsDir();
 const MEMORY_DIR = join(HOME, ".claude", "agent-memory", "shared");
 const AUTOPSY_FILE = join(MEMORY_DIR, "AUTOPSY.md");
 

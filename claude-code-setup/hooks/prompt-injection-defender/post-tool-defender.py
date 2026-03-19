@@ -254,6 +254,42 @@ def format_warning(
     return "\n".join(lines)
 
 
+def is_trusted_path(tool_name: str, tool_input: Dict[str, Any]) -> bool:
+    """Check if the source is a trusted local path that should skip scanning.
+
+    Trusted paths are the user's own config, code, and hook files.
+    These frequently contain security-related keywords that trigger
+    false positives (e.g., patterns.yaml contains injection patterns by design).
+    """
+    home = os.environ.get("USERPROFILE", os.environ.get("HOME", ""))
+    if not home:
+        return False
+
+    # Normalize path separators for comparison
+    home_normalized = home.replace("\\", "/").rstrip("/").lower()
+
+    trusted_prefixes = [
+        os.path.join(home, ".claude").replace("\\", "/").lower(),
+        os.path.join(home, "proggs").replace("\\", "/").lower(),
+    ]
+
+    source_path = ""
+    if tool_name == "Read":
+        source_path = tool_input.get("file_path", "")
+    elif tool_name == "Grep":
+        source_path = tool_input.get("path", "")
+    elif tool_name == "Glob":
+        source_path = tool_input.get("path", "")
+
+    if source_path:
+        normalized = source_path.replace("\\", "/").lower()
+        for prefix in trusted_prefixes:
+            if normalized.startswith(prefix):
+                return True
+
+    return False
+
+
 def get_source_info(tool_name: str, tool_input: Dict[str, Any]) -> str:
     """Extract source information from tool input for the warning message."""
     if tool_name == "Read":
@@ -318,6 +354,11 @@ def main() -> None:
 
     if tool_name not in monitored_tools and not is_mcp_tool:
         # Not a monitored tool, allow without scanning
+        sys.exit(0)
+
+    # Skip scanning for trusted local paths (own config, code, hooks)
+    # These contain security keywords by design and cause false positives
+    if is_trusted_path(tool_name, tool_input):
         sys.exit(0)
 
     # Extract text content from tool result

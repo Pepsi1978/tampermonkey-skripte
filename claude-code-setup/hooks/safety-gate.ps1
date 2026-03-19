@@ -4,9 +4,9 @@
 
 . "$PSScriptRoot/hook-log.ps1"
 
-$input = [Console]::In.ReadToEnd()
+$hookInput = [Console]::In.ReadToEnd()
 try {
-    $json = $input | ConvertFrom-Json
+    $json = $hookInput | ConvertFrom-Json
 } catch {
     exit 0
 }

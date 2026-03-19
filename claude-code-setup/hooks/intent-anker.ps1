@@ -11,8 +11,8 @@ $CounterFile = Join-Path $env:TEMP "claude-turn-counter.txt"
 
 # Read JSON input from stdin (Claude Code sends hook context)
 try {
-    $input = [Console]::In.ReadToEnd()
-    $json = $input | ConvertFrom-Json
+    $hookInput = [Console]::In.ReadToEnd()
+    $json = $hookInput | ConvertFrom-Json
 } catch {
     $json = $null
 }
