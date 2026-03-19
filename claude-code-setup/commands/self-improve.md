@@ -113,6 +113,36 @@ Wenn `~/proggs/mcp-code-search/` existiert: Pruefe ob der Index aktuell ist.
 - Im Report melden: "Semantic Index: [N] Dateien, [N] Chunks (aktualisiert/bereits aktuell)"
 - **Voraussetzung**: Ollama muss laufen. Wenn nicht → ueberspringen mit Hinweis.
 
+**Semantic Search Health-Check (v5.15 — PFLICHT bei jedem Lauf):**
+Nach dem Indexieren (oder wenn Index bereits aktuell): Funktionalitaetstest durchfuehren.
+Dieser Test prueft ob die GESAMTE Kette funktioniert (Ollama → Embedding → sqlite-vec → Suche):
+```bash
+cd ~/proggs/mcp-code-search && bun -e "
+  import { VectorStore } from './src/store.ts';
+  import { generateEmbedding } from './src/ollama.ts';
+  import { resolve, join } from 'path';
+  const root = resolve('\$HOME/proggs');
+  const store = new VectorStore(join(root, '.code-search', 'index.db'));
+  const stats = store.stats();
+  if (stats.totalChunks === 0) { console.log('FAIL: Index leer'); process.exit(1); }
+  const emb = await generateEmbedding('test query for health check');
+  if (emb.length !== 768) { console.log('FAIL: Embedding hat ' + emb.length + ' statt 768 Dimensionen'); process.exit(1); }
+  const results = store.search(emb, 3);
+  if (results.length === 0) { console.log('FAIL: Suche liefert 0 Ergebnisse'); process.exit(1); }
+  store.close();
+  console.log('OK: ' + stats.totalFiles + ' Dateien, ' + stats.totalChunks + ' Chunks, Suche liefert ' + results.length + ' Treffer');
+"
+```
+**Auswertung:**
+- `OK` → Im Report als ✅ melden: "Semantische Suche: [N] Dateien, [N] Chunks, funktioniert"
+- `FAIL` → Im Report als ❌ melden mit Fehlerdetail. Moegliche Ursachen pruefen:
+  1. Ollama laeuft nicht → `curl http://localhost:11434/api/tags` testen
+  2. nomic-embed-text fehlt → `ollama pull nomic-embed-text` ausfuehren
+  3. Index-DB korrupt → DB loeschen und neu indexieren
+  4. sqlite-vec Extension fehlt → `bun install` in mcp-code-search/ ausfuehren
+  Jeden Fehler in FAILURES.md eintragen und Behebung versuchen.
+- **SessionStart-Hook pruefen**: Pruefe ob `reindex-codebase.ps1` in settings.json als SessionStart-Hook registriert ist. Wenn nicht → als DEFEKT melden.
+
 ## Stufe 2: DEEP-DIVE
 
 **Load researcher templates from**: [self-improve-ref/researchers.md](self-improve-ref/researchers.md)
