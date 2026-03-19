@@ -1,13 +1,43 @@
 # Config Guard: Verifies protected settings after any config change
 # Hook event: PostToolUse (Edit|Write on settings.json)
 # Platform: Windows (PowerShell 7+)
+#
+# Output: JSON for hook compatibility.
+#   Block:   {"error":"CONFIG-GUARD: BLOCKIERT — ..."}
+#   Warning: plain text (PostToolUse context)
+#   OK:      no output
 
 . "$PSScriptRoot/hook-log.ps1"
+
+# Read hook input from stdin to check if the edited file is settings.json
+$hookInput = [Console]::In.ReadToEnd()
+try {
+    $hookJson = $hookInput | ConvertFrom-Json
+} catch {
+    # Could not parse hook input — not our concern, allow
+    exit 0
+}
+
+# Only check when settings.json was edited
+$toolInput = $hookJson.tool_input
+if (-not $toolInput) { exit 0 }
+
+$filePath = $toolInput.file_path
+if (-not $filePath) {
+    # Write tool uses file_path, Edit also uses file_path
+    $filePath = $toolInput.path
+}
+if (-not $filePath) { exit 0 }
+
+# Normalize path separators for comparison
+$normalizedPath = $filePath -replace '\\', '/'
+if ($normalizedPath -notmatch '\.claude/settings\.json$' -and $normalizedPath -notmatch '\.claude\\settings\.json$') {
+    exit 0
+}
 
 $Settings = Join-Path $env:USERPROFILE ".claude" "settings.json"
 if (-not (Test-Path $Settings)) {
     Hook-LogWarn "settings.json not found"
-    Write-Output "Config-Guard: settings.json nicht gefunden."
     exit 0
 }
 
@@ -15,11 +45,9 @@ try {
     $data = Get-Content $Settings -Raw | ConvertFrom-Json
 } catch {
     Hook-LogError "failed to parse settings.json: $_"
-    Write-Output "Config-Guard: settings.json konnte nicht gelesen werden."
     exit 0
 }
 
-$warnings = @()
 $blocks = @()
 
 # effortLevel: MUST be "high" — BLOCK anything else (CLAUDE.md requirement)
@@ -28,22 +56,22 @@ if ($eff -and $eff -ne 'high') {
     $blocks += "effortLevel=$eff (MUSS 'high' sein — CLAUDE.md-Regel)"
 }
 
-$env = $data.env
-if ($env) {
+$envData = $data.env
+if ($envData) {
     # CLAUDE_CODE_EFFORT_LEVEL in env
-    $envEff = $env.CLAUDE_CODE_EFFORT_LEVEL
+    $envEff = $envData.CLAUDE_CODE_EFFORT_LEVEL
     if ($envEff -and $envEff -ne 'high') {
         $blocks += "CLAUDE_CODE_EFFORT_LEVEL=$envEff (MUSS 'high' sein)"
     }
 
     # SUBAGENT_MODEL: BLOCK if changed from sonnet (critical for cost/quality)
-    $subModel = $env.CLAUDE_CODE_SUBAGENT_MODEL
+    $subModel = $envData.CLAUDE_CODE_SUBAGENT_MODEL
     if ($subModel -and $subModel -ne 'sonnet') {
         $blocks += "CLAUDE_CODE_SUBAGENT_MODEL=$subModel (erwartet: sonnet)"
     }
 
     # AUTOCOMPACT: BLOCK if below 95
-    $acp = $env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE
+    $acp = $envData.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE
     if ($acp -and [int]$acp -lt 95) {
         $blocks += "AUTOCOMPACT=$acp (minimum: 95)"
     }
@@ -52,16 +80,10 @@ if ($env) {
 if ($blocks.Count -gt 0) {
     $blockMsg = $blocks -join "; "
     Hook-LogError "BLOCKED — protected settings changed: $blockMsg"
-    Write-Output "CONFIG-GUARD: BLOCKIERT — Geschuetzte Settings geaendert: $blockMsg"
-    exit 1
-}
-
-if ($warnings.Count -gt 0) {
-    $warnMsg = $warnings -join "; "
-    Hook-LogWarn "unexpected setting change: $warnMsg"
-    Write-Output "CONFIG-GUARD: WARNUNG — Unerwartete Setting-Aenderung: $warnMsg"
-    Write-Output "Hinweis: Beim naechsten Session-Start wird automatisch auf 'medium' zurueckgesetzt."
-    exit 0
+    # Output valid JSON for hook compatibility
+    $jsonOutput = @{ error = "CONFIG-GUARD: BLOCKIERT — Geschuetzte Settings geaendert: $blockMsg" } | ConvertTo-Json -Compress
+    Write-Output $jsonOutput
+    exit 2
 }
 
 Hook-Log "all protected settings intact"
