@@ -99,6 +99,13 @@ Der Benutzer muss dich NICHT daran erinnern — du tust es AUTOMATISCH als letzt
    - Wenn der Debug-Workflow wiederverwendbar ist → als neuen Workflow eintragen
    - Z.B.: "Android Build-Fehler debuggen: 1. Gradle Cache löschen 2. Sync 3. ..."
 
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-debugger.json`:
+```json
+{"agent": "debugger", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Fehlertyp + Root Cause]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+
 **SELBSTTEST**: Bevor du deine Antwort beendest, prüfe:
 - [ ] Habe ich FAILURES.md aktualisiert? Wenn nein → JETZT machen
 - [ ] Habe ich MEMORY.md aktualisiert? Wenn nein → JETZT machen

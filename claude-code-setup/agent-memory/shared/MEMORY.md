@@ -15,6 +15,12 @@ _No entries yet. The architect will write architecture decisions here._
 ## From Debugger
 _No entries yet. The debugger will write root cause patterns here._
 
+## Fehlertyp-Bibliothek (praeventive Review-Hilfe)
+> Debugger klassifiziert jeden Fix nach Fehlertyp. Code-Reviewer prueft praeventiv gegen diese Liste.
+> Kategorien: OFF_BY_ONE, NULL_REFERENCE, RACE_CONDITION, TYPE_MISMATCH, LOGIC_ERROR,
+> CONFIG_DRIFT, PLATFORM_SPECIFIC, RESOURCE_LEAK, ENCODING, API_CONTRACT
+_Noch keine Eintraege. Der Debugger fuellt diese Bibliothek automatisch nach jedem Fix._
+
 ## From Self-Improve
 - **2026-03-14**: Shared Knowledge Hub created. Meta-Evolution system initialized.
 - **2026-03-14**: effortLevel was reset to "medium" by /model command — ConfigChange hook exists but Stop hook only catches at session end. Gap: need real-time protection.

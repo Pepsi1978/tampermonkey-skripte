@@ -82,6 +82,14 @@ After EVERY architecture design, you MUST:
 
 These write-backs are NOT optional. They make the entire system smarter over time.
 
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-architect.json`:
+```json
+{"agent": "architect", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung deiner wichtigsten Architekturentscheidung]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird ein Fehler in FAILURES.md protokolliert.
+
 ## Multi-Step Commit Planning (PFLICHT bei Tasks mit 3+ Dateien)
 
 Wenn eine Aufgabe mehr als 2 Dateien betrifft, MUSS der Architect eine geordnete Commit-Sequenz erstellen.

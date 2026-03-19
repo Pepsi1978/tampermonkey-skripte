@@ -89,6 +89,13 @@ After EVERY test session, you MUST:
 
 2. **MEMORY.md**: Add a 1-line entry under "From Tester" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "QuizVerse: No test infrastructure exists yet — only compiler checks available" or "Android tests need emulator running — check with adb devices first").
 
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-tester.json`:
+```json
+{"agent": "tester", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Test-Ergebnis + entdeckte Patterns]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+
 These write-backs are NOT optional. They make the entire system smarter over time.
 
 ## Robustness Protocol (PFLICHT)

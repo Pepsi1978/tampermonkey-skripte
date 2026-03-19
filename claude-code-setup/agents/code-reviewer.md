@@ -69,6 +69,14 @@ After EVERY review, you MUST do these two things:
 
 These write-backs are NOT optional. They make the entire system smarter over time.
 
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-code-reviewer.json`:
+```json
+{"agent": "code-reviewer", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung deiner wichtigsten Erkenntnis]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird ein Fehler in FAILURES.md protokolliert.
+
 ## Robustness Protocol (PFLICHT)
 
 ### Tool-Fehler

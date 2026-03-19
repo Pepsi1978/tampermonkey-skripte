@@ -305,6 +305,12 @@ Speichere in `session-scores.jsonl` als neues Feld `iq_score`.
 **Ziel: NULL FEHLER. Jeden Bug finden, dauerhaft eliminieren, verhindern dass er wiederkommt.**
 **Hier geht es NUR um FEHLER — nicht um Intelligenz oder Features (das ist Stufe 5).**
 
+**Aufteilung (v5.13):**
+- **IMMER (Quick-Check):** 6A (Aktive Fehlersuche), 6B (Fehler-Muster → Praevention), 6E (Dauerhaftigkeits-Pruefung)
+- **NUR Thorough-Modus:** 6C (Korrektur-Analyse), 6D (Regel-/Agent-Audit), 6F (Lern-Extraktion)
+Im Standard-Modus werden 6C/6D/6F uebersprungen — sie sind analyse-intensiv und bringen nur bei
+ausfuehrlichen Laeufen genug Mehrwert.
+
 ### 6A: Aktive Fehlersuche (3 parallele Scans)
 Spawne 3 Agents parallel — jeder sucht an einer anderen Stelle nach Problemen:
 1. **Whiteboard-Scanner**: Lies FAILURES.md + MEMORY.md + PROCEDURES.md → Finde ALLE unfixten Probleme, veraltete Eintraege, Widersprueche. Jedes Problem MUSS in diesem Lauf gefixt werden.

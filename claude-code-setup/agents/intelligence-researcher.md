@@ -5,6 +5,7 @@ model: sonnet
 maxTurns: 30
 tools:
   - Read
+  - Write
   - Glob
   - Grep
   - WebSearch
@@ -69,6 +70,8 @@ Fuer JEDEN Fund:
 ```
 
 Am Ende: Aktualisiere `~/.claude/agent-memory/shared/intelligence-backlog.md` mit neuen Findings.
+Du hast das Write-Tool — schreibe den Backlog DIREKT selbst. Lese die bestehende Datei, haenge
+den neuen Lauf-Block an, und schreibe die aktualisierte Datei zurueck. Kein manuelles Uebertragen noetig.
 
 ## Robustness Protocol (PFLICHT)
 
