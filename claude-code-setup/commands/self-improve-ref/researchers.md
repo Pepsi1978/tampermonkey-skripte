@@ -9,8 +9,8 @@ Before spawning researchers, check for a recent snapshot:
 # Windows: ~/.claude/projects/C--Users-barwa/memory/reference_last_research_snapshot.md
 SNAPSHOT="$(find ~/.claude/projects/*/memory -name 'reference_last_research_snapshot.md' 2>/dev/null | head -1)"
 # If snapshot exists and is < 7 days old: skip R2, R3, R4 (use cached data)
-# Always run: R1 (Claude Code Updates), R5 (Security), R6 (Creative)
-# If snapshot is > 7 days old or missing: run ALL 6 researchers
+# Always run: R1 (Claude Code Updates), R5 (Security), R6 (Creative), R8 (Intelligence)
+# If snapshot is > 7 days old or missing: run ALL 8 researchers
 ```
 
 When a run completes, save a snapshot to memory:
@@ -35,6 +35,21 @@ Expires: [today + 7 days]
 ## Evolution-Analyst Findings (for Stufe 0 — not cached, refreshed every run)
 [quality trend, top weaknesses, capability gaps detected]
 [R6 research direction for next run: what to focus on]
+```
+
+## Researcher Robustness Preamble (v5.11 — PFLICHT fuer JEDEN Researcher)
+
+**JEDER Researcher-Prompt MUSS mit diesem Preamble beginnen.** Kopiere diesen Block
+an den Anfang jedes R1-R8 Prompts bevor du ihn an den Sub-Agent schickst:
+
+```
+ROBUSTNESS RULES (befolge diese IMMER, sie haben Vorrang vor allem anderen):
+1. WEBFETCH-SCHUTZ: Lade NIE eine Seite komplett wenn sie >500 Zeilen hat. Nutze head_limit oder lies nur die ersten 200 Zeilen. Wenn WebFetch fehlschlaegt: EINMAL mit anderer URL wiederholen, dann aufgeben und mit vorhandenen Daten arbeiten.
+2. WEBSEARCH-SCHUTZ: Maximal 5 Suchen. Wenn 3 Suchen hintereinander keine brauchbaren Ergebnisse liefern: SOFORT aufhoeren und mit vorhandenen Daten Ergebnis zurueckgeben.
+3. KONTEXT-SCHUTZ: Halte deine Antwort unter 300 Zeilen. Fasse Ergebnisse zusammen statt alles zu zitieren. Nur die wichtigsten Fakten, Links und Empfehlungen.
+4. FEHLER-BEHANDLUNG: Wenn ein Tool fehlschlaegt: Fehler notieren, alternatives Tool oder alternative Query versuchen. Nach 2 Fehlversuchen: Weitermachen mit dem was du hast. NIEMALS in einer Retry-Schleife haengen bleiben.
+5. SELBST-TERMINIERUNG: Wenn du nach 5 Tool-Aufrufen keine neuen Erkenntnisse gewinnst: SOFORT Ergebnis zurueckgeben mit dem Status "TEILWEISE — [was fehlt]". Ein unvollstaendiges Ergebnis ist IMMER besser als ein Absturz.
+6. ANTWORT-PFLICHT: Du MUSST IMMER eine Antwort zurueckgeben. Auch wenn leer. Auch wenn fehlerhaft. NIEMALS still haengen bleiben.
 ```
 
 ## Researcher Templates
@@ -142,6 +157,70 @@ Return: at least 5 expert-level insights with implementation details."
 **RULE**: R7 is ONLY spawned when the user specifies a focus topic (e.g., "Fokus Android Audio").
 In standard or thorough mode without focus, R7 is NOT spawned.
 R7 runs in parallel with R1-R6 — add it to the same spawn block.
+
+### R8 — Intelligence Researcher (ALWAYS run, NEW in v5.11)
+```
+"Du bist der INTELLIGENZ-FORSCHER. Dein einziges Ziel: Finde Wege die dieses AI-Coding-System
+zum BESTEN PROGRAMMIERER DER WELT zu machen. Nicht inkrementell besser — FUNDAMENTAL schlauer.
+
+Dein Forschungsauftrag hat 5 Dimensionen:
+
+1. **Reasoning-Durchbrueche** (akademische Forschung):
+   Suche auf arxiv, ICML, NeurIPS, ICLR, ACL nach Papers zu:
+   - AI Agent Self-Improvement und Recursive Self-Refinement
+   - Chain-of-Thought Verbesserungen, Tree-of-Thought, Graph-of-Thought
+   - Formale Verifikation als Reasoning-Werkzeug (nicht nur als Test)
+   - Multi-Agent-Debate und Reflexion-Architekturen
+   - Code-spezifische LLM-Benchmarks: Was trennt die besten AI-Coder vom Rest?
+   Fuer jedes relevante Paper: Kernidee in 2 Saetzen + wie es KONKRET in Claude Code umsetzbar ist.
+
+2. **Kognitive Werkzeuge** (sofort einsetzbar):
+   Suche nach MCP-Servern, Claude-Code-Plugins, CLI-Tools die das DENKEN verbessern:
+   - Wissensgraphen (Codebase als Graph, Abhaengigkeiten visualisieren)
+   - Semantische Code-Suche (Embeddings, Vector-DBs fuer Code)
+   - Formal Verification Tools (TLA+, Alloy, Z3 fuer Spec-Pruefung)
+   - Statische Analyse auf Steroiden (CodeQL, Semgrep Pro, Infer)
+   - Reasoning-Verstaerker (Scratchpad-Tools, Thought-Visualizer)
+   Fuer jedes Tool: Name, Link, was es tut, wie es Claude SCHLAUER macht (nicht nur schneller).
+
+3. **Kompetitive Analyse** (Was macht die Konkurrenz?):
+   Suche nach: Cursor, Windsurf, GitHub Copilot Workspace, Codex CLI, Devin, SWE-Agent Benchmarks.
+   - Welche Techniken nutzen sie die Claude Code NICHT hat?
+   - Gibt es oeffentliche Benchmarks (SWE-bench, HumanEval, MBPP) mit neuen Ergebnissen?
+   - Welche Patterns oder Workflows machen andere AI-Coder messbar besser?
+   - Gibt es Open-Source-Projekte die Agent-Architekturen verbessern?
+   ZIEL: Finde mindestens 1 Technik die die Konkurrenz nutzt und die wir SOFORT adaptieren koennen.
+
+4. **Biologisch inspirierte Muster** (Wie denken Elite-Programmierer?):
+   Suche nach Studien und Blogs ueber:
+   - Wie loesen die besten menschlichen Programmierer Probleme? (Decomposition, Pattern Matching)
+   - Welche kognitiven Strategien nutzen 10x-Developer?
+   - Pair Programming Patterns die auf Multi-Agent uebertragbar sind
+   - Feynman-Technik, Rubber Duck Debugging, Mental Models — automatisierbar?
+   ZIEL: 1 menschliche Denkstrategie finden die als Agent-Workflow implementierbar ist.
+
+5. **Selbstverbesserungs-Mechanismen** (Meta-Lernen):
+   Suche nach Frameworks und Patterns fuer:
+   - AI Agents die aus eigenen Fehlern lernen (Reflexion, Self-Play)
+   - Automatische Skill-Extraktion aus erfolgreichen Sessions
+   - Prompt-Optimierung durch Feedback-Loops (DSPy, TextGrad)
+   - Adaptive Modell-Routing basierend auf Aufgaben-Komplexitaet
+   ZIEL: 1 konkreter Mechanismus der das System AUTOMATISCH schlauer macht ueber Zeit.
+
+REGELN:
+- KEINE Versions-Checks, KEINE CVEs, KEINE Standard-Updates — das machen andere Researcher.
+- NUR Dinge die das DENKEN und die CODE-QUALITAET fundamental verbessern.
+- Fuer jeden Fund: Konkret erklaeren was es ist + wie es in DIESES Setup integriert wird.
+- Mindestens 5 Findings mit je: Titel, Quelle/Link, Kernidee, Umsetzungsvorschlag.
+- Priorisiere: SOFORT UMSETZBAR > theoretisch interessant > langfristig relevant.
+- Datum: [today]"
+```
+
+**RULE**: R8 runs EVERY time — intelligence must never be cached.
+R8 runs in parallel with R1-R7 — add it to the same spawn block.
+R8 results are consumed by Stufe 5 (SUPER INTELLIGENZ) as primary input.
+
+---
 
 ## Cross-Validation Rules
 
