@@ -5,13 +5,33 @@ import com.quizverse.app.data.database.entities.Achievement
 import com.quizverse.app.data.database.entities.Category
 import com.quizverse.app.data.database.entities.UserProgress
 import com.quizverse.app.data.prepopulate.questions.animalQuestions
-import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert2
-import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert3
-import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert5
-import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsEasy6
 import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium5
 import com.quizverse.app.data.prepopulate.questions.animalQuestionsMedium6
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsHard6
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert6
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsExpert7
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster2
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster4
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster5
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster6
+import com.quizverse.app.data.prepopulate.questions.animalQuestionsMaster7
 import com.quizverse.app.data.prepopulate.questions.filmQuestions
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsEasy2
@@ -41,6 +61,7 @@ import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster4
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster5
 import com.quizverse.app.data.prepopulate.questions.filmQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.foodQuestions
+import com.quizverse.app.data.prepopulate.questions.foodQuestionsEasy2
 import com.quizverse.app.data.prepopulate.questions.geoQuestions
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.geoQuestionsMedium
@@ -168,6 +189,24 @@ import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster4
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster5
 import com.quizverse.app.data.prepopulate.questions.sportQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.techQuestions
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy1
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.techQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium
+import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.techQuestionsMedium5
+import com.quizverse.app.data.prepopulate.questions.techQuestionsHard
+import com.quizverse.app.data.prepopulate.questions.techQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.techQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.techQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.techQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.techQuestionsExpert
+import com.quizverse.app.data.prepopulate.questions.techQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.techQuestionsExpert3
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestions
 import com.quizverse.app.data.prepopulate.questions.dortmundQuestions
 
@@ -197,9 +236,9 @@ object QuestionSeeder {
             Category(id = 4,  name = "Film & Fernsehen",    iconName = "\uD83C\uDFAC", gradientStartColor = 0xFFEC4899L, gradientEndColor = 0xFFF43F5EL, questionCount = 560, isLocked = false),
             Category(id = 5,  name = "Musik",               iconName = "\uD83C\uDFB5", gradientStartColor = 0xFF8B5CF6L, gradientEndColor = 0xFFC084FCL, questionCount = 350, isLocked = false),
             Category(id = 6,  name = "Sport",               iconName = "\uD83C\uDFC5", gradientStartColor = 0xFF22C55EL, gradientEndColor = 0xFF10B981L, questionCount = 1500, isLocked = false),
-            Category(id = 7,  name = "Technologie",         iconName = "\uD83D\uDCBB", gradientStartColor = 0xFF3B82F6L, gradientEndColor = 0xFF6366F1L, questionCount = 50, isLocked = false),
+            Category(id = 7,  name = "Technologie",         iconName = "\uD83D\uDCBB", gradientStartColor = 0xFF3B82F6L, gradientEndColor = 0xFF6366F1L, questionCount = 1500, isLocked = false),
             Category(id = 8,  name = "Essen & Trinken",     iconName = "\uD83C\uDF73", gradientStartColor = 0xFFF59E0BL, gradientEndColor = 0xFFEF4444L, questionCount = 50, isLocked = false),
-            Category(id = 9,  name = "Tierwelt",            iconName = "\uD83D\uDC3E", gradientStartColor = 0xFF14B8A6L, gradientEndColor = 0xFF06B6D4L, questionCount = 50, isLocked = false),
+            Category(id = 9,  name = "Tierwelt",            iconName = "\uD83D\uDC3E", gradientStartColor = 0xFF14B8A6L, gradientEndColor = 0xFF06B6D4L, questionCount = 1500, isLocked = false),
             Category(id = 10, name = "Sprache & Literatur", iconName = "\uD83D\uDCDA", gradientStartColor = 0xFF8B5CF6L, gradientEndColor = 0xFFEC4899L, questionCount = 50, isLocked = false),
             Category(id = 11, name = "Alle Kategorien",      iconName = "\uD83C\uDF1F", gradientStartColor = 0xFFF43F5EL, gradientEndColor = 0xFFF97316L, questionCount = 50, isLocked = false),
             Category(id = 12, name = "Logik & Denksport",   iconName = "\uD83E\uDDE0", gradientStartColor = 0xFF0EA5E9L, gradientEndColor = 0xFF6366F1L, questionCount = 50, isLocked = false),
@@ -381,15 +420,54 @@ object QuestionSeeder {
             sportQuestionsMaster5() +
             sportQuestionsMaster6() +
             techQuestions() +
+            techQuestionsEasy() +
+            techQuestionsEasy1() +
+            techQuestionsEasy2() +
+            techQuestionsEasy3() +
+            techQuestionsEasy4() +
+            techQuestionsMedium() +
+            techQuestionsMedium2() +
+            techQuestionsMedium3() +
+            techQuestionsMedium4() +
+            techQuestionsMedium5() +
+            techQuestionsHard() +
+            techQuestionsHard2() +
+            techQuestionsHard3() +
+            techQuestionsHard4() +
+            techQuestionsHard5() +
+            techQuestionsExpert() +
+            techQuestionsExpert2() +
+            techQuestionsExpert3() +
             foodQuestions() +
+            foodQuestionsEasy2() +
             animalQuestions() +
-            animalQuestionsExpert2() +
-            animalQuestionsExpert3() +
-            animalQuestionsExpert5() +
-            animalQuestionsHard2() +
+            animalQuestionsEasy2() +
+            animalQuestionsEasy3() +
+            animalQuestionsEasy4() +
+            animalQuestionsEasy5() +
+            animalQuestionsEasy6() +
             animalQuestionsMedium2() +
             animalQuestionsMedium3() +
+            animalQuestionsMedium4() +
+            animalQuestionsMedium5() +
             animalQuestionsMedium6() +
+            animalQuestionsHard2() +
+            animalQuestionsHard3() +
+            animalQuestionsHard4() +
+            animalQuestionsHard5() +
+            animalQuestionsHard6() +
+            animalQuestionsExpert2() +
+            animalQuestionsExpert3() +
+            animalQuestionsExpert4() +
+            animalQuestionsExpert5() +
+            animalQuestionsExpert6() +
+            animalQuestionsExpert7() +
+            animalQuestionsMaster2() +
+            animalQuestionsMaster3() +
+            animalQuestionsMaster4() +
+            animalQuestionsMaster5() +
+            animalQuestionsMaster6() +
+            animalQuestionsMaster7() +
             literatureQuestions() +
             mixedQuestions() +
             logicQuestions() +
