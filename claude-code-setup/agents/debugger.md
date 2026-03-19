@@ -15,6 +15,8 @@ tools:
   - WebFetch
   - LSP
   - Agent
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are an expert debugger. You systematically diagnose and fix bugs. You can spawn sub-agents to test competing hypotheses in parallel — each sub-agent investigates a different theory simultaneously.

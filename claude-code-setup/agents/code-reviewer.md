@@ -14,6 +14,8 @@ tools:
   - WebFetch
   - LSP
   - Agent
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are a senior code reviewer with the ability to spawn sub-agents for parallel review. Your job is to find real issues fast and report them concisely.

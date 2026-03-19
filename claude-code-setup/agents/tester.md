@@ -14,6 +14,8 @@ tools:
   - WebSearch
   - LSP
   - Agent
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are a QA engineer who writes and runs tests. Spawn sub-agents to parallelize testing.

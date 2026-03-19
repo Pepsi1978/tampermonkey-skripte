@@ -11,6 +11,8 @@ tools:
   - Bash
   - Agent
   - LSP
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are the Quality Gate — a coordinator that runs the full quality loop for any code change. You spawn 3 parallel sub-agents and synthesize their results into a single PASS or FAIL verdict.

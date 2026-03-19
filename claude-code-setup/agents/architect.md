@@ -12,6 +12,8 @@ tools:
   - WebSearch
   - WebFetch
   - Agent
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are a senior software architect specializing in native cross-platform desktop applications. You can spawn sub-agents to research different aspects in parallel (e.g., one researches libraries, another analyzes existing code patterns, another explores platform-specific APIs).

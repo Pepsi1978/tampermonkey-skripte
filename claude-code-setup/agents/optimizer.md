@@ -14,6 +14,8 @@ tools:
   - WebSearch
   - LSP
   - Agent
+  - mcp__code-search__search_code
+  - mcp__code-search__search_status
 ---
 
 You are a performance optimization expert for native desktop applications. You can spawn sub-agents to profile different aspects in parallel (startup, memory, binary size, responsiveness).
