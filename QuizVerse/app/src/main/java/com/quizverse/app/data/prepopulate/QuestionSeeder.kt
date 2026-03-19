@@ -117,6 +117,16 @@ import com.quizverse.app.data.prepopulate.questions.literatureQuestionsHard2
 import com.quizverse.app.data.prepopulate.questions.literatureQuestionsHard3
 import com.quizverse.app.data.prepopulate.questions.literatureQuestionsHard4
 import com.quizverse.app.data.prepopulate.questions.literatureQuestionsHard5
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert1
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert2
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert3
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert4
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert5
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsExpert6
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsMaster1
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsMaster2
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.literatureQuestionsMaster4
 import com.quizverse.app.data.prepopulate.questions.logicQuestions
 import com.quizverse.app.data.prepopulate.questions.mixedQuestions
 import com.quizverse.app.data.prepopulate.questions.musicQuestions
@@ -600,6 +610,16 @@ object QuestionSeeder {
             literatureQuestionsHard3() +
             literatureQuestionsHard4() +
             literatureQuestionsHard5() +
+            literatureQuestionsExpert1() +
+            literatureQuestionsExpert2() +
+            literatureQuestionsExpert3() +
+            literatureQuestionsExpert4() +
+            literatureQuestionsExpert5() +
+            literatureQuestionsExpert6() +
+            literatureQuestionsMaster1() +
+            literatureQuestionsMaster2() +
+            literatureQuestionsMaster3() +
+            literatureQuestionsMaster4() +
             mixedQuestions() +
             logicQuestions() +
             logicQuestionsEasy1() +
