@@ -3,7 +3,7 @@ name: self-improve
 description: Systematic self-improvement of the Claude Code development environment (~10-30 min, token-intensive). ONLY use when the user explicitly says "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", "update alles", "mach mich besser", "aktualisiere alles", "pruef mein System", "System-Check", or "Umgebung pruefen". NEVER run this proactively or automatically — only on manual user request.
 ---
 
-# Self-Improve v5.8 — Systematic + Creative Environment Optimization
+# Self-Improve v5.11 — Systematic + Creative + Intelligence Environment Optimization
 
 **Before doing ANYTHING, show this overview in German:**
 
@@ -14,7 +14,7 @@ description: Systematic self-improvement of the Claude Code development environm
 ║  Cross-Platform: macOS + Windows + Termux/Android            ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Stufe 1: SCAN — env-checker Agent (Full/Quick)              ║
-║  Stufe 2: DEEP-DIVE — 6 Researcher + Smart-Cache (TTL)      ║
+║  Stufe 2: DEEP-DIVE — 8 Researcher + Smart-Cache (TTL)      ║
 ║  Stufe 3: IMPROVE — Updates + Report + Meta-Improve          ║
 ║  Stufe 4: CREATIVE — 6 Linsen + Benchmark + Build            ║
 ║  Stufe 5: SUPER INTELLIGENZ — Schlauer denken, nicht nur     ║
@@ -89,8 +89,8 @@ Full mode includes: Android deep-scan, agent tiers, language readiness, rules, g
 
 **Load researcher templates from**: [self-improve-ref/researchers.md](self-improve-ref/researchers.md)
 
-Key changes in v5.7:
-- **6 researchers** (R1-R6), not 5. R6 is the Creative Explorer (open-ended, no checklist).
+Key changes in v5.11:
+- **8 researchers** (R1-R8). R6=Creative, R7=Focus Deep-Dive, R8=Intelligence Researcher (NEW v5.11).
 - **Smart-Cache with per-category TTLs (NEW v5.7)**:
   Cache location: `~/.claude/self-improve-cache/` (NOT in shared memory — prevents contamination).
   | Researcher | TTL | Grund |
@@ -101,6 +101,7 @@ Key changes in v5.7:
   | R4 Versionen | 3 Tage | Tool-Versionen aendern sich maessig schnell |
   | R5 Security | IMMER frisch | Sicherheit darf nie gecacht werden |
   | R6 Creative | IMMER frisch | Kreativitaet braucht frische Ideen |
+  | R8 Intelligence | IMMER frisch | Intelligenz-Forschung muss immer aktuell sein |
   Check: `find ~/.claude/self-improve-cache/R{N}_*.md -mtime -{TTL_DAYS} 2>/dev/null`
   If cache file exists and within TTL: skip researcher, use cached data.
   If cache expired or missing: run researcher, save result to cache file.
@@ -222,20 +223,20 @@ Recherchiere und implementiere neue Denkstrategien die Claude FUNDAMENTAL schlau
 6. **Self-Play**: Gleiches Problem zweimal mit verschiedenen Ansaetzen loesen und vergleichen
 **REGEL**: Mindestens 1 neues Denkmuster pro Lauf TESTEN — nicht nur darueber reden.
 
-### 5C: Kreative Intelligenz-Vorschlaege (PFLICHT — mindestens 3 pro Lauf)
-Spawne einen `researcher` Agent mit folgendem Prompt:
-"Recherchiere RADIKAL: Wie wird ein AI Coding Agent zur SUPER-INTELLIGENZ im Programmieren?
-Suche WEIT jenseits konventioneller Verbesserungen:
-- Akademische Paper zu AI-Agent-Kognition (arxiv, ICML, NeurIPS, ICLR)
-- Experimentelle Frameworks die niemand sonst nutzt
-- Biologisch inspirierte Ansaetze (wie denken die besten menschlichen Programmierer?)
-- Formale Verifikation als Denkwerkzeug (nicht nur als Test)
-- Wissensrepraesentation jenseits von Text (Graphen, Embeddings, Ontologien)
-- Neue MCP-Server die das REASONING verbessern (nicht nur Daten liefern)
-Liefere mindestens 3 RADIKALE, SOFORT umsetzbare Vorschlaege."
+### 5C: Intelligence-Researcher-Ergebnisse umsetzen (PFLICHT — KEIN eigener Researcher mehr!)
 
-**REGEL**: Mindestens 1 der 3 Vorschlaege MUSS sofort umgesetzt werden — nicht "spaeter", JETZT.
-Die anderen 2 werden dem Benutzer praesentiert und in MEMORY.md unter "Intelligence Backlog" gespeichert.
+**ACHTUNG v5.11**: Stufe 5C spawnt KEINEN eigenen Researcher mehr. Stattdessen nutzt sie die
+Ergebnisse von **R8 (Intelligence Researcher)**, der bereits in Stufe 2 parallel mitgelaufen ist.
+
+1. **R8-Ergebnisse lesen**: Die 5+ Findings des Intelligence Researchers auswerten
+2. **Priorisieren**: Welche Findings sind SOFORT umsetzbar vs. langfristig?
+3. **Mindestens 1 Finding SOFORT umsetzen** — nicht "spaeter", JETZT. (z.B. neues Tool installieren, neuen Agent-Prompt verbessern, neues Denkmuster als Rule implementieren)
+4. **Die anderen Findings dem Benutzer praesentieren** und in MEMORY.md unter "Intelligence Backlog" speichern
+5. **Kompetitive Erkenntnisse** (was Konkurrenz besser macht) als Prioritaet behandeln — hier ist der groesste Hebel
+
+**REGEL**: Wenn R8 abgestuerzt ist (Researcher-Resilienz, v5.9): Stufe 5C darf EINMAL einen
+Ersatz-Researcher spawnen mit kleinerem Scope (nur Dimensionen 2+3: Kognitive Werkzeuge + Kompetitive Analyse).
+Das ist der EINZIGE Fall in dem 5C noch einen eigenen Researcher startet.
 
 ### 5D: Wissensquellen erschliessen (Neue Informationsquellen)
 1. **Codebase-Semantik**: Gibt es einen MCP-Server der die Codebase semantisch indexiert? (z.B. Zilliz claude-context, CodeGraphContext) → Testen und ggf. installieren
@@ -395,4 +396,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - **Shell/Terminal-Updates**: Siehe Core Rules oben — IMMER zuletzt, IMMER nach Bestaetigung.
 
 ---
-<!-- Skill Version: v5.10 | Date: 2026-03-19 | Lines: ~390/1000 (main) | Ref files: researchers.md (~165), report-and-creative.md (~181) | Total: ~736/2000 | Changes: v5.10 — Added Researcher-Resilienz section: crashed agents get 1 retry with smaller scope, then skip. Failures documented in FAILURES.md and listed in Final Summary. Prevents entire self-improve run from hanging when a single researcher agent crashes. Previous: v5.9 (triggers, dedup, IQ quality, Termux removal). -->
+<!-- Skill Version: v5.11 | Date: 2026-03-19 | Lines: ~395/1000 (main) | Ref files: researchers.md (~230), report-and-creative.md (~181) | Total: ~806/2000 | Changes: v5.11 — Added R8 Intelligence Researcher: 5 research dimensions (Reasoning, Kognitive Werkzeuge, Kompetitive Analyse, Biologische Muster, Selbstverbesserung). Runs ALWAYS (never cached). Stufe 5C refactored to consume R8 results instead of spawning inline researcher (Ansatz C). Fallback: if R8 crashes, 5C may spawn reduced-scope replacement. Previous: v5.10 (Researcher-Resilienz). -->
