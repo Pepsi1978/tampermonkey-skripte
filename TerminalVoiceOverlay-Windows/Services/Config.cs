@@ -44,7 +44,7 @@ namespace TerminalVoiceOverlay.Services
             AudioChannels = GetInt(env, "AUDIO_CHANNELS", 1);
 
             // Terminal-Erkennung
-            var processNames = Get(env, "TERMINAL_PROCESS_NAMES", "WindowsTerminal,pwsh,powershell");
+            var processNames = Get(env, "TERMINAL_PROCESS_NAMES", "WindowsTerminal,pwsh,powershell,cmd,mintty");
             TerminalProcessNames = processNames.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
