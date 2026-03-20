@@ -310,6 +310,25 @@ function main() {
 		if (!validateMetrics(metrics, transcript!)) {
 			process.exit(0);
 		}
+		// M1/B4: Deduplication — only write if session_id changed or turns increased by >5
+		if (existsSync(SCORES_FILE)) {
+			const lines = readFileSync(SCORES_FILE, "utf-8").trim().split("\n");
+			const lastLine = lines[lines.length - 1];
+			if (lastLine) {
+				try {
+					const last = JSON.parse(lastLine);
+					if (
+						last.session_id === metrics.session_id &&
+						Math.abs(metrics.total_turns - last.total_turns) <= 5
+					) {
+						// Same session, turns barely changed — skip duplicate write
+						process.exit(0);
+					}
+				} catch {
+					/* parse error — write anyway */
+				}
+			}
+		}
 		appendFileSync(SCORES_FILE, JSON.stringify(metrics) + "\n", "utf-8");
 		detectTrends(metrics);
 	} catch {

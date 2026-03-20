@@ -1,51 +1,75 @@
-#!/bin/bash
-# Auto-format: runs the appropriate code formatter after file edits
-HOOK_NAME="auto-format" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null || true
-input=$(cat)
-file_path=$(echo "$input" | yq -r '.tool_input.file_path // empty' 2>/dev/null)
-[[ -z "$file_path" || ! -f "$file_path" ]] && exit 0
+#!/usr/bin/env bash
+# auto-format.sh — PostToolUse Hook
+# Runs the appropriate code formatter after file edits.
+# Platform: macOS/Linux (bash)
 
-case "${file_path##*.}" in
-  swift) swift-format --in-place "$file_path" 2>/dev/null ;;
-  go)    gofmt -w "$file_path" 2>/dev/null ;;
-  rs)    rustfmt "$file_path" 2>/dev/null ;;
-  js|ts|tsx|mts|mjs|jsx|json|css)
-    # Format JS/TS/JSON/CSS with Biome if available, else Prettier
-    dir=$(dirname "$file_path")
-    if command -v biome &>/dev/null; then
-      biome format --write "$file_path" 2>/dev/null
-    elif [[ -f "$dir/node_modules/.bin/prettier" ]]; then
-      "$dir/node_modules/.bin/prettier" --write "$file_path" 2>/dev/null
-    fi
-    ;;
-  cs)
-    # Format C# with dotnet format if inside a project
-    proj_dir=$(dirname "$file_path")
-    while [[ "$proj_dir" != "/" ]]; do
-      if ls "$proj_dir"/*.csproj "$proj_dir"/*.sln 2>/dev/null | head -1 >/dev/null 2>&1; then
-        dotnet format whitespace "$proj_dir" --include "$file_path" 2>/dev/null
-        break
-      fi
-      proj_dir=$(dirname "$proj_dir")
-    done
-    ;;
-  c|cpp|h|hpp)
-    # Format C/C++ with clang-format if available
-    if command -v clang-format &>/dev/null; then
-      clang-format -i "$file_path" 2>/dev/null
-    fi
-    ;;
-  kt|kts)
-    # Format Kotlin with ktfmt (kotlinlang style)
-    if command -v ktfmt &>/dev/null; then
-      ktfmt --kotlinlang-style "$file_path" 2>/dev/null
-    fi
-    ;;
-  java)
-    # Format Java with google-java-format
-    if command -v google-java-format &>/dev/null; then
-      google-java-format --replace "$file_path" 2>/dev/null
-    fi
-    ;;
+source "$(dirname "$0")/hook-log.sh"
+
+# Read JSON input from stdin
+HOOK_INPUT=$(cat)
+if [ -z "$HOOK_INPUT" ]; then
+    exit 0
+fi
+
+# Extract file_path from JSON input
+FILE_PATH=$(echo "$HOOK_INPUT" | python3 -c "
+import sys, json
+try:
+    data = json.load(sys.stdin)
+    print(data.get('tool_input', {}).get('file_path', ''))
+except Exception:
+    print('')
+" 2>/dev/null)
+
+if [ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ]; then
+    exit 0
+fi
+
+hook_log "formatting $FILE_PATH"
+
+# Determine file extension (without leading dot)
+EXT="${FILE_PATH##*.}"
+
+case "$EXT" in
+    go)
+        gofmt -w "$FILE_PATH" 2>/dev/null || true
+        ;;
+    rs)
+        rustfmt "$FILE_PATH" 2>/dev/null || true
+        ;;
+    cs)
+        DIR=$(dirname "$FILE_PATH")
+        # Search up to 3 directory levels for a .csproj file
+        PROJ=$(find "$DIR" -maxdepth 3 -name "*.csproj" 2>/dev/null | head -1)
+        if [ -n "$PROJ" ]; then
+            PROJ_DIR=$(dirname "$PROJ")
+            dotnet format whitespace "$PROJ_DIR" --include "$FILE_PATH" 2>/dev/null || true
+        fi
+        ;;
+    ts|tsx|mts|js|jsx|mjs|json|css)
+        if command -v biome > /dev/null 2>&1; then
+            biome format --write "$FILE_PATH" 2>/dev/null || true
+        elif command -v prettier > /dev/null 2>&1; then
+            prettier --write "$FILE_PATH" 2>/dev/null || true
+        fi
+        ;;
+    c|cpp|h|hpp)
+        if command -v clang-format > /dev/null 2>&1; then
+            clang-format -i "$FILE_PATH" 2>/dev/null || true
+        fi
+        ;;
+    kt|kts)
+        if command -v ktfmt > /dev/null 2>&1; then
+            ktfmt --kotlinlang-style "$FILE_PATH" 2>/dev/null || true
+        elif command -v ktlint > /dev/null 2>&1; then
+            ktlint --format "$FILE_PATH" 2>/dev/null || true
+        fi
+        ;;
+    java)
+        if command -v google-java-format > /dev/null 2>&1; then
+            google-java-format --replace "$FILE_PATH" 2>/dev/null || true
+        fi
+        ;;
 esac
+
 exit 0

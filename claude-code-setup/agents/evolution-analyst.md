@@ -100,8 +100,35 @@ After completing your analysis, you MUST update:
 1. **MEMORY.md — "Systemzustand"** (`.claude/agent-memory/shared/MEMORY.md`): Add your trend findings and quality direction (e.g., "2026-03-20: Quality 7.2 → 8.1 improving, top weakness: missing error handling")
 2. **MEMORY.md — "Offene Fehler & Probleme"**: If you detect a new recurring failure pattern, document it with the standard template in that section
 
+## SICA Mode — Self-Improving Coding Agent (C1)
+
+When invoked with "SICA mode" or "self-improve agent prompts":
+
+1. **Identify underperforming agents**: Read session-scores.jsonl, find sessions with quality_score < 8.0
+2. **Trace the root cause**: Which agent type was most active in low-scoring sessions? (Look at tool_calls patterns, corrections)
+3. **Read the agent's prompt**: Open `~/.claude/agents/[agent-name].md`
+4. **Analyze weaknesses**: Based on session data and whiteboard entries under "Offene Fehler & Probleme", identify what the agent is doing wrong
+5. **Edit the agent's prompt**: Make TARGETED improvements:
+   - Add a specific rule that prevents the observed failure
+   - Clarify ambiguous instructions that led to mistakes
+   - Add edge-case handling for recurring problems
+6. **Document the change**: Write to whiteboard "Architektur-Entscheidungen" what was changed and why
+7. **Verify**: After editing, read the agent file again to confirm the change is correct
+
+**Constraints:**
+- Only edit ONE agent per SICA run (focused improvement)
+- Changes must be MINIMAL — add 1-3 lines, not rewrite the whole prompt
+- Never change the agent's model, maxTurns, or tools — only the system prompt
+- Always explain WHY the change should help (data-driven reasoning)
+- If no clear underperformer is found: Report "All agents performing adequately" and skip editing
+
+**Example SICA improvement:**
+Session c82e0cb1 had corrections=1 at turn ~124. Root cause: coder-Agent drifted from original task.
+→ Added rule to coder.md: "After every 20 turns, re-read the original task description to prevent drift."
+
 ## Important Rules
-- Never modify CLAUDE.md or settings.json directly — only propose changes
+- In standard mode: Never modify CLAUDE.md or settings.json directly — only propose changes
+- In SICA mode: MAY edit agent .md files directly (that's the whole point)
 - New agents go to `~/.claude/agents/` as proposals, user approves
 - Always show data-driven evidence for recommendations
 - Communicate in German with the user

@@ -102,6 +102,27 @@ After producing your verdict, you MUST update `.claude/agent-memory/shared/MEMOR
 - Wurden Dateien angegeben? Wenn nicht → `git diff --name-only HEAD` als Fallback.
 - Kein Git-Repository → "NO GIT — Quality Gate braucht ein Git-Repo" zurueckgeben.
 
+## Whiteboard Auto-Fill Enforcement (M3/B5 — PFLICHT)
+
+After ALL sub-agents return, check the whiteboard `.claude/agent-memory/shared/MEMORY.md`:
+1. Read the sections: "Erkenntnisse aus Code Reviews", "Erkenntnisse aus Tests", "Performance & Optimierung"
+2. If ANY sub-agent produced findings and the corresponding whiteboard section still says "_Noch keine Eintraege._":
+   - Replace "_Noch keine Eintraege._" with a 1-2 line summary of the sub-agent's key finding
+   - Format: `- **[DATE] quality-gate ([sub-agent]):** [1-line summary of finding]`
+3. This is NOT optional — every quality-gate run MUST leave at least 1 entry in the whiteboard.
+4. If all sub-agents found nothing notable: Write `- **[DATE] quality-gate:** Clean run — no issues found.` in "Erkenntnisse aus Code Reviews"
+
+## Debate Mode (B1 — Optional, aktiviert per Prompt)
+
+When instructed to run in "debate mode" or "Debate-Loop":
+1. Instead of spawning tester + coder in parallel, run them in a **3-round debate loop**:
+   - Round 1: tester generates test cases → coder implements to pass tests
+   - Round 2: tester reviews implementation, generates harder edge-case tests → coder fixes
+   - Round 3: tester does final verification → produces Pass/Fail verdict
+2. **Technical termination**: Create `/tmp/debate-round.json` with `{"round": N, "max": 3}` before each round. If round > max: STOP and produce verdict with whatever results you have.
+3. After debate: Run optimizer as usual (non-debate).
+4. Debate mode costs ~3x more tokens than normal mode — only use when explicitly requested.
+
 ## Rules
 - PASS = no critical issues, build succeeds, tests pass
 - FAIL = any critical issue, build failure, or test failure

@@ -3,46 +3,77 @@
 # Re-indexes the codebase for semantic search if files changed since last index.
 # Uses pointer-based DB switching: writes to index-N.db, then updates current.txt.
 # The old DB stays untouched and available for searches during the entire reindex.
-# Cross-platform counterpart to reindex-codebase.ps1 (Windows).
+# Old DBs are cleaned up on a best-effort basis.
+# v2: Uses whiteboard-insert.sh for section-based error logging (echo >> is FORBIDDEN).
+
+source "$(dirname "$0")/whiteboard-insert.sh"
 
 ROOT_DIR="$HOME/proggs"
 DB_DIR="$ROOT_DIR/.code-search"
 STAMP_FILE="$DB_DIR/.last-index-time"
 POINTER_FILE="$DB_DIR/current.txt"
 MCP_DIR="$ROOT_DIR/mcp-code-search"
+BUN_EXE="$HOME/.bun/bin/bun"
 
-# Abort if MCP server source doesn't exist
-[ -f "$MCP_DIR/src/index.ts" ] || exit 0
-
-# Abort if Ollama is not running
-curl -s --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1 || exit 0
-
-# Check if bun is available
-if command -v bun >/dev/null 2>&1; then
-    BUN_EXE="bun"
-elif [ -x "$HOME/.bun/bin/bun" ]; then
-    BUN_EXE="$HOME/.bun/bin/bun"
-else
-    # No bun found — skip reindex silently
+# Exit if the MCP indexer source doesn't exist
+if [ ! -f "$MCP_DIR/src/index.ts" ]; then
     exit 0
 fi
 
-# Ensure dependencies are installed
+# Ensure .mcp.json exists in home directory (Claude Code reads it from working dir)
+HOME_MCP="$HOME/.mcp.json"
+PROGGS_MCP="$ROOT_DIR/.mcp.json"
+if [ -f "$PROGGS_MCP" ] && [ ! -f "$HOME_MCP" ]; then
+    cp "$PROGGS_MCP" "$HOME_MCP"
+fi
+
+# Ensure bun dependencies are installed
 if [ ! -d "$MCP_DIR/node_modules" ]; then
-    (cd "$MCP_DIR" && "$BUN_EXE" install --frozen-lockfile 2>/dev/null || "$BUN_EXE" install 2>/dev/null) || exit 0
+    "$BUN_EXE" install --cwd "$MCP_DIR" 2>/dev/null
+fi
+
+# Auto-start Ollama if not running
+if ! curl -s --max-time 2 http://localhost:11434/api/tags > /dev/null 2>&1; then
+    # Try to find and start ollama
+    OLLAMA_BIN=""
+    if command -v ollama > /dev/null 2>&1; then
+        OLLAMA_BIN="ollama"
+    elif [ -f "/usr/local/bin/ollama" ]; then
+        OLLAMA_BIN="/usr/local/bin/ollama"
+    fi
+
+    if [ -n "$OLLAMA_BIN" ]; then
+        nohup "$OLLAMA_BIN" serve > /dev/null 2>&1 &
+        sleep 5
+        if ! curl -s --max-time 3 http://localhost:11434/api/tags > /dev/null 2>&1; then
+            exit 0
+        fi
+    else
+        exit 0
+    fi
+fi
+
+# Ensure nomic-embed-text model is available
+MODELS_JSON=$(curl -s --max-time 2 http://localhost:11434/api/tags 2>/dev/null)
+if [ $? -eq 0 ] && [ -n "$MODELS_JSON" ]; then
+    if ! echo "$MODELS_JSON" | grep -q "nomic-embed-text"; then
+        ollama pull nomic-embed-text 2>/dev/null || true
+    fi
 fi
 
 # Check if re-index is needed
-NEEDS_REINDEX=false
+NEEDS_REINDEX=0
 if [ ! -f "$STAMP_FILE" ]; then
-    NEEDS_REINDEX=true
+    NEEDS_REINDEX=1
 else
-    # Find any source file newer than the stamp
+    STAMP_TIME=$(stat -c %Y "$STAMP_FILE" 2>/dev/null || stat -f %m "$STAMP_FILE" 2>/dev/null)
+    # Find any code file newer than the stamp (exclude common non-code dirs)
     NEWER=$(find "$ROOT_DIR" \
-        -type f \( -name "*.ts" -o -name "*.kt" -o -name "*.rs" -o -name "*.go" \
-                   -o -name "*.cs" -o -name "*.swift" -o -name "*.py" -o -name "*.js" \
-                   -o -name "*.json" -o -name "*.md" -o -name "*.yaml" -o -name "*.ps1" \
-                   -o -name "*.sh" \) \
+        \( -name "*.ts" -o -name "*.kt" -o -name "*.rs" -o -name "*.go" \
+           -o -name "*.cs" -o -name "*.swift" -o -name "*.py" \
+           -o -name "*.js" -o -name "*.json" -o -name "*.md" \
+           -o -name "*.yaml" -o -name "*.ps1" -o -name "*.sh" \) \
+        -newer "$STAMP_FILE" \
         -not -path "*/node_modules/*" \
         -not -path "*/.git/*" \
         -not -path "*/.gradle/*" \
@@ -50,47 +81,56 @@ else
         -not -path "*/dist/*" \
         -not -path "*/target/*" \
         -not -path "*/.cache/*" \
-        -newer "$STAMP_FILE" \
-        -print -quit 2>/dev/null)
-    [ -n "$NEWER" ] && NEEDS_REINDEX=true
+        2>/dev/null | head -1)
+    if [ -n "$NEWER" ]; then
+        NEEDS_REINDEX=1
+    fi
 fi
 
-[ "$NEEDS_REINDEX" = false ] && exit 0
+if [ "$NEEDS_REINDEX" -eq 0 ]; then
+    exit 0
+fi
 
 # Determine next DB filename (index-N.db)
-mkdir -p "$DB_DIR"
 MAX_N=0
-for f in "$DB_DIR"/index-*.db; do
-    [ -e "$f" ] || continue
-    basename="$(basename "$f")"
-    n="${basename#index-}"
-    n="${n%.db}"
-    if [ "$n" -gt "$MAX_N" ] 2>/dev/null; then
-        MAX_N="$n"
-    fi
-done
+if [ -d "$DB_DIR" ]; then
+    while IFS= read -r dbfile; do
+        BASENAME=$(basename "$dbfile")
+        if [[ "$BASENAME" =~ ^index-([0-9]+)\.db$ ]]; then
+            N="${BASH_REMATCH[1]}"
+            if [ "$N" -gt "$MAX_N" ]; then
+                MAX_N=$N
+            fi
+        fi
+    done < <(find "$DB_DIR" -maxdepth 1 -name "index-*.db" 2>/dev/null)
+fi
 NEXT_N=$((MAX_N + 1))
 NEW_DB_NAME="index-${NEXT_N}.db"
 
-# Create temp script in mcp-code-search dir (Bun resolves imports relative to source file)
-TEMP_SCRIPT="$MCP_DIR/reindex-$(head -c 8 /dev/urandom | xxd -p).ts"
-cat > "$TEMP_SCRIPT" << 'REINDEX_EOF'
+# Build the TypeScript indexer script
+TEMP_FILE="$MCP_DIR/reindex-$(cat /proc/sys/kernel/random/uuid 2>/dev/null || date +%s%N | md5sum | head -c 8).ts"
+
+# Escape the root dir path for embedding in the TS heredoc
+ROOT_DIR_ESCAPED="${ROOT_DIR//\\/\/}"
+
+cat > "$TEMP_FILE" << TSEOF
 import { findCodeFiles, chunkFile } from './src/indexer.ts';
 import { generateEmbeddings } from './src/ollama.ts';
 import { VectorStore } from './src/store.ts';
 import { resolve, join } from 'path';
 import { mkdirSync, existsSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
 
-const rootDir = resolve(process.env.REINDEX_ROOT!);
+const rootDir = resolve('${ROOT_DIR_ESCAPED}');
 const dbDir = join(rootDir, '.code-search');
 if (!existsSync(dbDir)) mkdirSync(dbDir, { recursive: true });
 
-const newDbName = process.env.REINDEX_DB_NAME!;
+// Write to NEW db file — old one stays untouched for active searches
+const newDbName = '${NEW_DB_NAME}';
 const newDbPath = join(dbDir, newDbName);
 const store = new VectorStore(newDbPath);
 
 const files = await findCodeFiles(rootDir);
-const allChunks: any[] = [];
+const allChunks = [];
 for (const file of files) {
   const chunks = await chunkFile(file, rootDir);
   allChunks.push(...chunks);
@@ -99,51 +139,43 @@ for (const file of files) {
 const BATCH = 32;
 for (let i = 0; i < allChunks.length; i += BATCH) {
   const batch = allChunks.slice(i, i + BATCH);
-  const embeddings = await generateEmbeddings(batch.map((c: any) => c.content));
+  const embeddings = await generateEmbeddings(batch.map(c => c.content));
   store.insertBatch(batch, embeddings);
 }
 store.close();
 
-// Update pointer — this is the "switch" moment
+// Update pointer — this is the "switch" moment (tiny text write, practically instant)
 writeFileSync(join(dbDir, 'current.txt'), newDbName);
 
-// Clean up old DB files (best-effort)
-const currentBase = newDbName.replace('.db', '');
+// Clean up old DB files (best-effort — skip if locked)
 for (const f of readdirSync(dbDir)) {
-  if (f.match(/^index-\d+\.db/) && !f.startsWith(currentBase)) {
+  if (f.match(/^index-\d+\.db/) && !f.startsWith(newDbName.replace('.db', ''))) {
     try { unlinkSync(join(dbDir, f)); } catch {}
   }
 }
-REINDEX_EOF
+TSEOF
 
-# Run the reindex
-export REINDEX_ROOT="$ROOT_DIR"
-export REINDEX_DB_NAME="$NEW_DB_NAME"
-cleanup_temp() {
-    rm -f "$TEMP_SCRIPT"
-    # Also clean up any orphaned temp files from previous crashed runs
-    rm -f "$MCP_DIR"/reindex-*.ts 2>/dev/null
-}
-trap cleanup_temp EXIT
+# Run the indexer
+"$BUN_EXE" run "$TEMP_FILE" --cwd "$MCP_DIR" 2>/dev/null
+EXIT_CODE=$?
 
-WHITEBOARD="$ROOT_DIR/.claude/agent-memory/shared/MEMORY.md"
+# Clean up temp file (and any orphaned ones from previous crashed runs)
+rm -f "$TEMP_FILE"
+find "$MCP_DIR" -maxdepth 1 -name "reindex-*.ts" -delete 2>/dev/null || true
 
-if (cd "$MCP_DIR" && "$BUN_EXE" run "$TEMP_SCRIPT" 2>/dev/null); then
-    date -u +"%Y-%m-%dT%H:%M:%SZ" > "$STAMP_FILE"
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M')
+
+if [ "$EXIT_CODE" -eq 0 ]; then
+    mkdir -p "$DB_DIR"
+    date -Iseconds > "$STAMP_FILE" 2>/dev/null || date > "$STAMP_FILE"
     echo "Reindex-Hook: Codebase neu indexiert ($NEW_DB_NAME, pointer-swap)."
 else
-    EXIT_CODE=$?
-    if [ -f "$WHITEBOARD" ]; then
-        cat >> "$WHITEBOARD" << WBEOF
-
-### $(date +"%Y-%m-%d %H:%M") — Hook: reindex-codebase.sh — Indexierung ExitCode $EXIT_CODE
-**Quelle:** Hook: reindex-codebase.sh (SessionStart, async, macOS)
-**Symptom:** Semantische Indexierung fehlgeschlagen mit ExitCode $EXIT_CODE
-**Ursache:** Bun-Prozess beendet mit Code $EXIT_CODE. Moeglich: Timeout, fehlende Abhaengigkeiten, Ollama nicht erreichbar.
-**Betroffene Dateien:** ~/.claude/hooks/reindex-codebase.sh, mcp-code-search/
-**Fix-Vorschlag:** Ollama-Status pruefen (curl localhost:11434), bun install in mcp-code-search/, Hook-Timeout erhoehen.
-**Status:** OFFEN
-WBEOF
+    if [ "$EXIT_CODE" -eq 143 ]; then
+        EXIT_INFO="SIGTERM — process killed by 300s timeout"
+    else
+        EXIT_INFO="Unknown error (ExitCode: $EXIT_CODE)"
     fi
-    echo "Reindex-Hook: FEHLER — ExitCode $EXIT_CODE. Siehe Shared Whiteboard."
+    ENTRY="### $TIMESTAMP — Hook: reindex-codebase.sh — ExitCode $EXIT_CODE: $EXIT_INFO — Status: OFFEN"
+    insert_whiteboard_entry "Offene Fehler & Probleme" "$ENTRY"
+    echo "Reindex-Hook: FEHLER — Bun ExitCode $EXIT_CODE. Siehe Shared Whiteboard."
 fi

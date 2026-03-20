@@ -1,20 +1,42 @@
 #!/bin/bash
-# Notification hook for Claude Code — macOS only
-HOOK_NAME="notify" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null || true
+# Dynamic notification for macOS: extracts the actual message from Claude Code
+# Hook event: Notification
+# Platform: macOS (uses osascript for native notifications)
+#
+# On Linux without osascript, falls back to notify-send if available.
+# Silently succeeds if no notification tool is present — notifications are non-critical.
 
-INPUT=$(cat)
+# ---------------------------------------------------------------------------
+# Read JSON from stdin and extract notification message
+# ---------------------------------------------------------------------------
+hook_input="$(cat)"
 
-# Parse message
-MESSAGE=""
-if command -v python3 &>/dev/null; then
-    MESSAGE=$(echo "$INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('message',''))" 2>/dev/null || echo "")
+msg="$(printf '%s' "$hook_input" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    print(d.get('notification', {}).get('message', '') or '')
+except Exception:
+    print('')
+" 2>/dev/null)"
+
+if [ -z "$msg" ]; then
+    msg="Braucht deine Aufmerksamkeit"
 fi
-[ -z "$MESSAGE" ] && MESSAGE="Claude Code braucht deine Aufmerksamkeit"
 
-# Truncate
-[ ${#MESSAGE} -gt 200 ] && MESSAGE="${MESSAGE:0:197}..."
+# Truncate to 200 characters (same limit as the PS1 version)
+msg="${msg:0:200}"
 
-# Escape MESSAGE for safe osascript injection (prevent command injection)
-SAFE_MESSAGE=$(printf '%s' "$MESSAGE" | sed 's/\\/\\\\/g; s/"/\\"/g')
-osascript -e "display notification \"$SAFE_MESSAGE\" with title \"Claude Code\"" 2>/dev/null || true
+# ---------------------------------------------------------------------------
+# Send notification
+# ---------------------------------------------------------------------------
+if command -v osascript &>/dev/null; then
+    # macOS native notification via AppleScript
+    osascript -e "display notification \"$msg\" with title \"Claude Code\"" 2>/dev/null || true
+elif command -v notify-send &>/dev/null; then
+    # Linux fallback (requires libnotify-bin)
+    notify-send "Claude Code" "$msg" 2>/dev/null || true
+fi
+# Silently fail on any other platform — notifications are non-critical
+
 exit 0

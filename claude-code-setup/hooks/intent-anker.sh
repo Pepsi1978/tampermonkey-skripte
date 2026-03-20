@@ -1,45 +1,64 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Intent-Anker — Saves the original session goal for drift prevention
 # UserPromptSubmit hook: Turn 1 saves goal, counter tracks session length
+# Platform: macOS / Linux (bash equivalent of intent-anker.ps1)
 #
 # The goal file is used by:
-# - intent-tracking.md rule (every ~20 turns: verify alignment)
+# - intent-tracking.md rule (every ~5 turns: verify alignment)
 # - PreCompact prompt hook (preserve goal during compaction)
 
 GOAL_FILE="/tmp/claude-session-goal.txt"
 COUNTER_FILE="/tmp/claude-turn-counter.txt"
 
-# Read JSON input from stdin (Claude Code sends hook context)
-INPUT=$(cat 2>/dev/null || echo '{}')
+# Read JSON input from stdin (Claude Code sends hook context as JSON)
+hook_input=$(cat 2>/dev/null)
 
 # Increment turn counter
-TURN=$(cat "$COUNTER_FILE" 2>/dev/null || echo 0)
-TURN=$((TURN + 1))
-echo "$TURN" > "$COUNTER_FILE"
+turn=0
+if [ -f "$COUNTER_FILE" ]; then
+    turn=$(cat "$COUNTER_FILE" 2>/dev/null | tr -d '[:space:]')
+    # Validate that it is a number
+    [[ "$turn" =~ ^[0-9]+$ ]] || turn=0
+fi
+turn=$((turn + 1))
+printf '%s' "$turn" > "$COUNTER_FILE"
 
 # On turn 1: extract and save the user's prompt as session goal
-if [ "$TURN" -eq 1 ]; then
-  GOAL=$(echo "$INPUT" | python3 -c "
-import json, sys
+if [ "$turn" -eq 1 ] && [ -n "$hook_input" ]; then
+    # Try to extract .prompt (string) or .message (string) from JSON via python3
+    # Falls back to empty string if python3 unavailable or field missing
+    goal=$(python3 - "$hook_input" <<'PYEOF' 2>/dev/null
+import sys, json
+raw = sys.argv[1]
 try:
-    d = json.load(sys.stdin)
-    prompt = d.get('prompt', d.get('message', ''))
-    if isinstance(prompt, dict):
-        prompt = prompt.get('content', str(prompt))
-    # Save first 300 chars as goal
-    print(str(prompt)[:300])
-except:
-    print('')
-" 2>/dev/null)
-  if [ -n "$GOAL" ]; then
-    echo "$GOAL" > "$GOAL_FILE"
-  fi
+    data = json.loads(raw)
+except Exception:
+    sys.exit(0)
+
+goal = ""
+if "prompt" in data:
+    p = data["prompt"]
+    goal = p if isinstance(p, str) else (p.get("content", "") if isinstance(p, dict) else "")
+elif "message" in data:
+    m = data["message"]
+    goal = m if isinstance(m, str) else (m.get("content", "") if isinstance(m, dict) else "")
+
+# Trim to 300 characters
+goal = goal[:300]
+print(goal, end="")
+PYEOF
+)
+
+    if [ -n "$goal" ]; then
+        printf '%s' "$goal" > "$GOAL_FILE"
+    fi
 fi
 
-# Every 5 turns: write a reminder marker file (v2: reduced from 20 to 5 per research — arxiv 2510.07777)
-# Drift onset peaks at turns 4-7, so 5-turn interval catches it early
-if [ $((TURN % 5)) -eq 0 ] && [ -f "$GOAL_FILE" ]; then
-  echo "$TURN" > "/tmp/claude-intent-reminder.txt"
+# Every 5 turns: write a reminder marker file
+# Drift onset peaks at turns 4-7 (arxiv 2510.07777), so 5-turn interval catches it early
+if [ $((turn % 5)) -eq 0 ] && [ -f "$GOAL_FILE" ]; then
+    reminder_file="/tmp/claude-intent-reminder.txt"
+    printf '%s' "$turn" > "$reminder_file"
 fi
 
 exit 0

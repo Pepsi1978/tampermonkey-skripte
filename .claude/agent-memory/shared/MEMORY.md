@@ -68,6 +68,8 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 
 <!-- ARCHIV (2026-03-20): safety-gate blockierte rm -rf bei self-improve Cleanup — korrektes Verhalten, Alternative (find -delete) verwendet. -->
 
+<!-- ARCHIV (2026-03-20): Write-Back nicht erfolgt (5 Agents) — erwartetes Verhalten bei Worktree-Coder-Agents ohne direkten Whiteboard-Zugriff. -->
+
 ---
 
 ## Systemzustand (aktuell — Stand: 2026-03-20 21:15)

@@ -1,213 +1,193 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Auto-Sync: Syncs Claude Code config from GitHub on every session start
-# Runs as SessionStart hook — output is visible to the user
-# Works on: macOS, Linux, Termux (Android)
-#
-# DESIGN: This hook NEVER exits non-zero and NEVER produces errors.
-# Every single command is guarded with || true or 2>/dev/null.
-# The old EXIT trap from hook-log.sh was the #1 cause of phantom errors.
+# Runs as SessionStart hook
+# stdout → AI context (system-reminder), stderr → user terminal
+# Platform: macOS / Linux (bash equivalent of auto-sync.ps1)
 
-HOOK_NAME="auto-sync" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null || true
+source "$(dirname "$0")/hook-log.sh"
+
+# Write to both stdout (AI context) and stderr (user-visible terminal)
+write_status() {
+    echo "$1"
+    echo "$1" >&2
+}
 
 REPO_DIR="$HOME/proggs"
 SETUP_DIR="$REPO_DIR/claude-code-setup"
 CLAUDE_DIR="$HOME/.claude"
 
-# Check prerequisites
-if ! command -v git &>/dev/null; then
-    echo "Auto-Sync: git nicht gefunden — uebersprungen."
-    exit 0
-fi
-
+# Check if repo exists
 if [ ! -d "$REPO_DIR/.git" ]; then
-    echo "Auto-Sync: ~/proggs Repo nicht gefunden — uebersprungen."
+    hook_log_warn "~/proggs repo not found — skipped"
+    write_status "Auto-Sync: ~/proggs Repo nicht gefunden -- uebersprungen."
     exit 0
 fi
 
 cd "$REPO_DIR" || exit 0
 
-# Skip if rebase or merge is in progress
-if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ] || [ -f ".git/MERGE_HEAD" ]; then
-    echo "Auto-Sync: Rebase/Merge in Arbeit — uebersprungen."
-    exit 0
-fi
-
-# Fetch latest from remote (quick metadata check)
-# Use timeout to prevent hanging on slow connections
+# Fetch latest from remote
 if ! git fetch --quiet 2>/dev/null; then
-    echo "Auto-Sync: Keine Internetverbindung — uebersprungen."
+    hook_log_warn "git fetch failed — no internet?"
+    write_status "Auto-Sync: Keine Internetverbindung -- uebersprungen."
     exit 0
 fi
 
-# Compare local HEAD vs remote tracking branch
-LOCAL=$(git rev-parse HEAD 2>/dev/null || echo "none")
-REMOTE=$(git rev-parse @{u} 2>/dev/null || echo "")
+# Compare local vs remote
+local_sha=$(git rev-parse HEAD 2>/dev/null)
+remote_sha=$(git rev-parse '@{u}' 2>/dev/null)
 
-if [ -z "$REMOTE" ]; then
-    echo "Auto-Sync: Kein Upstream-Branch konfiguriert — uebersprungen."
-    exit 0
-fi
-
-if [ "$LOCAL" = "$REMOTE" ]; then
-    echo "Auto-Sync: Alle Dateien aktuell."
+if [ "$local_sha" = "$remote_sha" ]; then
+    write_status "Auto-Sync: Alle Dateien aktuell."
     exit 0
 fi
 
 # Updates available!
-BEHIND=$(git rev-list --count HEAD..@{u} 2>/dev/null || echo "?")
-echo "Auto-Sync: $BEHIND neue Commits auf GitHub gefunden — aktualisiere..."
+behind=$(git rev-list --count "HEAD..@{u}" 2>/dev/null)
+write_status "Auto-Sync: $behind neue Commits auf GitHub gefunden -- aktualisiere..."
 
-# Stash dirty changes before pull
-STASHED=false
-if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
-    if git stash push -m "auto-sync-$(date +%s)" --quiet 2>/dev/null; then
-        STASHED=true
+# Stash local changes if working tree is dirty (so rebase can proceed)
+dirty=$(git status --porcelain 2>/dev/null)
+stashed=false
+if [ -n "$dirty" ]; then
+    if git stash --include-untracked -m "auto-sync-stash" 2>/dev/null; then
+        stashed=true
+        write_status "Auto-Sync: Lokale Aenderungen temporaer gesichert (git stash)."
     fi
 fi
 
 # Pull with rebase
-PULL_OUTPUT=$(git pull --rebase --quiet 2>&1)
-PULL_RC=$?
+if ! git pull --rebase --quiet 2>/dev/null; then
+    # Restore stash if pull failed
+    if [ "$stashed" = true ]; then
+        git stash pop 2>/dev/null || true
+    fi
+    hook_log_error "git pull --rebase failed — merge conflict?"
+    write_status "Auto-Sync: FEHLER beim Pull (Merge-Konflikt?). Bitte manuell pruefen: cd ~/proggs; git status"
+    exit 1
+fi
 
 # Restore stashed changes
-if [ "$STASHED" = true ]; then
-    git stash pop --quiet 2>/dev/null || {
-        echo "Auto-Sync: Hinweis — gestashte Aenderungen in git stash list."
-    }
-fi
-
-if [ "$PULL_RC" != "0" ] 2>/dev/null; then
-    hook_log_error "git pull failed: $PULL_OUTPUT" 2>/dev/null || true
-    echo "Auto-Sync: Pull fehlgeschlagen — lokale Dateien unveraendert."
-    git rebase --abort 2>/dev/null || true
-    exit 0
-fi
-
-echo "Auto-Sync: Git Pull erfolgreich."
-
-# --- Sync config files ---
-SYNCED=""
-
-# Rules
-if [ -d "$SETUP_DIR/rules" ]; then
-    mkdir -p "$CLAUDE_DIR/rules" 2>/dev/null || true
-    COUNT=$(ls "$SETUP_DIR/rules/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    cp "$SETUP_DIR/rules/"*.md "$CLAUDE_DIR/rules/" 2>/dev/null || true
-    [ "${COUNT:-0}" -gt 0 ] 2>/dev/null && SYNCED="$SYNCED Rules($COUNT)"
-fi
-
-# Agents
-if [ -d "$SETUP_DIR/agents" ]; then
-    mkdir -p "$CLAUDE_DIR/agents" 2>/dev/null || true
-    COUNT=$(ls "$SETUP_DIR/agents/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    cp "$SETUP_DIR/agents/"*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
-    [ "${COUNT:-0}" -gt 0 ] 2>/dev/null && SYNCED="$SYNCED Agents($COUNT)"
-fi
-
-# Commands + subdirectories
-if [ -d "$SETUP_DIR/commands" ]; then
-    mkdir -p "$CLAUDE_DIR/commands" 2>/dev/null || true
-    COUNT=$(ls "$SETUP_DIR/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    cp "$SETUP_DIR/commands/"*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
-    for subdir in "$SETUP_DIR/commands/"*/; do
-        [ -d "$subdir" ] || continue
-        SUBNAME=$(basename "$subdir")
-        mkdir -p "$CLAUDE_DIR/commands/$SUBNAME" 2>/dev/null || true
-        cp "$subdir"* "$CLAUDE_DIR/commands/$SUBNAME/" 2>/dev/null || true
-        COUNT=$((COUNT + 1))
-    done
-    [ "${COUNT:-0}" -gt 0 ] 2>/dev/null && SYNCED="$SYNCED Commands($COUNT)"
-fi
-
-# Hooks (shell + TypeScript scripts)
-if [ -d "$SETUP_DIR/hooks" ]; then
-    mkdir -p "$CLAUDE_DIR/hooks" 2>/dev/null || true
-    HOOKS_COUNT=0
-    for hook in "$SETUP_DIR/hooks/"*.sh "$SETUP_DIR/hooks/"*.ts; do
-        [ -f "$hook" ] || continue
-        cp "$hook" "$CLAUDE_DIR/hooks/" 2>/dev/null || true
-        chmod +x "$CLAUDE_DIR/hooks/$(basename "$hook")" 2>/dev/null || true
-        HOOKS_COUNT=$((HOOKS_COUNT + 1))
-    done
-    [ "$HOOKS_COUNT" -gt 0 ] && SYNCED="$SYNCED Hooks($HOOKS_COUNT)"
-fi
-
-# CLAUDE.md
-if [ -f "$SETUP_DIR/CLAUDE.md" ]; then
-    cp "$SETUP_DIR/CLAUDE.md" "$HOME/CLAUDE.md" 2>/dev/null || true
-    cp "$SETUP_DIR/CLAUDE.md" "$REPO_DIR/CLAUDE.md" 2>/dev/null || true
-    SYNCED="$SYNCED CLAUDE.md"
-fi
-
-# .gitignore_global
-if [ -f "$SETUP_DIR/.gitignore_global" ]; then
-    cp "$SETUP_DIR/.gitignore_global" "$HOME/.gitignore_global" 2>/dev/null || true
-    SYNCED="$SYNCED .gitignore"
-fi
-
-# Settings sync from settings-reference.json
-REF_SETTINGS="$SETUP_DIR/settings-reference.json"
-LOCAL_SETTINGS="$CLAUDE_DIR/settings.json"
-if [ -f "$REF_SETTINGS" ] && [ -f "$LOCAL_SETTINGS" ] && command -v python3 &>/dev/null; then
-    # Settings merge via python3 with env vars (safe, no shell interpolation in code)
-    SETTINGS_CHANGES=$(REF_PATH="$REF_SETTINGS" LOCAL_PATH="$LOCAL_SETTINGS" python3 -c "
-import json, sys, os
-try:
-    ref = json.load(open(os.environ['REF_PATH']))
-    local = json.load(open(os.environ['LOCAL_PATH']))
-    changes = 0
-    # Sync enabledPlugins
-    ref_plugins = ref.get('enabledPlugins', {})
-    local_plugins = local.get('enabledPlugins', {})
-    for key, value in ref_plugins.items():
-        if key not in local_plugins or local_plugins[key] != value:
-            local_plugins[key] = value
-            changes += 1
-    if changes > 0:
-        local['enabledPlugins'] = local_plugins
-    # Sync extraKnownMarketplaces
-    ref_markets = ref.get('extraKnownMarketplaces', {})
-    local_markets = local.get('extraKnownMarketplaces', {})
-    for key, value in ref_markets.items():
-        if key not in local_markets:
-            local_markets[key] = value
-            changes += 1
-    if ref_markets:
-        local['extraKnownMarketplaces'] = local_markets
-    # Sync env vars (add missing only)
-    ref_env = ref.get('env', {})
-    local_env = local.get('env', {})
-    for key, value in ref_env.items():
-        if key not in local_env:
-            local_env[key] = value
-            changes += 1
-    if ref_env:
-        local['env'] = local_env
-    # Sync hooks (replace entire section)
-    ref_hooks = ref.get('hooks', {})
-    if ref_hooks:
-        local_hooks = local.get('hooks', {})
-        if json.dumps(ref_hooks, sort_keys=True) != json.dumps(local_hooks, sort_keys=True):
-            local['hooks'] = ref_hooks
-            changes += 1
-    if changes > 0:
-        json.dump(local, open(os.environ['LOCAL_PATH'], 'w'), indent=2)
-        with open(os.environ['LOCAL_PATH'], 'a') as f:
-            f.write('\n')
-    print(changes)
-except Exception as e:
-    print(0)
-" 2>/dev/null || echo "0")
-
-    if [ -n "$SETTINGS_CHANGES" ] && [ "$SETTINGS_CHANGES" -gt 0 ] 2>/dev/null; then
-        SYNCED="$SYNCED Settings($SETTINGS_CHANGES)"
+if [ "$stashed" = true ]; then
+    if ! git stash pop 2>/dev/null; then
+        hook_log_warn "stash pop had conflicts"
+        write_status "Auto-Sync: WARNUNG -- Stash-Restore hatte Konflikte. Bitte manuell pruefen: cd ~/proggs; git stash show"
+    else
+        write_status "Auto-Sync: Lokale Aenderungen wiederhergestellt."
     fi
 fi
 
-if [ -n "$SYNCED" ]; then
-    echo "Auto-Sync: Lokale Konfiguration aktualisiert:$SYNCED"
-    echo "Auto-Sync: Hinweis — CLAUDE.md und Rules werden erst nach Neustart von Claude Code wirksam."
-else
-    echo "Auto-Sync: Git Pull erfolgreich, keine Config-Aenderungen."
+write_status "Auto-Sync: Git Pull erfolgreich."
+
+# --- Sync config files from setup backup to active Claude Code config ---
+
+synced=""
+
+# Rules
+rules_dir="$SETUP_DIR/rules"
+if [ -d "$rules_dir" ]; then
+    mkdir -p "$CLAUDE_DIR/rules"
+    rules_count=$(find "$rules_dir" -maxdepth 1 -name "*.md" | wc -l | tr -d ' ')
+    if [ "$rules_count" -gt 0 ]; then
+        cp "$rules_dir"/*.md "$CLAUDE_DIR/rules/" 2>/dev/null || true
+        synced="$synced Rules($rules_count)"
+    fi
 fi
-exit 0
+
+# Agents
+agents_dir="$SETUP_DIR/agents"
+if [ -d "$agents_dir" ]; then
+    mkdir -p "$CLAUDE_DIR/agents"
+    agents_count=$(find "$agents_dir" -maxdepth 1 -name "*.md" | wc -l | tr -d ' ')
+    if [ "$agents_count" -gt 0 ]; then
+        cp "$agents_dir"/*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
+        synced="$synced Agents($agents_count)"
+    fi
+fi
+
+# Commands (including subdirectories like self-improve-ref/)
+commands_dir="$SETUP_DIR/commands"
+if [ -d "$commands_dir" ]; then
+    dest_commands="$CLAUDE_DIR/commands"
+    mkdir -p "$dest_commands"
+    # Copy top-level .md files
+    cmd_count=$(find "$commands_dir" -maxdepth 1 -name "*.md" | wc -l | tr -d ' ')
+    if [ "$cmd_count" -gt 0 ]; then
+        cp "$commands_dir"/*.md "$dest_commands/" 2>/dev/null || true
+    fi
+    # Copy subdirectories recursively (e.g. self-improve-ref/)
+    subdirs_count=0
+    while IFS= read -r -d '' subdir; do
+        cp -r "$subdir" "$dest_commands/" 2>/dev/null || true
+        subdirs_count=$((subdirs_count + 1))
+    done < <(find "$commands_dir" -mindepth 1 -maxdepth 1 -type d -print0)
+    total_cmd=$((cmd_count + subdirs_count))
+    if [ "$total_cmd" -gt 0 ]; then
+        synced="$synced Commands(${cmd_count}+${subdirs_count} dirs)"
+    fi
+fi
+
+# Hooks (PowerShell + TypeScript + Bash scripts + subdirectories)
+hooks_dir="$SETUP_DIR/hooks"
+if [ -d "$hooks_dir" ]; then
+    dest_hooks="$CLAUDE_DIR/hooks"
+    mkdir -p "$dest_hooks"
+    ps1_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ps1" | wc -l | tr -d ' ')
+    ts_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ts" | wc -l | tr -d ' ')
+    sh_count=$(find "$hooks_dir" -maxdepth 1 -name "*.sh" | wc -l | tr -d ' ')
+    # Copy all script files
+    find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) -exec cp {} "$dest_hooks/" \; 2>/dev/null || true
+    # Make .sh scripts executable after copying
+    find "$dest_hooks" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+    # Copy hook subdirectories (e.g. prompt-injection-defender/)
+    hook_subdirs_count=0
+    while IFS= read -r -d '' subdir; do
+        cp -r "$subdir" "$dest_hooks/" 2>/dev/null || true
+        hook_subdirs_count=$((hook_subdirs_count + 1))
+    done < <(find "$hooks_dir" -mindepth 1 -maxdepth 1 -type d -print0)
+    hook_count=$((ps1_count + ts_count + sh_count))
+    if [ "$hook_count" -gt 0 ] || [ "$hook_subdirs_count" -gt 0 ]; then
+        synced="$synced Hooks(${hook_count}+${hook_subdirs_count} dirs)"
+    fi
+fi
+
+# CLAUDE.md — use the REPO version (~/proggs/CLAUDE.md) as authoritative source,
+# NOT the setup backup (which may be older if another platform pushed changes).
+# The repo copy is always pulled fresh by git pull above.
+repo_claude="$REPO_DIR/CLAUDE.md"
+if [ -f "$repo_claude" ]; then
+    cp "$repo_claude" "$HOME/CLAUDE.md"
+    synced="$synced CLAUDE.md(from-repo)"
+fi
+
+# Skills
+skills_dir="$SETUP_DIR/skills"
+if [ -d "$skills_dir" ]; then
+    dest_skills="$CLAUDE_DIR/skills"
+    mkdir -p "$dest_skills"
+    # Copy skill directories recursively (each skill is a folder with SKILL.md)
+    skill_subdirs=0
+    while IFS= read -r -d '' subdir; do
+        cp -r "$subdir" "$dest_skills/" 2>/dev/null || true
+        skill_subdirs=$((skill_subdirs + 1))
+    done < <(find "$skills_dir" -mindepth 1 -maxdepth 1 -type d -print0)
+    # Copy top-level skill files
+    skill_files=$(find "$skills_dir" -maxdepth 1 -name "*.md" | wc -l | tr -d ' ')
+    if [ "$skill_files" -gt 0 ]; then
+        cp "$skills_dir"/*.md "$dest_skills/" 2>/dev/null || true
+    fi
+    total_skills=$((skill_subdirs + skill_files))
+    if [ "$total_skills" -gt 0 ]; then
+        synced="$synced Skills($total_skills)"
+    fi
+fi
+
+# .gitignore_global
+gitignore="$SETUP_DIR/.gitignore_global"
+if [ -f "$gitignore" ]; then
+    cp "$gitignore" "$HOME/.gitignore_global"
+    synced="$synced .gitignore"
+fi
+
+hook_log "sync complete:$synced"
+write_status "Auto-Sync: Lokale Konfiguration aktualisiert:$synced"
+write_status "Auto-Sync: Hinweis -- CLAUDE.md und Rules werden erst nach Neustart von Claude Code wirksam."

@@ -1,57 +1,118 @@
 #!/bin/bash
 # Config Guard: Verifies protected settings after any config change
-# Hook event: ConfigChange
-HOOK_NAME="config-guard" source "$HOME/.claude/hooks/hook-log.sh" 2>/dev/null || true
+# Hook event: PostToolUse (Edit|Write on settings.json)
+# Platform: macOS / Linux (bash)
+#
+# Output: JSON for hook compatibility.
+#   Block:   {"error":"CONFIG-GUARD: BLOCKIERT — ..."}
+#   OK:      no output (exit 0)
+
+HOOK_NAME="config-guard"
+LOG_DIR="$HOME/.claude/logs/hooks"
+LOG_FILE="$LOG_DIR/$(date +%Y-%m-%d).log"
+
+# ---------------------------------------------------------------------------
+# Logging helpers (mirrors hook-log.ps1 behaviour)
+# ---------------------------------------------------------------------------
+_hook_log() {
+    local level="$1"
+    local msg="$2"
+    local ts
+    ts="$(date +%H:%M:%S)"
+    mkdir -p "$LOG_DIR"
+    echo "[$ts] $level $HOOK_NAME: $msg" >> "$LOG_FILE" 2>/dev/null || true
+    find "$LOG_DIR" -name "*.log" -mtime +14 -delete 2>/dev/null || true
+}
+hook_log()       { _hook_log ""      "$1"; }
+hook_log_error() { _hook_log "ERROR" "$1"; }
+hook_log_warn()  { _hook_log "WARN " "$1"; }
+
+# ---------------------------------------------------------------------------
+# Read JSON from stdin
+# ---------------------------------------------------------------------------
+hook_input="$(cat)"
+
+# Extract file_path (Write tool) or path (fallback) from tool_input
+file_path="$(printf '%s' "$hook_input" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    ti = d.get('tool_input', {})
+    print(ti.get('file_path') or ti.get('path') or '')
+except Exception:
+    print('')
+" 2>/dev/null)"
+
+if [ -z "$file_path" ]; then
+    exit 0
+fi
+
+# Normalize backslashes and check if the target is settings.json
+normalized="${file_path//\\//}"
+if [[ "$normalized" != *".claude/settings.json" ]]; then
+    exit 0
+fi
 
 SETTINGS="$HOME/.claude/settings.json"
 if [ ! -f "$SETTINGS" ]; then
-    echo "Config-Guard: settings.json nicht gefunden."
+    hook_log_warn "settings.json not found at $SETTINGS"
     exit 0
 fi
 
-if ! command -v python3 &>/dev/null; then
-    echo "Config-Guard: python3 nicht verfuegbar — uebersprungen."
-    exit 0
-fi
+# ---------------------------------------------------------------------------
+# Parse and validate protected settings using Python (reliable JSON parsing)
+# ---------------------------------------------------------------------------
+violations="$(python3 - "$SETTINGS" <<'PYEOF'
+import sys, json
 
-RESULT=$(python3 -c "
-import json, sys
+settings_path = sys.argv[1]
 try:
-    d = json.load(open('$SETTINGS'))
-    warnings = []
-    blocks = []
-    eff = d.get('effortLevel', 'high')
-    if eff != 'high':
-        blocks.append(f'effortLevel={eff}(erwartet:high)')
-    env = d.get('env', {})
-    env_eff = env.get('CLAUDE_CODE_EFFORT_LEVEL', 'high')
-    if env_eff != 'high':
-        blocks.append(f'CLAUDE_CODE_EFFORT_LEVEL={env_eff}(erwartet:high)')
-    if env.get('CLAUDE_CODE_SUBAGENT_MODEL') != 'sonnet':
-        blocks.append(f\"CLAUDE_CODE_SUBAGENT_MODEL={env.get('CLAUDE_CODE_SUBAGENT_MODEL')}(erwartet:sonnet)\")
-    acp = env.get('CLAUDE_AUTOCOMPACT_PCT_OVERRIDE', '95')
-    try:
-        if acp and int(acp) < 95:
-            blocks.append(f'AUTOCOMPACT={acp}(minimum:95)')
-    except (ValueError, TypeError):
-        pass
-    print(f'WARN:{chr(31).join(warnings)}|BLOCK:{chr(31).join(blocks)}')
+    with open(settings_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
 except Exception as e:
-    print('WARN:|BLOCK:')
-" 2>/dev/null || echo "WARN:|BLOCK:")
+    sys.stderr.write(f"failed to parse settings.json: {e}\n")
+    sys.exit(0)
 
-WARNINGS=$(echo "$RESULT" | sed 's/WARN:\(.*\)|BLOCK:.*/\1/' | tr $'\x1f' ' ')
-BLOCKS=$(echo "$RESULT" | sed 's/WARN:.*|BLOCK:\(.*\)/\1/' | tr $'\x1f' ' ')
+blocks = []
 
-if [ -n "$BLOCKS" ] && [ "$BLOCKS" != " " ] && [ "$BLOCKS" != "" ]; then
-    echo "CONFIG-GUARD: BLOCKIERT — Geschuetzte Settings geaendert: $BLOCKS"
-    exit 1
+# effortLevel: MUST be "high" — BLOCK anything else (CLAUDE.md requirement)
+eff = data.get('effortLevel')
+if eff and eff != 'high':
+    blocks.append(f"effortLevel={eff} (MUSS 'high' sein — CLAUDE.md-Regel)")
+
+env_data = data.get('env', {})
+if env_data:
+    # CLAUDE_CODE_EFFORT_LEVEL in env
+    env_eff = env_data.get('CLAUDE_CODE_EFFORT_LEVEL')
+    if env_eff and env_eff != 'high':
+        blocks.append(f"CLAUDE_CODE_EFFORT_LEVEL={env_eff} (MUSS 'high' sein)")
+
+    # SUBAGENT_MODEL: BLOCK if changed from sonnet (critical for cost/quality)
+    sub_model = env_data.get('CLAUDE_CODE_SUBAGENT_MODEL')
+    if sub_model and sub_model != 'sonnet':
+        blocks.append(f"CLAUDE_CODE_SUBAGENT_MODEL={sub_model} (erwartet: sonnet)")
+
+    # AUTOCOMPACT: BLOCK if below 95
+    acp = env_data.get('CLAUDE_AUTOCOMPACT_PCT_OVERRIDE')
+    if acp is not None:
+        try:
+            if int(acp) < 95:
+                blocks.append(f"AUTOCOMPACT={acp} (minimum: 95)")
+        except (ValueError, TypeError):
+            pass
+
+print('; '.join(blocks))
+PYEOF
+)"
+
+if [ -n "$violations" ]; then
+    hook_log_error "BLOCKED — protected settings changed: $violations"
+    # Output valid JSON for hook compatibility
+    # Use python to safely escape the message as JSON string
+    json_out="$(python3 -c "import json, sys; print(json.dumps({'error': 'CONFIG-GUARD: BLOCKIERT — Geschuetzte Settings geaendert: ' + sys.argv[1]}))" "$violations" 2>/dev/null)"
+    printf '%s\n' "$json_out"
+    exit 2
 fi
 
-if [ -n "$WARNINGS" ] && [ "$WARNINGS" != " " ] && [ "$WARNINGS" != "" ]; then
-    echo "CONFIG-GUARD: WARNUNG — Unerwartete Setting-Aenderung: $WARNINGS"
-    exit 0
-fi
-
-echo "Config-Guard: Alle geschuetzten Einstellungen intakt."
+hook_log "all protected settings intact"
 exit 0

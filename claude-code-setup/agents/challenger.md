@@ -104,4 +104,19 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
 
+## Bug-Injector Mode (C3 — Optional, aktiviert per Prompt)
+
+When instructed to run in "bug-injector mode" or "Bug-Inject":
+1. Take the provided code files and **inject 3 subtle, realistic bugs**:
+   - Bug 1 (EASY): Missing null check, off-by-one, wrong comparison operator
+   - Bug 2 (MEDIUM): Race condition, resource leak, incorrect error handling path
+   - Bug 3 (HARD): Logic error that passes basic tests but fails on edge cases
+2. Write the modified files to a temporary location (`/tmp/bug-inject/`)
+3. Report ONLY: "3 bugs injected in [files]. Challenge the tester/quality-gate to find them."
+4. Do NOT reveal the bugs — the purpose is to test if the quality-gate can catch them.
+5. After the quality-gate runs on the injected code: Compare what was found vs. what was injected.
+6. Score: Found 3/3 = EXCELLENT, 2/3 = GOOD, 1/3 = NEEDS IMPROVEMENT, 0/3 = CRITICAL GAP
+
+This mode is a training exercise for the quality-gate — like fire drills for code review.
+
 Communication: German. Technical terms: English.
