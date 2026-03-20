@@ -8,6 +8,11 @@ using ClaudeVoiceOverlay.NativeMethods;
 
 namespace ClaudeVoiceOverlay.Services
 {
+    /// <summary>
+    /// Controls text insertion into Electron apps (Claude Desktop, Codex, Cursor).
+    /// Strategy: CDP (Chrome DevTools Protocol) first → keybd_event fallback.
+    /// CDP gives ~100% reliability; keybd_event works ~50% due to Chromium's dual focus model.
+    /// </summary>
     public static class AppController
     {
         private const byte VK_A = 0x41;
@@ -16,7 +21,130 @@ namespace ClaudeVoiceOverlay.Services
         private const ushort VK_HOME = 0x24;
         private const ushort VK_END = 0x23;
 
+        // CDP client for direct Chromium communication (shared, thread-safe)
+        private static readonly CdpClient _cdp = new();
+        private static bool _cdpChecked;
+
+        /// <summary>
+        /// Attempts CDP connection on first call, then reuses.
+        /// </summary>
+        private static async Task<bool> EnsureCdpAsync()
+        {
+            if (_cdp.IsConnected) return true;
+            if (_cdpChecked) return false; // Already checked, no port available
+
+            var connected = await _cdp.TryConnectAsync();
+            _cdpChecked = true;
+            return connected;
+        }
+
+        /// <summary>
+        /// Resets CDP state so next call re-scans ports.
+        /// Call this when the target app restarts.
+        /// </summary>
+        public static void ResetCdp()
+        {
+            _cdpChecked = false;
+        }
+
+        // ── Public API ──
+
         public static void PasteText(string text, IntPtr appHwnd, bool autoEnter = false)
+        {
+            // Try CDP first (100% reliable when available)
+            if (TryCdpPaste(text, autoEnter))
+                return;
+
+            // Fallback: clipboard + keybd_event (original working approach)
+            PasteViaKeyboard(text, appHwnd, autoEnter);
+        }
+
+        public static void ClearInput(IntPtr appHwnd)
+        {
+            // Try CDP first
+            if (TryCdpClear())
+                return;
+
+            // Fallback: keybd_event
+            ClearViaKeyboard(appHwnd);
+        }
+
+        public static void SendReturn()
+        {
+            SendKey(VK_RETURN);
+        }
+
+        public static void PressReturn(IntPtr appHwnd)
+        {
+            // Try CDP first
+            if (TryCdpEnter())
+                return;
+
+            // Fallback: keybd_event
+            PressReturnViaKeyboard(appHwnd);
+        }
+
+        // ── CDP Methods (preferred, ~100% reliable) ──
+
+        private static bool TryCdpPaste(string text, bool autoEnter)
+        {
+            try
+            {
+                if (!EnsureCdpAsync().GetAwaiter().GetResult())
+                    return false;
+
+                var inserted = _cdp.InsertTextAsync(text).GetAwaiter().GetResult();
+                if (!inserted) return false;
+
+                if (autoEnter)
+                {
+                    Thread.Sleep(100);
+                    _cdp.SendEnterAsync().GetAwaiter().GetResult();
+                }
+
+                Console.WriteLine("AppController: Text inserted via CDP");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AppController: CDP paste failed: {ex.Message} — falling back to keyboard");
+                return false;
+            }
+        }
+
+        private static bool TryCdpClear()
+        {
+            try
+            {
+                if (!EnsureCdpAsync().GetAwaiter().GetResult())
+                    return false;
+
+                return _cdp.ClearInputAsync().GetAwaiter().GetResult();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool TryCdpEnter()
+        {
+            try
+            {
+                if (!EnsureCdpAsync().GetAwaiter().GetResult())
+                    return false;
+
+                return _cdp.SendEnterAsync().GetAwaiter().GetResult();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ── Keyboard Fallback (original March 13 code that worked ~50%) ──
+
+        private static void PasteViaKeyboard(string text, IntPtr appHwnd, bool autoEnter)
         {
             string? previousClipboard = null;
             Application.Current.Dispatcher.Invoke(() =>
@@ -32,18 +160,13 @@ namespace ClaudeVoiceOverlay.Services
 
             if (isCodex)
             {
-                // Codex has a different Electron window structure:
-                // Chrome_RenderWidgetHostHWND is NOT a child of the main window.
-                // SetFocus on any child window STEALS keyboard focus.
-                // Instead: just Escape (returns focus to input) → Ctrl+V
-                Console.WriteLine("AppController: Codex mode — Escape → Ctrl+V");
+                Console.WriteLine("AppController: Codex/Cursor mode — Escape → Ctrl+V");
                 SendKey(Win32.VK_ESCAPE);
                 Thread.Sleep(200);
                 SendCtrlV();
             }
             else
             {
-                // Claude Desktop: render widget is a direct child — SetFocus + click works
                 FocusDirectRenderWidget(appHwnd);
                 ClickInputField(appHwnd);
                 SendCtrlV();
@@ -65,21 +188,18 @@ namespace ClaudeVoiceOverlay.Services
             }
         }
 
-        public static void ClearInput(IntPtr appHwnd)
+        private static void ClearViaKeyboard(IntPtr appHwnd)
         {
             BringToForeground(appHwnd);
 
             if (IsCodexProcess(appHwnd))
             {
-                // Codex: double-Escape — first closes any popup/autocomplete,
-                // second ensures focus lands in the input field
                 SendKey(Win32.VK_ESCAPE);
                 Thread.Sleep(150);
                 SendKey(Win32.VK_ESCAPE);
                 Thread.Sleep(200);
                 SendKey(VK_END);
                 Thread.Sleep(30);
-                // Ctrl+Shift+Home selects all text from cursor to start within the input
                 byte ctrlScan = (byte)Win32.MapVirtualKey(Win32.VK_CONTROL, Win32.MAPVK_VK_TO_VSC);
                 byte shiftScan = (byte)Win32.MapVirtualKey(Win32.VK_SHIFT, Win32.MAPVK_VK_TO_VSC);
                 byte homeScan = (byte)Win32.MapVirtualKey((uint)VK_HOME, Win32.MAPVK_VK_TO_VSC);
@@ -94,7 +214,6 @@ namespace ClaudeVoiceOverlay.Services
             }
             else
             {
-                // Claude Desktop: click into input field, then Ctrl+A is safe
                 FocusDirectRenderWidget(appHwnd);
                 ClickInputField(appHwnd);
                 SendKeyCombo(Win32.VK_CONTROL, VK_A);
@@ -103,12 +222,7 @@ namespace ClaudeVoiceOverlay.Services
             }
         }
 
-        public static void SendReturn()
-        {
-            SendKey(VK_RETURN);
-        }
-
-        public static void PressReturn(IntPtr appHwnd)
+        private static void PressReturnViaKeyboard(IntPtr appHwnd)
         {
             BringToForeground(appHwnd);
 
