@@ -71,7 +71,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "\"C:/Users/barwa/AppData/Local/Programs/Python/Python313/python.exe\" \"$USERPROFILE/.claude/hooks/prompt-injection-defender/post-tool-defender.py\"",
+						"command": "python3 \"$USERPROFILE/.claude/hooks/prompt-injection-defender/post-tool-defender.py\"",
 						"timeout": 5
 					}
 				]

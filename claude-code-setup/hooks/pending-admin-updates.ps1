@@ -6,6 +6,9 @@
 . "$PSScriptRoot/hook-log.ps1"
 . "$PSScriptRoot/whiteboard-insert.ps1"
 
+# Wrap entire script in error handler to prevent exit code crashes (winget can return non-zero)
+$ErrorActionPreference = "SilentlyContinue"
+
 $OutputScript = Join-Path $env:USERPROFILE "Desktop" "install-updates.ps1"
 
 $commands = @()
