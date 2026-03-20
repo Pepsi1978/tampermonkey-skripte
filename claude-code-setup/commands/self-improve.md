@@ -269,7 +269,7 @@ dadurch haengenbleiben. Fuer JEDEN Researcher gilt:
    blockiert NICHT den Rest. Stufe 2 wartet nur auf die noch laufenden Agents.
 3. **1x Neustart versuchen**: Den gescheiterten Researcher EINMAL neu starten mit
    kleinerem Scope (z.B. nur die wichtigste Teilfrage). Wenn auch der Neustart scheitert → ueberspringen.
-4. **Fehler dokumentieren**: Jeden Absturz sofort in `~/.claude/agent-memory/shared/MEMORY.md unter "Offene Fehler & Probleme"` eintragen:
+4. **Fehler dokumentieren**: Jeden Absturz sofort ins Whiteboard eintragen (Sektion "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md`):
    ```
    ## [Datum] Researcher R[N] Absturz
    - **Agent**: R[N] — [Name]
@@ -365,7 +365,7 @@ Present 3 suggestions for THIS SKILL. Apply only after user approval. Backup fir
 ### 3E: R8 Intelligence Agent (NEW v5.12)
 **Stufe 2 verwendet jetzt den dedizierten `intelligence-researcher` Agent** statt eines generischen
 Researcher-Prompts. Der Agent hat:
-- Eigenes Backlog-File (`~/.claude/agent-memory/shared/MEMORY.md unter "Forschung & Intelligence"`) mit Status pro Finding
+- Findings werden in MEMORY.md unter "Forschung & Intelligence" gespeichert, mit Status pro Finding
 - Liest vorherige Findings und sucht gezielt NEUE Ideen (kein Duplicate Research)
 - Output-Format mit expliziter JA/NEIN-Empfehlung pro Finding
 Spawn: `Agent(subagent_type="intelligence-researcher", name="r8-intelligence")`
@@ -441,7 +441,7 @@ Am Ende jedes Laufs: Berechne und zeige den **IQ-Score** (Intelligence Quotient 
 |-----------|-----|-------------------------------|
 | Praevention | 20 | Fehler mit ✅ DAUERHAFT Prevention = 2 Pkt, mit ⚠️ FRAGIL = 1 Pkt, ohne = 0 |
 | Gedaechtnis | 20 | Abschnitte in MEMORY.md die in letzten 30 Tagen aktualisiert wurden = 2 Pkt/Abschnitt |
-| Prozeduren | 20 | Workflows in MEMORY.md die verifiziert und aktuell sind = 2 Pkt/Workflow |
+| Konventionen | 20 | Regeln in "Regeln & Konventionen" die in letzten 5 Sessions angewandt wurden = 2 Pkt/Regel |
 | Regeln | 20 | Rules die in letzten 5 Sessions relevant waren = 3 Pkt, nie relevant = 1 Pkt |
 | Werkzeuge | 20 | Kognitive Tools die tatsaechlich GENUTZT werden = 3 Pkt, nur installiert = 1 Pkt |
 | **Gesamt** | **100** | **Summe — Qualitaet zaehlt mehr als Quantitaet** |

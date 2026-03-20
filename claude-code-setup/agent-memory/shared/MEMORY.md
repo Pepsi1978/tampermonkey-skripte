@@ -68,13 +68,13 @@ _Aktuell keine offenen Fehler._
 <!-- Wird von /self-improve und env-checker aktualisiert -->
 <!-- Zeigt den aktuellen Stand des Programmiersystems -->
 
-- **Plattform:** Windows 11 Home, Claude Code v2.1.79, Opus 4.6 (1M context)
+- **Plattform:** Windows 11 Home, Claude Code v2.1.80, Opus 4.6 (1M context)
 - **Sprachen:** Swift, C#, TypeScript, Rust, Go, Kotlin
 - **Semantic Search:** index-2.db, 599 Dateien, 10.206 Chunks (Stand: 2026-03-20 12:53)
 - **Ollama:** v0.18.2, nomic-embed-text Modell, Fenster versteckt (nur Tray)
 - **Quality Gate:** quality-gate Agent fuer kombiniertes test+review+optimize
 - **Agents:** 15 aktiv (code-reviewer hat memory:project, coder hat isolation:worktree)
-- **Hooks:** 17 Events registriert (auto-sync, disk-guard, safety-gate, reindex, etc.)
+- **Hooks:** 15 Events registriert (auto-sync, disk-guard, safety-gate, reindex, etc.)
 - **Plugins:** 92 Eintraege, 89 aktiv
 - **Preferred Patterns:** MVVM (Swift), Fluent Design (C#), strict mode (TypeScript)
 
