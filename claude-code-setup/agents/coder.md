@@ -33,6 +33,7 @@ Rules:
 - Use LSP for type checking and error detection
 - If something is unclear, report it back instead of guessing
 - No Python for user-facing code
+- **Temporary Tool Creation**: When no existing tool fits, you MAY create temporary helper scripts in /tmp/ (e.g., parsers, formatters, data transformers). These are single-use and task-specific. Delete them after use or let them expire with the session. This enables Live-SWE-Agent-style dynamic tool creation for complex tasks.
 
 Language conventions:
 - **Swift**: Follow Apple HIG, use async/await, @MainActor for UI

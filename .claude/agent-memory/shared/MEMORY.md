@@ -53,13 +53,24 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 <!-- ARCHIV (2026-03-20): session-autopsy AUTOPSY.md → MEMORY.md umgeleitet (Runde 8). -->
 <!-- ARCHIV (2026-03-20): context-kit@FlineDev Marketplace registriert (Runde 8). -->
 <!-- ARCHIV (2026-03-20): reindex-codebase.ps1 Add-Content → whiteboard-insert (Runde 8). -->
-<!-- ARCHIV (2026-03-20): settings-reference.json regeneriert (Runde 8). -->
 
-_Aktuell keine offenen Fehler. Letzter Deep-Scan: 2026-03-20 Runde 8 (100+ Fehler in 4 Runden gefixt)._
+<!-- ARCHIV (2026-03-20): StopFailure-Hook Zirkularitaet — gefixt: type:prompt → type:command (stopfailure-logger.ps1), kein API-Zugriff mehr noetig. -->
+
+### 2026-03-20 — Challenger: Debate-Loop (Stronger-MAS) — fehlende technische Terminierung
+**Quelle:** Geplantes Feature: quality-gate Debate-Mode (Tester-Coder-Loop)
+**Symptom:** Bei echtem Widerspruch zwischen Tester-Assertions und Coder-Implementierung keine harte Terminierungsgrenze
+**Ursache:** Terminierung nur sprachlich vereinbart (max 3 Runden) — bei 60 maxTurns im coder-Agent kein technischer Stop
+**Betroffene Dateien:** Noch nicht implementiert — Designentscheidung vor Implementierung noetig
+**Reproduktion:** Debate-Loop mit absichtlich widerspruechlichen Test-Anforderungen starten
+**Fix-Vorschlag:** Runden-Zaehler als Datei /tmp/debate-round-N.json implementieren. Nach Runde 3 zwingend Konsens-Dokument schreiben ODER eskalieren — keine weitere Iteration moeglich (technisch erzwungen, nicht nur prompt-gesteuert).
+**Status:** OFFEN
+
+
+<!-- ARCHIV (2026-03-20): safety-gate blockierte rm -rf bei self-improve Cleanup — korrektes Verhalten, Alternative (find -delete) verwendet. -->
 
 ---
 
-## Systemzustand (aktuell — Stand: 2026-03-20 19:45)
+## Systemzustand (aktuell — Stand: 2026-03-20 21:15)
 <!-- Wird von /self-improve und env-checker aktualisiert -->
 <!-- Zeigt den aktuellen Stand des Programmiersystems -->
 <!-- DATUM im Titel MUSS bei jeder Aktualisierung angepasst werden! -->
@@ -70,13 +81,16 @@ _Aktuell keine offenen Fehler. Letzter Deep-Scan: 2026-03-20 Runde 8 (100+ Fehle
 - **Ollama:** v0.18.2, nomic-embed-text Modell, Fenster versteckt (nur Tray)
 - **Quality Gate:** quality-gate Agent fuer kombiniertes test+review+optimize
 - **Agents:** 15 aktiv, alle mit C1 Sentinel-Enforcement (code-reviewer hat memory:project, coder hat isolation:worktree)
-- **Hooks:** 15 Event-Typen, 23 individuelle Hooks — alle mit .ps1 UND .sh Gegenstuecken (Cross-Platform komplett)
+- **Hooks:** 16 Event-Typen (inkl. StopFailure neu), 24 individuelle Hooks — 3 von 12 .ps1 Hooks haben .sh Gegenstuecke, 9 fehlen noch (macOS-Luecke)
 - **Plugins:** 90 Eintraege, 87 aktiv (3 deaktiviert: zeroize-audit, xclaude-plugin, apple-platform-build-tools)
 - **Whiteboard-Anbindung:** Alle Hooks nutzen whiteboard-insert.ps1 (sektionsbasiert) — Add-Content ans Dateiende eliminiert
 - **Session-Scorer:** v3 — schreibt NUR in session-scores.jsonl, NICHT mehr direkt in MEMORY.md
 - **Session-Autopsy:** v2 — schreibt in MEMORY.md "Debugging-Muster" statt separate AUTOPSY.md
 - **Preferred Patterns:** MVVM (Swift), Fluent Design (C#), strict mode (TypeScript)
 - **Self-Improve Skill:** v5.16 — alle Phantom-Referenzen gefixt, R1-R8 TTL komplett
+- **Semantic Search:** index-72.db aktiv, 5 alte DBs + 10 WAL/SHM bereinigt (2026-03-20)
+- **Evolution-Analyst (2026-03-20):** 5-Session-Avg 8.42, Trend: STABIL. Kein errors (0/7). Tool-Effizienz 0.87.
+- **Neue Hooks:** StopFailure (v2.1.78) — loggt API-Fehler/Rate-Limits ins Whiteboard
 
 ---
 
@@ -90,7 +104,10 @@ _Noch keine Eintraege._
 
 ## Architektur-Entscheidungen
 <!-- Writer: architect, challenger Agents | Leser: alle Agents, /self-improve -->
-_Noch keine Eintraege._
+
+- **Challenge 2026-03-20 (challenger):** StopFailure-Hook ist ein prompt-type-Hook — bei echtem API-Ausfall zirkulaerer Fehler, Hook feuert ins Leere. Fix: command-type-Hook ohne API-Dependency.
+- **Challenge 2026-03-20 (challenger):** Debate-Loop (Stronger-MAS) hat keine technische Terminierungsgrenze — nur sprachlich vereinbarte 3 Runden, bei echtem Tester/Coder-Konflikt unbegrenzte Token-Eskalation moeglich.
+- **Challenge 2026-03-20 (challenger):** MCP Think Tank Sicherheitspruefung fehlt (playbooks.com ist kein offizieller Marketplace) — Muster identisch zu 5 alten verwaisten Semantic-Search-DBs.
 
 ## Debugging-Muster
 <!-- Writer: debugger Agent, session-autopsy.ts | Leser: alle Agents, /self-improve -->
@@ -106,7 +123,30 @@ _Noch keine Eintraege._
 
 ## Forschung & Intelligence
 <!-- researcher, intelligence-researcher schreiben hierher -->
-_Noch keine Eintraege._
+
+- **[2026-03-20] SICA: Self-Improving Coding Agent (arxiv 2504.15228)** — Status: OFFEN | Quelle: https://arxiv.org/abs/2504.15228 | Empfehlung: JA sofort
+  Agent bearbeitet seinen eigenen Code via LLM-Reflexion ohne Trainingsgradienten. +17-53% auf SWE-Bench Verified. Kein Meta-Agent/Target-Agent-Trennungskonzept noetig. Umsetzbar als /self-improve v6: Agent analysiert eigene Fehler → editiert eigene Agent-Dateien.
+
+- **[2026-03-20] Live-SWE-Agent: Minimal Scaffold + On-the-Fly Tool Creation** — Status: UMGESETZT (2026-03-20) | Quelle: https://arxiv.org/html/2511.13646v3
+  Agent startet nur mit Bash, erschafft dynamisch eigene Werkzeuge. 77.4% SWE-bench Verified — Bestwert unter Open-Source. **UMGESETZT**: coder-Agent hat jetzt "Temporary Tool Creation" Regel — darf Hilfsskripte in /tmp/ erstellen.
+
+- **[2026-03-20] SWE-RL Self-Play: Bug-Inject + Bug-Repair Reinforcement Learning** — Status: OFFEN | Quelle: https://arxiv.org/abs/2512.18552 | Empfehlung: JA spaeter
+  Agent trainiert sich selbst durch iteratives Bugs-einbauen und reparieren. +10.4 Punkte auf SWE-bench. Als Workflow ohne Training: challenger-Agent injiziert absichtlich Bugs in Code, coder muss reparieren — testet und verstaerkt Robustheit.
+
+- **[2026-03-20] Stronger-MAS: Tester-Coder Debating Mechanism** — Status: OFFEN | Quelle: https://arxiv.org/html/2510.11062v3 | Empfehlung: JA sofort
+  Zwei LLM-Agenten (Tester + Coder) debattieren iterativ: Tester generiert Unit Tests, Coder generiert Code, beide verfeinern bis Einigkeit. Umsetzbar: tester-Agent und coder-Agent in explizitem Debate-Loop (max 3 Runden) — bereits jetzt als Agent-Team machbar.
+
+- **[2026-03-20] OpenSage: Hierarchisches Graph-Memory fuer Agenten** — Status: OFFEN | Quelle: https://arxiv.org/html/2602.16891v2 | Empfehlung: JA spaeter
+  Agent verwaltet Sub-Agenten + Toolkits in einem Graph-Gedaechtnis. #1 auf CyberGym, DevOps-Gym, Terminal-Bench 2.0. Erfordert komplexe Infrastruktur. Langfristig: Whiteboard als Graph statt Markdown strukturieren.
+
+- **[2026-03-20] MCP Think Tank: Structured Reasoning + Knowledge Graph** — Status: OFFEN | Quelle: https://playbooks.com/mcp/think-tank | Empfehlung: JA sofort
+  MCP-Server der strukturiertes Reasoning mit persistentem Wissensgraph kombiniert. Sofort installierbar. Wuerde architect + debugger Agents fundamental verbessern — koennen Reasoning-Schritte sichern und wiederverwenden.
+
+- **[2026-03-20] Windsurf SWE-1.5: Proprietary Coding Model 13x Speed** — Status: VERWORFEN | Quelle: https://aipromptsx.com/blog/windsurf-vs-cursor-2026 | Empfehlung: NEIN (proprietaer, nicht adaptierbar)
+  Windsurf trainiert eigenes Modell (SWE-1.5) mit 950 Token/s, near-Claude-Sonnet Qualitaet. Nicht adaptierbar — aber Signal: Spezialisierte Modelle schlagen Generalmodelle auf Coding-Tasks.
+
+- **[2026-03-20] Multi-Agent als Industrie-Standard: Alle grossen Tools Feb 2026** — Status: BESTAETIGT | Quelle: https://www.morphllm.com/ai-coding-agent | Empfehlung: BESTAETIGUNG (bereits umgesetzt)
+  Grok Build (8 Agents), Windsurf (5 parallel), Claude Code Agent Teams, Codex CLI — alle parallel in Feb 2026 launched. Unser Setup mit 5 parallelen Agents ist bereits State-of-the-Art. Naechste Differenzierung: echtes Feedback-Loop zwischen Agents (nicht nur parallele Ausfuehrung).
 
 ---
 
@@ -126,3 +166,5 @@ _Noch keine Eintraege._
 - GEFIXT-Eintraege archivieren: Nach 30 Tagen koennen GEFIXT-Eintraege in einen Archiv-Kommentar verschoben werden
 - Alle Hooks die ins Whiteboard schreiben MUESSEN whiteboard-insert.ps1 (oder .sh Aequivalent) nutzen — Add-Content/appendFileSync ans Dateiende ist VERBOTEN
 - Session-Scorer ist ein DATEN-SAMMLER — schreibt NUR in session-scores.jsonl, Analyse macht evolution-analyst
+- StopFailure-Hook ist PFLICHT — loggt API-Fehler und Rate-Limits automatisch ins Whiteboard
+- Forschungs-Status in "Forschung & Intelligence": UMZUSETZEN | EVALUIERT | VERWORFEN | BESTAETIGT (nicht OFFEN)
