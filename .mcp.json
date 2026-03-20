@@ -5,7 +5,7 @@
 			"args": ["code-review-graph", "serve"]
 		},
 		"code-search": {
-			"command": "bun",
+			"command": "C:/Users/barwa/.bun/bin/bun.exe",
 			"args": ["run", "C:/Users/barwa/proggs/mcp-code-search/src/index.ts"]
 		},
 		"think-tank": {
