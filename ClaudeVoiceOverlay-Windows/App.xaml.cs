@@ -181,7 +181,7 @@ namespace ClaudeVoiceOverlay
             {
                 _trayIcon!.Visible = false;
                 _overlayWindow?.Close();
-                Environment.Exit(0); // Exit code 0 = intentional — watchdog stops
+                Environment.Exit(1); // Exit code != 0 — watchdog restarts overlay
             });
 
             _trayIcon.ContextMenuStrip = menu;
