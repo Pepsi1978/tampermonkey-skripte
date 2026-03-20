@@ -92,6 +92,8 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 - **Hooks:** 16 Event-Typen, 21 .sh Hook-Dateien deployed + prompt-injection-defender (Python) — alle in settings.json angebunden (writeback-enforcer, memory-watchdog, reindex-codebase, pending-admin-updates, stopfailure-logger)
 - **Plugins:** 90 Eintraege, 87 aktiv (3 deaktiviert: zeroize-audit, xclaude-plugin, apple-platform-build-tools)
 - **Whiteboard-Anbindung:** Alle Hooks nutzen whiteboard-insert.sh (sektionsbasiert) — echo/append ans Dateiende eliminiert
+- **Ollama:** v0.18.2, nomic-embed-text Modell (768 Dim, 274MB), laeuft als brew-Service
+- **File-Locking:** flock v2.41.3 (util-linux via Homebrew), writeback-enforcer nutzt echtes Locking
 - **Session-Scorer:** v3 — schreibt NUR in session-scores.jsonl, NICHT mehr direkt in MEMORY.md
 - **Session-Autopsy:** v2 — schreibt in MEMORY.md "Debugging-Muster" statt separate AUTOPSY.md
 - **Preferred Patterns:** MVVM (Swift), Fluent Design (C#), strict mode (TypeScript)
