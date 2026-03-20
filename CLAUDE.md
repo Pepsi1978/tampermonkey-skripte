@@ -42,7 +42,18 @@
   2. Code Review → Custom Agent: `code-reviewer` (hat `memory: project` — lernt ueber Sessions)
   3. Verbesserung → Custom Agents: `optimizer` + `ui-polisher`
 - Erst wenn alle Pruefungen bestanden sind, wird committed und gepusht.
-- **Shared Knowledge Hub**: Alle Senior-Agenten (code-reviewer, tester, architect, debugger) schreiben Erkenntnisse in `.claude/agent-memory/shared/MEMORY.md`. Alle Agenten lesen dieses Whiteboard. Der `/self-improve` Skill nutzt es fuer gezielte Verbesserungen.
+- **Shared Knowledge Hub (ZENTRALES WHITEBOARD — PFLICHT)**:
+  - Datei: `.claude/agent-memory/shared/MEMORY.md` — die EINZIGE zentrale Wissensdatei.
+  - **Lesen**: JEDER Agent, Skill, Hook, MCP-Server und Plugin MUSS dieses Whiteboard lesen.
+  - **Schreiben**: JEDER Agent, Skill und Hook MUSS relevante Erkenntnisse reinschreiben.
+  - **Fehler-Logging**: Hooks und automatische Prozesse MUESSEN Fehler ins Whiteboard loggen
+    (Sektion "Offene Fehler & Probleme"). NIEMALS Fehler still verschlucken.
+  - **Fehlerformat**: Quelle, Symptom, Ursache, Betroffene Dateien, Fix-Vorschlag, Status.
+    Detailliert genug dass /self-improve den Fehler ohne Zusatzkontext fixen kann.
+  - **Angeschlossene Systeme**: CLAUDE.md, Feedback-Memories, Session-Scores, Self-Improve-Cache,
+    Claude-Mem Observations — alle im Whiteboard-Header dokumentiert.
+  - **Keine Fragmentierung**: NUR dieses eine Whiteboard. Keine separaten Dateien.
+  - Der `/self-improve` Skill ist der wichtigste Konsument — liest ALLES, fixt ALLE offenen Fehler.
 - Bei neuen Projekten: `architect` Agent + Recherche-Agent **parallel** starten.
 - Bei Bugs: `debugger` Agent nutzen (kann selbst Sub-Agenten fuer konkurrierende Hypothesen spawnen).
 - `coder` Agent hat `isolation: worktree` — mehrere Coder koennen sicher parallel an verschiedenen Dateien arbeiten.

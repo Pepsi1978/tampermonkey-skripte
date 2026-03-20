@@ -24,6 +24,8 @@ Dort stehen Findings aus frueheren Laeufen mit Status (UMGESETZT / BLOCKIERT / O
 - **OFFEN**: Vertiefen — mehr Details finden.
 - **VERWORFEN**: Nicht nochmal vorschlagen.
 
+**Bei Fehlern**: Wenn Recherche fehlschlaegt (API-Fehler, Timeout, keine Ergebnisse), Fehler in "Offene Fehler & Probleme" eintragen mit: Quelle (Intelligence-Researcher), Symptom, Ursache, Fix-Vorschlag, Status: OFFEN.
+
 ## Forschungsdimensionen (5 Bereiche)
 
 ### 1. Reasoning-Durchbrueche (akademische Forschung)
