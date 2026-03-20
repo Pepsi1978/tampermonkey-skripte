@@ -34,6 +34,10 @@ interface AchievementDao {
     @Query("UPDATE achievements SET currentValue = :currentValue WHERE id = :id")
     suspend fun updateProgress(id: String, currentValue: Int)
 
+    /** Reset all achievements to locked state with zero progress. */
+    @Query("UPDATE achievements SET isUnlocked = 0, currentValue = 0, unlockedDate = NULL")
+    suspend fun resetAll()
+
     /** Mark an achievement as unlocked and record the unlock date. */
     @Query(
         "UPDATE achievements " +

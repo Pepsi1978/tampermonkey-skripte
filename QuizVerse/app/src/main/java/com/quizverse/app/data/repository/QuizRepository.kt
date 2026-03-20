@@ -216,11 +216,14 @@ class QuizRepository(private val database: QuizDatabase) {
     }
 
     /**
-     * Deletes all user progress and re-inserts a blank row.
-     * Used when the player taps "Reset Progress" in settings.
+     * Performs a complete progress reset: clears UserProgress, HighScores,
+     * and resets all Achievements to locked/zero. Re-inserts a blank
+     * UserProgress row so the app can continue working normally.
      */
     suspend fun resetProgress() {
         progressDao.deleteAll()
+        highScoreDao.deleteAll()
+        achievementDao.resetAll()
         progressDao.insertProgress(com.quizverse.app.data.database.entities.UserProgress())
     }
 

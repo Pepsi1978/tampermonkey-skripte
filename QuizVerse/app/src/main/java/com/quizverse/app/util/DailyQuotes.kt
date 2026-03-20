@@ -8,6 +8,16 @@ import java.time.LocalDate
  */
 object DailyQuotes {
 
+    /**
+     * Returns today's quote based on the day of the year.
+     * Same quote all day, cycles annually through all 366 entries.
+     */
+    fun todayQuote(): String {
+        val dayOfYear = LocalDate.now().dayOfYear
+        return quotes[(dayOfYear - 1) % quotes.size]
+    }
+
+    /** Returns a random quote, optionally excluding one (for refresh). */
     fun randomQuote(exclude: String? = null): String {
         if (exclude == null) return quotes.random()
         var next: String
