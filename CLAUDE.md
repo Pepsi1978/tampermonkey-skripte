@@ -33,6 +33,25 @@
 - NIEMALS Shell-Updates waehrend laufender Arbeit oder mitten in einer Aufgabe ausfuehren.
 - VOR Shell-Updates: Benutzer WARNEN und um explizite Bestaetigung bitten.
 - Reihenfolge: Alle Aufgaben erledigen → Ergebnisse committen/pushen → Benutzer warnen → Bestaetigung abwarten → Shell-Updates als letzten Schritt.
+- **NACH Shell-Updates: PATH-Verifizierung ist PFLICHT** — Shell-Updates koennen den Windows User PATH zerstoeren.
+  - SOFORT nach jedem Shell-Update den Windows User PATH pruefen: `pwsh -NoProfile -Command '[Environment]::GetEnvironmentVariable("PATH", "User")'`
+  - Alle folgenden Verzeichnisse MUESSEN im User PATH vorhanden sein (Referenzliste):
+    ```
+    %USERPROFILE%\bin                                          # python/python3 Wrapper
+    %USERPROFILE%\.local\bin                                   # uvx, pipx
+    %USERPROFILE%\.bun\bin                                     # bun
+    %USERPROFILE%\.cargo\bin                                   # rustc, cargo, cargo-audit etc.
+    %USERPROFILE%\AppData\Roaming\npm                          # biome, globale npm-Pakete
+    %USERPROFILE%\go\bin                                       # gomobile, gobind
+    C:\Gradle\gradle-9.4.1\bin                                 # gradle (Version bei Upgrade anpassen!)
+    C:\Kotlin\kotlinc\bin                                      # kotlinc, kotlin
+    %LOCALAPPDATA%\Android\Sdk\platform-tools                  # adb, fastboot
+    %LOCALAPPDATA%\Android\Sdk\cmdline-tools\latest\bin        # sdkmanager, avdmanager
+    %LOCALAPPDATA%\Android\Sdk\emulator                        # emulator
+    ```
+  - Zusaetzlich pruefen: JAVA_HOME, ANDROID_HOME, GOPATH muessen gesetzt sein.
+  - Fehlende Eintraege SOFORT wiederherstellen, nicht den Benutzer fragen.
+  - MCP-Server-Configs (.mcp.json) MUESSEN absolute Pfade verwenden, nie nackte Befehlsnamen wie "bun" oder "cargo".
 
 ## Qualitaetsschleife (PFLICHT nach jedem Feature/Projekt!)
 - **PFLICHT**: Nach jedem abgeschlossenen Feature oder neuen Projekt MUSS der `quality-gate` Agent gestartet werden. Das ist KEINE Option — es ist wie eine Qualitaetskontrolle in einer Fabrik. KEIN Commit ohne bestandenen quality-gate.
