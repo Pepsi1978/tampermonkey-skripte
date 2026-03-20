@@ -149,7 +149,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "python \"$USERPROFILE/.claude/hooks/prompt-injection-defender/post-tool-defender.py\"",
+						"command": "python3 \"$USERPROFILE/.claude/hooks/prompt-injection-defender/post-tool-defender.py\"",
 						"timeout": 5
 					}
 				]
@@ -160,7 +160,7 @@
 					{
 						"type": "command",
 						"command": "pwsh -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/auto-format.ps1\"",
-						"timeout": 5,
+						"timeout": 15,
 						"async": true
 					}
 				]
@@ -192,7 +192,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "powershell -ExecutionPolicy Bypass -File \"$HOME/.claude/hooks/stopfailure-logger.ps1\"",
+						"command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/stopfailure-logger.ps1\"",
 						"timeout": 10
 					}
 				]
@@ -239,17 +239,6 @@
 						"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/writeback-enforcer.ps1\"",
 						"timeout": 10,
 						"async": true
-					}
-				]
-			}
-		],
-		"PermissionRequest": [
-			{
-				"hooks": [
-					{
-						"type": "prompt",
-						"prompt": "A permission request was triggered. Check `.claude/agent-memory/shared/MEMORY.md` 'Regeln & Konventionen' for known safe/unsafe operations. In one sentence, explain what the requested action does and whether it is standard and safe in this project's context.",
-						"timeout": 10
 					}
 				]
 			}
@@ -503,6 +492,5 @@
 	"language": "de",
 	"alwaysThinkingEnabled": true,
 	"effortLevel": "high",
-	"autoUpdatesChannel": "latest",
-	"skipDangerousModePermissionPrompt": true
+	"autoUpdatesChannel": "latest"
 }

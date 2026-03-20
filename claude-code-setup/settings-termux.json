@@ -53,7 +53,6 @@
   "enableAllProjectMcpServers": true,
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "hooks": {
     "Notification": [

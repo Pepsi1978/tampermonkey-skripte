@@ -435,6 +435,5 @@
   "language": "de",
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true
+  "autoUpdatesChannel": "latest"
 }
