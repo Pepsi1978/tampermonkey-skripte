@@ -189,11 +189,14 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 - Wenn Parry (Prompt-Injection-Scanner) laeuft: externen Code damit scannen.
 
 ## Status-Meldung nach jeder Aufgabe (KRITISCH)
-- Nach JEDER abgeschlossenen Aufgabe als letzten Satz den Commit/Push-Status melden:
-  - Wenn committed und gepusht: **"Committed und gepusht."**
+- Nach JEDER abgeschlossenen Aufgabe als letzten Satz den Status der drei Pflichtschritte melden:
+  - Wenn alles erledigt: **"Committed, gepusht und plattformuebergreifend."**
+  - Wenn Cross-Platform nicht noetig war (z.B. reine Markdown-Aenderung): **"Committed und gepusht."**
   - Wenn nur committed: **"Committed."**
   - Wenn nichts committed wurde: **"Ich habe weder committed noch gepusht."**
+  - Wenn Cross-Platform noch offen ist: **"Committed und gepusht. Cross-Platform: [was fehlt noch]."**
 - Diese Meldung ist IMMER der letzte Satz der Antwort — keine Ausnahmen.
+- Die drei Pflichtschritte sind: 1) Commit 2) Push 3) Cross-Platform-Pruefung.
 
 ## Cross-Platform-Pflicht bei jedem Commit (KRITISCH)
 - **Vor jedem Commit+Push** pruefen: Funktioniert diese Aenderung auch auf der anderen Plattform?
