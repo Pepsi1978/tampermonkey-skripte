@@ -26,13 +26,13 @@ if (-not (Test-Path $nodeModules)) {
     Start-Process -FilePath $bunExe -ArgumentList "install" -WorkingDirectory $mcpDir -NoNewWindow -Wait
 }
 
-# Auto-start Ollama if not running
+# Auto-start Ollama if not running (headless server — no GUI window)
 try {
     $null = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 2 -ErrorAction Stop
 } catch {
-    $ollamaExe = "$env:LOCALAPPDATA\Programs\Ollama\ollama app.exe"
+    $ollamaExe = "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe"
     if (Test-Path $ollamaExe) {
-        Start-Process -FilePath $ollamaExe -WindowStyle Hidden
+        Start-Process -FilePath $ollamaExe -ArgumentList "serve" -WindowStyle Hidden
         Start-Sleep -Seconds 5
         try {
             $null = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 3 -ErrorAction Stop
@@ -120,7 +120,7 @@ for (const f of readdirSync(dbDir)) {
 }
 "@
 
-    $tempFile = Join-Path $env:TEMP "reindex-$([guid]::NewGuid().ToString('N').Substring(0,8)).ts"
+    $tempFile = Join-Path $mcpDir "reindex-$([guid]::NewGuid().ToString('N').Substring(0,8)).ts"
     Set-Content -Path $tempFile -Value $script -Encoding UTF8
     $process = Start-Process -FilePath $bunExe -ArgumentList "run", $tempFile -WorkingDirectory $mcpDir -NoNewWindow -Wait -PassThru
     Remove-Item $tempFile -ErrorAction SilentlyContinue
@@ -129,7 +129,15 @@ for (const f of readdirSync(dbDir)) {
         if (-not (Test-Path $dbDir)) { New-Item -ItemType Directory -Path $dbDir -Force | Out-Null }
         Set-Content -Path $stampFile -Value (Get-Date -Format "o")
         Write-Output "Reindex-Hook: Codebase neu indexiert ($newDbName, pointer-swap)."
+    } else {
+        $failMsg = "## $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Bun exited with code $($process.ExitCode)`n`n**Hook:** reindex-codebase.ps1 (SessionStart)`n**Symptom:** Indexierung fehlgeschlagen, ExitCode=$($process.ExitCode)`n**Status:** OFFEN`n"
+        $failFile = Join-Path $rootDir ".claude\agent-memory\shared\FAILURES.md"
+        if (Test-Path $failFile) { Add-Content -Path $failFile -Value "`n---`n`n$failMsg" }
+        Write-Output "Reindex-Hook: FEHLER — Bun ExitCode $($process.ExitCode). Siehe FAILURES.md."
     }
 } catch {
-    # Fail silently
+    $failMsg = "## $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Exception`n`n**Hook:** reindex-codebase.ps1 (SessionStart)`n**Symptom:** $($_.Exception.Message)`n**Status:** OFFEN`n"
+    $failFile = Join-Path $rootDir ".claude\agent-memory\shared\FAILURES.md"
+    if (Test-Path $failFile) { Add-Content -Path $failFile -Value "`n---`n`n$failMsg" }
+    Write-Output "Reindex-Hook: EXCEPTION — $($_.Exception.Message). Siehe FAILURES.md."
 }
