@@ -7,6 +7,16 @@ Das zentrale Nervensystem des Claude Code Systems. JEDE Komponente die hier arbe
 **Gepflegt von**: /self-improve (raeumte auf, loest offene Fehler, haelt aktuell)
 **Pfad**: `.claude/agent-memory/shared/MEMORY.md`
 
+**Angeschlossene Systeme** (MUESSEN von /self-improve ebenfalls gelesen werden):
+- **Benutzer-Feedback**: `~/.claude/projects/*/memory/feedback_*.md`
+  (Pfad ist plattformabhaengig: Windows=C--Users-barwa, macOS=Users-frank)
+  Enthaelt Korrekturen und Praeferenzen des Benutzers. /self-improve MUSS diese lesen
+  und daraus neue Regeln oder Hooks ableiten, wenn ein Feedback-Muster systemweit gilt.
+- **Projekt-Notizen**: `~/.claude/projects/*/memory/project_*.md`
+  Enthaelt laufende Projekte und deren Status.
+- **Memory-Index**: `~/.claude/projects/*/memory/MEMORY.md`
+  Zeigt alle vorhandenen Memory-Dateien als Verzeichnis.
+
 ---
 
 ## Offene Fehler & Probleme (PRIORITAET fuer /self-improve)

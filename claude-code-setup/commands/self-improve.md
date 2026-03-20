@@ -33,10 +33,17 @@ fuer ALLE Komponenten des Claude Code Systems: Agents, Skills, Hooks, MCP-Server
 1. **ZUERST lesen**: Vor jeder Aktion das Whiteboard komplett lesen
 2. **Offene Fehler fixen**: Sektion "Offene Fehler & Probleme" — JEDER Eintrag mit Status OFFEN
    MUSS in diesem Lauf gefixt oder zumindest adressiert werden
-3. **Systemzustand aktualisieren**: Nach Aenderungen die Sektion "Systemzustand" updaten
-4. **Erkenntnisse eintragen**: Alles was fuer andere Agents/Skills nuetzlich ist → reinschreiben
-5. **Keine separaten Dateien**: Es gibt NUR dieses eine Whiteboard. Keine FAILURES.md, keine
-   PROCEDURES.md, keine intelligence-backlog.md — alles gehoert in MEMORY.md.
+3. **Benutzer-Feedback lesen**: `~/.claude/projects/C--Users-barwa/memory/feedback_*.md` enthalt
+   direkte Korrekturen und Praeferenzen des Benutzers. Diese MUESSEN gelesen werden, weil:
+   - Feedback-Muster die systemweit gelten → als neue Regel oder Hook implementieren
+   - Wiederholte Korrekturen → deuten auf fehlendes automatisches Verhalten hin
+   - Auf BEIDEN Plattformen relevant: macOS hat eigenes Memory-Verzeichnis, aber der
+     Inhalt muss funktional identisch wirken
+4. **Systemzustand aktualisieren**: Nach Aenderungen die Sektion "Systemzustand" updaten
+5. **Erkenntnisse eintragen**: Alles was fuer andere Agents/Skills nuetzlich ist → reinschreiben
+6. **Keine separaten Wissens-Dateien**: Es gibt NUR dieses eine Whiteboard fuer System-Wissen.
+   Die Benutzer-Feedback-Memories sind die EINZIGE Ausnahme — sie sind an das Whiteboard
+   angeschlossen (siehe Header) und werden von /self-improve mitgelesen.
 
 **Whiteboard-Sektionen:**
 - "Offene Fehler & Probleme" — Fehler aus Hooks, Agents, MCP-Servern, Plugins (PRIORITAET!)
