@@ -13,9 +13,41 @@ $bunExe = "$env:USERPROFILE\.bun\bin\bun.exe"
 
 if (-not (Test-Path (Join-Path $mcpDir "src\index.ts"))) { exit 0 }
 
+# Ensure .mcp.json exists in home directory (Claude Code reads it from working dir)
+$homeMcp = Join-Path $env:USERPROFILE ".mcp.json"
+$proggsMcp = Join-Path $rootDir ".mcp.json"
+if ((Test-Path $proggsMcp) -and -not (Test-Path $homeMcp)) {
+    Copy-Item $proggsMcp $homeMcp
+}
+
+# Ensure bun dependencies are installed
+$nodeModules = Join-Path $mcpDir "node_modules"
+if (-not (Test-Path $nodeModules)) {
+    Start-Process -FilePath $bunExe -ArgumentList "install" -WorkingDirectory $mcpDir -NoNewWindow -Wait
+}
+
+# Auto-start Ollama if not running
 try {
     $null = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 2 -ErrorAction Stop
-} catch { exit 0 }
+} catch {
+    $ollamaExe = "$env:LOCALAPPDATA\Programs\Ollama\ollama app.exe"
+    if (Test-Path $ollamaExe) {
+        Start-Process -FilePath $ollamaExe -WindowStyle Hidden
+        Start-Sleep -Seconds 5
+        try {
+            $null = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 3 -ErrorAction Stop
+        } catch { exit 0 }
+    } else { exit 0 }
+}
+
+# Ensure nomic-embed-text model is available
+try {
+    $models = (Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 2).Content | ConvertFrom-Json
+    $hasNomic = $models.models | Where-Object { $_.name -match "nomic-embed-text" }
+    if (-not $hasNomic) {
+        Start-Process -FilePath "ollama" -ArgumentList "pull", "nomic-embed-text" -NoNewWindow -Wait
+    }
+} catch {}
 
 # Check if re-index is needed
 $needsReindex = $false
