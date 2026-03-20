@@ -1,7 +1,8 @@
 # Shared Knowledge Hub — Zentrales Whiteboard
 
 Das zentrale Nervensystem des Claude Code Systems. JEDE Komponente die hier arbeitet
-(Agents, Skills, Hooks, MCP-Server, Plugins) MUSS hier lesen und schreiben.
+(Agents, Skills, Hooks, Plugins) MUSS hier lesen und schreiben.
+_MCP-Server koennen das Whiteboard nicht lesen (kein Dateisystem-Zugriff). Ihre Ergebnisse werden von den aufrufenden Agents ins Whiteboard geschrieben._
 
 **Zugriff**: Lesen + Schreiben fuer ALLE Komponenten — keine Ausnahmen.
 **Gepflegt von**: /self-improve (raeumte auf, loest offene Fehler, haelt aktuell)
@@ -83,7 +84,7 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 - **Ollama:** v0.18.2, nomic-embed-text Modell, Fenster versteckt (nur Tray)
 - **Quality Gate:** quality-gate Agent fuer kombiniertes test+review+optimize
 - **Agents:** 15 aktiv, alle mit C1 Sentinel-Enforcement (code-reviewer hat memory:project, coder hat isolation:worktree)
-- **Hooks:** 16 Event-Typen (inkl. StopFailure neu), 24 individuelle Hooks — 3 von 12 .ps1 Hooks haben .sh Gegenstuecke, 9 fehlen noch (macOS-Luecke)
+- **Hooks:** 16 Event-Typen (inkl. StopFailure neu), 24 individuelle Hooks — 15 .ps1 (alle deployed), .sh Gegenstuecke im Backup vorhanden (auto-sync bei Session-Start kopiert sie)
 - **Plugins:** 90 Eintraege, 87 aktiv (3 deaktiviert: zeroize-audit, xclaude-plugin, apple-platform-build-tools)
 - **Whiteboard-Anbindung:** Alle Hooks nutzen whiteboard-insert.ps1 (sektionsbasiert) — Add-Content ans Dateiende eliminiert
 - **Session-Scorer:** v3 — schreibt NUR in session-scores.jsonl, NICHT mehr direkt in MEMORY.md
