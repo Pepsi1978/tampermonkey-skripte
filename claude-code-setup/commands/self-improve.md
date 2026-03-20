@@ -3,13 +3,13 @@ name: self-improve
 description: Systematic self-improvement of the Claude Code development environment (~10-30 min, token-intensive). ONLY use when the user explicitly says "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", "update alles", "mach mich besser", "aktualisiere alles", "pruef mein System", "System-Check", or "Umgebung pruefen". NEVER run this proactively or automatically — only on manual user request.
 ---
 
-# Self-Improve v5.16 — Systematic + Creative + Intelligence Environment Optimization
+# Self-Improve v5.17 — Systematic + Creative + Intelligence Environment Optimization
 
 **Before doing ANYTHING, show this overview in German:**
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  Self-Improve Skill v5.16 — Deine Entwicklungsumgebung      ║
+║  Self-Improve Skill v5.17 — Deine Entwicklungsumgebung      ║
 ║  pruefen, aktualisieren, KREATIV ERFORSCHEN                  ║
 ║  Cross-Platform: macOS + Windows                             ║
 ╠══════════════════════════════════════════════════════════════╣
@@ -27,7 +27,8 @@ description: Systematic self-improvement of the Claude Code development environm
 ## Zentrales Whiteboard — Nervensystem des Gesamtsystems (KRITISCH)
 
 Das Whiteboard (`.claude/agent-memory/shared/MEMORY.md`) ist die EINZIGE zentrale Wissensdatei
-fuer ALLE Komponenten des Claude Code Systems: Agents, Skills, Hooks, MCP-Server, Plugins.
+fuer ALLE Komponenten des Claude Code Systems: Agents, Skills, Hooks, Plugins.
+_MCP-Server koennen das Whiteboard nicht lesen (kein Dateisystem-Zugriff). Ihre Ergebnisse werden von den aufrufenden Agents ins Whiteboard geschrieben._
 
 **Self-Improve ist der WICHTIGSTE Konsument dieses Whiteboards:**
 1. **ZUERST lesen**: Vor jeder Aktion das Whiteboard komplett lesen
@@ -241,21 +242,24 @@ Wenn eine dieser Pruefungen fehlschlaegt → als KRITISCHER DEFEKT in MEMORY.md 
 
 Key changes (accumulated through v5.15):
 - **8 researchers** (R1-R8). R6=Creative, R7=Focus Deep-Dive, R8=Intelligence Researcher (NEW v5.11).
-- **Smart-Cache with per-category TTLs (NEW v5.7)**:
+- **Smart-Cache (v5.17 — git-diff-basiert, ersetzt TTL)**:
   Cache location: `~/.claude/self-improve-cache/` (NOT in shared memory — prevents contamination).
-  | Researcher | TTL | Grund |
-  |------------|-----|-------|
-  | R1 Updates | 1 Tag | Claude Code Releases aendern sich schnell |
-  | R2 Plugins | 7 Tage | Marketplace aendert sich selten |
-  | R3 Parallel | 7 Tage | Patterns sind stabil |
-  | R4 Versionen | 3 Tage | Tool-Versionen aendern sich maessig schnell |
+  **Invalidierung**: Pruefen ob sich Dateien unter `~/.claude/agents/`, `~/.claude/hooks/`,
+  `~/.claude/rules/` oder `settings.json` seit dem letzten Cache-Zeitstempel geaendert haben.
+  Wenn ja → betroffene Researcher (R2, R3, R4) neu starten. Wenn nein → gecachte Ergebnisse nutzen.
+  Zeitstempel: `~/.claude/self-improve-cache/.last-cache-time`
+  | Researcher | Cache-Regel | Grund |
+  |------------|-------------|-------|
+  | R1 Updates | IMMER frisch | Claude Code Releases aendern sich schnell |
+  | R2 Plugins | Gecacht (env-diff) | Nur neu wenn Plugins/Settings sich geaendert haben |
+  | R3 Parallel | Gecacht (env-diff) | Nur neu wenn Agents/Hooks sich geaendert haben |
+  | R4 Versionen | Gecacht (env-diff) | Nur neu wenn Tool-Konfiguration sich geaendert hat |
   | R5 Security | IMMER frisch | Sicherheit darf nie gecacht werden |
   | R6 Creative | IMMER frisch | Kreativitaet braucht frische Ideen |
   | R7 Focus | NUR im Focus-Modus | Wird nur bei explizitem Fokus-Thema gestartet |
   | R8 Intelligence | IMMER frisch | Intelligenz-Forschung muss immer aktuell sein |
-  Check: `find ~/.claude/self-improve-cache/R{N}_*.md -mtime -{TTL_DAYS} 2>/dev/null`
-  If cache file exists and within TTL: skip researcher, use cached data.
-  If cache expired or missing: run researcher, save result to cache file.
+  **Thorough-Modus**: Ignoriert Cache komplett — alle Researcher laufen frisch.
+  Details zur Implementierung: siehe [self-improve-ref/researchers.md](self-improve-ref/researchers.md)
 - **R2 self-validates**: Runs `gh api repos/{owner}/{repo}` before recommending plugins.
 - **Spawn ALL active researchers in ONE message block.**
 
@@ -272,7 +276,7 @@ dadurch haengenbleiben. Fuer JEDEN Researcher gilt:
    kleinerem Scope (z.B. nur die wichtigste Teilfrage). Wenn auch der Neustart scheitert → ueberspringen.
 4. **Fehler dokumentieren**: Jeden Absturz sofort ins Whiteboard eintragen (Sektion "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md`):
    ```
-   ## [Datum] Researcher R[N] Absturz
+   ### [Datum] Researcher R[N] Absturz
    - **Agent**: R[N] — [Name]
    - **Fehler**: [Fehlermeldung oder "kein Output nach Timeout"]
    - **Neustart**: [Erfolgreich / Gescheitert]
@@ -510,7 +514,7 @@ For any focus: After checklist-based checks, explore BEYOND the checklist.
 
 **REGEL: Jede Verbesserung muss plattformuebergreifend wirksam werden.**
 Alle Aenderungen die /self-improve macht — neue Hooks, Agents, Skills, Configs, Settings —
-muessen bei GitHub hinterlegt werden, damit andere Plattformen (Windows, Termux) beim
+muessen bei GitHub hinterlegt werden, damit andere Plattformen (Windows, macOS) beim
 naechsten Session-Start automatisch die neuesten Verbesserungen erhalten.
 
 **Was synchronisiert werden muss:**
@@ -596,4 +600,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - **Shell/Terminal-Updates**: Siehe Core Rules oben — IMMER zuletzt, IMMER nach Bestaetigung.
 
 ---
-<!-- Skill Version: v5.16 | Date: 2026-03-20 | Changes: v5.16 — Fixed 3 phantom section references (From Self-Improve→Systemzustand, Intelligence Backlog→Forschung & Intelligence, Pending Admin Actions→Offene Fehler DEFERRED), fixed researcher count (6→8), added R7 to TTL table, fixed sync list (added *.ps1), updated ref file versions to v5.15, fixed Meta-Improve line limit (300→600). Previous: v5.15. -->
+<!-- Skill Version: v5.17 | Date: 2026-03-20 | Changes: v5.17 — Replaced TTL-based cache with git-diff-based invalidation (resolves conflict with researchers.md), removed MCP-Server from Whiteboard-Konsumenten (can't read files), removed Termux platform reference (deinstalled), fixed researcher crash format (##→###), noted file-locking/mutex on MEMORY.md, MEMORY.md symlink eliminates diverging copies. Previous: v5.16. -->
