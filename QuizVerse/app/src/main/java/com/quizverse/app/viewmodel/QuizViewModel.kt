@@ -8,6 +8,7 @@ import com.quizverse.app.util.Constants
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -54,6 +55,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
     private var timerJob: Job? = null
     private var currentDifficulty: Int = 1
     private var isSurvivalMode: Boolean = false
+    private var isDailyChallenge: Boolean = false
 
     // ---- Public API --------------------------------------------------------
 
@@ -72,6 +74,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
     ) {
         currentDifficulty = difficulty
         isSurvivalMode = survival
+        isDailyChallenge = (categoryId == 11 && count == Constants.DAILY_QUESTION_COUNT)
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
@@ -236,14 +239,32 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
 
         viewModelScope.launch {
             // Save the completed session as a high score entry
+            val mode = when {
+                isDailyChallenge -> "daily"
+                isSurvivalMode  -> "survival"
+                else            -> "classic"
+            }
             repository.saveHighScore(
-                mode       = if (isSurvivalMode) "survival" else "classic",
+                mode       = mode,
                 categoryId = state.currentQuestion?.categoryId,
                 score      = state.score,
                 answered   = state.questionIndex + 1,
                 correct    = state.correctAnswers,
                 difficulty = currentDifficulty
             )
+
+            // Record daily challenge completion so the streak increments
+            if (isDailyChallenge) {
+                val today = java.time.LocalDate.now().toString()
+                val progress = repository.getProgress().first()
+                if (progress != null) {
+                    repository.saveDailyChallengeCompletion(
+                        date   = today,
+                        streak = progress.dailyChallengeStreak + 1
+                    )
+                }
+            }
+
             repository.checkAndUnlockAchievements()
         }
 

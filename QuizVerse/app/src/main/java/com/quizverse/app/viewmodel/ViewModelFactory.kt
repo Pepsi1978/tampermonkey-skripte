@@ -38,6 +38,9 @@ class QuizViewModelFactory(
             modelClass.isAssignableFrom(ProfileViewModel::class.java) ->
                 ProfileViewModel(repository) as T
 
+            modelClass.isAssignableFrom(DailyChallengeViewModel::class.java) ->
+                DailyChallengeViewModel(repository) as T
+
             else -> throw IllegalArgumentException(
                 "Unknown ViewModel class: ${modelClass.name}. " +
                 "Add it to QuizViewModelFactory.create()."
@@ -58,8 +61,11 @@ class QuizViewModelFactory(
         @Composable
         fun create(): QuizViewModelFactory {
             val app = LocalContext.current.applicationContext as QuizVerseApp
-            val repository = QuizRepository(app.database)
-            return QuizViewModelFactory(repository)
+            // Use remember to avoid recreating the factory on every recomposition
+            return androidx.compose.runtime.remember {
+                val repository = QuizRepository(app.database)
+                QuizViewModelFactory(repository)
+            }
         }
     }
 }

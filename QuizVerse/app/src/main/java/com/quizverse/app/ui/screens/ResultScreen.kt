@@ -479,8 +479,15 @@ fun ResultScreen(
                         )
                         Button(
                             onClick = {
-                                navController.navigate(Screen.Difficulty.createRoute(categoryId)) {
-                                    popUpTo(Screen.Category.route)
+                                if (categoryId > 0) {
+                                    navController.navigate(Screen.Difficulty.createRoute(categoryId)) {
+                                        popUpTo(Screen.Category.route)
+                                    }
+                                } else {
+                                    // Invalid or missing categoryId — go to category selection
+                                    navController.navigate(Screen.Category.route) {
+                                        popUpTo(Screen.Home.route)
+                                    }
                                 }
                             },
                             modifier = Modifier

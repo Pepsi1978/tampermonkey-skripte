@@ -121,6 +121,7 @@ class DailyChallengeViewModel(private val repository: QuizRepository) : ViewMode
 
         viewModelScope.launch {
             repository.updateStreak(correct)
+            repository.incrementAnswerStats(correct)
             if (correct) {
                 val xpGained = Constants.XP_BASE * dailyDifficulty
                 repository.updateXpAndLevel(xpGained)

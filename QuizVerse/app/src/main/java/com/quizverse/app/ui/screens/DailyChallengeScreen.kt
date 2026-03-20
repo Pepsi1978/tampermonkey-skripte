@@ -30,7 +30,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -62,9 +62,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.quizverse.app.QuizVerseApp
+import com.quizverse.app.data.repository.QuizRepository
 import com.quizverse.app.ui.navigation.Screen
 import com.quizverse.app.ui.theme.Accent
+import com.quizverse.app.viewmodel.QuizViewModelFactory
 import com.quizverse.app.ui.theme.GlassBorder
 import com.quizverse.app.ui.theme.GlassWhite
 import com.quizverse.app.ui.theme.Gold
@@ -80,8 +83,9 @@ private val GreenSuccess = Color(0xFF4CAF50)
 @Composable
 fun DailyChallengeScreen(navController: NavHostController) {
     val app = LocalContext.current.applicationContext as QuizVerseApp
-    val db = app.database
-    val progress by db.progressDao().getProgress().collectAsState(initial = null)
+    val repository = QuizRepository(app.database)
+    val factory = QuizViewModelFactory(repository)
+    val progress by app.database.progressDao().getProgress().collectAsState(initial = null)
     val today = java.time.LocalDate.now().toString()
     val alreadyCompleted = progress?.lastDailyChallengeDate == today
 
@@ -150,7 +154,7 @@ fun DailyChallengeScreen(navController: NavHostController) {
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Zurück",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
@@ -387,7 +391,7 @@ fun DailyChallengeScreen(navController: NavHostController) {
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-                            InfoRow(icon = "🎯", text = "10 zufällige Fragen aus allen Kategorien")
+                            InfoRow(icon = "🎯", text = "15 zufällige Fragen aus allen Kategorien")
                             Spacer(modifier = Modifier.height(8.dp))
                             InfoRow(icon = "⚡", text = "Mittlere Schwierigkeit")
                             Spacer(modifier = Modifier.height(8.dp))
@@ -467,9 +471,9 @@ fun DailyChallengeScreen(navController: NavHostController) {
                                     if (!alreadyCompleted) {
                                         navController.navigate(
                                             Screen.Quiz.createRoute(
-                                                categoryId = -1,
+                                                categoryId = 11,
                                                 difficulty = 2,
-                                                questionCount = 10
+                                                questionCount = 15
                                             )
                                         )
                                     }
