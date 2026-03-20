@@ -8,7 +8,9 @@
 $sentinelDir = $env:TEMP
 $sentinelPattern = "agent-writeback-*.json"
 $memoryFile = Join-Path $env:USERPROFILE ".claude\agent-memory\shared\MEMORY.md"
-$whiteboardFile = $memoryFile  # Same file — errors go to "Offene Fehler & Probleme" section
+
+# Guard: exit gracefully if whiteboard doesn't exist
+if (-not (Test-Path $memoryFile)) { exit 0 }
 
 # Find all sentinel files
 $sentinelFiles = Get-ChildItem -Path $sentinelDir -Filter $sentinelPattern -ErrorAction SilentlyContinue

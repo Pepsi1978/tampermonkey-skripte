@@ -32,7 +32,9 @@ fuer ALLE Komponenten des Claude Code Systems: Agents, Skills, Hooks, MCP-Server
 **Self-Improve ist der WICHTIGSTE Konsument dieses Whiteboards:**
 1. **ZUERST lesen**: Vor jeder Aktion das Whiteboard komplett lesen
 2. **Offene Fehler fixen**: Sektion "Offene Fehler & Probleme" — JEDER Eintrag mit Status OFFEN
-   MUSS in diesem Lauf gefixt oder zumindest adressiert werden
+   MUSS in diesem Lauf gefixt oder zumindest adressiert werden.
+   Fehlerformat im Whiteboard: Quelle, Symptom, Ursache, Betroffene Dateien, Fix-Vorschlag, Status.
+   Der "Fix-Vorschlag" sagt dir konkret was zu tun ist — folge ihm oder verbessere ihn.
 3. **Benutzer-Feedback lesen**: `~/.claude/projects/C--Users-barwa/memory/feedback_*.md` enthalt
    direkte Korrekturen und Praeferenzen des Benutzers. Diese MUESSEN gelesen werden, weil:
    - Feedback-Muster die systemweit gelten → als neue Regel oder Hook implementieren

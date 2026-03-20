@@ -121,4 +121,4 @@ _Noch keine Eintraege._
 **Betroffene Dateien:** `~/.claude/settings.json` (Hook-Timeout), `~/.claude/hooks/reindex-codebase.ps1`
 **Reproduktion:** SessionStart mit veraltetem Index + langsame Ollama-Antwort → Timeout nach 180s
 **Fix-Vorschlag:** Hook-Timeout von 180s auf 300s erhoehen in settings.json. Alternativ: Hook prueft ob bereits eine Indexierung laeuft (Lock-File).
-**Status:** OFFEN
+**Status:** GEFIXT (2026-03-20) — Timeout auf 300s erhoeht
