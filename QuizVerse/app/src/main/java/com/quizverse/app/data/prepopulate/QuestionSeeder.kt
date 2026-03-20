@@ -145,6 +145,7 @@ import com.quizverse.app.data.prepopulate.questions.mixedQuestions
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy1
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert1
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster1
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium1
 import com.quizverse.app.data.prepopulate.questions.musicQuestions
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsEasy2
@@ -719,6 +720,7 @@ object QuestionSeeder {
             mixedQuestionsEasy1() +
             mixedQuestionsExpert1() +
             mixedQuestionsMaster1() +
+            mixedQuestionsMedium1() +
             logicQuestions() +
             logicQuestionsEasy1() +
             logicQuestionsEasy2() +
