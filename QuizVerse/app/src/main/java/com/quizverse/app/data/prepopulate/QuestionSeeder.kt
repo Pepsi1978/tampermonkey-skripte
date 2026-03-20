@@ -312,7 +312,10 @@ import com.quizverse.app.data.prepopulate.questions.logicQuestionsMedium1
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsMedium2
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsMedium3
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsHard1
+import com.quizverse.app.data.prepopulate.questions.logicQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.logicQuestionsHard3
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsExpert1
+import com.quizverse.app.data.prepopulate.questions.logicQuestionsExpert4
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsMaster1
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestions
 import com.quizverse.app.data.prepopulate.questions.herthaBscQuestionsEasy2
@@ -698,6 +701,7 @@ object QuestionSeeder {
             logicQuestionsMedium3() +
             logicQuestionsHard1() +
             logicQuestionsExpert1() +
+            logicQuestionsExpert4() +
             logicQuestionsMaster1() +
             herthaBscQuestions() +
             herthaBscQuestionsEasy2() +
