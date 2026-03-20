@@ -10,8 +10,7 @@ namespace TerminalVoiceOverlay.Services
         private readonly string[] _terminalProcessNames;
 
         private Win32.WinEventDelegate? _winEventDelegate;
-        private IntPtr _foregroundHookHandle;
-        private IntPtr _minimizeHookHandle;
+        private IntPtr _hookHandle;
         private IntPtr _lastTerminalHwnd;
 
         public event Action<IntPtr>? TerminalActivated;
@@ -29,8 +28,7 @@ namespace TerminalVoiceOverlay.Services
             // Must store delegate in a field to prevent GC
             _winEventDelegate = OnWinEvent;
 
-            // Hook foreground changes
-            _foregroundHookHandle = Win32.SetWinEventHook(
+            _hookHandle = Win32.SetWinEventHook(
                 Win32.EVENT_SYSTEM_FOREGROUND,
                 Win32.EVENT_SYSTEM_FOREGROUND,
                 IntPtr.Zero,
@@ -38,20 +36,8 @@ namespace TerminalVoiceOverlay.Services
                 0, 0,
                 Win32.WINEVENT_OUTOFCONTEXT | Win32.WINEVENT_SKIPOWNPROCESS);
 
-            if (_foregroundHookHandle == IntPtr.Zero)
-                Console.WriteLine("TerminalWatcher: SetWinEventHook (foreground) failed");
-
-            // Hook minimize/restore events to detect terminal minimized/restored
-            _minimizeHookHandle = Win32.SetWinEventHook(
-                Win32.EVENT_SYSTEM_MINIMIZESTART,
-                Win32.EVENT_SYSTEM_MINIMIZEEND,
-                IntPtr.Zero,
-                _winEventDelegate,
-                0, 0,
-                Win32.WINEVENT_OUTOFCONTEXT | Win32.WINEVENT_SKIPOWNPROCESS);
-
-            if (_minimizeHookHandle == IntPtr.Zero)
-                Console.WriteLine("TerminalWatcher: SetWinEventHook (minimize) failed");
+            if (_hookHandle == IntPtr.Zero)
+                Console.WriteLine("TerminalWatcher: SetWinEventHook fehlgeschlagen");
 
             // Check initial state
             CheckForegroundWindow(Win32.GetForegroundWindow());
@@ -60,30 +46,9 @@ namespace TerminalVoiceOverlay.Services
         private void OnWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd,
             int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            switch (eventType)
+            if (eventType == Win32.EVENT_SYSTEM_FOREGROUND)
             {
-                case Win32.EVENT_SYSTEM_FOREGROUND:
-                    CheckForegroundWindow(hwnd);
-                    break;
-
-                case Win32.EVENT_SYSTEM_MINIMIZESTART:
-                    // A window was minimized — if it's our terminal, hide the overlay
-                    if (hwnd == _lastTerminalHwnd)
-                    {
-                        Console.WriteLine("TerminalWatcher: terminal minimized");
-                        Application.Current?.Dispatcher.Invoke(() => TerminalDeactivated?.Invoke());
-                    }
-                    break;
-
-                case Win32.EVENT_SYSTEM_MINIMIZEEND:
-                    // A window was restored — if it's a terminal, show the overlay
-                    if (IsTerminalWindow(hwnd))
-                    {
-                        _lastTerminalHwnd = hwnd;
-                        Console.WriteLine("TerminalWatcher: terminal restored");
-                        Application.Current?.Dispatcher.Invoke(() => TerminalActivated?.Invoke(hwnd));
-                    }
-                    break;
+                CheckForegroundWindow(hwnd);
             }
         }
 
@@ -98,31 +63,8 @@ namespace TerminalVoiceOverlay.Services
             }
             else
             {
-                // KEY FIX: Only hide the overlay if the terminal window is gone or minimized.
-                // If the terminal is still visible (just not foreground), keep the overlay visible.
-                if (IsTerminalStillVisible())
-                {
-                    // Terminal is still visible on screen — keep overlay shown
-                    Console.WriteLine("TerminalWatcher: foreground changed but terminal still visible — keeping overlay");
-                    return;
-                }
-
                 Application.Current?.Dispatcher.Invoke(() => TerminalDeactivated?.Invoke());
             }
-        }
-
-        /// <summary>
-        /// Checks if the last known terminal window is still visible and not minimized.
-        /// </summary>
-        private bool IsTerminalStillVisible()
-        {
-            if (_lastTerminalHwnd == IntPtr.Zero)
-                return false;
-
-            // Window must exist, be visible, and not be minimized
-            return Win32.IsWindow(_lastTerminalHwnd)
-                && Win32.IsWindowVisible(_lastTerminalHwnd)
-                && !Win32.IsIconic(_lastTerminalHwnd);
         }
 
         private bool IsTerminalWindow(IntPtr hwnd)
@@ -176,15 +118,10 @@ namespace TerminalVoiceOverlay.Services
 
         public void Dispose()
         {
-            if (_foregroundHookHandle != IntPtr.Zero)
+            if (_hookHandle != IntPtr.Zero)
             {
-                Win32.UnhookWinEvent(_foregroundHookHandle);
-                _foregroundHookHandle = IntPtr.Zero;
-            }
-            if (_minimizeHookHandle != IntPtr.Zero)
-            {
-                Win32.UnhookWinEvent(_minimizeHookHandle);
-                _minimizeHookHandle = IntPtr.Zero;
+                Win32.UnhookWinEvent(_hookHandle);
+                _hookHandle = IntPtr.Zero;
             }
         }
     }
