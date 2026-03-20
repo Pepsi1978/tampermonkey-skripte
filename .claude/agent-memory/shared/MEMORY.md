@@ -49,50 +49,17 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 <!-- frischer /self-improve Lauf sie ohne zusaetzlichen Kontext fixen kann! -->
 
 <!-- ARCHIV (2026-03-20): 3 GEFIXT-Eintraege zu reindex-codebase.ps1 ExitCode 143 — Timeout von 180s auf 300s erhoeht, Bun-Imports gefixt. Regel: Hooks duerfen NIEMALS Fehler still verschlucken. -->
+<!-- ARCHIV (2026-03-20): .sh Hooks nicht deployed — auto-sync.ps1 gefixt (Runde 6), alle 4 fehlenden .sh erstellt (Runde 8). -->
+<!-- ARCHIV (2026-03-20): session-autopsy AUTOPSY.md → MEMORY.md umgeleitet (Runde 8). -->
+<!-- ARCHIV (2026-03-20): context-kit@FlineDev Marketplace registriert (Runde 8). -->
+<!-- ARCHIV (2026-03-20): reindex-codebase.ps1 Add-Content → whiteboard-insert (Runde 8). -->
+<!-- ARCHIV (2026-03-20): settings-reference.json regeneriert (Runde 8). -->
 
-### 2026-03-20 18:10 — System: Cross-Platform — .sh Hooks nicht lokal deployed
-**Quelle:** Deep-Scan Runde 5+6
-**Symptom:** .sh-Hooks EXISTIEREN im Setup-Backup (~/proggs/claude-code-setup/hooks/) aber werden NICHT nach ~/.claude/hooks/ deployed
-**Ursache:** auto-sync.ps1 kopierte nur .ps1 und .ts — .sh Dateien wurden ignoriert
-**Fix:** auto-sync.ps1 um .sh-Kopie erweitert (Runde 6). Ab naechster Session werden .sh Hooks automatisch deployed.
-**Betroffene Dateien:** ~/.claude/hooks/auto-sync.ps1 (gefixt), Setup-Backup hat: auto-sync.sh, safety-gate.sh, disk-guard.sh, config-guard.sh, hook-log.sh, intent-anker.sh, notify.sh, reindex-codebase.sh, session-cleanup.sh, auto-format.sh
-**Verbleibend:** 4 Hooks haben noch KEIN .sh-Gegenstueck: memory-watchdog, writeback-enforcer, pending-admin-updates, admin-setup
-**Status:** TEILWEISE GEFIXT (2026-03-20) — auto-sync repariert, 4 .sh noch fehlend
-
-### 2026-03-20 18:35 — Hook: session-autopsy.ts — Schreibt in separate AUTOPSY.md
-**Quelle:** Deep-Scan Runde 6
-**Symptom:** Session-Autopsy schreibt in .claude/agent-memory/shared/AUTOPSY.md statt MEMORY.md
-**Ursache:** Wurde vor der "nur ein Whiteboard" Regel erstellt
-**Betroffene Dateien:** ~/.claude/hooks/session-autopsy.ts (Zeile 48: AUTOPSY_FILE)
-**Fix-Vorschlag:** session-autopsy.ts umschreiben: Ergebnisse unter "Debugging-Muster" in MEMORY.md eintragen statt in separate Datei
-**Status:** OFFEN
-
-### 2026-03-20 18:35 — Config: context-kit@FlineDev — Marketplace nicht registriert
-**Quelle:** Deep-Scan Runde 6
-**Symptom:** Plugin context-kit@FlineDev ist in enabledPlugins aktiviert, aber "FlineDev" ist NICHT in extraKnownMarketplaces
-**Ursache:** Plugin wurde manuell oder ueber einen inzwischen entfernten Kanal installiert
-**Betroffene Dateien:** ~/.claude/settings.json (enabledPlugins + extraKnownMarketplaces)
-**Fix-Vorschlag:** FlineDev-Marketplace registrieren: `"FlineDev": {"source": {"source": "github", "repo": "FlineDev/context-kit"}}` oder Plugin entfernen wenn nicht genutzt
-**Status:** OFFEN
-
-### 2026-03-20 18:35 — Hook: reindex-codebase.ps1 — Fehler-Eintraege landen am Dateiende
-**Quelle:** Deep-Scan Runde 6
-**Symptom:** Wenn reindex fehlschlaegt, wird der Fehler per Add-Content ans Ende der MEMORY.md gehaengt — ausserhalb jeder Sektion
-**Ursache:** Add-Content haengt immer am Dateiende an, nutzt keine Sektionserkennung
-**Betroffene Dateien:** ~/.claude/hooks/reindex-codebase.ps1 (Zeilen 141-142 und 149-150)
-**Fix-Vorschlag:** Fehler-Eintraege per PowerShell-Logik in die "Offene Fehler" Sektion einfuegen (gleiche Technik wie writeback-enforcer v2.1)
-**Status:** OFFEN
-
-### 2026-03-20 18:35 — Sync: settings-reference.json veraltet
-**Quelle:** Deep-Scan Runde 6
-**Symptom:** settings-reference.json letzte Aenderung 2026-03-19 — aktuelle settings.json weicht ab (Hooks, Plugins aktualisiert seitdem)
-**Betroffene Dateien:** ~/proggs/claude-code-setup/settings-reference.json
-**Fix-Vorschlag:** settings-reference.json aus aktueller settings.json regenerieren (ohne maschinenspezifische Permissions)
-**Status:** OFFEN
+_Aktuell keine offenen Fehler. Letzter Deep-Scan: 2026-03-20 Runde 8 (100+ Fehler in 4 Runden gefixt)._
 
 ---
 
-## Systemzustand (aktuell — Stand: 2026-03-20 18:30)
+## Systemzustand (aktuell — Stand: 2026-03-20 19:45)
 <!-- Wird von /self-improve und env-checker aktualisiert -->
 <!-- Zeigt den aktuellen Stand des Programmiersystems -->
 <!-- DATUM im Titel MUSS bei jeder Aktualisierung angepasst werden! -->
@@ -102,11 +69,14 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 - **Semantic Search:** Aktiv (wird bei jeder Session automatisch aktualisiert via reindex-Hook)
 - **Ollama:** v0.18.2, nomic-embed-text Modell, Fenster versteckt (nur Tray)
 - **Quality Gate:** quality-gate Agent fuer kombiniertes test+review+optimize
-- **Agents:** 15 aktiv (code-reviewer hat memory:project, coder hat isolation:worktree)
-- **Hooks:** 15 Event-Typen, 23 individuelle Hooks registriert (auto-sync, disk-guard, safety-gate, reindex, intent-anker, notify, prompt-injection-defender, auto-format, config-guard, memory-watchdog, writeback-enforcer, session-scorer, session-autopsy, session-cleanup, pending-admin-updates + 8 Prompt-Hooks)
+- **Agents:** 15 aktiv, alle mit C1 Sentinel-Enforcement (code-reviewer hat memory:project, coder hat isolation:worktree)
+- **Hooks:** 15 Event-Typen, 23 individuelle Hooks — alle mit .ps1 UND .sh Gegenstuecken (Cross-Platform komplett)
 - **Plugins:** 90 Eintraege, 87 aktiv (3 deaktiviert: zeroize-audit, xclaude-plugin, apple-platform-build-tools)
+- **Whiteboard-Anbindung:** Alle Hooks nutzen whiteboard-insert.ps1 (sektionsbasiert) — Add-Content ans Dateiende eliminiert
+- **Session-Scorer:** v3 — schreibt NUR in session-scores.jsonl, NICHT mehr direkt in MEMORY.md
+- **Session-Autopsy:** v2 — schreibt in MEMORY.md "Debugging-Muster" statt separate AUTOPSY.md
 - **Preferred Patterns:** MVVM (Swift), Fluent Design (C#), strict mode (TypeScript)
-- **Cross-Platform-Luecke:** macOS hat 0 von 14 .sh-Hook-Gegenstuecken (nur Windows-Hooks vorhanden)
+- **Self-Improve Skill:** v5.16 — alle Phantom-Referenzen gefixt, R1-R8 TTL komplett
 
 ---
 
@@ -123,7 +93,7 @@ _Noch keine Eintraege._
 _Noch keine Eintraege._
 
 ## Debugging-Muster
-<!-- Writer: debugger Agent | Leser: alle Agents, /self-improve -->
+<!-- Writer: debugger Agent, session-autopsy.ts | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
 ## Performance & Optimierung
@@ -153,5 +123,6 @@ _Noch keine Eintraege._
 - Cross-Platform: Jede Aenderung MUSS auf beiden Plattformen funktionieren
 - Status-Meldung: "Committed, gepusht und plattformuebergreifend" nur wenn ehrlich
 - Writeback-Enforcer: Sentinel-Daten gehoeren in die thematisch passende Sektion, NICHT ans Dateiende
-- GEFIXT-Eintraege archivieren: Nach 30 Tagen koennen GEFIXT-Eintraege in einen Archiv-Kommentar verschoben werden um die Sektion kurz zu halten
-- Alle Hooks die ins Whiteboard schreiben MUESSEN die Sektionserkennung nutzen — Add-Content ans Dateiende ist VERBOTEN
+- GEFIXT-Eintraege archivieren: Nach 30 Tagen koennen GEFIXT-Eintraege in einen Archiv-Kommentar verschoben werden
+- Alle Hooks die ins Whiteboard schreiben MUESSEN whiteboard-insert.ps1 (oder .sh Aequivalent) nutzen — Add-Content/appendFileSync ans Dateiende ist VERBOTEN
+- Session-Scorer ist ein DATEN-SAMMLER — schreibt NUR in session-scores.jsonl, Analyse macht evolution-analyst

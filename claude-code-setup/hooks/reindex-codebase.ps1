@@ -3,6 +3,9 @@
 # Uses pointer-based DB switching: writes to index-N.db, then updates current.txt.
 # The old DB stays untouched and available for searches during the entire reindex.
 # Old DBs are cleaned up on a best-effort basis (skips locked files on Windows).
+# v2: Uses whiteboard-insert.ps1 for section-based error logging (Add-Content is FORBIDDEN).
+
+. "$PSScriptRoot/whiteboard-insert.ps1"
 
 $rootDir = "$env:USERPROFILE\proggs"
 $dbDir = Join-Path $rootDir ".code-search"
@@ -140,19 +143,14 @@ for (const f of readdirSync(dbDir)) {
         Set-Content -Path $stampFile -Value (Get-Date -Format "o")
         Write-Output "Reindex-Hook: Codebase neu indexiert ($newDbName, pointer-swap)."
     } else {
-        $whiteboardFile = Join-Path $rootDir ".claude\agent-memory\shared\MEMORY.md"
-        if (Test-Path $whiteboardFile) {
-            $exitInfo = if ($process.ExitCode -eq 143) { "SIGTERM — Prozess vom 300s-Timeout gekillt" } else { "Unbekannter Fehler (ExitCode: $($process.ExitCode))" }
-            $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: reindex-codebase.ps1 — Indexierung ExitCode $($process.ExitCode)`n**Quelle:** Hook: reindex-codebase.ps1 (SessionStart, async)`n**Symptom:** Semantische Indexierung fehlgeschlagen mit ExitCode $($process.ExitCode) ($exitInfo)`n**Ursache:** $exitInfo. Hook-Timeout in settings.json ist 180s, bei 599+ Dateien und kaltem Ollama kann das knapp werden.`n**Betroffene Dateien:** ~/.claude/settings.json (Hook-Timeout), ~/.claude/hooks/reindex-codebase.ps1`n**Fix-Vorschlag:** Hook-Timeout von 180s auf 300s erhoehen. Alternativ Lock-File um parallele Laeufe zu verhindern.`n**Status:** OFFEN"
-            Add-Content -Path $whiteboardFile -Value $entry
-        }
+        $exitInfo = if ($process.ExitCode -eq 143) { "SIGTERM — Prozess vom 300s-Timeout gekillt" } else { "Unbekannter Fehler (ExitCode: $($process.ExitCode))" }
+        $entry = "### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: reindex-codebase.ps1 — ExitCode $($process.ExitCode): $exitInfo — Status: OFFEN"
+        Insert-WhiteboardEntry -Section "Offene Fehler & Probleme" -Entry $entry
         Write-Output "Reindex-Hook: FEHLER — Bun ExitCode $($process.ExitCode). Siehe Shared Whiteboard."
     }
 } catch {
-    $whiteboardFile = Join-Path $rootDir ".claude\agent-memory\shared\MEMORY.md"
-    if (Test-Path $whiteboardFile) {
-        $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: reindex-codebase.ps1 — Exception`n**Quelle:** Hook: reindex-codebase.ps1 (SessionStart, async)`n**Symptom:** PowerShell-Exception: $($_.Exception.Message)`n**Ursache:** $($_.Exception.GetType().Name) in Zeile $($_.InvocationInfo.ScriptLineNumber): $($_.InvocationInfo.Line.Trim())`n**Betroffene Dateien:** ~/.claude/hooks/reindex-codebase.ps1`n**Fix-Vorschlag:** Exception-Ursache in der genannten Zeile beheben.`n**Status:** OFFEN"
-        Add-Content -Path $whiteboardFile -Value $entry
-    }
-    Write-Output "Reindex-Hook: EXCEPTION — $($_.Exception.Message). Siehe Shared Whiteboard."
+    $errMsg = $_.Exception.Message -replace "`r?`n", " "
+    $entry = "### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: reindex-codebase.ps1 — Exception: $errMsg — Status: OFFEN"
+    Insert-WhiteboardEntry -Section "Offene Fehler & Probleme" -Entry $entry
+    Write-Output "Reindex-Hook: EXCEPTION — $errMsg. Siehe Shared Whiteboard."
 }
