@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +25,8 @@ namespace TerminalVoiceOverlay
             if (e.Args.Length > 0 && e.Args[0] == "--run")
             {
                 // Overlay mode: run the actual UI
-                StartOverlay();
+                var watchdogPid = GetArgValue(e.Args, "--watchdog-pid");
+                StartOverlay(watchdogPid);
             }
             else
             {
@@ -53,16 +55,18 @@ namespace TerminalVoiceOverlay
             {
                 while (true)
                 {
-                    Console.WriteLine("Watchdog: starting overlay...");
-                    var proc = Process.Start(new ProcessStartInfo
-                    {
-                        FileName = Environment.ProcessPath!,
-                        Arguments = "--run",
-                        UseShellExecute = false
-                    });
+                    // Find existing overlay or start a new one
+                    var overlay = FindOverlayProcess() ?? StartOverlayProcess();
 
-                    proc?.WaitForExit();
-                    var exitCode = proc?.ExitCode ?? -1;
+                    if (overlay == null)
+                    {
+                        Thread.Sleep(2000);
+                        continue;
+                    }
+
+                    Console.WriteLine($"Watchdog: monitoring overlay PID {overlay.Id}");
+                    overlay.WaitForExit();
+                    var exitCode = overlay.ExitCode;
 
                     if (exitCode == 0)
                     {
@@ -80,9 +84,27 @@ namespace TerminalVoiceOverlay
             });
         }
 
+        private Process? FindOverlayProcess()
+        {
+            var myPid = Environment.ProcessId;
+            return Process.GetProcessesByName("TerminalVoiceOverlay")
+                .FirstOrDefault(p => p.Id != myPid);
+        }
+
+        private Process? StartOverlayProcess()
+        {
+            Console.WriteLine("Watchdog: starting overlay...");
+            return Process.Start(new ProcessStartInfo
+            {
+                FileName = Environment.ProcessPath!,
+                Arguments = $"--run --watchdog-pid={Environment.ProcessId}",
+                UseShellExecute = false
+            });
+        }
+
         // ── Overlay mode: the actual voice overlay with UI ──
 
-        private void StartOverlay()
+        private void StartOverlay(int watchdogPid)
         {
             // Catch unhandled exceptions for logging
             DispatcherUnhandledException += (_, e) =>
@@ -103,17 +125,44 @@ namespace TerminalVoiceOverlay
                     "TerminalVoiceOverlay — Konfigurationsfehler",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                Environment.Exit(1); // Error — watchdog will restart
+                Environment.Exit(1);
                 return;
             }
 
-            // Create overlay window (starts hidden)
             _overlayWindow = new OverlayWindow(config);
-
-            // Setup tray icon
             SetupTrayIcon();
 
-            Console.WriteLine("TerminalVoiceOverlay gestartet (overlay mode)");
+            // Monitor the watchdog — restart it if it dies
+            if (watchdogPid > 0)
+                MonitorWatchdog(watchdogPid);
+
+            Console.WriteLine($"TerminalVoiceOverlay gestartet (overlay mode, watchdog PID={watchdogPid})");
+        }
+
+        private void MonitorWatchdog(int watchdogPid)
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(3000);
+                    try
+                    {
+                        Process.GetProcessById(watchdogPid);
+                    }
+                    catch
+                    {
+                        // Watchdog is gone — restart it
+                        Console.WriteLine("Overlay: watchdog died, restarting...");
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = Environment.ProcessPath!,
+                            UseShellExecute = true
+                        });
+                        break;
+                    }
+                }
+            });
         }
 
         private void SetupTrayIcon()
@@ -143,6 +192,13 @@ namespace TerminalVoiceOverlay
         {
             _trayIcon?.Dispose();
             base.OnExit(e);
+        }
+
+        private static int GetArgValue(string[] args, string key)
+        {
+            var prefix = key + "=";
+            var arg = args.FirstOrDefault(a => a.StartsWith(prefix));
+            return arg != null && int.TryParse(arg.Substring(prefix.Length), out var val) ? val : 0;
         }
     }
 }
