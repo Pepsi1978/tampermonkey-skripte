@@ -267,7 +267,7 @@ fun dortmundQuestionsMedium5(): List<Question> = listOf(
         correctAnswer = 2,
         explanation = "Seit 2005 trägt das Stadion den Namen Signal Iduna Park nach dem Versicherungsunternehmen Signal Iduna, das die Namensrechte erworben hat.",
         difficulty = 2,
-        funFact = "Der ursprüngliche Name „Westfalenstadion" bleibt im Volksmund und in der UEFA-Nomenklatur für internationale Spiele erhalten."
+        funFact = "Der ursprüngliche Name 'Westfalenstadion' bleibt im Volksmund und in der UEFA-Nomenklatur für internationale Spiele erhalten."
     ),
 
     Question(

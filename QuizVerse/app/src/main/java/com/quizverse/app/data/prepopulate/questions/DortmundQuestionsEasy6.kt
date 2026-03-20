@@ -155,7 +155,7 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
         answerC = "Schwarz und Gelb",
         answerD = "Blau und Gelb",
         correctAnswer = 2,
-        explanation = "Borussia Dortmund trägt traditionell Schwarz und Gelb, weshalb der Verein auch „Die Schwarz-Gelben" oder „Die Borussen" genannt wird.",
+        explanation = "Borussia Dortmund trägt traditionell Schwarz und Gelb, weshalb der Verein auch 'Die Schwarz-Gelben' oder 'Die Borussen' genannt wird.",
         difficulty = 1,
         funFact = "Die Vereinsfarben entstammen den Farben des Schulatlasses, der damals von den Gründern benutzt wurde."
     ),
@@ -167,7 +167,7 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
         answerC = "Der BVB",
         answerD = "Die Fohlen",
         correctAnswer = 2,
-        explanation = "Borussia Dortmund ist weithin als BVB bekannt — kurz für Ballspiel-Verein Borussia. Daneben heißt der Verein auch „Die Schwarz-Gelben".",
+        explanation = "Borussia Dortmund ist weithin als BVB bekannt — kurz für Ballspiel-Verein Borussia. Daneben heißt der Verein auch 'Die Schwarz-Gelben'.",
         difficulty = 1,
         funFact = "Borussia ist das lateinische Wort für Preußen."
     ),
@@ -275,9 +275,9 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
         answerC = "Die Rot-Weißen",
         answerD = "Die Adler",
         correctAnswer = 0,
-        explanation = "Die Spieler von Borussia Dortmund werden als „Die Borussen" bezeichnet, abgeleitet vom lateinischen Wort für Preußen.",
+        explanation = "Die Spieler von Borussia Dortmund werden als 'Die Borussen' bezeichnet, abgeleitet vom lateinischen Wort für Preußen.",
         difficulty = 1,
-        funFact = "Auch Borussia Mönchengladbach heißt „Borussen" — bei Derbys zwischen beiden Klubs muss man daher präzisieren."
+        funFact = "Auch Borussia Mönchengladbach heißt 'Borussen' — bei Derbys zwischen beiden Klubs muss man daher präzisieren."
     ),
     Question(
         categoryId = 14,
@@ -299,7 +299,7 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
         answerC = "Der Kessel",
         answerD = "Das Wohnzimmer",
         correctAnswer = 1,
-        explanation = "Die Südtribüne des Signal Iduna Park ist als „Gelbe Wand" weltberühmt — sie ist die größte Stehplatztribüne Europas.",
+        explanation = "Die Südtribüne des Signal Iduna Park ist als 'Gelbe Wand' weltberühmt — sie ist die größte Stehplatztribüne Europas.",
         difficulty = 1,
         funFact = "Auf der Gelben Wand finden bei Heimspielen über 24.000 Zuschauer stehend Platz."
     ),
@@ -407,9 +407,9 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
         answerC = "Schwarz-Gelb für immer",
         answerD = "Borussia bis in den Tod",
         correctAnswer = 1,
-        explanation = "Das offizielle Vereinsmotto von Borussia Dortmund lautet „Echte Liebe" — es steht für die leidenschaftliche Verbindung von Fans und Verein.",
+        explanation = "Das offizielle Vereinsmotto von Borussia Dortmund lautet 'Echte Liebe' — es steht für die leidenschaftliche Verbindung von Fans und Verein.",
         difficulty = 1,
-        funFact = "Das Motto „Echte Liebe" wurde Teil einer großen Marketingkampagne und ist heute auf dem Vereinswappen zu sehen."
+        funFact = "Das Motto 'Echte Liebe' wurde Teil einer großen Marketingkampagne und ist heute auf dem Vereinswappen zu sehen."
     ),
     Question(
         categoryId = 14,
@@ -473,7 +473,7 @@ fun dortmundQuestionsEasy6(): List<Question> = listOf(
     ),
     Question(
         categoryId = 14,
-        questionText = "Welcher BVB-Spieler war bekannt als „Der Biene Maja der Bundesliga" wegen seiner blonden Haare und Torjubel?",
+        questionText = "Welcher BVB-Spieler war bekannt als 'Der Biene Maja der Bundesliga' wegen seiner blonden Haare und Torjubel?",
         answerA = "Stefan Reuter",
         answerB = "Karl-Heinz Riedle",
         answerC = "Stephane Chapuisat",

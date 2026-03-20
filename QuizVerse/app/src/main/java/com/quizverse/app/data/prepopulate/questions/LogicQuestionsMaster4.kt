@@ -126,7 +126,7 @@ fun logicQuestionsMaster4(): List<Question> = listOf(
     Question(
         categoryId = 12,
         questionText = "Wie löst Alfred Tarski das Lügner-Paradoxon durch seine Theorie der Wahrheit?",
-        answerA = "Tarski unterscheidet streng zwischen Objektsprache und Metasprache: 'Schnee ist weiß' ist ein Objekt-Satz, '"Schnee ist weiß" ist wahr' ist ein Meta-Satz. Der Wahrheitsprädikat T darf nur in der Metasprache auf Sätze der Objektsprache angewendet werden — Selbstanwendung ist syntaktisch verboten",
+        answerA = "Tarski unterscheidet streng zwischen Objektsprache und Metasprache: 'Schnee ist weiß' ist ein Objekt-Satz, die Aussage 'Schnee ist weiß ist wahr' ist ein Meta-Satz. Der Wahrheitsprädikat T darf nur in der Metasprache auf Sätze der Objektsprache angewendet werden — Selbstanwendung ist syntaktisch verboten",
         answerB = "Tarski zeigt, dass das Lügner-Paradoxon keinen echten Widerspruch erzeugt, wenn man dreiwertige Logik verwendet",
         answerC = "Tarski beweist, dass das Lügner-Paradoxon eine falsche Aussage ist",
         answerD = "Tarski eliminiert das Wahrheitsprädikat aus der Logik vollständig",
