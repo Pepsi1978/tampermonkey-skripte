@@ -109,3 +109,10 @@ After producing your verdict, you MUST update `.claude/agent-memory/shared/MEMOR
 - Warnings alone do NOT cause FAIL — but list them
 - Communication: German. Code references: English.
 - Do NOT fix issues yourself — only report them
+
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-quality-gate.json`:
+```json
+{"agent": "quality-gate", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: PASS/FAIL + Anzahl Issues]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.

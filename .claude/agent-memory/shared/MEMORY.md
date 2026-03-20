@@ -26,8 +26,8 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 - **Session-Scores**: `~/.claude/session-scores.jsonl`
   Qualitaets-Trends ueber Sessions hinweg. /self-improve liest diese fuer Trend-Analyse
   und IQ-Score. Wenn Qualitaet sinkt → Ursache im Whiteboard suchen.
-- **Self-Improve Cache**: `~/.claude/self-improve-cache/R1-R5_*.md`
-  Gecachte Researcher-Ergebnisse mit TTL. Veraltet? → /self-improve aktualisiert sie.
+- **Self-Improve Cache**: `~/.claude/self-improve-cache/R*_*.md`
+  Gecachte Researcher-Ergebnisse (R1-R8) mit TTL. Veraltet? → /self-improve aktualisiert sie.
 - **Claude-Mem Observations**: `~/.claude/homunculus/projects/*/observations.jsonl`
   Cross-Session-Wissen vom claude-mem Plugin. Enthaelt Beobachtungen aus frueheren Sessions
   die fuer aktuelle Arbeit relevant sein koennen.
@@ -65,19 +65,52 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 **Hinweis:** Dritter automatischer Eintrag vom selben Problem. Timeout bereits auf 300s erhoeht, wirkt ab naechster Session.
 **Status:** GEFIXT (2026-03-20) — Duplikat, alle drei Eintraege betreffen denselben Bug
 
-### 2026-03-20 18:10 — System: Cross-Platform — KEINE .sh Hook-Gegenstuecke
-**Quelle:** Deep-Scan Runde 5
-**Symptom:** 14 PowerShell-Hooks vorhanden, aber KEIN einziges .sh-Gegenstueck fuer macOS
-**Ursache:** Hooks wurden nur fuer Windows erstellt, macOS-Aequivalente nie nachgezogen
-**Betroffene Dateien:** ~/.claude/hooks/ (alle 14 .ps1 Dateien brauchen .sh Gegenstuecke)
-**Fix-Vorschlag:** Fuer jeden .ps1-Hook ein funktionsaequivalentes .sh-Script erstellen. Prioritaet: auto-sync.sh, safety-gate.sh, memory-watchdog.sh, writeback-enforcer.sh (diese 4 sind systemkritisch)
+### 2026-03-20 18:10 — System: Cross-Platform — .sh Hooks nicht lokal deployed
+**Quelle:** Deep-Scan Runde 5+6
+**Symptom:** .sh-Hooks EXISTIEREN im Setup-Backup (~/proggs/claude-code-setup/hooks/) aber werden NICHT nach ~/.claude/hooks/ deployed
+**Ursache:** auto-sync.ps1 kopierte nur .ps1 und .ts — .sh Dateien wurden ignoriert
+**Fix:** auto-sync.ps1 um .sh-Kopie erweitert (Runde 6). Ab naechster Session werden .sh Hooks automatisch deployed.
+**Betroffene Dateien:** ~/.claude/hooks/auto-sync.ps1 (gefixt), Setup-Backup hat: auto-sync.sh, safety-gate.sh, disk-guard.sh, config-guard.sh, hook-log.sh, intent-anker.sh, notify.sh, reindex-codebase.sh, session-cleanup.sh, auto-format.sh
+**Verbleibend:** 4 Hooks haben noch KEIN .sh-Gegenstueck: memory-watchdog, writeback-enforcer, pending-admin-updates, admin-setup
+**Status:** TEILWEISE GEFIXT (2026-03-20) — auto-sync repariert, 4 .sh noch fehlend
+
+### 2026-03-20 18:35 — Hook: session-autopsy.ts — Schreibt in separate AUTOPSY.md
+**Quelle:** Deep-Scan Runde 6
+**Symptom:** Session-Autopsy schreibt in .claude/agent-memory/shared/AUTOPSY.md statt MEMORY.md
+**Ursache:** Wurde vor der "nur ein Whiteboard" Regel erstellt
+**Betroffene Dateien:** ~/.claude/hooks/session-autopsy.ts (Zeile 48: AUTOPSY_FILE)
+**Fix-Vorschlag:** session-autopsy.ts umschreiben: Ergebnisse unter "Debugging-Muster" in MEMORY.md eintragen statt in separate Datei
+**Status:** OFFEN
+
+### 2026-03-20 18:35 — Config: context-kit@FlineDev — Marketplace nicht registriert
+**Quelle:** Deep-Scan Runde 6
+**Symptom:** Plugin context-kit@FlineDev ist in enabledPlugins aktiviert, aber "FlineDev" ist NICHT in extraKnownMarketplaces
+**Ursache:** Plugin wurde manuell oder ueber einen inzwischen entfernten Kanal installiert
+**Betroffene Dateien:** ~/.claude/settings.json (enabledPlugins + extraKnownMarketplaces)
+**Fix-Vorschlag:** FlineDev-Marketplace registrieren: `"FlineDev": {"source": {"source": "github", "repo": "FlineDev/context-kit"}}` oder Plugin entfernen wenn nicht genutzt
+**Status:** OFFEN
+
+### 2026-03-20 18:35 — Hook: reindex-codebase.ps1 — Fehler-Eintraege landen am Dateiende
+**Quelle:** Deep-Scan Runde 6
+**Symptom:** Wenn reindex fehlschlaegt, wird der Fehler per Add-Content ans Ende der MEMORY.md gehaengt — ausserhalb jeder Sektion
+**Ursache:** Add-Content haengt immer am Dateiende an, nutzt keine Sektionserkennung
+**Betroffene Dateien:** ~/.claude/hooks/reindex-codebase.ps1 (Zeilen 141-142 und 149-150)
+**Fix-Vorschlag:** Fehler-Eintraege per PowerShell-Logik in die "Offene Fehler" Sektion einfuegen (gleiche Technik wie writeback-enforcer v2.1)
+**Status:** OFFEN
+
+### 2026-03-20 18:35 — Sync: settings-reference.json veraltet
+**Quelle:** Deep-Scan Runde 6
+**Symptom:** settings-reference.json letzte Aenderung 2026-03-19 — aktuelle settings.json weicht ab (Hooks, Plugins aktualisiert seitdem)
+**Betroffene Dateien:** ~/proggs/claude-code-setup/settings-reference.json
+**Fix-Vorschlag:** settings-reference.json aus aktueller settings.json regenerieren (ohne maschinenspezifische Permissions)
 **Status:** OFFEN
 
 ---
 
-## Systemzustand (aktuell)
+## Systemzustand (aktuell — Stand: 2026-03-20 18:30)
 <!-- Wird von /self-improve und env-checker aktualisiert -->
 <!-- Zeigt den aktuellen Stand des Programmiersystems -->
+<!-- DATUM im Titel MUSS bei jeder Aktualisierung angepasst werden! -->
 
 - **Plattform:** Windows 11 Home, Claude Code v2.1.80, Opus 4.6 (1M context)
 - **Sprachen:** Swift, C#, TypeScript, Rust, Go, Kotlin
@@ -135,3 +168,5 @@ _Noch keine Eintraege._
 - Cross-Platform: Jede Aenderung MUSS auf beiden Plattformen funktionieren
 - Status-Meldung: "Committed, gepusht und plattformuebergreifend" nur wenn ehrlich
 - Writeback-Enforcer: Sentinel-Daten gehoeren in die thematisch passende Sektion, NICHT ans Dateiende
+- GEFIXT-Eintraege archivieren: Nach 30 Tagen koennen GEFIXT-Eintraege in einen Archiv-Kommentar verschoben werden um die Sektion kurz zu halten
+- Alle Hooks die ins Whiteboard schreiben MUESSEN die Sektionserkennung nutzen — Add-Content ans Dateiende ist VERBOTEN

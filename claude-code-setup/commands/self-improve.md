@@ -533,6 +533,8 @@ cp ~/.claude/rules/*.md ~/proggs/claude-code-setup/rules/
 cp ~/.claude/agents/*.md ~/proggs/claude-code-setup/agents/
 cp ~/.claude/commands/self-improve.md ~/proggs/claude-code-setup/commands/
 cp -r ~/.claude/commands/self-improve-ref/ ~/proggs/claude-code-setup/commands/self-improve-ref/
+# Note: .sh hooks exist in the backup but may not exist locally on Windows
+# auto-sync.ps1 now deploys .sh from backup to local (fixed in Runde 6)
 cp ~/.claude/hooks/*.sh ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 cp ~/.claude/hooks/*.ts ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 cp ~/.claude/hooks/*.ps1 ~/proggs/claude-code-setup/hooks/ 2>/dev/null

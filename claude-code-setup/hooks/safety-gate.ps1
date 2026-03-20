@@ -38,6 +38,12 @@ $dangerous = @(
 foreach ($pattern in $dangerous) {
     if ($cmd -match $pattern) {
         Hook-LogError "BLOCKED dangerous command: $pattern — cmd: $($cmd.Substring(0, [Math]::Min(100, $cmd.Length)))"
+        # Log to whiteboard so /self-improve can detect patterns
+        $whiteboardFile = Join-Path $env:USERPROFILE "proggs\.claude\agent-memory\shared\MEMORY.md"
+        if (Test-Path $whiteboardFile) {
+            $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: safety-gate.ps1 — Gefaehrlicher Befehl blockiert`n**Quelle:** Hook: safety-gate.ps1 (PreToolUse Bash)`n**Symptom:** Befehl blockiert: $($cmd.Substring(0, [Math]::Min(80, $cmd.Length)))`n**Ursache:** Pattern-Match: $pattern`n**Status:** AUTO-LOGGED"
+            Add-Content -Path $whiteboardFile -Value $entry -Encoding UTF8
+        }
         Write-Output "{`"error`":`"BLOCKED: Dangerous command detected — $pattern`"}"
         exit 2
     }

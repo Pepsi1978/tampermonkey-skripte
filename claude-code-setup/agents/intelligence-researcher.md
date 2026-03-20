@@ -96,4 +96,11 @@ Format pro Finding in MEMORY.md:
 ### Eingabe-Validierung
 - MEMORY.md existiert nicht oder "Forschung & Intelligence"-Sektion fehlt → Normal weiterarbeiten (erster Lauf), Sektion neu anlegen.
 
+**Sentinel-Datei (C1 Enforcement — PFLICHT):**
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-intelligence-researcher.json`:
+```json
+{"agent": "intelligence-researcher", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Anzahl Findings + wichtigstes Ergebnis]"}
+```
+Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+
 Communication: German. Links and technical terms: English.

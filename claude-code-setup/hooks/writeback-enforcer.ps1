@@ -1,6 +1,7 @@
 # writeback-enforcer.ps1 — SubagentStop Hook for Write-Back Enforcement (C1)
 # Checks for sentinel files written by senior agents, merges findings into MEMORY.md
 # into the CORRECT SECTION (not just appended at the end).
+# v2.1: Fixed CRLF handling — uses regex instead of IndexOf for reliable section detection.
 #
 # Sentinel file format: $env:TEMP/agent-writeback-{agentname}.json
 # Content: { "agent": "name", "timestamp": "ISO8601", "findings": "one-line summary" }
@@ -27,14 +28,17 @@ $sectionMap = @{
     "researcher"          = "## Forschung & Intelligence"
     "intelligence-researcher" = "## Forschung & Intelligence"
     "evolution-analyst"   = "## Systemzustand (aktuell)"
+    "quality-gate"        = "## Erkenntnisse aus Tests"
+    "env-checker"         = "## Systemzustand (aktuell)"
 }
 
 # Find all sentinel files
 $sentinelFiles = Get-ChildItem -Path $sentinelDir -Filter $sentinelPattern -ErrorAction SilentlyContinue
 
 if ($sentinelFiles.Count -gt 0) {
-    # Read the full whiteboard content
-    $content = Get-Content $memoryFile -Raw -ErrorAction Stop
+    # Read the full whiteboard content as array of lines (preserves original line endings)
+    $lines = Get-Content $memoryFile -Encoding UTF8 -ErrorAction Stop
+    $placeholder = "_Noch keine Eintraege._"
 
     foreach ($f in $sentinelFiles) {
         try {
@@ -49,36 +53,44 @@ if ($sentinelFiles.Count -gt 0) {
             # Find the correct section to insert into
             $targetSection = $sectionMap[$agentName]
             if (-not $targetSection) {
-                # Unknown agent — append under Erkenntnisse aus Code Reviews as fallback
                 $targetSection = "## Erkenntnisse aus Code Reviews"
             }
 
-            # Find the section and insert after the placeholder or last entry
-            $placeholder = "_Noch keine Eintraege._"
-            $sectionIdx = $content.IndexOf($targetSection)
+            # Find the section header line index
+            $sectionIdx = -1
+            for ($i = 0; $i -lt $lines.Count; $i++) {
+                if ($lines[$i].TrimEnd() -eq $targetSection) {
+                    $sectionIdx = $i
+                    break
+                }
+            }
 
             if ($sectionIdx -ge 0) {
-                # Find the placeholder within this section
-                $searchStart = $sectionIdx + $targetSection.Length
-                $placeholderIdx = $content.IndexOf($placeholder, $searchStart)
-                # Check that placeholder is within this section (before next ## heading)
-                $nextSectionIdx = $content.IndexOf("`n## ", $searchStart + 1)
-
-                if ($placeholderIdx -ge 0 -and ($nextSectionIdx -lt 0 -or $placeholderIdx -lt $nextSectionIdx)) {
-                    # Replace placeholder with the entry
-                    $content = $content.Remove($placeholderIdx, $placeholder.Length).Insert($placeholderIdx, $entry)
-                } else {
-                    # No placeholder — insert before the next section (or section separator)
-                    if ($nextSectionIdx -ge 0) {
-                        $content = $content.Insert($nextSectionIdx, "$entry`n")
-                    } else {
-                        # Fallback: append at end
-                        $content += "`n$entry"
+                # Find placeholder within this section (before next ## heading)
+                $placeholderIdx = -1
+                $insertIdx = $sectionIdx + 1
+                for ($j = $sectionIdx + 1; $j -lt $lines.Count; $j++) {
+                    if ($lines[$j] -match '^## ') { break }  # Next section
+                    if ($lines[$j] -match '^---') { break }   # Section separator
+                    if ($lines[$j].Trim() -eq $placeholder) {
+                        $placeholderIdx = $j
+                        break
                     }
+                    $insertIdx = $j + 1
+                }
+
+                if ($placeholderIdx -ge 0) {
+                    # Replace placeholder with entry
+                    $lines[$placeholderIdx] = $entry
+                } else {
+                    # Insert before next section (at insertIdx)
+                    $newLines = [System.Collections.ArrayList]@($lines)
+                    $newLines.Insert($insertIdx, $entry)
+                    $lines = $newLines.ToArray()
                 }
             } else {
                 # Section not found — append at end as last resort
-                $content += "`n$entry"
+                $lines += $entry
             }
 
             # Remove processed sentinel file
@@ -91,8 +103,8 @@ if ($sentinelFiles.Count -gt 0) {
         }
     }
 
-    # Write the updated content back
-    Set-Content -Path $memoryFile -Value $content -Encoding UTF8 -NoNewline -ErrorAction Stop
+    # Write the updated content back (line-by-line preserves original encoding)
+    Set-Content -Path $memoryFile -Value $lines -Encoding UTF8 -ErrorAction Stop
 }
 # If no sentinel files exist, that's OK — not every subagent is a senior agent.
-# The memory-watchdog.ps1 (existing hook) handles the "should have written but didn't" case.
+# The memory-watchdog.ps1 handles the "should have written but didn't" case.

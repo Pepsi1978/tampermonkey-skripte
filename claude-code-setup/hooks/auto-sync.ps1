@@ -128,19 +128,25 @@ if (Test-Path $commandsDir) {
     }
 }
 
-# Hooks (PowerShell + TypeScript scripts)
+# Hooks (PowerShell + TypeScript + Bash scripts + subdirectories)
 $hooksDir = Join-Path $SetupDir "hooks"
 if (Test-Path $hooksDir) {
     $destHooks = Join-Path $ClaudeDir "hooks"
     New-Item -ItemType Directory -Force -Path $destHooks | Out-Null
     $ps1Hooks = @(Get-ChildItem "$hooksDir\*.ps1" -ErrorAction SilentlyContinue)
     $tsHooks = @(Get-ChildItem "$hooksDir\*.ts" -ErrorAction SilentlyContinue)
-    foreach ($hook in ($ps1Hooks + $tsHooks)) {
+    $shHooks = @(Get-ChildItem "$hooksDir\*.sh" -ErrorAction SilentlyContinue)
+    foreach ($hook in ($ps1Hooks + $tsHooks + $shHooks)) {
         Copy-Item $hook.FullName $destHooks -Force
     }
-    $hookCount = $ps1Hooks.Count + $tsHooks.Count
-    if ($hookCount -gt 0) {
-        $synced += "Hooks($hookCount)"
+    # Copy hook subdirectories (e.g. prompt-injection-defender/)
+    $hookSubdirs = @(Get-ChildItem $hooksDir -Directory -ErrorAction SilentlyContinue)
+    foreach ($subdir in $hookSubdirs) {
+        Copy-Item $subdir.FullName $destHooks -Recurse -Force
+    }
+    $hookCount = $ps1Hooks.Count + $tsHooks.Count + $shHooks.Count
+    if ($hookCount -gt 0 -or $hookSubdirs.Count -gt 0) {
+        $synced += "Hooks($hookCount+$($hookSubdirs.Count) dirs)"
     }
 }
 
@@ -150,6 +156,27 @@ if (Test-Path $claudeMd) {
     Copy-Item $claudeMd (Join-Path $env:USERPROFILE "CLAUDE.md") -Force
     Copy-Item $claudeMd (Join-Path $RepoDir "CLAUDE.md") -Force
     $synced += "CLAUDE.md"
+}
+
+# Skills
+$skillsDir = Join-Path $SetupDir "skills"
+if (Test-Path $skillsDir) {
+    $destSkills = Join-Path $ClaudeDir "skills"
+    New-Item -ItemType Directory -Force -Path $destSkills | Out-Null
+    # Copy skill directories recursively (each skill is a folder with SKILL.md)
+    $skillSubdirs = @(Get-ChildItem $skillsDir -Directory -ErrorAction SilentlyContinue)
+    foreach ($subdir in $skillSubdirs) {
+        Copy-Item $subdir.FullName $destSkills -Recurse -Force
+    }
+    # Copy top-level skill files
+    $skillFiles = @(Get-ChildItem "$skillsDir\*.md" -ErrorAction SilentlyContinue)
+    if ($skillFiles.Count -gt 0) {
+        Copy-Item "$skillsDir\*.md" $destSkills -Force
+    }
+    $totalSkills = $skillSubdirs.Count + $skillFiles.Count
+    if ($totalSkills -gt 0) {
+        $synced += "Skills($totalSkills)"
+    }
 }
 
 # .gitignore_global

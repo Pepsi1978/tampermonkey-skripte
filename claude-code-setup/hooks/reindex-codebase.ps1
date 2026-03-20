@@ -137,7 +137,7 @@ for (const f of readdirSync(dbDir)) {
     } else {
         $whiteboardFile = Join-Path $rootDir ".claude\agent-memory\shared\MEMORY.md"
         if (Test-Path $whiteboardFile) {
-            $exitInfo = if ($process.ExitCode -eq 143) { "SIGTERM — Prozess vom 180s-Timeout gekillt" } else { "Unbekannter Fehler" }
+            $exitInfo = if ($process.ExitCode -eq 143) { "SIGTERM — Prozess vom 300s-Timeout gekillt" } else { "Unbekannter Fehler (ExitCode: $($process.ExitCode))" }
             $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: reindex-codebase.ps1 — Indexierung ExitCode $($process.ExitCode)`n**Quelle:** Hook: reindex-codebase.ps1 (SessionStart, async)`n**Symptom:** Semantische Indexierung fehlgeschlagen mit ExitCode $($process.ExitCode) ($exitInfo)`n**Ursache:** $exitInfo. Hook-Timeout in settings.json ist 180s, bei 599+ Dateien und kaltem Ollama kann das knapp werden.`n**Betroffene Dateien:** ~/.claude/settings.json (Hook-Timeout), ~/.claude/hooks/reindex-codebase.ps1`n**Fix-Vorschlag:** Hook-Timeout von 180s auf 300s erhoehen. Alternativ Lock-File um parallele Laeufe zu verhindern.`n**Status:** OFFEN"
             Add-Content -Path $whiteboardFile -Value $entry
         }

@@ -3,12 +3,12 @@
 ## Rule: Track and Verify Original Intent
 
 The original session goal is automatically saved to `/tmp/claude-session-goal.txt` by the intent-anker hook.
-A reminder marker is written every 20 turns to `/tmp/claude-intent-reminder.txt`.
+A reminder marker is written every 5 turns to `/tmp/claude-intent-reminder.txt` (by intent-anker.ps1).
 
 When working on a task that spans more than 10 tool calls:
 
 1. **At the start**: Read `/tmp/claude-session-goal.txt` to recall the user's original request
-2. **Every ~20 tool calls**: Re-read the goal file and verify: "Am I still working toward this exact goal?"
+2. **Every ~5 turns** (when reminder file updates): Re-read the goal file and verify: "Am I still working toward this exact goal?"
 3. **Before any major direction change**: Explicitly state what you're about to do differently and why
 4. **If you notice drift**: Stop immediately and ask the user
 
