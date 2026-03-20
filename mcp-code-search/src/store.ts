@@ -1,8 +1,10 @@
-// Vector Store — sqlite-vec powered via bun:sqlite
+// Vector Store — sqlite-vec powered via better-sqlite3
 // Stores code chunks with their embeddings in SQLite.
 // Uses sqlite-vec extension for fast approximate nearest neighbor search.
+// Note: bun:sqlite on macOS does not support loadExtension, so we use
+// better-sqlite3 which works on both Node.js and Bun across all platforms.
 
-import { Database } from "bun:sqlite";
+import Database from "better-sqlite3";
 import * as sqliteVec from "sqlite-vec";
 
 const VECTOR_DIM = 768; // nomic-embed-text dimension
@@ -20,7 +22,7 @@ export interface SearchResult extends CodeChunk {
 }
 
 export class VectorStore {
-	private db: Database;
+	private db: InstanceType<typeof Database>;
 
 	constructor(dbPath: string) {
 		this.db = new Database(dbPath);
@@ -65,7 +67,7 @@ export class VectorStore {
 				chunk.content,
 				chunk.language,
 			);
-			const rowId = result.lastInsertRowid;
+			const rowId = BigInt(result.lastInsertRowid);
 			const buf = new Float32Array(embedding);
 			insertVec.run(rowId, buf);
 		});
@@ -99,7 +101,7 @@ export class VectorStore {
 					chunk.content,
 					chunk.language,
 				);
-				const rowId = result.lastInsertRowid;
+				const rowId = BigInt(result.lastInsertRowid);
 				const buf = new Float32Array(embedding);
 				insertVec.run(rowId, buf);
 			}

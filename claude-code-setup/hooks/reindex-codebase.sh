@@ -13,7 +13,27 @@ DB_DIR="$ROOT_DIR/.code-search"
 STAMP_FILE="$DB_DIR/.last-index-time"
 POINTER_FILE="$DB_DIR/current.txt"
 MCP_DIR="$ROOT_DIR/mcp-code-search"
-BUN_EXE="$HOME/.bun/bin/bun"
+# On macOS, bun:sqlite lacks loadExtension and bun can't use better-sqlite3.
+# Use node (with better-sqlite3) for indexing on macOS, bun on other platforms.
+if [ "$(uname)" = "Darwin" ]; then
+    # macOS: use tsx (TypeScript executor for Node.js)
+    if command -v tsx > /dev/null 2>&1; then
+        RUNNER="tsx"
+    else
+        echo "Reindex-Hook: tsx nicht gefunden (npm i -g tsx) — Semantic Search deaktiviert."
+        exit 0
+    fi
+else
+    # Windows/Linux: use bun
+    if command -v bun > /dev/null 2>&1; then
+        RUNNER="$(command -v bun) run"
+    elif [ -f "$HOME/.bun/bin/bun" ]; then
+        RUNNER="$HOME/.bun/bin/bun run"
+    else
+        echo "Reindex-Hook: bun nicht gefunden — Semantic Search deaktiviert."
+        exit 0
+    fi
+fi
 
 # Exit if the MCP indexer source doesn't exist
 if [ ! -f "$MCP_DIR/src/index.ts" ]; then
@@ -29,7 +49,12 @@ fi
 
 # Ensure bun dependencies are installed
 if [ ! -d "$MCP_DIR/node_modules" ]; then
-    "$BUN_EXE" install --cwd "$MCP_DIR" 2>/dev/null
+    # Install deps: prefer bun for speed, fallback to npm
+    if command -v bun > /dev/null 2>&1; then
+        bun install --cwd "$MCP_DIR" 2>/dev/null
+    else
+        npm install --prefix "$MCP_DIR" 2>/dev/null
+    fi
 fi
 
 # Auto-start Ollama if not running
@@ -108,55 +133,58 @@ NEXT_N=$((MAX_N + 1))
 NEW_DB_NAME="index-${NEXT_N}.db"
 
 # Build the TypeScript indexer script
-TEMP_FILE="$MCP_DIR/reindex-$(cat /proc/sys/kernel/random/uuid 2>/dev/null || date +%s%N | md5sum | head -c 8).ts"
+TEMP_FILE="$MCP_DIR/reindex-$(uuidgen 2>/dev/null || cat /proc/sys/kernel/random/uuid 2>/dev/null || date +%s).ts"
 
 # Escape the root dir path for embedding in the TS heredoc
 ROOT_DIR_ESCAPED="${ROOT_DIR//\\/\/}"
 
 cat > "$TEMP_FILE" << TSEOF
-import { findCodeFiles, chunkFile } from './src/indexer.ts';
-import { generateEmbeddings } from './src/ollama.ts';
-import { VectorStore } from './src/store.ts';
+import { findCodeFiles, chunkFile } from '${MCP_DIR}/src/indexer.ts';
+import { generateEmbeddings } from '${MCP_DIR}/src/ollama.ts';
+import { VectorStore } from '${MCP_DIR}/src/store.ts';
 import { resolve, join } from 'path';
 import { mkdirSync, existsSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
 
-const rootDir = resolve('${ROOT_DIR_ESCAPED}');
-const dbDir = join(rootDir, '.code-search');
-if (!existsSync(dbDir)) mkdirSync(dbDir, { recursive: true });
+async function main() {
+  const rootDir = resolve('${ROOT_DIR_ESCAPED}');
+  const dbDir = join(rootDir, '.code-search');
+  if (!existsSync(dbDir)) mkdirSync(dbDir, { recursive: true });
 
-// Write to NEW db file — old one stays untouched for active searches
-const newDbName = '${NEW_DB_NAME}';
-const newDbPath = join(dbDir, newDbName);
-const store = new VectorStore(newDbPath);
+  const newDbName = '${NEW_DB_NAME}';
+  const newDbPath = join(dbDir, newDbName);
+  const store = new VectorStore(newDbPath);
 
-const files = await findCodeFiles(rootDir);
-const allChunks = [];
-for (const file of files) {
-  const chunks = await chunkFile(file, rootDir);
-  allChunks.push(...chunks);
-}
+  const files = await findCodeFiles(rootDir);
+  const allChunks: any[] = [];
+  for (const file of files) {
+    const chunks = await chunkFile(file, rootDir);
+    allChunks.push(...chunks);
+  }
 
-const BATCH = 32;
-for (let i = 0; i < allChunks.length; i += BATCH) {
-  const batch = allChunks.slice(i, i + BATCH);
-  const embeddings = await generateEmbeddings(batch.map(c => c.content));
-  store.insertBatch(batch, embeddings);
-}
-store.close();
+  const BATCH = 32;
+  for (let i = 0; i < allChunks.length; i += BATCH) {
+    const batch = allChunks.slice(i, i + BATCH);
+    const embeddings = await generateEmbeddings(batch.map((c: any) => c.content));
+    store.insertBatch(batch, embeddings);
+  }
+  store.close();
 
-// Update pointer — this is the "switch" moment (tiny text write, practically instant)
-writeFileSync(join(dbDir, 'current.txt'), newDbName);
+  // Update pointer — this is the "switch" moment
+  writeFileSync(join(dbDir, 'current.txt'), newDbName);
 
-// Clean up old DB files (best-effort — skip if locked)
-for (const f of readdirSync(dbDir)) {
-  if (f.match(/^index-\d+\.db/) && !f.startsWith(newDbName.replace('.db', ''))) {
-    try { unlinkSync(join(dbDir, f)); } catch {}
+  // Clean up old DB files (best-effort — skip if locked)
+  for (const f of readdirSync(dbDir)) {
+    if (f.match(/^index-\d+\\.db/) && !f.startsWith(newDbName.replace('.db', ''))) {
+      try { unlinkSync(join(dbDir, f)); } catch {}
+    }
   }
 }
+
+main().catch(e => { console.error(e); process.exit(1); });
 TSEOF
 
 # Run the indexer
-"$BUN_EXE" run "$TEMP_FILE" --cwd "$MCP_DIR" 2>/dev/null
+cd "$MCP_DIR" && $RUNNER "$TEMP_FILE" 2>/dev/null
 EXIT_CODE=$?
 
 # Clean up temp file (and any orphaned ones from previous crashed runs)
