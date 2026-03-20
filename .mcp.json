@@ -5,14 +5,14 @@
 			"args": ["code-review-graph", "serve"]
 		},
 		"code-search": {
-			"command": "C:/Users/barwa/.bun/bin/bun.exe",
-			"args": ["run", "C:/Users/barwa/proggs/mcp-code-search/src/index.ts"]
+			"command": "bun",
+			"args": ["run", "./mcp-code-search/src/index.ts"]
 		},
 		"think-tank": {
 			"command": "npx",
 			"args": ["-y", "mcp-think-tank@2.0.7"],
 			"env": {
-				"MCP_THINK_TANK_STORAGE": "C:/Users/barwa/proggs/.think-tank"
+				"MCP_THINK_TANK_STORAGE": "./.think-tank"
 			}
 		}
 	}
