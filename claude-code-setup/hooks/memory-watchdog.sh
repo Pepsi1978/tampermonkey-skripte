@@ -36,8 +36,21 @@ miss_count=$((miss_count + 1))
 echo "$miss_count" > "$COUNTER_FILE"
 
 if [ "$miss_count" -ge 5 ]; then
-    echo "MEMORY_WATCHDOG: $miss_count consecutive misses — logged"
+    ts=$(date +"%Y-%m-%d %H:%M")
+    entry="### [$ts] Agent: Write-Back nicht erfolgt ($miss_count aufeinanderfolgende Agents) — Status: AUTO-LOGGED"
+    # Section-based insertion using whiteboard-insert.sh if available
+    if [ -f "$HOME/.claude/hooks/whiteboard-insert.sh" ]; then
+        source "$HOME/.claude/hooks/whiteboard-insert.sh"
+        insert_whiteboard_entry "Offene Fehler & Probleme" "$entry"
+    else
+        # Fallback: replace first placeholder or append after section header
+        if grep -q "_Noch keine Eintraege._" "$MEMORY_FILE"; then
+            sed -i.bak "0,/_Noch keine Eintraege._/s/_Noch keine Eintraege._/$entry/" "$MEMORY_FILE"
+            rm -f "$MEMORY_FILE.bak"
+        fi
+    fi
     echo "0" > "$COUNTER_FILE"
+    echo "MEMORY_WATCHDOG: $miss_count consecutive misses — logged to MEMORY.md"
 fi
 
 exit 0
