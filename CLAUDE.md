@@ -42,7 +42,14 @@
   2. Code Review → Custom Agent: `code-reviewer` (hat `memory: project` — lernt ueber Sessions)
   3. Verbesserung → Custom Agents: `optimizer` + `ui-polisher`
 - Erst wenn alle Pruefungen bestanden sind, wird committed und gepusht.
-- **Shared Knowledge Hub**: Alle Senior-Agenten (code-reviewer, tester, architect, debugger) schreiben Erkenntnisse in `.claude/agent-memory/shared/MEMORY.md`. Alle Agenten lesen dieses Whiteboard. Der `/self-improve` Skill nutzt es fuer gezielte Verbesserungen.
+- **Shared Knowledge Hub (ZENTRALES WHITEBOARD — PFLICHT)**:
+  - Datei: `.claude/agent-memory/shared/MEMORY.md` — das ist die EINZIGE zentrale Wissensdatei fuer alle Agenten.
+  - **Lesen**: JEDER Agent und Skill MUSS dieses Whiteboard lesen, wenn er davon profitieren kann. Es ist die erste Anlaufstelle fuer Kontext.
+  - **Schreiben**: JEDER Agent, Skill und Hook MUSS relevante Erkenntnisse ins Whiteboard schreiben — nicht nur Senior-Agenten.
+  - **Fehler-Logging**: Hooks und automatische Prozesse MUESSEN Fehler ins Whiteboard loggen (Sektion "Recurring Issues"). NIEMALS Fehler still verschlucken (`catch {}` ohne Logging ist verboten).
+  - **Neue Dateien/Strukturen**: Bei jeder neuen Datei, neuem Projekt, neuer Architektur-Entscheidung oder neuer Konfiguration MUSS geprueft werden, ob sie ins Whiteboard gehoert. Wenn andere Agenten oder `/self-improve` davon profitieren wuerden → eintragen.
+  - **Keine Fragmentierung**: Es gibt NUR dieses eine Whiteboard. Keine separaten FAILURES.md, PROCEDURES.md oder aehnliche Dateien. Alles gehoert hierhin, organisiert in die bestehenden Sektionen.
+  - Der `/self-improve` Skill nutzt dieses Whiteboard fuer gezielte Verbesserungen und erkennt offene Fehler automatisch.
 - Bei neuen Projekten: `architect` Agent + Recherche-Agent **parallel** starten.
 - Bei Bugs: `debugger` Agent nutzen (kann selbst Sub-Agenten fuer konkurrierende Hypothesen spawnen).
 - `coder` Agent hat `isolation: worktree` — mehrere Coder koennen sicher parallel an verschiedenen Dateien arbeiten.
@@ -215,22 +222,6 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 - Die CLAUDE.md existiert lokal (`~/CLAUDE.md`) und im Repository (`~/proggs/CLAUDE.md`)
 - Bei jeder Aenderung muessen **beide Versionen synchron** gehalten werden
 - Workflow: Datei bearbeiten → beide Kopien aktualisieren → committen → pushen
-
-## Semantische Code-Suche (BEVORZUGT)
-- Bei konzeptuellen Fragen oder wenn viele Dateien (~20+) betroffen sein koennten: **Automatisch die semantische Suche** (MCP `search_code` Tool) nutzen, nicht nur Grep/Glob.
-- Nicht warten bis der Benutzer "suche semantisch" sagt — selbststaendig entscheiden.
-- **Semantisch suchen wenn:**
-  - Die Frage ein Konzept beschreibt, keine exakten Datei-/Funktionsnamen
-  - Mehr als ~20 Dateien betroffen sein koennten
-  - Der Benutzer auf Deutsch nach englischem Code fragt
-  - Grep nach 2-3 Versuchen nichts Gutes findet → automatisch auf semantisch wechseln
-  - Die Frage uebergreifende Zusammenhaenge betrifft ("Alles was mit X zu tun hat")
-- **Grep/Glob weiterhin nutzen wenn:**
-  - Ein konkreter Datei- oder Funktionsname genannt wird
-  - Eine exakte Fehlermeldung gesucht wird
-  - Eine einzelne bekannte Datei geoeffnet werden soll
-- Bei Unsicherheit beide kombinieren: Semantisch fuer den Ueberblick, Grep fuer die Praezision.
-- Voraussetzung: Der Index muss vorhanden sein (wird beim SessionStart automatisch aufgebaut).
 
 ## Sprache
 - Kommunikation mit dem Benutzer auf Deutsch.
