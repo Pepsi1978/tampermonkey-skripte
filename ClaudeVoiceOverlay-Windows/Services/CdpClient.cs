@@ -16,7 +16,7 @@ namespace ClaudeVoiceOverlay.Services
     public sealed class CdpClient : IDisposable
     {
         private static readonly int[] ScanPorts = { 9222, 9223, 9224, 9225, 9226, 9227, 9228, 9229 };
-        private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(2) };
+        private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromMilliseconds(500) };
 
         private ClientWebSocket? _ws;
         private int _messageId;

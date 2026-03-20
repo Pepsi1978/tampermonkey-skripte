@@ -90,20 +90,23 @@ namespace ClaudeVoiceOverlay.Services
         {
             try
             {
-                if (!EnsureCdpAsync().GetAwaiter().GetResult())
-                    return false;
-
-                var inserted = _cdp.InsertTextAsync(text).GetAwaiter().GetResult();
-                if (!inserted) return false;
-
-                if (autoEnter)
+                // Task.Run avoids deadlock: async code must NOT marshal back to UI thread
+                return Task.Run(async () =>
                 {
-                    Thread.Sleep(100);
-                    _cdp.SendEnterAsync().GetAwaiter().GetResult();
-                }
+                    if (!await EnsureCdpAsync()) return false;
 
-                Console.WriteLine("AppController: Text inserted via CDP");
-                return true;
+                    var inserted = await _cdp.InsertTextAsync(text);
+                    if (!inserted) return false;
+
+                    if (autoEnter)
+                    {
+                        await Task.Delay(100);
+                        await _cdp.SendEnterAsync();
+                    }
+
+                    Console.WriteLine("AppController: Text inserted via CDP");
+                    return true;
+                }).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -116,10 +119,11 @@ namespace ClaudeVoiceOverlay.Services
         {
             try
             {
-                if (!EnsureCdpAsync().GetAwaiter().GetResult())
-                    return false;
-
-                return _cdp.ClearInputAsync().GetAwaiter().GetResult();
+                return Task.Run(async () =>
+                {
+                    if (!await EnsureCdpAsync()) return false;
+                    return await _cdp.ClearInputAsync();
+                }).GetAwaiter().GetResult();
             }
             catch
             {
@@ -131,10 +135,11 @@ namespace ClaudeVoiceOverlay.Services
         {
             try
             {
-                if (!EnsureCdpAsync().GetAwaiter().GetResult())
-                    return false;
-
-                return _cdp.SendEnterAsync().GetAwaiter().GetResult();
+                return Task.Run(async () =>
+                {
+                    if (!await EnsureCdpAsync()) return false;
+                    return await _cdp.SendEnterAsync();
+                }).GetAwaiter().GetResult();
             }
             catch
             {
