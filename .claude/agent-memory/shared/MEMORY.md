@@ -16,6 +16,14 @@ Das zentrale Nervensystem des Claude Code Systems. JEDE Komponente die hier arbe
   Enthaelt laufende Projekte und deren Status.
 - **Memory-Index**: `~/.claude/projects/*/memory/MEMORY.md`
   Zeigt alle vorhandenen Memory-Dateien als Verzeichnis.
+- **Session-Scores**: `~/.claude/session-scores.jsonl`
+  Qualitaets-Trends ueber Sessions hinweg. /self-improve liest diese fuer Trend-Analyse
+  und IQ-Score. Wenn Qualitaet sinkt → Ursache im Whiteboard suchen.
+- **Self-Improve Cache**: `~/.claude/self-improve-cache/R1-R5_*.md`
+  Gecachte Researcher-Ergebnisse mit TTL. Veraltet? → /self-improve aktualisiert sie.
+- **Claude-Mem Observations**: `~/.claude/homunculus/projects/*/observations.jsonl`
+  Cross-Session-Wissen vom claude-mem Plugin. Enthaelt Beobachtungen aus frueheren Sessions
+  die fuer aktuelle Arbeit relevant sein koennen.
 
 ---
 
