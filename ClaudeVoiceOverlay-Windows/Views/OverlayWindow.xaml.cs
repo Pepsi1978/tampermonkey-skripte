@@ -255,7 +255,7 @@ namespace ClaudeVoiceOverlay.Views
             XButton.Background = BtnIdle;
 
             // Clear input with proper async/await
-            await AppController.ClearInputAsync(hwnd);
+            AppController.ClearInput(hwnd);
 
             // Reset X button color after 2 seconds
             await Task.Delay(2000);
@@ -317,7 +317,7 @@ namespace ClaudeVoiceOverlay.Views
                     if (hasPastedText)
                         finalText = " " + finalText;
 
-                    await AppController.PasteTextAsync(finalText, _appWatcher.ActiveAppHwnd, autoEnterEnabled);
+                    AppController.PasteText(finalText, _appWatcher.ActiveAppHwnd, autoEnterEnabled);
                     SetMicState(RecordingState.Success);
                     Console.WriteLine("Text inserted");
 
@@ -416,7 +416,7 @@ namespace ClaudeVoiceOverlay.Views
                     else
                         finalText = "/btw " + finalText;
 
-                    await AppController.PasteTextAsync(finalText, _appWatcher.ActiveAppHwnd, autoEnterEnabled);
+                    AppController.PasteText(finalText, _appWatcher.ActiveAppHwnd, autoEnterEnabled);
                     SetBtwMicState(RecordingState.Success);
                     Console.WriteLine("BTW text inserted");
 
@@ -470,9 +470,9 @@ namespace ClaudeVoiceOverlay.Views
         {
             if (lastRawTranscript == null) return;
 
-            await AppController.ClearInputAsync(_appWatcher.ActiveAppHwnd);
+            AppController.ClearInput(_appWatcher.ActiveAppHwnd);
             await Task.Delay(100);
-            await AppController.PasteTextAsync(lastRawTranscript, _appWatcher.ActiveAppHwnd);
+            AppController.PasteText(lastRawTranscript, _appWatcher.ActiveAppHwnd);
             hasPastedText = true;
             Console.WriteLine($"Whisper raw text inserted: {lastRawTranscript}");
 
@@ -523,7 +523,7 @@ namespace ClaudeVoiceOverlay.Views
                 Console.WriteLine("Auto-enter ON — firing Return");
 
                 // Fire a Return key press into the active app
-                await AppController.PressReturnAsync(_appWatcher.ActiveAppHwnd);
+                AppController.PressReturn(_appWatcher.ActiveAppHwnd);
             }
         }
 
