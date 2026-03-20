@@ -188,31 +188,39 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 - Im Zweifel: Dem Benutzer den Inhalt zeigen und vor Installation fragen.
 - Wenn Parry (Prompt-Injection-Scanner) laeuft: externen Code damit scannen.
 
-## Status-Meldung nach jeder Aufgabe (KRITISCH)
-- Nach JEDER abgeschlossenen Aufgabe als letzten Satz den Status der drei Pflichtschritte melden:
-  - Wenn alles erledigt: **"Committed, gepusht und plattformuebergreifend."**
-  - Wenn Cross-Platform nicht noetig war (z.B. reine Markdown-Aenderung): **"Committed und gepusht."**
-  - Wenn nur committed: **"Committed."**
-  - Wenn nichts committed wurde: **"Ich habe weder committed noch gepusht."**
-  - Wenn Cross-Platform noch offen ist: **"Committed und gepusht. Cross-Platform: [was fehlt noch]."**
-- Diese Meldung ist IMMER der letzte Satz der Antwort — keine Ausnahmen.
-- Die drei Pflichtschritte sind: 1) Commit 2) Push 3) Cross-Platform-Pruefung.
+## Cross-Platform-Pflicht und Status-Meldung (KRITISCH)
 
-## Cross-Platform-Pflicht bei jedem Commit (KRITISCH)
-- **Vor jedem Commit+Push** pruefen: Funktioniert diese Aenderung auch auf der anderen Plattform?
-- **Hooks**: Jeder `.ps1`-Hook (Windows) MUSS ein `.sh`-Gegenstueck (macOS) haben und umgekehrt.
-  Wenn ein Hook geaendert oder neu erstellt wird → sofort das Gegenstueck erstellen/aktualisieren.
-  Die Logik muss funktional identisch sein, nur die Syntax unterscheidet sich (PowerShell vs Bash).
-- **Agents, Skills, Commands, Rules**: Diese sind plattformunabhaengig (Markdown) — werden
-  automatisch ueber `~/proggs/claude-code-setup/` synchronisiert. Kein Extra-Aufwand noetig.
-- **Settings**: settings.json ist plattformspezifisch (Pfade unterscheiden sich).
-  Aenderungen an Hooks/Plugins/Env muessen in `settings-reference.json` dokumentiert werden,
-  damit `auto-sync` sie auf der anderen Plattform anwenden kann.
-- **Whiteboard (MEMORY.md)**: Ist plattformuebergreifend — wird ueber Git synchronisiert.
-  Fehler die auf einer Plattform auftreten, sind auf der anderen sichtbar.
-- **Reihenfolge**: Aufgabe erledigen → Cross-Platform pruefen → Commit → Push → Status-Meldung.
-- **Wenn Cross-Platform nicht moeglich** (z.B. plattformspezifischer Fix): Im Commit-Message
-  vermerken: "Windows-only" oder "macOS-only", damit die andere Plattform Bescheid weiss.
+### Pflicht-Ablauf nach jeder Aufgabe (alle 3 Schritte MUESSEN passieren)
+1. **Cross-Platform ZUERST umsetzen** — nicht nur pruefen, sondern MACHEN:
+   - **Hooks**: Wurde ein `.ps1` geaendert? → Sofort das `.sh`-Gegenstueck anpassen (und umgekehrt).
+     Nicht "spaeter" oder "naechste Session" — JETZT, vor dem Commit.
+   - **Settings**: Wurde settings.json geaendert? → Aenderung in `settings-reference.json` dokumentieren.
+   - **Agents, Skills, Commands, Rules**: Plattformunabhaengig (Markdown) — automatisch OK.
+   - **Whiteboard**: Plattformuebergreifend ueber Git — automatisch OK.
+2. **Commit** — erst nachdem Cross-Platform erledigt ist.
+3. **Push** — sofort nach dem Commit.
+
+### Status-Meldung (IMMER der letzte Satz — keine Ausnahmen)
+- **"Committed, gepusht und plattformuebergreifend."** — NUR wenn Cross-Platform wirklich umgesetzt
+  wurde (beide Hook-Varianten aktualisiert, settings-reference aktuell, etc.)
+- **"Committed und gepusht."** — nur wenn die Aenderung rein plattformunabhaengig war
+  (z.B. nur Markdown-Dateien, nur Whiteboard, nur CLAUDE.md)
+- **"Committed und gepusht. Cross-Platform: [was fehlt]."** — wenn Cross-Platform noetig war
+  aber nicht vollstaendig umgesetzt werden konnte (z.B. macOS-Hook zu komplex fuer diese Session)
+- **"Ich habe weder committed noch gepusht."** — wenn nichts geaendert wurde.
+
+### WICHTIG: Ehrlichkeit bei "plattformuebergreifend"
+- Das Wort "plattformuebergreifend" am Ende DARF NUR stehen, wenn die Arbeit WIRKLICH gemacht wurde.
+- NIEMALS "plattformuebergreifend" schreiben, wenn das Gegenstueck nicht erstellt/aktualisiert wurde.
+- Im Zweifel: Ehrlich sagen was fehlt. Ein ehrliches "Cross-Platform: .sh fehlt noch" ist besser
+  als ein falsches "plattformuebergreifend".
+
+### Checkliste (vor dem Commit mental durchgehen)
+- [ ] Wurden `.ps1`-Hooks geaendert? → `.sh`-Gegenstueck ebenfalls geaendert?
+- [ ] Wurden `.sh`-Hooks geaendert? → `.ps1`-Gegenstueck ebenfalls geaendert?
+- [ ] Wurde settings.json geaendert? → settings-reference.json aktualisiert?
+- [ ] Neues Projekt erstellt? → Funktioniert es auf beiden Plattformen?
+- [ ] Pfade verwendet? → Sind sie plattformunabhaengig (~/proggs/ statt C:\Users\...)?
 
 ## Commit-Nachrichten
 - Jede Commit-Nachricht beginnt mit einer **fortlaufenden Nummer**: `#NNN - Beschreibung`
