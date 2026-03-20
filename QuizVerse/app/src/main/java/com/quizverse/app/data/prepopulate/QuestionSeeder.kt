@@ -143,6 +143,20 @@ import com.quizverse.app.data.prepopulate.questions.logicQuestionsMaster5
 import com.quizverse.app.data.prepopulate.questions.logicQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.mixedQuestions
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy1
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy2
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy3
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy4
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsEasy5
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium1
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium2
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium3
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium4
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium5
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsHard1
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsHard2
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsHard3
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsHard4
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsHard5
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert1
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert2
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert3
@@ -150,7 +164,11 @@ import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert4
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert5
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsExpert6
 import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster1
-import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMedium1
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster2
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster3
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster4
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster5
+import com.quizverse.app.data.prepopulate.questions.mixedQuestionsMaster6
 import com.quizverse.app.data.prepopulate.questions.musicQuestions
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsEasy
 import com.quizverse.app.data.prepopulate.questions.musicQuestionsEasy2
@@ -723,6 +741,20 @@ object QuestionSeeder {
             literatureQuestionsMaster6() +
             mixedQuestions() +
             mixedQuestionsEasy1() +
+            mixedQuestionsEasy2() +
+            mixedQuestionsEasy3() +
+            mixedQuestionsEasy4() +
+            mixedQuestionsEasy5() +
+            mixedQuestionsMedium1() +
+            mixedQuestionsMedium2() +
+            mixedQuestionsMedium3() +
+            mixedQuestionsMedium4() +
+            mixedQuestionsMedium5() +
+            mixedQuestionsHard1() +
+            mixedQuestionsHard2() +
+            mixedQuestionsHard3() +
+            mixedQuestionsHard4() +
+            mixedQuestionsHard5() +
             mixedQuestionsExpert1() +
             mixedQuestionsExpert2() +
             mixedQuestionsExpert3() +
@@ -730,7 +762,11 @@ object QuestionSeeder {
             mixedQuestionsExpert5() +
             mixedQuestionsExpert6() +
             mixedQuestionsMaster1() +
-            mixedQuestionsMedium1() +
+            mixedQuestionsMaster2() +
+            mixedQuestionsMaster3() +
+            mixedQuestionsMaster4() +
+            mixedQuestionsMaster5() +
+            mixedQuestionsMaster6() +
             logicQuestions() +
             logicQuestionsEasy1() +
             logicQuestionsEasy2() +
