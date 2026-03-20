@@ -130,14 +130,18 @@ for (const f of readdirSync(dbDir)) {
         Set-Content -Path $stampFile -Value (Get-Date -Format "o")
         Write-Output "Reindex-Hook: Codebase neu indexiert ($newDbName, pointer-swap)."
     } else {
-        $failMsg = "## $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Bun exited with code $($process.ExitCode)`n`n**Hook:** reindex-codebase.ps1 (SessionStart)`n**Symptom:** Indexierung fehlgeschlagen, ExitCode=$($process.ExitCode)`n**Status:** OFFEN`n"
-        $failFile = Join-Path $rootDir ".claude\agent-memory\shared\FAILURES.md"
-        if (Test-Path $failFile) { Add-Content -Path $failFile -Value "`n---`n`n$failMsg" }
-        Write-Output "Reindex-Hook: FEHLER — Bun ExitCode $($process.ExitCode). Siehe FAILURES.md."
+        $whiteboardFile = Join-Path $rootDir ".claude\agent-memory\shared\MEMORY.md"
+        if (Test-Path $whiteboardFile) {
+            $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Bun ExitCode $($process.ExitCode)`n**Symptom:** Indexierung fehlgeschlagen`n**Status:** OFFEN"
+            Add-Content -Path $whiteboardFile -Value $entry
+        }
+        Write-Output "Reindex-Hook: FEHLER — Bun ExitCode $($process.ExitCode). Siehe Shared Whiteboard."
     }
 } catch {
-    $failMsg = "## $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Exception`n`n**Hook:** reindex-codebase.ps1 (SessionStart)`n**Symptom:** $($_.Exception.Message)`n**Status:** OFFEN`n"
-    $failFile = Join-Path $rootDir ".claude\agent-memory\shared\FAILURES.md"
-    if (Test-Path $failFile) { Add-Content -Path $failFile -Value "`n---`n`n$failMsg" }
-    Write-Output "Reindex-Hook: EXCEPTION — $($_.Exception.Message). Siehe FAILURES.md."
+    $whiteboardFile = Join-Path $rootDir ".claude\agent-memory\shared\MEMORY.md"
+    if (Test-Path $whiteboardFile) {
+        $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — reindex-codebase.ps1: Exception`n**Symptom:** $($_.Exception.Message)`n**Status:** OFFEN"
+        Add-Content -Path $whiteboardFile -Value $entry
+    }
+    Write-Output "Reindex-Hook: EXCEPTION — $($_.Exception.Message). Siehe Shared Whiteboard."
 }

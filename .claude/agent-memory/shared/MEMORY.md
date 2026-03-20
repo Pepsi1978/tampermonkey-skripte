@@ -31,7 +31,12 @@ _No entries yet._
 
 ## Recurring Issues (shared — any writer can add)
 <!-- Patterns that keep showing up across reviews, tests, and debugging -->
-_No entries yet._
+
+### 2026-03-20 — Silent hook failures masked broken semantic search for days
+**Source:** reindex-codebase.ps1 (SessionStart hook)
+**Problem:** Bun resolves `import './src/...'` relative to source file, not working directory. Temp file in `%TEMP%` could not find `./src/` — indexing failed silently for 16+ hours. Root cause: `catch {}` swallowed the error.
+**Fix applied:** Temp file now written to `mcp-code-search/` dir. All catch blocks now log errors to this whiteboard section instead of swallowing them.
+**Rule derived:** Hooks MUST NEVER silently swallow errors. Every catch block in a hook must append to this "Recurring Issues" section so `/self-improve` can detect and fix them.
 
 ## Rules & Conventions (shared)
 - No Python for user-facing code
