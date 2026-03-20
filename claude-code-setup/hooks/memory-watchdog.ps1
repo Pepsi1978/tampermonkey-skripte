@@ -7,6 +7,7 @@
 # Other agents (coder, researcher, etc.) are exempt.
 
 param()
+. "$PSScriptRoot/whiteboard-insert.ps1"
 
 # Write to the REPO copy (~/proggs/.claude/) — this is the authoritative whiteboard
 # that gets committed. The ~/.claude/ copy is kept in sync by the commit workflow.
@@ -55,9 +56,9 @@ if ($missCount -ge 5) {
 - **Status**: AUTO-LOGGED
 "@
 
-    if (Test-Path $whiteboardFile) {
-        Add-Content -Path $whiteboardFile -Value $warning -Encoding UTF8
-    }
+    # Use section-based insertion (Add-Content to file-end is FORBIDDEN)
+    $entry = "### [$date] Agent: Write-Back nicht erfolgt ($missCount aufeinanderfolgende Agents) — Status: AUTO-LOGGED"
+    Insert-WhiteboardEntry -Section "Offene Fehler & Probleme" -Entry $entry
     # Reset counter after logging
     Set-Content -Path $counterFile -Value "0" -Force
     Write-Output "MEMORY_WATCHDOG: $missCount consecutive misses — logged to MEMORY.md"

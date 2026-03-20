@@ -541,6 +541,7 @@ cp ~/.claude/hooks/*.ts ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 cp ~/.claude/hooks/*.ps1 ~/proggs/claude-code-setup/hooks/ 2>/dev/null
 # Subdirectories (z.B. prompt-injection-defender/) ebenfalls kopieren
 cp -r ~/.claude/hooks/prompt-injection-defender/ ~/proggs/claude-code-setup/hooks/prompt-injection-defender/ 2>/dev/null
+cp -r ~/.claude/skills/ ~/proggs/claude-code-setup/skills/ 2>/dev/null
 cp ~/CLAUDE.md ~/proggs/CLAUDE.md
 # Knowledge files (cross-platform shared intelligence)
 mkdir -p ~/proggs/claude-code-setup/agent-memory/shared/

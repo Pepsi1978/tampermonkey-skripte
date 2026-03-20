@@ -47,7 +47,12 @@ try {
     if (-not $hasNomic) {
         Start-Process -FilePath "ollama" -ArgumentList "pull", "nomic-embed-text" -NoNewWindow -Wait
     }
-} catch {}
+} catch {
+    # Log to hook-log instead of silently swallowing (whiteboard rule)
+    if (Get-Command Hook-LogWarn -ErrorAction SilentlyContinue) {
+        Hook-LogWarn "Ollama model check failed: $_"
+    }
+}
 
 # Check if re-index is needed
 $needsReindex = $false

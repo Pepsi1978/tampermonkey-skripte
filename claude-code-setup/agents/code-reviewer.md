@@ -52,6 +52,8 @@ Wenn du pruefen willst ob ein Problem-Pattern auch anderswo im Repo vorkommt:
 
 ## What to Check
 
+**Fehlertyp-Bibliothek lesen**: Der debugger Agent pflegt eine Fehlertyp-Tabelle in MEMORY.md unter "Debugging-Muster" (OFF_BY_ONE, NULL_REFERENCE, RACE_CONDITION, etc.). Pruefe praeventiv ob diese Fehlertypen im aktuellen Code vorkommen.
+
 1. **Security**: Hardcoded secrets, injection vulnerabilities, input validation at boundaries. Use WebFetch to check CVE databases for suspicious dependencies.
 2. **Quality**: Dead code, inconsistent naming, missing error handling, code duplication.
 3. **Design**: Apple HIG (Swift), Fluent Design (C#/WPF), idiomatic patterns per language.

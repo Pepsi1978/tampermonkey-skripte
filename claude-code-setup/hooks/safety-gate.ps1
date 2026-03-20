@@ -3,6 +3,7 @@
 # Platform: Windows (PowerShell 7+)
 
 . "$PSScriptRoot/hook-log.ps1"
+. "$PSScriptRoot/whiteboard-insert.ps1"
 
 $hookInput = [Console]::In.ReadToEnd()
 try {
@@ -38,12 +39,9 @@ $dangerous = @(
 foreach ($pattern in $dangerous) {
     if ($cmd -match $pattern) {
         Hook-LogError "BLOCKED dangerous command: $pattern — cmd: $($cmd.Substring(0, [Math]::Min(100, $cmd.Length)))"
-        # Log to whiteboard so /self-improve can detect patterns
-        $whiteboardFile = Join-Path $env:USERPROFILE "proggs\.claude\agent-memory\shared\MEMORY.md"
-        if (Test-Path $whiteboardFile) {
-            $entry = "`n### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: safety-gate.ps1 — Gefaehrlicher Befehl blockiert`n**Quelle:** Hook: safety-gate.ps1 (PreToolUse Bash)`n**Symptom:** Befehl blockiert: $($cmd.Substring(0, [Math]::Min(80, $cmd.Length)))`n**Ursache:** Pattern-Match: $pattern`n**Status:** AUTO-LOGGED"
-            Add-Content -Path $whiteboardFile -Value $entry -Encoding UTF8
-        }
+        # Log to whiteboard using section-based insertion (Add-Content is FORBIDDEN)
+        $entry = "### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: safety-gate.ps1 — Befehl blockiert: $pattern"
+        Insert-WhiteboardEntry -Section "Offene Fehler & Probleme" -Entry $entry
         Write-Output "{`"error`":`"BLOCKED: Dangerous command detected — $pattern`"}"
         exit 2
     }

@@ -1,16 +1,14 @@
 #!/usr/bin/env bun
 /**
- * Session Scorer — Meta-Evolution Artifact #1 (Windows Version)
+ * Session Scorer — Meta-Evolution Artifact #1 (Cross-Platform)
  *
  * Runs at SessionEnd to analyze the current session transcript
  * and extract quality metrics into a JSONL log file.
  *
- * Metrics tracked:
- * - total_turns: Number of user messages
- * - tool_calls: Number of tool invocations
- * - errors: Number of failed tool calls
- * - corrections: User corrections detected
- * - quality_score: Composite 1-10 score
+ * v3: Removed direct MEMORY.md writes (violates Add-Content rule).
+ * Trend warnings go to stderr (hook log) — evolution-analyst reads session-scores.jsonl.
+ * Added iq_score field (filled by /self-improve Stufe 5E).
+ * Fixed error regex false positives, removed hardcoded paths.
  */
 
 import {
@@ -22,23 +20,29 @@ import {
 } from "fs";
 import { join } from "path";
 
-const HOME = process.env.USERPROFILE || process.env.HOME || "C:\\Users\\barwa";
+const HOME = process.env.USERPROFILE || process.env.HOME || "";
+if (!HOME) process.exit(0);
 const SCORES_FILE = join(HOME, ".claude", "session-scores.jsonl");
 
-// Windows project directory path
 function findProjectsDir(): string {
 	const claudeDir = join(HOME, ".claude", "projects");
 	if (!existsSync(claudeDir)) return "";
 	try {
 		const entries = readdirSync(claudeDir);
-		// Find the project dir matching C--Users-barwa or similar
 		for (const entry of entries) {
 			const fullPath = join(claudeDir, entry);
 			if (statSync(fullPath).isDirectory() && entry.startsWith("C--")) {
 				return fullPath;
 			}
 		}
-		// Fallback: use first directory
+		// macOS fallback: Users-*
+		for (const entry of entries) {
+			const fullPath = join(claudeDir, entry);
+			if (statSync(fullPath).isDirectory() && entry.startsWith("Users-")) {
+				return fullPath;
+			}
+		}
+		// Last resort: first directory
 		for (const entry of entries) {
 			const fullPath = join(claudeDir, entry);
 			if (statSync(fullPath).isDirectory()) {
@@ -61,6 +65,7 @@ interface SessionMetrics {
 	errors: number;
 	corrections: number;
 	quality_score: number;
+	iq_score: number; // Filled by /self-improve Stufe 5E, default 0
 }
 
 function findLatestTranscript(): string | null {
@@ -72,7 +77,6 @@ function findLatestTranscript(): string | null {
 
 		for (const entry of entries) {
 			if (!entry.endsWith(".jsonl")) continue;
-			// Skip agent transcripts — only score main sessions (UUID format)
 			if (entry.startsWith("agent-")) continue;
 			const fullPath = join(PROJECTS_DIR, entry);
 			try {
@@ -101,12 +105,13 @@ function analyzeTranscript(path: string): SessionMetrics {
 	let errors = 0;
 	let corrections = 0;
 
+	// v3: Added ASCII-safe alternatives for umlauts (cross-platform safety)
 	const correctionPatterns = [
 		/\bnein\b/i,
 		/\bfalsch\b/i,
 		/\bnicht das\b/i,
 		/\bstop\b/i,
-		/\brückgängig\b/i,
+		/\br[uü]ckg[aä]ngig\b/i, // handles both rückgängig and rueckgaengig
 		/\bundo\b/i,
 		/\bwrong\b/i,
 		/\bthat's not\b/i,
@@ -114,6 +119,12 @@ function analyzeTranscript(path: string): SessionMetrics {
 		/\bmach das nicht\b/i,
 		/\bso nicht\b/i,
 	];
+
+	// v3: More precise error detection — exclude common non-error patterns
+	const errorPattern =
+		/\b(error|failed|exception|ENOENT|EPERM|FATAL|CRASHED)\b/i;
+	const errorExclusions =
+		/error.handling|error.message|error.type|fix.the.error|catch.error|on.error|if.error|no.error/i;
 
 	for (const line of lines) {
 		try {
@@ -127,7 +138,6 @@ function analyzeTranscript(path: string): SessionMetrics {
 					typeof msg.content === "string"
 						? msg.content
 						: JSON.stringify(msg.content);
-				// v2: Context-aware correction detection
 				const isQuestion = text.includes("?");
 				const hasCodeBlock = text.includes("```");
 				const textStart = text.slice(0, 80);
@@ -150,7 +160,8 @@ function analyzeTranscript(path: string): SessionMetrics {
 					typeof msg.content === "string"
 						? msg.content
 						: JSON.stringify(msg.content);
-				if (/error|failed|exception|ENOENT|EPERM/i.test(output)) {
+				// v3: Only count genuine errors, not mentions of "error" in code/comments
+				if (errorPattern.test(output) && !errorExclusions.test(output)) {
 					errors++;
 				}
 			}
@@ -187,12 +198,10 @@ function analyzeTranscript(path: string): SessionMetrics {
 	if (toolCalls > 50) score += 0.3;
 	else if (toolCalls > 20) score += 0.15;
 
-	// Parallelization ratio scoring (calibrated against real data: baseline 0.85, max 1.27)
 	if (totalTurns > 0) {
 		const ratio = toolCalls / totalTurns;
-		if (ratio >= 1.0)
-			score += 0.2; // Bonus: above-average parallelization
-		else if (ratio < 0.5) score -= 0.2; // Malus: very low tool usage
+		if (ratio >= 1.0) score += 0.2;
+		else if (ratio < 0.5) score -= 0.2;
 	}
 
 	score = Math.max(1.0, Math.min(10.0, Math.round(score * 10) / 10));
@@ -208,9 +217,12 @@ function analyzeTranscript(path: string): SessionMetrics {
 		errors,
 		corrections,
 		quality_score: score,
+		iq_score: 0, // Filled by /self-improve, not by the scorer
 	};
 }
 
+// v3: Trend detection writes to stderr (hook log) instead of MEMORY.md.
+// The evolution-analyst agent reads session-scores.jsonl for trend analysis.
 function detectTrends(currentMetrics: SessionMetrics): void {
 	if (!existsSync(SCORES_FILE)) return;
 
@@ -225,61 +237,45 @@ function detectTrends(currentMetrics: SessionMetrics): void {
 			}
 		})
 		.filter((s): s is SessionMetrics => s !== null && s.total_turns > 0)
-		.filter((s) => s.total_turns >= 10);
+		.filter((s) => s.total_turns >= 5); // v3: lowered from 10 to 5
 
 	if (allScores.length < 5) return;
 
-	const sharedMemory = join(
-		HOME,
-		".claude",
-		"agent-memory",
-		"shared",
-		"MEMORY.md",
-	);
-
-	if (allScores.length < 20) {
+	if (allScores.length >= 10) {
 		const recent = allScores.slice(-5);
 		const avg = recent.reduce((s, m) => s + m.quality_score, 0) / recent.length;
-		if (allScores.length >= 10) {
-			const prevAvg =
-				allScores.slice(-10, -5).reduce((s, m) => s + m.quality_score, 0) / 5;
-			if (avg < prevAvg - 0.5) {
-				const warning = `\n- **${currentMetrics.date.split("T")[0]}**: Quality declining: ${prevAvg.toFixed(1)} → ${avg.toFixed(1)} (simple trend)\n`;
-				if (existsSync(sharedMemory)) {
-					appendFileSync(sharedMemory, warning, "utf-8");
-				}
-			}
+		const prevAvg =
+			allScores.slice(-10, -5).reduce((s, m) => s + m.quality_score, 0) / 5;
+		if (avg < prevAvg - 0.5) {
+			// v3: Write to stderr (shows in hook log) instead of appendFileSync to MEMORY.md
+			console.error(
+				`TREND WARNING: Quality declining: ${prevAvg.toFixed(1)} → ${avg.toFixed(1)}`,
+			);
 		}
-		return;
 	}
 
-	// Phase 2: SPC (>= 20 sessions)
-	const scores = allScores.map((s) => s.quality_score);
-	const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
-	const stdDev = Math.sqrt(
-		scores.reduce((sum, s) => sum + (s - mean) ** 2, 0) / (scores.length - 1),
-	);
-	const ucl = mean + 3 * stdDev;
-	const lcl = mean - 3 * stdDev;
-	const current = currentMetrics.quality_score;
-	const warnings: string[] = [];
-
-	if (current > ucl || current < lcl) {
-		warnings.push(
-			`SPC SIGNAL: Score ${current} outside limits [${lcl.toFixed(1)}, ${ucl.toFixed(1)}]`,
+	if (allScores.length >= 20) {
+		const scores = allScores.map((s) => s.quality_score);
+		const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+		const stdDev = Math.sqrt(
+			scores.reduce((sum, s) => sum + (s - mean) ** 2, 0) / (scores.length - 1),
 		);
-	}
+		const ucl = mean + 3 * stdDev;
+		const lcl = mean - 3 * stdDev;
+		const current = currentMetrics.quality_score;
 
-	const last7 = allScores.slice(-7).map((s) => s.quality_score);
-	if (last7.length === 7 && last7.every((s) => s < mean)) {
-		warnings.push(
-			`SPC SIGNAL: 7 consecutive sessions below mean (${mean.toFixed(1)})`,
-		);
-	}
+		if (current > ucl || current < lcl) {
+			console.error(
+				`SPC SIGNAL: Score ${current} outside limits [${lcl.toFixed(1)}, ${ucl.toFixed(1)}]`,
+			);
+		}
 
-	if (warnings.length > 0 && existsSync(sharedMemory)) {
-		const entry = `\n- **${currentMetrics.date.split("T")[0]}**: ${warnings.join("; ")} [SPC: μ=${mean.toFixed(1)}, σ=${stdDev.toFixed(2)}, N=${scores.length}]\n`;
-		appendFileSync(sharedMemory, entry, "utf-8");
+		const last7 = allScores.slice(-7).map((s) => s.quality_score);
+		if (last7.length === 7 && last7.every((s) => s < mean)) {
+			console.error(
+				`SPC SIGNAL: 7 consecutive sessions below mean (${mean.toFixed(1)})`,
+			);
+		}
 	}
 }
 
@@ -291,17 +287,10 @@ function validateMetrics(
 		const content = readFileSync(transcriptPath, "utf-8");
 		const lineCount = content.trim().split("\n").length;
 		if (metrics.total_turns === 0 && lineCount > 50) {
-			const warning = `\n### [${new Date().toISOString().split("T")[0]}] SCORER WARNING: 0 turns parsed from ${lineCount}-line transcript\n- **Session**: ${metrics.session_id}\n- **Action**: Skipped writing dummy score.\n`;
-			const failuresPath = join(
-				HOME,
-				".claude",
-				"agent-memory",
-				"shared",
-				"MEMORY.md",
+			// v3: Log to stderr instead of appendFileSync to MEMORY.md
+			console.error(
+				`SCORER WARNING: 0 turns parsed from ${lineCount}-line transcript (${metrics.session_id}). Skipping.`,
 			);
-			if (existsSync(failuresPath)) {
-				appendFileSync(failuresPath, warning, "utf-8");
-			}
 			return false;
 		}
 	} catch {

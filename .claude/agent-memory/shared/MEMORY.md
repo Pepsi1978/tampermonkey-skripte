@@ -48,22 +48,7 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 <!-- WICHTIG: Fehler MUESSEN ausfuehrlich genug beschrieben werden, dass ein -->
 <!-- frischer /self-improve Lauf sie ohne zusaetzlichen Kontext fixen kann! -->
 
-### 2026-03-20 — Hook: reindex-codebase.ps1 — Stille Indexierungsfehler + Timeout
-**Quelle:** Hook: reindex-codebase.ps1 (SessionStart, async)
-**Symptom:** Semantischer Index 16+ Stunden veraltet, spaeter ExitCode 143 (Timeout)
-**Ursache:** 1) Bun Import-Pfade relativ zur Datei, nicht CWD — Temp in %TEMP% fand ./src/ nicht.
-2) Timeout 180s zu knapp bei 600+ Dateien.
-**Fix:** Temp-Datei ins mcp-code-search/ verschoben, Timeout auf 300s erhoeht, finally{}-Cleanup.
-**Regel abgeleitet:** Hooks duerfen NIEMALS Fehler still verschlucken. Jeder catch-Block MUSS ins Whiteboard loggen.
-**Status:** GEFIXT (2026-03-20)
-
-### 2026-03-20 14:10 — Hook: reindex-codebase.ps1 — Erneuter ExitCode 143 (Duplikat)
-**Hinweis:** Automatisch vom Hook eingetragen, aber Timeout war bereits auf 300s erhoeht. Hook lief mit alter Session-Konfiguration (180s). Kein neuer Fehler.
-**Status:** GEFIXT (2026-03-20) — Duplikat des obigen Eintrags
-
-### 2026-03-20 14:35 — Hook: reindex-codebase.ps1 — Indexierung ExitCode 143 (Duplikat)
-**Hinweis:** Dritter automatischer Eintrag vom selben Problem. Timeout bereits auf 300s erhoeht, wirkt ab naechster Session.
-**Status:** GEFIXT (2026-03-20) — Duplikat, alle drei Eintraege betreffen denselben Bug
+<!-- ARCHIV (2026-03-20): 3 GEFIXT-Eintraege zu reindex-codebase.ps1 ExitCode 143 — Timeout von 180s auf 300s erhoeht, Bun-Imports gefixt. Regel: Hooks duerfen NIEMALS Fehler still verschlucken. -->
 
 ### 2026-03-20 18:10 — System: Cross-Platform — .sh Hooks nicht lokal deployed
 **Quelle:** Deep-Scan Runde 5+6

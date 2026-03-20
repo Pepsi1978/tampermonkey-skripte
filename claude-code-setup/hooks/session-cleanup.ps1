@@ -30,6 +30,12 @@ if (Test-Path $nodeCache) {
     }
 }
 
+# Clean old agent-writeback sentinel files (prevent accumulation)
+$sentinelPattern = Join-Path $env:TEMP "agent-writeback-*.json"
+Get-ChildItem $sentinelPattern -ErrorAction SilentlyContinue |
+    Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-2) } |
+    ForEach-Object { try { Remove-Item $_.FullName -Force; $cleaned++ } catch { } }
+
 # Clean old hook log files (already handled by hook-log.ps1, but belt-and-suspenders)
 $hookLogs = Join-Path $env:USERPROFILE ".claude" "logs" "hooks"
 if (Test-Path $hookLogs) {
