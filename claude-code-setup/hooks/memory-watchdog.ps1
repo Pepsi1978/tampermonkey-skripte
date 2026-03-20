@@ -8,8 +8,10 @@
 
 param()
 
-$memoryFile = Join-Path $env:USERPROFILE ".claude" "agent-memory" "shared" "MEMORY.md"
-$whiteboardFile = Join-Path $env:USERPROFILE ".claude" "agent-memory" "shared" "MEMORY.md"
+# Write to the REPO copy (~/proggs/.claude/) — this is the authoritative whiteboard
+# that gets committed. The ~/.claude/ copy is kept in sync by the commit workflow.
+$memoryFile = Join-Path $env:USERPROFILE "proggs" ".claude" "agent-memory" "shared" "MEMORY.md"
+$whiteboardFile = $memoryFile
 $counterFile = Join-Path $env:TEMP "claude-writeback-counter.txt"
 
 # Count SubagentStop events since last MEMORY.md write

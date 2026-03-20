@@ -123,3 +123,8 @@ _Noch keine Eintraege._
 - Einziges Repository: Pepsi1978/proggs
 - Cross-Platform: Jede Aenderung MUSS auf beiden Plattformen funktionieren
 - Status-Meldung: "Committed, gepusht und plattformuebergreifend" nur wenn ehrlich
+
+### 2026-03-20 14:10 — Hook: reindex-codebase.ps1 — Erneuter ExitCode 143 (Duplikat)
+**Hinweis:** Dieser Fehler wurde automatisch vom Hook eingetragen, aber das Timeout war bereits
+auf 300s erhoeht. Der Hook lief mit der alten Session-Konfiguration (180s). Kein neuer Fehler.
+**Status:** GEFIXT (2026-03-20) — Timeout bereits auf 300s, wirkt ab naechster Session

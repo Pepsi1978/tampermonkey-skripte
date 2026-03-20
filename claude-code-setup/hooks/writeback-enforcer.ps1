@@ -7,7 +7,8 @@
 
 $sentinelDir = $env:TEMP
 $sentinelPattern = "agent-writeback-*.json"
-$memoryFile = Join-Path $env:USERPROFILE ".claude\agent-memory\shared\MEMORY.md"
+# Write to the REPO copy (~/proggs/.claude/) — authoritative whiteboard
+$memoryFile = Join-Path $env:USERPROFILE "proggs\.claude\agent-memory\shared\MEMORY.md"
 
 # Guard: exit gracefully if whiteboard doesn't exist
 if (-not (Test-Path $memoryFile)) { exit 0 }
