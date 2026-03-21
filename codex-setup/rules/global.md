@@ -5,6 +5,8 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 ## Zweck und Geltungsbereich
 
 - Diese Datei ist fuer Codex gedacht, nicht fuer Claude Code.
+- `codex-setup/` ist der Synchronisierungsordner fuer Codex auf macOS und Codex auf Windows.
+- Die Regeln in `codex-setup/` sollen in beide Richtungen gelten: macOS zu Windows und Windows zu macOS.
 - `claude-code-setup/`, `CLAUDE.md` und andere Claude-Code-Dateien sind fuer Codex keine Arbeitsanweisung.
 - Wenn der Benutzer `Cloud Code` sagt, ist damit `Claude Code` gemeint.
 

@@ -2,6 +2,13 @@
 
 Dieser Ordner ist die plattformuebergreifende, synchronisierte Regelbasis fuer Codex.
 
+Wofuer dieser Ordner da ist:
+- nur fuer Codex
+- nicht fuer Claude Code
+- fuer die Synchronisation von Codex auf macOS zu Codex auf Windows
+- fuer die Synchronisation von Codex auf Windows zu Codex auf macOS
+- als gemeinsame, synchronisierte Regelquelle fuer Codex auf beiden Plattformen
+
 Zweck:
 - Regeln fuer Codex zwischen macOS und Windows synchron halten
 - `Codex-Regeln/` als bisherigen Einzelordner ersetzen
