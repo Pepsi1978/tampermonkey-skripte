@@ -204,6 +204,15 @@ if [ -f "$repo_mcp" ]; then
     synced="$synced .mcp.json"
 fi
 
+# Ensure code-search MCP server dependencies are installed
+mcp_cs_dir="$REPO_DIR/mcp-code-search"
+if [ -d "$mcp_cs_dir" ] && [ ! -d "$mcp_cs_dir/node_modules" ]; then
+    if command -v /opt/homebrew/bin/bun >/dev/null 2>&1; then
+        (cd "$mcp_cs_dir" && /opt/homebrew/bin/bun install --silent 2>/dev/null) && \
+            synced="$synced code-search-deps" || true
+    fi
+fi
+
 # .gitignore_global
 gitignore="$SETUP_DIR/.gitignore_global"
 if [ -f "$gitignore" ]; then
