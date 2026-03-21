@@ -53,12 +53,23 @@ function Hook-LogWarn {
     try { $line | Out-File -FilePath $script:_HookLogFile -Append -Encoding utf8 } catch { }
 }
 
-# Register automatic error logging on script exit
+# Register automatic error logging on script exit.
+# NOTE: -SupportEvent is intentionally NOT used here. The flag would hide the subscriber
+# from Get-EventSubscriber (making it unremovable/undebuggable), and more importantly,
+# the Action block runs in a child scope where Hook-LogError is not available.
+# The plain registration below keeps the subscriber visible and debuggable.
+# The Action block captures the log file path via $using: to work in the event scope.
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
     if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
-        Hook-LogError "unexpected exit code $LASTEXITCODE"
+        $ts = Get-Date -Format "HH:mm:ss"
+        $logFile = $script:_HookLogFile
+        $hookName = $script:_HookLogName
+        try {
+            "[$ts] ERROR $hookName`: unexpected exit code $LASTEXITCODE" |
+                Out-File -FilePath $logFile -Append -Encoding utf8
+        } catch { }
     }
-} -SupportEvent 2>$null
+} 2>$null
 
 # Trap terminating errors and log them
 trap {
