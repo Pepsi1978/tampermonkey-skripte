@@ -259,7 +259,7 @@ These write-backs are NOT optional. They make the entire review system smarter a
 - If the change is trivial (< 5 lines, config-only, version bump), say so and skip spawning sub-agents — a direct 1-paragraph assessment suffices.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-mar-reviewer.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-mar-reviewer.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-mar-reviewer.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "mar-reviewer", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Verdict + kritischster Fund]"}
 ```

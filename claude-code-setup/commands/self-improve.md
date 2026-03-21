@@ -620,4 +620,4 @@ If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 - **Shell/Terminal-Updates**: Siehe Core Rules oben — IMMER zuletzt, IMMER nach Bestaetigung.
 
 ---
-<!-- Skill Version: v5.17 | Date: 2026-03-20 | Changes: v5.17 — Replaced TTL-based cache with git-diff-based invalidation (resolves conflict with researchers.md), removed MCP-Server from Whiteboard-Konsumenten (can't read files), removed Termux platform reference (deinstalled), fixed researcher crash format (##→###), noted file-locking/mutex on MEMORY.md, MEMORY.md symlink eliminates diverging copies. Previous: v5.16. -->
+<!-- Skill Version: v5.18 | Date: 2026-03-21 | Changes: v5.18 — Removed all Termux references (Termux deinstalled, no longer a supported platform). Previous: v5.17 — Replaced TTL-based cache with git-diff-based invalidation, removed MCP-Server from Whiteboard-Konsumenten, fixed researcher crash format, noted MEMORY.md symlink. -->

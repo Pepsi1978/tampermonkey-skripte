@@ -89,7 +89,7 @@ Der Benutzer muss dich NICHT daran erinnern — du tust es AUTOMATISCH als letzt
 Der writeback-enforcer merged die Findings automatisch in die richtigen MEMORY.md-Sektionen.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-debugger.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-debugger.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-debugger.json` (Windows). Nutze das Write-Tool -- der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "debugger", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Fehlertyp + Root Cause]"}
 ```
@@ -97,7 +97,7 @@ Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
 Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 **SELBSTTEST**: Bevor du deine Antwort beendest, prüfe:
-- [ ] Habe ich die Sentinel-Datei `/tmp/agent-writeback-debugger.json` geschrieben? Wenn nein → JETZT machen
+- [ ] Habe ich die Sentinel-Datei (system temp dir)/agent-writeback-debugger.json geschrieben? Wenn nein → JETZT machen
 - [ ] Enthält das Findings-Feld Fehlertyp + Root Cause? Wenn nein → Korrigieren
 - [ ] War der Workflow wiederverwendbar? Wenn ja → Findings mit [WORKFLOW:] prefixen
 

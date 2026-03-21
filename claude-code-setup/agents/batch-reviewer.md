@@ -70,7 +70,7 @@ No essays. No praise. Speed is the priority.
 - Existieren die Dateien? Fehlende Dateien ueberspringen, nicht abbrechen.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-batch-reviewer.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-batch-reviewer.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-batch-reviewer.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "batch-reviewer", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Anzahl Dateien reviewt + wichtigster Fund]"}
 ```

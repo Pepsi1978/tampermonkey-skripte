@@ -99,7 +99,7 @@ These write-backs are NOT optional. They make the entire system smarter over tim
 - Existieren die referenzierten Dateien? Wenn nicht → Melden statt blind weiterarbeiten.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-challenger.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-challenger.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-challenger.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "challenger", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Wichtigste Schwachstelle die gefunden wurde]"}
 ```

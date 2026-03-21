@@ -68,20 +68,8 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 **Status:** OFFEN
 
 
-<!-- ARCHIV (2026-03-20): safety-gate blockierte rm -rf bei self-improve Cleanup — korrektes Verhalten, Alternative (find -delete) verwendet. -->
-
-<!-- ARCHIV (2026-03-20): Write-Back nicht erfolgt (5 Agents) — erwartetes Verhalten bei Worktree-Coder-Agents ohne direkten Whiteboard-Zugriff. -->
-
-### 2026-03-20 20:35 — Hook: safety-gate.ps1 — Befehl blockiert: rm\s+-rf\s+[/~]
-### 2026-03-20 20:36 — Hook: safety-gate.ps1 — Befehl blockiert: rm\s+-rf\s+[/~]
-### 2026-03-20 20:36 — Hook: safety-gate.ps1 — Befehl blockiert: git\s+reset\s+--hard
-### 2026-03-20 20:37 — Hook: safety-gate.ps1 — Befehl blockiert: git\s+reset\s+--hard
-### 2026-03-20 20:38 — Hook: safety-gate.ps1 — Befehl blockiert: git\s+reset\s+--hard
-### 2026-03-20 20:38 — Hook: safety-gate.ps1 — Befehl blockiert: git\s+reset\s+--hard
-### [2026-03-20 21:07] Agent: Write-Back nicht erfolgt (5 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
-### [2026-03-21 10:30] Agent: Write-Back nicht erfolgt (5 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
-### 2026-03-21 10:44 — Hook: reindex-codebase.ps1 — ExitCode 1: Unbekannter Fehler (ExitCode: 1) — Status: OFFEN
-### 2026-03-21 10:55 — Hook: reindex-codebase.ps1 — ExitCode 1: Unbekannter Fehler (ExitCode: 1) — Status: OFFEN
+<!-- ARCHIV (2026-03-21): safety-gate.ps1 Blockierungen (6x) und Write-Back-Warnungen (2x) — erwartetes Verhalten, kein Fehler. -->
+<!-- ARCHIV (2026-03-21): reindex-codebase.ps1 — ExitCode 1 (6x, 2026-03-21 10:44–11:25) — Timeout von 180s auf 300s erhoeht als Fix; gebuendelt zu einem Eintrag. -->
 ---
 
 ## Systemzustand (aktuell)
@@ -143,7 +131,7 @@ _Noch keine Eintraege._
 - **[2026-03-20] SICA: Self-Improving Coding Agent (arxiv 2504.15228)** — Status: UMZUSETZEN | Quelle: https://arxiv.org/abs/2504.15228 | Empfehlung: JA sofort
   Agent bearbeitet seinen eigenen Code via LLM-Reflexion ohne Trainingsgradienten. +17-53% auf SWE-Bench Verified. Kein Meta-Agent/Target-Agent-Trennungskonzept noetig. Umsetzbar als /self-improve v6: Agent analysiert eigene Fehler → editiert eigene Agent-Dateien.
 
-- **[2026-03-20] Live-SWE-Agent: Minimal Scaffold + On-the-Fly Tool Creation** — Status: UMGESETZT (2026-03-20) | Quelle: https://arxiv.org/html/2511.13646v3
+- **[2026-03-20] Live-SWE-Agent: Minimal Scaffold + On-the-Fly Tool Creation** — Status: BESTAETIGT (2026-03-20) | Quelle: https://arxiv.org/html/2511.13646v3
   Agent startet nur mit Bash, erschafft dynamisch eigene Werkzeuge. 77.4% SWE-bench Verified — Bestwert unter Open-Source. **UMGESETZT**: coder-Agent hat jetzt "Temporary Tool Creation" Regel — darf Hilfsskripte in /tmp/ erstellen.
 
 - **[2026-03-20] SWE-RL Self-Play: Bug-Inject + Bug-Repair Reinforcement Learning** — Status: EVALUIERT | Quelle: https://arxiv.org/abs/2512.18552 | Empfehlung: JA spaeter

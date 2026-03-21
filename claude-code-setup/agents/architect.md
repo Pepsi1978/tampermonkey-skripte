@@ -91,7 +91,7 @@ After EVERY architecture design, you MUST:
 These write-backs are NOT optional. They make the entire system smarter over time.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-architect.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-architect.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-architect.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "architect", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung deiner wichtigsten Architekturentscheidung]"}
 ```

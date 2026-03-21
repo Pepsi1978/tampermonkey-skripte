@@ -80,7 +80,7 @@ Format pro Finding in MEMORY.md (wird vom writeback-enforcer eingefuegt):
 ```
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-intelligence-researcher.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-intelligence-researcher.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-intelligence-researcher.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "intelligence-researcher", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Anzahl Findings + wichtigstes Ergebnis]"}
 ```

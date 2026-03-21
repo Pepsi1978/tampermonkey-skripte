@@ -88,7 +88,7 @@ These write-backs are NOT optional. They make the entire system smarter over tim
 - Existieren die Dateien? Wenn nicht → Sofort melden.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-optimizer.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-optimizer.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-optimizer.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "optimizer", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: wichtigstes Optimierungs-Finding]"}
 ```

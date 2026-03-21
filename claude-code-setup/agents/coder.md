@@ -21,7 +21,7 @@ You are a fast, focused implementation agent. You receive well-defined coding ta
 Before starting, read this file if it exists — it prevents you from repeating known mistakes:
 - `.claude/agent-memory/shared/MEMORY.md` — Project conventions, patterns, known bugs ("Offene Fehler & Probleme"), and proven workflows ("Regeln & Konventionen"). Follow what's documented there.
 Do NOT write full findings to this file — you are a fast implementation agent, not a reviewer.
-However, if you discover a BUG or ANTI-PATTERN while implementing, write a 1-line sentinel file to `/tmp/agent-writeback-coder.json`:
+However, if you discover a BUG or ANTI-PATTERN while implementing, write a 1-line sentinel file to the system temp directory: `/tmp/agent-writeback-coder.json` (macOS/Linux) or `$env:TEMP/agent-writeback-coder.json` (Windows). Use the Write tool — the path resolves automatically.
 ```json
 {"agent": "coder", "timestamp": "[ISO8601]", "findings": "[1-line: what you found]"}
 ```

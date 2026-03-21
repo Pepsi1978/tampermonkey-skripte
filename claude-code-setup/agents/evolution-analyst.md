@@ -135,7 +135,7 @@ Session c82e0cb1 had corrections=1 at turn ~124. Root cause: coder-Agent drifted
 - Use English for code and technical identifiers
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-evolution-analyst.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-evolution-analyst.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-evolution-analyst.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "evolution-analyst", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Qualitaets-Trend + wichtigste Schwaeche]"}
 ```
