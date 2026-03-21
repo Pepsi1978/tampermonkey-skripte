@@ -1,12 +1,16 @@
 # Dynamic notification for Windows: extracts the actual message from Claude Code
 # MUST run under powershell.exe (5.1), NOT pwsh 7+ — WinRT Toast API requires it
-# No hook-log.ps1 dependency (PS 5.1 incompatible with PS7 syntax in hook-log.ps1)
+# Note: hook-log.ps1 is sourced for error logging but uses only PS 5.1-compatible syntax.
+
+. "$PSScriptRoot/hook-log.ps1"
 
 $hookInput = [Console]::In.ReadToEnd()
+$msg = $null
 try {
     $json = $hookInput | ConvertFrom-Json
     $msg = $json.notification.message
 } catch {
+    Hook-LogWarn "notify.ps1: Failed to parse notification JSON: $_"
     $msg = $null
 }
 if (-not $msg) { $msg = "Braucht deine Aufmerksamkeit" }
@@ -21,5 +25,5 @@ try {
         [Windows.UI.Notifications.ToastNotification]::new($xml)
     )
 } catch {
-    # Silently fail — notification is non-critical
+    Hook-LogWarn "notify.ps1: Toast notification failed: $_"
 }

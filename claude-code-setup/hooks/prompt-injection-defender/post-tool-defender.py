@@ -25,7 +25,9 @@ but sends the reason message to Claude as a warning.
 import json
 import os
 import re
+import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -34,6 +36,30 @@ try:
 except ImportError:
     # Fallback if yaml not available
     yaml = None
+
+
+def log_to_whiteboard(entry: str) -> None:
+    """Log injection detection to whiteboard via whiteboard-insert script."""
+    hooks_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        if os.name == "nt":
+            script = os.path.join(hooks_dir, "whiteboard-insert.ps1")
+            subprocess.run(
+                ["powershell", "-NoProfile", "-File", script,
+                 "-Section", "Offene Fehler & Probleme", "-Entry", entry],
+                timeout=5,
+                capture_output=True,
+            )
+        else:
+            script = os.path.join(hooks_dir, "whiteboard-insert.sh")
+            subprocess.run(
+                ["bash", script, "Offene Fehler & Probleme", entry],
+                timeout=5,
+                capture_output=True,
+            )
+    except Exception:
+        # Fail silently — logging must never crash the hook
+        pass
 
 
 def load_config() -> Dict[str, Any]:
@@ -452,6 +478,16 @@ def main() -> None:
         # Using "block" decision sends the reason to Claude as feedback
         output = {"decision": "block", "reason": warning}
         print(json.dumps(output))
+
+        # Log detection to whiteboard
+        date_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        high_count = sum(1 for d in detections if d[3] == "high")
+        brief = f"{len(detections)} pattern(s) matched ({high_count} high-severity) in {source_info}"
+        wb_entry = (
+            f"### {date_str} — Hook: prompt-injection-defender — "
+            f"Prompt Injection erkannt in {tool_name}: {brief}"
+        )
+        log_to_whiteboard(wb_entry)
 
     # Always exit 0 to allow continuation (warn, don't block)
     sys.exit(0)

@@ -7,8 +7,10 @@
 # - intent-tracking.md rule (every ~5 turns: verify alignment)
 # - PreCompact prompt hook (preserve goal during compaction)
 
-GOAL_FILE="/tmp/claude-session-goal.txt"
-COUNTER_FILE="/tmp/claude-turn-counter.txt"
+source "$(dirname "$0")/hook-log.sh"
+
+GOAL_FILE="${TMPDIR:-/tmp}/claude-session-goal.txt"
+COUNTER_FILE="${TMPDIR:-/tmp}/claude-turn-counter.txt"
 
 # Read JSON input from stdin (Claude Code sends hook context as JSON)
 hook_input=$(cat 2>/dev/null)
@@ -57,7 +59,7 @@ fi
 # Every 5 turns: write a reminder marker file
 # Drift onset peaks at turns 4-7 (arxiv 2510.07777), so 5-turn interval catches it early
 if [ $((turn % 5)) -eq 0 ] && [ -f "$GOAL_FILE" ]; then
-    reminder_file="/tmp/claude-intent-reminder.txt"
+    reminder_file="${TMPDIR:-/tmp}/claude-intent-reminder.txt"
     printf '%s' "$turn" > "$reminder_file"
 fi
 

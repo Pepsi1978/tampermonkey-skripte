@@ -6,14 +6,18 @@
 # - intent-tracking.md rule (every ~5 turns: verify alignment)
 # - PreCompact prompt hook (preserve goal during compaction)
 
+. "$PSScriptRoot/hook-log.ps1"
+
 $GoalFile = Join-Path $env:TEMP "claude-session-goal.txt"
 $CounterFile = Join-Path $env:TEMP "claude-turn-counter.txt"
 
 # Read JSON input from stdin (Claude Code sends hook context)
+$json = $null
 try {
     $hookInput = [Console]::In.ReadToEnd()
-    $json = $hookInput | ConvertFrom-Json
+    $json = $hookInput | ConvertFrom-Json -ErrorAction Stop
 } catch {
+    Hook-LogWarn "Failed to parse hook JSON input: $_"
     $json = $null
 }
 

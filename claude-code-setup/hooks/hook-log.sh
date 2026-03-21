@@ -46,6 +46,10 @@ _hook_log_trap_handler() {
     hook_log_error "command failed at line ${line_no} — ${cmd}"
 }
 
+# IMPORTANT: The ERR trap is suppressed by `|| true` constructs in sourcing hooks.
+# Hooks that use `command || true` will NOT trigger this trap on failure.
+# For reliable error detection, hooks should check $? explicitly after critical commands.
+
 # Register ERR trap: fires whenever a command exits with non-zero status
 trap '_hook_log_trap_handler $LINENO' ERR
 

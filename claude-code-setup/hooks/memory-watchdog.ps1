@@ -7,6 +7,7 @@
 # Other agents (coder, researcher, etc.) are exempt.
 
 param()
+. "$PSScriptRoot/hook-log.ps1"
 . "$PSScriptRoot/whiteboard-insert.ps1"
 
 # Write to the REPO copy (~/proggs/.claude/) — this is the authoritative whiteboard

@@ -6,6 +6,8 @@
 # On Linux without osascript, falls back to notify-send if available.
 # Silently succeeds if no notification tool is present — notifications are non-critical.
 
+source "$(dirname "$0")/hook-log.sh"
+
 # ---------------------------------------------------------------------------
 # Read JSON from stdin and extract notification message
 # ---------------------------------------------------------------------------
@@ -32,10 +34,19 @@ msg="${msg:0:200}"
 # ---------------------------------------------------------------------------
 if command -v osascript &>/dev/null; then
     # macOS native notification via AppleScript
-    osascript -e "display notification \"$msg\" with title \"Claude Code\"" 2>/dev/null || true
+    # Escape backslashes and double-quotes to prevent quote injection into osascript
+    safe_msg="${msg//\\/\\\\}"
+    safe_msg="${safe_msg//\"/\\\"}"
+    osascript -e "display notification \"${safe_msg}\" with title \"Claude Code\"" 2>/dev/null
+    if [ $? -ne 0 ]; then
+        hook_log_warn "osascript notification failed"
+    fi
 elif command -v notify-send &>/dev/null; then
     # Linux fallback (requires libnotify-bin)
-    notify-send "Claude Code" "$msg" 2>/dev/null || true
+    notify-send "Claude Code" "$msg" 2>/dev/null
+    if [ $? -ne 0 ]; then
+        hook_log_warn "notify-send failed"
+    fi
 fi
 # Silently fail on any other platform — notifications are non-critical
 

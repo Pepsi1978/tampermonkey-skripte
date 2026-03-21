@@ -6,6 +6,7 @@
 # Old DBs are cleaned up on a best-effort basis.
 # v2: Uses whiteboard-insert.sh for section-based error logging (echo >> is FORBIDDEN).
 
+source "$(dirname "$0")/hook-log.sh"
 source "$(dirname "$0")/whiteboard-insert.sh"
 
 ROOT_DIR="$HOME/proggs"
@@ -82,7 +83,7 @@ fi
 MODELS_JSON=$(curl -s --max-time 2 http://localhost:11434/api/tags 2>/dev/null)
 if [ $? -eq 0 ] && [ -n "$MODELS_JSON" ]; then
     if ! echo "$MODELS_JSON" | grep -q "nomic-embed-text"; then
-        ollama pull nomic-embed-text 2>/dev/null || true
+        ollama pull nomic-embed-text 2>/dev/null || hook_log_warn "ollama pull nomic-embed-text failed"
     fi
 fi
 
@@ -203,6 +204,7 @@ else
     else
         EXIT_INFO="Unknown error (ExitCode: $EXIT_CODE)"
     fi
+    hook_log_error "Indexer failed — ExitCode $EXIT_CODE: $EXIT_INFO"
     ENTRY="### $TIMESTAMP — Hook: reindex-codebase.sh — ExitCode $EXIT_CODE: $EXIT_INFO — Status: OFFEN"
     insert_whiteboard_entry "Offene Fehler & Probleme" "$ENTRY"
     echo "Reindex-Hook: FEHLER — Bun ExitCode $EXIT_CODE. Siehe Shared Whiteboard."

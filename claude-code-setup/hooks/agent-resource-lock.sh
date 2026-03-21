@@ -7,6 +7,8 @@
 #   <action>   — acquire | release | check
 # Lock files live in /tmp/claude-locks/ — auto-expire after 10 minutes
 
+source "$(dirname "$0")/hook-log.sh"
+
 set -euo pipefail
 
 if [ $# -ne 2 ]; then
@@ -26,7 +28,7 @@ case "$ACTION" in
         ;;
 esac
 
-LOCK_DIR="/tmp/claude-locks"
+LOCK_DIR="${TMPDIR:-/tmp}/claude-locks"
 mkdir -p "$LOCK_DIR"
 LOCK_FILE="$LOCK_DIR/${RESOURCE}.lock"
 
@@ -48,11 +50,13 @@ case "$ACTION" in
         age=$(get_lock_age_minutes)
         if [ "$age" -ge 0 ] && [ "$age" -lt 10 ]; then
             owner=$(cat "$LOCK_FILE" 2>/dev/null || echo "unknown")
+            hook_log "lock DENIED for '$RESOURCE' — held by $owner (${age}min ago)"
             echo "LOCKED — Resource '$RESOURCE' is held by $owner (${age}min ago). Wait or use a different resource."
             exit 1
         fi
         # Acquire lock (overwrites stale locks older than 10 minutes)
         echo "$(hostname)-PID$$-$(date +%H:%M:%S)" > "$LOCK_FILE"
+        hook_log "lock ACQUIRED for '$RESOURCE'"
         echo "ACQUIRED — Resource '$RESOURCE' locked."
         exit 0
         ;;
@@ -60,8 +64,10 @@ case "$ACTION" in
     release)
         if [ -f "$LOCK_FILE" ]; then
             rm -f "$LOCK_FILE"
+            hook_log "lock RELEASED for '$RESOURCE'"
             echo "RELEASED — Resource '$RESOURCE' unlocked."
         else
+            hook_log "lock RELEASE called but '$RESOURCE' was not locked"
             echo "NO-LOCK — Resource '$RESOURCE' was not locked."
         fi
         exit 0
@@ -71,9 +77,11 @@ case "$ACTION" in
         age=$(get_lock_age_minutes)
         if [ "$age" -ge 0 ] && [ "$age" -lt 10 ]; then
             owner=$(cat "$LOCK_FILE" 2>/dev/null || echo "unknown")
+            hook_log "lock CHECK: '$RESOURCE' is BUSY — held by $owner (${age}min ago)"
             echo "BUSY — Resource '$RESOURCE' is held by $owner (${age}min ago)."
             exit 1
         else
+            hook_log "lock CHECK: '$RESOURCE' is FREE"
             echo "FREE — Resource '$RESOURCE' is available."
             exit 0
         fi

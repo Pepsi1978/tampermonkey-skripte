@@ -32,10 +32,16 @@ EXT="${FILE_PATH##*.}"
 
 case "$EXT" in
     go)
-        gofmt -w "$FILE_PATH" 2>/dev/null || true
+        gofmt -w "$FILE_PATH" 2>/dev/null
+        if [ $? -ne 0 ]; then
+            hook_log_warn "formatter gofmt failed (exit $?) on $FILE_PATH"
+        fi
         ;;
     rs)
-        rustfmt "$FILE_PATH" 2>/dev/null || true
+        rustfmt "$FILE_PATH" 2>/dev/null
+        if [ $? -ne 0 ]; then
+            hook_log_warn "formatter rustfmt failed (exit $?) on $FILE_PATH"
+        fi
         ;;
     cs)
         DIR=$(dirname "$FILE_PATH")
@@ -43,31 +49,52 @@ case "$EXT" in
         PROJ=$(find "$DIR" -maxdepth 3 -name "*.csproj" 2>/dev/null | head -1)
         if [ -n "$PROJ" ]; then
             PROJ_DIR=$(dirname "$PROJ")
-            dotnet format whitespace "$PROJ_DIR" --include "$FILE_PATH" 2>/dev/null || true
+            dotnet format whitespace "$PROJ_DIR" --include "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter dotnet-format failed (exit $?) on $FILE_PATH"
+            fi
         fi
         ;;
     ts|tsx|mts|js|jsx|mjs|json|css)
         if command -v biome > /dev/null 2>&1; then
-            biome format --write "$FILE_PATH" 2>/dev/null || true
+            biome format --write "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter biome failed (exit $?) on $FILE_PATH"
+            fi
         elif command -v prettier > /dev/null 2>&1; then
-            prettier --write "$FILE_PATH" 2>/dev/null || true
+            prettier --write "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter prettier failed (exit $?) on $FILE_PATH"
+            fi
         fi
         ;;
     c|cpp|h|hpp)
         if command -v clang-format > /dev/null 2>&1; then
-            clang-format -i "$FILE_PATH" 2>/dev/null || true
+            clang-format -i "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter clang-format failed (exit $?) on $FILE_PATH"
+            fi
         fi
         ;;
     kt|kts)
         if command -v ktfmt > /dev/null 2>&1; then
-            ktfmt --kotlinlang-style "$FILE_PATH" 2>/dev/null || true
+            ktfmt --kotlinlang-style "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter ktfmt failed (exit $?) on $FILE_PATH"
+            fi
         elif command -v ktlint > /dev/null 2>&1; then
-            ktlint --format "$FILE_PATH" 2>/dev/null || true
+            ktlint --format "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter ktlint failed (exit $?) on $FILE_PATH"
+            fi
         fi
         ;;
     java)
         if command -v google-java-format > /dev/null 2>&1; then
-            google-java-format --replace "$FILE_PATH" 2>/dev/null || true
+            google-java-format --replace "$FILE_PATH" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                hook_log_warn "formatter google-java-format failed (exit $?) on $FILE_PATH"
+            fi
         fi
         ;;
 esac
