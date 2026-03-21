@@ -224,7 +224,14 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 1. **Cross-Platform ZUERST umsetzen** — nicht nur pruefen, sondern MACHEN:
    - **Hooks**: Wurde ein `.ps1` geaendert? → Sofort das `.sh`-Gegenstueck anpassen (und umgekehrt).
      Nicht "spaeter" oder "naechste Session" — JETZT, vor dem Commit.
-   - **Settings**: Wurde settings.json geaendert? → Aenderung in `settings-reference.json` dokumentieren.
+   - **Settings (3-Dateien-Regel)**: Wurde `~/.claude/settings.json` geaendert?
+     → ALLE DREI Dateien im Setup-Repo aktualisieren:
+     1. `~/proggs/claude-code-setup/settings-reference.json` — 1:1 Kopie der Windows-Settings
+     2. `~/proggs/claude-code-setup/settings.json` — macOS-Version mit gleichen env-Variablen,
+        Permissions, Plugins und Hooks (nur Pfade und Plattform-spezifische Befehle unterschiedlich)
+     3. `~/proggs/claude-code-setup/settings.local.json` — Vorlage fuer lokale Overrides
+     Wurde `~/.claude/settings.local.json` geaendert? → Auch die Vorlage im Setup-Repo aktualisieren.
+     **NIEMALS nur eine der drei Dateien aktualisieren und die anderen vergessen.**
    - **Agents, Skills, Commands, Rules**: Plattformunabhaengig (Markdown) — automatisch OK.
    - **Whiteboard**: Plattformuebergreifend ueber Git — automatisch OK.
 2. **Commit** — erst nachdem Cross-Platform erledigt ist.
@@ -248,9 +255,12 @@ Richtiges Modell fuer die richtige Aufgabe — Opus denkt, Sonnet macht:
 ### Checkliste (vor dem Commit mental durchgehen)
 - [ ] Wurden `.ps1`-Hooks geaendert? → `.sh`-Gegenstueck ebenfalls geaendert?
 - [ ] Wurden `.sh`-Hooks geaendert? → `.ps1`-Gegenstueck ebenfalls geaendert?
-- [ ] Wurde settings.json geaendert? → settings-reference.json aktualisiert?
+- [ ] Wurde `~/.claude/settings.json` geaendert? → Alle 3 Setup-Repo-Dateien aktualisiert?
+  (settings-reference.json, settings.json macOS-Version, settings.local.json Vorlage)
+- [ ] Wurde `~/.claude/settings.local.json` geaendert? → Setup-Repo-Vorlage aktualisiert?
 - [ ] Neues Projekt erstellt? → Funktioniert es auf beiden Plattformen?
 - [ ] Pfade verwendet? → Sind sie plattformunabhaengig (~/proggs/ statt C:\Users\...)?
+- [ ] Config-Aenderung gemacht? → MUSS trotzdem committed und gepusht werden!
 
 ## Commit-Nachrichten
 - Jede Commit-Nachricht beginnt mit einer **fortlaufenden Nummer**: `#NNN - Beschreibung`
