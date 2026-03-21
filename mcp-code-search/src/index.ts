@@ -7,14 +7,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { resolve, join } from "path";
-import {
-	existsSync,
-	mkdirSync,
-	readFileSync,
-	writeFileSync,
-	readdirSync,
-	unlinkSync,
-} from "fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync } from "fs";
 
 import {
 	generateEmbeddings,
@@ -78,37 +71,6 @@ function getStore(rootDir: string): VectorStore {
 	return store;
 }
 
-function nextDbName(dbDir: string): string {
-	// Find the highest index-N.db number and return N+1
-	let maxN = 0;
-	if (existsSync(dbDir)) {
-		for (const f of readdirSync(dbDir)) {
-			const match = f.match(/^index-(\d+)\.db$/);
-			if (match) {
-				const n = parseInt(match[1], 10);
-				if (n > maxN) maxN = n;
-			}
-		}
-	}
-	return `index-${maxN + 1}.db`;
-}
-
-function cleanupOldDbs(dbDir: string, currentFile: string): void {
-	// Delete old index-N.db files (and their WAL/SHM companions) that are not the current one
-	if (!existsSync(dbDir)) return;
-	const currentBase = currentFile.replace(".db", "");
-	for (const f of readdirSync(dbDir)) {
-		// Match index-N.db, index-N.db-wal, index-N.db-shm — but NOT the current one
-		if (f.match(/^index-\d+\.db/) && !f.startsWith(currentBase)) {
-			try {
-				unlinkSync(join(dbDir, f));
-			} catch {
-				// File still locked on Windows — skip, will be cleaned up next time
-			}
-		}
-	}
-}
-
 const server = new McpServer({
 	name: "code-search",
 	version: "1.1.0",
@@ -117,7 +79,7 @@ const server = new McpServer({
 // --- Tool: index_codebase ---
 server.tool(
 	"index_codebase",
-	"Index a local codebase for semantic code search. Walks all source files, chunks them, generates embeddings via Ollama, and stores in a local vector database. Safe to run while searching — uses atomic pointer swap.",
+	"Full reindex of a local codebase for semantic code search. Clears the existing index and re-indexes all files from scratch. Use this only for first-time indexing or to fix a corrupted index — the SessionStart hook handles incremental updates automatically.",
 	{
 		directory: z
 			.string()
@@ -138,81 +100,47 @@ server.tool(
 		const dbDir = join(rootDir, ".code-search");
 		if (!existsSync(dbDir)) mkdirSync(dbDir, { recursive: true });
 
-		// Write to a NEW db file (pointer-based, no file locking conflicts)
-		const newDbName = nextDbName(dbDir);
-		const newDbPath = join(dbDir, newDbName);
-		const newStore = new VectorStore(newDbPath);
-
-		const files = await findCodeFiles(rootDir);
-		if (files.length === 0) {
-			newStore.close();
-			try {
-				unlinkSync(newDbPath);
-			} catch {}
-			return {
-				content: [
-					{ type: "text" as const, text: `No code files found in ${rootDir}` },
-				],
-			};
-		}
-
-		const allChunks: Array<{
-			filePath: string;
-			startLine: number;
-			endLine: number;
-			content: string;
-			language: string;
-		}> = [];
-
-		for (const file of files) {
-			const chunks = await chunkFile(file, rootDir);
-			allChunks.push(...chunks);
-		}
-
-		if (allChunks.length === 0) {
-			newStore.close();
-			try {
-				unlinkSync(newDbPath);
-			} catch {}
-			return {
-				content: [
-					{
-						type: "text" as const,
-						text: `Files found but no chunks generated (files may be empty or binary)`,
-					},
-				],
-			};
-		}
-
-		const EMBED_BATCH = 32;
-		for (let i = 0; i < allChunks.length; i += EMBED_BATCH) {
-			const batch = allChunks.slice(i, i + EMBED_BATCH);
-			const texts = batch.map((c) => c.content);
-			const embeddings = await generateEmbeddings(texts);
-			newStore.insertBatch(batch, embeddings);
-		}
-
-		const stats = newStore.stats();
-		newStore.close();
-
-		// Update pointer to new DB (atomic — just a text file write)
-		writeFileSync(join(dbDir, "current.txt"), newDbName);
-
-		// Close old store so next getStore() picks up the new pointer
+		// Close existing store so we can rewrite the DB
 		if (store) {
 			store.close();
 			store = null;
 			currentDbPath = null;
 		}
 
-		// Clean up old DB files (best-effort, skips locked files)
-		cleanupOldDbs(dbDir, newDbName);
+		const dbPath = join(dbDir, "index.db");
+		const vs = new VectorStore(dbPath);
+		vs.clear();
+
+		const files = await findCodeFiles(rootDir);
+		if (files.length === 0) {
+			vs.close();
+			return {
+				content: [
+					{
+						type: "text" as const,
+						text: `No code files found in ${rootDir}`,
+					},
+				],
+			};
+		}
+
+		let totalChunks = 0;
+		for (const file of files) {
+			const chunks = await chunkFile(file, rootDir);
+			if (chunks.length === 0) continue;
+			const embeddings = await generateEmbeddings(chunks.map((c) => c.content));
+			vs.insertBatch(chunks, embeddings);
+			totalChunks += chunks.length;
+		}
+
+		const stats = vs.stats();
+		vs.close();
 
 		return {
 			content: [
 				{
 					type: "text" as const,
-					text: `Indexed ${stats.totalFiles} files, ${stats.totalChunks} chunks in ${rootDir}.\nDatabase: ${newDbPath}`,
+					text: `Indexed ${stats.totalFiles} files, ${stats.totalChunks} chunks in ${rootDir}.\nDatabase: ${dbPath}`,
 				},
 			],
 		};

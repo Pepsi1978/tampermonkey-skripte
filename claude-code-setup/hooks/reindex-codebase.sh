@@ -114,7 +114,11 @@ fi
 # --- Lock: prevent parallel reindex ---
 if [ -f "$LOCK_FILE" ]; then
     LOCK_PID=$(cat "$LOCK_FILE" 2>/dev/null)
-    if [ -n "$LOCK_PID" ] && kill -0 "$LOCK_PID" 2>/dev/null; then
+    if [ "$LOCK_PID" = "pending" ]; then
+        # Lock was just set by another hook instance — worker about to start
+        hook_log "reindex is pending start — skipping"
+        exit 0
+    elif [ -n "$LOCK_PID" ] && kill -0 "$LOCK_PID" 2>/dev/null; then
         hook_log "reindex already running (PID $LOCK_PID) — skipping"
         exit 0
     else
@@ -140,6 +144,9 @@ if [ ! -f "$DB_PATH" ]; then
 fi
 
 # --- Start reindex as fully detached background process ---
+# Set lock BEFORE forking to close the race window between stale-check and worker start.
+# The worker will overwrite it with its own PID once running.
+echo "pending" > "$LOCK_FILE"
 hook_log "starting incremental reindex (background)"
 
 WORKER_SCRIPT="$DB_DIR/.reindex-worker.sh"
