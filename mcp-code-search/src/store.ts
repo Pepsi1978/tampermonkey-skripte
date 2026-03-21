@@ -44,11 +44,46 @@ export class VectorStore {
 		this.db.exec(
 			`CREATE VIRTUAL TABLE IF NOT EXISTS vec_chunks USING vec0(embedding float[${VECTOR_DIM}])`,
 		);
+
+		// Index for fast file-based lookups (incremental reindex)
+		this.db.exec(
+			"CREATE INDEX IF NOT EXISTS idx_chunks_file_path ON chunks(file_path)",
+		);
 	}
 
 	clear(): void {
 		this.db.exec("DELETE FROM vec_chunks");
 		this.db.exec("DELETE FROM chunks");
+	}
+
+	/** Delete all chunks belonging to a file path. Returns number of deleted chunks. */
+	deleteByFilePath(filePath: string): number {
+		const ids = this.db
+			.prepare("SELECT id FROM chunks WHERE file_path = ?")
+			.all(filePath) as Array<{ id: number }>;
+
+		if (ids.length === 0) return 0;
+
+		const deleteVec = this.db.prepare("DELETE FROM vec_chunks WHERE rowid = ?");
+		const deleteChunk = this.db.prepare("DELETE FROM chunks WHERE id = ?");
+
+		const run = this.db.transaction(() => {
+			for (const { id } of ids) {
+				deleteVec.run(id);
+				deleteChunk.run(id);
+			}
+		});
+
+		run();
+		return ids.length;
+	}
+
+	/** Get all unique file paths currently in the index. */
+	getIndexedFiles(): string[] {
+		const rows = this.db
+			.prepare("SELECT DISTINCT file_path FROM chunks ORDER BY file_path")
+			.all() as Array<{ file_path: string }>;
+		return rows.map((r) => r.file_path);
 	}
 
 	insert(chunk: CodeChunk, embedding: number[]): void {

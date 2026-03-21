@@ -24,13 +24,17 @@ import {
 import { VectorStore } from "./store.js";
 import { findCodeFiles, chunkFile } from "./indexer.js";
 
-// Pointer-based DB management: current.txt points to the active DB file.
-// The reindex hook writes to a NEW file and only updates the pointer when done.
-// This avoids Windows file locking issues during reindex.
+// DB management: uses a single index.db updated in-place by incremental reindex.
+// Fallback to old numbered index-N.db via current.txt for backwards compatibility.
 let store: VectorStore | null = null;
 let currentDbPath: string | null = null;
 
 function resolveCurrentDb(dbDir: string): string {
+	// Primary: single index.db (v4+ incremental reindex)
+	if (existsSync(join(dbDir, "index.db"))) {
+		return join(dbDir, "index.db");
+	}
+	// Fallback: old pointer-based system (current.txt → index-N.db)
 	const pointerFile = join(dbDir, "current.txt");
 	if (existsSync(pointerFile)) {
 		const pointer = readFileSync(pointerFile, "utf-8").trim();
@@ -38,11 +42,7 @@ function resolveCurrentDb(dbDir: string): string {
 			return join(dbDir, pointer);
 		}
 	}
-	// Fallback 1: index.db directly (backwards compatible)
-	if (existsSync(join(dbDir, "index.db"))) {
-		return join(dbDir, "index.db");
-	}
-	// Fallback 2: find the highest numbered index-N.db (recover from missing pointer)
+	// Last resort: find highest numbered index-N.db
 	if (existsSync(dbDir)) {
 		let maxN = 0;
 		let found = "";
@@ -56,13 +56,9 @@ function resolveCurrentDb(dbDir: string): string {
 				}
 			}
 		}
-		if (found) {
-			// Auto-repair: write pointer so this doesn't happen again
-			writeFileSync(pointerFile, found);
-			return join(dbDir, found);
-		}
+		if (found) return join(dbDir, found);
 	}
-	return join(dbDir, "index.db"); // Will trigger "no index" message downstream
+	return join(dbDir, "index.db");
 }
 
 function getStore(rootDir: string): VectorStore {

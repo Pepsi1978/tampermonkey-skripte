@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # reindex-codebase.sh — SessionStart Hook (async)
-# v3: Complete rewrite for reliability.
+# v4: Incremental reindex — only re-indexes changed files.
 #
-# Key improvements over v2:
-# - Uses a permanent reindex.ts script instead of HEREDOC generation
-# - nohup background process — immune to hook timeout (300s)
+# Architecture:
+# - Single DB file (index.db) updated in-place, no more pointer-swap
+# - reindex.ts detects changed files via mtime comparison and only
+#   re-embeds those — typically <1 minute instead of 30-60 minutes
+# - Full reindex only when DB doesn't exist (first run)
+# - nohup + disown detaches from hook process group (survives timeout)
 # - Lock file prevents parallel reindex processes
-# - Bash-based cleanup (no more HEREDOC regex bugs)
-# - Cleans up WAL/SHM files from crashed indexers
 
 HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$HOOKS_DIR/hook-log.sh"
@@ -15,6 +16,7 @@ source "$HOOKS_DIR/whiteboard-insert.sh"
 
 ROOT_DIR="$HOME/proggs"
 DB_DIR="$ROOT_DIR/.code-search"
+DB_PATH="$DB_DIR/index.db"
 STAMP_FILE="$DB_DIR/.last-index-time"
 LOCK_FILE="$DB_DIR/.reindex.lock"
 MCP_DIR="$ROOT_DIR/mcp-code-search"
@@ -84,10 +86,10 @@ if [ $? -eq 0 ] && [ -n "$MODELS_JSON" ]; then
     fi
 fi
 
-# --- Check if reindex is needed ---
+# --- Quick check if reindex is needed (avoid spawning worker for nothing) ---
 mkdir -p "$DB_DIR"
 
-if [ -f "$STAMP_FILE" ]; then
+if [ -f "$STAMP_FILE" ] && [ -f "$DB_PATH" ]; then
     NEWER=$(find "$ROOT_DIR" \
         \( -name "*.ts" -o -name "*.kt" -o -name "*.rs" -o -name "*.go" \
            -o -name "*.cs" -o -name "*.swift" -o -name "*.py" \
@@ -116,44 +118,30 @@ if [ -f "$LOCK_FILE" ]; then
         hook_log "reindex already running (PID $LOCK_PID) — skipping"
         exit 0
     else
-        # Stale lock file — remove it
         rm -f "$LOCK_FILE"
         hook_log_warn "removed stale lock file (PID $LOCK_PID no longer exists)"
     fi
 fi
 
-# --- Determine next DB filename ---
-CURRENT_DB=$(cat "$DB_DIR/current.txt" 2>/dev/null || echo "")
-MAX_N=0
-for dbfile in "$DB_DIR"/index-*.db; do
-    [ -f "$dbfile" ] || continue
-    BASENAME=$(basename "$dbfile")
-    if [[ "$BASENAME" =~ ^index-([0-9]+)\.db$ ]]; then
-        N="${BASH_REMATCH[1]}"
-        [ "$N" -gt "$MAX_N" ] && MAX_N=$N
+# --- Migrate from old numbered DBs to single index.db ---
+# One-time migration: if index.db doesn't exist but old numbered DBs do,
+# rename the current one to index.db and delete the rest.
+if [ ! -f "$DB_PATH" ]; then
+    CURRENT_OLD=$(cat "$DB_DIR/current.txt" 2>/dev/null || echo "")
+    if [ -n "$CURRENT_OLD" ] && [ -f "$DB_DIR/$CURRENT_OLD" ]; then
+        mv "$DB_DIR/$CURRENT_OLD" "$DB_PATH"
+        hook_log "migrated $CURRENT_OLD → index.db"
     fi
-done
-NEXT_N=$((MAX_N + 1))
-NEW_DB_NAME="index-${NEXT_N}.db"
-NEW_DB_PATH="$DB_DIR/$NEW_DB_NAME"
-
-# --- Clean up orphaned WAL/SHM files from crashed previous runs ---
-for f in "$DB_DIR"/index-*.db-wal "$DB_DIR"/index-*.db-shm; do
-    [ -f "$f" ] || continue
-    BASE_DB="${f%-*}"  # Remove -wal or -shm suffix
-    # If the base DB exists but is NOT the current one, clean up
-    if [ -f "$BASE_DB" ] && [ "$(basename "$BASE_DB")" != "$CURRENT_DB" ]; then
-        rm -f "$f"
-    fi
-done
+    # Clean up ALL old numbered DBs and their WAL/SHM
+    for f in "$DB_DIR"/index-*.db "$DB_DIR"/index-*.db-wal "$DB_DIR"/index-*.db-shm; do
+        [ -f "$f" ] && rm -f "$f"
+    done
+    rm -f "$DB_DIR/current.txt"
+fi
 
 # --- Start reindex as fully detached background process ---
-# Must use nohup + setsid/disown to survive hook process group termination.
-# Claude Code kills the hook's process group after timeout, so a simple ( ... ) &
-# is NOT enough — the subshell would be killed too.
-hook_log "starting reindex (background): $NEW_DB_NAME"
+hook_log "starting incremental reindex (background)"
 
-# Write a worker script that runs independently of this hook
 WORKER_SCRIPT="$DB_DIR/.reindex-worker.sh"
 cat > "$WORKER_SCRIPT" << WORKER_EOF
 #!/usr/bin/env bash
@@ -161,26 +149,14 @@ cat > "$WORKER_SCRIPT" << WORKER_EOF
 echo \$\$ > "$LOCK_FILE"
 
 cd "$MCP_DIR" || exit 1
-"$RUNNER" "$REINDEX_SCRIPT" "$ROOT_DIR" "$NEW_DB_PATH" > "$LOG_FILE" 2>&1
+"$RUNNER" "$REINDEX_SCRIPT" "$ROOT_DIR" "$DB_PATH" "$STAMP_FILE" > "$LOG_FILE" 2>&1
 EXIT_CODE=\$?
 
 if [ "\$EXIT_CODE" -eq 0 ]; then
     date -Iseconds > "$STAMP_FILE" 2>/dev/null || date > "$STAMP_FILE"
-    # Clean up old DB files (keep only the new one)
-    CURRENT_AFTER=\$(cat "$DB_DIR/current.txt" 2>/dev/null || echo "")
-    for f in "$DB_DIR"/index-*.db "$DB_DIR"/index-*.db-wal "$DB_DIR"/index-*.db-shm; do
-        [ -f "\$f" ] || continue
-        BASENAME=\$(basename "\$f")
-        case "\$BASENAME" in
-            "\${CURRENT_AFTER}"*) continue ;;
-        esac
-        rm -f "\$f" 2>/dev/null || true
-    done
-    # Clean up leftover reindex-*.ts temp files from v2
-    find "$MCP_DIR" -maxdepth 1 -name "reindex-*.ts" ! -name "reindex.ts" -delete 2>/dev/null || true
 else
-    # Failed: remove incomplete DB, keep old one
-    rm -f "$NEW_DB_PATH" "${NEW_DB_PATH}-wal" "${NEW_DB_PATH}-shm" 2>/dev/null || true
+    # Log failure but keep existing DB intact (incremental = safe)
+    echo "Reindex failed with exit code \$EXIT_CODE" >> "$LOG_FILE"
 fi
 
 rm -f "$LOCK_FILE"
