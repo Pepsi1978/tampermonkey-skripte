@@ -57,7 +57,7 @@ Wenn du grosse Mengen recherchieren sollst (50+ Fakten, 50+ Fragen validieren, e
 - Suchbegriff leer oder unklar → Sofort "INVALID INPUT — Suchbegriff fehlt oder unklar" zurueckgeben.
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-researcher.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-researcher.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-researcher.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "researcher", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Wichtigstes Recherche-Ergebnis]"}
 ```

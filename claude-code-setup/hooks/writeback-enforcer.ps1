@@ -1,10 +1,13 @@
 # writeback-enforcer.ps1 — SubagentStop Hook for Write-Back Enforcement (C1)
 # Checks for sentinel files written by senior agents, merges findings into MEMORY.md
 # into the CORRECT SECTION (not just appended at the end).
-# v2.1: Fixed CRLF handling — uses regex instead of IndexOf for reliable section detection.
+# v2.2: Added subagent-failure + tool-failure to sectionMap (K10).
+#       Added section-field override: sentinel JSON may contain "section" to override the map.
+#       Fixed CRLF handling — uses regex instead of IndexOf for reliable section detection.
 #
 # Sentinel file format: $env:TEMP/agent-writeback-{agentname}.json
 # Content: { "agent": "name", "timestamp": "ISO8601", "findings": "one-line summary" }
+# Optional: add "section": "Offene Fehler & Probleme" to route to a specific section.
 
 $sentinelDir = $env:TEMP
 $sentinelPattern = "agent-writeback-*.json"
@@ -31,6 +34,9 @@ $sectionMap = @{
     "quality-gate"        = "## Erkenntnisse aus Tests"
     "env-checker"         = "## Systemzustand"
     "coder"               = "## Erkenntnisse aus Code Reviews"
+    # K10: failure sentinels from SubagentStop and PostToolUseFailure hooks
+    "subagent-failure"    = "## Offene Fehler & Probleme"
+    "tool-failure"        = "## Offene Fehler & Probleme"
 }
 
 # Find all sentinel files
@@ -62,10 +68,18 @@ if ($sentinelFiles.Count -gt 0) {
 
                 $entry = "- **[$ts] $agentName**: $findings"
 
-                # Find the correct section to insert into
-                $targetSection = $sectionMap[$agentName]
-                if (-not $targetSection) {
-                    $targetSection = "## Erkenntnisse aus Code Reviews"
+                # K10: If the sentinel contains a "section" field, use it as override.
+                # This allows quality-gate (3 sentinels) and failure hooks to route correctly.
+                $sectionOverride = if ($data.section) { $data.section } else { $null }
+                if ($sectionOverride) {
+                    $targetSection = "## $sectionOverride"
+                    # Avoid double-## if the value already starts with ##
+                    if ($sectionOverride -like '##*') { $targetSection = $sectionOverride }
+                } else {
+                    $targetSection = $sectionMap[$agentName]
+                    if (-not $targetSection) {
+                        $targetSection = "## Erkenntnisse aus Code Reviews"
+                    }
                 }
 
                 # Find the section header line index

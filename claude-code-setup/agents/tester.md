@@ -100,7 +100,7 @@ After EVERY test session, you MUST:
 2. **Write a sentinel file (see Mandatory Write-Back below).** If tests revealed a bug pattern, prefix your sentinel findings with [BUG:] — the writeback-enforcer will route these to "Offene Fehler & Probleme".
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-tester.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-tester.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-tester.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "tester", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Test-Ergebnis + entdeckte Patterns]"}
 ```

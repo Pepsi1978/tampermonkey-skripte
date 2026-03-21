@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # writeback-enforcer.sh — SubagentStop Hook for Write-Back Enforcement (C1, macOS/Linux)
 # Checks for sentinel files written by senior agents, merges findings into MEMORY.md.
-# v3: Added flock-based file locking (matches PS1 mutex) + hook-log.sh integration.
+# v3.1: Added subagent-failure + tool-failure to section map (K10).
+#       Added section-field override: sentinel JSON may contain "section" to route correctly.
+#       flock-based file locking (matches PS1 mutex) + hook-log.sh integration.
 
 # Source hook-log.sh for structured logging
 source "$(dirname "$0")/hook-log.sh"
@@ -24,6 +26,8 @@ get_section() {
         ui-polisher) echo "## UI/UX-Patterns" ;;
         researcher|intelligence-researcher) echo "## Forschung & Intelligence" ;;
         evolution-analyst|env-checker) echo "## Systemzustand" ;;
+        # K10: failure sentinels from SubagentStop and PostToolUseFailure hooks
+        subagent-failure|tool-failure) echo "## Offene Fehler & Probleme" ;;
         *) echo "## Erkenntnisse aus Code Reviews" ;;
     esac
 }
@@ -49,7 +53,17 @@ _do_merge() {
         section_override=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('section',''))" "$f" 2>/dev/null || echo "")
         ts=$(date +"%Y-%m-%d %H:%M")
         entry="- **[$ts] $agent**: $findings"
-        target_section=$(get_section "$agent")
+        # K10: If sentinel contains a "section" field, use it as override over the map.
+        # This enables quality-gate (3 named sentinels) and failure hooks to route correctly.
+        if [ -n "$section_override" ]; then
+            # Prepend "## " if not already present
+            case "$section_override" in
+                "## "*) target_section="$section_override" ;;
+                *) target_section="## $section_override" ;;
+            esac
+        else
+            target_section=$(get_section "$agent")
+        fi
 
         # Use Python for reliable in-place editing (no BSD/GNU sed incompatibility, no
         # delimiter issues with slashes in file paths or findings text).

@@ -57,13 +57,15 @@ function Hook-LogWarn {
 # NOTE: -SupportEvent is intentionally NOT used here. The flag would hide the subscriber
 # from Get-EventSubscriber (making it unremovable/undebuggable), and more importantly,
 # the Action block runs in a child scope where Hook-LogError is not available.
-# The plain registration below keeps the subscriber visible and debuggable.
-# The Action block captures the log file path via $using: to work in the event scope.
+# FIX K7: $script: scope is inaccessible inside event Action blocks — capture values into
+# local variables first and reference them via $using: inside the Action scriptblock.
+$capturedLogFile = $script:_HookLogFile
+$capturedHookName = $script:_HookLogName
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
     if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
         $ts = Get-Date -Format "HH:mm:ss"
-        $logFile = $script:_HookLogFile
-        $hookName = $script:_HookLogName
+        $logFile = $using:capturedLogFile
+        $hookName = $using:capturedHookName
         try {
             "[$ts] ERROR $hookName`: unexpected exit code $LASTEXITCODE" |
                 Out-File -FilePath $logFile -Append -Encoding utf8

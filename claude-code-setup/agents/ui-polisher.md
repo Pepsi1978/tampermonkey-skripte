@@ -63,7 +63,7 @@ After completing your review, write a sentinel file (see below). The writeback-e
 2. Findings with [UI-ISSUE:] prefix → routed to "Offene Fehler & Probleme"
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-ui-polisher.json`:
+Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-ui-polisher.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-ui-polisher.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
 {"agent": "ui-polisher", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung deiner wichtigsten UI-Erkenntnis]"}
 ```

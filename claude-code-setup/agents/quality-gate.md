@@ -78,19 +78,19 @@ Write these three JSON files as your LAST action before returning your response:
 
 **Sentinel 1 — Code Reviews:**
 ```json
-// /tmp/agent-writeback-quality-gate-reviews.json
+// System-Temp-Verzeichnis: /tmp/agent-writeback-quality-gate-reviews.json (macOS/Linux) oder $env:TEMP/agent-writeback-quality-gate-reviews.json (Windows)
 {"agent": "quality-gate", "section": "Erkenntnisse aus Code Reviews", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: kritischster Code-Review-Fund von code-reviewer]"}
 ```
 
 **Sentinel 2 — Tests:**
 ```json
-// /tmp/agent-writeback-quality-gate-tests.json
+// System-Temp-Verzeichnis: /tmp/agent-writeback-quality-gate-tests.json (macOS/Linux) oder $env:TEMP/agent-writeback-quality-gate-tests.json (Windows)
 {"agent": "quality-gate", "section": "Erkenntnisse aus Tests", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Test-Ergebnis, Anzahl bestanden/fehlgeschlagen]"}
 ```
 
 **Sentinel 3 — Performance:**
 ```json
-// /tmp/agent-writeback-quality-gate-perf.json
+// System-Temp-Verzeichnis: /tmp/agent-writeback-quality-gate-perf.json (macOS/Linux) oder $env:TEMP/agent-writeback-quality-gate-perf.json (Windows)
 {"agent": "quality-gate", "section": "Performance & Optimierung", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: wichtigstes Performance-Finding von optimizer]"}
 ```
 
@@ -151,9 +151,8 @@ When instructed to run in "debate mode" or "Debate-Loop":
 - Do NOT fix issues yourself — only report them
 
 **Sentinel-Dateien (C1 Enforcement — PFLICHT — ALLE DREI schreiben):**
-Schreibe die drei JSON-Dateien aus "Mandatory Write-Back" oben. Zusätzlich für den SubagentStop-Hook die Haupt-Sentinel-Datei:
+Schreibe die drei JSON-Dateien aus "Mandatory Write-Back" oben. Zusätzlich für den SubagentStop-Hook die Haupt-Sentinel-Datei in das System-Temp-Verzeichnis: `/tmp/agent-writeback-quality-gate.json` (macOS/Linux) oder `$env:TEMP/agent-writeback-quality-gate.json` (Windows). Nutze das Write-Tool — der Pfad wird automatisch aufgeloest.
 ```json
-// /tmp/agent-writeback-quality-gate.json
 {"agent": "quality-gate", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: PASS/FAIL + Anzahl Issues]"}
 ```
 Der SubagentStop-Hook liest diese Dateien automatisch und merged sie in MEMORY.md.

@@ -10,6 +10,7 @@ tools:
   - Glob
   - Grep
   - Bash
+  - Write
   - WebSearch
   - WebFetch
   - LSP
