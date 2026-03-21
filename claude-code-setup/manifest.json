@@ -86,6 +86,7 @@
 			"code-review",
 			"playwright",
 			"coderabbit",
+			"aikido",
 			"explanatory-output-style",
 			"skill-creator",
 			"plugin-dev",
@@ -145,12 +146,14 @@
 			"reflexion",
 			"sadd",
 			"sdd",
+			"spec-driven-development",
 			"tdd",
 			"tech-stack"
 		],
 		"boostvolt": ["claude-code-lsps"],
 		"xclaude-plugin-marketplace": ["xclaude-plugin"],
-		"claude-reflect-marketplace": ["claude-reflect"]
+		"claude-reflect-marketplace": ["claude-reflect"],
+		"FlineDev": ["context-kit"]
 	},
 
 	"platform_specific_plugins": {
@@ -205,6 +208,10 @@
 		"claude-reflect-marketplace": {
 			"source": "github",
 			"repo": "BayramAnnakov/claude-reflect"
+		},
+		"FlineDev": {
+			"source": "github",
+			"repo": "FlineDev/context-kit"
 		}
 	},
 
