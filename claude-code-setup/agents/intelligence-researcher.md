@@ -85,6 +85,8 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "intelligence-researcher", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Anzahl Findings + wichtigstes Ergebnis]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
+If you encounter errors during research, prefix your sentinel findings with [ERROR:] — the writeback-enforcer will route error-prefixed entries to "Offene Fehler & Probleme".
 
 ## Robustness Protocol (PFLICHT)
 

@@ -82,9 +82,9 @@ Rules:
 
 After EVERY architecture design, you MUST:
 
-1. **MEMORY.md — "Architektur-Entscheidungen"**: Add a 1-line entry in `.claude/agent-memory/shared/MEMORY.md` under "Architektur-Entscheidungen" documenting the key decision (e.g., "ProjectX: MVVM+Coordinator, SwiftUI for macOS, WPF+MVVM for Windows").
+1. **Write a sentinel file (see Mandatory Write-Back below).** The writeback-enforcer hook will merge your findings into the correct MEMORY.md section ("Architektur-Entscheidungen"). Key decision example: "ProjectX: MVVM+Coordinator, SwiftUI for macOS, WPF+MVVM for Windows".
 
-2. **MEMORY.md — "Offene Fehler & Probleme"**: If the architecture avoids a known failure pattern or if you identify a potential risk, document it under "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md`.
+2. **Write a sentinel file (see Mandatory Write-Back below).** If the architecture avoids a known failure pattern or if you identify a potential risk, prefix your sentinel findings with [RISK:] — the writeback-enforcer will route these to "Offene Fehler & Probleme".
 
 3. **Consider spawning a challenger**: For non-trivial architectures, recommend spawning a `challenger` agent to stress-test the design before implementation.
 
@@ -96,7 +96,7 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "architect", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung deiner wichtigsten Architekturentscheidung]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
-Wenn du diese Datei NICHT schreibst, wird ein Fehler in MEMORY.md (Sektion "Offene Fehler & Probleme") protokolliert.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 ## Multi-Step Commit Planning (PFLICHT bei Tasks mit 3+ Dateien)
 

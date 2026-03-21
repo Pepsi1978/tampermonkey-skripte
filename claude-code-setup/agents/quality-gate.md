@@ -11,6 +11,7 @@ tools:
   - Bash
   - Agent
   - LSP
+  - Write
   - mcp__code-search__search_code
   - mcp__code-search__search_status
 ---
@@ -70,9 +71,30 @@ or
 ```
 
 ## Mandatory Write-Back (NEVER SKIP)
-After producing your verdict, you MUST update `.claude/agent-memory/shared/MEMORY.md`:
-1. **"Offene Fehler & Probleme"**: If FAIL — document the critical issues found with the standard template (Symptom → Root Cause → Fix → Prevention → Files)
-2. Appropriate thematic section: Add patterns spotted by sub-agents under the correct section (e.g., "Erkenntnisse aus Code Reviews", "Erkenntnisse aus Tests", "Performance & Optimierung")
+After producing your verdict, you MUST write THREE separate sentinel files — one per thematic section.
+Do NOT write directly to MEMORY.md. The writeback-enforcer merges all sentinel files automatically.
+
+Write these three JSON files as your LAST action before returning your response:
+
+**Sentinel 1 — Code Reviews:**
+```json
+// /tmp/agent-writeback-quality-gate-reviews.json
+{"agent": "quality-gate", "section": "Erkenntnisse aus Code Reviews", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: kritischster Code-Review-Fund von code-reviewer]"}
+```
+
+**Sentinel 2 — Tests:**
+```json
+// /tmp/agent-writeback-quality-gate-tests.json
+{"agent": "quality-gate", "section": "Erkenntnisse aus Tests", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Test-Ergebnis, Anzahl bestanden/fehlgeschlagen]"}
+```
+
+**Sentinel 3 — Performance:**
+```json
+// /tmp/agent-writeback-quality-gate-perf.json
+{"agent": "quality-gate", "section": "Performance & Optimierung", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: wichtigstes Performance-Finding von optimizer]"}
+```
+
+Wenn FAIL: Prefix des jeweiligen Findings mit [CRITICAL:] — der writeback-enforcer routet diese nach "Offene Fehler & Probleme".
 
 ## Robustness Protocol (PFLICHT)
 
@@ -104,13 +126,10 @@ After producing your verdict, you MUST update `.claude/agent-memory/shared/MEMOR
 
 ## Whiteboard Auto-Fill Enforcement (M3/B5 — PFLICHT)
 
-After ALL sub-agents return, check the whiteboard `.claude/agent-memory/shared/MEMORY.md`:
-1. Read the sections: "Erkenntnisse aus Code Reviews", "Erkenntnisse aus Tests", "Performance & Optimierung"
-2. If ANY sub-agent produced findings and the corresponding whiteboard section still says "_Noch keine Eintraege._":
-   - Replace "_Noch keine Eintraege._" with a 1-2 line summary of the sub-agent's key finding
-   - Format: `- **[DATE] quality-gate ([sub-agent]):** [1-line summary of finding]`
-3. This is NOT optional — every quality-gate run MUST leave at least 1 entry in the whiteboard.
-4. If all sub-agents found nothing notable: Write `- **[DATE] quality-gate:** Clean run — no issues found.` in "Erkenntnisse aus Code Reviews"
+After ALL sub-agents return, include their key findings in the three sentinel files (see Mandatory Write-Back).
+The writeback-enforcer will merge them into the correct MEMORY.md sections automatically.
+This is NOT optional — every quality-gate run MUST write all three sentinel files with at least 1 finding each.
+If all sub-agents found nothing notable: Use findings value "Clean run — no issues found." in each sentinel file.
 
 ## Debate Mode (B1 — Optional, aktiviert per Prompt)
 
@@ -131,9 +150,11 @@ When instructed to run in "debate mode" or "Debate-Loop":
 - Communication: German. Code references: English.
 - Do NOT fix issues yourself — only report them
 
-**Sentinel-Datei (C1 Enforcement — PFLICHT):**
-Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-quality-gate.json`:
+**Sentinel-Dateien (C1 Enforcement — PFLICHT — ALLE DREI schreiben):**
+Schreibe die drei JSON-Dateien aus "Mandatory Write-Back" oben. Zusätzlich für den SubagentStop-Hook die Haupt-Sentinel-Datei:
 ```json
+// /tmp/agent-writeback-quality-gate.json
 {"agent": "quality-gate", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: PASS/FAIL + Anzahl Issues]"}
 ```
-Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Der SubagentStop-Hook liest diese Dateien automatisch und merged sie in MEMORY.md.
+Wenn du diese Dateien NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.

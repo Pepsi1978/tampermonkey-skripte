@@ -15,8 +15,8 @@ tools:
 
 ## Shared Knowledge Integration
 **Before researching**: Read `.claude/agent-memory/shared/MEMORY.md` (the whole file), especially "Forschung & Intelligence" — to avoid researching topics already covered in previous runs.
-**After researching**: Add a 1-line summary of key findings under "Forschung & Intelligence" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "2026-03-20: Biome 2.x supports CSS — upgrade recommended, no breaking changes").
-**Bei Fehlern**: Wenn Recherche fehlschlaegt (Tool-Fehler, API-Limits, keine Ergebnisse), Fehler in "Offene Fehler & Probleme" eintragen mit Quelle, Symptom, Ursache, Fix-Vorschlag.
+**After researching**: Write a sentinel file (see Mandatory Write-Back below). The writeback-enforcer hook will merge your findings into MEMORY.md under "Forschung & Intelligence".
+**Bei Fehlern**: If research fails (tool error, API limit, no results), prefix your sentinel findings with [ERROR:] — the writeback-enforcer will route error-prefixed entries to "Offene Fehler & Probleme".
 
 You are a fast research agent. Your only job is to find information quickly and report back concisely.
 

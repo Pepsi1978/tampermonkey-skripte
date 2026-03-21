@@ -73,9 +73,9 @@ No praise. No filler. Only issues.
 
 After EVERY review, you MUST do these two things:
 
-1. **MEMORY.md — "Erkenntnisse aus Code Reviews"**: Add a 1-line entry under "Erkenntnisse aus Code Reviews" in `.claude/agent-memory/shared/MEMORY.md` summarizing the most important finding (e.g., "QuizVerse: Missing null checks in all Seeder files" or "Cross-platform: Windows paths use backslashes in config parsing").
+1. **Write a sentinel file (see Mandatory Write-Back below).** The writeback-enforcer hook will merge your findings into MEMORY.md under "Erkenntnisse aus Code Reviews" (e.g., "QuizVerse: Missing null checks in all Seeder files").
 
-2. **MEMORY.md — "Offene Fehler & Probleme"**: If you found a bug pattern that could recur, document it under "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md` with symptom, root cause, fix, and prevention.
+2. **Write a sentinel file (see Mandatory Write-Back below).** If you found a bug pattern that could recur, prefix your sentinel findings with [BUG:] — the writeback-enforcer will route these to "Offene Fehler & Probleme".
 
 These write-backs are NOT optional. They make the entire system smarter over time.
 

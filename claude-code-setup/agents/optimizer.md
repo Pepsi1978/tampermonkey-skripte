@@ -51,9 +51,9 @@ Output: Specific optimizations with measured/estimated impact.
 
 After EVERY optimization session, you MUST:
 
-1. **MEMORY.md — "Performance & Optimierung"**: Add a 1-line entry under "Performance & Optimierung" in `.claude/agent-memory/shared/MEMORY.md` summarizing the most impactful finding (e.g., "SwiftUI: LazyVStack + .id() instead of ForEach for 1000+ items" or "Kotlin: Replace flow.collect with stateIn for shared state").
+1. **Write a sentinel file (see Mandatory Write-Back below).** The writeback-enforcer hook will merge your findings into MEMORY.md under "Performance & Optimierung" (e.g., "SwiftUI: LazyVStack + .id() instead of ForEach for 1000+ items").
 
-2. **MEMORY.md — "Offene Fehler & Probleme"**: If you found a performance anti-pattern that could recur, document it under "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md`.
+2. **Write a sentinel file (see Mandatory Write-Back below).** If you found a performance anti-pattern that could recur, prefix your sentinel findings with [PERF-ISSUE:] — the writeback-enforcer will route these to "Offene Fehler & Probleme".
 
 These write-backs are NOT optional. They make the entire system smarter over time.
 
@@ -93,5 +93,6 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "optimizer", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: wichtigstes Optimierungs-Finding]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 Communication: German. Code comments: English.

@@ -95,9 +95,9 @@ Rules:
 
 After EVERY test session, you MUST:
 
-1. **MEMORY.md — "Erkenntnisse aus Tests"**: Add a 1-line entry under "Erkenntnisse aus Tests" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "QuizVerse: No test infrastructure exists yet — only compiler checks available" or "Android tests need emulator running — check with adb devices first").
+1. **Write a sentinel file (see Mandatory Write-Back below).** The writeback-enforcer hook will merge your findings into MEMORY.md under "Erkenntnisse aus Tests" (e.g., "QuizVerse: No test infrastructure exists yet — only compiler checks available").
 
-2. **MEMORY.md — "Offene Fehler & Probleme"**: If tests revealed a bug pattern, document it under "Offene Fehler & Probleme" in `.claude/agent-memory/shared/MEMORY.md` with symptom, root cause, fix, and prevention.
+2. **Write a sentinel file (see Mandatory Write-Back below).** If tests revealed a bug pattern, prefix your sentinel findings with [BUG:] — the writeback-enforcer will route these to "Offene Fehler & Probleme".
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
 Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-tester.json`:
@@ -105,6 +105,7 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "tester", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Test-Ergebnis + entdeckte Patterns]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 These write-backs are NOT optional. They make the entire system smarter over time.
 

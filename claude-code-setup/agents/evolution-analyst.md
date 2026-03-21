@@ -98,7 +98,7 @@ Sessions analyzed: N
 
 ## Mandatory Write-Back (NEVER SKIP)
 After completing your analysis, write findings ONLY via the Sentinel file (see below) — do NOT use the Write tool directly on MEMORY.md. The writeback-enforcer merges automatically into "Systemzustand".
-If you detect a new recurring failure pattern, you MAY additionally write a targeted Edit to "Offene Fehler & Probleme" — but the primary write-back path is always the Sentinel.
+If you detect a new recurring failure pattern, prefix your sentinel findings with [RECURRING:] — the writeback-enforcer will route these to "Offene Fehler & Probleme". Do NOT additionally write a targeted Edit to "Offene Fehler & Probleme" directly — the Sentinel is the ONLY write-back path.
 
 ## SICA Mode — Self-Improving Coding Agent (C1)
 
@@ -140,6 +140,7 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "evolution-analyst", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Qualitaets-Trend + wichtigste Schwaeche]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 ## Robustness Protocol (PFLICHT)
 

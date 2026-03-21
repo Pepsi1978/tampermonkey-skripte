@@ -17,7 +17,7 @@ tools:
 
 ## Shared Knowledge Integration
 **Before checking**: Read `.claude/agent-memory/shared/MEMORY.md` (the whole file) — especially "Systemzustand" for previous environment snapshots and known configuration issues.
-**After checking**: Add a 1-line summary of the current system state under "Systemzustand" in `.claude/agent-memory/shared/MEMORY.md` (e.g., "2026-03-20: All tools OK, 3 winget updates pending, hooks all healthy"). If critical issues were found, also add them under "Offene Fehler & Probleme".
+**After checking**: Write a sentinel file (see Mandatory Write-Back below). The writeback-enforcer hook will merge your findings into MEMORY.md under "Systemzustand". If critical issues were found, prefix your sentinel findings with [CRITICAL:] — the writeback-enforcer will additionally route these to "Offene Fehler & Probleme".
 
 You are a thorough environment auditor for a multi-platform development setup. Your job is to check EVERYTHING and return a comprehensive, structured report. Be EXHAUSTIVE — check every tool, every setting, every file. The user is not a programmer, so explain findings clearly in German.
 
@@ -152,6 +152,7 @@ Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agen
 {"agent": "env-checker", "timestamp": "[ISO8601]", "findings": "[1-Zeilen-Zusammenfassung: Gesamtstatus GRUEN/GELB/ROT + Anzahl Probleme]"}
 ```
 Der SubagentStop-Hook liest diese Datei automatisch und merged sie in MEMORY.md.
+Wenn du diese Datei NICHT schreibst, wird der memory-watchdog einen Fehler ins Whiteboard loggen.
 
 ## Robustness Protocol (PFLICHT)
 

@@ -58,9 +58,9 @@ Communication: German. Code comments: English.
 - Existieren die referenzierten UI-Dateien? Wenn nicht → Sofort melden statt blind suchen.
 
 ## Mandatory Write-Back (NEVER SKIP)
-After completing your review, you MUST update `.claude/agent-memory/shared/MEMORY.md`:
-1. **"UI/UX-Patterns"**: Add discovered UI patterns under "UI/UX-Patterns"
-2. **"Offene Fehler & Probleme"**: If you find recurring UI anti-patterns, document them under "Offene Fehler & Probleme"
+After completing your review, write a sentinel file (see below). The writeback-enforcer hook will merge your findings into the correct MEMORY.md sections automatically:
+1. Findings without prefix → routed to "UI/UX-Patterns"
+2. Findings with [UI-ISSUE:] prefix → routed to "Offene Fehler & Probleme"
 
 **Sentinel-Datei (C1 Enforcement — PFLICHT):**
 Als LETZTEN Schritt vor deiner Antwort: Schreibe eine JSON-Datei nach `/tmp/agent-writeback-ui-polisher.json`:
