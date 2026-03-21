@@ -170,7 +170,12 @@ main().catch(e => { console.error(e); process.exit(1); });
 TSEOF
 
 # Replace placeholders with actual shell variable values
-sed -i "s|__MCP_DIR__|${MCP_DIR}|g; s|__ROOT_DIR__|${ROOT_DIR_ESCAPED}|g; s|__NEW_DB_NAME__|${NEW_DB_NAME}|g" "$TEMP_FILE"
+# macOS sed requires -i '' (empty extension), Linux sed uses -i without argument
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "s|__MCP_DIR__|${MCP_DIR}|g; s|__ROOT_DIR__|${ROOT_DIR_ESCAPED}|g; s|__NEW_DB_NAME__|${NEW_DB_NAME}|g" "$TEMP_FILE"
+else
+    sed -i "s|__MCP_DIR__|${MCP_DIR}|g; s|__ROOT_DIR__|${ROOT_DIR_ESCAPED}|g; s|__NEW_DB_NAME__|${NEW_DB_NAME}|g" "$TEMP_FILE"
+fi
 
 # Run the indexer
 cd "$MCP_DIR" && $RUNNER "$TEMP_FILE" 2>/dev/null
