@@ -134,7 +134,7 @@ patch_plugin_hooks() {
     hook_log "auto-patching $(basename "$(dirname "$(dirname "$hooks_json")")")/hooks.json" 2>/dev/null || true
 
     local tmp_file="${hooks_json}.guard-tmp"
-    local fallback="|| { sleep 2 \&\& curl -sf http://${host}:${port}/api/health >\/dev\/null 2>\&1 \&\& exit 0 || exit 1; }"
+    local fallback="|| { sleep 5 \&\& curl -sf http://${host}:${port}/api/health >\/dev\/null 2>\&1 \&\& exit 0 || exit 1; }"
 
     # Patch worker-service start and context commands
     sed \
