@@ -126,6 +126,8 @@ _Noch keine Eintraege._
 
 - **[2026-03-22 18:44] self-improve**: Bash- und PowerShell-Validierung fuer codex-setup laufen grün. Der direkte code-search-MCP-Client hat jetzt einen deterministischen Selbsttest mit temporaerem Fake-MCP-Server, der quoted code-search-Sections, alternative Config-Pfade, env/cwd-Uebergabe und eine echte search_status/search_code-Smoke-Route ohne laufende Codex-Session prueft.
 
+- **[2026-03-22 19:09] self-improve**: Der OpenAI-Docs-MCP-Smoke-Test laeuft jetzt mit hartem 30-Sekunden-Timeout pro `codex exec`-Versuch und genau einem frischen Retry. In der Realprobe ist Versuch 1 sauber per Timeout abgebrochen und Versuch 2 danach erfolgreich mit `AVAILABLE` durchgelaufen; Bash- und PowerShell-Validierung fuer codex-setup bleiben grün.
+
 ## Architektur-Entscheidungen
 - **[2026-03-22 10:48] self-improve**: Die Whiteboard-Bruecke arbeitet jetzt fail-closed. Whiteboard-Aufloesung ist nur noch fuer das autoritative Workspace-Ziel `<workspace>/codex-setup/agent-memory/shared/MEMORY.md` erlaubt; Wrapper uebergeben dafuer explizit `--workspace`, und der Validator deckt CWD-Regressionsfaelle ab.
 
@@ -137,6 +139,8 @@ _Noch keine Eintraege._
 - **[2026-03-22 18:18] self-improve**: Fuer code-search-Diagnosen gibt es jetzt einen direkten MCP-CLI-Client in codex-setup/scripts/code-search-mcp-client.*. Fragen zu semantischer Suche, Indexierung oder Hintergrund-Reindex sollen kuenftig bevorzugt ueber check-code-search-health beantwortet werden statt ueber Erinnerungswissen oder Einzelabfragen.
 
 - **[2026-03-22 18:44] self-improve**: Der direkte code-search-MCP-Client liest seine Konfiguration jetzt bevorzugt ueber Python tomllib und faellt nur noch notfalls auf einen lokalen Minimalparser zurueck. Dadurch funktionieren quoted code-search-Sectionnamen, env/cwd-Werte und alternative Config-Pfade robuster; der Healthcheck normalisiert zusaetzlich DB-Pfade plattformuebergreifend fuer macOS und Windows.
+
+- **[2026-03-22 19:09] self-improve**: Der OpenAI-Docs-MCP-Check nutzt jetzt einen gemeinsamen Node-Kern in `codex-setup/scripts/check-openai-docs-mcp.mjs`, waehrend `.sh` und `.ps1` nur noch Wrapper sind. Fuer einen Freigabe- und Validierungspfad wird ein ueberzogenes Timeout bewusst abgebrochen statt im Hintergrund weiterlaufen gelassen; danach folgt hoechstens ein frischer zweiter Versuch, damit das Ergebnis deterministisch und trotzdem fehlertolerant bleibt.
 
 ## Debugging-Muster
 _Noch keine Eintraege._

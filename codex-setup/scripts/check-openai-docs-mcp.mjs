@@ -1,0 +1,300 @@
+#!/usr/bin/env node
+
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { spawnSync } from "child_process";
+import { tmpdir } from "os";
+import { join, resolve } from "path";
+import { fileURLToPath } from "url";
+
+const DOCS_MCP_URL = "https://developers.openai.com/mcp";
+const DOCS_GUIDE_URL = "https://developers.openai.com/api/docs/guides/tools-connectors-mcp";
+const DEFAULT_TIMEOUT_MS = 30000;
+const DEFAULT_ATTEMPTS = 2;
+const DEFAULT_RETRY_DELAY_MS = 1000;
+const PROMPT = [
+	"Use only the openaiDeveloperDocs MCP server.",
+	"Do not use web search or any fallback.",
+	"If openaiDeveloperDocs is available in this fresh Codex session, look up the OpenAI models page and reply with exactly AVAILABLE.",
+	"If the MCP server is unavailable, reply with exactly UNAVAILABLE.",
+].join("\n");
+
+function fail(message, details = "") {
+	const suffix = details ? `\n${details}` : "";
+	console.error(`${message}${suffix}`);
+	process.exit(1);
+}
+
+function usage() {
+	return [
+		"Usage: check-openai-docs-mcp.mjs [--timeout-ms <ms>] [--attempts <n>] [--retry-delay-ms <ms>] [--json]",
+		"",
+		"Runs a bounded openaiDeveloperDocs MCP smoke test with a fresh retry.",
+	].join("\n");
+}
+
+function readOptionValue(argv, index, flag) {
+	const value = argv[index + 1] ?? "";
+	if (!value || value.startsWith("--")) {
+		fail(`Missing value for ${flag}.`, usage());
+	}
+	return value;
+}
+
+function parsePositiveInt(rawValue, flag) {
+	const parsed = Number.parseInt(rawValue, 10);
+	if (!Number.isFinite(parsed) || parsed <= 0) {
+		fail(`Invalid ${flag} value: ${rawValue}`);
+	}
+	return parsed;
+}
+
+function parseArgs(argv) {
+	const options = {
+		timeoutMs: DEFAULT_TIMEOUT_MS,
+		attempts: DEFAULT_ATTEMPTS,
+		retryDelayMs: DEFAULT_RETRY_DELAY_MS,
+		json: false,
+	};
+
+	for (let index = 0; index < argv.length; index++) {
+		const arg = argv[index];
+		if (arg === "--timeout-ms") {
+			options.timeoutMs = parsePositiveInt(readOptionValue(argv, index, arg), arg);
+			index++;
+			continue;
+		}
+		if (arg === "--attempts") {
+			options.attempts = parsePositiveInt(readOptionValue(argv, index, arg), arg);
+			index++;
+			continue;
+		}
+		if (arg === "--retry-delay-ms") {
+			options.retryDelayMs = parsePositiveInt(readOptionValue(argv, index, arg), arg);
+			index++;
+			continue;
+		}
+		if (arg === "--json") {
+			options.json = true;
+			continue;
+		}
+		if (arg === "--help" || arg === "-h") {
+			console.log(usage());
+			process.exit(0);
+		}
+		fail(`Unknown argument: ${arg}`, usage());
+	}
+
+	return options;
+}
+
+function run(command, args, options = {}) {
+	const result = spawnSync(command, args, {
+		encoding: "utf8",
+		maxBuffer: 4 * 1024 * 1024,
+		...options,
+	});
+
+	if (result.error && result.error.code !== "ETIMEDOUT") {
+		fail(`Failed to run ${command}.`, result.error.message);
+	}
+
+	return result;
+}
+
+function sleep(ms) {
+	Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+function readLastLine(text) {
+	const lines = text
+		.replace(/\r/g, "")
+		.split("\n")
+		.map((line) => line.trim())
+		.filter(Boolean);
+	return lines.at(-1) ?? "";
+}
+
+function readMessageFile(filePath) {
+	if (!existsSync(filePath)) {
+		return "";
+	}
+
+	return readFileSync(filePath, "utf8");
+}
+
+async function checkDocsGuideReachable() {
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), 10000);
+
+	try {
+		const response = await fetch(DOCS_GUIDE_URL, {
+			redirect: "follow",
+			signal: controller.signal,
+		});
+
+		if (!response.ok) {
+			fail(
+				"OpenAI docs guide is not reachable.",
+				`${DOCS_GUIDE_URL} returned HTTP ${response.status}.`,
+			);
+		}
+	} catch (error) {
+		fail(
+			"OpenAI docs guide reachability check failed.",
+			error instanceof Error ? error.message : String(error),
+		);
+	} finally {
+		clearTimeout(timer);
+	}
+}
+
+function checkMcpConfig() {
+	const result = run("codex", ["mcp", "get", "openaiDeveloperDocs"]);
+	if (result.status !== 0) {
+		fail(
+			"Failed to inspect openaiDeveloperDocs MCP configuration.",
+			(result.stderr || result.stdout || "").trim(),
+		);
+	}
+
+	const output = `${result.stdout}${result.stderr}`;
+	if (!output.includes("enabled: true")) {
+		fail("openaiDeveloperDocs MCP is not enabled.");
+	}
+	if (!output.includes(DOCS_MCP_URL)) {
+		fail("openaiDeveloperDocs MCP points to an unexpected URL.", output.trim());
+	}
+}
+
+function runCodexAttempt(repoRoot, options, attempt) {
+	const tempDir = mkdtempSync(join(tmpdir(), "check-openai-docs-mcp-"));
+	const outputPath = join(tempDir, "message.txt");
+	const args = [
+		"exec",
+		"--skip-git-repo-check",
+		"--dangerously-bypass-approvals-and-sandbox",
+		"-C",
+		repoRoot,
+		"-c",
+		'model_reasoning_effort="low"',
+		"-o",
+		outputPath,
+		PROMPT,
+	];
+
+	try {
+		const startedAt = Date.now();
+		const result = run("codex", args, {
+			timeout: options.timeoutMs,
+			killSignal: "SIGKILL",
+		});
+		const durationMs = Date.now() - startedAt;
+		const messageText = readMessageFile(outputPath);
+		const smokeResult = readLastLine(messageText);
+		const logText = `${result.stdout}${result.stderr}`.trim();
+		const timedOut = result.error?.code === "ETIMEDOUT";
+		const available = result.status === 0 && smokeResult === "AVAILABLE";
+		const failureReason = timedOut
+			? `timed out after ${options.timeoutMs} ms`
+			: result.status !== 0
+				? `codex exec exited with status ${result.status}`
+				: smokeResult
+					? `unexpected reply: ${smokeResult}`
+					: "no reply captured";
+
+		return {
+			attempt,
+			durationMs,
+			timedOut,
+			ok: available,
+			smokeResult,
+			failureReason,
+			logText,
+		};
+	} finally {
+		rmSync(tempDir, { recursive: true, force: true });
+	}
+}
+
+function buildReport(repoRoot, options, attemptResults) {
+	const success = attemptResults.find((attempt) => attempt.ok) ?? null;
+
+	return {
+		repoRoot,
+		timeoutMs: options.timeoutMs,
+		attempts: options.attempts,
+		retryDelayMs: options.retryDelayMs,
+		configured: true,
+		docsReachable: true,
+		ok: Boolean(success),
+		successAttempt: success?.attempt ?? null,
+		attemptResults: attemptResults.map((attempt) => ({
+			attempt: attempt.attempt,
+			ok: attempt.ok,
+			timedOut: attempt.timedOut,
+			durationMs: attempt.durationMs,
+			smokeResult: attempt.smokeResult || "",
+			failureReason: attempt.ok ? "" : attempt.failureReason,
+		})),
+	};
+}
+
+function printHumanSuccess(report) {
+	const attemptLabel = report.successAttempt === 1
+		? "on the first attempt"
+		: `on attempt ${report.successAttempt}/${report.attempts}`;
+	console.log(
+		`openaiDeveloperDocs MCP configured, official docs reachable, and fresh Codex exec can use it ${attemptLabel} with a ${report.timeoutMs} ms timeout per attempt`,
+	);
+}
+
+function printFailure(report, attemptResults) {
+	const detailLines = attemptResults.map((attempt) => {
+		const lines = [
+			`attempt ${attempt.attempt}/${report.attempts}: ${attempt.failureReason}`,
+		];
+		if (attempt.logText) {
+			lines.push(attempt.logText);
+		}
+		return lines.join("\n");
+	});
+
+	fail(
+		"Fresh Codex exec did not confirm openaiDeveloperDocs availability within the bounded retry window.",
+		detailLines.join("\n\n"),
+	);
+}
+
+const options = parseArgs(process.argv.slice(2));
+const scriptDir = fileURLToPath(new URL(".", import.meta.url));
+const repoRoot = resolve(join(scriptDir, "..", ".."));
+
+checkMcpConfig();
+await checkDocsGuideReachable();
+
+const attemptResults = [];
+for (let attempt = 1; attempt <= options.attempts; attempt++) {
+	const result = runCodexAttempt(repoRoot, options, attempt);
+	attemptResults.push(result);
+
+	if (result.ok) {
+		break;
+	}
+
+	if (attempt < options.attempts) {
+		sleep(options.retryDelayMs);
+	}
+}
+
+const report = buildReport(repoRoot, options, attemptResults);
+
+if (options.json) {
+	console.log(JSON.stringify(report, null, "\t"));
+	if (!report.ok) {
+		process.exit(1);
+	}
+} else if (report.ok) {
+	printHumanSuccess(report);
+} else {
+	printFailure(report, attemptResults);
+}

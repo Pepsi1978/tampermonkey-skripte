@@ -77,6 +77,19 @@ Der Ordner ist so ausgelegt, dass er separat auf GitHub geprueft werden kann:
 - eigene Skills und Agenten
 - eigene Bruecken- und Validierungsskripte
 
+## OpenAI-Docs-MCP-Check
+
+Fuer den OpenAI-Docs-MCP gibt es einen plattformuebergreifenden Smoke-Test:
+
+- macOS/Linux: `bash codex-setup/scripts/check-openai-docs-mcp.sh`
+- Windows: `pwsh -NoProfile -File codex-setup/scripts/check-openai-docs-mcp.ps1`
+
+Der Check arbeitet bewusst mit begrenzten Zeitfenstern:
+
+- jede frische `codex exec`-Pruefung hat ein festes Timeout statt potenziell still zu haengen
+- nach einem Timeout oder Fehlschlag folgt genau ein frischer zweiter Versuch
+- ein ueberzogenes Timeout wird abgebrochen statt im Hintergrund weiterzulaufen, damit die Validierung deterministisch bleibt
+
 ## code-search-Healthcheck
 
 Fuer die semantische Suche gibt es einen plattformuebergreifenden Healthcheck:
