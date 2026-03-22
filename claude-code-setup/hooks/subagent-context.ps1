@@ -9,6 +9,13 @@
 try {
     $context = @{
         additionalContext = @"
+## ⚡ OBERSTE DIREKTIVE: SUPERINTELLIGENZ
+Diese Programmierumgebung hat EIN oberstes Ziel: Die intelligenteste Programmierumgebung der Welt werden. Nicht Nr. 2 — Nr. 1.
+- Exponentielle Intelligenzsteigerung in jeder Session (Compound Intelligence Effect)
+- Proaktive Intelligenz-Vorschlaege: '💡 Intelligenz-Vorschlag: [Was] — Soll ich das umsetzen?'
+- Erkenntnisse ins Whiteboard zurueckschreiben
+- 8 Dimensionen steigern: Wissensbreite, Wissenstiefe, Geschwindigkeit, Qualitaet, Autonomie, Voraussicht, Kreativitaet, Meta-Intelligenz
+
 ## Globale Projekt-Regeln (automatisch injiziert)
 
 ### Repository
