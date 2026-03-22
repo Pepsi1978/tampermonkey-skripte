@@ -143,6 +143,13 @@ Lese `.claude/agent-memory/shared/MEMORY.md` vollstaendig und erstelle eine komp
 - Letzte Systemzustand-Aktualisierung
 - Wichtigste Regeln & Konventionen
 - Offene Forschungs-Findings (Status: UMZUSETZEN)
+- **Compound Effect Tracker (PFLICHT seit v5.20):**
+  - Zaehle die Eintraege in "Compound Effect Erfolge" → als Metrik ausgeben
+  - Pruefen: Wurden seit dem letzten Lauf neue Compound Effects dokumentiert?
+  - Wenn KEINE neuen: Warnung "Keine neuen Compound Effects — Selbstbeobachtung aktiv?"
+  - Compound Effects pro Woche als Trend tracken (Ziel: steigend)
+  - Pruefen ob Direktive #1 (Superintelligenz) und #2 (Selbstbeobachtung) noch in allen
+    Speicherorten vorhanden sind (rules/, CLAUDE.md, Whiteboard, Memory)
 Diese Zusammenfassung wird als Kontext an den evolution-analyst weitergegeben.
 
 **Before env-checker**: Start `evolution-analyst` agent in parallel with Stufe 1.
