@@ -147,6 +147,10 @@ export class VectorStore {
 		run();
 	}
 
+	async backupTo(destinationPath: string): Promise<void> {
+		await this.db.backup(destinationPath);
+	}
+
 	search(queryEmbedding: number[], limit: number): SearchResult[] {
 		const queryBuf = new Float32Array(queryEmbedding);
 

@@ -6,20 +6,22 @@ Claude Code liest dieses Dokument beim Setup und richtet alles automatisch ein.
 ## Architektur
 
 ```
-~/proggs/mcp-code-search/     ← MCP-Server (TypeScript, laeuft mit Bun)
+~/proggs/mcp-code-search/     ← MCP-Server (TypeScript, laeuft mit tsx/Node.js)
 ~/proggs/.code-search/        ← Vektor-Datenbank (SQLite + sqlite-vec)
   ├── current.txt             ← Pointer auf aktive DB (z.B. "index-3.db")
   ├── index-3.db              ← Aktive Datenbank
   └── .last-index-time        ← Zeitstempel des letzten Index-Laufs
 ~/.claude/hooks/reindex-codebase.sh (.ps1 auf Windows)  ← SessionStart-Hook
 ~/proggs/.mcp.json            ← MCP-Server-Registrierung
+~/.local/bin/codex           ← Optionaler Codex-Wrapper fuer automatischen Hintergrund-Reindex
 ```
 
 ## Voraussetzungen
 
 | Komponente | Wozu | Installation |
 |---|---|---|
-| **Bun** | Laufzeit fuer den MCP-Server | `curl -fsSL https://bun.sh/install \| bash` |
+| **Node.js** | Laufzeit fuer MCP + Native Addons | nodejs.org |
+| **tsx** | TypeScript-Runner fuer Server und Reindex | `npm install -g tsx` |
 | **Ollama** | Embedding-Modell lokal ausfuehren | `brew install ollama` (macOS) / ollama.com (Windows) |
 | **nomic-embed-text** | 768-dimensionale Embeddings | `ollama pull nomic-embed-text` |
 
@@ -27,8 +29,9 @@ Claude Code liest dieses Dokument beim Setup und richtet alles automatisch ein.
 
 ### 1. Voraussetzungen pruefen
 ```bash
-# Bun vorhanden?
-bun --version
+# Node/tsx vorhanden?
+node --version
+tsx --version
 
 # Ollama laeuft?
 curl -s http://localhost:11434/api/tags | grep nomic-embed-text
@@ -37,7 +40,7 @@ curl -s http://localhost:11434/api/tags | grep nomic-embed-text
 ### 2. npm-Abhaengigkeiten installieren
 ```bash
 cd ~/proggs/mcp-code-search
-bun install
+npm install
 ```
 
 ### 3. MCP-Server registrieren
@@ -47,8 +50,8 @@ bun install
 {
   "mcpServers": {
     "code-search": {
-      "command": "bun",
-      "args": ["run", "~/proggs/mcp-code-search/src/index.ts"]
+      "command": "/opt/homebrew/bin/tsx",
+      "args": ["/Users/<user>/proggs/mcp-code-search/src/index.ts"]
     }
   }
 }
@@ -59,8 +62,8 @@ bun install
 {
   "mcpServers": {
     "code-search": {
-      "command": "bun",
-      "args": ["run", "C:/Users/barwa/proggs/mcp-code-search/src/index.ts"]
+      "command": "tsx",
+      "args": ["C:/Users/barwa/proggs/mcp-code-search/src/index.ts"]
     }
   }
 }
@@ -102,10 +105,27 @@ Dann in `~/.claude/settings.json` unter `hooks.SessionStart` hinzufuegen:
 
 ### 5. Erster Index-Lauf
 ```bash
-# Manuell ausloesen (oder naechsten Claude-Session-Start abwarten)
+# Manuell ausloesen (oder naechsten Claude-/Codex-Session-Start abwarten)
 cd ~/proggs/mcp-code-search
-bun run src/index.ts  # Wird beim naechsten SessionStart automatisch passieren
+tsx src/reindex.ts ~/proggs
 ```
+
+## Codex CLI: automatischer Hintergrund-Reindex beim Start
+
+Codex nutzt eine eigene MCP-Konfiguration in `~/.codex/config.toml`. Der MCP-Server kann so registriert werden:
+
+```bash
+codex mcp add code-search -- /opt/homebrew/bin/tsx /Users/<user>/proggs/mcp-code-search/src/index.ts
+```
+
+Wenn `codex` bei jedem Start automatisch pruefen soll, ob seit dem letzten Lauf Dateien geaendert wurden, ist ein Wrapper vor dem eigentlichen Binary der einfachste robuste Weg:
+
+1. `~/.local/bin/codex` triggert `mcp-code-search/scripts/codex-auto-reindex.sh`
+2. Das Skript bestimmt das Workspace-Root (`git rev-parse --show-toplevel`, sonst aktuelles Verzeichnis)
+3. `src/reindex.ts` prueft `.last-index-time`, sperrt parallele Laeufe per `.reindex-lock` und schreibt eine neue `index-N.db`
+4. Erst nach erfolgreichem Build wird `current.txt` auf die neue DB umgeschaltet
+
+So bleibt die alte Suche waehrend einer Neuindexierung weiter benutzbar.
 
 ## Null-Ausfallzeit (Zero Downtime)
 

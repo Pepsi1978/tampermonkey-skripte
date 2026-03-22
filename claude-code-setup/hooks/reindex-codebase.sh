@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # reindex-codebase.sh — SessionStart Hook (async)
-# v4: Incremental reindex — only re-indexes changed files.
+# v5: Pointer-based incremental reindex with atomic DB switch.
 #
 # Architecture:
-# - Single DB file (index.db) updated in-place, no more pointer-swap
-# - reindex.ts detects changed files via mtime comparison and only
-#   re-embeds those — typically <1 minute instead of 30-60 minutes
-# - Full reindex only when DB doesn't exist (first run)
+# - current.txt points to the active complete DB (index-N.db)
+# - reindex.ts snapshots the active DB, updates only changed/new/deleted files,
+#   and switches the pointer only after a successful run
+# - Full reindex only on first run or when no usable active DB exists
 # - nohup + disown detaches from hook process group (survives timeout)
 # - Lock file prevents parallel reindex processes
 
@@ -89,7 +89,17 @@ fi
 # --- Quick check if reindex is needed (avoid spawning worker for nothing) ---
 mkdir -p "$DB_DIR"
 
-if [ -f "$STAMP_FILE" ] && [ -f "$DB_PATH" ]; then
+ACTIVE_DB=""
+CURRENT_DB=$(cat "$DB_DIR/current.txt" 2>/dev/null || echo "")
+if [ -n "$CURRENT_DB" ] && [ -f "$DB_DIR/$CURRENT_DB" ]; then
+    ACTIVE_DB="$DB_DIR/$CURRENT_DB"
+elif ls "$DB_DIR"/index-*.db >/dev/null 2>&1; then
+    ACTIVE_DB=$(ls "$DB_DIR"/index-*.db 2>/dev/null | sort | tail -1)
+elif [ -f "$DB_PATH" ]; then
+    ACTIVE_DB="$DB_PATH"
+fi
+
+if [ -f "$STAMP_FILE" ] && [ -n "$ACTIVE_DB" ]; then
     NEWER=$(find "$ROOT_DIR" \
         \( -name "*.ts" -o -name "*.kt" -o -name "*.rs" -o -name "*.go" \
            -o -name "*.cs" -o -name "*.swift" -o -name "*.py" \
@@ -144,22 +154,6 @@ if [ -f "$LOCK_FILE" ]; then
         rm -f "$LOCK_FILE"
         hook_log_warn "removed stale lock file (PID $LOCK_PID no longer exists)"
     fi
-fi
-
-# --- Migrate from old numbered DBs to single index.db ---
-# One-time migration: if index.db doesn't exist but old numbered DBs do,
-# rename the current one to index.db and delete the rest.
-if [ ! -f "$DB_PATH" ]; then
-    CURRENT_OLD=$(cat "$DB_DIR/current.txt" 2>/dev/null || echo "")
-    if [ -n "$CURRENT_OLD" ] && [ -f "$DB_DIR/$CURRENT_OLD" ]; then
-        mv "$DB_DIR/$CURRENT_OLD" "$DB_PATH"
-        hook_log "migrated $CURRENT_OLD → index.db"
-    fi
-    # Clean up ALL old numbered DBs and their WAL/SHM
-    for f in "$DB_DIR"/index-*.db "$DB_DIR"/index-*.db-wal "$DB_DIR"/index-*.db-shm; do
-        [ -f "$f" ] && rm -f "$f"
-    done
-    rm -f "$DB_DIR/current.txt"
 fi
 
 # --- Start reindex as fully detached background process ---

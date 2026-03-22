@@ -13,7 +13,7 @@ heisst `createPool()` und enthaelt das Wort "Datenbank" gar nicht. Eine normale 
 
 | Komponente | Was es tut |
 |-----------|-----------|
-| **Bun** | Schnelle TypeScript-Runtime |
+| **Node.js + tsx** | Startet den MCP-Server und die Reindex-CLI stabil mit `better-sqlite3` |
 | **Ollama + nomic-embed-text** | Berechnet Embeddings lokal (768 Dimensionen) |
 | **sqlite-vec** | Vektor-Datenbank fuer aehnlichkeitsbasierte Suche |
 | **MCP SDK** | Protokoll damit Claude Code die Tools nutzen kann |
@@ -22,16 +22,37 @@ heisst `createPool()` und enthaelt das Wort "Datenbank" gar nicht. Eine normale 
 
 ### Voraussetzungen
 
-1. **Bun** installiert
-2. **Ollama** installiert und gestartet
-3. Embedding-Modell: `ollama pull nomic-embed-text`
+1. **Node.js** installiert
+2. **tsx** installiert (`npm install -g tsx`)
+3. **Ollama** installiert und gestartet
+4. Embedding-Modell: `ollama pull nomic-embed-text`
 
 ### Setup
 
 ```bash
 cd ~/proggs/mcp-code-search
-bun install
+npm install
 ```
+
+## Codex-Autostart
+
+Fuer Codex CLI wird `code-search` separat in `~/.codex/config.toml` registriert. Der funktionierende Startbefehl ist:
+
+```bash
+codex mcp add code-search -- /opt/homebrew/bin/tsx /Users/frank/Codex/mcp-code-search/src/index.ts
+```
+
+Damit die Indexierung bei jedem `codex`-Start automatisch im Hintergrund geprueft wird, gibt es zusaetzlich:
+
+- `src/reindex.ts`: prueft, ob seit `.last-index-time` relevante Dateien geaendert wurden
+- inkrementelles Reindexing: nur geaenderte, neue oder geloeschte Dateien werden im Index ersetzt
+- bestehende Indexdaten fuer unveraenderte Dateien bleiben erhalten und werden nicht neu eingebettet
+- atomarer Pointer-Swap ueber `current.txt`: der alte komplette Index bleibt waehrend jedes Reindex aktiv, bis der neue fertig ist
+- `state.json`: speichert den zuletzt erfolgreich aktivierten Index inklusive Zeitstempel und Modus
+- `scripts/codex-auto-reindex.sh`: startet den Reindex-Check asynchron fuer das aktuelle Workspace-Root
+- `~/.local/bin/codex`: triggert dieses Skript automatisch vor dem eigentlichen Codex-Start
+
+Der Hintergrundlauf schreibt sein Protokoll nach `<workspace>/.code-search/reindex.log`.
 
 ## Benutzung (3 MCP-Tools)
 
