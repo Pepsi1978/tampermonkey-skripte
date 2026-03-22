@@ -106,6 +106,8 @@ _Noch keine Eintraege._
 
 - **[2026-03-22 11:20] self-improve**: `pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1` und `pwsh -NoProfile -File codex-setup/scripts/check-openai-docs-mcp.ps1` laufen lokal auf macOS grün. Der Bash-Validator prueft damit ab jetzt auch die PowerShell-Seite automatisch mit.
 
+- **[2026-03-22 12:00] self-improve**: `validate-codex-setup.sh` hat jetzt einen `grep`-Fallback, wenn `rg` fehlt. Damit bleibt der Unix-Validator lokal schnell, laeuft aber auch auf GitHub-Ubuntu-Runnern ohne `ripgrep` statt mit Exit 127 auszufallen.
+
 ## Architektur-Entscheidungen
 - **[2026-03-22 10:48] self-improve**: Die Whiteboard-Bruecke arbeitet jetzt fail-closed. Whiteboard-Aufloesung ist nur noch fuer das autoritative Workspace-Ziel `<workspace>/codex-setup/agent-memory/shared/MEMORY.md` erlaubt; Wrapper uebergeben dafuer explizit `--workspace`, und der Validator deckt CWD-Regressionsfaelle ab.
 

@@ -5,6 +5,32 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
+if command -v rg >/dev/null 2>&1; then
+  search_fixed() {
+    local pattern="$1"
+    shift
+    rg -F -- "$pattern" "$@" >/dev/null
+  }
+
+  search_regex() {
+    local pattern="$1"
+    shift
+    rg -- "$pattern" "$@" >/dev/null
+  }
+else
+  search_fixed() {
+    local pattern="$1"
+    shift
+    grep -F -- "$pattern" "$@" >/dev/null
+  }
+
+  search_regex() {
+    local pattern="$1"
+    shift
+    grep -E -- "$pattern" "$@" >/dev/null
+  }
+fi
+
 required_files=(
   "AGENTS.md"
   "codex-setup/rules/global.md"
@@ -65,7 +91,7 @@ for section in \
   "## UI/UX-Patterns" \
   "## Forschung & Intelligence" \
   "## Regeln & Konventionen"; do
-  rg -F "$section" "codex-setup/agent-memory/shared/MEMORY.md" >/dev/null
+  search_fixed "$section" "codex-setup/agent-memory/shared/MEMORY.md"
 done
 
 for file in \
@@ -77,30 +103,30 @@ for file in \
   "codex-setup/skills/self-improve/references/report-and-creative.md" \
   "codex-setup/skills/self-improve/references/whiteboard-bridge.md" \
   "codex-setup/skills/self-improve/references/workspace-scan.md"; do
-  rg -F "Oberste Direktive" "$file" >/dev/null
+  search_fixed "Oberste Direktive" "$file"
 done
 
-rg -F "OpenAI developer documentation MCP server" "AGENTS.md" >/dev/null
-rg -F "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md" >/dev/null
-rg -F "End every final response with exactly one git status line" "AGENTS.md" >/dev/null
-rg -F "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen" "codex-setup/rules/global.md" >/dev/null
-rg -F "Die letzte Zeile der Abschlussantwort soll den Git-Status eindeutig nennen" "codex-setup/rules/global.md" >/dev/null
-rg -F "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen soll" "codex-setup/README.md" >/dev/null
+search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
+search_fixed "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md"
+search_fixed "End every final response with exactly one git status line" "AGENTS.md"
+search_fixed "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen" "codex-setup/rules/global.md"
+search_fixed "Die letzte Zeile der Abschlussantwort soll den Git-Status eindeutig nennen" "codex-setup/rules/global.md"
+search_fixed "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen soll" "codex-setup/README.md"
 
 while IFS= read -r -d '' file; do
-  rg -F "Oberste Direktive" "$file" >/dev/null
+  search_fixed "Oberste Direktive" "$file"
 done < <(find "codex-setup/skills/self-improve/references/agents" -name "*.md" -print0)
 
-node "codex-setup/scripts/whiteboard-bridge.mjs" print-directive --workspace "$REPO_ROOT" | rg -F "Oberste Direktive" >/dev/null
+node "codex-setup/scripts/whiteboard-bridge.mjs" print-directive --workspace "$REPO_ROOT" | grep -F "Oberste Direktive" >/dev/null
 
 script_files=()
 while IFS= read -r -d '' file; do
   script_files+=("$file")
 done < <(find "codex-setup/scripts" -type f \( -name "*.sh" -o -name "*.ps1" -o -name "*.mjs" \) ! -name "validate-codex-setup.sh" ! -name "validate-codex-setup.ps1" -print0)
 
-if ((${#script_files[@]} > 0)) && rg -n \
+if ((${#script_files[@]} > 0)) && search_regex \
   "Pepsi1978/proggs|~/proggs/(claude-code-setup|\\.claude)|/Users/frank/proggs/(claude-code-setup|\\.claude)|C:\\\\Users\\\\barwa\\\\proggs|~/.claude/settings.json" \
-  "${script_files[@]}" >/dev/null; then
+  "${script_files[@]}"; then
   echo "Forbidden operational Claude/proggs reference found in codex-setup scripts." >&2
   exit 1
 fi
@@ -122,7 +148,7 @@ node "$REPO_ROOT/codex-setup/scripts/whiteboard-bridge.mjs" insert \
   --directive-token "$temp_token" \
   --section "Systemzustand" \
   --entry "- **[2099-01-01 00:00] validator**: bridge mutation smoke test" >/dev/null
-rg -F "bridge mutation smoke test" "$temp_workspace/codex-setup/agent-memory/shared/MEMORY.md" >/dev/null
+search_fixed "bridge mutation smoke test" "$temp_workspace/codex-setup/agent-memory/shared/MEMORY.md"
 node "$REPO_ROOT/codex-setup/scripts/whiteboard-bridge.mjs" check-integrity --workspace "$temp_workspace" >/dev/null
 
 if node "$REPO_ROOT/codex-setup/scripts/whiteboard-bridge.mjs" insert \
@@ -133,7 +159,7 @@ if node "$REPO_ROOT/codex-setup/scripts/whiteboard-bridge.mjs" insert \
   echo "whiteboard-bridge accepted an invalid directive token." >&2
   exit 1
 fi
-if rg -F "should fail" "$temp_workspace/codex-setup/agent-memory/shared/MEMORY.md" >/dev/null; then
+if search_fixed "should fail" "$temp_workspace/codex-setup/agent-memory/shared/MEMORY.md"; then
   echo "whiteboard-bridge wrote data despite an invalid directive token." >&2
   exit 1
 fi
