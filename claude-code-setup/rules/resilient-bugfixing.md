@@ -11,28 +11,25 @@ Session, auf welcher Plattform, nach welchem Update.
 Claude muss **waehrend der Arbeit** kontinuierlich nach Verbesserungen suchen und dem Benutzer
 Vorschlaege machen. Nicht nur wenn Fehler auftreten, sondern IMMER:
 
-### Wann Vorschlaege machen?
-- **Nach jedem Fix**: "Das hat funktioniert — aber hier sehe ich noch eine Schwachstelle..."
-- **Bei wiederkehrenden Mustern**: "Mir faellt auf, dass wir X schon 2x manuell gemacht haben. Soll ich das automatisieren?"
-- **Bei Zwischenfehler in der Session**: Wenn waehrend der Arbeit etwas nicht beim ersten Mal klappt,
-  auch wenn es danach gefixt wurde → trotzdem vorschlagen wie man es in Zukunft vermeiden kann
-- **Bei ineffizienten Workflows**: Wenn ein Schritt zu viele Versuche braucht oder zu lange dauert
-- **Bei fehlender Absicherung**: Wenn etwas funktioniert, aber keine Tests/Guards/Fallbacks hat
-- **Am Ende einer groesseren Aufgabe**: Kurzer Rueckblick: "Was koennte beim naechsten Mal besser laufen?"
+### Wann und wo Vorschlaege machen?
+- **Nur AM ENDE der Aufgabe** — NIEMALS mittendrin waehrend der Arbeit.
+- Der Vorschlag kommt NACH der Status-Meldung ("Committed, gepusht und plattformuebergreifend.").
+- **Nur wenn es einen ECHTEN Mehrwert gibt** — keinen Vorschlag erzwingen wenn nichts auffaellt.
+- Kein Vorschlag ist besser als ein banaler Vorschlag.
 
-### Format fuer Vorschlaege
-Vorschlaege MUESSEN kurz, klar und sofort umsetzbar sein:
+### Wann ist ein Vorschlag sinnvoll?
+- Zwischenfehler in der Session die spaeter gefixt wurden → Praevention vorschlagen
+- Wiederkehrende manuelle Schritte → Automatisierung vorschlagen
+- Fehlende Absicherung (keine Tests, kein Retry, kein Fallback) → Haertung vorschlagen
+- Ineffizienzen (zu viele Versuche, zu lange Wartezeit) → Optimierung vorschlagen
+- Neue Muster erkannt die das System schlauer machen koennten
+
+### Format
+Kurz, klar, am Ende der Antwort, maximal 2-3 Saetze:
 ```
 💡 **Intelligenz-Vorschlag**: [Was verbessert werden kann]
-   → [Konkreter Vorschlag in 1-2 Saetzen]
-   → Soll ich das umsetzen?
+   → [Konkreter Vorschlag] — Soll ich das umsetzen?
 ```
-
-### Beispiele fuer gute Vorschlaege
-- "Dieser Hook hat keinen Retry-Mechanismus. Wenn der mal fehlschlaegt, haengt die Session."
-- "Wir haben jetzt 3 Hooks die curl brauchen. Ein gemeinsamer Health-Check-Helper waere robuster."
-- "Dieses Plugin wird bei jedem Start geprueft, aber das Ergebnis koennte gecacht werden."
-- "Der Build hat 2x fehlgeschlagen wegen fehlender Abhaengigkeit. Ein Pre-Flight-Check wuerde das verhindern."
 
 ## Pflicht-Ablauf bei JEDEM Bugfix
 
