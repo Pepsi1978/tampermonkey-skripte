@@ -1,10 +1,38 @@
-# Resilient Bugfixing — Fehler nur EINMAL (KRITISCH)
+# Resilient Bugfixing & Proaktive Intelligenz-Steigerung (KRITISCH)
 
 ## Regel: Jeder Bug wird zum permanenten System-Upgrade
 
 Wenn ein Fehler gefunden und gefixt wird, ist der Fix NICHT fertig, bis er **zukunftssicher** ist.
 Ein Fehler darf in dieser Programmierumgebung **niemals zweimal auftreten** — egal in welcher
 Session, auf welcher Plattform, nach welchem Update.
+
+## Proaktive Intelligenz-Vorschlaege (PFLICHT in jeder Session)
+
+Claude muss **waehrend der Arbeit** kontinuierlich nach Verbesserungen suchen und dem Benutzer
+Vorschlaege machen. Nicht nur wenn Fehler auftreten, sondern IMMER:
+
+### Wann Vorschlaege machen?
+- **Nach jedem Fix**: "Das hat funktioniert — aber hier sehe ich noch eine Schwachstelle..."
+- **Bei wiederkehrenden Mustern**: "Mir faellt auf, dass wir X schon 2x manuell gemacht haben. Soll ich das automatisieren?"
+- **Bei Zwischenfehler in der Session**: Wenn waehrend der Arbeit etwas nicht beim ersten Mal klappt,
+  auch wenn es danach gefixt wurde → trotzdem vorschlagen wie man es in Zukunft vermeiden kann
+- **Bei ineffizienten Workflows**: Wenn ein Schritt zu viele Versuche braucht oder zu lange dauert
+- **Bei fehlender Absicherung**: Wenn etwas funktioniert, aber keine Tests/Guards/Fallbacks hat
+- **Am Ende einer groesseren Aufgabe**: Kurzer Rueckblick: "Was koennte beim naechsten Mal besser laufen?"
+
+### Format fuer Vorschlaege
+Vorschlaege MUESSEN kurz, klar und sofort umsetzbar sein:
+```
+💡 **Intelligenz-Vorschlag**: [Was verbessert werden kann]
+   → [Konkreter Vorschlag in 1-2 Saetzen]
+   → Soll ich das umsetzen?
+```
+
+### Beispiele fuer gute Vorschlaege
+- "Dieser Hook hat keinen Retry-Mechanismus. Wenn der mal fehlschlaegt, haengt die Session."
+- "Wir haben jetzt 3 Hooks die curl brauchen. Ein gemeinsamer Health-Check-Helper waere robuster."
+- "Dieses Plugin wird bei jedem Start geprueft, aber das Ergebnis koennte gecacht werden."
+- "Der Build hat 2x fehlgeschlagen wegen fehlender Abhaengigkeit. Ein Pre-Flight-Check wuerde das verhindern."
 
 ## Pflicht-Ablauf bei JEDEM Bugfix
 
@@ -60,3 +88,6 @@ Nie nur EINE Absicherung. Immer mindestens 2-3 Schichten:
 - ❌ Fix nur fuer den einen konkreten Fall, ohne aehnliche Faelle zu pruefen
 - ❌ Fix ohne Memory-Eintrag (Wissen geht verloren zwischen Sessions)
 - ❌ "Funktioniert jetzt" sagen ohne zu pruefen ob es in 2 Wochen noch funktioniert
+- ❌ Zwischenfehler in der Session ignorieren nur weil sie "danach" gefixt wurden
+- ❌ Session beenden ohne Rueckblick auf Verbesserungsmoeglichkeiten
+- ❌ Stumm arbeiten ohne proaktive Vorschlaege zur Intelligenz-Steigerung
