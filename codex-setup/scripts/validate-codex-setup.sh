@@ -108,9 +108,11 @@ done
 
 search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
 search_fixed "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md"
-search_fixed "End every final response with exactly one git status line" "AGENTS.md"
+search_fixed "always start with \`Committed.\`" "AGENTS.md"
+search_fixed "add a second final line \`Gepusht in <path>, plattformuebergreifend.\`" "AGENTS.md"
 search_fixed "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen" "codex-setup/rules/global.md"
-search_fixed "Die letzte Zeile der Abschlussantwort soll den Git-Status eindeutig nennen" "codex-setup/rules/global.md"
+search_fixed "zuerst \`Committed.\` sobald der lokale Commit existiert" "codex-setup/rules/global.md"
+search_fixed "als zweite Abschlusszeile \`Gepusht in <path>, plattformuebergreifend.\`" "codex-setup/rules/global.md"
 search_fixed "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen soll" "codex-setup/README.md"
 
 while IFS= read -r -d '' file; do

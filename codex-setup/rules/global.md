@@ -89,7 +89,7 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 - Wenn eine `codex-setup/`-Synchronisation zusaetzlich `AGENTS.md` oder `.github/workflows/codex-setup-validate.yml` braucht, duerfen diese Dateien im selben Sync-Commit mitgefuehrt werden.
 - Fuer alle anderen Ordner im Repository gilt: `git push` nur nach ausdruecklicher Benutzeranweisung.
 - Vor einem moeglichen Push soll Codex Aenderungen bevorzugt lokal validieren.
-- Die letzte Zeile der Abschlussantwort soll den Git-Status eindeutig nennen: `Committed.` wenn nur committed wurde, oder `Gepusht in <path>, plattformuebergreifend.` wenn der Codex-Setup-Sync erfolgreich auf GitHub liegt.
+- Die Abschlussantwort soll den Git-Status fuer Verstaendlichkeit immer in dieser Reihenfolge nennen: zuerst `Committed.` sobald der lokale Commit existiert. Wenn der Codex-Setup-Sync zusaetzlich auf GitHub liegt, folgt danach als zweite Abschlusszeile `Gepusht in <path>, plattformuebergreifend.`.
 
 ## Startverhalten fuer Codex
 

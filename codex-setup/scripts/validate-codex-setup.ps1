@@ -105,16 +105,24 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('automatically crea
     throw "AGENTS.md must instruct Codex to auto-commit and push validated codex-setup changes."
 }
 
-if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('End every final response with exactly one git status line')) {
-    throw "AGENTS.md must instruct Codex to end with the required git status line."
+if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('always start with `Committed.`')) {
+    throw "AGENTS.md must require the final response to start git status reporting with Committed."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('add a second final line `Gepusht in <path>, plattformuebergreifend.`')) {
+    throw "AGENTS.md must define the optional pushed git status line."
 }
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch [regex]::Escape('nach erfolgreicher lokaler Validierung eigenstaendig committen und nach `origin/main` pushen')) {
     throw "global.md must instruct Codex to auto-push validated codex-setup changes."
 }
 
-if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch [regex]::Escape('Die letzte Zeile der Abschlussantwort soll den Git-Status eindeutig nennen')) {
-    throw "global.md must define the final git status line."
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch [regex]::Escape('zuerst `Committed.` sobald der lokale Commit existiert')) {
+    throw "global.md must require Committed as the first git status line."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch [regex]::Escape('als zweite Abschlusszeile `Gepusht in <path>, plattformuebergreifend.`')) {
+    throw "global.md must define the pushed git status line."
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch [regex]::Escape('nach erfolgreicher lokaler Validierung eigenstaendig committen und nach `origin/main` pushen soll')) {
