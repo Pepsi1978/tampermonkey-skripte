@@ -22,20 +22,14 @@ export function ensureDbDir(dbDir: string): void {
 
 /**
  * List candidate database files in priority order:
- * 1. Primary: single index.db (v4+ incremental reindex)
- * 2. Fallback: pointer-based current.txt → index-N.db
+ * 1. Primary: pointer-based current.txt → index-N.db (active snapshot)
+ * 2. Fallback: legacy single index.db (v4+ incremental reindex)
  * 3. Last resort: highest-numbered index-N.db
  */
 export function listDbCandidates(dbDir: string): DbCandidate[] {
 	const candidates: DbCandidate[] = [];
 
-	// Primary: single index.db
-	const mainDb = join(dbDir, "index.db");
-	if (existsSync(mainDb)) {
-		candidates.push({ path: mainDb });
-	}
-
-	// Fallback: pointer-based system (current.txt → index-N.db)
+	// Primary: pointer-based system (current.txt → index-N.db)
 	const pointerFile = join(dbDir, "current.txt");
 	if (existsSync(pointerFile)) {
 		try {
@@ -52,6 +46,12 @@ export function listDbCandidates(dbDir: string): DbCandidate[] {
 		} catch {
 			// Ignore read errors on pointer file
 		}
+	}
+
+	// Fallback: legacy single index.db
+	const mainDb = join(dbDir, "index.db");
+	if (existsSync(mainDb) && !candidates.some((c) => c.path === mainDb)) {
+		candidates.push({ path: mainDb });
 	}
 
 	// Last resort: find numbered index-N.db files

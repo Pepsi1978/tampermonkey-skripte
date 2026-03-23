@@ -546,6 +546,38 @@
       ],
       "created_at": "2026-03-23T20:33:04.712Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-code-search-active-snapshot-before-legacy-db",
+      "source_cli": "Codex",
+      "category": "search-runtime",
+      "summary": "code-search now resolves the active pointer snapshot before the legacy index.db",
+      "context_for_other_clis": "This fix affects the local Codex code-search runtime and the direct health-check workflow. The MCP server had been reading the stale legacy database even though the active pointer in current.txt had already moved to index-17.db.",
+      "symptom_before_fix": "search_status reported /Users/frank/Codex/.code-search/index.db with 184 files and 800 chunks, while the active snapshot in current.txt was index-17.db with 673 files and 11053 chunks.",
+      "root_cause": "listDbCandidates in mcp-code-search/src/db-state.ts prioritized the legacy index.db before the pointer file, so both search_status and search_code could open the wrong database whenever both existed.",
+      "what_was_fixed": "current.txt pointer first",
+      "why_it_was_fixed": "make the live search runtime use the same active snapshot as the reindex pointer",
+      "exact_error_text": "search_status showed Database: /Users/frank/Codex/.code-search/index.db with 184 files and 800 chunks while the healthy workspace pointer was index-17.db with 673 files and 11053 chunks.",
+      "root_cause_why_chain": "Why 1: the MCP server opened the legacy database before the active pointer. Why 2: the candidate list still treated index.db as primary even when current.txt existed. Why 3: the status path and search path therefore drifted away from the reindex pointer and reported stale totals.",
+      "related_error_sources_checked": "Checked the same candidate-resolution surface in search_status, search_code, and the health-check script because they must all observe the same active snapshot and must not diverge between status and query paths.",
+      "wrong_pattern_example": "Wrong pattern: prefer the legacy index.db whenever it exists and only consult current.txt later.",
+      "right_pattern_example": "Right pattern: read current.txt first, then fall back to index.db only if the pointer is missing or invalid.",
+      "avoidance_rule": "If a code-search workspace uses pointer-based snapshots, then always resolve the pointer before any legacy database fallback and restart long-lived runtime processes after changing the resolver order.",
+      "resilience_summary": "The fix is defensive because it forces both search and status onto the same active snapshot, update-resilient because the pointer remains authoritative across reindexes, extensible because new candidate types can still be added after the pointer, documented in the ledger, and damage-free because the change only affects database selection.",
+      "fix_induced_failure_review": "Dependencies: search_code, search_status, the pointer file, and the reindex workflow all share the same resolver. Failure scenario: if the pointer is missing or malformed, the code still falls back to the legacy database instead of crashing. State changes: none beyond database selection. Race conditions: low, but the runtime cache should be restarted after changing the resolver order so long-lived sessions do not keep the stale store. Backward compatibility: legacy single-file indexes still open when no pointer exists. Platform effects: pointer selection works the same on macOS and Windows. Update resistance: future reindexes keep the pointer authoritative. Graceful degradation: missing or unreadable pointer files fall back cleanly to the old database.",
+      "verification": "Verified with the fresh code-search health smoke on /Users/frank/Codex: it now reports activeDb index-17.db, 673 files, and 11053 chunks, matching the workspace pointer instead of the stale legacy database.",
+      "portability_notes": "Any other CLI that uses pointer-based search snapshots should treat the pointer as the source of truth and only fall back to a legacy database when the pointer is absent. Long-lived runtime processes should be restarted after changing candidate priority so they do not hold stale open connections.",
+      "impact": "Search and status now resolve the same active database snapshot.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "mcp-code-search/src/db-state.ts",
+        "mcp-code-search/README.md"
+      ],
+      "created_at": "2026-03-23T22:33:27.959Z",
+      "status": "active"
     }
   ]
 }

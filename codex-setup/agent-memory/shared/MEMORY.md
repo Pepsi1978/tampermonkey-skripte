@@ -199,6 +199,13 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 **Status:** OFFEN
 
 
+### 2026-03-23 — Quelle: [mcp-code-search] — Aktiver Snapshot gewinnt vor Legacy-DB
+**Status:** GEFIXT
+**Symptom:** search_status meldete index.db mit 184 Dateien und 800 Chunks, obwohl current.txt bereits index-17.db mit 673 Dateien und 11053 Chunks zeigte.
+**Ursache:** listDbCandidates priorisierte die legacy index.db vor current.txt und liess damit den aktiven Snapshot im Status und in Suchabfragen aus.
+**Fix:** current.txt ist jetzt der erste Kandidat; index.db ist nur noch Fallback.
+**Regel:** Bei pointer-basierten Indizes immer den Pointer zuerst lesen und Legacy-DB nur als Notfall verwenden.
+
 ---
 
 ## Systemzustand
