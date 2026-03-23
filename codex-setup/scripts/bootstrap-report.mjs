@@ -19,7 +19,7 @@ const ENVIRONMENT_FIX_LEDGER_REPO_PATH =
 const IMPLEMENTED_SUGGESTION_LEDGER_REPO_PATH =
   "codex-setup/state/implemented-intelligence-suggestions.json";
 
-const KNOWN_CLIS = ["Codex", "Cloud Code", "Gemini CLI"];
+const KNOWN_CLIS = ["Codex", "Claude Code", "Gemini CLI"];
 
 function parseArgs(argv) {
   const args = { _: [], json: false, cli: "all" };
@@ -49,7 +49,7 @@ function normalizeCliName(rawCli) {
   if (!normalized || normalized === "all") return "all";
   if (normalized === "codex") return "Codex";
   if (normalized === "cloud code" || normalized === "cloud-code") {
-    return "Cloud Code";
+    return "Claude Code";
   }
   if (
     normalized === "gemini cli" ||
@@ -59,7 +59,7 @@ function normalizeCliName(rawCli) {
     return "Gemini CLI";
   }
   throw new Error(
-    `Unknown --cli value: ${rawCli}. Expected one of: all, Codex, Cloud Code, Gemini CLI.`,
+    `Unknown --cli value: ${rawCli}. Expected one of: all, Codex, Claude Code, Gemini CLI.`,
   );
 }
 
@@ -175,14 +175,14 @@ function buildReportEntries() {
       },
     },
     {
-      cli: "Cloud Code",
-      registry: registry.peer_registry_targets?.["Cloud Code"] || {},
-      bootstrap_setup: registry.bootstrap_artifacts?.["Cloud Code"] || {},
-      bootstrap_report: registry.bootstrap_report_artifacts?.["Cloud Code"] || {},
+      cli: "Claude Code",
+      registry: registry.peer_registry_targets?.["Claude Code"] || {},
+      bootstrap_setup: registry.bootstrap_artifacts?.["Claude Code"] || {},
+      bootstrap_report: registry.bootstrap_report_artifacts?.["Claude Code"] || {},
       ledgers: {
         environment_fixes: buildEnvironmentFixSourcesForCloud(cloudContext),
         implemented_intelligence_suggestions:
-          intelligenceBridge.peer_ledgers?.["Cloud Code"] || {},
+          intelligenceBridge.peer_ledgers?.["Claude Code"] || {},
       },
       codex_bridge_entrypoints: {
         cloud_code_delta: buildBridgeEntry(cloudContext),

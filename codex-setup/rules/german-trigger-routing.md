@@ -5,7 +5,7 @@ Es soll nur auf Faehigkeiten zeigen, die Codex hier wirklich besitzt.
 
 ## Grundregel
 
-- Wenn der Benutzer `Cloud Code` sagt, ist fuer Codex damit `Claude Code` gemeint.
+- Wenn der Benutzer `Claude Code` sagt, ist fuer Codex damit `Claude Code` gemeint.
 - `claude-code-setup/` und `CLAUDE.md` sind dabei nur Lese- und Vergleichsquellen.
 - `claude-code-setup/agent-memory/shared/MEMORY.md` ist die aktuell vorgemerkte read-only Cloud-Code-Fehlerquelle.
 - `Gemini-Setup/`, `Gemini-Setup/agent-memory/shared/MEMORY.md` und `%USERPROFILE%\GeminiCLI` sind fuer Codex ebenfalls nur Lesequellen.
@@ -30,19 +30,19 @@ Aktion:
 ### Claude-/Cloud-Code-Delta
 
 - "was ist neuer als bei dir"
-- "uebernimm das von Cloud Code"
-- "Starte bitte die Bruecke zu Cloud Code"
+- "uebernimm das von Claude Code"
+- "Starte bitte die Bruecke zu Claude Code"
 - "Claude Setup vergleichen"
-- "schau im Cloud Code Repo nach"
+- "schau im Claude Code Repo nach"
 - "welche Regeln sind dort neuer"
-- "hol dir die neuesten Informationen von Cloud Code"
-- "was wurde bei Cloud Code erneuert"
-- "neueste Regeln von Cloud Code"
-- "neueste Agenten von Cloud Code"
-- "neueste Arbeitsprozesse von Cloud Code"
-- "welche Fehler wurden bei Cloud Code gefixt"
-- "welche robuste Fixlogik gibt es bei Cloud Code"
-- "welche Haertungen sind bei Cloud Code neu"
+- "hol dir die neuesten Informationen von Claude Code"
+- "was wurde bei Claude Code erneuert"
+- "neueste Regeln von Claude Code"
+- "neueste Agenten von Claude Code"
+- "neueste Arbeitsprozesse von Claude Code"
+- "welche Fehler wurden bei Claude Code gefixt"
+- "welche robuste Fixlogik gibt es bei Claude Code"
+- "welche Haertungen sind bei Claude Code neu"
 - "was davon ist fuer Codex sinnvoll"
 
 Aktion:
@@ -51,7 +51,7 @@ Aktion:
 - danach Port-Kandidaten als `ADD`, `ADAPT` oder `REPLACE` erklaeren
 - auch `ADD` und `ADAPT` nur als Vorschlag berichten, niemals autonom umsetzen
 - bei `REPLACE` vor Umsetzung warnen und bestaetigen lassen
-- der Satz `Starte bitte die Bruecke zu Cloud Code` ist ein direkter Ausloeser fuer diesen kompletten Ablauf
+- der Satz `Starte bitte die Bruecke zu Claude Code` ist ein direkter Ausloeser fuer diesen kompletten Ablauf
 
 ### Gemini-CLI-Delta
 
@@ -76,7 +76,7 @@ Aktion:
 - "logge diesen Umgebungsfix"
 - "welche Fehler hast du in deiner Umgebung gefixt"
 - "warum hast du diesen Umgebungsfehler gefixt"
-- "was kann Cloud Code von deinen Fixes lernen"
+- "was kann Claude Code von deinen Fixes lernen"
 - "was kann Gemini CLI von deinen Fixes lernen"
 
 Aktion:
@@ -89,14 +89,14 @@ Aktion:
 
 - "welche Intelligenzvorschlaege hast du umgesetzt"
 - "wo ist deine Intelligenzvorschlag-Liste"
-- "was koennen Cloud Code oder Gemini CLI von deinen Intelligenzvorschlaegen lernen"
+- "was koennen Claude Code oder Gemini CLI von deinen Intelligenzvorschlaegen lernen"
 - "logge diesen umgesetzten Intelligenzvorschlag"
 
 Aktion:
 - `codex-setup/state/implemented-intelligence-suggestions.json` lesen oder aktualisieren
 - zum Schreiben `codex-setup/scripts/register-intelligence-suggestion.*` verwenden
 - immer den urspruenglichen Vorschlag, Kontext, Umsetzungsgrund, konkrete Umsetzung, Resilienz-Zusammenfassung, Failure-Review und Portierungshinweise fuer andere CLIs erfassen
-- bei Brueckenfragen die bekannten Ledger-Adressen fuer Codex, Cloud Code und Gemini CLI mitberichten
+- bei Brueckenfragen die bekannten Ledger-Adressen fuer Codex, Claude Code und Gemini CLI mitberichten
 
 ### Bridge-Registry
 
@@ -106,7 +106,7 @@ Aktion:
 
 Aktion:
 - `codex-setup/bridges/bridge-registry.json` lesen oder aktualisieren
-- die Registry-Adressen fuer Codex, Cloud Code und Gemini CLI mitberichten
+- die Registry-Adressen fuer Codex, Claude Code und Gemini CLI mitberichten
 - neue Bruecken zuerst dort eintragen und erst danach die Einzel-Bruecken erweitern
 
 ### Bootstrap-Report

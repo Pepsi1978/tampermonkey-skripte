@@ -103,7 +103,7 @@ function loadLedger(filePath) {
 function buildEntry(args, existingEntry = null) {
   const now = new Date().toISOString();
   const portableTo = splitCsv(args["portable-to"], existingEntry?.portable_to || [
-    "Cloud Code",
+    "Claude Code",
     "Gemini CLI",
   ]);
   const artifacts = splitCsv(args.artifacts, existingEntry?.artifacts || []);

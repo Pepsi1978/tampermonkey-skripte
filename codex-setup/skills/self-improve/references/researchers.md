@@ -20,7 +20,7 @@ Use fresh research whenever:
 - `~/.codex/config.toml` changed
 - local skill files changed
 - MCP registrations changed
-- Claude/Cloud Code setup was changed and Codex may need a new delta pass
+- Claude/Claude Code setup was changed and Codex may need a new delta pass
 
 ## R1 — Codex and OpenAI Updates
 

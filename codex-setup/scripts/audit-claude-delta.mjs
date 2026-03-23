@@ -29,7 +29,7 @@ const DEFAULT_STATE = {
   last_applied_commit: null,
   last_reviewed_at: null,
   last_applied_at: null,
-  notes: "Tracks only Cloud Code programming-environment deltas for Codex.",
+  notes: "Tracks only Claude Code programming-environment deltas for Codex.",
 };
 
 function parseArgs(argv) {

@@ -265,7 +265,7 @@ Triggers on requests to create Android projects, screens, ViewModels, repositori
 
 ## Shared Knowledge Hub Integration
 
-**Whiteboard**: `C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup/agent-memory/shared/MEMORY.md` (EINZIGE zentrale Wissensdatei)
+**Whiteboard**: `/Users/frank/GeminiCLI/Gemini-Setup/agent-memory/shared/MEMORY.md` (EINZIGE zentrale Wissensdatei)
 
 **Lesen**: Vor der Ausfuehrung das Whiteboard lesen fuer bekannte Muster, Arch-Entscheidungen und offene Probleme.
 

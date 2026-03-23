@@ -58,7 +58,7 @@ Claude-Dateien sind fuer Codex bei diesem Prozess strikt read-only.
 
 ## Ledger fuer umgesetzte Intelligenzvorschlaege
 
-- Falls Cloud Code spaeter einen eigenen Ledger fuer umgesetzte `Intelligenzvorschlaege` veroeffentlicht, soll Codex diesen Ledger read-only als weitere Delta-Quelle behandeln.
+- Falls Claude Code spaeter einen eigenen Ledger fuer umgesetzte `Intelligenzvorschlaege` veroeffentlicht, soll Codex diesen Ledger read-only als weitere Delta-Quelle behandeln.
 - Die erwartete Zieladresse fuer diese Fremdquelle wird in `codex-setup/bridges/cloud-code-delta-bridge.*` und `codex-setup/bridges/intelligence-suggestion-exchange-bridge.*` vorgemerkt.
 - Die Existenz oder Nichtexistenz dieser Quelle aendert nichts an der Proposal-only-Regel.
 

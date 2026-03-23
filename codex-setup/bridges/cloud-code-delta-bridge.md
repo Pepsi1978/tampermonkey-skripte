@@ -1,11 +1,11 @@
-# Cloud Code Delta Bridge
+# Claude Code Delta Bridge
 
 Dies ist die generische Bruecken-Spezifikation fuer andere CLI-Programmierumgebungen.
 
 Ziel:
 
-- neue Regeln, Agents, Skills, Hooks, Arbeitsprozesse und Setup-Ideen aus `Cloud Code`
-- umgebungsbezogene Fehlerfixes, Haertungen und zukunftsfaehige Fixlogik aus `Cloud Code`
+- neue Regeln, Agents, Skills, Hooks, Arbeitsprozesse und Setup-Ideen aus `Claude Code`
+- umgebungsbezogene Fehlerfixes, Haertungen und zukunftsfaehige Fixlogik aus `Claude Code`
 - spaeter auch bereits umgesetzte `Intelligenzvorschlaege` aus einem optionalen Cloud-Code-Ledger
 - sauber, deutsch und approval-faehig auflisten
 - nur die Programmierumgebung betrachten, nicht normalen Projektcode
@@ -16,7 +16,7 @@ Validierung oder die Programmierumgebung beziehen.
 
 ## Quellseite
 
-Fuer Codex ist `Cloud Code` gleich `Claude Code`.
+Fuer Codex ist `Claude Code` gleich `Claude Code`.
 
 Read-only Quellen:
 
@@ -92,7 +92,7 @@ Andere CLIs sollen zusaetzlich einen registry-getriebenen Bootstrap-Report veroe
   `Gemini-Setup/bridges/bridge-registry.json`
 
 Hinweis fuer andere Bruecken:
-- Cloud Code und Gemini CLI sollen diese Registry-Dateiart ebenfalls uebernehmen und dort ihre exakten Ledger- und Bridge-Adressen veroeffentlichen.
+- Claude Code und Gemini CLI sollen diese Registry-Dateiart ebenfalls uebernehmen und dort ihre exakten Ledger- und Bridge-Adressen veroeffentlichen.
 
 ## Pflichtklassifikation
 
@@ -140,14 +140,14 @@ Wenn erkennbar, zusaetzlich:
 
 Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
 
-- "hol dir die neuesten Informationen von Cloud Code"
-- "Starte bitte die Bruecke zu Cloud Code"
-- "was wurde bei Cloud Code erneuert"
-- "welche Verbesserungen gibt es bei Cloud Code"
+- "hol dir die neuesten Informationen von Claude Code"
+- "Starte bitte die Bruecke zu Claude Code"
+- "was wurde bei Claude Code erneuert"
+- "welche Verbesserungen gibt es bei Claude Code"
 - "welche Regeln sind dort neuer"
 - "welche Agenten oder Arbeitsprozesse sind dort neuer"
-- "welche Fehler wurden bei Cloud Code gefixt"
-- "welche robuste Fixlogik gibt es bei Cloud Code"
+- "welche Fehler wurden bei Claude Code gefixt"
+- "welche robuste Fixlogik gibt es bei Claude Code"
 - "was davon ist fuer [Ziel-CLI] sinnvoll"
 - "schau im Codex Setup Ordner nach dieser Bruecke"
 - "baue diese Bruecke auch fuer [Ziel-CLI]"
@@ -160,7 +160,7 @@ Fuer Codex ist die Referenzimplementierung:
 - `codex-setup/scripts/audit-claude-delta.sh`
 - `codex-setup/scripts/audit-claude-delta.ps1`
 
-Der Satz `Starte bitte die Bruecke zu Cloud Code` soll bei Codex immer direkt diese Referenzimplementierung ausloesen.
+Der Satz `Starte bitte die Bruecke zu Claude Code` soll bei Codex immer direkt diese Referenzimplementierung ausloesen.
 
 Der dazugehoerige State liegt unter:
 

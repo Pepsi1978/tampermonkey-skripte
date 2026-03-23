@@ -164,7 +164,7 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 
 ### Cross-Tool-Lernen
 
-- Cloud Code, Codex CLI und Gemini CLI arbeiten in dieselbe Richtung.
+- Claude Code, Codex CLI und Gemini CLI arbeiten in dieselbe Richtung.
 - Jede Umgebung darf ueber read-only Bruecken Verbesserungen der anderen lesen und als Vorschlaege praesentieren.
 - Jede Umgebung schreibt dennoch nur in ihren eigenen Workspace.
 
@@ -231,7 +231,7 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 
 - **[2026-03-22 11:54] self-improve**: Fuer schnelle QuizVerse-Android-Starts auf macOS gilt jetzt der feste Emulator-Pfad `/opt/homebrew/share/android-commandlinetools/emulator/emulator`, `adb` liegt unter `/opt/homebrew/share/android-commandlinetools/platform-tools/adb`, das SDK unter `/Users/frank/Library/Android/sdk`, das Projekt unter `/Users/frank/Codex/QuizVerse`, und der bevorzugte AVD ist `Pixel7_API35`.
 
-- **[2026-03-23 12:15] self-improve**: Codex hat jetzt self-observation als zweite Direktive, eine wiederverwendbare Cloud Code-Bruecke in codex-setup/bridges/ und einen Claude-Delta-Audit fuer Regeln, Agenten, Prozesse, Setup-Verbesserungen sowie umgebungsbezogene Fehlerfixes.
+- **[2026-03-23 12:15] self-improve**: Codex hat jetzt self-observation als zweite Direktive, eine wiederverwendbare Claude Code-Bruecke in codex-setup/bridges/ und einen Claude-Delta-Audit fuer Regeln, Agenten, Prozesse, Setup-Verbesserungen sowie umgebungsbezogene Fehlerfixes.
 
 ---
 
@@ -269,7 +269,7 @@ Installed Codex self-improve skill to /Users/frank/.codex/skills/self-improve
 codex-setup validation passed
 Bootstrap abgeschlossen.
 Naechste direkte Bruecken-Trigger:
-- Starte bitte die Bruecke zu Cloud Code
+- Starte bitte die Bruecke zu Claude Code
 - Starte bitte die Bruecke zu Gemini CLI
 Optionaler Gesamtueberblick:
 - bash codex-setup/scripts/bootstrap-report.sh, \Installed Codex self-improve skill to /Users/frank/.codex/skills/self-improve, \codex-setup validation passed und \codex-setup validation passed auf macOS grün. Die neue Bootstrap-Report-Bruecke ist lokal nutzbar.
@@ -300,9 +300,9 @@ Optionaler Gesamtueberblick:
 
 - **[2026-03-23 17:24] codex-setup**: Die Cloud-Code- und Gemini-Delta-Audits lesen ihre Git-Scanpfade, Trigger und Bridge-Metadaten jetzt direkt aus codex-setup/bridges/bridge-registry.json plus der jeweiligen Bridge-JSON. Neue Bruecken sollen damit zuerst die zentrale Registry erweitern, statt dieselben Pfade oder Trigger spaeter nochmal im Audit-Code zu duplizieren.
 
-- **[2026-03-23 13:48] self-improve**: Frische Rechner sollen Codex-Setup jetzt ueber `codex-setup/scripts/bootstrap-codex-setup.{ps1,sh}` bootstrapen. Die Bootstrap-Adressen sind zusaetzlich in `codex-setup/bridges/bridge-registry.json`, den Delta-Bruecken und der Intelligence-Exchange-Bruecke dokumentiert, damit Cloud Code und Gemini CLI dieselbe Struktur spaeter read-only nachziehen koennen.
+- **[2026-03-23 13:48] self-improve**: Frische Rechner sollen Codex-Setup jetzt ueber `codex-setup/scripts/bootstrap-codex-setup.{ps1,sh}` bootstrapen. Die Bootstrap-Adressen sind zusaetzlich in `codex-setup/bridges/bridge-registry.json`, den Delta-Bruecken und der Intelligence-Exchange-Bruecke dokumentiert, damit Claude Code und Gemini CLI dieselbe Struktur spaeter read-only nachziehen koennen.
 
-- **[2026-03-23 14:00] self-improve**: `codex-setup/scripts/bootstrap-report.{mjs,ps1,sh}` liefert jetzt einen registry-getriebenen Gesamtueberblick ueber Bootstrap-, Ledger- und Bridge-Adressen fuer Codex, Cloud Code und Gemini CLI. Der Report liest seine Struktur aus `bridge-registry.json` und den bestehenden Bridge-JSONs statt neue Adressinseln aufzubauen.
+- **[2026-03-23 14:00] self-improve**: `codex-setup/scripts/bootstrap-report.{mjs,ps1,sh}` liefert jetzt einen registry-getriebenen Gesamtueberblick ueber Bootstrap-, Ledger- und Bridge-Adressen fuer Codex, Claude Code und Gemini CLI. Der Report liest seine Struktur aus `bridge-registry.json` und den bestehenden Bridge-JSONs statt neue Adressinseln aufzubauen.
 
 - **[2026-03-23 19:04] self-improve**: validate-codex-setup.ps1 startet PowerShell-Untertests jetzt fail-closed ueber absolute pwsh -File-Aufrufe, und install-self-improve.ps1 leitet sein Zielverzeichnis plattformtauglich ueber UserProfile/HOME ab. Damit werden macOS-Pfad- und Home-Aufloesungen nicht mehr stillschweigend als gruen fehlinterpretiert.
 
@@ -380,13 +380,13 @@ _Noch keine Eintraege._
 
 - **[2026-03-23 12:15] self-improve**: claude-code-setup/, CLAUDE.md, Gemini-Setup/ und C:\Users\barwa\GeminiCLI sind fuer Codex nur read-only Vergleichsquellen. Cloud-Code-Fragen zu Regeln, Agenten, Arbeitsprozessen, Setup oder gefixten Umgebungsfehlern sollen zuerst ueber codex-setup/scripts/audit-claude-delta.* laufen und deutsch im Schema A1/B1/C1/D1 berichtet werden.
 
-- **[2026-03-23 12:21] self-improve**: Umwelt-Fixes von Codex werden zusaetzlich in codex-setup/state/environment-fixes.json mit was und warum protokolliert. Andere CLIs duerfen dieses Log read-only lesen, damit Fehlerfixes zwischen Codex, Cloud Code und spaeter Gemini CLI austauschbar werden.
+- **[2026-03-23 12:21] self-improve**: Umwelt-Fixes von Codex werden zusaetzlich in codex-setup/state/environment-fixes.json mit was und warum protokolliert. Andere CLIs duerfen dieses Log read-only lesen, damit Fehlerfixes zwischen Codex, Claude Code und spaeter Gemini CLI austauschbar werden.
 
 - **[2026-03-23 12:30] self-improve**: Eintraege in codex-setup/state/environment-fixes.json muessen jetzt fuer fremde CLIs voll kontextfaehig sein: Kontext, sichtbares Symptom, technische Ursache, Verifikation und Portierungshinweis sind Pflicht. Kurze what/why-Notizen reichen nicht mehr.
 
-- **[2026-03-23 12:33] self-improve**: Der exakte deutsche Direkt-Trigger fuer den kompletten Cloud-Code-Delta-Audit lautet Starte bitte die Bruecke zu Cloud Code. Als explizite read-only Fremd-Fehlerquellen sind jetzt claude-code-setup/agent-memory/shared/MEMORY.md, Gemini-Setup/agent-memory/shared/MEMORY.md und C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md vorgemerkt.
+- **[2026-03-23 12:33] self-improve**: Der exakte deutsche Direkt-Trigger fuer den kompletten Cloud-Code-Delta-Audit lautet Starte bitte die Bruecke zu Claude Code. Als explizite read-only Fremd-Fehlerquellen sind jetzt claude-code-setup/agent-memory/shared/MEMORY.md, Gemini-Setup/agent-memory/shared/MEMORY.md und C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md vorgemerkt.
 
-- **[2026-03-23 13:00] codex-setup**: Delta-Bruecken zu Cloud Code und Gemini CLI sind jetzt strikt proposal-only. Trigger: `Starte bitte die Bruecke zu Cloud Code` und `Starte bitte die Bruecke zu Gemini CLI`. Jede Bruecke muss zuerst eine gruppierte A1/B1/C1/D1-Vorschlagsliste erzeugen; keine autonome Umsetzung, auch nicht fuer ADD oder ADAPT.
+- **[2026-03-23 13:00] codex-setup**: Delta-Bruecken zu Claude Code und Gemini CLI sind jetzt strikt proposal-only. Trigger: `Starte bitte die Bruecke zu Claude Code` und `Starte bitte die Bruecke zu Gemini CLI`. Jede Bruecke muss zuerst eine gruppierte A1/B1/C1/D1-Vorschlagsliste erzeugen; keine autonome Umsetzung, auch nicht fuer ADD oder ADAPT.
 
 - **[2026-03-23 13:20] codex-setup**: Die Oberste Direktive wurde auf die staerkere Superintelligenz-Fassung umgestellt: 8 Intelligenz-Dimensionen, Compound-Improvement, exakter `Intelligenz-Vorschlag`-Stil und read-only Cross-Tool-Lernen sind jetzt als dauerhafte Codex-Steuerlogik verankert und validator-abgesichert.
 

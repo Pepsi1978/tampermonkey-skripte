@@ -2,10 +2,10 @@
 
 Use this reference under the whiteboard's `## Oberste Direktive` when the user asks for anything like:
 
-- compare Cloud Code with Codex
+- compare Claude Code with Codex
 - port Claude setup improvements to Codex
 - check what is newer in Claude rules, hooks, skills, agents, or settings
-- check which setup-level bugs or hardening patterns Cloud Code already fixed
+- check which setup-level bugs or hardening patterns Claude Code already fixed
 
 ## Mandatory Guardrails
 

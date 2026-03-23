@@ -35,7 +35,7 @@ const OPTIONAL_FIELDS = [
   {
     key: "portable-to",
     prompt: "Portable-to CSV",
-    defaultValue: "Cloud Code, Gemini CLI",
+    defaultValue: "Claude Code, Gemini CLI",
   },
   { key: "artifacts", prompt: "Artefakte CSV", defaultValue: "" },
   { key: "impact", prompt: "Impact", defaultValue: "" },

@@ -457,7 +457,7 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "audit-gemini-delta.mjs
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "cloud-code-delta-bridge") {
-    throw "README.md must document the reusable Cloud Code bridge."
+    throw "README.md must document the reusable Claude Code bridge."
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "environment-fixes.json") {
@@ -504,8 +504,8 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "bootstrap-report.ps1")
     throw "README.md must document the registry-driven bootstrap report."
 }
 
-if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Cloud Code") {
-    throw "README.md must document the direct Cloud Code bridge trigger."
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Claude Code") {
+    throw "README.md must document the direct Claude Code bridge trigger."
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Gemini CLI") {
@@ -604,8 +604,8 @@ if (
 if (-not $ImplementedSuggestions.peer_ledgers.Codex) {
     throw "implemented-intelligence-suggestions.json must expose the Codex ledger address."
 }
-if (-not $ImplementedSuggestions.peer_ledgers.'Cloud Code') {
-    throw "implemented-intelligence-suggestions.json must expose the Cloud Code ledger address."
+if (-not $ImplementedSuggestions.peer_ledgers.'Claude Code') {
+    throw "implemented-intelligence-suggestions.json must expose the Claude Code ledger address."
 }
 if (-not $ImplementedSuggestions.peer_ledgers.'Gemini CLI') {
     throw "implemented-intelligence-suggestions.json must expose the Gemini CLI ledger address."
@@ -660,13 +660,13 @@ if (
 ) {
     throw "bridge-registry.json must define the shared bridge guardrails."
 }
-if (-not $BridgeRegistry.peer_registry_targets.Codex -or -not $BridgeRegistry.peer_registry_targets.'Cloud Code' -or -not $BridgeRegistry.peer_registry_targets.'Gemini CLI') {
+if (-not $BridgeRegistry.peer_registry_targets.Codex -or -not $BridgeRegistry.peer_registry_targets.'Claude Code' -or -not $BridgeRegistry.peer_registry_targets.'Gemini CLI') {
     throw "bridge-registry.json must expose all peer registry targets."
 }
 if (
     -not $BridgeRegistry.bootstrap_artifacts.Codex.repo_scripts -or
     $BridgeRegistry.bootstrap_artifacts.Codex.repo_scripts.Count -lt 2 -or
-    -not $BridgeRegistry.bootstrap_artifacts.'Cloud Code'.expected_repo_scripts -or
+    -not $BridgeRegistry.bootstrap_artifacts.'Claude Code'.expected_repo_scripts -or
     -not $BridgeRegistry.bootstrap_artifacts.'Gemini CLI'.expected_repo_scripts
 ) {
     throw "bridge-registry.json must expose bootstrap artifacts for Codex and expected peer CLIs."
@@ -674,7 +674,7 @@ if (
 if (
     -not $BridgeRegistry.bootstrap_report_artifacts.Codex.repo_scripts -or
     $BridgeRegistry.bootstrap_report_artifacts.Codex.repo_scripts.Count -lt 3 -or
-    -not $BridgeRegistry.bootstrap_report_artifacts.'Cloud Code'.expected_repo_scripts -or
+    -not $BridgeRegistry.bootstrap_report_artifacts.'Claude Code'.expected_repo_scripts -or
     -not $BridgeRegistry.bootstrap_report_artifacts.'Gemini CLI'.expected_repo_scripts
 ) {
     throw "bridge-registry.json must expose bootstrap-report artifacts for Codex and expected peer CLIs."
@@ -799,8 +799,8 @@ if ((Get-Content "codex-setup\bridges\directive-3-resilient-bugfixing-universal.
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json
-if ($CloudCodeBridge.source_label -ne "Cloud Code") {
-    throw "cloud-code-delta-bridge.json must identify Cloud Code as the source label."
+if ($CloudCodeBridge.source_label -ne "Claude Code") {
+    throw "cloud-code-delta-bridge.json must identify Claude Code as the source label."
 }
 if (-not $CloudCodeBridge.proposal_only) {
     throw "cloud-code-delta-bridge.json must be proposal-only."
@@ -811,8 +811,8 @@ if (-not $CloudCodeBridge.replacement_requires_confirmation) {
 if ($CloudCodeBridge.trigger_phrases.Count -lt 3) {
     throw "cloud-code-delta-bridge.json must define multiple trigger phrases."
 }
-if ($CloudCodeBridge.trigger_phrases -notcontains "Starte bitte die Bruecke zu Cloud Code") {
-    throw "cloud-code-delta-bridge.json must include the direct Cloud Code bridge trigger."
+if ($CloudCodeBridge.trigger_phrases -notcontains "Starte bitte die Bruecke zu Claude Code") {
+    throw "cloud-code-delta-bridge.json must include the direct Claude Code bridge trigger."
 }
 if (-not $CloudCodeBridge.include_implemented_intelligence_suggestions) {
     throw "cloud-code-delta-bridge.json must include implemented intelligence suggestions."
@@ -839,7 +839,7 @@ if (
 if (
     $CloudCodeBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
     $CloudCodeBridge.bridge_registry.bridge_id -ne "cloud-code-delta" -or
-    -not $CloudCodeBridge.bridge_registry.peer_expected_registries.'Cloud Code' -or
+    -not $CloudCodeBridge.bridge_registry.peer_expected_registries.'Claude Code' -or
     -not $CloudCodeBridge.bridge_registry.peer_expected_registries.'Gemini CLI'
 ) {
     throw "cloud-code-delta-bridge.json must expose bridge-registry metadata."
@@ -906,7 +906,7 @@ if (
 if (
     -not $IntelligenceBridge.bootstrap_setup.codex.repo_scripts -or
     $IntelligenceBridge.bootstrap_setup.codex.repo_scripts.Count -lt 2 -or
-    -not $IntelligenceBridge.bootstrap_setup.'Cloud Code'.expected_repo_scripts -or
+    -not $IntelligenceBridge.bootstrap_setup.'Claude Code'.expected_repo_scripts -or
     -not $IntelligenceBridge.bootstrap_setup.'Gemini CLI'.expected_repo_scripts
 ) {
     throw "intelligence-suggestion-exchange-bridge.json must expose bootstrap addresses for all CLIs."
@@ -964,7 +964,7 @@ if (
 if (
     $GeminiBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
     $GeminiBridge.bridge_registry.bridge_id -ne "gemini-cli-delta" -or
-    -not $GeminiBridge.bridge_registry.peer_expected_registries.'Cloud Code' -or
+    -not $GeminiBridge.bridge_registry.peer_expected_registries.'Claude Code' -or
     -not $GeminiBridge.bridge_registry.peer_expected_registries.'Gemini CLI'
 ) {
     throw "gemini-cli-delta-bridge.json must expose bridge-registry metadata."
@@ -1010,10 +1010,10 @@ if (
     $BootstrapReport.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
     $BootstrapReport.clis.Count -lt 3 -or
     -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Codex" }) -or
-    -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Cloud Code" }) -or
+    -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Claude Code" }) -or
     -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Gemini CLI" })
 ) {
-    throw "bootstrap-report.mjs must expose Codex, Cloud Code, and Gemini CLI address groups."
+    throw "bootstrap-report.mjs must expose Codex, Claude Code, and Gemini CLI address groups."
 }
 Invoke-CheckedPwshScript `
     -RelativePath "codex-setup/scripts/bootstrap-report.ps1" `
@@ -1066,7 +1066,7 @@ if (
     $ClaudeAudit.bridge_id -ne "cloud-code-delta" -or
     $ClaudeAudit.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
     $ClaudeAudit.tracked_git_paths.Count -lt 2 -or
-    $ClaudeAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Cloud Code" -or
+    $ClaudeAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Claude Code" -or
     -not $ClaudeAudit.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path -or
     -not $ClaudeAudit.exchange_ledgers.bootstrap_setup.codex.repo_scripts -or
     -not $ClaudeAudit.exchange_ledgers.bootstrap_report.codex.repo_scripts
@@ -1108,7 +1108,7 @@ if ($TempGuidedFixes.entries[0].id -ne "validator-guided-fix") {
 Remove-Item $TempNewFixLedger -ErrorAction SilentlyContinue
 
 $TempSuggestionLedger = Join-Path ([System.IO.Path]::GetTempPath()) ("implemented-intelligence-suggestions-" + [guid]::NewGuid().ToString() + ".json")
-node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state $TempSuggestionLedger --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --resilience-summary "This smoke test is resilient because it validates the full implemented-intelligence workflow, not just a static file, and it keeps proposal formatting plus future-proof metadata under active verification." --failure-review "Dependencies: registry defaults, the registration script, and the ledger schema must stay aligned. Failure scenario: if one layer drifts the validator must fail loudly. State change: only a temporary file is written. Race risk is negligible in the temp path. Backward compatibility remains because the smoke uses the same script entrypoint. Platform effects are covered by PowerShell and Bash validators. Update resistance comes from rerunning the smoke after future schema or bridge-registry changes. Graceful degradation is preserved because failure only aborts validation." --portable-to "Cloud Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" | Out-Null
+node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state $TempSuggestionLedger --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --resilience-summary "This smoke test is resilient because it validates the full implemented-intelligence workflow, not just a static file, and it keeps proposal formatting plus future-proof metadata under active verification." --failure-review "Dependencies: registry defaults, the registration script, and the ledger schema must stay aligned. Failure scenario: if one layer drifts the validator must fail loudly. State change: only a temporary file is written. Race risk is negligible in the temp path. Backward compatibility remains because the smoke uses the same script entrypoint. Platform effects are covered by PowerShell and Bash validators. Update resistance comes from rerunning the smoke after future schema or bridge-registry changes. Graceful degradation is preserved because failure only aborts validation." --portable-to "Claude Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" | Out-Null
 if ($LASTEXITCODE -ne 0) {
     throw "Intelligence-suggestion registration script could not write a temporary entry."
 }

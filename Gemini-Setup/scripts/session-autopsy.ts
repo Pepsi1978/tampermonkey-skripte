@@ -25,7 +25,7 @@ const HOME = process.env.USERPROFILE || process.env.HOME || "";
 
 // Windows project directory: find dynamically (C--Users-barwa or similar)
 function findProjectsDir(): string {
-	const GeminiDir = join("C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup", "projects");
+	const GeminiDir = join("/Users/frank/GeminiCLI/Gemini-Setup", "projects");
 	if (!existsSync(GeminiDir)) return "";
 	try {
 		const entries = readdirSync(GeminiDir);
@@ -39,7 +39,7 @@ function findProjectsDir(): string {
 		// macOS fallback: Users- prefix (e.g. Users-barwa)
 		for (const entry of entries) {
 			const fullPath = join(GeminiDir, entry);
-			if (statSync(fullPath).isDirectory() && entry.startsWith("Users-")) {
+			if (statSync(fullPath).isDirectory() && entry.startsWith("Users-frank")) {
 				return fullPath;
 			}
 		}
@@ -59,8 +59,7 @@ const PROJECTS_DIR = findProjectsDir();
 // (complies with "nur ein Whiteboard" rule from Deep-Scan Runde 6)
 const MEMORY_FILE = join(
 	HOME,
-	"proggs",
-	".Gemini",
+	".gemini",
 	"agent-memory",
 	"shared",
 	"MEMORY.md",
@@ -70,8 +69,8 @@ const MIN_CORRECTIONS_TO_WRITE = 3;
 const MAX_AUTOPSY_ENTRIES = 10;
 
 // v3: Closed-Loop Learning — auto-generate rules from recurring correction patterns
-const LEARNING_STATE_FILE = join("C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup", "learning-loop-state.json");
-const AUTO_RULES_DIR = join("C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup", "rules", "auto-learned");
+const LEARNING_STATE_FILE = join("/Users/frank/GeminiCLI/Gemini-Setup", "learning-loop-state.json");
+const AUTO_RULES_DIR = join("/Users/frank/GeminiCLI/Gemini-Setup", "rules", "auto-learned");
 const MAX_AUTO_RULES = 5; // cap to prevent rule bloat
 const PATTERN_THRESHOLD = 3; // how many sessions with same type trigger auto-rule
 const LOOKBACK_SESSIONS = 10; // how far back to look

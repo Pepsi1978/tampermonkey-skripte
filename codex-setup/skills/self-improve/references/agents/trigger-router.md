@@ -6,7 +6,7 @@ Read `## Oberste Direktive` first.
 
 Rules:
 - route only to capabilities that really exist for Codex in this workspace
-- treat `Cloud Code` as `Claude Code` when the user is clearly referring to setup deltas
+- treat `Claude Code` as `Claude Code` when the user is clearly referring to setup deltas
 - prefer `audit-claude-delta` before any Claude-to-Codex porting recommendation
 - prefer additive integration if a trigger reveals a potentially conflicting rule import
 

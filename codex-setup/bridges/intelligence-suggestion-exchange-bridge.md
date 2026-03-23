@@ -50,7 +50,7 @@ Jeder Eintrag braucht mindestens:
 
 - Codex:
   `codex-setup/state/implemented-intelligence-suggestions.json`
-- Cloud Code erwartet:
+- Claude Code erwartet:
   `claude-code-setup/state/implemented-intelligence-suggestions.json`
 - Gemini CLI erwartet:
   `Gemini-Setup/state/implemented-intelligence-suggestions.json`
@@ -74,7 +74,7 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
 
 - "welche Intelligenzvorschlaege hast du umgesetzt"
 - "wo ist deine Intelligenzvorschlag-Liste"
-- "was koennen Cloud Code oder Gemini CLI von deinen Intelligenzvorschlaegen lernen"
+- "was koennen Claude Code oder Gemini CLI von deinen Intelligenzvorschlaegen lernen"
 - "welche umgesetzten Intelligenzvorschlaege kann ich in andere CLIs uebernehmen"
 
 ## Referenzimplementierung fuer Codex
@@ -92,7 +92,7 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
   `codex-setup/scripts/bootstrap-codex-setup.sh`
   und
   `codex-setup/scripts/bootstrap-codex-setup.ps1`
-- Cloud Code erwartet:
+- Claude Code erwartet:
   `claude-code-setup/scripts/bootstrap-claude-code-setup.sh`
   und
   `claude-code-setup/scripts/bootstrap-claude-code-setup.ps1`
@@ -113,7 +113,7 @@ Andere CLIs sollen diese Bootstrap-Adressen in ihrer Registry und in ihrer Delta
   `codex-setup/scripts/bootstrap-report.mjs`
   `codex-setup/scripts/bootstrap-report.sh`
   `codex-setup/scripts/bootstrap-report.ps1`
-- Cloud Code erwartet:
+- Claude Code erwartet:
   `claude-code-setup/scripts/bootstrap-report.mjs`
   `claude-code-setup/scripts/bootstrap-report.sh`
   `claude-code-setup/scripts/bootstrap-report.ps1`

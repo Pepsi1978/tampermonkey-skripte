@@ -16,7 +16,7 @@
       "portability_notes": "Any other CLI that spawns its own executable on Windows should not rely on the bare command name. Resolve `.cmd`, `.exe`, and `.ps1` launchers explicitly and use shell execution when wrapper scripts are part of the installation path.",
       "impact": "OpenAI-docs validation no longer depends on fragile PATH assumptions.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -47,7 +47,7 @@
       "portability_notes": "If another CLI ships a TOML fallback parser for local config inspection, it must support multiline arrays and other formatting used by its own fixtures. A self-test should intentionally exercise the fallback path, not just the preferred parser path.",
       "impact": "The direct code-search MCP client self-test is deterministic on Windows and Git Bash even without Python TOML support.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -79,7 +79,7 @@
       "portability_notes": "Other CLIs should separate repository integrity from workstation-specific runtime state. Keep deterministic self-tests mandatory, but gate live integration smokes on whether the relevant external or local services are actually configured in that runtime.",
       "impact": "codex-setup validation remains strict on repo content while still exercising live MCP checks whenever the local runtime is configured.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -102,7 +102,7 @@
       "source_cli": "Codex",
       "category": "knowledge-hardening",
       "summary": "Environment-fix entries now require full cross-CLI context instead of short what/why notes.",
-      "context_for_other_clis": "This change hardens the Codex environment-fix ledger itself. Other CLIs such as Cloud Code or Gemini CLI may consume the ledger later without having seen the original session, the original logs, or the local debugging path that produced the fix.",
+      "context_for_other_clis": "This change hardens the Codex environment-fix ledger itself. Other CLIs such as Claude Code or Gemini CLI may consume the ledger later without having seen the original session, the original logs, or the local debugging path that produced the fix.",
       "symptom_before_fix": "Short fix entries with only what and why were technically correct but still too thin for another CLI to reproduce or trust the change. A reader from another environment could miss the real failure mode, the triggering conditions, or the limits of the fix.",
       "root_cause": "The first version of the ledger schema optimized for compactness, not for cross-CLI transfer. It did not force authors to record the surrounding context, the visible symptom, the technical cause, or the verification path.",
       "what_was_fixed": "The fix ledger schema, bridge spec, logger, and validators now require context, symptom, root cause, verification, and portability notes in addition to what/why.",
@@ -111,7 +111,7 @@
       "portability_notes": "Any CLI that wants bidirectional fix exchange should enforce the same rule: a fix entry must be understandable without the original debugging session. Otherwise the ledger becomes a list of headlines instead of a transferable engineering memory.",
       "impact": "Cross-CLI fix transfer is now based on self-contained engineering context instead of terse summaries.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -138,16 +138,16 @@
       "source_cli": "Codex",
       "category": "bridge-hardening",
       "summary": "Cloud-Code- und Gemini-CLI-Bruecken sind jetzt strikt proposal-only und der Gemini-Delta-Audit ist dauerhaft validiert.",
-      "context_for_other_clis": "This fix belongs to the Codex-side bridge layer that reads foreign CLI setup environments such as Cloud Code and Gemini CLI. The bridge is meant to compare rules, memory patterns, validators, and environment-level fixes without writing into the foreign workspaces and without silently changing Codex rules before the user sees the delta report.",
+      "context_for_other_clis": "This fix belongs to the Codex-side bridge layer that reads foreign CLI setup environments such as Claude Code and Gemini CLI. The bridge is meant to compare rules, memory patterns, validators, and environment-level fixes without writing into the foreign workspaces and without silently changing Codex rules before the user sees the delta report.",
       "symptom_before_fix": "Before this hardening the Cloud bridge only forced approval for clear replacements, while additive findings could still be interpreted as implementation-ready guidance. Gemini CLI also had no fully integrated bridge path in Codex, so the trigger phrase, validation path, skill references, and proposal contract were not yet enforced end to end.",
       "root_cause": "The original bridge design focused on classifying deltas as ADD, ADAPT, or REPLACE, but it did not elevate proposal-only behavior to a first-class invariant across AGENTS, global rules, trigger routing, bridge specs, self-improve references, validators, and both audit wrappers. Gemini bridge support existed only as new files, not as a fully connected Codex control path.",
-      "what_was_fixed": "Codex now includes a full Gemini CLI delta bridge with read-only source rules, direct trigger phrases, reusable bridge specs, validator coverage, self-improve references, and audit wrappers. In addition, both Cloud Code and Gemini CLI bridges now declare proposal-only behavior explicitly, so ADD and ADAPT findings are reported in grouped A1/B1/C1/D1 form and never auto-applied without user approval.",
+      "what_was_fixed": "Codex now includes a full Gemini CLI delta bridge with read-only source rules, direct trigger phrases, reusable bridge specs, validator coverage, self-improve references, and audit wrappers. In addition, both Claude Code and Gemini CLI bridges now declare proposal-only behavior explicitly, so ADD and ADAPT findings are reported in grouped A1/B1/C1/D1 form and never auto-applied without user approval.",
       "why_it_was_fixed": "Cross-CLI bridge results should improve Codex intelligence without risking silent overwrites, accidental behavior drift, or loss of strong existing Codex rules. The user also needs a stable review workflow where deltas are first explained optically and only then approved item by item.",
       "verification": "Verified by running node syntax checks for both delta-audit scripts, executing the Gemini delta audit directly and through its PowerShell wrapper, reinstalling the self-improve skill, and passing both full codex-setup validators in PowerShell and Git Bash. The validators now assert Gemini bridge files, trigger phrases, proposal-only flags, Gemini state tracking, and temporary review-state writes for the Gemini audit.",
       "portability_notes": "Any CLI that consumes setup deltas from another environment should treat every imported delta as proposal-only until the user approves it explicitly. Approval should not depend only on REPLACE cases; additive imports can also change behavior over time. The durable pattern is: read-only source, grouped proposal output, explicit approval gate, validator checks for the trigger phrase and bridge contract, and a local state file that tracks only environment-level deltas.",
-      "impact": "Codex can now compare both Cloud Code and Gemini CLI environments through the same controlled review model without autonomously importing changes.",
+      "impact": "Codex can now compare both Claude Code and Gemini CLI environments through the same controlled review model without autonomously importing changes.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -194,7 +194,7 @@
       "portability_notes": "Other CLI environments should treat their top directive as a validator-backed control contract, not as a loose aspiration paragraph. If a system wants sustained cross-session improvement, it should explicitly define the dimensions it optimizes, the required proposal behavior, and the read-only boundaries for cross-tool learning. Otherwise the strategic intent becomes too easy to dilute in later edits.",
       "impact": "Codex now has a harder, more explicit top-level optimization contract that should improve consistency across rules, skills, bridges, and future self-improvement work.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -234,7 +234,7 @@
       "portability_notes": "Other CLI environments should implement self-observation as an operational contract, not as an optional reflection habit. The durable pattern is: define explicit observation categories, cover every working component, separate background observation from user-facing reporting, persist user corrections and knowledge gaps immediately, and treat repeated failures as evidence that the first fix was not resistant enough.",
       "impact": "Codex now has a clearer sensor layer for improvement work, which should reduce repeated detours, repeated user corrections, and non-resistant fixes over time.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -282,7 +282,7 @@
       "portability_notes": "Other CLI environments should separate project bugfixing from environment bugfixing and give environment bugfixes a stronger process. The durable pattern is: dedicated directive, 3x-Why root-cause analysis, related-surface review, defense in depth, failure review, and a transferable fix ledger schema that records the exact lesson instead of only the final patch. Without that structure, the same environment bugs will be relearned after updates or platform changes.",
       "impact": "Codex now treats environment bugfixes as one-time lessons that should remove an entire class of recurring setup failures instead of only clearing the visible symptom in the current session.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [
@@ -329,7 +329,7 @@
       "portability_notes": "Andere CLIs sollten dieselbe Fehlerklasse vermeiden: Pfadmetadaten fuer Bruecken und Ledger nie aus einer einzelnen Maschine ableiten, sondern immer in repo-relative, home-relative oder %USERPROFILE%-basierte Vorlagen uebersetzen. Wenn Audit-Skripte lokale Config-Zielhinweise ausgeben, sollten sie diese ausserdem zur Laufzeit aus dem aktuellen Benutzerkontext berechnen.",
       "impact": "",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [],
@@ -358,7 +358,7 @@
       "portability_notes": "Andere CLIs mit PowerShell-Komponenten sollten dieselbe Vermeidungsregel in ihre Skriptkonventionen und Bootstrap-Smokes uebernehmen. Der Fehler ist leicht wiederholbar, wenn neue `.ps1`-Bootstrap- oder Wrapper-Skripte aus allgemeinem Skriptstil heraus gebaut werden, ohne die besondere Position von `param(...)` zu beachten.",
       "impact": "",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [],
@@ -387,7 +387,7 @@
       "portability_notes": "Any CLI that validates sibling PowerShell scripts on macOS or Linux should launch them through explicit absolute pwsh -File calls and should resolve the user home directory through platform APIs plus HOME fallback instead of assuming USERPROFILE exists outside Windows.",
       "impact": "The PowerShell parity path on macOS now fails only on real setup regressions instead of masking wrapper-launch and home-resolution bugs.",
       "portable_to": [
-        "Cloud Code",
+        "Claude Code",
         "Gemini CLI"
       ],
       "artifacts": [

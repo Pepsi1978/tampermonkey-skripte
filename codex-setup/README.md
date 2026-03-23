@@ -165,18 +165,18 @@ Der Report sammelt:
 - Bootstrap-Skripte
 - Environment-Fix-Ledger-Adressen
 - Implemented-Intelligence-Ledger-Adressen
-- die Codex-seitigen Bridge-Einstiege fuer Cloud Code und Gemini CLI
+- die Codex-seitigen Bridge-Einstiege fuer Claude Code und Gemini CLI
 
 Andere CLIs sollen spaeter denselben Report-Typ im eigenen Setup anlegen und seine Adressen ebenfalls in Registry und Delta-Bruecke veroeffentlichen.
 
 ## Claude-Delta-Audit
 
-Wenn Claude/Cloud Code neue Regeln, Hooks, Skills, robuste Fehlerfixes oder Setup-Verbesserungen bekommt,
+Wenn Claude/Claude Code neue Regeln, Hooks, Skills, robuste Fehlerfixes oder Setup-Verbesserungen bekommt,
 nutzt Codex dafuer einen plattformuebergreifenden Delta-Audit:
 
 Der direkte deutsche Kurztrigger dafuer ist:
 
-- `Starte bitte die Bruecke zu Cloud Code`
+- `Starte bitte die Bruecke zu Claude Code`
 
 - macOS/Linux: `bash codex-setup/scripts/audit-claude-delta.sh`
 - Windows: `pwsh -NoProfile -File codex-setup/scripts/audit-claude-delta.ps1`
@@ -193,7 +193,7 @@ sollen deshalb zuerst die Registry erweitern, statt diese Informationen spaeter 
 im Audit-Code zu verdoppeln.
 
 Dabei sind auch umgebungsbezogene Fehlerfixes, Guardrails und Haertungslogik in Scope,
-solange sie nicht normalen Projektcode betreffen. Falls Cloud Code spaeter einen eigenen Ledger
+solange sie nicht normalen Projektcode betreffen. Falls Claude Code spaeter einen eigenen Ledger
 fuer umgesetzte `Intelligenzvorschlaege` veroeffentlicht, soll diese Bruecke auch diese Quelle
 read-only auswerten und ihre Adresse mitberichten.
 
@@ -278,7 +278,7 @@ maschinenlesbarer Eintrag dokumentiert werden:
 - Gefuehrte Erfassung: `new-environment-fix.sh` und `new-environment-fix.ps1`
 
 Dieses Log ist nur fuer Umwelt-/Setup-Fixes gedacht, nicht fuer normalen Projektcode.
-Es soll anderen CLI-Umgebungen wie Cloud Code oder Gemini CLI ermoeglichen, von Codex-Fixes zu lernen.
+Es soll anderen CLI-Umgebungen wie Claude Code oder Gemini CLI ermoeglichen, von Codex-Fixes zu lernen.
 Jeder Eintrag muss so ausfuehrlich sein, dass andere CLIs ihn auch ohne den urspruenglichen Session-Kontext verstehen koennen.
 Neue oder aktualisierte Eintraege muessen zusaetzlich Why-Chain, verwandte Fehlerquellen,
 falsches und richtiges Muster, eine klare Vermeidungsregel sowie eine Resilienz- und Failure-Review enthalten.
@@ -298,7 +298,7 @@ maschinenlesbar dokumentiert werden:
 - Wrapper: `register-intelligence-suggestion.sh` und `register-intelligence-suggestion.ps1`
 
 Dieses Log ist nur fuer bereits umgesetzte Verbesserungen der Programmierumgebung gedacht.
-Es soll anderen CLI-Umgebungen wie Cloud Code oder Gemini CLI ermoeglichen, nicht nur Fehlerfixes,
+Es soll anderen CLI-Umgebungen wie Claude Code oder Gemini CLI ermoeglichen, nicht nur Fehlerfixes,
 sondern auch bereits umgesetzte Verbesserungsideen von Codex zu lesen und nachzuvollziehen.
 Jeder Eintrag muss so ausfuehrlich sein, dass andere CLIs ihn auch ohne den urspruenglichen
 Session-Kontext verstehen koennen. Das gleiche Robustheitsniveau wie bei Umwelt-Fixes gilt
@@ -317,7 +317,7 @@ Die zentrale Registry fuer Bruecken-Metadaten liegt unter:
 - `codex-setup/bridges/bridge-registry.json`
 
 Sie enthaelt die gemeinsamen Trigger, Zielpfade, erwarteten Fremd-Registries und
-die gemeinsamen Guardrails fuer Cloud Code, Gemini CLI und die Exchange-Bruecken.
+die gemeinsamen Guardrails fuer Claude Code, Gemini CLI und die Exchange-Bruecken.
 Andere CLIs sollen dieselbe Dateiart im eigenen Setup anlegen und ihre exakten Registry-
 und Ledger-Adressen dort veroeffentlichen.
 

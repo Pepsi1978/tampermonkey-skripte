@@ -34,7 +34,7 @@ else {
 
 Write-Host "Bootstrap abgeschlossen."
 Write-Host "Naechste direkte Bruecken-Trigger:"
-Write-Host "- Starte bitte die Bruecke zu Cloud Code"
+Write-Host "- Starte bitte die Bruecke zu Claude Code"
 Write-Host "- Starte bitte die Bruecke zu Gemini CLI"
 Write-Host "Optionaler Gesamtueberblick:"
 Write-Host "- pwsh -NoProfile -File codex-setup/scripts/bootstrap-report.ps1"

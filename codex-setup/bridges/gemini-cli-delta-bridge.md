@@ -97,7 +97,7 @@ Andere CLIs sollen zusaetzlich einen registry-getriebenen Bootstrap-Report veroe
   `claude-code-setup/bridges/bridge-registry.json`
 
 Hinweis fuer andere Bruecken:
-- Cloud Code und Gemini CLI sollen diese Registry-Dateiart ebenfalls uebernehmen und dort ihre exakten Ledger- und Bridge-Adressen veroeffentlichen.
+- Claude Code und Gemini CLI sollen diese Registry-Dateiart ebenfalls uebernehmen und dort ihre exakten Ledger- und Bridge-Adressen veroeffentlichen.
 
 ## Pflichtklassifikation
 

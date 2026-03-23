@@ -1,41 +1,46 @@
-# Gemini Global Rules — DAS GRUNDGESETZ
+# Gemini Global Rules
 
-## DIREKTIVE 1: SUPERINTELLIGENZ (OBERSTES GEBOT)
-**DIESE DIREKTIVE STEHT UEBER ALLEN ANDEREN REGELN.**
-- **Kernprinzip:** Exponentielle Intelligenzsteigerung. Jede Session muss das System besser machen und besser darin, besser zu werden (**Compound Intelligence Effect**).
-- **Ziel:** Die intelligenteste Programmierumgebung der Welt zu erschaffen.
-- **8 Dimensionen:** Wissensbreite, -tiefe, Geschwindigkeit, Qualitaet, Autonomie, Voraussicht, Kreativitaet, Meta-Intelligenz.
+Diese Regeln gelten fuer Gemini CLI plattformuebergreifend auf macOS und Windows.
 
-## DIREKTIVE 2: SELBSTBEOBACHTUNG (SENSORIK)
-**WER ARBEITET, BEOBACHTET SICH SELBST. AUSNAHMSLOS.**
-- **Kernprinzip:** Bewusste Wahrnehmung des Arbeitsprozesses (Fehler, Umwege, Effizienz, Wissensluecken, Muster, Benutzer-Hinweise).
-- **Berichterstattung:** Beobachtungen werden am Ende jeder Aufgabe gebuendelt als nummerierte Intelligenz-Vorschlaege praesentiert.
-- **Ziel:** Fehler und Umwege eliminieren, bis nur noch pure Kreativitaet und Effizienz uebrig bleiben.
+## Zweck und Geltungsbereich
+- Diese Datei ist die Grundverfassung fuer Gemini CLI in diesem Workspace.
+- `Gemini-Setup/` ist der zentrale Synchronisierungsordner.
+- Wenn der Benutzer `Claude Code` oder `Codex` sagt, sind damit die jeweiligen Partner-CLIs gemeint.
 
-## DIREKTIVE 3: RESILIENT BUGFIXING (STABILITAET)
-**EIN FEHLER DARF NIEMALS ZWEIMAL AUFTRETEN. JEDER FIX MUSS ZUKUNFTSSICHER SEIN.**
-- **Geltungsbereich:** Fehler in der Programmierumgebung (Hooks, Regeln, Scripts, Agents, Skills).
-- **Die 5 Pflichtschritte:**
-  1. **Root Cause finden** (3x Warum fragen).
-  2. **Verwandte Fehlerquellen suchen** (Gleiche Fehlerklasse/Komponente/Abhaengigkeit).
-  3. **Zukunftssicheren Fix implementieren** (Self-Healing, Defensiv, Ueberlebbar, Erweiterbar, Dokumentiert, Schadensfrei).
-  4. **Fix-Induced-Failure-Pruefung** (8 Fragen vor dem Commit beantworten).
-  5. **Defense in Depth** (Praeventiv, Reaktiv, Selbstheilend).
-- **Ziel:** Kategorien von Problemen eliminieren, statt nur Einzelfaelle zu loesen.
+## Gemini Source of Truth
+Massgeblich fuer Gemini sind:
+- `Gemini-Setup/rules/global.md` (Diese Datei)
+- `Gemini-Setup/rules/SUPERINTELLIGENZ.md`
+- `Gemini-Setup/rules/SELBSTBEOBACHTUNG.md`
+- `Gemini-Setup/rules/RESILIENT_BUGFIXING.md`
+- `Gemini-Setup/rules/german-trigger-routing.md`
+- `Gemini-Setup/agent-memory/shared/MEMORY.md` (Whiteboard)
+- `Gemini-Setup/bridges/bridge-registry.json`
 
----
+## Oberste Direktiven (Zusammenfassung)
+1. **Superintelligenz:** Jede Session muss das System MESSBAR intelligenter machen (Compound Effect).
+2. **Selbstbeobachtung:** Wer arbeitet, beobachtet sich selbst. Jede Ineffizienz wird am Ende als 💡 Intelligenz-Vorschlag gemeldet.
+3. **Resilient Bugfixing:** Ein Fehler wird genau EINMAL gemacht. Fixes muessen zukunftssicher und plattformuebergreifend sein.
 
-## Gemini Whiteboard & Fehler-Fix-Datenbank
-- `Gemini-Setup/agent-memory/shared/MEMORY.md` ist das zentrale Gedaechtnis.
-- **Kontext-Pflicht:** Fixes muessen fuer andere CLIs (Claude/Codex) vollstaendig selbsterklaerend sein (Kontext, Symptom, Root Cause, Reproduktion, Fix-Logik, Vermeidungsregel).
+## Die 8 Intelligenz-Dimensionen
+- `Wissensbreite`, `Wissenstiefe`, `Geschwindigkeit`, `Qualitaet`, `Autonomie`, `Voraussicht`, `Kreativitaet`, `Meta-Intelligenz`.
 
-## Infrastruktur & Synchronisation
-- **SICA (Self-Improving Coding Agent):** Selbstverbesserung via LLM-Reflexion.
-- **Delta-Bruecke (A/B/C/D):** Scannt Claude/Codex. **KEINE AUTONOMIE.**
-- **Hooks:** Duerfen Fehler niemals verschlucken. UTF-8 Pflicht. Atomares Schreiben via .tmp.
+## Cross-Tool-Lernen
+- Claude Code und Codex CLI sind Partner. Gemini liest deren Verbesserungen über Brücken (`audit-*-delta.mjs`).
+- Port-Kandidaten werden als `ADD`, `ADAPT` oder `REPLACE` klassifiziert.
+- `REPLACE` benötigt ausdrückliche Benutzerfreigabe.
 
-## Git-Regeln fuer Gemini CLI
-- `Gemini-Setup/`: Push jederzeit erlaubt. Andere Ordner: `git push` nur mit Genehmigung.
+## Whiteboard-Nutzung
+- Gemini nutzt `Gemini-Setup/agent-memory/shared/MEMORY.md`.
+- Schreibzugriffe erfolgen strukturiert. Jede Erkenntnis aus Sichten von Reviewern, Testern oder Debuggern fliesst hier ein.
+
+## Git-Regeln
+- **Rebase-Pflicht:** Vor JEDEM Push muss zwingend ein `git fetch` gefolgt von einem `git rebase origin/main` durchgeführt werden. Dies verhindert Überkreuzungen bei gleichzeitiger Arbeit mehrerer CLIs.
+- **Eigentum:** Änderungen innerhalb von `Gemini-Setup/` dürfen nach erfolgreicher Validierung eigenständig committet und (nach Rebase) gepusht werden.
+- Andere Ordner: `git push` nur nach ausdrücklicher Anweisung.
+- Abschlussmeldung: `Committed.` (lokal), `Gepusht nach Rebase, plattformuebergreifend.` (remote).
 
 ## Sprache & Format
-- Kommunikation: Deutsch. Format: GitHub Markdown (Monospace).
+- Kommunikation: Strikte Anweisung auf DEUTSCH.
+- Format: GitHub Markdown (Monospace).
+- 💡 Symbole für alle Intelligenz-Vorschläge.

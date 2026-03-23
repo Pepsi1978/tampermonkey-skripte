@@ -58,7 +58,7 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
 - "logge diesen Umgebungsfix"
 - "welche Fehler hast du in deiner Umgebung gefixt"
 - "warum hast du diesen Umgebungsfehler gefixt"
-- "was kann Cloud Code von deinen Fixes lernen"
+- "was kann Claude Code von deinen Fixes lernen"
 - "was kann Gemini CLI von deinen Fixes lernen"
 
 ## Referenzimplementierung fuer Codex

@@ -48,7 +48,7 @@ fi
 
 echo "Bootstrap abgeschlossen."
 echo "Naechste direkte Bruecken-Trigger:"
-echo "- Starte bitte die Bruecke zu Cloud Code"
+echo "- Starte bitte die Bruecke zu Claude Code"
 echo "- Starte bitte die Bruecke zu Gemini CLI"
 echo "Optionaler Gesamtueberblick:"
 echo "- bash codex-setup/scripts/bootstrap-report.sh"

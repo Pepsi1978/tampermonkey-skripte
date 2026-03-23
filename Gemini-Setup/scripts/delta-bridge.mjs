@@ -3,12 +3,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const REPO_ROOT = process.env.GEMINI_REPO_ROOT || "C:\\Users\\barwa\\GeminiCLI";
+const REPO_ROOT = process.env.GEMINI_REPO_ROOT || "/Users/frank/GeminiCLI";
 
 const WHITEBOARDS = {
-  GEMINI: path.join(REPO_ROOT, "proggs", "Gemini-Setup", "agent-memory", "shared", "MEMORY.md"),
-  Gemini: path.join(REPO_ROOT, "proggs", "Gemini-Setup", "agent-memory", "shared", "MEMORY.md"),
-  CODEX: path.join(REPO_ROOT, "proggs", "codex-setup", "agent-memory", "shared", "MEMORY.md"),
+  GEMINI: path.join(REPO_ROOT, "Gemini-Setup", "agent-memory", "shared", "MEMORY.md"),
+  Gemini: path.join(REPO_ROOT, "Gemini-Setup", "agent-memory", "shared", "MEMORY.md"),
+  CODEX: path.join(REPO_ROOT, "codex-setup", "agent-memory", "shared", "MEMORY.md"),
 };
 
 async function fileExists(filePath) {

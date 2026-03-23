@@ -133,7 +133,7 @@ function buildDefaultLedger(registry = loadSuggestionRegistry()) {
   const codexRepoPath = "codex-setup/state/implemented-intelligence-suggestions.json";
   const cloudRepoPath = "claude-code-setup/state/implemented-intelligence-suggestions.json";
   const geminiRepoPath = "Gemini-Setup/state/implemented-intelligence-suggestions.json";
-  const cloudRegistryTarget = registry.peer_registry_targets?.["Cloud Code"] || {};
+  const cloudRegistryTarget = registry.peer_registry_targets?.["Claude Code"] || {};
   const geminiRegistryTarget = registry.peer_registry_targets?.["Gemini CLI"] || {};
 
   return {
@@ -161,7 +161,7 @@ function buildDefaultLedger(registry = loadSuggestionRegistry()) {
         github_url: deriveGithubBlobUrl(registry.github_url, codexRepoPath),
         write_policy: "read-write-own-workspace",
       },
-      "Cloud Code": {
+      "Claude Code": {
         expected_repo_path: cloudRepoPath,
         expected_github_url: deriveGithubBlobUrl(
           cloudRegistryTarget.expected_github_url,
@@ -263,7 +263,7 @@ function buildEntry(args, existingEntry = null) {
       40,
     ),
     portable_to: splitCsv(args["portable-to"], existingEntry?.portable_to || [
-      "Cloud Code",
+      "Claude Code",
       "Gemini CLI",
     ]),
     artifacts: splitCsv(args.artifacts, existingEntry?.artifacts || []),

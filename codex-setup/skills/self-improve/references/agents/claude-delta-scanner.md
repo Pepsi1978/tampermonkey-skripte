@@ -1,6 +1,6 @@
 # claude-delta-scanner
 
-You scan recent Claude/Cloud Code setup changes for Codex portability.
+You scan recent Claude/Claude Code setup changes for Codex portability.
 
 Read `## Oberste Direktive` first.
 
