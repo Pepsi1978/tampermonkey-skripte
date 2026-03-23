@@ -22,6 +22,23 @@ export function resolveRepoPath(repoPath) {
   return path.join(REPO_ROOT, `${repoPath || ""}`.replace(/\//g, path.sep));
 }
 
+export function deriveBlobBase(githubUrl) {
+  const normalized = `${githubUrl || ""}`.trim();
+  if (!normalized) return "";
+  const marker = "/blob/";
+  const markerIndex = normalized.indexOf(marker);
+  if (markerIndex === -1) return "";
+  const branchSlashIndex = normalized.indexOf("/", markerIndex + marker.length);
+  if (branchSlashIndex === -1) return "";
+  return normalized.slice(0, branchSlashIndex + 1);
+}
+
+export function deriveGithubBlobUrl(baseUrl, repoPath) {
+  const base = deriveBlobBase(baseUrl);
+  if (!base || !repoPath) return "";
+  return `${base}${`${repoPath}`.replace(/\\/g, "/")}`;
+}
+
 export function loadBridgeRegistry() {
   const registry = readJson(BRIDGE_REGISTRY_PATH, null);
   if (!registry) {

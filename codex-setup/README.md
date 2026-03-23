@@ -135,9 +135,31 @@ Wenn Codex auf einem neuen Rechner diese Bruecken und Direktiven noch nicht kenn
    `pwsh -File codex-setup/scripts/install-self-improve.ps1`,
    `bash codex-setup/scripts/validate-codex-setup.sh` oder
    `pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1`
+4. Optional den Gesamtueberblick fuer Bootstrap-, Ledger- und Bridge-Adressen anzeigen:
+   `node codex-setup/scripts/bootstrap-report.mjs`,
+   `bash codex-setup/scripts/bootstrap-report.sh` oder
+   `pwsh -NoProfile -File codex-setup/scripts/bootstrap-report.ps1`
 
 Alle wichtigen Regeln, Bruecken, Ledger und Trigger liegen bewusst in `codex-setup/` und `AGENTS.md` im Git-Repo, nicht nur in lokalem Session-Wissen.
 Die Bootstrap-Skripte sind Teil der Codex-Referenzimplementierung und sollen fuer andere CLIs spaeter ebenfalls als eigene, read-only dokumentierte Setup-Einstiegspfade veroeffentlicht werden.
+
+## Bootstrap-Report
+
+Fuer neue Rechner und andere CLI-Umgebungen gibt es einen registry-getriebenen Gesamtbericht:
+
+- direkt: `node codex-setup/scripts/bootstrap-report.mjs`
+- macOS/Linux: `bash codex-setup/scripts/bootstrap-report.sh`
+- Windows: `pwsh -NoProfile -File codex-setup/scripts/bootstrap-report.ps1`
+
+Der Report sammelt:
+
+- Registry-Adressen
+- Bootstrap-Skripte
+- Environment-Fix-Ledger-Adressen
+- Implemented-Intelligence-Ledger-Adressen
+- die Codex-seitigen Bridge-Einstiege fuer Cloud Code und Gemini CLI
+
+Andere CLIs sollen spaeter denselben Report-Typ im eigenen Setup anlegen und seine Adressen ebenfalls in Registry und Delta-Bruecke veroeffentlichen.
 
 ## Claude-Delta-Audit
 

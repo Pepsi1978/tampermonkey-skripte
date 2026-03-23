@@ -76,6 +76,9 @@ required_files=(
   "codex-setup/scripts/install-self-improve.ps1"
   "codex-setup/scripts/bootstrap-codex-setup.sh"
   "codex-setup/scripts/bootstrap-codex-setup.ps1"
+  "codex-setup/scripts/bootstrap-report.mjs"
+  "codex-setup/scripts/bootstrap-report.sh"
+  "codex-setup/scripts/bootstrap-report.ps1"
   "codex-setup/scripts/check-openai-docs-mcp.mjs"
   "codex-setup/scripts/check-openai-docs-mcp.sh"
   "codex-setup/scripts/check-openai-docs-mcp.ps1"
@@ -207,12 +210,15 @@ search_fixed "new-environment-fix.ps1" "codex-setup/README.md"
 search_fixed "intelligence-suggestion-exchange-bridge" "codex-setup/README.md"
 search_fixed "bootstrap-codex-setup.sh" "codex-setup/README.md"
 search_fixed "bootstrap-codex-setup.ps1" "codex-setup/README.md"
+search_fixed "bootstrap-report.mjs" "codex-setup/README.md"
+search_fixed "bootstrap-report.ps1" "codex-setup/README.md"
 search_fixed "Starte bitte die Bruecke zu Cloud Code" "codex-setup/README.md"
 search_fixed "Starte bitte die Bruecke zu Gemini CLI" "codex-setup/README.md"
 search_fixed "GeminiCLI" "codex-setup/README.md"
 search_fixed "8 Intelligenz-Dimensionen" "codex-setup/README.md"
 search_fixed "resilient-bugfixing" "codex-setup/README.md"
 search_fixed "bridge-registry.json" "codex-setup/README.md"
+search_fixed "zeige den Bootstrap-Report" "codex-setup/rules/german-trigger-routing.md"
 search_fixed "neue Tools, Plugins oder Agenten" "codex-setup/rules/global.md"
 search_fixed "semantischer Suche, Indexierung, Hintergrund-Reindex" "codex-setup/rules/global.md"
 search_fixed "Read-Only Fremd-Workspaces" "codex-setup/rules/global.md"
@@ -243,7 +249,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.registry_name!=='codex-bridge-registry') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.global_policies || !data.global_policies.proposal_only || !data.global_policies.replace_requires_confirmation || !data.global_policies.foreign_sources_read_only || !data.global_policies.implemented_intelligence_must_be_resilient || !data.global_policies.implemented_intelligence_resilience_rule) process.exit(1); if(!data.peer_registry_targets || !data.peer_registry_targets.Codex || !data.peer_registry_targets['Cloud Code'] || !data.peer_registry_targets['Gemini CLI']) process.exit(1); if(!data.bootstrap_artifacts || !data.bootstrap_artifacts.Codex || !Array.isArray(data.bootstrap_artifacts.Codex.repo_scripts) || data.bootstrap_artifacts.Codex.repo_scripts.length<2 || !data.bootstrap_artifacts['Cloud Code'] || !data.bootstrap_artifacts['Gemini CLI']) process.exit(1); if(!data.bridges || !data.bridges['cloud-code-delta'] || !data.bridges['gemini-cli-delta'] || !data.bridges['environment-fix-exchange'] || !data.bridges['implemented-intelligence-suggestion-exchange']) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.registry_name!=='codex-bridge-registry') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.global_policies || !data.global_policies.proposal_only || !data.global_policies.replace_requires_confirmation || !data.global_policies.foreign_sources_read_only || !data.global_policies.implemented_intelligence_must_be_resilient || !data.global_policies.implemented_intelligence_resilience_rule) process.exit(1); if(!data.peer_registry_targets || !data.peer_registry_targets.Codex || !data.peer_registry_targets['Cloud Code'] || !data.peer_registry_targets['Gemini CLI']) process.exit(1); if(!data.bootstrap_artifacts || !data.bootstrap_artifacts.Codex || !Array.isArray(data.bootstrap_artifacts.Codex.repo_scripts) || data.bootstrap_artifacts.Codex.repo_scripts.length<2 || !data.bootstrap_artifacts['Cloud Code'] || !data.bootstrap_artifacts['Gemini CLI']) process.exit(1); if(!data.bootstrap_report_artifacts || !data.bootstrap_report_artifacts.Codex || !Array.isArray(data.bootstrap_report_artifacts.Codex.repo_scripts) || data.bootstrap_report_artifacts.Codex.repo_scripts.length<3 || !data.bootstrap_report_artifacts['Cloud Code'] || !data.bootstrap_report_artifacts['Gemini CLI']) process.exit(1); if(!data.bridges || !data.bridges['cloud-code-delta'] || !data.bridges['gemini-cli-delta'] || !data.bridges['environment-fix-exchange'] || !data.bridges['implemented-intelligence-suggestion-exchange']) process.exit(1);" || {
   echo "bridge-registry.json is invalid." >&2
   exit 1
 }
@@ -275,7 +281,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(!data.include_implemented_intelligence_suggestions) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1); if(!data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_setup.cloud_code_expected || !data.exchange_ledgers.bootstrap_setup.gemini_expected) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(!data.include_implemented_intelligence_suggestions) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1); if(!data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_setup.cloud_code_expected || !data.exchange_ledgers.bootstrap_setup.gemini_expected) process.exit(1); if(!data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3 || !data.exchange_ledgers.bootstrap_report.cloud_code_expected || !data.exchange_ledgers.bootstrap_report.gemini_expected) process.exit(1);" || {
   echo "cloud-code-delta-bridge.json must expose implemented-suggestion ledger addresses." >&2
   exit 1
 }
@@ -305,7 +311,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/intelligence-suggestion-exchange-bridge.json','utf8')); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.requires_resilience_fields) process.exit(1); if(!Array.isArray(data.entry_schema) || !data.entry_schema.includes('resilience_summary') || !data.entry_schema.includes('future_failure_review')) process.exit(1); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='implemented-intelligence-suggestion-exchange') process.exit(1); if(!data.bootstrap_setup || !data.bootstrap_setup.codex || !Array.isArray(data.bootstrap_setup.codex.repo_scripts) || data.bootstrap_setup.codex.repo_scripts.length<2 || !data.bootstrap_setup['Cloud Code'] || !data.bootstrap_setup['Gemini CLI']) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/intelligence-suggestion-exchange-bridge.json','utf8')); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.requires_resilience_fields) process.exit(1); if(!Array.isArray(data.entry_schema) || !data.entry_schema.includes('resilience_summary') || !data.entry_schema.includes('future_failure_review')) process.exit(1); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='implemented-intelligence-suggestion-exchange') process.exit(1); if(!data.bootstrap_setup || !data.bootstrap_setup.codex || !Array.isArray(data.bootstrap_setup.codex.repo_scripts) || data.bootstrap_setup.codex.repo_scripts.length<2 || !data.bootstrap_setup['Cloud Code'] || !data.bootstrap_setup['Gemini CLI']) process.exit(1); if(!Array.isArray(data.reference_implementation) || !data.reference_implementation.includes('codex-setup/scripts/bootstrap-report.mjs')) process.exit(1);" || {
   echo "intelligence-suggestion-exchange-bridge.json must define proposal-prefix, resilience, and bridge-registry metadata." >&2
   exit 1
 }
@@ -320,7 +326,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/gemini-cli-delta-bridge.json','utf8')); if(!data.include_implemented_intelligence_suggestions) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1); if(!data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_setup.gemini_expected || !data.exchange_ledgers.bootstrap_setup.cloud_code_expected) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/gemini-cli-delta-bridge.json','utf8')); if(!data.include_implemented_intelligence_suggestions) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1); if(!data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_setup.gemini_expected || !data.exchange_ledgers.bootstrap_setup.cloud_code_expected) process.exit(1); if(!data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3 || !data.exchange_ledgers.bootstrap_report.gemini_expected || !data.exchange_ledgers.bootstrap_report.cloud_code_expected) process.exit(1);" || {
   echo "gemini-cli-delta-bridge.json must expose implemented-suggestion ledger addresses." >&2
   exit 1
 }
@@ -388,6 +394,12 @@ if command -v pwsh >/dev/null 2>&1; then
 fi
 
 bash "codex-setup/scripts/bootstrap-codex-setup.sh" --skip-validate >/dev/null
+bootstrap_report_json="$(node "codex-setup/scripts/bootstrap-report.mjs" --json)"
+node -e "const data=JSON.parse(process.argv[1]); if(data.report_kind!=='bootstrap-report') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.clis) || data.clis.length<3) process.exit(1); const names=data.clis.map(item=>item.cli); if(!names.includes('Codex')||!names.includes('Cloud Code')||!names.includes('Gemini CLI')) process.exit(1);" "$bootstrap_report_json" || {
+  echo "bootstrap-report.mjs must expose Codex, Cloud Code, and Gemini CLI address groups." >&2
+  exit 1
+}
+bash "codex-setup/scripts/bootstrap-report.sh" --cli "Codex" >/dev/null
 
 if has_mcp_server "openaiDeveloperDocs"; then
   bash "codex-setup/scripts/check-openai-docs-mcp.sh" >/dev/null
@@ -395,7 +407,7 @@ else
   echo "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
 fi
 audit_json="$(node "codex-setup/scripts/audit-claude-delta.mjs" --json)"
-node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='cloud-code-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<2) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2) process.exit(1);" "$audit_json" || {
+node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='cloud-code-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<2) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$audit_json" || {
   echo "Claude delta audit must expose registry-driven bridge metadata." >&2
   exit 1
 }
@@ -430,7 +442,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.a
 }
 bash "codex-setup/scripts/audit-claude-delta.sh" --json >/dev/null
 gemini_audit_json="$(node "codex-setup/scripts/audit-gemini-delta.mjs" --json)"
-node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='gemini-cli-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<1) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2) process.exit(1);" "$gemini_audit_json" || {
+node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='gemini-cli-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<1) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$gemini_audit_json" || {
   echo "Gemini delta audit must expose registry-driven bridge metadata." >&2
   exit 1
 }

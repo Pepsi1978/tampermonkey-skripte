@@ -160,6 +160,45 @@
       ],
       "created_at": "2026-03-23T13:48:22.635Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-registry-driven-bootstrap-report",
+      "source_cli": "Codex",
+      "summary": "Codex besitzt jetzt einen registry-getriebenen Bootstrap-Report, der Bootstrap-, Ledger- und Bridge-Adressen fuer neue Rechner und andere CLIs gesammelt ausgibt.",
+      "proposal_text": "💡 Intelligenz-Vorschlag: Die Bootstrap-Adressen sind jetzt in Registry und Bruecken sichtbar, aber noch statisch gepflegt — Baue einen kleinen registry-getriebenen `bootstrap-report`, der fuer neue Rechner oder andere CLIs sofort alle Bootstrap-, Ledger- und Bridge-Adressen gesammelt ausgibt — Soll ich das umsetzen?",
+      "context_for_other_clis": "Diese Umsetzung entstand direkt nach dem neuen Frische-Rechner-Bootstrap. Das Setup hatte bereits Bootstrap-Skripte, Registry-Eintraege, Delta-Bruecken und Ledger-Adressen, aber diese Informationen lagen verteilt in mehreren JSON-, Markdown- und State-Dateien. Fuer neue Rechner, fuer manuelle Weitergabe an andere CLIs und fuer spaetere Ports fehlte damit noch ein einziger, belastbarer Gesamtueberblick, der die relevanten Adressen ohne Sessionwissen zusammenfasst.",
+      "why_it_was_suggested": "Der reale Reibungspunkt war die Verteilung des Wissens: Bootstrap-Skripte standen in README und Registry, Ledger-Adressen in verschiedenen Bruecken und die eigentlichen Codex-Einstiegspunkte in separaten Audit-Dateien. Dadurch war alles zwar vorhanden, aber fuer einen schnellen Neuaufbau oder fuer einen Fremd-CLI-Port noch nicht auf einen Blick sichtbar.",
+      "why_it_was_implemented": "Der Benutzer hat die Umsetzung direkt freigegeben. Damit wurde aus dem Wunsch nach schnellerem Neuaufbau eine dauerhafte Report-Faehigkeit, die neue Rechner und andere CLIs sofort mit denselben zentralen Adressen versorgt und die Brueckenarchitektur noch lesbarer macht.",
+      "how_it_was_implemented": "Codex hat `codex-setup/scripts/bootstrap-report.mjs` plus die Wrapper `bootstrap-report.sh` und `bootstrap-report.ps1` gebaut. Der Report liest `bridge-registry.json`, die Cloud- und Gemini-Delta-Bruecken sowie die Exchange-Bruecken fuer Umwelt-Fixes und umgesetzte Intelligenzvorschlaege und erzeugt daraus einen menschenlesbaren oder JSON-basierten Gesamtbericht. Zusaetzlich wurden `bridge-registry.json`, die Cloud- und Gemini-Delta-Bruecken, die Intelligence-Suggestion-Exchange-Bruecke, README, Trigger-Routing, die Bootstrap-Skripte selbst und beide Validatoren erweitert. Die Registry kennt jetzt auch erwartete Bootstrap-Report-Artefakte fuer Cloud Code und Gemini CLI, und die Delta-Audit-Metadaten fuehren diese Report-Adressen fuer spaetere Fremd-Implementierungen mit.",
+      "bridge_value": "Andere CLIs erhalten jetzt nicht nur einzelne Dateiadressen, sondern einen standardisierten Report-Typ, der die gesamte Reproduzierbarkeitsoberflaeche sichtbar macht: Registry, Bootstrap-Skripte, Environment-Fix-Ledger, Implemented-Intelligence-Ledger und die Codex-seitigen Bridge-Einstiegspunkte. Das beschleunigt frische Rechner, vereinfacht Portierungen und reduziert Nachfragen nach Einzelpfaden.",
+      "adoption_guidance": "Wenn Cloud Code oder Gemini CLI dieselbe Faehigkeit uebernehmen, sollten sie einen eigenen registry-getriebenen `bootstrap-report` anlegen, der auf ihre eigene Registry und ihre eigenen Bridge-JSONs zeigt. Die Report-Adressen gehoeren dann wiederum in die eigene `bridge-registry.json` und in die jeweilige Delta-Bruecke. Codex liest diese Informationen spaeter strikt read-only.",
+      "resilience_summary": "Die Umsetzung ist robust, weil der neue Report nicht auf einer separaten Sonderdatei basiert, sondern seine Struktur aus der bestehenden Registry und den existierenden Bruecken zieht. Dadurch sinkt das Risiko von Doppelpflege. Gleichzeitig pruefen PowerShell- und Git-Bash-Validatoren jetzt nicht nur die Dateiexistenz, sondern auch das JSON-Format, die CLI-Gruppen und die Wrapper-Aufrufe des Reports.",
+      "future_failure_review": "Geprueft wurden die wichtigsten Rueckfaelle: Report-Dateien vorhanden aber nirgends registriert, Registry kennt Bootstrap-Reports aber die Delta-Bruecken nicht, Wrapper existieren aber liefern keine Fehlercodes, oder der Report gibt nur Codex statt aller relevanten CLI-Gruppen aus. Die Validatoren decken deshalb Required-Files, README, Trigger-Routing, Registry-Metadaten, Bridge-Metadaten, JSON-Output und Wrapper-Smokes ab. Graceful Degradation bleibt erhalten, weil der Report read-only arbeitet und fehlende Fremd-Registrierungen als erwartete Zieladressen statt als Hard-Failure behandelt.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/bootstrap-report.mjs",
+        "codex-setup/scripts/bootstrap-report.sh",
+        "codex-setup/scripts/bootstrap-report.ps1",
+        "codex-setup/scripts/bridge-registry.mjs",
+        "codex-setup/bridges/bridge-registry.json",
+        "codex-setup/bridges/cloud-code-delta-bridge.json",
+        "codex-setup/bridges/cloud-code-delta-bridge.md",
+        "codex-setup/bridges/gemini-cli-delta-bridge.json",
+        "codex-setup/bridges/gemini-cli-delta-bridge.md",
+        "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json",
+        "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md",
+        "codex-setup/rules/german-trigger-routing.md",
+        "codex-setup/README.md",
+        "codex-setup/scripts/bootstrap-codex-setup.ps1",
+        "codex-setup/scripts/bootstrap-codex-setup.sh",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh"
+      ],
+      "created_at": "2026-03-23T14:00:21.951Z",
+      "status": "active"
     }
   ]
 }

@@ -63,6 +63,23 @@ Andere CLIs sollen dieselbe Dateiart im eigenen Setup anlegen und ihre Adresse i
 
 Andere CLIs sollen fuer frische Rechner eigene Bootstrap-Skripte anlegen und deren genaue Adressen sowohl in der Registry als auch in der Delta-Bruecke mit veroeffentlichen.
 
+## Bootstrap-Report
+
+- Codex-Referenz:
+  `codex-setup/scripts/bootstrap-report.mjs`
+  `codex-setup/scripts/bootstrap-report.sh`
+  `codex-setup/scripts/bootstrap-report.ps1`
+- Erwartete Cloud-Code-Adresse:
+  `claude-code-setup/scripts/bootstrap-report.mjs`
+  `claude-code-setup/scripts/bootstrap-report.sh`
+  `claude-code-setup/scripts/bootstrap-report.ps1`
+- Erwartete Gemini-Adresse:
+  `Gemini-Setup/scripts/bootstrap-report.mjs`
+  `Gemini-Setup/scripts/bootstrap-report.sh`
+  `Gemini-Setup/scripts/bootstrap-report.ps1`
+
+Andere CLIs sollen zusaetzlich einen registry-getriebenen Bootstrap-Report veroeffentlichen, der Bootstrap-, Ledger- und Bridge-Adressen gesammelt ausgibt.
+
 ## Bridge-Registry
 
 - Zentrale Codex-Registry:

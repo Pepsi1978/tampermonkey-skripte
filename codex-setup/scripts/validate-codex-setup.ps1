@@ -48,6 +48,9 @@ $RequiredFiles = @(
     "codex-setup\scripts\install-self-improve.ps1",
     "codex-setup\scripts\bootstrap-codex-setup.sh",
     "codex-setup\scripts\bootstrap-codex-setup.ps1",
+    "codex-setup\scripts\bootstrap-report.mjs",
+    "codex-setup\scripts\bootstrap-report.sh",
+    "codex-setup\scripts\bootstrap-report.ps1",
     "codex-setup\scripts\check-openai-docs-mcp.mjs",
     "codex-setup\scripts\check-openai-docs-mcp.sh",
     "codex-setup\scripts\check-openai-docs-mcp.ps1",
@@ -369,6 +372,14 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "bootstrap-codex-setup.
     throw "README.md must document the PowerShell bootstrap script."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "bootstrap-report.mjs") {
+    throw "README.md must document the registry-driven bootstrap report."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "bootstrap-report.ps1") {
+    throw "README.md must document the registry-driven bootstrap report."
+}
+
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Cloud Code") {
     throw "README.md must document the direct Cloud Code bridge trigger."
 }
@@ -387,6 +398,10 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "8 Intelligenz-Dimensio
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "resilient-bugfixing") {
     throw "README.md must document resilient bugfixing."
+}
+
+if ((Get-Content "codex-setup\rules\german-trigger-routing.md" -Raw) -notmatch "zeige den Bootstrap-Report") {
+    throw "german-trigger-routing.md must route bootstrap-report requests."
 }
 
 $ClaudeDeltaState = Get-Content "codex-setup\state\claude-delta-state.json" -Raw | ConvertFrom-Json
@@ -533,6 +548,14 @@ if (
     throw "bridge-registry.json must expose bootstrap artifacts for Codex and expected peer CLIs."
 }
 if (
+    -not $BridgeRegistry.bootstrap_report_artifacts.Codex.repo_scripts -or
+    $BridgeRegistry.bootstrap_report_artifacts.Codex.repo_scripts.Count -lt 3 -or
+    -not $BridgeRegistry.bootstrap_report_artifacts.'Cloud Code'.expected_repo_scripts -or
+    -not $BridgeRegistry.bootstrap_report_artifacts.'Gemini CLI'.expected_repo_scripts
+) {
+    throw "bridge-registry.json must expose bootstrap-report artifacts for Codex and expected peer CLIs."
+}
+if (
     -not $BridgeRegistry.bridges.'cloud-code-delta' -or
     -not $BridgeRegistry.bridges.'gemini-cli-delta' -or
     -not $BridgeRegistry.bridges.'environment-fix-exchange' -or
@@ -600,6 +623,14 @@ if (
     -not $CloudCodeBridge.exchange_ledgers.bootstrap_setup.gemini_expected.repo_scripts
 ) {
     throw "cloud-code-delta-bridge.json must expose bootstrap addresses for Codex and peer CLIs."
+}
+if (
+    -not $CloudCodeBridge.exchange_ledgers.bootstrap_report.codex.repo_scripts -or
+    $CloudCodeBridge.exchange_ledgers.bootstrap_report.codex.repo_scripts.Count -lt 3 -or
+    -not $CloudCodeBridge.exchange_ledgers.bootstrap_report.cloud_code_expected.repo_scripts -or
+    -not $CloudCodeBridge.exchange_ledgers.bootstrap_report.gemini_expected.repo_scripts
+) {
+    throw "cloud-code-delta-bridge.json must expose bootstrap-report addresses for Codex and peer CLIs."
 }
 if (
     $CloudCodeBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
@@ -676,6 +707,9 @@ if (
 ) {
     throw "intelligence-suggestion-exchange-bridge.json must expose bootstrap addresses for all CLIs."
 }
+if ($IntelligenceBridge.reference_implementation -notcontains "codex-setup/scripts/bootstrap-report.mjs") {
+    throw "intelligence-suggestion-exchange-bridge.json must document the bootstrap report as part of the reference implementation."
+}
 
 $GeminiDeltaState = Get-Content "codex-setup\state\gemini-delta-state.json" -Raw | ConvertFrom-Json
 if ($GeminiDeltaState.scope -ne "gemini-environment-only") {
@@ -716,6 +750,14 @@ if (
     throw "gemini-cli-delta-bridge.json must expose bootstrap addresses for Codex and peer CLIs."
 }
 if (
+    -not $GeminiBridge.exchange_ledgers.bootstrap_report.codex.repo_scripts -or
+    $GeminiBridge.exchange_ledgers.bootstrap_report.codex.repo_scripts.Count -lt 3 -or
+    -not $GeminiBridge.exchange_ledgers.bootstrap_report.gemini_expected.repo_scripts -or
+    -not $GeminiBridge.exchange_ledgers.bootstrap_report.cloud_code_expected.repo_scripts
+) {
+    throw "gemini-cli-delta-bridge.json must expose bootstrap-report addresses for Codex and peer CLIs."
+}
+if (
     $GeminiBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
     $GeminiBridge.bridge_registry.bridge_id -ne "gemini-cli-delta" -or
     -not $GeminiBridge.bridge_registry.peer_expected_registries.'Cloud Code' -or
@@ -750,6 +792,23 @@ Get-ChildItem "codex-setup/scripts" -Filter "*.ps1" | ForEach-Object {
 }
 
 & "codex-setup\scripts\bootstrap-codex-setup.ps1" -SkipValidate | Out-Null
+
+$BootstrapReportJson = node "codex-setup/scripts/bootstrap-report.mjs" --json
+if ($LASTEXITCODE -ne 0) {
+    throw "bootstrap-report.mjs failed."
+}
+$BootstrapReport = ($BootstrapReportJson -join "`n") | ConvertFrom-Json
+if (
+    $BootstrapReport.report_kind -ne "bootstrap-report" -or
+    $BootstrapReport.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $BootstrapReport.clis.Count -lt 3 -or
+    -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Codex" }) -or
+    -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Cloud Code" }) -or
+    -not ($BootstrapReport.clis | Where-Object { $_.cli -eq "Gemini CLI" })
+) {
+    throw "bootstrap-report.mjs must expose Codex, Cloud Code, and Gemini CLI address groups."
+}
+& "codex-setup\scripts\bootstrap-report.ps1" --cli Codex | Out-Null
 
 $TempToken = (node (Join-Path $RepoRoot "codex-setup\scripts\whiteboard-bridge.mjs") directive-token --workspace $TempWorkspace | Select-Object -Last 1).Trim()
 node (Join-Path $RepoRoot "codex-setup\scripts\whiteboard-bridge.mjs") insert --workspace $TempWorkspace --directive-token $TempToken --section "Systemzustand" --entry "- **[2099-01-01 00:00] validator**: bridge mutation smoke test" | Out-Null
@@ -799,7 +858,8 @@ if (
     $ClaudeAudit.tracked_git_paths.Count -lt 2 -or
     $ClaudeAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Cloud Code" -or
     -not $ClaudeAudit.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path -or
-    -not $ClaudeAudit.exchange_ledgers.bootstrap_setup.codex.repo_scripts
+    -not $ClaudeAudit.exchange_ledgers.bootstrap_setup.codex.repo_scripts -or
+    -not $ClaudeAudit.exchange_ledgers.bootstrap_report.codex.repo_scripts
 ) {
     throw "Claude delta audit must expose registry-driven bridge metadata."
 }
@@ -867,7 +927,8 @@ if (
     $GeminiAudit.tracked_git_paths.Count -lt 1 -or
     $GeminiAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Gemini CLI" -or
     -not $GeminiAudit.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path -or
-    -not $GeminiAudit.exchange_ledgers.bootstrap_setup.codex.repo_scripts
+    -not $GeminiAudit.exchange_ledgers.bootstrap_setup.codex.repo_scripts -or
+    -not $GeminiAudit.exchange_ledgers.bootstrap_report.codex.repo_scripts
 ) {
     throw "Gemini delta audit must expose registry-driven bridge metadata."
 }

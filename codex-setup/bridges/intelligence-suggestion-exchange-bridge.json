@@ -65,7 +65,10 @@
     "codex-setup/scripts/register-intelligence-suggestion.sh",
     "codex-setup/scripts/register-intelligence-suggestion.ps1",
     "codex-setup/scripts/bootstrap-codex-setup.sh",
-    "codex-setup/scripts/bootstrap-codex-setup.ps1"
+    "codex-setup/scripts/bootstrap-codex-setup.ps1",
+    "codex-setup/scripts/bootstrap-report.mjs",
+    "codex-setup/scripts/bootstrap-report.sh",
+    "codex-setup/scripts/bootstrap-report.ps1"
   ],
   "bootstrap_setup": {
     "codex": {
@@ -109,6 +112,7 @@
     "Lege im eigenen Setup zusaetzlich `bridges/bridge-registry.json` an und veroeffentliche dort die exakten Bridge- und Ledger-Adressen.",
     "Lege im eigenen Setup einen Ledger fuer umgesetzte Intelligenzvorschlaege an.",
     "Lege im eigenen Setup zusaetzlich Bootstrap-Skripte fuer frische Rechner an und veroeffentliche deren Adressen in Registry und Delta-Bruecke.",
+    "Lege im eigenen Setup zusaetzlich einen Bootstrap-Report an, der Bootstrap-, Ledger- und Bridge-Adressen gesammelt ausgibt.",
     "Veroeffentliche die Ledger-Adresse in der eigenen Delta-Bruecke.",
     "Berichte den Ledger fuer andere CLIs nur read-only."
   ]

@@ -106,3 +106,24 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
   `%USERPROFILE%\GeminiCLI\scripts/bootstrap-gemini-setup.ps1`
 
 Andere CLIs sollen diese Bootstrap-Adressen in ihrer Registry und in ihrer Delta-Bruecke mit veroeffentlichen, damit frische Rechner dieselbe Setup-Logik ohne Session-Kontext nachziehen koennen.
+
+## Erwartete Bootstrap-Report-Adressen
+
+- Codex:
+  `codex-setup/scripts/bootstrap-report.mjs`
+  `codex-setup/scripts/bootstrap-report.sh`
+  `codex-setup/scripts/bootstrap-report.ps1`
+- Cloud Code erwartet:
+  `claude-code-setup/scripts/bootstrap-report.mjs`
+  `claude-code-setup/scripts/bootstrap-report.sh`
+  `claude-code-setup/scripts/bootstrap-report.ps1`
+- Gemini CLI erwartet:
+  `Gemini-Setup/scripts/bootstrap-report.mjs`
+  `Gemini-Setup/scripts/bootstrap-report.sh`
+  `Gemini-Setup/scripts/bootstrap-report.ps1`
+- Lokale read-only Zusatzquelle fuer Gemini CLI:
+  `%USERPROFILE%\GeminiCLI\scripts/bootstrap-report.mjs`
+  `%USERPROFILE%\GeminiCLI\scripts/bootstrap-report.sh`
+  `%USERPROFILE%\GeminiCLI\scripts/bootstrap-report.ps1`
+
+Andere CLIs sollen diesen Bootstrap-Report ebenfalls in Registry und Delta-Bruecke veroeffentlichen, damit die Gesamtstruktur fuer neue Rechner und Fremd-CLIs auf einen Blick sichtbar ist.

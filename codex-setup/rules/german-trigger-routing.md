@@ -109,6 +109,20 @@ Aktion:
 - die Registry-Adressen fuer Codex, Cloud Code und Gemini CLI mitberichten
 - neue Bruecken zuerst dort eintragen und erst danach die Einzel-Bruecken erweitern
 
+### Bootstrap-Report
+
+- "zeige den Bootstrap-Report"
+- "welche Bootstrap-Adressen gelten"
+- "welche Ledger-Adressen gelten"
+- "welche Bridge-Adressen gelten"
+- "gib mir den Gesamtueberblick fuer neue Rechner"
+
+Aktion:
+- `codex-setup/scripts/bootstrap-report.*` ausfuehren
+- Bootstrap-, Ledger- und Bridge-Adressen gesammelt berichten
+- dabei Codex-, Cloud-Code- und Gemini-CLI-Adressen zusammenfassen
+- fuer andere CLIs mitberichten, dass sie denselben Report-Typ spaeter im eigenen Setup veroeffentlichen sollen
+
 ### OpenAI- und Codex-Doku
 
 - "OpenAI API"

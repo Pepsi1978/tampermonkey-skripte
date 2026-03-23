@@ -218,6 +218,8 @@ _Noch keine Eintraege._
 
 - **[2026-03-23 13:48] self-improve**: Frische Rechner sollen Codex-Setup jetzt ueber `codex-setup/scripts/bootstrap-codex-setup.{ps1,sh}` bootstrapen. Die Bootstrap-Adressen sind zusaetzlich in `codex-setup/bridges/bridge-registry.json`, den Delta-Bruecken und der Intelligence-Exchange-Bruecke dokumentiert, damit Cloud Code und Gemini CLI dieselbe Struktur spaeter read-only nachziehen koennen.
 
+- **[2026-03-23 14:00] self-improve**: `codex-setup/scripts/bootstrap-report.{mjs,ps1,sh}` liefert jetzt einen registry-getriebenen Gesamtueberblick ueber Bootstrap-, Ledger- und Bridge-Adressen fuer Codex, Cloud Code und Gemini CLI. Der Report liest seine Struktur aus `bridge-registry.json` und den bestehenden Bridge-JSONs statt neue Adressinseln aufzubauen.
+
 ## Debugging-Muster
 - **[2026-03-23 13:53] self-improve**: In PowerShell-Skripten muss `param(...)` das erste ausführbare Statement bleiben. Wenn vorher bereits `$ErrorActionPreference` oder anderer Code steht, wird `param` beim Script-Aufruf als normaler Befehl interpretiert und der Bootstrap bricht sofort ab.
 
@@ -282,3 +284,5 @@ _Noch keine Eintraege._
 - **[2026-03-23 17:48] codex-setup**: Fuer frische Rechner gilt jetzt explizit: operative Codex-Pfade sind workspace-relativ, und typische lokale Gemini-Pfade werden als `%USERPROFILE%\GeminiCLI\...`-Vorlage behandelt. Aeltere absolute Benutzerpfade in historischen Whiteboard-Eintraegen sind nur Sitzungskontext dieser Maschine, nicht die aktuelle operative Vorgabe.
 
 - **[2026-03-23 13:48] self-improve**: Wenn neue Reproduzierbarkeits-Artefakte wie Bootstrap-Skripte entstehen, muessen ihre exakten Repo-/GitHub-Adressen nicht nur in README und Ledgern, sondern auch in `bridge-registry.json` und den betroffenen Delta-Bruecken stehen, damit andere CLIs sie ohne Session-Kontext finden.
+
+- **[2026-03-23 14:00] self-improve**: Wenn neue Reproduzierbarkeitsberichte entstehen, muessen sie registry-getrieben bleiben und ihre eigenen Repo-/GitHub-Adressen ebenfalls in `bridge-registry.json` sowie den betroffenen Delta-Bruecken veroeffentlichen. Ein Bootstrap-Report darf keine Pfad- oder Ledger-Informationen manuell duplizieren.
