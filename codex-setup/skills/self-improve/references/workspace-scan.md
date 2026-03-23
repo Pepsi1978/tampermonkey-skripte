@@ -23,6 +23,7 @@ Always inspect:
 - `codex-setup/bridges/`
 - `codex-setup/bridges/directive-1-superintelligence-universal.md`
 - `codex-setup/bridges/directive-2-self-observation-universal.md`
+- `codex-setup/bridges/directive-3-resilient-bugfixing-universal.md`
 - `codex-setup/skills/self-improve/`
 - `.github/workflows/`
 - `~/.codex/config.toml`
@@ -50,11 +51,13 @@ The scan must answer:
 12. Is directive 2 mirrored in both the repo whiteboard and the deployed local self-improve skill?
 13. Does directive 2 still require immediate persistence of user hints and treat repeated failures as alarms?
 14. Is resilient bugfixing visible as directive 3 for environment-level fixes?
-15. Can Claude/Cloud Code setup changes be audited without writing into Claude files?
-16. Does the Claude-delta audit state cleanly track only programming-environment deltas?
-17. Does `codex-setup/bridges/` expose a reusable Cloud-Code bridge spec that other CLIs can read and mirror?
-18. Does Codex log environment-level fixes with enough context, symptom, cause, verification, and portability detail that other CLIs can understand them without session context?
-19. Can Gemini CLI setup and memory changes be audited without writing into Gemini files?
+15. Is directive 3 mirrored in both the repo whiteboard and the deployed local self-improve skill?
+16. Does directive 3 still require the 5 bugfix steps, the 8-point review, defense in depth, and platform-aware durability?
+17. Can Claude/Cloud Code setup changes be audited without writing into Claude files?
+18. Does the Claude-delta audit state cleanly track only programming-environment deltas?
+19. Does `codex-setup/bridges/` expose a reusable Cloud-Code bridge spec that other CLIs can read and mirror?
+20. Does Codex log environment-level fixes with enough context, symptom, cause, verification, and portability detail that other CLIs can understand them without session context?
+21. Can Gemini CLI setup and memory changes be audited without writing into Gemini files?
 
 ## Forbidden Operational Sources
 

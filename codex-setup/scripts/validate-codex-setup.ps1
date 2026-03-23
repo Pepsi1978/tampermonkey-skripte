@@ -54,6 +54,7 @@ $RequiredFiles = @(
     "codex-setup\bridges\cloud-code-delta-bridge.json",
     "codex-setup\bridges\directive-1-superintelligence-universal.md",
     "codex-setup\bridges\directive-2-self-observation-universal.md",
+    "codex-setup\bridges\directive-3-resilient-bugfixing-universal.md",
     "codex-setup\bridges\gemini-cli-delta-bridge.md",
     "codex-setup\bridges\gemini-cli-delta-bridge.json",
     "codex-setup\bridges\bridge-registry.json",
@@ -251,6 +252,14 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "resilient bugfixing as directive 3
     throw "AGENTS.md must include resilient bugfixing as directive 3."
 }
 
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "8-point fix-induced-failure review before commit") {
+    throw "AGENTS.md must require the full directive-3 review."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "Preserve Direktive 3 in those same two places") {
+    throw "AGENTS.md must preserve directive 3 in repo and local mirrors."
+}
+
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('automatically create a focused commit and push it to `origin/main`')) {
     throw "AGENTS.md must instruct Codex to auto-commit and push validated codex-setup changes."
 }
@@ -359,16 +368,48 @@ if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Muster-Erkennung
     throw "global.md must spell out the stronger directive 2 categories."
 }
 
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Ein Fehler wird genau EINMAL gemacht") {
+    throw "global.md must carry the stronger directive 3 phrasing."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "8-Punkte-Fix-Induced-Failure-Pruefung") {
+    throw "global.md must spell out the stronger directive 3 review."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "kein implizites Encoding") {
+    throw "global.md must mention the stronger directive 3 platform rule."
+}
+
 if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch '3x `Warum\?`') {
     throw "resilient-bugfixing.md must require 3x Warum."
 }
 
-if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Fix-Induced-Failure-Pruefung") {
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Ein Fehler wird genau EINMAL gemacht - dann nie wieder.") {
+    throw "resilient-bugfixing.md must carry the core directive 3 sentence."
+}
+
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "## Der Pflicht-Ablauf: 5 Schritte bei JEDEM Bugfix") {
+    throw "resilient-bugfixing.md must define the 5-step bugfix workflow."
+}
+
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "### Schritt 3b: Fix-Induced-Failure-Pruefung") {
     throw "resilient-bugfixing.md must define the fix-induced-failure review."
 }
 
-if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Defense in Depth") {
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "### Schritt 4: Mehrere Absicherungsschichten \(Defense in Depth\)") {
     throw "resilient-bugfixing.md must define defense in depth."
+}
+
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Windows: UTF-8 Encoding ist PFLICHT") {
+    throw "resilient-bugfixing.md must include the Windows UTF-8 rule."
+}
+
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Atomares Schreiben \(Write-to-Temp-then-Rename\)") {
+    throw "resilient-bugfixing.md must include the atomic-write rule."
+}
+
+if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch "Diese Direktive muss an mindestens 2 unabhaengigen Orten gespeichert sein.") {
+    throw "resilient-bugfixing.md must require directive redundancy."
 }
 
 if ((Get-Content "codex-setup\rules\resilient-bugfixing.md" -Raw) -notmatch 'Jeder Umgebungsfix gehoert in `codex-setup/state/environment-fixes.json`') {
@@ -701,6 +742,14 @@ if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Mu
     throw "MEMORY.md must include the stronger directive 2 category summary."
 }
 
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Ein Fehler wird genau EINMAL gemacht") {
+    throw "MEMORY.md must mirror the stronger directive 3 phrasing."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "8-Punkte-Fix-Induced-Failure-Pruefung") {
+    throw "MEMORY.md must summarize the stronger directive 3 review."
+}
+
 if ((Get-Content "codex-setup\skills\self-improve\references\report-and-creative.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "report-and-creative.md must define the visible intelligence proposal format."
 }
@@ -721,8 +770,16 @@ if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "Dir
     throw "SKILL.md must preserve directive 2 in repo and local deployment."
 }
 
+if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "Direktive 3 must remain mirrored") {
+    throw "SKILL.md must preserve directive 3 in repo and local deployment."
+}
+
 if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "repeated failures as class-level alarms") {
     throw "SKILL.md must keep the stronger directive 2 alarm semantics."
+}
+
+if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "8-point fix-induced-failure review") {
+    throw "SKILL.md must keep the stronger directive 3 review semantics."
 }
 
 if ((Get-Content "codex-setup\bridges\directive-2-self-observation-universal.md" -Raw) -notmatch "SELBSTBEOBACHTUNG \(ZWEITHOECHSTE PRIORITAET\)") {
@@ -731,6 +788,14 @@ if ((Get-Content "codex-setup\bridges\directive-2-self-observation-universal.md"
 
 if ((Get-Content "codex-setup\bridges\directive-2-self-observation-universal.md" -Raw) -notmatch "Wer arbeitet, beobachtet sich selbst. Ausnahmslos.") {
     throw "directive-2-self-observation-universal.md must include the core self-observation sentence."
+}
+
+if ((Get-Content "codex-setup\bridges\directive-3-resilient-bugfixing-universal.md" -Raw) -notmatch "RESILIENT BUGFIXING \(DRITTHOECHSTE PRIORITAET\)") {
+    throw "directive-3-resilient-bugfixing-universal.md must exist as the canonical directive 3 bridge."
+}
+
+if ((Get-Content "codex-setup\bridges\directive-3-resilient-bugfixing-universal.md" -Raw) -notmatch "Ein Fehler wird genau EINMAL gemacht - dann nie wieder.") {
+    throw "directive-3-resilient-bugfixing-universal.md must include the core directive 3 sentence."
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json

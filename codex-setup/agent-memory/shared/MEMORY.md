@@ -152,13 +152,15 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 - Wenn derselbe Fehlertyp zum zweiten Mal auftaucht, ist das ein Alarm und die ganze Fehlerklasse muss adressiert werden, nicht nur die einzelne Instanz.
 - Diese Direktive soll wie Direktive 1 im Repo-Whiteboard und im deployten lokalen Self-Improve-Skill gespiegelt bleiben.
 
-### Direktive 3: Resilient Bugfixing
+### Direktive 3: Resilient Bugfixing - Ein Fehler wird genau EINMAL gemacht
 
-- Diese Direktive gilt fuer Umgebungsfehler in Hooks, Regeln, Settings, MCP-Nutzung, Validierung, Skripten, Agents und Skills.
-- Vor jedem Umgebungsfix gilt: 3x `Warum?`, gleiche Fehlerklasse pruefen, gleiche Komponente pruefen, gleiche Abhaengigkeiten pruefen.
-- Ein Fix ist erst fertig, wenn er defensiv, update-resistent, moeglichst selbstheilend, erweiterbar und dokumentiert ist.
-- Vor Abschluss eines Umgebungsfixes soll eine Fix-Induced-Failure-Pruefung mit Abhaengigkeiten, Fehlszenarien, Zustandsaenderungen, Race Conditions, Rueckwaertskompatibilitaet, Plattform-Effekten, Update-Resistenz und Graceful Degradation mitgedacht werden.
-- Jeder Umgebungsfix gehoert in die Fix-Datenbank, damit derselbe Fehler nicht erneut gelernt werden muss.
+- Diese Direktive ist die dritthoechste Regel direkt unter Direktive 1 und 2 und gilt fuer jeden Bugfix in Hooks, Regeln, Settings, MCP-Nutzung, Validierung, Skripten, Agents und Skills.
+- Ein Umgebungsfix ist nicht fertig, bis er zukunftssicher ist: derselbe Fehler soll nicht auf der naechsten Session, der anderen Plattform oder nach dem naechsten Update wiederkommen.
+- Der Pflichtablauf hat 5 Schritte: Root Cause mit mindestens 3x `Warum?`, gleiche Fehlerklasse/Komponente/Abhaengigkeiten pruefen, einen self-healing defensiven Fix bauen, die 8-Punkte-Fix-Induced-Failure-Pruefung vor dem Commit durchgehen, dann Defense in Depth plus Persistenz sicherstellen.
+- Die 8 Pflichtpruefungen sind: Abhaengigkeiten, Fehlszenarien, Zustandsaenderungen, Race Conditions, Rueckwaertskompatibilitaet, Plattform-Effekte, Update-Resistenz und Graceful Degradation.
+- Plattformregeln gehoeren zu Direktive 3 dazu: auf Windows kein implizites Encoding, bei kritischen Dateien atomar schreiben und Shell-/Pfad-/Locale-Unterschiede zwischen macOS und Windows immer mitpruefen.
+- Jeder Umgebungsfix gehoert in `codex-setup/state/environment-fixes.json`, damit dieselbe Fehlerklasse nicht erneut gelernt werden muss.
+- Diese Direktive soll wie Direktive 1 und 2 im Repo-Whiteboard und im deployten lokalen Self-Improve-Skill gespiegelt bleiben.
 
 ### Cross-Tool-Lernen
 
@@ -269,6 +271,8 @@ Optionaler Gesamtueberblick:
 
 [2026-03-23 20:43] self-improve: Direktive-2-Upgrade mit bash/pwsh install-self-improve sowie bash/pwsh validate-codex-setup erfolgreich validiert; neue Validator-Marker sichern Bridge, Mirror, End-of-Task-Reporting und Repeated-Failure-Alarm ab.
 
+[2026-03-23 21:19] self-improve: Direktive-3-Upgrade mit bash/pwsh install-self-improve sowie bash/pwsh validate-codex-setup erfolgreich validiert; neue Validator-Marker sichern Bridge, 5-Schritte-Workflow, 8-Punkte-Review, Plattformregeln und Mirror-Pflicht ab.
+
 ## Architektur-Entscheidungen
 - **[2026-03-22 10:48] self-improve**: Die Whiteboard-Bruecke arbeitet jetzt fail-closed. Whiteboard-Aufloesung ist nur noch fuer das autoritative Workspace-Ziel `<workspace>/codex-setup/agent-memory/shared/MEMORY.md` erlaubt; Wrapper uebergeben dafuer explizit `--workspace`, und der Validator deckt CWD-Regressionsfaelle ab.
 
@@ -316,6 +320,8 @@ All parameters are case-insensitive.-Aufrufe, und \ leitet sein Zielverzeichnis 
 - **[2026-03-23 20:16] self-improve**: Direktive 1 ist jetzt in der staerkeren Weltklasse-Fassung verankert: Ziel ist die intelligenteste Programmierumgebung der Welt, der Benutzer wird explizit als deutschsprachiger Systemarchitekt gefasst, und die Direktive muss mindestens im Repo-Whiteboard plus in der lokal deployten self-improve-Kopie gespiegelt bleiben. Die Validatoren pruefen diese Marker jetzt aktiv.
 
 [2026-03-23 20:43] self-improve: Direktive 2 ist jetzt als kanonische Bridge-Datei in codex-setup/bridges verankert und als staerkere Repo-/Runtime-Spiegelung in AGENTS, MEMORY, global.md, self-observation.md und dem Self-Improve-Skill durchgezogen.
+
+[2026-03-23 21:19] self-improve: Direktive 3 ist jetzt als kanonische Bridge-Datei in codex-setup/bridges verankert und als staerkere Repo-/Runtime-Spiegelung in AGENTS, MEMORY, global.md, resilient-bugfixing.md, README und dem Self-Improve-Skill durchgezogen.
 
 ## Debugging-Muster
 - **[2026-03-23 13:53] self-improve**: In PowerShell-Skripten muss `param(...)` das erste ausführbare Statement bleiben. Wenn vorher bereits `$ErrorActionPreference` oder anderer Code steht, wird `param` beim Script-Aufruf als normaler Befehl interpretiert und der Bootstrap bricht sofort ab.

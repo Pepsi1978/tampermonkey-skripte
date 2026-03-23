@@ -168,16 +168,18 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 - Wenn derselbe Fehlertyp zum zweiten Mal auftaucht, ist das ein Alarm: Codex soll nicht nur den Einzelfall fixen, sondern die ganze Fehlerklasse absichern.
 - Diese Direktive soll wie Direktive 1 im Repo-Whiteboard und im deployten lokalen Self-Improve-Skill gespiegelt bleiben, damit lokale oder repo-seitige Drift sichtbar wird.
 
-### Direktive 3: Resilient Bugfixing
+### Direktive 3: Resilient Bugfixing - Ein Fehler wird genau EINMAL gemacht
 
 - Direktive Nummer 3 unterhalb dieser `Oberste Direktive` ist resilientes Bugfixing fuer Umgebungsfehler.
-- Sie gilt nur fuer Fehler in Hooks, Regeln, Settings, MCP-Nutzung, Validierung, Skripten, Agents und Skills, nicht fuer normale Projekt- oder App-Bugs.
+- Sie ist die dritthoechste Systemregel und gilt nur fuer Fehler in Hooks, Regeln, Settings, MCP-Nutzung, Validierung, Skripten, Agents und Skills, nicht fuer normale Projekt- oder App-Bugs.
 - Vor jedem Umgebungsfix soll Codex die Root Cause mit mindestens 3x `Warum?` herausarbeiten statt nur das Symptom zu entfernen.
 - Vor der Implementierung sollen gleiche Fehlerklasse, gleiche Komponente und gleiche Abhaengigkeiten mitgeprueft werden.
-- Ein Fix ist erst fertig, wenn er defensiv, update-resistent, erweiterbar, dokumentiert und moeglichst selbstheilend ausgelegt ist.
-- Vor dem Abschluss soll Codex eine Fix-Induced-Failure-Pruefung durchgehen: Abhaengigkeiten, Fehlszenarien, Zustandsaenderungen, Race Conditions, Rueckwaertskompatibilitaet, Plattform-Effekte, Update-Resistenz und Graceful Degradation.
-- Gute Umgebungsfixes sollen defense in depth aufbauen statt nur eine einzelne Schutzschicht zu setzen.
-- Jeder Umgebungsfix gehoert in `codex-setup/state/environment-fixes.json`, damit derselbe Fehler nicht erneut gelernt werden muss.
+- Ein Fix ist erst fertig, wenn er self-healing, defensiv, ueberlebbar, erweiterbar, dokumentiert und schadensfrei ausgelegt ist.
+- Vor dem Abschluss muss Codex die 8-Punkte-Fix-Induced-Failure-Pruefung durchgehen: Abhaengigkeiten, Fehlszenarien, Zustandsaenderungen, Race Conditions, Rueckwaertskompatibilitaet, Plattform-Effekte, Update-Resistenz und Graceful Degradation.
+- Gute Umgebungsfixes sollen Defense in Depth aufbauen statt nur eine einzelne Schutzschicht zu setzen.
+- Plattformregeln gehoeren dazu: auf Windows kein implizites Encoding, kritische Dateien atomar schreiben und Shell-/Pfad-/Locale-Unterschiede aktiv mitpruefen.
+- Jeder Umgebungsfix gehoert in `codex-setup/state/environment-fixes.json`, damit dieselbe Fehlerklasse nicht erneut gelernt werden muss.
+- Diese Direktive soll wie Direktive 1 und 2 im Repo-Whiteboard und im deployten lokalen Self-Improve-Skill gespiegelt bleiben.
 
 ### Cross-Tool-Lernen
 

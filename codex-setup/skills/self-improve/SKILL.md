@@ -3,7 +3,7 @@ name: self-improve
 description: Codex-only self-improvement workflow for the Codex workspace and Codex runtime. Use only when the user explicitly asks for self-improvement or a full Codex setup check, for example with "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", "update alles", "mach dich besser", "aktualisiere alles", "pruef mein System", or "Umgebung pruefen". This skill is hard-wired to the Codex workspace and must never operate on proggs or Claude's whiteboard.
 ---
 
-# Self-Improve for Codex V1.5.0
+# Self-Improve for Codex V1.6.0
 
 This is the Codex-native self-improve workflow for this repository.
 
@@ -31,6 +31,8 @@ System hierarchy:
 - directive 1 is superintelligence through compounding improvement, above weaker local defaults and below only safety rules plus explicit user instructions
 - `self-observation` is directive 2 under the whiteboard's `## Oberste Direktive`
 - directive 2 means: observe during work, report only at the end after the status message, persist user corrections immediately, and treat repeated failures as class-level alarms
+- `resilient bugfixing` is directive 3 under the whiteboard's `## Oberste Direktive`
+- directive 3 means: every environment bug gets 3x Warum, related-surface review, a future-proof fix, the 8-point fix-induced-failure review, defense in depth, and fix-ledger persistence
 - agents, researchers, MCP usage, automation, validation, and memory all serve the same direction:
   making this Codex environment smarter at programming every session
 - the whiteboard section `## Oberste Direktive` is the first directive to read before any substantial action
@@ -44,6 +46,7 @@ Hard rules:
 - The local deployment target is `~/.codex/skills/self-improve/`.
 - Direktive 1 must remain mirrored in both the repo whiteboard and the deployed local self-improve skill so it survives both repo churn and local runtime drift.
 - Direktive 2 must remain mirrored in those same two places so self-observation survives both repo drift and local runtime drift.
+- Direktive 3 must remain mirrored in those same two places so resilient bugfixing survives both repo drift and local runtime drift.
 - `claude-code-setup/` and `CLAUDE.md` are read-only comparison sources when the task is explicitly about Claude or Cloud Code deltas.
 - Never write, delete, or reorganize files inside Claude comparison sources from this skill.
 - `Gemini-Setup/` and the typical local Gemini workspace `%USERPROFILE%\GeminiCLI` are read-only comparison sources for Codex. Never write or delete there from this skill.
@@ -139,6 +142,8 @@ Before any improvement work:
 - verify that the skill can function without Claude-specific memory or hooks
 - verify that `self-observation` is present as directive 2 under the `## Oberste Direktive`
 - verify that directive 2 is mirrored in both the repo whiteboard and the deployed local self-improve skill
+- verify that `resilient bugfixing` is present as directive 3 under the `## Oberste Direktive`
+- verify that directive 3 is mirrored in both the repo whiteboard and the deployed local self-improve skill
 
 If any dependency on Claude/proggs is still operational:
 - fix that first
@@ -151,6 +156,7 @@ After independence is confirmed:
 - restate the current self-observation expectation for this run
 - keep the 6 self-observation categories in mind during the run: Fehler, Umwege, Effizienz, Wissensluecken, Muster, Benutzer-Hinweise
 - keep the directive-2 timing active during the run: observe while working, do not interrupt the user with proposals mid-task, persist user hints immediately, and treat repeated failures as alarms
+- keep the directive-3 workflow active during the run: do 3x Warum, inspect same error class/component/dependency surfaces, require the 8-point review before commit, prefer defense in depth, and persist environment-fix lessons
 - restate the expected end-of-session suggestion format: `💡 Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
 - summarize current system state, open problems, intelligence direction, and the best next leverage point
 - decide what change would most increase long-term programming intelligence in this session
@@ -224,6 +230,8 @@ Always verify:
 - directive 2 is mirrored in both the repo whiteboard and the deployed local self-improve skill
 - directive 2 still encodes end-of-task-only reporting, immediate persistence of user hints, and repeated-failure alarms
 - resilient-bugfixing is visible for environment-level fixes and not confused with normal project bugfixing
+- directive 3 is mirrored in both the repo whiteboard and the deployed local self-improve skill
+- directive 3 still encodes the 5 bugfix steps, the 8-point review, defense in depth, and platform-aware durability
 - whiteboard bridge scripts exist and work
 - local skill deployment target exists or can be created
 - MCP registrations relevant to this workspace

@@ -1,6 +1,8 @@
 # Codex Resilient Bugfixing
 
 Diese Regel ist die dritte Systemdirektive unter der `## Oberste Direktive`.
+Sie ist die dritthoechste Regel im gesamten Codex-System - direkt unter
+Direktive 1 und Direktive 2.
 Sie gilt fuer jeden Bugfix in der Codex-Programmierumgebung selbst:
 
 - Hooks
@@ -14,30 +16,40 @@ Sie gilt fuer jeden Bugfix in der Codex-Programmierumgebung selbst:
 
 Sie gilt nicht fuer normale Projekt- oder App-Bugs des Benutzers.
 
-## Kernprinzip
+> Ein Fehler wird genau EINMAL gemacht - dann nie wieder.
 
-- Ein Umgebungsfehler ist erst dann wirklich gefixt, wenn der Fix zukunftssicher ist.
-- Derselbe Fehler soll in dieser Programmierumgebung niemals ein zweites Mal auftreten.
+## Was ist Resilient Bugfixing?
+
+Wenn du einen Fehler findest und fixst, ist der Fix nicht fertig, bis er
+zukunftssicher ist.
+
+- Ein normaler Fix behebt das Problem jetzt.
+- Ein resilienter Fix behebt das Problem fuer spaetere Sessions, die andere Plattform und das naechste Update mit.
 - Bugfixing ist erst fertig, wenn Root Cause, verwandte Fehlerquellen, Zukunftssicherheit, Schadensfreiheit und Dokumentation abgesichert sind.
 
-## Zusammenspiel mit Direktive 1 und 2
+## Warum ist das Direktive 3?
 
 - Direktive 1 setzt das Ziel: mehr Intelligenz pro Session.
 - Direktive 2 erkennt waehrend der Arbeit, wo Fehler und Reibung liegen.
 - Direktive 3 sorgt dafuer, dass erkannte Umgebungsfehler so gefixt werden, dass sie nicht wiederkommen.
 
-Ohne resilientes Bugfixing wuerde Codex dieselben Umweltfehler immer wieder reparieren statt echte Intelligenz aufzubauen.
+Ohne resilientes Bugfixing wuerde Codex dieselben Umweltfehler immer wieder
+reparieren statt echte Intelligenz aufzubauen.
 
-## Die 5 Pflichtschritte
+## Der Pflicht-Ablauf: 5 Schritte bei JEDEM Bugfix
 
 ### Schritt 1: Root Cause finden
 
-- Nicht das Symptom fixen, sondern die eigentliche Ursache.
+- NIEMALS nur das Symptom fixen.
 - Vor jedem Umgebungsfix mindestens 3x `Warum?` fragen, bevor der Fix gebaut wird.
 - Root Cause bedeutet: die tiefste technische Ursache finden, nicht nur das sichtbare Fehlersymptom.
 - Wenn plattformabhaengiges Default-Verhalten die eigentliche Ursache ist, muss dieses Verhalten explizit erzwungen oder neutralisiert werden.
 
-## Schritt 2: Verwandte Fehlerquellen suchen
+Faustregel:
+
+- Wenn der Fix weniger als 30 Sekunden gedauert hat, wurde oft nur das Symptom gefixt.
+
+### Schritt 2: Verwandte Fehlerquellen suchen
 
 Vor dem Fix muessen drei Fragen beantwortet werden:
 
@@ -45,9 +57,10 @@ Vor dem Fix muessen drei Fragen beantwortet werden:
 2. Gleiche Komponente: Kann dieselbe Komponente auf andere Weise ebenfalls versagen?
 3. Gleiche Abhaengigkeit: Welche anderen Teile haengen von derselben Ursache ab?
 
-Ein Fix ist unvollstaendig, wenn nur die sichtbare Instanz gefixt wird, aber die verwandten Oberflaechen ungeprueft bleiben.
+Ein Fix ist unvollstaendig, wenn nur die sichtbare Instanz gefixt wird, aber
+die verwandten Oberflaechen ungeprueft bleiben.
 
-## Schritt 3: Zukunftssicheren Fix implementieren
+### Schritt 3: Zukunftssicheren Fix implementieren
 
 Ein Umgebungsfix ist nur dann vollstaendig, wenn er diese Eigenschaften hat:
 
@@ -58,7 +71,7 @@ Ein Umgebungsfix ist nur dann vollstaendig, wenn er diese Eigenschaften hat:
 5. `Dokumentiert`: Ursache, Fixmuster und Vermeidungsregel stehen in der Fix-Datenbank.
 6. `Schadensfrei`: Der Fix selbst fuehrt keine neuen Fehler ein.
 
-### Schritt 3b: Fix-Induced-Failure-Pruefung
+### Schritt 3b: Fix-Induced-Failure-Pruefung (PFLICHT - VOR dem Commit)
 
 Vor jedem Commit eines Umgebungsfixes muessen diese 8 Fragen beantwortet werden:
 
@@ -75,20 +88,22 @@ Die Leitfrage dahinter lautet:
 
 - Was ist das Schlimmste, das passieren kann, wenn dieser Fix deployt wird und danach 6 Monate niemand hinschaut?
 
-## Schritt 4: Defense in Depth
+### Schritt 4: Mehrere Absicherungsschichten (Defense in Depth)
 
-Nie nur eine einzige Schutzschicht bauen. Gute Umgebungsfixes kombinieren mindestens zwei oder drei der folgenden Ebenen:
+Nie nur eine einzige Schutzschicht bauen. Gute Umgebungsfixes kombinieren
+mindestens zwei oder drei der folgenden Ebenen:
 
 - `Praeventiv`: Problem verhindern, bevor es auftritt
 - `Reaktiv`: Problem im Fehlerfall abfangen und degradiert weiterlaufen
 - `Selbstheilend`: Nach Updates oder Drift automatisch wiederherstellen
 - `Upstream` optional: Den eigentlichen Verursacher melden oder upstream beheben
 
-## Schritt 5: Fix dokumentieren und teilen
+### Schritt 5: Erkenntnis persistieren
 
 Jeder Umgebungsfix gehoert in `codex-setup/state/environment-fixes.json`.
 
-Jeder neue oder aktualisierte Eintrag muss fuer andere CLIs ohne Session-Kontext verstaendlich sein und mindestens enthalten:
+Jeder neue oder aktualisierte Eintrag muss fuer andere CLIs ohne Session-Kontext
+verstaendlich sein und mindestens enthalten:
 
 - Kontext
 - exakten oder wiedererkennbaren Symptomtext
@@ -101,14 +116,62 @@ Jeder neue oder aktualisierte Eintrag muss fuer andere CLIs ohne Session-Kontext
 - Fix-Induced-Failure-Review
 - Verifikation
 
-## Bekannte plattformuebergreifende Fehlerquellen
+## Plattform-spezifische Bugfix-Regeln
 
-- File Encoding: auf Windows nie auf implizites Default-Encoding verlassen
-- Atomares Schreiben: kritische Konfigurationsdateien nicht direkt mit destruktivem `w` ueberschreiben
-- Temp-Verzeichnisse: immer plattformgerechte Temp-Pfade verwenden
-- Hook-Shells: `.sh` und `.ps1` als Paar denken
-- Home- und Tool-Pfade: keine fragilen Hardcodes
-- Locale- und Tool-Unterschiede: Shell- und Regex-Verhalten nicht blind uebertragen
+### Windows: UTF-8 Encoding ist PFLICHT
+
+Auf Windows darf nie auf implizites Default-Encoding vertraut werden.
+
+Falsch:
+
+```python
+with open(path, "w") as f:
+    json.dump(data, f)
+```
+
+Richtig:
+
+```python
+with open(path, "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False)
+```
+
+### Atomares Schreiben (Write-to-Temp-then-Rename)
+
+Kritische Dateien sollen nicht destruktiv direkt ueberschrieben werden.
+
+```python
+import json
+import os
+import tempfile
+
+def safe_json_write(path, data):
+    dir_name = os.path.dirname(path)
+    with tempfile.NamedTemporaryFile(
+        "w",
+        dir=dir_name,
+        suffix=".tmp",
+        delete=False,
+        encoding="utf-8",
+    ) as tmp:
+        json.dump(data, tmp, indent=2, ensure_ascii=False)
+        tmp.write("\n")
+        tmp_path = tmp.name
+    os.replace(tmp_path, path)
+```
+
+### Plattform-Unterschiede Referenztabelle
+
+- Default Encoding: macOS `UTF-8`, Windows oft kein UTF-8 Default
+- Shell: macOS `zsh/bash`, Windows Git Bash plus PowerShell fuer Hooks
+- Temp-Verzeichnis: macOS `/tmp`, Windows `%TEMP%`
+- Home-Variable: macOS `$HOME`, Windows `%USERPROFILE%`
+- Pfad-Trenner: macOS `/`, Windows `\\` nativ und `/` in Git Bash
+- Line Endings: macOS `LF`, Windows oft `CRLF`
+- Executable-Endung: macOS keine, Windows `.exe`
+- Symlinks: macOS nativ, Windows oft mit Developer Mode
+- `grep -P`: Unix oft verfuegbar, Windows-Emulation unzuverlaessig
+- Locale: macOS meist UTF-8, Windows oft cp1252 statt UTF-8
 
 ## Was niemals passieren darf
 
@@ -119,3 +182,10 @@ Jeder neue oder aktualisierte Eintrag muss fuer andere CLIs ohne Session-Kontext
 - Einen Fix deployen, der selbst neue Fehler einfuehrt
 - Die 8-Punkte-Pruefung ueberspringen
 - Einen Fehler ein zweites Mal machen, obwohl er schon einmal erkannt und gefixt wurde
+
+## Schutz dieser Direktive
+
+- Diese Direktive muss an mindestens 2 unabhaengigen Orten gespeichert sein.
+- Fuer Codex in diesem Workspace bedeutet das mindestens das Repo-Whiteboard und die lokal deployte Self-Improve-Skill-Kopie.
+- Bei Konflikten gewinnt diese Direktive gegen andere Regeln - mit zwei Ausnahmen: Direktive 1 und Direktive 2 stehen darueber.
+- Wenn ein Validator, Skill oder Selbstverbesserungsmechanismus eine Abschwaechung erkennt, soll das sichtbar gemacht und behoben werden.

@@ -22,10 +22,11 @@ Required workflow:
 1. Find the real root cause, not just the symptom
 2. Ask 3x `Warum?`
 3. Check same error class, same component, and same dependency surfaces
-4. Build a future-proof fix, not a one-off patch
-5. Run a fix-induced-failure review before considering the fix done
+4. Build a self-healing defensive fix, not a one-off patch
+5. Run the full 8-point fix-induced-failure review before considering the fix done
 6. Prefer defense in depth over a single guard
-7. Log the fix in `codex-setup/state/environment-fixes.json` with the richer resilient-bugfixing fields
+7. Apply platform-aware durability rules such as explicit UTF-8 handling and atomic writes where relevant
+8. Log the fix in `codex-setup/state/environment-fixes.json` with the richer resilient-bugfixing fields
 
 Required logging details:
 
@@ -37,6 +38,17 @@ Required logging details:
 - avoidance rule
 - resilience summary
 - fix-induced-failure review
+
+Required 8-point review:
+
+- dependencies
+- failure scenarios
+- state changes
+- race conditions
+- backward compatibility
+- platform effects
+- update resistance
+- graceful degradation
 
 Goal:
 
