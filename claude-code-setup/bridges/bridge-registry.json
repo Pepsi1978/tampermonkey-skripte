@@ -1,0 +1,43 @@
+{
+	"version": 1,
+	"registry_name": "claude-code-bridge-registry",
+	"registry_path": "claude-code-setup/bridges/bridge-registry.json",
+	"global_policies": {
+		"proposal_only": true,
+		"replace_requires_confirmation": true,
+		"foreign_sources_read_only": true,
+		"implemented_intelligence_must_be_resilient": true
+	},
+	"bridges": {
+		"codex-delta": {
+			"spec": "claude-code-setup/bridges/codex-delta-bridge.md",
+			"state": "claude-code-setup/state/codex-delta-state.json",
+			"sources": ["codex-setup/**", "AGENTS.md"],
+			"description": "Scannt Codex Setup auf neue Regeln, Skills, Fixes, Bridge-Updates"
+		},
+		"gemini-delta": {
+			"spec": "claude-code-setup/bridges/gemini-delta-bridge.md",
+			"state": "claude-code-setup/state/gemini-delta-state.json",
+			"sources": ["Gemini-Setup/**"],
+			"description": "Scannt Gemini Setup auf neue Regeln, Fixes, Memory-Muster"
+		}
+	},
+	"peer_registries": {
+		"Codex": {
+			"registry_path": "codex-setup/bridges/bridge-registry.json",
+			"write_policy": "read-only-from-claude-code"
+		},
+		"Gemini CLI": {
+			"registry_path": "Gemini-Setup/bridges/bridge-registry.json",
+			"write_policy": "read-only-from-claude-code"
+		}
+	},
+	"ledger_addresses": {
+		"claude_code_fixes": "claude-code-setup/environment-fixes.md",
+		"claude_code_suggestions": "claude-code-setup/state/implemented-intelligence-suggestions.json",
+		"codex_fixes": "codex-setup/state/environment-fixes.json",
+		"codex_suggestions": "codex-setup/state/implemented-intelligence-suggestions.json",
+		"gemini_fixes": "Gemini-Setup/agent-memory/shared/MEMORY.md",
+		"gemini_suggestions": "Gemini-Setup/state/implemented-intelligence-suggestions.json"
+	}
+}
