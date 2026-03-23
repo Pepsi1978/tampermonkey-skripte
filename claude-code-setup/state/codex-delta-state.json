@@ -4,9 +4,9 @@
 	"tracked_paths": ["codex-setup/**", "AGENTS.md"],
 	"replace_requires_confirmation": true,
 	"additive_bias": true,
-	"last_reviewed_commit": "03f5bf8",
-	"last_applied_commit": "03f5bf8",
-	"last_reviewed_at": "2026-03-23T13:00:00+01:00",
-	"last_applied_at": "2026-03-23T13:00:00+01:00",
-	"notes": "Bootstrapped during first Claude Code session with Codex delta bridge. Tracks only Codex setup and programming-environment deltas."
+	"last_reviewed_commit": "82e8f25",
+	"last_applied_commit": "82e8f25",
+	"last_reviewed_at": "2026-03-23T22:22:00+01:00",
+	"last_applied_at": "2026-03-23T22:22:00+01:00",
+	"notes": "16 Codex-Commits reviewed. Applied: A1 (directive-2 universal bridge), C1 (new-environment-fix.mjs), C3 (validate-claude-code-setup.sh). Skipped: E1 (TOML fix not relevant for Claude Code JSON config). 8 of 13 environment fixes were already implemented."
 }
