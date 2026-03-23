@@ -95,8 +95,19 @@ Aktion:
 Aktion:
 - `codex-setup/state/implemented-intelligence-suggestions.json` lesen oder aktualisieren
 - zum Schreiben `codex-setup/scripts/register-intelligence-suggestion.*` verwenden
-- immer den urspruenglichen Vorschlag, Kontext, Umsetzungsgrund, konkrete Umsetzung und Portierungshinweise fuer andere CLIs erfassen
+- immer den urspruenglichen Vorschlag, Kontext, Umsetzungsgrund, konkrete Umsetzung, Resilienz-Zusammenfassung, Failure-Review und Portierungshinweise fuer andere CLIs erfassen
 - bei Brueckenfragen die bekannten Ledger-Adressen fuer Codex, Cloud Code und Gemini CLI mitberichten
+
+### Bridge-Registry
+
+- "wo ist deine Bridge Registry"
+- "welche Bruecken sind registriert"
+- "welche Registry-Adresse muessen die anderen CLIs uebernehmen"
+
+Aktion:
+- `codex-setup/bridges/bridge-registry.json` lesen oder aktualisieren
+- die Registry-Adressen fuer Codex, Cloud Code und Gemini CLI mitberichten
+- neue Bruecken zuerst dort eintragen und erst danach die Einzel-Bruecken erweitern
 
 ### OpenAI- und Codex-Doku
 

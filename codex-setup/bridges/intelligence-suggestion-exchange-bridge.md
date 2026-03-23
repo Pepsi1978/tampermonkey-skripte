@@ -25,6 +25,8 @@ Jeder Eintrag braucht mindestens:
 - `how_it_was_implemented`
 - `bridge_value`
 - `adoption_guidance`
+- `resilience_summary`
+- `future_failure_review`
 - `portable_to`
 - `artifacts`
 - `created_at`
@@ -34,6 +36,7 @@ Jeder Eintrag braucht mindestens:
 
 - Andere CLIs duerfen nicht voraussetzen, dass sie die urspruengliche Session oder den ausloesenden Reibungspunkt kennen.
 - Deshalb muss jeder Eintrag den noetigen Kontext, den eigentlichen Vorschlag, den Nutzen, die Umsetzung und die Portierungslogik in vollstaendigen Saetzen erklaeren.
+- Umgesetzte `Intelligenzvorschlaege` sollen denselben Zukunftsstandard wie Umwelt-Fixes haben. Deshalb braucht jeder Eintrag auch eine Resilienz-Zusammenfassung und ein Future-Failure-Review.
 - Kurze Notizen wie "Helper gebaut" oder "Bridge verbessert" reichen nicht.
 
 ## Brueckenpflicht fuer andere CLIs
@@ -53,6 +56,17 @@ Jeder Eintrag braucht mindestens:
   `Gemini-Setup/state/implemented-intelligence-suggestions.json`
 - Lokale read-only Zusatzquelle fuer Gemini CLI:
   `C:\Users\barwa\GeminiCLI\state\implemented-intelligence-suggestions.json`
+
+## Bridge-Registry
+
+- Codex:
+  `codex-setup/bridges/bridge-registry.json`
+- Erwartete Cloud-Code-Registry:
+  `claude-code-setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Repo-Registry:
+  `Gemini-Setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Workspace-Registry:
+  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`
 
 ## Triggerwoerter
 

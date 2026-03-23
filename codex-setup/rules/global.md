@@ -21,6 +21,7 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
   - `codex-setup/rules/claude-delta-sync.md`
   - `codex-setup/rules/gemini-delta-sync.md`
   - `codex-setup/agent-memory/shared/MEMORY.md`
+  - `codex-setup/bridges/bridge-registry.json`
   - `codex-setup/state/implemented-intelligence-suggestions.json`
   - `codex-setup/skills/self-improve/`
   - `codex-setup/scripts/`
@@ -197,11 +198,18 @@ Alle acht Dimensionen sollen wachsen. Einseitige Optimierung reicht nicht.
 ## Codex-Log fuer umgesetzte Intelligenzvorschlaege
 
 - Wenn Codex einen eigenen `Intelligenzvorschlag` wirklich umsetzt, soll Codex diese Umsetzung zusaetzlich in `codex-setup/state/implemented-intelligence-suggestions.json` dokumentieren.
-- Jeder Eintrag muss mindestens enthalten: den urspruenglichen Vorschlag, Kontext fuer andere CLIs, warum der Vorschlag entstanden ist, warum er umgesetzt wurde, wie er konkret umgesetzt wurde und welchen Brueckenwert andere CLIs daraus ziehen koennen.
+- Jeder Eintrag muss mindestens enthalten: den urspruenglichen Vorschlag, Kontext fuer andere CLIs, warum der Vorschlag entstanden ist, warum er umgesetzt wurde, wie er konkret umgesetzt wurde, welchen Brueckenwert andere CLIs daraus ziehen koennen sowie eine Resilienz-Zusammenfassung und ein Failure-Review.
 - Zum Schreiben soll Codex `codex-setup/scripts/register-intelligence-suggestion.*` verwenden.
 - Dieses Log ist nur fuer umgesetzte Verbesserungen der Programmierumgebung gedacht, nicht fuer normale Projektarbeit.
 - Andere CLI-Umgebungen duerfen dieses Log read-only lesen, damit Cloud Code, Gemini CLI oder spaetere CLIs dieselben Verbesserungsideen schneller uebernehmen koennen.
 - Die wiederverwendbare Bruecken-Spezifikation dafuer liegt unter `codex-setup/bridges/intelligence-suggestion-exchange-bridge.*`.
+- Umgesetzte `Intelligenzvorschlaege` sollen denselben Zukunftsstandard wie Umgebungsfixes haben: keine fragilen Einmal-Loesungen, verwandte Oberflaechen mitpruefen, update-resistent bauen und die Robustheit ausdruecklich dokumentieren.
+
+## Codex-Bridge-Registry
+
+- `codex-setup/bridges/bridge-registry.json` ist die zentrale Registry fuer Bruecken-Trigger, Zieladressen, erwartete Fremd-Registries und gemeinsame Bridge-Guardrails.
+- Cloud-Code-, Gemini-CLI- und Exchange-Bruecken sollen diese Registry referenzieren statt solche Metadaten still auseinanderlaufen zu lassen.
+- Wenn weitere CLI-Bruecken hinzukommen, sollen sie zuerst in dieser Registry eingetragen werden.
 
 ## Codex Skills und Agents
 

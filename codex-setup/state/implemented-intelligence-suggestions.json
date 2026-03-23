@@ -1,9 +1,16 @@
 {
-  "version": 1,
+  "version": 2,
   "scope": "programming-environment-only",
   "ledger_kind": "implemented-intelligence-suggestions",
   "proposal_prefix": "💡 Intelligenz-Vorschlag:",
   "github_url": "https://github.com/Pepsi1978/proggs/blob/main/codex-setup/state/implemented-intelligence-suggestions.json",
+  "bridge_registry_path": "codex-setup/bridges/bridge-registry.json",
+  "bridge_registry_github_url": "https://github.com/Pepsi1978/proggs/blob/main/codex-setup/bridges/bridge-registry.json",
+  "resilience_rule": "Umgesetzte Intelligenzvorschlaege muessen denselben Zukunftsstandard wie Umgebungsfixes haben: verwandte Oberflaechen mitpruefen, update-resistent bauen, Failure-Review mitdenken und die Robustheit ausdruecklich dokumentieren.",
+  "required_resilience_fields": [
+    "resilience_summary",
+    "future_failure_review"
+  ],
   "bridge_reference": [
     "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md",
     "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json"
@@ -37,9 +44,11 @@
       "context_for_other_clis": "Diese Umsetzung entstand in einer Codex-Setup-Session, in der nicht nur neue Regeln und Bruecken gebaut wurden, sondern auch der Wunsch entstand, solche Verbesserungen plattformuebergreifend auf weitere Rechner und spaeter auf andere CLI-Umgebungen zu uebertragen. Ohne ein eigenes Ledger fuer bereits umgesetzte Intelligenzvorschlaege und ohne einen gefuehrten Fix-Helper waere ein Teil dieser Lernarbeit weiterhin an Sitzungswissen und lange manuelle Flag-Listen gebunden geblieben.",
       "why_it_was_suggested": "Der bestehende Environment-Fix-Ledger war bereits reichhaltig, aber seine Erfassung blieb bei vielen Pflichtfeldern fehleranfaellig und die Umsetzung echter Intelligenzvorschlaege hatte noch keinen eigenen, fuer andere CLIs lesbaren Speicherort.",
       "why_it_was_implemented": "Der Benutzer wollte die komplette neue Bruecken- und Lernlogik sofort in Codex-Setup auf GitHub sichern, damit dieselbe Umgebung noch heute auf weiteren Rechnern reproduzierbar ist und Cloud Code, Codex CLI und spaeter Gemini CLI dieselbe Verbesserungsidee gegenseitig nachvollziehen koennen.",
-      "how_it_was_implemented": "Codex hat ein neues Ledger codex-setup/state/implemented-intelligence-suggestions.json, die Exchange-Bruecke codex-setup/bridges/intelligence-suggestion-exchange-bridge.*, den Registrierungsweg \register-intelligence-suggestion.*, den gefuehrten Helper \new-environment-fix.*, neue Bridge-Metadaten fuer Cloud Code und Gemini CLI sowie erweiterte Validatoren gebaut. Zusaetzlich werden erwartete Fremd-Adressen fuer Cloud Code und Gemini CLI jetzt schon im Brueckensystem mitgefuehrt, damit andere CLIs spaeter dieselbe Dateiart anlegen und ihre Adresse veroeffentlichen koennen.",
+      "how_it_was_implemented": "Codex hat ein neues Ledger codex-setup/state/implemented-intelligence-suggestions.json, die Exchange-Bruecke codex-setup/bridges/intelligence-suggestion-exchange-bridge.*, den Registrierungsweg codex-setup/scripts/register-intelligence-suggestion.*, den gefuehrten Helper codex-setup/scripts/new-environment-fix.*, neue Bridge-Metadaten fuer Cloud Code und Gemini CLI sowie erweiterte Validatoren gebaut. Zusaetzlich werden erwartete Fremd-Adressen fuer Cloud Code und Gemini CLI jetzt schon im Brueckensystem mitgefuehrt, damit andere CLIs spaeter dieselbe Dateiart anlegen und ihre Adresse veroeffentlichen koennen.",
       "bridge_value": "Andere CLIs koennen jetzt nicht nur Umwelt-Fixes, sondern auch bereits umgesetzte Verbesserungsideen von Codex lesen. Gleichzeitig kennen die Cloud- und Gemini-Bruecken bereits die erwarteten Speicherorte fuer entsprechende Fremd-Ledger, sodass kuenftige Delta-Audits diese Quelle nachziehen koennen, sobald sie auf der Quellseite angelegt wurde.",
       "adoption_guidance": "Wenn eine andere CLI dieselbe Faehigkeit uebernehmen will, sollte sie einen eigenen Ledger fuer umgesetzte Intelligenzvorschlaege in ihrer eigenen Setup-Basis anlegen, die Adresse in ihrer Delta-Bruecke veroeffentlichen, die Datei fuer Fremd-CLIs read-only halten und ihre Validatorik um einen end-to-end Schreibtest fuer den neuen Ledger erweitern.",
+      "resilience_summary": "Die Umsetzung ist zukunftssicherer als eine reine Einzelloesung, weil Ledger, Exchange-Bruecke, Guided Helper und Validatoren gemeinsam gebaut wurden. Dadurch wird nicht nur eine Datei hinzugefuegt, sondern die ganze Lernschleife fuer kuenftige Sessions und andere CLIs abgesichert.",
+      "future_failure_review": "Geprueft wurden Drift zwischen Ledger-Schema und Registrierungsskript, Drift zwischen Guided Helper und Kernschreiber, fehlende Fremd-Adressen in kuenftigen Bruecken und unvollstaendige Cross-CLI-Erklaerungen. Die Validatoren pruefen deshalb jetzt den kompletten Workflow statt nur Dateiexistenz.",
       "portable_to": [
         "Cloud Code",
         "Gemini CLI"
@@ -54,6 +63,37 @@
         "codex-setup/scripts/validate-codex-setup.sh"
       ],
       "created_at": "2026-03-23T12:46:38.737Z",
+      "status": "active"
+    },
+    {
+      "id": "2026-03-23-central-bridge-registry-and-visible-proposal-prefix",
+      "source_cli": "Codex",
+      "summary": "Codex nutzt jetzt eine zentrale Bridge-Registry, erzwingt das sichtbare Vorschlagsformat mit Gluebirne und behandelt umgesetzte Intelligenzvorschlaege zukunftssicher wie Umgebungsfixes.",
+      "proposal_text": "💡 Intelligenz-Vorschlag: Die Bridge-Metadaten liegen jetzt an mehreren Stellen verteilt — Baue ein zentrales bridge-registry.json, ziehe sichtbare Vorschlagsformate auf `💡 Intelligenz-Vorschlag:` fest und verankere dieselbe Zukunftssicherheit fuer umgesetzte Intelligenzvorschlaege wie fuer Umgebungsfixes — Soll ich das umsetzen?",
+      "context_for_other_clis": "Diese Umsetzung entstand, nachdem Codex bereits Cloud-Code- und Gemini-CLI-Bruecken gebaut hatte und der Benutzer dieselbe Brueckenlogik spaeter auf weiteren Rechnern und in weiteren CLI-Umgebungen reproduzierbar machen wollte. Ohne eine zentrale Registry muessten Trigger, Zieladressen, Fremd-Registries und gemeinsame Guardrails weiter ueber mehrere Bridge-Dateien, Regeln und Validatoren hinweg manuell synchron gehalten werden. Gleichzeitig sollte das sichtbare Vorschlagsformat fuer den Benutzer optisch eindeutig werden und umgesetzte Intelligenzvorschlaege denselben zukunftssicheren Qualitaetsstandard wie Umgebungsfixes erhalten.",
+      "why_it_was_suggested": "Der bestehende Stand hatte schon funktionierende Bruecken, aber kein zentrales maschinenlesbares Register fuer Trigger, Peer-Adressen und gemeinsame Guardrails. Dadurch waere kuenftige Erweiterung auf weitere CLIs fehleranfaellig geblieben und das sichtbare `💡`-Format waere nur teilweise verankert gewesen.",
+      "why_it_was_implemented": "Der Benutzer wollte die Registry-Idee direkt jetzt umsetzen, bevor die gleiche Umgebung auf weiteren Rechnern reproduziert wird. Dadurch werden Brueckeninformationen zentralisiert, die sichtbare Vorschlagsnotation dauerhaft abgesichert und die Lernartefakte fuer andere CLIs ohne Session-Kontext besser nachvollziehbar.",
+      "how_it_was_implemented": "Codex hat codex-setup/bridges/bridge-registry.json als zentrale Registry gebaut und AGENTS, globale Regeln, README, Self-Improve-Skill, Trigger-Routing und mehrere Bridge-Dateien daran ausgerichtet. Die Cloud-Code-, Gemini-, Environment-Fix- und Intelligence-Exchange-Bruecken tragen jetzt bridge_registry-Metadaten mit exakten Pfaden und Adoptionshinweisen. Das Registrierungs-Skript fuer umgesetzte Intelligenzvorschlaege liest seine Defaults jetzt aus der Registry, erzwingt das exakte Prefix `💡 Intelligenz-Vorschlag:` und die Validatoren pruefen Registry-Struktur, Resilienzfelder, Peer-Adressen und das sichtbare Vorschlagsformat in PowerShell und Bash.",
+      "bridge_value": "Andere CLIs koennen spaeter dieselbe Registry-Dateiart uebernehmen und darin ihre eigenen Bridge- und Ledger-Adressen veroeffentlichen, statt Sonderlogik pro CLI zu erfinden. Gleichzeitig erkennt jede kuenftige Delta-Bruecke schneller, welche Trigger, Ledger und Guardrails ueberhaupt zu ihr gehoeren.",
+      "adoption_guidance": "Wenn Cloud Code, Gemini CLI oder spaetere CLIs diese Logik uebernehmen, sollten sie zuerst im eigenen Setup eine bridge-registry.json anlegen, dort ihre exakten Bridge- und Ledger-Adressen veroeffentlichen und erst danach ihre Delta-Bruecken daran anbinden. Umgesetzte Intelligenzvorschlaege sollten dabei immer Resilienz-Zusammenfassung und Failure-Review mitfuehren, damit andere CLIs die Tragweite ohne Session-Kontext verstehen.",
+      "resilience_summary": "Die Umsetzung ist resilient, weil nicht nur eine neue Registry-Datei entstanden ist, sondern gleichzeitig Registrierungs-Skript, Bridge-Metadaten, Whiteboard-Regel, Referenzen und beide Validatoren an dieselbe Struktur gebunden wurden. Dadurch driftet die Registry nicht still aus dem System und das sichtbare Vorschlagsformat wird ebenso wie die Zukunftssicherheit der Suggestions aktiv erzwungen.",
+      "future_failure_review": "Geprueft wurden Drift zwischen Registry und einzelnen Bridge-Dateien, Drift zwischen Vorschlags-Ledger und Registrierungs-Skript, fehlende Peer-Adressen, verlorene Adoptionshinweise und uneinheitliche Benutzerdarstellung ohne `💡`-Prefix. Die Validatoren decken deshalb sowohl statische Metadaten als auch den end-to-end Schreibweg fuer das Suggestion-Ledger ab, sodass kuenftige Schema- oder Bruecken-Aenderungen nicht unbemerkt aneinander vorbeilaufen.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/bridges/bridge-registry.json",
+        "codex-setup/bridges/cloud-code-delta-bridge.json",
+        "codex-setup/bridges/gemini-cli-delta-bridge.json",
+        "codex-setup/bridges/environment-fix-exchange-bridge.json",
+        "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json",
+        "codex-setup/scripts/register-intelligence-suggestion.mjs",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh",
+        "codex-setup/agent-memory/shared/MEMORY.md"
+      ],
+      "created_at": "2026-03-23T13:06:09.338Z",
       "status": "active"
     }
   ]

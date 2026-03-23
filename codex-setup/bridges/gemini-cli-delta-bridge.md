@@ -41,6 +41,22 @@ Codex schreibt nur in seine eigene Setup-Basis:
 
 Andere CLIs sollen dieselbe Dateiart im eigenen Setup anlegen und ihre Adresse in der eigenen Bruecke mit veroeffentlichen.
 
+## Bridge-Registry
+
+- Zentrale Codex-Registry:
+  `codex-setup/bridges/bridge-registry.json`
+- GitHub:
+  `https://github.com/Pepsi1978/proggs/blob/main/codex-setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Repo-Registry:
+  `Gemini-Setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Workspace-Registry:
+  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`
+- Erwartete Cloud-Code-Registry:
+  `claude-code-setup/bridges/bridge-registry.json`
+
+Hinweis fuer andere Bruecken:
+- Cloud Code und Gemini CLI sollen diese Registry-Dateiart ebenfalls uebernehmen und dort ihre exakten Ledger- und Bridge-Adressen veroeffentlichen.
+
 ## Pflichtklassifikation
 
 Jeder Delta-Kandidat wird als genau eine dieser Klassen berichtet:

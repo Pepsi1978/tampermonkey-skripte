@@ -49,6 +49,7 @@ Hard rules:
 - If this run fixes a Codex environment issue, log the fix with full cross-CLI context in `codex-setup/state/environment-fixes.json`.
 - If this run fixes a Codex environment bug, follow the resilient-bugfixing workflow instead of shipping a one-off patch.
 - If this run implements a Codex `Intelligenzvorschlag`, also log that implementation in `codex-setup/state/implemented-intelligence-suggestions.json`.
+- Implemented `Intelligenzvorschlaege` must be as durable as environment fixes: no one-off patches, check related surfaces, document resilience, and include a future-failure review.
 
 Read these files as needed:
 - [references/workspace-scan.md](references/workspace-scan.md)
@@ -197,6 +198,7 @@ Minimum scan targets:
 - `codex-setup/state/gemini-delta-state.json`
 - `codex-setup/state/environment-fixes.json`
 - `codex-setup/state/implemented-intelligence-suggestions.json`
+- `codex-setup/bridges/bridge-registry.json`
 - `codex-setup/scripts/register-environment-fix.*`
 - `codex-setup/bridges/environment-fix-exchange-bridge.*`
 - `codex-setup/scripts/new-environment-fix.*`
@@ -274,7 +276,7 @@ After each environment-level fix:
 After each implemented intelligence suggestion:
 - add or update an entry in `codex-setup/state/implemented-intelligence-suggestions.json`
 - use `codex-setup/scripts/register-intelligence-suggestion.*`
-- capture the original proposal, the context, why the proposal existed, why it was implemented, how it was implemented, and what another CLI should learn from it
+- capture the original proposal, the context, why the proposal existed, why it was implemented, how it was implemented, the resilience summary, the future-failure review, and what another CLI should learn from it
 - include bridge-relevant addresses or adoption guidance when the implementation affects Cloud Code, Gemini CLI, or future CLI bridges
 
 ## Stage 4: Creative

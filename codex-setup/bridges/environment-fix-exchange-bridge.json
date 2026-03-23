@@ -31,6 +31,11 @@
   ],
   "requires_full_context": true,
   "requires_resilient_bugfix_fields": true,
+  "bridge_registry": {
+    "registry_path": "codex-setup/bridges/bridge-registry.json",
+    "registry_github_url": "https://github.com/Pepsi1978/proggs/blob/main/codex-setup/bridges/bridge-registry.json",
+    "bridge_id": "environment-fix-exchange"
+  },
   "write_scope": [
     "own setup folder only"
   ],

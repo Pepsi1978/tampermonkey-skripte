@@ -7,53 +7,27 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
+const DEFAULT_REGISTRY_PATH = path.join(
+  REPO_ROOT,
+  "codex-setup",
+  "bridges",
+  "bridge-registry.json",
+);
 const DEFAULT_LEDGER_PATH = path.join(
   REPO_ROOT,
   "codex-setup",
   "state",
   "implemented-intelligence-suggestions.json",
 );
-const DEFAULT_LEDGER = {
-  version: 1,
-  scope: "programming-environment-only",
-  ledger_kind: "implemented-intelligence-suggestions",
-  proposal_prefix: "💡 Intelligenz-Vorschlag:",
-  github_url: "",
-  bridge_reference: [
-    "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md",
-    "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json",
-  ],
-  peer_ledgers: {
-    Codex: {
-      repo_path: "codex-setup/state/implemented-intelligence-suggestions.json",
-      github_url: "",
-      write_policy: "read-write-own-workspace",
-    },
-    "Cloud Code": {
-      expected_repo_path:
-        "claude-code-setup/state/implemented-intelligence-suggestions.json",
-      expected_github_url: "",
-      write_policy: "read-only-from-codex",
-      status: "awaiting-foreign-registration",
-    },
-    "Gemini CLI": {
-      expected_repo_path:
-        "Gemini-Setup/state/implemented-intelligence-suggestions.json",
-      expected_local_path:
-        "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json",
-      expected_github_url: "",
-      write_policy: "read-only-from-codex",
-      status: "awaiting-foreign-registration",
-    },
-  },
-  entries: [],
-};
+const DEFAULT_PROPOSAL_PREFIX = "💡 Intelligenz-Vorschlag:";
+const DEFAULT_RESILIENCE_RULE =
+  "Umgesetzte Intelligenzvorschlaege muessen denselben Zukunftsstandard wie Umgebungsfixes haben: verwandte Oberflaechen mitpruefen, update-resistent bauen und die Robustheit ausdruecklich dokumentieren.";
 
 function usage() {
   return [
     "Usage:",
     "  register-intelligence-suggestion.mjs list [--json] [--state PATH]",
-    "  register-intelligence-suggestion.mjs add --id ID --summary TEXT --proposal TEXT --context TEXT --suggested-because TEXT --implemented-because TEXT --implementation TEXT --bridge-value TEXT --adoption-guidance TEXT [--portable-to CSV] [--artifacts CSV] [--source-cli NAME] [--status STATUS] [--json] [--state PATH]",
+    "  register-intelligence-suggestion.mjs add --id ID --summary TEXT --proposal TEXT --context TEXT --suggested-because TEXT --implemented-because TEXT --implementation TEXT --bridge-value TEXT --adoption-guidance TEXT --resilience-summary TEXT --failure-review TEXT [--portable-to CSV] [--artifacts CSV] [--source-cli NAME] [--status STATUS] [--json] [--state PATH]",
   ].join("\n");
 }
 
@@ -93,6 +67,23 @@ function splitCsv(value, fallback = []) {
     .filter(Boolean);
 }
 
+function deriveBlobBase(githubUrl) {
+  const normalized = `${githubUrl || ""}`.trim();
+  if (!normalized) return "";
+  const marker = "/blob/";
+  const markerIndex = normalized.indexOf(marker);
+  if (markerIndex === -1) return "";
+  const branchSlashIndex = normalized.indexOf("/", markerIndex + marker.length);
+  if (branchSlashIndex === -1) return "";
+  return normalized.slice(0, branchSlashIndex + 1);
+}
+
+function deriveGithubBlobUrl(baseUrl, repoPath) {
+  const base = deriveBlobBase(baseUrl);
+  if (!base) return "";
+  return `${base}${repoPath.replace(/\\/g, "/")}`;
+}
+
 function ensureText(value, label) {
   const normalized = `${value || ""}`.trim();
   if (!normalized) {
@@ -121,19 +112,113 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function loadLedger(filePath) {
-  const loaded = readJson(filePath, DEFAULT_LEDGER);
+function loadBridgeRegistry() {
+  const fallback = {
+    registry_path: "codex-setup/bridges/bridge-registry.json",
+    github_url: "",
+    proposal_prefix: DEFAULT_PROPOSAL_PREFIX,
+    global_policies: {
+      implemented_intelligence_resilience_rule: DEFAULT_RESILIENCE_RULE,
+    },
+    peer_registry_targets: {},
+  };
+  const loaded = readJson(DEFAULT_REGISTRY_PATH, fallback);
   return {
-    ...DEFAULT_LEDGER,
+    ...fallback,
     ...loaded,
-    peer_ledgers: loaded.peer_ledgers || DEFAULT_LEDGER.peer_ledgers,
-    bridge_reference: loaded.bridge_reference || DEFAULT_LEDGER.bridge_reference,
+    global_policies: {
+      ...fallback.global_policies,
+      ...(loaded.global_policies || {}),
+    },
+    peer_registry_targets:
+      loaded.peer_registry_targets || fallback.peer_registry_targets,
+  };
+}
+
+function buildDefaultLedger(registry = loadBridgeRegistry()) {
+  const codexRepoPath = "codex-setup/state/implemented-intelligence-suggestions.json";
+  const cloudRepoPath = "claude-code-setup/state/implemented-intelligence-suggestions.json";
+  const geminiRepoPath = "Gemini-Setup/state/implemented-intelligence-suggestions.json";
+  const cloudRegistryTarget = registry.peer_registry_targets?.["Cloud Code"] || {};
+  const geminiRegistryTarget = registry.peer_registry_targets?.["Gemini CLI"] || {};
+
+  return {
+    version: 2,
+    scope: "programming-environment-only",
+    ledger_kind: "implemented-intelligence-suggestions",
+    proposal_prefix: registry.proposal_prefix || DEFAULT_PROPOSAL_PREFIX,
+    github_url: deriveGithubBlobUrl(registry.github_url, codexRepoPath),
+    bridge_registry_path: registry.registry_path || "codex-setup/bridges/bridge-registry.json",
+    bridge_registry_github_url: registry.github_url || "",
+    resilience_rule:
+      registry.global_policies?.implemented_intelligence_resilience_rule ||
+      DEFAULT_RESILIENCE_RULE,
+    required_resilience_fields: [
+      "resilience_summary",
+      "future_failure_review",
+    ],
+    bridge_reference: [
+      "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md",
+      "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json",
+    ],
+    peer_ledgers: {
+      Codex: {
+        repo_path: codexRepoPath,
+        github_url: deriveGithubBlobUrl(registry.github_url, codexRepoPath),
+        write_policy: "read-write-own-workspace",
+      },
+      "Cloud Code": {
+        expected_repo_path: cloudRepoPath,
+        expected_github_url: deriveGithubBlobUrl(
+          cloudRegistryTarget.expected_github_url,
+          cloudRepoPath,
+        ),
+        write_policy: "read-only-from-codex",
+        status: "awaiting-foreign-registration",
+      },
+      "Gemini CLI": {
+        expected_repo_path: geminiRepoPath,
+        expected_local_path:
+          "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json",
+        expected_github_url: deriveGithubBlobUrl(
+          geminiRegistryTarget.expected_github_url,
+          geminiRepoPath,
+        ),
+        write_policy: "read-only-from-codex",
+        status: "awaiting-foreign-registration",
+      },
+    },
+    entries: [],
+  };
+}
+
+function loadLedger(filePath) {
+  const defaultLedger = buildDefaultLedger();
+  const loaded = readJson(filePath, defaultLedger);
+  return {
+    ...defaultLedger,
+    ...loaded,
+    peer_ledgers: loaded.peer_ledgers || defaultLedger.peer_ledgers,
+    bridge_reference: loaded.bridge_reference || defaultLedger.bridge_reference,
+    required_resilience_fields:
+      loaded.required_resilience_fields ||
+      defaultLedger.required_resilience_fields,
     entries: Array.isArray(loaded.entries) ? loaded.entries : [],
   };
 }
 
+function ensureProposalText(value, prefix) {
+  const normalized = ensureDetailedText(value, "proposal", 20);
+  if (!normalized.startsWith(prefix)) {
+    throw new Error(`proposal must start with "${prefix}"`);
+  }
+  return normalized;
+}
+
 function buildEntry(args, existingEntry = null) {
   const now = new Date().toISOString();
+  const registry = loadBridgeRegistry();
+  const proposalPrefix = registry.proposal_prefix || DEFAULT_PROPOSAL_PREFIX;
   return {
     id: ensureText(args.id || existingEntry?.id, "id"),
     source_cli: ensureText(
@@ -141,10 +226,9 @@ function buildEntry(args, existingEntry = null) {
       "source-cli",
     ),
     summary: ensureText(args.summary || existingEntry?.summary, "summary"),
-    proposal_text: ensureDetailedText(
+    proposal_text: ensureProposalText(
       args.proposal || existingEntry?.proposal_text,
-      "proposal",
-      20,
+      proposalPrefix,
     ),
     context_for_other_clis: ensureDetailedText(
       args.context || existingEntry?.context_for_other_clis,
@@ -173,6 +257,16 @@ function buildEntry(args, existingEntry = null) {
       args["adoption-guidance"] || existingEntry?.adoption_guidance,
       "adoption-guidance",
       30,
+    ),
+    resilience_summary: ensureDetailedText(
+      args["resilience-summary"] || existingEntry?.resilience_summary,
+      "resilience-summary",
+      40,
+    ),
+    future_failure_review: ensureDetailedText(
+      args["failure-review"] || existingEntry?.future_failure_review,
+      "failure-review",
+      40,
     ),
     portable_to: splitCsv(args["portable-to"], existingEntry?.portable_to || [
       "Cloud Code",
@@ -209,6 +303,8 @@ function printList(ledger, asJson) {
     lines.push(`   Implementation: ${entry.how_it_was_implemented}`);
     lines.push(`   Bridge value: ${entry.bridge_value}`);
     lines.push(`   Adoption guidance: ${entry.adoption_guidance}`);
+    lines.push(`   Resilience: ${entry.resilience_summary}`);
+    lines.push(`   Failure review: ${entry.future_failure_review}`);
     if (entry.portable_to?.length) {
       lines.push(`   Portable to: ${entry.portable_to.join(", ")}`);
     }

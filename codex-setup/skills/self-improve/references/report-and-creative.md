@@ -74,7 +74,7 @@
 Always produce exactly 3 suggestions in this format:
 
 ```markdown
-Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?
+💡 Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?
 ```
 
 Never auto-apply these three suggestions without user approval.

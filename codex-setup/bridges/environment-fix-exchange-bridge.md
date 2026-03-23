@@ -67,3 +67,14 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
 - `codex-setup/scripts/register-environment-fix.mjs`
 - `codex-setup/scripts/register-environment-fix.sh`
 - `codex-setup/scripts/register-environment-fix.ps1`
+
+## Bridge-Registry
+
+- Codex:
+  `codex-setup/bridges/bridge-registry.json`
+- Erwartete Cloud-Code-Registry:
+  `claude-code-setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Repo-Registry:
+  `Gemini-Setup/bridges/bridge-registry.json`
+- Erwartete Gemini-Workspace-Registry:
+  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`

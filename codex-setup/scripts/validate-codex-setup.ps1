@@ -33,6 +33,7 @@ $RequiredFiles = @(
     "codex-setup\bridges\cloud-code-delta-bridge.json",
     "codex-setup\bridges\gemini-cli-delta-bridge.md",
     "codex-setup\bridges\gemini-cli-delta-bridge.json",
+    "codex-setup\bridges\bridge-registry.json",
     "codex-setup\bridges\environment-fix-exchange-bridge.md",
     "codex-setup\bridges\environment-fix-exchange-bridge.json",
     "codex-setup\bridges\intelligence-suggestion-exchange-bridge.md",
@@ -181,12 +182,16 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "8 intelligence dimensions") {
     throw "AGENTS.md must keep the 8 intelligence dimensions in scope."
 }
 
-if ((Get-Content "AGENTS.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "AGENTS.md must define the intelligence proposal format."
 }
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch "implemented-intelligence-suggestions.json") {
     throw "AGENTS.md must define the implemented intelligence suggestion ledger."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "bridge-registry.json") {
+    throw "AGENTS.md must define the bridge registry."
 }
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch "every agent, skill, plugin, hook, and process") {
@@ -261,12 +266,16 @@ if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Cross-Tool-Lerne
     throw "global.md must describe cross-tool learning."
 }
 
-if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "global.md must define the intelligence proposal format."
 }
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "implemented-intelligence-suggestions.json") {
     throw "global.md must define the implemented intelligence suggestion ledger."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "bridge-registry.json") {
+    throw "global.md must define the bridge registry."
 }
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Direktive 3: Resilient Bugfixing") {
@@ -345,6 +354,10 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "intelligence-suggestio
     throw "README.md must document the intelligence-suggestion exchange bridge."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "bridge-registry.json") {
+    throw "README.md must document the bridge registry."
+}
+
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Cloud Code") {
     throw "README.md must document the direct Cloud Code bridge trigger."
 }
@@ -416,8 +429,27 @@ if ($ImplementedSuggestions.scope -ne "programming-environment-only") {
 if ($ImplementedSuggestions.ledger_kind -ne "implemented-intelligence-suggestions") {
     throw "implemented-intelligence-suggestions.json must identify its ledger kind."
 }
+if ($ImplementedSuggestions.proposal_prefix -ne "💡 Intelligenz-Vorschlag:") {
+    throw "implemented-intelligence-suggestions.json must define the visible proposal prefix."
+}
 if (-not $ImplementedSuggestions.github_url) {
     throw "implemented-intelligence-suggestions.json must expose its GitHub URL."
+}
+if ($ImplementedSuggestions.bridge_registry_path -ne "codex-setup/bridges/bridge-registry.json") {
+    throw "implemented-intelligence-suggestions.json must expose the central bridge-registry path."
+}
+if (-not $ImplementedSuggestions.bridge_registry_github_url) {
+    throw "implemented-intelligence-suggestions.json must expose the central bridge-registry GitHub URL."
+}
+if ([string]::IsNullOrWhiteSpace($ImplementedSuggestions.resilience_rule) -or $ImplementedSuggestions.resilience_rule.Length -lt 40) {
+    throw "implemented-intelligence-suggestions.json must define the resilience rule."
+}
+if (
+    $ImplementedSuggestions.required_resilience_fields.Count -lt 2 -or
+    $ImplementedSuggestions.required_resilience_fields -notcontains "resilience_summary" -or
+    $ImplementedSuggestions.required_resilience_fields -notcontains "future_failure_review"
+) {
+    throw "implemented-intelligence-suggestions.json must require resilience fields."
 }
 if (-not $ImplementedSuggestions.peer_ledgers.Codex) {
     throw "implemented-intelligence-suggestions.json must expose the Codex ledger address."
@@ -441,13 +473,53 @@ foreach ($entry in $ImplementedSuggestions.entries) {
         [string]::IsNullOrWhiteSpace($entry.why_it_was_implemented) -or
         [string]::IsNullOrWhiteSpace($entry.how_it_was_implemented) -or
         [string]::IsNullOrWhiteSpace($entry.bridge_value) -or
-        [string]::IsNullOrWhiteSpace($entry.adoption_guidance)
+        [string]::IsNullOrWhiteSpace($entry.adoption_guidance) -or
+        [string]::IsNullOrWhiteSpace($entry.resilience_summary) -or
+        [string]::IsNullOrWhiteSpace($entry.future_failure_review)
     ) {
         throw "implemented-intelligence-suggestions.json contains an invalid entry."
     }
-    if ($entry.context_for_other_clis.Length -lt 40 -or $entry.why_it_was_suggested.Length -lt 30 -or $entry.why_it_was_implemented.Length -lt 30 -or $entry.how_it_was_implemented.Length -lt 40 -or $entry.bridge_value.Length -lt 30 -or $entry.adoption_guidance.Length -lt 30) {
+    if (
+        $entry.proposal_text -notlike "💡 Intelligenz-Vorschlag:*" -or
+        $entry.context_for_other_clis.Length -lt 40 -or
+        $entry.why_it_was_suggested.Length -lt 30 -or
+        $entry.why_it_was_implemented.Length -lt 30 -or
+        $entry.how_it_was_implemented.Length -lt 40 -or
+        $entry.bridge_value.Length -lt 30 -or
+        $entry.adoption_guidance.Length -lt 30 -or
+        $entry.resilience_summary.Length -lt 40 -or
+        $entry.future_failure_review.Length -lt 40
+    ) {
         throw "implemented-intelligence-suggestions.json entries must contain detailed cross-CLI context."
     }
+}
+
+$BridgeRegistry = Get-Content "codex-setup\bridges\bridge-registry.json" -Raw | ConvertFrom-Json
+if ($BridgeRegistry.registry_name -ne "codex-bridge-registry") {
+    throw "bridge-registry.json must identify the Codex bridge registry."
+}
+if ($BridgeRegistry.proposal_prefix -ne "💡 Intelligenz-Vorschlag:") {
+    throw "bridge-registry.json must define the visible proposal prefix."
+}
+if (
+    -not $BridgeRegistry.global_policies.proposal_only -or
+    -not $BridgeRegistry.global_policies.replace_requires_confirmation -or
+    -not $BridgeRegistry.global_policies.foreign_sources_read_only -or
+    -not $BridgeRegistry.global_policies.implemented_intelligence_must_be_resilient -or
+    [string]::IsNullOrWhiteSpace($BridgeRegistry.global_policies.implemented_intelligence_resilience_rule)
+) {
+    throw "bridge-registry.json must define the shared bridge guardrails."
+}
+if (-not $BridgeRegistry.peer_registry_targets.Codex -or -not $BridgeRegistry.peer_registry_targets.'Cloud Code' -or -not $BridgeRegistry.peer_registry_targets.'Gemini CLI') {
+    throw "bridge-registry.json must expose all peer registry targets."
+}
+if (
+    -not $BridgeRegistry.bridges.'cloud-code-delta' -or
+    -not $BridgeRegistry.bridges.'gemini-cli-delta' -or
+    -not $BridgeRegistry.bridges.'environment-fix-exchange' -or
+    -not $BridgeRegistry.bridges.'implemented-intelligence-suggestion-exchange'
+) {
+    throw "bridge-registry.json must list all active Codex bridge types."
 }
 
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {
@@ -458,12 +530,16 @@ if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Cr
     throw "MEMORY.md must describe cross-tool learning."
 }
 
-if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "MEMORY.md must define the intelligence proposal format."
 }
 
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Effizienzverluste, Wissensluecken, wiederkehrenden Muster") {
     throw "MEMORY.md must summarize the stronger self-observation categories."
+}
+
+if ((Get-Content "codex-setup\skills\self-improve\references\report-and-creative.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
+    throw "report-and-creative.md must define the visible intelligence proposal format."
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json
@@ -488,6 +564,14 @@ if (-not $CloudCodeBridge.include_implemented_intelligence_suggestions) {
 if (-not $CloudCodeBridge.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) {
     throw "cloud-code-delta-bridge.json must expose implemented-suggestion ledger addresses."
 }
+if (
+    $CloudCodeBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $CloudCodeBridge.bridge_registry.bridge_id -ne "cloud-code-delta" -or
+    -not $CloudCodeBridge.bridge_registry.peer_expected_registries.'Cloud Code' -or
+    -not $CloudCodeBridge.bridge_registry.peer_expected_registries.'Gemini CLI'
+) {
+    throw "cloud-code-delta-bridge.json must expose bridge-registry metadata."
+}
 
 $EnvironmentFixBridge = Get-Content "codex-setup\bridges\environment-fix-exchange-bridge.json" -Raw | ConvertFrom-Json
 if ($EnvironmentFixBridge.source_label -ne "CLI Environment Fixes") {
@@ -506,6 +590,12 @@ if (-not $EnvironmentFixBridge.requires_full_context) {
 if (-not $EnvironmentFixBridge.requires_resilient_bugfix_fields) {
     throw "environment-fix-exchange-bridge.json must require resilient bugfix fields."
 }
+if (
+    $EnvironmentFixBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $EnvironmentFixBridge.bridge_registry.bridge_id -ne "environment-fix-exchange"
+) {
+    throw "environment-fix-exchange-bridge.json must expose bridge-registry metadata."
+}
 
 $IntelligenceBridge = Get-Content "codex-setup\bridges\intelligence-suggestion-exchange-bridge.json" -Raw | ConvertFrom-Json
 if ($IntelligenceBridge.source_label -ne "Implemented Intelligence Suggestions") {
@@ -522,6 +612,24 @@ if (-not $IntelligenceBridge.peer_registration_required) {
 }
 if ($IntelligenceBridge.trigger_phrases.Count -lt 3) {
     throw "intelligence-suggestion-exchange-bridge.json must define multiple trigger phrases."
+}
+if ($IntelligenceBridge.proposal_prefix -ne "💡 Intelligenz-Vorschlag:") {
+    throw "intelligence-suggestion-exchange-bridge.json must define the visible proposal prefix."
+}
+if (-not $IntelligenceBridge.requires_resilience_fields) {
+    throw "intelligence-suggestion-exchange-bridge.json must require resilience fields."
+}
+if (
+    $IntelligenceBridge.entry_schema -notcontains "resilience_summary" -or
+    $IntelligenceBridge.entry_schema -notcontains "future_failure_review"
+) {
+    throw "intelligence-suggestion-exchange-bridge.json must expose resilience fields in its schema."
+}
+if (
+    $IntelligenceBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $IntelligenceBridge.bridge_registry.bridge_id -ne "implemented-intelligence-suggestion-exchange"
+) {
+    throw "intelligence-suggestion-exchange-bridge.json must expose bridge-registry metadata."
 }
 
 $GeminiDeltaState = Get-Content "codex-setup\state\gemini-delta-state.json" -Raw | ConvertFrom-Json
@@ -553,6 +661,14 @@ if (-not $GeminiBridge.include_implemented_intelligence_suggestions) {
 }
 if (-not $GeminiBridge.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) {
     throw "gemini-cli-delta-bridge.json must expose implemented-suggestion ledger addresses."
+}
+if (
+    $GeminiBridge.bridge_registry.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $GeminiBridge.bridge_registry.bridge_id -ne "gemini-cli-delta" -or
+    -not $GeminiBridge.bridge_registry.peer_expected_registries.'Cloud Code' -or
+    -not $GeminiBridge.bridge_registry.peer_expected_registries.'Gemini CLI'
+) {
+    throw "gemini-cli-delta-bridge.json must expose bridge-registry metadata."
 }
 
 Get-ChildItem "codex-setup\skills\self-improve\references\agents" -Filter "*.md" | ForEach-Object {
@@ -657,7 +773,7 @@ if ($TempGuidedFixes.entries[0].id -ne "validator-guided-fix") {
 Remove-Item $TempNewFixLedger -ErrorAction SilentlyContinue
 
 $TempSuggestionLedger = Join-Path ([System.IO.Path]::GetTempPath()) ("implemented-intelligence-suggestions-" + [guid]::NewGuid().ToString() + ".json")
-node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state $TempSuggestionLedger --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --portable-to "Cloud Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" | Out-Null
+node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state $TempSuggestionLedger --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --resilience-summary "This smoke test is resilient because it validates the full implemented-intelligence workflow, not just a static file, and it keeps proposal formatting plus future-proof metadata under active verification." --failure-review "Dependencies: registry defaults, the registration script, and the ledger schema must stay aligned. Failure scenario: if one layer drifts the validator must fail loudly. State change: only a temporary file is written. Race risk is negligible in the temp path. Backward compatibility remains because the smoke uses the same script entrypoint. Platform effects are covered by PowerShell and Bash validators. Update resistance comes from rerunning the smoke after future schema or bridge-registry changes. Graceful degradation is preserved because failure only aborts validation." --portable-to "Cloud Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" | Out-Null
 if ($LASTEXITCODE -ne 0) {
     throw "Intelligence-suggestion registration script could not write a temporary entry."
 }

@@ -66,7 +66,8 @@ Wichtigste Trennung:
   Wiederverwendbare Bruecken-Spezifikationen fuer andere CLI-Umgebungen.
   Hier liegen die generische Cloud-Code-Delta-Bruecke, die Gemini-CLI-Delta-Bruecke
   sowie die Exchange-Bruecken fuer Umwelt-Fixes und umgesetzte Intelligenzvorschlaege
-  als Referenz fuer weitere Setups.
+  als Referenz fuer weitere Setups. Die zentrale Metadatenbasis dafuer ist
+  `bridges/bridge-registry.json`.
 
 - `state/environment-fixes.json`
   Maschinenlesbares Log fuer Codex-Fixes an Regeln, Runtime, Validierung, MCP-Nutzung und Setup.
@@ -76,7 +77,7 @@ Wichtigste Trennung:
 - `state/implemented-intelligence-suggestions.json`
   Maschinenlesbares Log fuer bereits umgesetzte `Intelligenzvorschlaege` in der Codex-Programmierumgebung.
   Es dokumentiert den urspruenglichen Vorschlag, den Kontext, den Umsetzungsgrund, die konkrete Umsetzung
-  und den Brueckenwert fuer andere CLIs.
+  den Brueckenwert fuer andere CLIs sowie die Zukunftssicherheit der Umsetzung.
 
 - `skills/self-improve/`
   Der Codex-spezifische Self-Improve-Skill fuer diesen Workspace, inklusive Referenzen,
@@ -163,6 +164,7 @@ Die generische Bruecken-Spezifikation fuer andere CLI-Umgebungen liegt zusaetzli
 
 - `codex-setup/bridges/cloud-code-delta-bridge.md`
 - `codex-setup/bridges/cloud-code-delta-bridge.json`
+- `codex-setup/bridges/bridge-registry.json`
 
 ## Gemini-Delta-Audit
 
@@ -205,6 +207,7 @@ Die generische Bruecken-Spezifikation fuer andere CLI-Umgebungen liegt zusaetzli
 
 - `codex-setup/bridges/gemini-cli-delta-bridge.md`
 - `codex-setup/bridges/gemini-cli-delta-bridge.json`
+- `codex-setup/bridges/bridge-registry.json`
 
 ## Environment-Fix-Log
 
@@ -240,12 +243,25 @@ Dieses Log ist nur fuer bereits umgesetzte Verbesserungen der Programmierumgebun
 Es soll anderen CLI-Umgebungen wie Cloud Code oder Gemini CLI ermoeglichen, nicht nur Fehlerfixes,
 sondern auch bereits umgesetzte Verbesserungsideen von Codex zu lesen und nachzuvollziehen.
 Jeder Eintrag muss so ausfuehrlich sein, dass andere CLIs ihn auch ohne den urspruenglichen
-Session-Kontext verstehen koennen.
+Session-Kontext verstehen koennen. Das gleiche Robustheitsniveau wie bei Umwelt-Fixes gilt
+auch fuer umgesetzte `Intelligenzvorschlaege`: verwandte Oberflaechen mitpruefen, update-resistent
+bauen und Resilienz plus Failure-Review mit dokumentieren.
 
 Die generische Bruecken-Spezifikation dafuer liegt unter:
 
 - `codex-setup/bridges/intelligence-suggestion-exchange-bridge.md`
 - `codex-setup/bridges/intelligence-suggestion-exchange-bridge.json`
+
+## Bridge-Registry
+
+Die zentrale Registry fuer Bruecken-Metadaten liegt unter:
+
+- `codex-setup/bridges/bridge-registry.json`
+
+Sie enthaelt die gemeinsamen Trigger, Zielpfade, erwarteten Fremd-Registries und
+die gemeinsamen Guardrails fuer Cloud Code, Gemini CLI und die Exchange-Bruecken.
+Andere CLIs sollen dieselbe Dateiart im eigenen Setup anlegen und ihre exakten Registry-
+und Ledger-Adressen dort veroeffentlichen.
 
 ## Git-Regel fuer diesen Ordner
 

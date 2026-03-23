@@ -70,7 +70,7 @@ Alle acht Dimensionen sollen wachsen, nicht nur einzelne davon.
 
 - In jeder Session aktiv nach Verbesserungsmoeglichkeiten suchen, nicht erst auf Nachfrage.
 - Wenn waehrend der Arbeit ein ineffizienter Workflow, ein fehlender Agent, ein neuer Skill, ein besserer Prozess oder ein intelligenter Port sichtbar wird, soll am Ende ein konkreter `Intelligenzvorschlag` folgen.
-- Vorschlagsformat: `Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
+- Vorschlagsformat: `💡 Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
 - Vorschlaege kommen am Ende der Aufgabe, nie mitten in der Arbeit.
 - Vorschlaege kommen nach der eigentlichen Status- oder Ergebnis-Meldung.
 - Nur echter Mehrwert zaehlt; kein banaler Vorschlag.
@@ -270,3 +270,5 @@ _Noch keine Eintraege._
 - **[2026-03-23 14:10] codex-setup**: Direktive 3 `Resilient Bugfixing` ist jetzt als eigene Pflichtregel verankert. Umgebungsfixes muessen ab jetzt 3x-Why, verwandte Fehlerquellen, Defense in Depth, Fix-Induced-Failure-Review und die reichere Fix-Datenbank-Dokumentation durchlaufen, damit derselbe Fehler nicht erneut gelernt wird.
 
 - **[2026-03-23 15:05] codex-setup**: Codex loggt jetzt umgesetzte Intelligenzvorschlaege in codex-setup/state/implemented-intelligence-suggestions.json, nutzt new-environment-fix.* fuer gefuehrte Umgebungsfix-Erfassung und zeigt neue Vorschlaege fuer den Benutzer im sichtbaren Format 💡 Intelligenz-Vorschlag: ... an. Cloud-Code- und Gemini-Bruecken tragen zusaetzlich bereits die erwarteten Fremd-Adressen fuer entsprechende Ledger vorab mit.
+
+- **[2026-03-23 17:05] codex-setup**: Die zentrale Bridge-Registry liegt jetzt in codex-setup/bridges/bridge-registry.json. Sichtbare Vorschlaege muessen ab jetzt immer exakt als `💡 Intelligenz-Vorschlag:` erscheinen. Umgesetzte Intelligenzvorschlaege folgen nun demselben Zukunftsstandard wie Umgebungsfixes, inklusive Resilienz-Zusammenfassung und Failure-Review, und die Cloud-Code- sowie Gemini-Bruecken tragen den Registry-Adoptionshinweis jetzt auch maschinenlesbar mit.

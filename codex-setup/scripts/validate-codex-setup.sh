@@ -61,6 +61,7 @@ required_files=(
   "codex-setup/bridges/cloud-code-delta-bridge.json"
   "codex-setup/bridges/gemini-cli-delta-bridge.md"
   "codex-setup/bridges/gemini-cli-delta-bridge.json"
+  "codex-setup/bridges/bridge-registry.json"
   "codex-setup/bridges/environment-fix-exchange-bridge.md"
   "codex-setup/bridges/environment-fix-exchange-bridge.json"
   "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md"
@@ -177,8 +178,9 @@ search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
 search_fixed "GeminiCLI" "AGENTS.md"
 search_fixed "proposal-only" "AGENTS.md"
 search_fixed "8 intelligence dimensions" "AGENTS.md"
-search_fixed "Intelligenz-Vorschlag:" "AGENTS.md"
+search_fixed "💡 Intelligenz-Vorschlag:" "AGENTS.md"
 search_fixed "implemented-intelligence-suggestions.json" "AGENTS.md"
+search_fixed "bridge-registry.json" "AGENTS.md"
 search_fixed "every agent, skill, plugin, hook, and process" "AGENTS.md"
 search_fixed "resilient bugfixing as directive 3" "AGENTS.md"
 search_fixed "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md"
@@ -205,14 +207,16 @@ search_fixed "Starte bitte die Bruecke zu Gemini CLI" "codex-setup/README.md"
 search_fixed "GeminiCLI" "codex-setup/README.md"
 search_fixed "8 Intelligenz-Dimensionen" "codex-setup/README.md"
 search_fixed "resilient-bugfixing" "codex-setup/README.md"
+search_fixed "bridge-registry.json" "codex-setup/README.md"
 search_fixed "neue Tools, Plugins oder Agenten" "codex-setup/rules/global.md"
 search_fixed "semantischer Suche, Indexierung, Hintergrund-Reindex" "codex-setup/rules/global.md"
 search_fixed "Read-Only Fremd-Workspaces" "codex-setup/rules/global.md"
 search_fixed "GeminiCLI" "codex-setup/rules/global.md"
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/rules/global.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/rules/global.md"
-search_fixed "Intelligenz-Vorschlag:" "codex-setup/rules/global.md"
+search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/rules/global.md"
 search_fixed "implemented-intelligence-suggestions.json" "codex-setup/rules/global.md"
+search_fixed "bridge-registry.json" "codex-setup/rules/global.md"
 search_fixed "Direktive 3: Resilient Bugfixing" "codex-setup/rules/global.md"
 search_fixed "Die 6 Beobachtungskategorien" "codex-setup/rules/self-observation.md"
 search_fixed "### 4. Wissensluecken" "codex-setup/rules/self-observation.md"
@@ -234,16 +238,22 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/state/implemented-intelligence-suggestions.json','utf8')); if(data.scope!=='programming-environment-only') process.exit(1); if(data.ledger_kind!=='implemented-intelligence-suggestions') process.exit(1); if(!data.github_url) process.exit(1); if(!data.peer_ledgers || !data.peer_ledgers.Codex || !data.peer_ledgers['Cloud Code'] || !data.peer_ledgers['Gemini CLI']) process.exit(1); if(!Array.isArray(data.entries) || data.entries.length<1) process.exit(1); if(data.entries.some(entry=>!entry.id||!entry.summary||!entry.proposal_text||!entry.context_for_other_clis||entry.context_for_other_clis.length<40||!entry.why_it_was_suggested||entry.why_it_was_suggested.length<30||!entry.why_it_was_implemented||entry.why_it_was_implemented.length<30||!entry.how_it_was_implemented||entry.how_it_was_implemented.length<40||!entry.bridge_value||entry.bridge_value.length<30||!entry.adoption_guidance||entry.adoption_guidance.length<30)) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.registry_name!=='codex-bridge-registry') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.global_policies || !data.global_policies.proposal_only || !data.global_policies.replace_requires_confirmation || !data.global_policies.foreign_sources_read_only || !data.global_policies.implemented_intelligence_must_be_resilient || !data.global_policies.implemented_intelligence_resilience_rule) process.exit(1); if(!data.peer_registry_targets || !data.peer_registry_targets.Codex || !data.peer_registry_targets['Cloud Code'] || !data.peer_registry_targets['Gemini CLI']) process.exit(1); if(!data.bridges || !data.bridges['cloud-code-delta'] || !data.bridges['gemini-cli-delta'] || !data.bridges['environment-fix-exchange'] || !data.bridges['implemented-intelligence-suggestion-exchange']) process.exit(1);" || {
+  echo "bridge-registry.json is invalid." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/state/implemented-intelligence-suggestions.json','utf8')); if(data.scope!=='programming-environment-only') process.exit(1); if(data.ledger_kind!=='implemented-intelligence-suggestions') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(data.bridge_registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!data.github_url || !data.bridge_registry_github_url || !data.resilience_rule || data.resilience_rule.length<40) process.exit(1); if(!Array.isArray(data.required_resilience_fields) || !data.required_resilience_fields.includes('resilience_summary') || !data.required_resilience_fields.includes('future_failure_review')) process.exit(1); if(!data.peer_ledgers || !data.peer_ledgers.Codex || !data.peer_ledgers['Cloud Code'] || !data.peer_ledgers['Gemini CLI']) process.exit(1); if(!Array.isArray(data.entries) || data.entries.length<1) process.exit(1); if(data.entries.some(entry=>!entry.id||!entry.summary||!entry.proposal_text||!String(entry.proposal_text).startsWith('💡 Intelligenz-Vorschlag:')||!entry.context_for_other_clis||entry.context_for_other_clis.length<40||!entry.why_it_was_suggested||entry.why_it_was_suggested.length<30||!entry.why_it_was_implemented||entry.why_it_was_implemented.length<30||!entry.how_it_was_implemented||entry.how_it_was_implemented.length<40||!entry.bridge_value||entry.bridge_value.length<30||!entry.adoption_guidance||entry.adoption_guidance.length<30||!entry.resilience_summary||entry.resilience_summary.length<40||!entry.future_failure_review||entry.future_failure_review.length<40)) process.exit(1);" || {
   echo "implemented-intelligence-suggestions.json is invalid." >&2
   exit 1
 }
 
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/agent-memory/shared/MEMORY.md"
-search_fixed "Intelligenz-Vorschlag:" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Effizienzverluste, Wissensluecken, wiederkehrenden Muster" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Direktive 3: Resilient Bugfixing" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/skills/self-improve/references/report-and-creative.md"
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(data.source_label!=='Cloud Code') process.exit(1); if(!data.replacement_requires_confirmation) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1); if(!data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1);" || {
   echo "cloud-code-delta-bridge.json is invalid." >&2
@@ -260,6 +270,11 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='cloud-code-delta' || !data.bridge_registry.peer_expected_registries || !data.bridge_registry.peer_expected_registries['Cloud Code'] || !data.bridge_registry.peer_expected_registries['Gemini CLI']) process.exit(1);" || {
+  echo "cloud-code-delta-bridge.json must define bridge-registry metadata." >&2
+  exit 1
+}
+
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/environment-fix-exchange-bridge.json','utf8')); if(data.source_label!=='CLI Environment Fixes') process.exit(1); if(data.scope!=='programming-environment-only') process.exit(1); if(!data.requires_full_context) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1);" || {
   echo "environment-fix-exchange-bridge.json is invalid." >&2
   exit 1
@@ -270,8 +285,18 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/environment-fix-exchange-bridge.json','utf8')); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='environment-fix-exchange') process.exit(1);" || {
+  echo "environment-fix-exchange-bridge.json must define bridge-registry metadata." >&2
+  exit 1
+}
+
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/intelligence-suggestion-exchange-bridge.json','utf8')); if(data.source_label!=='Implemented Intelligence Suggestions') process.exit(1); if(data.scope!=='programming-environment-only') process.exit(1); if(!data.requires_full_context) process.exit(1); if(!data.peer_registration_required) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1);" || {
   echo "intelligence-suggestion-exchange-bridge.json is invalid." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/intelligence-suggestion-exchange-bridge.json','utf8')); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.requires_resilience_fields) process.exit(1); if(!Array.isArray(data.entry_schema) || !data.entry_schema.includes('resilience_summary') || !data.entry_schema.includes('future_failure_review')) process.exit(1); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='implemented-intelligence-suggestion-exchange') process.exit(1);" || {
+  echo "intelligence-suggestion-exchange-bridge.json must define proposal-prefix, resilience, and bridge-registry metadata." >&2
   exit 1
 }
 
@@ -287,6 +312,11 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/gemini-cli-delta-bridge.json','utf8')); if(!data.include_implemented_intelligence_suggestions) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1);" || {
   echo "gemini-cli-delta-bridge.json must expose implemented-suggestion ledger addresses." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/gemini-cli-delta-bridge.json','utf8')); if(!data.bridge_registry || data.bridge_registry.registry_path!=='codex-setup/bridges/bridge-registry.json' || data.bridge_registry.bridge_id!=='gemini-cli-delta' || !data.bridge_registry.peer_expected_registries || !data.bridge_registry.peer_expected_registries['Cloud Code'] || !data.bridge_registry.peer_expected_registries['Gemini CLI']) process.exit(1);" || {
+  echo "gemini-cli-delta-bridge.json must define bridge-registry metadata." >&2
   exit 1
 }
 
@@ -377,7 +407,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.a
 }
 temp_suggestion_ledger="$(mktemp)"
 rm -f "$temp_suggestion_ledger"
-node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state "$temp_suggestion_ledger" --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --portable-to "Cloud Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" >/dev/null
+node "codex-setup/scripts/register-intelligence-suggestion.mjs" add --state "$temp_suggestion_ledger" --id "validator-intelligence-suggestion" --summary "temporary intelligence suggestion entry" --proposal "💡 Intelligenz-Vorschlag: A durable helper should exist for rich ledger writes so future sessions do not retype long schemas manually." --context "This temporary validator entry proves that the implemented-intelligence-suggestion ledger can store a full cross-CLI explanation, not just a short headline." --suggested-because "The richer Codex ledgers are valuable only if their entries remain understandable for other CLIs without access to this session." --implemented-because "The validator needs an end-to-end write proof so the ledger schema and registration script cannot silently drift apart." --implementation "The validator writes a temporary intelligence-suggestion entry through the dedicated registration script and then reads the ledger back to confirm the persisted id." --bridge-value "Other CLIs can trust that the Codex implemented-suggestion ledger is validated as a workflow and not merely as a static JSON file." --adoption-guidance "If another CLI creates the same ledger, it should keep an end-to-end validator smoke test so schema drift is caught before a real session depends on the file." --resilience-summary "This smoke test is resilient because it validates the full implemented-intelligence workflow, not just a static file, and it keeps proposal formatting plus future-proof metadata under active verification." --failure-review "Dependencies: registry defaults, the registration script, and the ledger schema must stay aligned. Failure scenario: if one layer drifts the validator must fail loudly. State change: only a temporary file is written. Race risk is negligible in the temp path. Backward compatibility remains because the smoke uses the same script entrypoint. Platform effects are covered by PowerShell and Bash validators. Update resistance comes from rerunning the smoke after future schema or bridge-registry changes. Graceful degradation is preserved because failure only aborts validation." --portable-to "Cloud Code,Gemini CLI" --artifacts "codex-setup/scripts/register-intelligence-suggestion.mjs,codex-setup/state/implemented-intelligence-suggestions.json" >/dev/null
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(!data.entries || data.entries[0].id!=='validator-intelligence-suggestion') process.exit(1);" "$temp_suggestion_ledger" || {
   echo "Intelligence-suggestion registration failed." >&2
   exit 1
