@@ -83,8 +83,10 @@ Whiteboard-Regeln:
   zuerst die Whiteboard-Sektion `## Oberste Direktive` mitlesen und ihr folgen.
 - Unterhalb der `## Oberste Direktive` gilt fuer Codex zusaetzlich die zweite Direktive
   `self-observation`: Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege,
-  Geschwindigkeitsverluste und Benutzerkorrekturen beobachten und daraus Schutzmassnahmen
-  oder Intelligenzvorschlaege fuer kuenftige Sessions ableiten.
+  Effizienzverluste, Wissensluecken, wiederkehrenden Muster und Benutzerkorrekturen beobachten
+  und daraus Schutzmassnahmen oder Intelligenzvorschlaege fuer kuenftige Sessions ableiten.
+- Diese zweite Direktive gilt fuer jeden Agenten, Skill, Hook, jedes Plugin und jeden Prozess.
+- Beobachtungen werden waehrend der Arbeit gesammelt, aber erst am Ende der Aufgabe nach der Status-Meldung gebuendelt zurueckgegeben.
 - Die `## Oberste Direktive` verfolgt ausdruecklich einen Compound-Intelligence-Ansatz:
   nicht nur Probleme loesen, sondern das System besser darin machen, sich selbst intelligenter zu machen
   und ganze Problemklassen schrittweise zu eliminieren.

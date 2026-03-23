@@ -165,6 +165,7 @@ search_fixed "GeminiCLI" "AGENTS.md"
 search_fixed "proposal-only" "AGENTS.md"
 search_fixed "8 intelligence dimensions" "AGENTS.md"
 search_fixed "Intelligenz-Vorschlag:" "AGENTS.md"
+search_fixed "every agent, skill, plugin, hook, and process" "AGENTS.md"
 search_fixed "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md"
 search_fixed "always start with \`Committed.\`" "AGENTS.md"
 search_fixed "add a second final line \`Gepusht in <path>, plattformuebergreifend.\`" "AGENTS.md"
@@ -191,6 +192,11 @@ search_fixed "GeminiCLI" "codex-setup/rules/global.md"
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/rules/global.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/rules/global.md"
 search_fixed "Intelligenz-Vorschlag:" "codex-setup/rules/global.md"
+search_fixed "Die 6 Beobachtungskategorien" "codex-setup/rules/self-observation.md"
+search_fixed "### 4. Wissensluecken" "codex-setup/rules/self-observation.md"
+search_fixed "### 6. Benutzer-Hinweise" "codex-setup/rules/self-observation.md"
+search_fixed "Rueckmeldung: immer am Ende der Aufgabe und nach der Status-Meldung" "codex-setup/rules/self-observation.md"
+search_fixed "jeden Agenten, jeden Skill, jedes Plugin, jeden Hook und jeden Prozess" "codex-setup/rules/self-observation.md"
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/state/claude-delta-state.json','utf8')); if(data.scope!=='claude-environment-only') process.exit(1); if(!data.replace_requires_confirmation) process.exit(1); if(!data.tracked_paths.includes('CLAUDE.md')) process.exit(1);" || {
   echo "claude-delta-state.json is invalid." >&2
@@ -205,6 +211,7 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Intelligenz-Vorschlag:" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "Effizienzverluste, Wissensluecken, wiederkehrenden Muster" "codex-setup/agent-memory/shared/MEMORY.md"
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(data.source_label!=='Cloud Code') process.exit(1); if(!data.replacement_requires_confirmation) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1); if(!data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1);" || {
   echo "cloud-code-delta-bridge.json is invalid." >&2

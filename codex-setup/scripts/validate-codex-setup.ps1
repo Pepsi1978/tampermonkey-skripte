@@ -172,6 +172,10 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
     throw "AGENTS.md must define the intelligence proposal format."
 }
 
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "every agent, skill, plugin, hook, and process") {
+    throw "AGENTS.md must apply self-observation to every agent, skill, plugin, hook, and process."
+}
+
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('automatically create a focused commit and push it to `origin/main`')) {
     throw "AGENTS.md must instruct Codex to auto-commit and push validated codex-setup changes."
 }
@@ -238,6 +242,26 @@ if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Cross-Tool-Lerne
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
     throw "global.md must define the intelligence proposal format."
+}
+
+if ((Get-Content "codex-setup\rules\self-observation.md" -Raw) -notmatch "Die 6 Beobachtungskategorien") {
+    throw "self-observation.md must define the 6 observation categories."
+}
+
+if ((Get-Content "codex-setup\rules\self-observation.md" -Raw) -notmatch "### 4. Wissensluecken") {
+    throw "self-observation.md must include Wissensluecken."
+}
+
+if ((Get-Content "codex-setup\rules\self-observation.md" -Raw) -notmatch "### 6. Benutzer-Hinweise") {
+    throw "self-observation.md must include Benutzer-Hinweise."
+}
+
+if ((Get-Content "codex-setup\rules\self-observation.md" -Raw) -notmatch "Rueckmeldung: immer am Ende der Aufgabe und nach der Status-Meldung") {
+    throw "self-observation.md must require end-of-task reporting after the status message."
+}
+
+if ((Get-Content "codex-setup\rules\self-observation.md" -Raw) -notmatch "jeden Agenten, jeden Skill, jedes Plugin, jeden Hook und jeden Prozess") {
+    throw "self-observation.md must apply to all working components."
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "audit-claude-delta.mjs") {
@@ -322,6 +346,10 @@ if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Cr
 
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
     throw "MEMORY.md must define the intelligence proposal format."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Effizienzverluste, Wissensluecken, wiederkehrenden Muster") {
+    throw "MEMORY.md must summarize the stronger self-observation categories."
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json

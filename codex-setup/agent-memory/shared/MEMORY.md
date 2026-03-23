@@ -92,7 +92,11 @@ Alle acht Dimensionen sollen wachsen, nicht nur einzelne davon.
 ### Direktive 2: Selbstbeobachtung
 
 - Direktive Nummer 2 unterhalb dieser `Oberste Direktive` ist Codex-Selbstbeobachtung.
-- Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege, Benutzerkorrekturen und Zeitverluste aktiv beobachten und daraus Schutzmassnahmen, Regelideen oder Intelligenzvorschlaege ableiten.
+- Sie gilt fuer jeden Agenten, jeden Skill, jedes Plugin, jeden Hook und jeden Prozess.
+- Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege, Effizienzverluste, Wissensluecken, wiederkehrenden Muster und Benutzerkorrekturen aktiv beobachten und daraus Schutzmassnahmen, Regelideen oder Intelligenzvorschlaege ableiten.
+- Beobachtungen werden waehrend der Arbeit gesammelt, aber erst am Ende der Aufgabe nach der Status-Meldung gebuendelt zurueckgegeben.
+- Wenn der Benutzer etwas korrigiert oder neues Setup-Wissen liefert, soll dieses Wissen sofort dauerhaft abgesichert werden.
+- Wenn derselbe Fehlertyp erneut auftaucht, soll die ganze Fehlerklasse adressiert werden, nicht nur die einzelne Instanz.
 
 ### Cross-Tool-Lernen
 
@@ -252,3 +256,5 @@ _Noch keine Eintraege._
 - **[2026-03-23 13:00] codex-setup**: Delta-Bruecken zu Cloud Code und Gemini CLI sind jetzt strikt proposal-only. Trigger: `Starte bitte die Bruecke zu Cloud Code` und `Starte bitte die Bruecke zu Gemini CLI`. Jede Bruecke muss zuerst eine gruppierte A1/B1/C1/D1-Vorschlagsliste erzeugen; keine autonome Umsetzung, auch nicht fuer ADD oder ADAPT.
 
 - **[2026-03-23 13:20] codex-setup**: Die Oberste Direktive wurde auf die staerkere Superintelligenz-Fassung umgestellt: 8 Intelligenz-Dimensionen, Compound-Improvement, exakter `Intelligenz-Vorschlag`-Stil und read-only Cross-Tool-Lernen sind jetzt als dauerhafte Codex-Steuerlogik verankert und validator-abgesichert.
+
+- **[2026-03-23 13:40] codex-setup**: Direktive 2 `Selbstbeobachtung` ist jetzt als staerkere Pflichtregel verankert: 6 Beobachtungskategorien, Hintergrundbeobachtung ohne Mid-Task-Unterbrechung, End-of-task-Rueckmeldung nach Status-Meldung und sofortige Persistenz fuer Wissensluecken sowie Benutzer-Korrekturen.

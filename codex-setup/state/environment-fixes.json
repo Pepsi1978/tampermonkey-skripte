@@ -171,6 +171,38 @@
       ],
       "created_at": "2026-03-23T12:08:11.520Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-self-observation-directive-upgrade",
+      "source_cli": "Codex",
+      "category": "directive-hardening",
+      "summary": "Codex self-observation now runs as a stronger second directive with 6 observation categories, end-of-task reporting, and mandatory persistence of user corrections and knowledge gaps.",
+      "context_for_other_clis": "This fix applies to the second-highest directive in the Codex environment itself. The user clarified that self-observation is not a loose reminder but a mandatory background behavior for every agent, skill, plugin, hook, and process. It must continuously watch how work is performed and turn real observations into durable setup improvements at the end of the task.",
+      "symptom_before_fix": "Before this upgrade the Codex setup already mentioned self-observation, but the contract was still too compressed. It only modeled 5 categories, did not explicitly separate efficiency from detours, did not include knowledge gaps as a first-class category, did not clearly state that every working component is covered, and did not fully encode the end-of-task reporting rule and the requirement to persist user corrections immediately.",
+      "root_cause": "The earlier self-observation rule had grown from shorter summaries and therefore left important operational details implicit. Because those details were not validator-backed across the rule, AGENTS, memory, README, and self-improve workflow, the second directive could drift toward a softer interpretation over time.",
+      "what_was_fixed": "The self-observation rule was expanded to a full 6-category contract: Fehler, Umwege, Effizienz, Wissensluecken, Muster, and Benutzer-Hinweise. The rule now applies explicitly to every agent, skill, plugin, hook, and process; requires observations to be gathered during work but reported only at the end after the status message; requires user corrections and knowledge gaps to be persisted immediately; and treats repeated failures as a signal to eliminate the entire error class. AGENTS, global rules, README, memory, self-improve workflow, report references, workspace-scan references, and validators were updated to carry and check the same contract.",
+      "why_it_was_fixed": "The user wants self-observation to function as the sensor layer for the superintelligence directive. That only works if the rule is explicit enough to catch detours, repeated mistakes, knowledge deficits, and user guidance before they are forgotten or repeated in later sessions.",
+      "verification": "Verified by redeploying the updated self-improve skill and rerunning both full codex-setup validators in PowerShell and Git Bash. Both validators passed after the upgrade and now assert the 6 observation categories, the all-components scope, the mandatory end-of-task reporting rule, and the stronger self-observation summary in the Codex memory.",
+      "portability_notes": "Other CLI environments should implement self-observation as an operational contract, not as an optional reflection habit. The durable pattern is: define explicit observation categories, cover every working component, separate background observation from user-facing reporting, persist user corrections and knowledge gaps immediately, and treat repeated failures as evidence that the first fix was not resistant enough.",
+      "impact": "Codex now has a clearer sensor layer for improvement work, which should reduce repeated detours, repeated user corrections, and non-resistant fixes over time.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/rules/self-observation.md",
+        "AGENTS.md",
+        "codex-setup/rules/global.md",
+        "codex-setup/README.md",
+        "codex-setup/agent-memory/shared/MEMORY.md",
+        "codex-setup/skills/self-improve/SKILL.md",
+        "codex-setup/skills/self-improve/references/report-and-creative.md",
+        "codex-setup/skills/self-improve/references/workspace-scan.md",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh"
+      ],
+      "created_at": "2026-03-23T12:11:54.057Z",
+      "status": "active"
     }
   ]
 }

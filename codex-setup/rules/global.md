@@ -105,7 +105,12 @@ Alle acht Dimensionen sollen wachsen. Einseitige Optimierung reicht nicht.
 ### Direktive 2: Selbstbeobachtung
 
 - Direktive Nummer 2 unterhalb dieser `Oberste Direktive` ist Codex-Selbstbeobachtung.
-- Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege, Benutzerkorrekturen und Zeitverluste aktiv beobachten und daraus am Ende der Session Schutzmassnahmen, Regelideen oder Intelligenzvorschlaege ableiten.
+- Sie gilt fuer jeden Agenten, jeden Skill, jedes Plugin, jeden Hook und jeden Prozess in diesem Codex-Setup.
+- Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege, Effizienzverluste, Wissensluecken, wiederkehrenden Muster und Benutzerkorrekturen aktiv beobachten und daraus am Ende der Session Schutzmassnahmen, Regelideen oder Intelligenzvorschlaege ableiten.
+- Beobachtungen werden waehrend der Arbeit gesammelt, aber nicht mitten im Arbeitsfluss ausgerollt.
+- Rueckmeldung dazu erfolgt am Ende der Aufgabe und nach der eigentlichen Status-Meldung.
+- Wenn der Benutzer etwas korrigiert oder neues Setup-Wissen liefert, soll dieses Wissen sofort dauerhaft abgesichert werden.
+- Wenn derselbe Fehlertyp erneut auftaucht, soll Codex nicht nur den Einzelfall fixen, sondern die ganze Fehlerklasse absichern.
 
 ### Cross-Tool-Lernen
 

@@ -140,6 +140,7 @@ After independence is confirmed:
 - read and restate `## Oberste Direktive` before scanning or changing anything else
 - restate the current superintelligence direction and which of the 8 intelligence dimensions this run should improve the most
 - restate the current self-observation expectation for this run
+- keep the 6 self-observation categories in mind during the run: Fehler, Umwege, Effizienz, Wissensluecken, Muster, Benutzer-Hinweise
 - restate the expected end-of-session suggestion format: `Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
 - summarize current system state, open problems, intelligence direction, and the best next leverage point
 - decide what change would most increase long-term programming intelligence in this session
@@ -201,6 +202,7 @@ Always verify:
 - own Codex whiteboard exists
 - the whiteboard contains `## Oberste Direktive`
 - the self-observation directive is propagated where it should be
+- the 6 self-observation categories are still visible in the controlling Codex files
 - whiteboard bridge scripts exist and work
 - local skill deployment target exists or can be created
 - MCP registrations relevant to this workspace

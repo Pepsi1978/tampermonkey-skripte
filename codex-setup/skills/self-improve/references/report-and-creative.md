@@ -31,6 +31,9 @@
 ### Selbstbeobachtung
 [Kurz: welche Reibung, Fehler, Umwege oder Benutzerhinweise wurden fuer Codex nutzbar gemacht]
 
+### Selbstbeobachtungskategorien
+[Welche der 6 Kategorien waren relevant: Fehler, Umwege, Effizienz, Wissensluecken, Muster, Benutzer-Hinweise?]
+
 ### Claude-Delta-Status
 [Wenn benutzt: welche Kandidaten waren ADD, ADAPT oder REPLACE]
 
