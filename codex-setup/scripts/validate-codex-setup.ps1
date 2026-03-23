@@ -38,6 +38,7 @@ $RequiredFiles = @(
     "codex-setup\bridges\environment-fix-exchange-bridge.json",
     "codex-setup\bridges\intelligence-suggestion-exchange-bridge.md",
     "codex-setup\bridges\intelligence-suggestion-exchange-bridge.json",
+    "codex-setup\scripts\bridge-registry.mjs",
     "codex-setup\scripts\whiteboard-bridge.mjs",
     "codex-setup\scripts\whiteboard-insert.sh",
     "codex-setup\scripts\whiteboard-insert.ps1",
@@ -521,6 +522,16 @@ if (
 ) {
     throw "bridge-registry.json must list all active Codex bridge types."
 }
+if (
+    $BridgeRegistry.bridges.'cloud-code-delta'.state_scope -ne "claude-environment-only" -or
+    $BridgeRegistry.bridges.'gemini-cli-delta'.state_scope -ne "gemini-environment-only" -or
+    $BridgeRegistry.bridges.'cloud-code-delta'.audit_git_paths.Count -lt 2 -or
+    $BridgeRegistry.bridges.'gemini-cli-delta'.audit_git_paths.Count -lt 1 -or
+    [string]::IsNullOrWhiteSpace($BridgeRegistry.bridges.'cloud-code-delta'.audit_title) -or
+    [string]::IsNullOrWhiteSpace($BridgeRegistry.bridges.'gemini-cli-delta'.audit_title)
+) {
+    throw "bridge-registry.json must define audit scope, titles, and git paths for the delta bridges."
+}
 
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {
     throw "MEMORY.md must define the 8 intelligence dimensions."
@@ -738,6 +749,15 @@ $ClaudeAudit = ($ClaudeAuditJson -join "`n") | ConvertFrom-Json
 if (-not $ClaudeAudit.latest_relevant_commit) {
     throw "Claude delta audit did not report a latest relevant commit."
 }
+if (
+    $ClaudeAudit.bridge_id -ne "cloud-code-delta" -or
+    $ClaudeAudit.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $ClaudeAudit.tracked_git_paths.Count -lt 2 -or
+    $ClaudeAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Cloud Code" -or
+    -not $ClaudeAudit.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path
+) {
+    throw "Claude delta audit must expose registry-driven bridge metadata."
+}
 
 $TempAuditState = Join-Path ([System.IO.Path]::GetTempPath()) ("claude-delta-state-" + [guid]::NewGuid().ToString() + ".json")
 node "codex-setup/scripts/audit-claude-delta.mjs" mark-reviewed --state $TempAuditState --commit $ClaudeAudit.latest_relevant_commit | Out-Null
@@ -795,6 +815,15 @@ if ($LASTEXITCODE -ne 0) {
 $GeminiAudit = ($GeminiAuditJson -join "`n") | ConvertFrom-Json
 if (-not $GeminiAudit.latest_relevant_commit) {
     throw "Gemini delta audit did not report a latest relevant commit."
+}
+if (
+    $GeminiAudit.bridge_id -ne "gemini-cli-delta" -or
+    $GeminiAudit.registry_path -ne "codex-setup/bridges/bridge-registry.json" -or
+    $GeminiAudit.tracked_git_paths.Count -lt 1 -or
+    $GeminiAudit.trigger_phrases -notcontains "Starte bitte die Bruecke zu Gemini CLI" -or
+    -not $GeminiAudit.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path
+) {
+    throw "Gemini delta audit must expose registry-driven bridge metadata."
 }
 
 $TempGeminiState = Join-Path ([System.IO.Path]::GetTempPath()) ("gemini-delta-state-" + [guid]::NewGuid().ToString() + ".json")

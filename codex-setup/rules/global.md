@@ -209,6 +209,7 @@ Alle acht Dimensionen sollen wachsen. Einseitige Optimierung reicht nicht.
 
 - `codex-setup/bridges/bridge-registry.json` ist die zentrale Registry fuer Bruecken-Trigger, Zieladressen, erwartete Fremd-Registries und gemeinsame Bridge-Guardrails.
 - Cloud-Code-, Gemini-CLI- und Exchange-Bruecken sollen diese Registry referenzieren statt solche Metadaten still auseinanderlaufen zu lassen.
+- Die Delta-Audits fuer Cloud Code und Gemini CLI sollen ihre Git-Scanpfade, Trigger und Bridge-Metadaten direkt aus `codex-setup/bridges/bridge-registry.json` plus der jeweiligen Bridge-JSON lesen statt diese Informationen im Audit-Code doppelt zu pflegen.
 - Wenn weitere CLI-Bruecken hinzukommen, sollen sie zuerst in dieser Registry eingetragen werden.
 
 ## Codex Skills und Agents

@@ -213,6 +213,8 @@ _Noch keine Eintraege._
 
 - **[2026-03-23 12:15] self-improve**: Der Cloud-Code-Transfer folgt jetzt strikt ADD / ADAPT / REPLACE; REPLACE braucht Freigabe, additive Integration bleibt Standard und lokale MCP-Live-Smoketests in der Validatorik laufen nur noch bei wirklich registrierten Servern.
 
+- **[2026-03-23 17:24] codex-setup**: Die Cloud-Code- und Gemini-Delta-Audits lesen ihre Git-Scanpfade, Trigger und Bridge-Metadaten jetzt direkt aus codex-setup/bridges/bridge-registry.json plus der jeweiligen Bridge-JSON. Neue Bruecken sollen damit zuerst die zentrale Registry erweitern, statt dieselben Pfade oder Trigger spaeter nochmal im Audit-Code zu duplizieren.
+
 ## Debugging-Muster
 _Noch keine Eintraege._
 

@@ -3,18 +3,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { REPO_ROOT, loadBridgeContext } from "./bridge-registry.mjs";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const REPO_ROOT = path.resolve(__dirname, "..", "..");
-const DEFAULT_STATE_PATH = path.join(
-  REPO_ROOT,
-  "codex-setup",
-  "state",
-  "claude-delta-state.json",
-);
-const TRACKED_PATHS = ["CLAUDE.md", "claude-code-setup"];
+const BRIDGE_ID = "cloud-code-delta";
+const BRIDGE_CONTEXT = loadBridgeContext(BRIDGE_ID);
+const DEFAULT_STATE_PATH = BRIDGE_CONTEXT.statePath;
+const TRACKED_PATHS = BRIDGE_CONTEXT.auditGitPaths;
 const REPLACE_SUBJECT_RE = /\b(rewrite|replace|remove|delete|drop|rename|overhaul)\b/i;
 const BUGFIX_SUBJECT_RE =
   /\b(fix|bug|regression|resilien|harden|hardening|guard|watchdog|repair|safety|stability|parity|healthcheck|health-check|timeout|fallback|validator|validate)\b/i;
@@ -23,16 +17,18 @@ const BUGFIX_PATH_RE =
 
 const DEFAULT_STATE = {
   version: 1,
-  scope: "claude-environment-only",
-  tracked_paths: ["CLAUDE.md", "claude-code-setup/**"],
-  replace_requires_confirmation: true,
-  additive_bias: true,
+  bridge_id: BRIDGE_ID,
+  bridge_registry_path: BRIDGE_CONTEXT.registry.registry_path,
+  scope: BRIDGE_CONTEXT.stateScope,
+  tracked_paths: BRIDGE_CONTEXT.sourcePaths,
+  tracked_git_paths: BRIDGE_CONTEXT.auditGitPaths,
+  replace_requires_confirmation: BRIDGE_CONTEXT.replacementRequiresConfirmation,
+  additive_bias: BRIDGE_CONTEXT.bridgeJson.additive_bias ?? true,
   last_reviewed_commit: null,
   last_applied_commit: null,
   last_reviewed_at: null,
   last_applied_at: null,
-  notes:
-    "Tracks only Claude/Cloud Code programming-environment deltas for Codex.",
+  notes: "Tracks only Cloud Code programming-environment deltas for Codex.",
 };
 
 function parseArgs(argv) {
@@ -429,8 +425,18 @@ function buildCandidates(commits, state, limit) {
 }
 
 function loadState(statePath) {
-  const loaded = readJson(statePath, DEFAULT_STATE);
-  return { ...DEFAULT_STATE, ...loaded };
+  const loaded = readJson(statePath, {});
+  return {
+    ...DEFAULT_STATE,
+    ...loaded,
+    bridge_id: DEFAULT_STATE.bridge_id,
+    bridge_registry_path: DEFAULT_STATE.bridge_registry_path,
+    scope: DEFAULT_STATE.scope,
+    tracked_paths: DEFAULT_STATE.tracked_paths,
+    tracked_git_paths: DEFAULT_STATE.tracked_git_paths,
+    replace_requires_confirmation: DEFAULT_STATE.replace_requires_confirmation,
+    additive_bias: DEFAULT_STATE.additive_bias,
+  };
 }
 
 function buildRange(baseCommit) {
@@ -468,9 +474,21 @@ function scanDeltas(args, statePath) {
 
   return {
     generated_at: new Date().toISOString(),
+    bridge_id: BRIDGE_ID,
+    source_label: BRIDGE_CONTEXT.sourceLabel,
+    registry_path: BRIDGE_CONTEXT.registry.registry_path,
+    registry_github_url: BRIDGE_CONTEXT.registry.github_url,
+    bridge_files: BRIDGE_CONTEXT.bridgeFiles,
+    trigger_phrases: BRIDGE_CONTEXT.triggerPhrases,
+    proposal_only: BRIDGE_CONTEXT.proposalOnly,
+    replacement_requires_confirmation:
+      BRIDGE_CONTEXT.replacementRequiresConfirmation,
+    read_only_sources: BRIDGE_CONTEXT.readOnlySources,
+    exchange_ledgers: BRIDGE_CONTEXT.exchangeLedgers,
     repo_root: REPO_ROOT,
     scope: state.scope,
     tracked_paths: state.tracked_paths,
+    tracked_git_paths: state.tracked_git_paths,
     state_path: statePath,
     base_commit: baseCommit,
     base_commit_status: baseStatus,
@@ -484,8 +502,10 @@ function scanDeltas(args, statePath) {
 
 function formatTextReport(result) {
   const lines = [
-    "Claude Delta Audit",
+    BRIDGE_CONTEXT.auditTitle,
+    `Registry: ${result.registry_path}`,
     `Scope: ${result.tracked_paths.join(", ")}`,
+    `Git-Scanpfade: ${result.tracked_git_paths.join(", ")}`,
     `State file: ${result.state_path}`,
     `Base commit: ${result.base_commit || "(none)"}`,
     `Latest relevant commit: ${result.latest_relevant_commit || "(none)"}`,
@@ -499,7 +519,7 @@ function formatTextReport(result) {
   }
 
   if (result.candidates.length === 0) {
-    lines.push("Keine neuen portablen Claude-Setup-Deltas seit dem Basisstand.");
+    lines.push(BRIDGE_CONTEXT.noDeltaMessage);
     return `${lines.join("\n")}\n`;
   }
 
@@ -578,7 +598,7 @@ function markState(args, statePath, fieldPrefix) {
   const state = loadState(statePath);
   const commit = args.commit || getLatestRelevantCommit();
   if (!commit) {
-    throw new Error("No Claude delta commit available to store.");
+    throw new Error(`No ${BRIDGE_CONTEXT.sourceLabel} delta commit available to store.`);
   }
   if (!isValidCommit(commit)) {
     throw new Error(`Invalid commit: ${commit}`);

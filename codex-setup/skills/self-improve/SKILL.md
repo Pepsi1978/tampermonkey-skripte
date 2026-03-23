@@ -157,6 +157,7 @@ Workflow:
 - read [references/claude-delta-sync.md](references/claude-delta-sync.md)
 - run `codex-setup/scripts/audit-claude-delta.*`
 - classify candidates as `ADD`, `ADAPT`, or `REPLACE`
+- treat `codex-setup/bridges/bridge-registry.json` plus the corresponding bridge JSON as the source of truth for audit scan paths, trigger phrases, and bridge metadata
 - treat Claude files as read-only comparison sources
 - never auto-apply bridge findings; report them first as grouped proposals
 - if the audit shows `REPLACE`, warn first and do not overwrite existing Codex behavior without approval
@@ -170,6 +171,7 @@ Workflow:
 - read [references/gemini-delta-sync.md](references/gemini-delta-sync.md)
 - run `codex-setup/scripts/audit-gemini-delta.*`
 - classify candidates as `ADD`, `ADAPT`, or `REPLACE`
+- treat `codex-setup/bridges/bridge-registry.json` plus the corresponding bridge JSON as the source of truth for audit scan paths, trigger phrases, and bridge metadata
 - treat Gemini files as read-only comparison sources
 - never auto-apply bridge findings; report them first as grouped proposals
 - if the audit shows `REPLACE`, warn first and do not overwrite existing Codex behavior without approval

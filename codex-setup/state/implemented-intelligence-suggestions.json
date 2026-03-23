@@ -95,6 +95,37 @@
       ],
       "created_at": "2026-03-23T13:06:09.338Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-registry-driven-delta-audits",
+      "source_cli": "Codex",
+      "summary": "Die Delta-Audits fuer Cloud Code und Gemini CLI lesen ihre Git-Scanpfade, Trigger und Bridge-Metadaten jetzt direkt aus der zentralen Bridge-Registry.",
+      "proposal_text": "💡 Intelligenz-Vorschlag: Die Delta-Audits sollen sich selbst direkt aus der zentralen Bridge-Registry speisen — Ziehe Git-Scanpfade, Trigger und Bridge-Metadaten in eine gemeinsame Registry-Hilfslogik, damit neue Bruecken spaeter keine Pfad- oder Triggerdaten mehr doppelt im Audit-Code pflegen muessen — Soll ich das umsetzen?",
+      "context_for_other_clis": "Diese Umsetzung entstand, nachdem Codex bereits eine zentrale bridge-registry.json aufgebaut hatte, die Brueckenadressen, Trigger und gemeinsame Guardrails fuer Cloud Code und Gemini CLI enthaelt. Die beiden Delta-Audits funktionierten zwar bereits, hielten ihre relevanten Git-Scanpfade und einen Teil ihrer operativen Metadaten jedoch weiterhin lokal im Audit-Code vor. Dadurch waere jede neue Bruecke gezwungen gewesen, dieselben Basisinformationen an mindestens zwei Stellen zu pflegen: einmal in der Registry und einmal im jeweiligen Audit-Skript.",
+      "why_it_was_suggested": "Die Registry war bereits als zentrale Brueckenkarte eingefuehrt, aber die beiden Delta-Audits zogen ihre eigentlichen Scanpfade noch nicht daraus. Damit bestand weiter das Risiko von Drift zwischen Registry, Bridge-JSON und Audit-Code, gerade wenn spaeter weitere CLI-Bruecken dazukommen oder bestehende Trigger und Pfade geaendert werden.",
+      "why_it_was_implemented": "Der Benutzer wollte den letzten Vorschlag direkt umsetzen, damit die neue zentrale Bridge-Registry nicht nur dokumentativ existiert, sondern auch die laufenden Delta-Audits real speist. Das ist ein direkter Hebel fuer mehr Zukunftssicherheit, weniger Doppelpflege und schnelleres Erweitern des Brueckensystems auf weiteren Rechnern und weitere CLI-Umgebungen.",
+      "how_it_was_implemented": "Codex hat eine neue gemeinsame Hilfsdatei codex-setup/scripts/bridge-registry.mjs gebaut. Diese laedt die zentrale bridge-registry.json, loest die zugehoerige Bridge-JSON auf und stellt den Delta-Audits den Bridge-Kontext bereit. audit-claude-delta.mjs und audit-gemini-delta.mjs lesen jetzt state_file, audit_title, state_scope, audit_git_paths, trigger_phrases, proposal_only, read_only_sources und exchange_ledgers aus dieser Registry-Kopplung statt diese operativen Brueckeninformationen lokal zu duplizieren. Die Audits geben diese Metadaten auch in ihrem JSON-Output mit aus, sodass Validatoren die echte Registry-Kopplung pruefen koennen. Zusaetzlich wurde register-intelligence-suggestion.mjs auf dieselbe Registry-Hilfslogik umgestellt, damit auch dort kein zweiter Registry-Lader parallel driftet.",
+      "bridge_value": "Andere CLIs oder spaetere weitere Bruecken koennen dasselbe Muster uebernehmen: erst die zentrale Registry erweitern, danach den Audit-Kern nur noch aus dieser Registry speisen. Dadurch sinkt die Zahl der Stellen, an denen Trigger, Scanpfade oder Ledger-Hinweise gepflegt werden muessen, und Bruecken werden leichter reproduzierbar und plattformuebergreifend portierbar.",
+      "adoption_guidance": "Wenn Cloud Code, Gemini CLI oder spaetere CLI-Umgebungen diese Logik uebernehmen, sollten sie eine zentrale bridge-registry.json plus eine kleine Registry-Hilfslogik anlegen und ihre Delta-Audits ausschliesslich daraus fuettern. Neue Bruecken sollten erst in der Registry eingetragen und erst danach ueber Audit-Skripte, Validatoren oder Routing-Regeln angebunden werden. So bleibt die Registry der einzige Ort fuer Trigger, Scanpfade und Brueckenmetadaten.",
+      "resilience_summary": "Die Umsetzung ist robust, weil nicht nur zwei Audit-Dateien angepasst wurden, sondern eine gemeinsame Registry-Hilfslogik, die Registry selbst, README, globale Regeln, der Self-Improve-Skill und beide Validatoren zusammen aktualisiert wurden. Dadurch pruefen die Validatoren jetzt aktiv, dass die Audits wirklich registry-getriebene Metadaten ausgeben, statt nur zufaellig noch zu funktionieren.",
+      "future_failure_review": "Geprueft wurden Drift zwischen Registry und Audit-Code, fehlende Audit-Git-Pfade in der Registry, verlorene Triggerphrasen im Audit-Output, fehlende Ledger-Metadaten sowie eine zweite lokale Registry-Ladelogik im Suggestion-Registrierungsskript. Die Audits liefern deshalb jetzt bridge_id, registry_path, tracked_git_paths, trigger_phrases und exchange_ledgers im JSON-Output mit, und beide Validatoren schlagen fehl, wenn diese Kopplung wieder verloren geht.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/bridge-registry.mjs",
+        "codex-setup/scripts/audit-claude-delta.mjs",
+        "codex-setup/scripts/audit-gemini-delta.mjs",
+        "codex-setup/bridges/bridge-registry.json",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh",
+        "codex-setup/README.md",
+        "codex-setup/rules/global.md",
+        "codex-setup/skills/self-improve/SKILL.md"
+      ],
+      "created_at": "2026-03-23T13:21:39.323Z",
+      "status": "active"
     }
   ]
 }

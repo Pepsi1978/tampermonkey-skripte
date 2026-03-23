@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "registry_name": "codex-bridge-registry",
   "registry_path": "codex-setup/bridges/bridge-registry.json",
   "github_url": "https://github.com/Pepsi1978/proggs/blob/main/codex-setup/bridges/bridge-registry.json",
@@ -42,13 +42,20 @@
         "codex-setup/bridges/cloud-code-delta-bridge.md",
         "codex-setup/bridges/cloud-code-delta-bridge.json"
       ],
+      "audit_title": "Cloud Code Delta Audit",
+      "state_scope": "claude-environment-only",
       "state_file": "codex-setup/state/claude-delta-state.json",
       "source_label": "Cloud Code",
+      "audit_git_paths": [
+        "CLAUDE.md",
+        "claude-code-setup"
+      ],
       "source_paths": [
         "CLAUDE.md",
         "claude-code-setup/**",
         "claude-code-setup/state/implemented-intelligence-suggestions.json"
       ],
+      "no_delta_message": "Keine neuen portablen Cloud-Code-Setup-Deltas seit dem Basisstand.",
       "trigger_phrases": [
         "hol dir die neuesten Informationen von Cloud Code",
         "Starte bitte die Bruecke zu Cloud Code",
@@ -61,8 +68,13 @@
         "codex-setup/bridges/gemini-cli-delta-bridge.md",
         "codex-setup/bridges/gemini-cli-delta-bridge.json"
       ],
+      "audit_title": "Gemini CLI Delta Audit",
+      "state_scope": "gemini-environment-only",
       "state_file": "codex-setup/state/gemini-delta-state.json",
       "source_label": "Gemini CLI",
+      "audit_git_paths": [
+        "Gemini-Setup"
+      ],
       "source_paths": [
         "Gemini-Setup/**",
         "Gemini-Setup/agent-memory/shared/MEMORY.md",
@@ -70,6 +82,7 @@
         "Gemini-Setup/state/implemented-intelligence-suggestions.json",
         "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json"
       ],
+      "no_delta_message": "Keine neuen portablen Gemini-Setup-Deltas seit dem Basisstand.",
       "trigger_phrases": [
         "Starte bitte die Bruecke zu Gemini CLI",
         "was wurde bei Gemini CLI erneuert",

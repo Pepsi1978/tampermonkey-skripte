@@ -139,6 +139,11 @@ Der Audit betrachtet absichtlich nur Programmierumgebung und Setup:
 - `CLAUDE.md`
 - `claude-code-setup/**`
 
+Die Node-Auditlogik liest ihre Git-Scanpfade, Trigger und Bridge-Metadaten direkt aus
+`codex-setup/bridges/bridge-registry.json` und der zugehoerigen Bridge-JSON. Neue Bruecken
+sollen deshalb zuerst die Registry erweitern, statt diese Informationen spaeter nochmal direkt
+im Audit-Code zu verdoppeln.
+
 Dabei sind auch umgebungsbezogene Fehlerfixes, Guardrails und Haertungslogik in Scope,
 solange sie nicht normalen Projektcode betreffen. Falls Cloud Code spaeter einen eigenen Ledger
 fuer umgesetzte `Intelligenzvorschlaege` veroeffentlicht, soll diese Bruecke auch diese Quelle
@@ -184,6 +189,11 @@ Der Audit betrachtet absichtlich nur Programmierumgebung und Setup:
 - `Gemini-Setup/**`
 - `Gemini-Setup/agent-memory/shared/MEMORY.md`
 - optional read-only als Zusatzquelle: `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`
+
+Die Node-Auditlogik liest ihre Git-Scanpfade, Trigger und Bridge-Metadaten direkt aus
+`codex-setup/bridges/bridge-registry.json` und der zugehoerigen Bridge-JSON. Neue Bruecken
+sollen deshalb zuerst die Registry erweitern, statt diese Informationen spaeter nochmal direkt
+im Audit-Code zu verdoppeln.
 
 Dabei sind auch umgebungsbezogene Fehlerfixes, Memory-Muster, Guardrails und Haertungslogik in Scope,
 solange sie nicht normalen Projektcode betreffen. Falls Gemini CLI spaeter einen eigenen Ledger

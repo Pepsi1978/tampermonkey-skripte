@@ -66,6 +66,7 @@ required_files=(
   "codex-setup/bridges/environment-fix-exchange-bridge.json"
   "codex-setup/bridges/intelligence-suggestion-exchange-bridge.md"
   "codex-setup/bridges/intelligence-suggestion-exchange-bridge.json"
+  "codex-setup/scripts/bridge-registry.mjs"
   "codex-setup/scripts/whiteboard-bridge.mjs"
   "codex-setup/scripts/whiteboard-insert.sh"
   "codex-setup/scripts/whiteboard-insert.ps1"
@@ -243,6 +244,11 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.bridges['cloud-code-delta'].state_scope!=='claude-environment-only') process.exit(1); if(data.bridges['gemini-cli-delta'].state_scope!=='gemini-environment-only') process.exit(1); if(!Array.isArray(data.bridges['cloud-code-delta'].audit_git_paths) || data.bridges['cloud-code-delta'].audit_git_paths.length<2) process.exit(1); if(!Array.isArray(data.bridges['gemini-cli-delta'].audit_git_paths) || data.bridges['gemini-cli-delta'].audit_git_paths.length<1) process.exit(1); if(!data.bridges['cloud-code-delta'].audit_title || !data.bridges['gemini-cli-delta'].audit_title) process.exit(1);" || {
+  echo "bridge-registry.json must define audit scope, titles, and git paths for the delta bridges." >&2
+  exit 1
+}
+
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/state/implemented-intelligence-suggestions.json','utf8')); if(data.scope!=='programming-environment-only') process.exit(1); if(data.ledger_kind!=='implemented-intelligence-suggestions') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(data.bridge_registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!data.github_url || !data.bridge_registry_github_url || !data.resilience_rule || data.resilience_rule.length<40) process.exit(1); if(!Array.isArray(data.required_resilience_fields) || !data.required_resilience_fields.includes('resilience_summary') || !data.required_resilience_fields.includes('future_failure_review')) process.exit(1); if(!data.peer_ledgers || !data.peer_ledgers.Codex || !data.peer_ledgers['Cloud Code'] || !data.peer_ledgers['Gemini CLI']) process.exit(1); if(!Array.isArray(data.entries) || data.entries.length<1) process.exit(1); if(data.entries.some(entry=>!entry.id||!entry.summary||!entry.proposal_text||!String(entry.proposal_text).startsWith('💡 Intelligenz-Vorschlag:')||!entry.context_for_other_clis||entry.context_for_other_clis.length<40||!entry.why_it_was_suggested||entry.why_it_was_suggested.length<30||!entry.why_it_was_implemented||entry.why_it_was_implemented.length<30||!entry.how_it_was_implemented||entry.how_it_was_implemented.length<40||!entry.bridge_value||entry.bridge_value.length<30||!entry.adoption_guidance||entry.adoption_guidance.length<30||!entry.resilience_summary||entry.resilience_summary.length<40||!entry.future_failure_review||entry.future_failure_review.length<40)) process.exit(1);" || {
   echo "implemented-intelligence-suggestions.json is invalid." >&2
   exit 1
@@ -383,6 +389,10 @@ else
   echo "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
 fi
 audit_json="$(node "codex-setup/scripts/audit-claude-delta.mjs" --json)"
+node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='cloud-code-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<2) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1);" "$audit_json" || {
+  echo "Claude delta audit must expose registry-driven bridge metadata." >&2
+  exit 1
+}
 audit_latest="$(node -e "const data=JSON.parse(process.argv[1]); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$audit_json")"
 temp_audit_state="$(mktemp)"
 rm -f "$temp_audit_state"
@@ -414,6 +424,10 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.a
 }
 bash "codex-setup/scripts/audit-claude-delta.sh" --json >/dev/null
 gemini_audit_json="$(node "codex-setup/scripts/audit-gemini-delta.mjs" --json)"
+node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='gemini-cli-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<1) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path) process.exit(1);" "$gemini_audit_json" || {
+  echo "Gemini delta audit must expose registry-driven bridge metadata." >&2
+  exit 1
+}
 gemini_audit_latest="$(node -e "const data=JSON.parse(process.argv[1]); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$gemini_audit_json")"
 temp_gemini_state="$(mktemp)"
 rm -f "$temp_gemini_state"

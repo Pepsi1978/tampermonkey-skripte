@@ -2,17 +2,11 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const REPO_ROOT = path.resolve(__dirname, "..", "..");
-const DEFAULT_REGISTRY_PATH = path.join(
+import {
   REPO_ROOT,
-  "codex-setup",
-  "bridges",
-  "bridge-registry.json",
-);
+  loadBridgeRegistry,
+} from "./bridge-registry.mjs";
+
 const DEFAULT_LEDGER_PATH = path.join(
   REPO_ROOT,
   "codex-setup",
@@ -112,7 +106,7 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function loadBridgeRegistry() {
+function loadSuggestionRegistry() {
   const fallback = {
     registry_path: "codex-setup/bridges/bridge-registry.json",
     github_url: "",
@@ -122,7 +116,7 @@ function loadBridgeRegistry() {
     },
     peer_registry_targets: {},
   };
-  const loaded = readJson(DEFAULT_REGISTRY_PATH, fallback);
+  const loaded = loadBridgeRegistry();
   return {
     ...fallback,
     ...loaded,
@@ -135,7 +129,7 @@ function loadBridgeRegistry() {
   };
 }
 
-function buildDefaultLedger(registry = loadBridgeRegistry()) {
+function buildDefaultLedger(registry = loadSuggestionRegistry()) {
   const codexRepoPath = "codex-setup/state/implemented-intelligence-suggestions.json";
   const cloudRepoPath = "claude-code-setup/state/implemented-intelligence-suggestions.json";
   const geminiRepoPath = "Gemini-Setup/state/implemented-intelligence-suggestions.json";
@@ -217,7 +211,7 @@ function ensureProposalText(value, prefix) {
 
 function buildEntry(args, existingEntry = null) {
   const now = new Date().toISOString();
-  const registry = loadBridgeRegistry();
+  const registry = loadSuggestionRegistry();
   const proposalPrefix = registry.proposal_prefix || DEFAULT_PROPOSAL_PREFIX;
   return {
     id: ensureText(args.id || existingEntry?.id, "id"),
