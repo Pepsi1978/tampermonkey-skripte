@@ -12,9 +12,9 @@ const DEFAULT_STATE_PATH = path.join(
   REPO_ROOT,
   "codex-setup",
   "state",
-  "claude-delta-state.json",
+  "gemini-delta-state.json",
 );
-const TRACKED_PATHS = ["CLAUDE.md", "claude-code-setup"];
+const TRACKED_PATHS = ["Gemini-Setup"];
 const REPLACE_SUBJECT_RE = /\b(rewrite|replace|remove|delete|drop|rename|overhaul)\b/i;
 const BUGFIX_SUBJECT_RE =
   /\b(fix|bug|regression|resilien|harden|hardening|guard|watchdog|repair|safety|stability|parity|healthcheck|health-check|timeout|fallback|validator|validate)\b/i;
@@ -23,8 +23,8 @@ const BUGFIX_PATH_RE =
 
 const DEFAULT_STATE = {
   version: 1,
-  scope: "claude-environment-only",
-  tracked_paths: ["CLAUDE.md", "claude-code-setup/**"],
+  scope: "gemini-environment-only",
+  tracked_paths: ["Gemini-Setup/**"],
   replace_requires_confirmation: true,
   additive_bias: true,
   last_reviewed_commit: null,
@@ -32,7 +32,7 @@ const DEFAULT_STATE = {
   last_reviewed_at: null,
   last_applied_at: null,
   notes:
-    "Tracks only Claude/Cloud Code programming-environment deltas for Codex.",
+    "Tracks only Gemini CLI programming-environment deltas for Codex.",
 };
 
 function parseArgs(argv) {
@@ -107,50 +107,48 @@ function getLatestRelevantCommit() {
 }
 
 function isPortableSourcePath(sourcePath) {
-  if (sourcePath === "CLAUDE.md") return true;
-  if (!sourcePath.startsWith("claude-code-setup/")) return false;
+  if (!sourcePath.startsWith("Gemini-Setup/")) return false;
 
   return (
-    /^claude-code-setup\/rules\/.+\.md$/u.test(sourcePath) ||
-    /^claude-code-setup\/agents\/.+\.md$/u.test(sourcePath) ||
-    /^claude-code-setup\/commands\/.+/u.test(sourcePath) ||
-    /^claude-code-setup\/hooks\/.+/u.test(sourcePath) ||
-    /^claude-code-setup\/skills\/.+/u.test(sourcePath) ||
-    /^claude-code-setup\/scripts\/.+/u.test(sourcePath) ||
-    /^claude-code-setup\/mcp-.+\.json$/u.test(sourcePath) ||
-    /^claude-code-setup\/hooks-.+\.json$/u.test(sourcePath) ||
-    /^claude-code-setup\/settings.*\.json$/u.test(sourcePath) ||
-    sourcePath === "claude-code-setup/manifest.json" ||
-    sourcePath === "claude-code-setup/README.md" ||
-    sourcePath === "claude-code-setup/SETUP-SEMANTIC-SEARCH.md"
+    /^Gemini-Setup\/rules\/.+\.md$/u.test(sourcePath) ||
+    /^Gemini-Setup\/agents\/.+\.md$/u.test(sourcePath) ||
+    /^Gemini-Setup\/commands\/.+/u.test(sourcePath) ||
+    /^Gemini-Setup\/hooks\/.+/u.test(sourcePath) ||
+    /^Gemini-Setup\/skills\/.+/u.test(sourcePath) ||
+    /^Gemini-Setup\/scripts\/.+/u.test(sourcePath) ||
+    /^Gemini-Setup\/mcp-.+\.json$/u.test(sourcePath) ||
+    /^Gemini-Setup\/hooks-.+\.json$/u.test(sourcePath) ||
+    /^Gemini-Setup\/settings.*\.json$/u.test(sourcePath) ||
+    sourcePath === "Gemini-Setup/manifest.json" ||
+    sourcePath === "Gemini-Setup/README.md" ||
+    sourcePath === "Gemini-Setup/agent-memory/shared/MEMORY.md"
   );
 }
 
 function classifyPath(sourcePath) {
-  if (sourcePath === "CLAUDE.md") {
-    return {
-      category: "root-rules",
-      target_hints: ["AGENTS.md", "codex-setup/rules/global.md"],
-    };
-  }
-
   const filename = path.posix.basename(sourcePath);
   const basename = filename.replace(/\.[^.]+$/u, "");
 
-  if (/^claude-code-setup\/rules\/.+\.md$/u.test(sourcePath)) {
-    const mappedName =
-      basename === "german-skill-triggers"
-        ? "german-trigger-routing"
-        : basename === "superintelligence"
-          ? "global"
-          : basename;
+  if (/^Gemini-Setup\/rules\/.+\.md$/u.test(sourcePath)) {
+    const mappedName = basename === "global" ? "global" : basename;
     return {
       category: "rule",
       target_hints: [`codex-setup/rules/${mappedName}.md`],
     };
   }
 
-  if (/^claude-code-setup\/agents\/.+\.md$/u.test(sourcePath)) {
+  if (sourcePath === "Gemini-Setup/agent-memory/shared/MEMORY.md") {
+    return {
+      category: "memory-pattern",
+      target_hints: [
+        "codex-setup/agent-memory/shared/MEMORY.md",
+        "codex-setup/state/environment-fixes.json",
+        "codex-setup/rules/global.md",
+      ],
+    };
+  }
+
+  if (/^Gemini-Setup\/agents\/.+\.md$/u.test(sourcePath)) {
     return {
       category: "agent",
       target_hints: [
@@ -159,7 +157,7 @@ function classifyPath(sourcePath) {
     };
   }
 
-  if (/^claude-code-setup\/commands\/self-improve/u.test(sourcePath)) {
+  if (/^Gemini-Setup\/commands\/self-improve/u.test(sourcePath)) {
     return {
       category: "self-improve",
       target_hints: [
@@ -169,7 +167,7 @@ function classifyPath(sourcePath) {
     };
   }
 
-  if (/^claude-code-setup\/commands\//u.test(sourcePath)) {
+  if (/^Gemini-Setup\/commands\//u.test(sourcePath)) {
     return {
       category: "command",
       target_hints: [
@@ -179,21 +177,21 @@ function classifyPath(sourcePath) {
     };
   }
 
-  if (/^claude-code-setup\/hooks\//u.test(sourcePath)) {
+  if (/^Gemini-Setup\/hooks\//u.test(sourcePath)) {
     return {
       category: "hook",
       target_hints: ["codex-setup/scripts/", "AGENTS.md"],
     };
   }
 
-  if (/^claude-code-setup\/skills\//u.test(sourcePath)) {
+  if (/^Gemini-Setup\/skills\//u.test(sourcePath)) {
     return {
       category: "skill",
       target_hints: ["codex-setup/skills/self-improve/", "AGENTS.md"],
     };
   }
 
-  if (/^claude-code-setup\/scripts\//u.test(sourcePath)) {
+  if (/^Gemini-Setup\/scripts\//u.test(sourcePath)) {
     return {
       category: "script",
       target_hints: ["codex-setup/scripts/", "codex-setup/skills/self-improve/"],
@@ -201,10 +199,10 @@ function classifyPath(sourcePath) {
   }
 
   if (
-    /^claude-code-setup\/settings.*\.json$/u.test(sourcePath) ||
-    /^claude-code-setup\/hooks-.+\.json$/u.test(sourcePath) ||
-    /^claude-code-setup\/mcp-.+\.json$/u.test(sourcePath) ||
-    sourcePath === "claude-code-setup/manifest.json"
+    /^Gemini-Setup\/settings.*\.json$/u.test(sourcePath) ||
+    /^Gemini-Setup\/hooks-.+\.json$/u.test(sourcePath) ||
+    /^Gemini-Setup\/mcp-.+\.json$/u.test(sourcePath) ||
+    sourcePath === "Gemini-Setup/manifest.json"
   ) {
     return {
       category: "environment-config",
@@ -324,7 +322,7 @@ function detectBugfixSignal({ subject, relevantChanges, categories }) {
   }
 
   return relevantChanges.some((change) =>
-    /resilient-bugfixing\.md$/i.test(change.path),
+    /resilient-bugfixing\.md$|agent-memory\/shared\/MEMORY\.md$/i.test(change.path),
   );
 }
 
@@ -455,7 +453,7 @@ function scanDeltas(args, statePath) {
 
 function formatTextReport(result) {
   const lines = [
-    "Claude Delta Audit",
+    "Gemini CLI Delta Audit",
     `Scope: ${result.tracked_paths.join(", ")}`,
     `State file: ${result.state_path}`,
     `Base commit: ${result.base_commit || "(none)"}`,
@@ -470,7 +468,7 @@ function formatTextReport(result) {
   }
 
   if (result.candidates.length === 0) {
-    lines.push("Keine neuen portablen Claude-Setup-Deltas seit dem Basisstand.");
+    lines.push("Keine neuen portablen Gemini-Setup-Deltas seit dem Basisstand.");
     return `${lines.join("\n")}\n`;
   }
 
@@ -495,10 +493,10 @@ function formatTextReport(result) {
     },
     {
       code: "C",
-      title: "Skripte, Hooks und Validierung",
+      title: "Skripte, Memory-Muster und Validierung",
       match: (candidate) =>
         candidate.categories.some((category) =>
-          ["hook", "script", "setup-doc"].includes(category),
+          ["hook", "script", "setup-doc", "memory-pattern"].includes(category),
         ),
     },
     {
@@ -543,7 +541,7 @@ function markState(args, statePath, fieldPrefix) {
   const state = loadState(statePath);
   const commit = args.commit || getLatestRelevantCommit();
   if (!commit) {
-    throw new Error("No Claude delta commit available to store.");
+    throw new Error("No Gemini delta commit available to store.");
   }
   if (!isValidCommit(commit)) {
     throw new Error(`Invalid commit: ${commit}`);
@@ -603,7 +601,7 @@ function main() {
   }
 
   throw new Error(
-    "Usage: audit-claude-delta.mjs [scan|status|mark-reviewed|mark-applied] [--json] [--all] [--since REF] [--commit SHA] [--state PATH] [--limit N]",
+    "Usage: audit-gemini-delta.mjs [scan|status|mark-reviewed|mark-applied] [--json] [--all] [--since REF] [--commit SHA] [--state PATH] [--limit N]",
   );
 }
 

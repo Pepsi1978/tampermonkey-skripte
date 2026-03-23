@@ -100,6 +100,45 @@
       ],
       "created_at": "2026-03-23T11:30:46.589Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-bridge-proposal-guard-and-gemini-delta",
+      "source_cli": "Codex",
+      "category": "bridge-hardening",
+      "summary": "Cloud-Code- und Gemini-CLI-Bruecken sind jetzt strikt proposal-only und der Gemini-Delta-Audit ist dauerhaft validiert.",
+      "context_for_other_clis": "This fix belongs to the Codex-side bridge layer that reads foreign CLI setup environments such as Cloud Code and Gemini CLI. The bridge is meant to compare rules, memory patterns, validators, and environment-level fixes without writing into the foreign workspaces and without silently changing Codex rules before the user sees the delta report.",
+      "symptom_before_fix": "Before this hardening the Cloud bridge only forced approval for clear replacements, while additive findings could still be interpreted as implementation-ready guidance. Gemini CLI also had no fully integrated bridge path in Codex, so the trigger phrase, validation path, skill references, and proposal contract were not yet enforced end to end.",
+      "root_cause": "The original bridge design focused on classifying deltas as ADD, ADAPT, or REPLACE, but it did not elevate proposal-only behavior to a first-class invariant across AGENTS, global rules, trigger routing, bridge specs, self-improve references, validators, and both audit wrappers. Gemini bridge support existed only as new files, not as a fully connected Codex control path.",
+      "what_was_fixed": "Codex now includes a full Gemini CLI delta bridge with read-only source rules, direct trigger phrases, reusable bridge specs, validator coverage, self-improve references, and audit wrappers. In addition, both Cloud Code and Gemini CLI bridges now declare proposal-only behavior explicitly, so ADD and ADAPT findings are reported in grouped A1/B1/C1/D1 form and never auto-applied without user approval.",
+      "why_it_was_fixed": "Cross-CLI bridge results should improve Codex intelligence without risking silent overwrites, accidental behavior drift, or loss of strong existing Codex rules. The user also needs a stable review workflow where deltas are first explained optically and only then approved item by item.",
+      "verification": "Verified by running node syntax checks for both delta-audit scripts, executing the Gemini delta audit directly and through its PowerShell wrapper, reinstalling the self-improve skill, and passing both full codex-setup validators in PowerShell and Git Bash. The validators now assert Gemini bridge files, trigger phrases, proposal-only flags, Gemini state tracking, and temporary review-state writes for the Gemini audit.",
+      "portability_notes": "Any CLI that consumes setup deltas from another environment should treat every imported delta as proposal-only until the user approves it explicitly. Approval should not depend only on REPLACE cases; additive imports can also change behavior over time. The durable pattern is: read-only source, grouped proposal output, explicit approval gate, validator checks for the trigger phrase and bridge contract, and a local state file that tracks only environment-level deltas.",
+      "impact": "Codex can now compare both Cloud Code and Gemini CLI environments through the same controlled review model without autonomously importing changes.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "AGENTS.md",
+        "codex-setup/README.md",
+        "codex-setup/rules/global.md",
+        "codex-setup/rules/german-trigger-routing.md",
+        "codex-setup/rules/claude-delta-sync.md",
+        "codex-setup/rules/gemini-delta-sync.md",
+        "codex-setup/bridges/cloud-code-delta-bridge.md",
+        "codex-setup/bridges/cloud-code-delta-bridge.json",
+        "codex-setup/bridges/gemini-cli-delta-bridge.md",
+        "codex-setup/bridges/gemini-cli-delta-bridge.json",
+        "codex-setup/scripts/audit-claude-delta.mjs",
+        "codex-setup/scripts/audit-gemini-delta.mjs",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh",
+        "codex-setup/skills/self-improve/SKILL.md",
+        "codex-setup/skills/self-improve/references/claude-delta-sync.md",
+        "codex-setup/skills/self-improve/references/gemini-delta-sync.md"
+      ],
+      "created_at": "2026-03-23T11:59:39.641Z",
+      "status": "active"
     }
   ]
 }

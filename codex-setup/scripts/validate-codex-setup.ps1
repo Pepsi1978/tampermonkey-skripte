@@ -22,11 +22,15 @@ $RequiredFiles = @(
     "codex-setup\rules\self-observation.md",
     "codex-setup\rules\german-trigger-routing.md",
     "codex-setup\rules\claude-delta-sync.md",
+    "codex-setup\rules\gemini-delta-sync.md",
     "codex-setup\agent-memory\shared\MEMORY.md",
     "codex-setup\state\claude-delta-state.json",
+    "codex-setup\state\gemini-delta-state.json",
     "codex-setup\state\environment-fixes.json",
     "codex-setup\bridges\cloud-code-delta-bridge.md",
     "codex-setup\bridges\cloud-code-delta-bridge.json",
+    "codex-setup\bridges\gemini-cli-delta-bridge.md",
+    "codex-setup\bridges\gemini-cli-delta-bridge.json",
     "codex-setup\bridges\environment-fix-exchange-bridge.md",
     "codex-setup\bridges\environment-fix-exchange-bridge.json",
     "codex-setup\scripts\whiteboard-bridge.mjs",
@@ -49,10 +53,15 @@ $RequiredFiles = @(
     "codex-setup\scripts\audit-claude-delta.mjs",
     "codex-setup\scripts\audit-claude-delta.sh",
     "codex-setup\scripts\audit-claude-delta.ps1",
+    "codex-setup\scripts\audit-gemini-delta.mjs",
+    "codex-setup\scripts\audit-gemini-delta.sh",
+    "codex-setup\scripts\audit-gemini-delta.ps1",
     "codex-setup\scripts\register-environment-fix.mjs",
     "codex-setup\scripts\register-environment-fix.sh",
     "codex-setup\scripts\register-environment-fix.ps1",
     "codex-setup\skills\self-improve\references\claude-delta-sync.md",
+    "codex-setup\skills\self-improve\references\gemini-delta-sync.md",
+    "codex-setup\skills\self-improve\references\agents\gemini-delta-scanner.md",
     "codex-setup\skills\self-improve\SKILL.md"
 )
 
@@ -127,9 +136,11 @@ $DirectiveFiles = @(
     "codex-setup\rules\self-observation.md",
     "codex-setup\rules\german-trigger-routing.md",
     "codex-setup\rules\claude-delta-sync.md",
+    "codex-setup\rules\gemini-delta-sync.md",
     "codex-setup\agent-memory\shared\MEMORY.md",
     "codex-setup\skills\self-improve\SKILL.md",
     "codex-setup\skills\self-improve\references\claude-delta-sync.md",
+    "codex-setup\skills\self-improve\references\gemini-delta-sync.md",
     "codex-setup\skills\self-improve\references\report-and-creative.md",
     "codex-setup\skills\self-improve\references\whiteboard-bridge.md",
     "codex-setup\skills\self-improve\references\workspace-scan.md"
@@ -147,6 +158,10 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "OpenAI developer documentation MCP
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch "GeminiCLI") {
     throw "AGENTS.md must mark Gemini comparison paths as read-only."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "proposal-only") {
+    throw "AGENTS.md must mark bridge findings as proposal-only."
 }
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('automatically create a focused commit and push it to `origin/main`')) {
@@ -209,6 +224,10 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "audit-claude-delta.mjs
     throw "README.md must document the Claude delta audit."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "audit-gemini-delta.mjs") {
+    throw "README.md must document the Gemini delta audit."
+}
+
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "cloud-code-delta-bridge") {
     throw "README.md must document the reusable Cloud Code bridge."
 }
@@ -223,6 +242,10 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "register-environment-f
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Cloud Code") {
     throw "README.md must document the direct Cloud Code bridge trigger."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruecke zu Gemini CLI") {
+    throw "README.md must document the direct Gemini bridge trigger."
 }
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "GeminiCLI") {
@@ -269,6 +292,9 @@ $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json
 if ($CloudCodeBridge.source_label -ne "Cloud Code") {
     throw "cloud-code-delta-bridge.json must identify Cloud Code as the source label."
 }
+if (-not $CloudCodeBridge.proposal_only) {
+    throw "cloud-code-delta-bridge.json must be proposal-only."
+}
 if (-not $CloudCodeBridge.replacement_requires_confirmation) {
     throw "cloud-code-delta-bridge.json must require approval for replacements."
 }
@@ -291,6 +317,31 @@ if ($EnvironmentFixBridge.trigger_phrases.Count -lt 3) {
 }
 if (-not $EnvironmentFixBridge.requires_full_context) {
     throw "environment-fix-exchange-bridge.json must require full context."
+}
+
+$GeminiDeltaState = Get-Content "codex-setup\state\gemini-delta-state.json" -Raw | ConvertFrom-Json
+if ($GeminiDeltaState.scope -ne "gemini-environment-only") {
+    throw "gemini-delta-state.json must track only Gemini environment deltas."
+}
+if (-not $GeminiDeltaState.replace_requires_confirmation) {
+    throw "gemini-delta-state.json must require approval for replacements."
+}
+if ($GeminiDeltaState.tracked_paths -notcontains "Gemini-Setup/**") {
+    throw "gemini-delta-state.json must track Gemini-Setup/**."
+}
+
+$GeminiBridge = Get-Content "codex-setup\bridges\gemini-cli-delta-bridge.json" -Raw | ConvertFrom-Json
+if ($GeminiBridge.source_label -ne "Gemini CLI") {
+    throw "gemini-cli-delta-bridge.json must identify Gemini CLI as the source label."
+}
+if (-not $GeminiBridge.proposal_only) {
+    throw "gemini-cli-delta-bridge.json must be proposal-only."
+}
+if (-not $GeminiBridge.replacement_requires_confirmation) {
+    throw "gemini-cli-delta-bridge.json must require approval for replacements."
+}
+if ($GeminiBridge.trigger_phrases -notcontains "Starte bitte die Bruecke zu Gemini CLI") {
+    throw "gemini-cli-delta-bridge.json must include the direct Gemini bridge trigger."
 }
 
 Get-ChildItem "codex-setup\skills\self-improve\references\agents" -Filter "*.md" | ForEach-Object {
@@ -386,6 +437,31 @@ Remove-Item $TempFixLedger -ErrorAction SilentlyContinue
 & pwsh -NoProfile -File "codex-setup\scripts\audit-claude-delta.ps1" --json | Out-Null
 if ($LASTEXITCODE -ne 0) {
     throw "Claude delta audit PowerShell wrapper failed."
+}
+
+$GeminiAuditJson = node "codex-setup/scripts/audit-gemini-delta.mjs" --json
+if ($LASTEXITCODE -ne 0) {
+    throw "Gemini delta audit failed."
+}
+$GeminiAudit = ($GeminiAuditJson -join "`n") | ConvertFrom-Json
+if (-not $GeminiAudit.latest_relevant_commit) {
+    throw "Gemini delta audit did not report a latest relevant commit."
+}
+
+$TempGeminiState = Join-Path ([System.IO.Path]::GetTempPath()) ("gemini-delta-state-" + [guid]::NewGuid().ToString() + ".json")
+node "codex-setup/scripts/audit-gemini-delta.mjs" mark-reviewed --state $TempGeminiState --commit $GeminiAudit.latest_relevant_commit | Out-Null
+if ($LASTEXITCODE -ne 0) {
+    throw "Gemini delta audit could not write a temporary reviewed state."
+}
+$TempGeminiAudit = Get-Content $TempGeminiState -Raw | ConvertFrom-Json
+if ($TempGeminiAudit.last_reviewed_commit -ne $GeminiAudit.latest_relevant_commit) {
+    throw "Gemini delta audit stored the wrong reviewed commit."
+}
+Remove-Item $TempGeminiState -ErrorAction SilentlyContinue
+
+& pwsh -NoProfile -File "codex-setup\scripts\audit-gemini-delta.ps1" --json | Out-Null
+if ($LASTEXITCODE -ne 0) {
+    throw "Gemini delta audit PowerShell wrapper failed."
 }
 
 & node "codex-setup/scripts/check-code-search-mcp-client.mjs" | Out-Null

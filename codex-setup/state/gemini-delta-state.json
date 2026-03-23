@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "scope": "gemini-environment-only",
+  "tracked_paths": [
+    "Gemini-Setup/**"
+  ],
+  "replace_requires_confirmation": true,
+  "additive_bias": true,
+  "last_reviewed_commit": null,
+  "last_applied_commit": null,
+  "last_reviewed_at": null,
+  "last_applied_at": null,
+  "notes": "Tracks only Gemini CLI setup and programming-environment deltas for Codex."
+}

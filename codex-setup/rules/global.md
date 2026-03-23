@@ -18,6 +18,7 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
   - `codex-setup/rules/self-observation.md`
   - `codex-setup/rules/german-trigger-routing.md`
   - `codex-setup/rules/claude-delta-sync.md`
+  - `codex-setup/rules/gemini-delta-sync.md`
   - `codex-setup/agent-memory/shared/MEMORY.md`
   - `codex-setup/skills/self-improve/`
   - `codex-setup/scripts/`
@@ -94,8 +95,20 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 - Dieser Audit betrachtet nur Programmierumgebung und Setup, nicht normalen Projektcode.
 - Port-Kandidaten sollen als `ADD`, `ADAPT` oder `REPLACE` klassifiziert werden.
 - Umgebungsbezogene Fehlerfixes und Haertungslogik aus Claude Code sollen dabei ebenfalls als uebernehmbare Port-Kandidaten sichtbar gemacht werden.
+- Ergebnisse aus diesem Audit sind immer nur Vorschlaege. Auch `ADD` und `ADAPT` duerfen niemals autonom umgesetzt werden.
 - `REPLACE` bedeutet: bestehende Codex-Regel, Prompt-Logik oder Setup-Verhalten wuerde ganz oder teilweise ersetzt werden. Dafuer ist vor der Umsetzung eine ausdrueckliche Benutzerfreigabe noetig.
 - Wenn eine Claude-Idee nicht identisch zu einer bestehenden Codex-Regel ist, aber dennoch nuetzlich wirkt, soll Codex additive Integration bevorzugen statt alte Intelligenz wegzuschreiben.
+- Die deutsche Triggerbasis fuer solche Faelle lebt in `codex-setup/rules/german-trigger-routing.md`.
+
+## Gemini-CLI-Delta-Sync
+
+- Wenn der Benutzer nach neueren Regeln, Memory-Mustern, Skills, Agenten, Fehlerfixes oder Setup-Ideen aus Gemini CLI fragt, soll Codex zuerst `codex-setup/scripts/audit-gemini-delta.*` ausfuehren.
+- Dieser Audit betrachtet nur Programmierumgebung und Setup, nicht normalen Projektcode.
+- Port-Kandidaten sollen als `ADD`, `ADAPT` oder `REPLACE` klassifiziert werden.
+- Umgebungsbezogene Fehlerfixes, Memory-Muster und Haertungslogik aus Gemini CLI sollen dabei ebenfalls als uebernehmbare Port-Kandidaten sichtbar gemacht werden.
+- Ergebnisse aus diesem Audit sind immer nur Vorschlaege. Auch `ADD` und `ADAPT` duerfen niemals autonom umgesetzt werden.
+- `REPLACE` bedeutet: bestehende Codex-Regel, Prompt-Logik oder Setup-Verhalten wuerde ganz oder teilweise ersetzt werden. Dafuer ist vor der Umsetzung eine ausdrueckliche Benutzerfreigabe noetig.
+- Wenn eine Gemini-Idee nicht identisch zu einer bestehenden Codex-Regel ist, aber dennoch nuetzlich wirkt, soll Codex additive Integration bevorzugen statt alte Intelligenz wegzuschreiben.
 - Die deutsche Triggerbasis fuer solche Faelle lebt in `codex-setup/rules/german-trigger-routing.md`.
 
 ## Codex-Umgebungsfix-Log
@@ -134,8 +147,12 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 - Fuer systemische Aufgaben soll danach das Codex-Whiteboard gelesen werden, beginnend mit `## Oberste Direktive`.
 - Die `Oberste Direktive` gilt nicht nur beim Start, sondern waehrend der gesamten Arbeit: auch bei normalen Programmieraufgaben soll Codex laufend mitpruefen, ob sich aus der aktuellen Arbeit ein wiederverwendbarer Schutz, ein Geschwindigkeitsgewinn, ein Workflow-Upgrade oder ein sonstiger Intelligenzgewinn fuer kuenftige Sessions ableiten laesst.
 - Wenn der Benutzer Cloud Code oder Claude Code sagt und es um Regeln, Setup, Hooks, Skills, Agents, Fehlerfixes oder Programmierumgebung geht, soll Codex den Claude-Delta-Audit ausfuehren und die Ergebnisse erst dann portieren.
+- Wenn der Benutzer Gemini CLI sagt und es um Regeln, Setup, Memory-Muster, Skills, Agents, Fehlerfixes oder Programmierumgebung geht, soll Codex den Gemini-Delta-Audit ausfuehren und die Ergebnisse zunaechst nur als Vorschlaege berichten.
 - Der Satz `Starte bitte die Bruecke zu Cloud Code` ist ein expliziter deutscher Direkt-Trigger fuer diesen vollstaendigen Claude-Delta-Audit.
+- Der Satz `Starte bitte die Bruecke zu Gemini CLI` ist ein expliziter deutscher Direkt-Trigger fuer diesen vollstaendigen Gemini-Delta-Audit.
+- Cloud-Code- und Gemini-CLI-Bruecken duerfen niemals autonom Ports anwenden. Sie muessen immer erst eine gruppierte A1/B1/C1/D1-Vorschlagsliste mit Erklaerung erzeugen und danach ausdrueckliche Benutzerfreigabe abwarten.
 - Wenn der Claude-Delta-Audit echte Ersetzungen bestehender Codex-Regeln oder Codex-Setup-Texte anzeigt, soll Codex vor dem Ueberschreiben warnen und eine kurze Freigabe einholen. Additive Erweiterungen duerfen bevorzugt vorgeschlagen werden.
+- Dasselbe gilt fuer den Gemini-Delta-Audit.
 - Wenn der Benutzer wissen will, welche Umwelt-Fixes Codex bereits hat oder was andere CLIs von Codex lernen koennen, soll Codex `codex-setup/state/environment-fixes.json` bzw. `register-environment-fix.*` benutzen.
 - Wenn der Benutzer nach semantischer Suche, Indexierung, Hintergrund-Reindex oder `code-search`-Status fragt, soll Codex bevorzugt `codex-setup/scripts/check-code-search-health.*` ausfuehren statt den Zustand nur aus Erinnerung oder Einzelabfragen abzuleiten.
 - Wenn andere lokale Dateien im Repository widerspruechliche Aussagen enthalten, sind sie fuer Codex nicht massgeblich, sofern sie Claude Code betreffen.

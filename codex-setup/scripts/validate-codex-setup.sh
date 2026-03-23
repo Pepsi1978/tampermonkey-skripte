@@ -50,11 +50,15 @@ required_files=(
   "codex-setup/rules/self-observation.md"
   "codex-setup/rules/german-trigger-routing.md"
   "codex-setup/rules/claude-delta-sync.md"
+  "codex-setup/rules/gemini-delta-sync.md"
   "codex-setup/agent-memory/shared/MEMORY.md"
   "codex-setup/state/claude-delta-state.json"
+  "codex-setup/state/gemini-delta-state.json"
   "codex-setup/state/environment-fixes.json"
   "codex-setup/bridges/cloud-code-delta-bridge.md"
   "codex-setup/bridges/cloud-code-delta-bridge.json"
+  "codex-setup/bridges/gemini-cli-delta-bridge.md"
+  "codex-setup/bridges/gemini-cli-delta-bridge.json"
   "codex-setup/bridges/environment-fix-exchange-bridge.md"
   "codex-setup/bridges/environment-fix-exchange-bridge.json"
   "codex-setup/scripts/whiteboard-bridge.mjs"
@@ -77,10 +81,15 @@ required_files=(
   "codex-setup/scripts/audit-claude-delta.mjs"
   "codex-setup/scripts/audit-claude-delta.sh"
   "codex-setup/scripts/audit-claude-delta.ps1"
+  "codex-setup/scripts/audit-gemini-delta.mjs"
+  "codex-setup/scripts/audit-gemini-delta.sh"
+  "codex-setup/scripts/audit-gemini-delta.ps1"
   "codex-setup/scripts/register-environment-fix.mjs"
   "codex-setup/scripts/register-environment-fix.sh"
   "codex-setup/scripts/register-environment-fix.ps1"
   "codex-setup/skills/self-improve/references/claude-delta-sync.md"
+  "codex-setup/skills/self-improve/references/gemini-delta-sync.md"
+  "codex-setup/skills/self-improve/references/agents/gemini-delta-scanner.md"
   "codex-setup/skills/self-improve/SKILL.md"
 )
 
@@ -140,9 +149,11 @@ for file in \
   "codex-setup/rules/self-observation.md" \
   "codex-setup/rules/german-trigger-routing.md" \
   "codex-setup/rules/claude-delta-sync.md" \
+  "codex-setup/rules/gemini-delta-sync.md" \
   "codex-setup/agent-memory/shared/MEMORY.md" \
   "codex-setup/skills/self-improve/SKILL.md" \
   "codex-setup/skills/self-improve/references/claude-delta-sync.md" \
+  "codex-setup/skills/self-improve/references/gemini-delta-sync.md" \
   "codex-setup/skills/self-improve/references/report-and-creative.md" \
   "codex-setup/skills/self-improve/references/whiteboard-bridge.md" \
   "codex-setup/skills/self-improve/references/workspace-scan.md"; do
@@ -151,6 +162,7 @@ done
 
 search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
 search_fixed "GeminiCLI" "AGENTS.md"
+search_fixed "proposal-only" "AGENTS.md"
 search_fixed "automatically create a focused commit and push it to \`origin/main\`" "AGENTS.md"
 search_fixed "always start with \`Committed.\`" "AGENTS.md"
 search_fixed "add a second final line \`Gepusht in <path>, plattformuebergreifend.\`" "AGENTS.md"
@@ -162,10 +174,12 @@ search_fixed "check-code-search-health.sh" "codex-setup/README.md"
 search_fixed "code-search-mcp-client.sh" "codex-setup/README.md"
 search_fixed "Last write mode" "codex-setup/README.md"
 search_fixed "audit-claude-delta.mjs" "codex-setup/README.md"
+search_fixed "audit-gemini-delta.mjs" "codex-setup/README.md"
 search_fixed "cloud-code-delta-bridge" "codex-setup/README.md"
 search_fixed "environment-fixes.json" "codex-setup/README.md"
 search_fixed "register-environment-fix.mjs" "codex-setup/README.md"
 search_fixed "Starte bitte die Bruecke zu Cloud Code" "codex-setup/README.md"
+search_fixed "Starte bitte die Bruecke zu Gemini CLI" "codex-setup/README.md"
 search_fixed "GeminiCLI" "codex-setup/README.md"
 search_fixed "neue Tools, Plugins oder Agenten" "codex-setup/rules/global.md"
 search_fixed "semantischer Suche, Indexierung, Hintergrund-Reindex" "codex-setup/rules/global.md"
@@ -187,8 +201,23 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(!data.proposal_only) process.exit(1);" || {
+  echo "cloud-code-delta-bridge.json must be proposal-only." >&2
+  exit 1
+}
+
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/environment-fix-exchange-bridge.json','utf8')); if(data.source_label!=='CLI Environment Fixes') process.exit(1); if(data.scope!=='programming-environment-only') process.exit(1); if(!data.requires_full_context) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1);" || {
   echo "environment-fix-exchange-bridge.json is invalid." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/state/gemini-delta-state.json','utf8')); if(data.scope!=='gemini-environment-only') process.exit(1); if(!data.replace_requires_confirmation) process.exit(1); if(!data.tracked_paths.includes('Gemini-Setup/**')) process.exit(1);" || {
+  echo "gemini-delta-state.json is invalid." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/gemini-cli-delta-bridge.json','utf8')); if(data.source_label!=='Gemini CLI') process.exit(1); if(!data.proposal_only) process.exit(1); if(!data.replacement_requires_confirmation) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1);" || {
+  echo "gemini-cli-delta-bridge.json is invalid." >&2
   exit 1
 }
 
@@ -271,6 +300,16 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.a
   exit 1
 }
 bash "codex-setup/scripts/audit-claude-delta.sh" --json >/dev/null
+gemini_audit_json="$(node "codex-setup/scripts/audit-gemini-delta.mjs" --json)"
+gemini_audit_latest="$(node -e "const data=JSON.parse(process.argv[1]); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$gemini_audit_json")"
+temp_gemini_state="$(mktemp)"
+rm -f "$temp_gemini_state"
+node "codex-setup/scripts/audit-gemini-delta.mjs" mark-reviewed --state "$temp_gemini_state" --commit "$gemini_audit_latest" >/dev/null
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(data.last_reviewed_commit!==process.argv[2]) process.exit(1);" "$temp_gemini_state" "$gemini_audit_latest" || {
+  echo "Gemini delta audit failed to store a reviewed commit." >&2
+  exit 1
+}
+bash "codex-setup/scripts/audit-gemini-delta.sh" --json >/dev/null
 node "codex-setup/scripts/check-code-search-mcp-client.mjs" >/dev/null
 if has_mcp_server "code-search"; then
   bash "codex-setup/scripts/code-search-mcp-client.sh" tools >/dev/null

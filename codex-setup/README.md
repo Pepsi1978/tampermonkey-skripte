@@ -43,17 +43,22 @@ Wichtigste Trennung:
   Regelwerk fuer den sicheren Transfer von sinnvollen Claude/Cloud-Code-
   Umgebungsverbesserungen nach Codex, inklusive Warnpflicht vor Ersetzungen.
 
+- `rules/gemini-delta-sync.md`
+  Regelwerk fuer den sicheren Transfer von sinnvollen Gemini-CLI-
+  Umgebungsverbesserungen nach Codex, inklusive Vorschlagspflicht vor jeder Umsetzung.
+
 - `agent-memory/shared/MEMORY.md`
   Das eigene Codex-Whiteboard. Nur dieses Whiteboard ist fuer Codex autoritativ.
   Die Sektion `## Oberste Direktive` ist dabei das oberste Zielsystem fuer alle angebundenen Komponenten.
 
 - `scripts/`
   Plattformuebergreifende Hilfsskripte fuer Whiteboard-Resolver, Whiteboard-Insert, Sentinel-Merge,
-  Skill-Installation, Validierung, `code-search`-Healthchecks und Claude-Delta-Audits.
+  Skill-Installation, Validierung, `code-search`-Healthchecks sowie Claude- und Gemini-Delta-Audits.
 
 - `bridges/`
   Wiederverwendbare Bruecken-Spezifikationen fuer andere CLI-Umgebungen.
-  Hier liegen die generische Cloud-Code-Delta-Bruecke und die Environment-Fix-Exchange-Bruecke als Referenz fuer weitere Setups.
+  Hier liegen die generische Cloud-Code-Delta-Bruecke, die Gemini-CLI-Delta-Bruecke
+  und die Environment-Fix-Exchange-Bruecke als Referenz fuer weitere Setups.
 
 - `state/environment-fixes.json`
   Maschinenlesbares Log fuer Codex-Fixes an Regeln, Runtime, Validierung, MCP-Nutzung und Setup.
@@ -123,10 +128,57 @@ Er ignoriert Projektcode und klassifiziert Port-Kandidaten als:
 Fuer `REPLACE` gilt: erst warnen, dann ausdruecklich bestaetigen lassen.
 Wenn zwei Regeln nicht identisch sind, aber beide nuetzlich wirken, ist ein additiver Codex-Port dem Ueberschreiben vorzuziehen.
 
+Wichtig:
+
+- Auch `ADD` und `ADAPT` werden aus dieser Bruecke niemals autonom uebernommen.
+- Cloud-Code-Bruecken-Ergebnisse sind immer nur Vorschlaege im Format `A1` bis `Dn`.
+- Erst nach ausdruecklicher Benutzerfreigabe wie `A1 umsetzen`, `B2 umsetzen` oder `alles umsetzen`
+  darf Codex die Vorschlaege in `codex-setup/` umsetzen.
+
 Die generische Bruecken-Spezifikation fuer andere CLI-Umgebungen liegt zusaetzlich unter:
 
 - `codex-setup/bridges/cloud-code-delta-bridge.md`
 - `codex-setup/bridges/cloud-code-delta-bridge.json`
+
+## Gemini-Delta-Audit
+
+Wenn Gemini CLI neue Regeln, Memory-Muster, robuste Fehlerfixes oder Setup-Verbesserungen bekommt,
+nutzt Codex dafuer einen plattformuebergreifenden Delta-Audit:
+
+Der direkte deutsche Kurztrigger dafuer ist:
+
+- `Starte bitte die Bruecke zu Gemini CLI`
+
+- macOS/Linux: `bash codex-setup/scripts/audit-gemini-delta.sh`
+- Windows: `pwsh -NoProfile -File codex-setup/scripts/audit-gemini-delta.ps1`
+- direkt: `node codex-setup/scripts/audit-gemini-delta.mjs`
+
+Der Audit betrachtet absichtlich nur Programmierumgebung und Setup:
+
+- `Gemini-Setup/**`
+- `Gemini-Setup/agent-memory/shared/MEMORY.md`
+- optional read-only als Zusatzquelle: `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`
+
+Dabei sind auch umgebungsbezogene Fehlerfixes, Memory-Muster, Guardrails und Haertungslogik in Scope,
+solange sie nicht normalen Projektcode betreffen.
+
+Er ignoriert Projektcode und klassifiziert Port-Kandidaten als:
+
+- `ADD`: neue, additive Codex-Idee
+- `ADAPT`: sinnvoll, aber fuer Codex zu uebersetzen
+- `REPLACE`: potenzielle Ersetzung bestehender Codex-Regeln oder -Verhaltensweisen
+
+Wichtig:
+
+- Auch `ADD` und `ADAPT` werden aus dieser Bruecke niemals autonom uebernommen.
+- Gemini-Bruecken-Ergebnisse sind immer nur Vorschlaege im Format `A1` bis `Dn`.
+- Erst nach ausdruecklicher Benutzerfreigabe wie `A1 umsetzen`, `B2 umsetzen` oder `alles umsetzen`
+  darf Codex die Vorschlaege in `codex-setup/` umsetzen.
+
+Die generische Bruecken-Spezifikation fuer andere CLI-Umgebungen liegt zusaetzlich unter:
+
+- `codex-setup/bridges/gemini-cli-delta-bridge.md`
+- `codex-setup/bridges/gemini-cli-delta-bridge.json`
 
 ## Environment-Fix-Log
 

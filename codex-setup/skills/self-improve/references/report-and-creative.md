@@ -31,6 +31,9 @@
 ### Claude-Delta-Status
 [Wenn benutzt: welche Kandidaten waren ADD, ADAPT oder REPLACE]
 
+### Gemini-Delta-Status
+[Wenn benutzt: welche Kandidaten waren ADD, ADAPT oder REPLACE]
+
 ### Recherche-Ergebnis
 | Researcher | Wichtigste Erkenntnis | Aktion |
 |------------|----------------------|--------|

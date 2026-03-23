@@ -139,3 +139,15 @@ Check whether the fixes clearly explain:
 
 Return only gaps, duplicates, or export improvements.
 ```
+
+## R11 — Gemini Delta Monitor
+
+Prompt skeleton:
+```text
+Review recent changes in Gemini-Setup that affect setup, rules, memory patterns,
+skills, validation, agents, or programming environment only.
+Classify each candidate for Codex as ADD, ADAPT, or REPLACE.
+Never auto-apply anything. Prepare only a proposal list.
+If a candidate would replace existing Codex rule text or behavior, mark it approval-required.
+Prefer additive Codex integration when both old and new logic are useful.
+```

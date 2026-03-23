@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "bridge_name": "gemini-cli-delta",
+  "source_label": "Gemini CLI",
+  "source_resolved_as": "Gemini CLI",
+  "language": "de",
+  "tracked_paths": [
+    "Gemini-Setup/**"
+  ],
+  "target_scope": "setup-and-programming-environment-only",
+  "include_fixed_errors": true,
+  "include_bugfix_logic": true,
+  "read_only_sources": [
+    "Gemini-Setup/**",
+    "Gemini-Setup/agent-memory/shared/MEMORY.md",
+    "C:/Users/barwa/GeminiCLI/agent-memory/shared/MEMORY.md"
+  ],
+  "classifications": [
+    "ADD",
+    "ADAPT",
+    "REPLACE"
+  ],
+  "proposal_only": true,
+  "replacement_requires_confirmation": true,
+  "additive_bias": true,
+  "report_groups": [
+    {
+      "code": "A",
+      "title": "Regeln und Prompts"
+    },
+    {
+      "code": "B",
+      "title": "Agenten, Skills und Arbeitsprozesse"
+    },
+    {
+      "code": "C",
+      "title": "Skripte, Memory-Muster und Validierung"
+    },
+    {
+      "code": "D",
+      "title": "Runtime und Konfiguration"
+    }
+  ],
+  "trigger_phrases": [
+    "Starte bitte die Bruecke zu Gemini CLI",
+    "starte die Bruecke zu Gemini CLI",
+    "was wurde bei Gemini CLI erneuert",
+    "welche Verbesserungen gibt es bei Gemini CLI",
+    "welche Regeln sind bei Gemini CLI neuer",
+    "welche Fehler wurden bei Gemini CLI gefixt",
+    "was davon ist fuer Codex sinnvoll"
+  ],
+  "reference_implementation": [
+    "codex-setup/scripts/audit-gemini-delta.mjs",
+    "codex-setup/scripts/audit-gemini-delta.sh",
+    "codex-setup/scripts/audit-gemini-delta.ps1"
+  ],
+  "state_file": "codex-setup/state/gemini-delta-state.json"
+}

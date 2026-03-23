@@ -195,3 +195,5 @@ _Noch keine Eintraege._
 - **[2026-03-23 12:30] self-improve**: Eintraege in codex-setup/state/environment-fixes.json muessen jetzt fuer fremde CLIs voll kontextfaehig sein: Kontext, sichtbares Symptom, technische Ursache, Verifikation und Portierungshinweis sind Pflicht. Kurze what/why-Notizen reichen nicht mehr.
 
 - **[2026-03-23 12:33] self-improve**: Der exakte deutsche Direkt-Trigger fuer den kompletten Cloud-Code-Delta-Audit lautet Starte bitte die Bruecke zu Cloud Code. Als explizite read-only Fremd-Fehlerquellen sind jetzt claude-code-setup/agent-memory/shared/MEMORY.md, Gemini-Setup/agent-memory/shared/MEMORY.md und C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md vorgemerkt.
+
+- **[2026-03-23 13:00] codex-setup**: Delta-Bruecken zu Cloud Code und Gemini CLI sind jetzt strikt proposal-only. Trigger: `Starte bitte die Bruecke zu Cloud Code` und `Starte bitte die Bruecke zu Gemini CLI`. Jede Bruecke muss zuerst eine gruppierte A1/B1/C1/D1-Vorschlagsliste erzeugen; keine autonome Umsetzung, auch nicht fuer ADD oder ADAPT.

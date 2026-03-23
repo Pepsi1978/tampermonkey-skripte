@@ -52,6 +52,7 @@ Read these files as needed:
 - [references/researchers.md](references/researchers.md)
 - [references/report-and-creative.md](references/report-and-creative.md)
 - [references/claude-delta-sync.md](references/claude-delta-sync.md)
+- [references/gemini-delta-sync.md](references/gemini-delta-sync.md)
 - Agent prompts under [references/agents/](references/agents)
 
 ## Mandatory Opening
@@ -148,6 +149,20 @@ Workflow:
 - run `codex-setup/scripts/audit-claude-delta.*`
 - classify candidates as `ADD`, `ADAPT`, or `REPLACE`
 - treat Claude files as read-only comparison sources
+- never auto-apply bridge findings; report them first as grouped proposals
+- if the audit shows `REPLACE`, warn first and do not overwrite existing Codex behavior without approval
+- if a useful idea is not identical to an existing Codex rule, prefer additive Codex integration
+
+## Stage 0.6: Gemini Delta Gate
+
+Mandatory whenever the user explicitly asks about Gemini CLI setup changes.
+
+Workflow:
+- read [references/gemini-delta-sync.md](references/gemini-delta-sync.md)
+- run `codex-setup/scripts/audit-gemini-delta.*`
+- classify candidates as `ADD`, `ADAPT`, or `REPLACE`
+- treat Gemini files as read-only comparison sources
+- never auto-apply bridge findings; report them first as grouped proposals
 - if the audit shows `REPLACE`, warn first and do not overwrite existing Codex behavior without approval
 - if a useful idea is not identical to an existing Codex rule, prefer additive Codex integration
 
@@ -166,8 +181,11 @@ Minimum scan targets:
 - `codex-setup/rules/self-observation.md`
 - `codex-setup/rules/german-trigger-routing.md`
 - `codex-setup/rules/claude-delta-sync.md`
+- `codex-setup/rules/gemini-delta-sync.md`
 - `codex-setup/scripts/audit-claude-delta.*`
+- `codex-setup/scripts/audit-gemini-delta.*`
 - `codex-setup/state/claude-delta-state.json`
+- `codex-setup/state/gemini-delta-state.json`
 - `codex-setup/state/environment-fixes.json`
 - `codex-setup/scripts/register-environment-fix.*`
 - `codex-setup/bridges/environment-fix-exchange-bridge.*`
@@ -205,6 +223,7 @@ Codex-native researcher roles:
 - whiteboard-scanner
 - durability-auditor
 - claude-delta-scanner
+- gemini-delta-scanner
 - rules-porter
 - trigger-router
 

@@ -32,6 +32,7 @@ const SECTION_MAP = {
   "whiteboard-scanner": "Offene Fehler & Probleme",
   "durability-auditor": "Debugging-Muster",
   "claude-delta-scanner": "Forschung & Intelligence",
+  "gemini-delta-scanner": "Forschung & Intelligence",
   "rules-porter": "Regeln & Konventionen",
   "trigger-router": "Regeln & Konventionen",
   "quality-gate": "Erkenntnisse aus Tests",

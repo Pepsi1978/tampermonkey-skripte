@@ -35,9 +35,12 @@ agents, skills, validation, runtime glue, or other programming-environment behav
 
 ## Approval Policy
 
-- `ADD`: can be recommended as the safe default
-- `ADAPT`: explain the Codex translation path
+- `ADD`: can be recommended, but only as a proposal
+- `ADAPT`: explain the Codex translation path, but only as a proposal
 - `REPLACE`: explicit warning first, then wait for approval before replacing anything
+
+Never auto-apply Claude bridge findings.
+Always prepare grouped A1/B1/C1/D1 proposals first and wait for explicit approval.
 
 When semantics diverge but both sides are useful:
 

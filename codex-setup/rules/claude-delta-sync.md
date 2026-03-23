@@ -37,6 +37,13 @@ Claude-Dateien sind fuer Codex bei diesem Prozess strikt read-only.
 - Ohne ausdrueckliche Benutzerfreigabe darf Codex bestehende Codex-Regeln oder bestehendes Codex-Setup-Verhalten nicht durch Claude-Text ersetzen.
 - Wenn alte und neue Regel nicht identisch sind, aber beide nuetzlich wirken, soll Codex additive Integration bevorzugen.
 
+## Vorschlagspflicht
+
+- Ergebnisse aus dieser Bruecke sind immer nur Vorschlaege.
+- Auch `ADD` und `ADAPT` duerfen nicht autonom umgesetzt werden.
+- Codex muss erst eine gruppierte A1/B1/C1/D1-Liste mit kurzer Erklaerung erzeugen.
+- Erst nach ausdruecklicher Benutzerfreigabe wie `A1 umsetzen`, `B2 umsetzen` oder `alles umsetzen` darf Codex die Vorschlaege in `codex-setup/` portieren.
+
 ## Bewaehrungsphase
 
 - Portierte Regeln und Portierungslogiken gelten erst nach 5 realen Anwendungen als robust.

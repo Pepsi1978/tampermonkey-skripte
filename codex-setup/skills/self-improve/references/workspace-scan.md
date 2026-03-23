@@ -11,10 +11,13 @@ Always inspect:
 - `codex-setup/rules/self-observation.md`
 - `codex-setup/rules/german-trigger-routing.md`
 - `codex-setup/rules/claude-delta-sync.md`
+- `codex-setup/rules/gemini-delta-sync.md`
 - `codex-setup/agent-memory/shared/MEMORY.md`
 - `codex-setup/scripts/`
 - `codex-setup/scripts/audit-claude-delta.mjs`
+- `codex-setup/scripts/audit-gemini-delta.mjs`
 - `codex-setup/state/claude-delta-state.json`
+- `codex-setup/state/gemini-delta-state.json`
 - `codex-setup/state/environment-fixes.json`
 - `codex-setup/bridges/`
 - `codex-setup/skills/self-improve/`
@@ -42,6 +45,7 @@ The scan must answer:
 10. Does the Claude-delta audit state cleanly track only programming-environment deltas?
 11. Does `codex-setup/bridges/` expose a reusable Cloud-Code bridge spec that other CLIs can read and mirror?
 12. Does Codex log environment-level fixes with enough context, symptom, cause, verification, and portability detail that other CLIs can understand them without session context?
+13. Can Gemini CLI setup and memory changes be audited without writing into Gemini files?
 
 ## Forbidden Operational Sources
 

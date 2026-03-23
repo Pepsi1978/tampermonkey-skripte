@@ -47,6 +47,10 @@ Jeder Delta-Kandidat wird als genau eine dieser Klassen berichtet:
 - `ADAPT`: als zielsystem-spezifische Portierung erklaeren
 - `REPLACE`: vor der Umsetzung ausdruecklich warnen und Freigabe holen
 
+- Alle drei Klassen sind zunaechst nur Vorschlaege.
+- Auch `ADD` und `ADAPT` duerfen niemals autonom umgesetzt werden.
+- Erst nach ausdruecklicher Benutzerfreigabe auf Basis der A1/B1/C1/D1-Liste darf der Zielagent die Vorschlaege uebernehmen.
+
 Wenn alte und neue Logik beide nuetzlich sind, ist additive Integration der Standard.
 
 ## Ausgabeformat

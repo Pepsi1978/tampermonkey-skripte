@@ -49,8 +49,27 @@ Aktion:
 - zuerst `codex-setup/scripts/audit-claude-delta.*` ausfuehren
 - dabei Regeln, Agents, Skills, Hooks, Arbeitsprozesse, Trigger, Programmierumgebung und umgebungsbezogene Fehlerfixes auswerten
 - danach Port-Kandidaten als `ADD`, `ADAPT` oder `REPLACE` erklaeren
+- auch `ADD` und `ADAPT` nur als Vorschlag berichten, niemals autonom umsetzen
 - bei `REPLACE` vor Umsetzung warnen und bestaetigen lassen
 - der Satz `Starte bitte die Bruecke zu Cloud Code` ist ein direkter Ausloeser fuer diesen kompletten Ablauf
+
+### Gemini-CLI-Delta
+
+- "Starte bitte die Bruecke zu Gemini CLI"
+- "starte die Bruecke zu Gemini CLI"
+- "was wurde bei Gemini CLI erneuert"
+- "welche Verbesserungen gibt es bei Gemini CLI"
+- "welche Regeln sind bei Gemini CLI neuer"
+- "welche Fehler wurden bei Gemini CLI gefixt"
+- "was davon ist fuer Codex sinnvoll"
+
+Aktion:
+- zuerst `codex-setup/scripts/audit-gemini-delta.*` ausfuehren
+- dabei Regeln, Memory-Muster, Agents, Skills, Arbeitsprozesse, Trigger, Programmierumgebung und umgebungsbezogene Fehlerfixes auswerten
+- danach Port-Kandidaten als `ADD`, `ADAPT` oder `REPLACE` erklaeren
+- auch `ADD` und `ADAPT` nur als Vorschlag berichten, niemals autonom umsetzen
+- bei `REPLACE` vor Umsetzung warnen und bestaetigen lassen
+- der Satz `Starte bitte die Bruecke zu Gemini CLI` ist ein direkter Ausloeser fuer diesen kompletten Ablauf
 
 ### Umgebungsfixe und Fix-Log
 
@@ -122,4 +141,5 @@ Aktion:
 
 - Wenn ein Claude-Delta nur zusaetzliche Intelligenz bringt, bevorzuge `ADD` oder additive `ADAPT`.
 - Wenn bestehende Codex-Regeln oder Codex-Setup-Texte wirklich ersetzt werden muessten, markiere das als `REPLACE`.
+- Ergebnisse aus Cloud-Code- oder Gemini-CLI-Bruecken sind immer nur Vorschlaege, nie direkte Umsetzungen.
 - `REPLACE` braucht eine klare Warnung vor der Umsetzung.
