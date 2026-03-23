@@ -321,6 +321,8 @@ All parameters are case-insensitive.-Aufrufe, und \ leitet sein Zielverzeichnis 
 - **[2026-03-23 13:53] self-improve**: In PowerShell-Skripten muss `param(...)` das erste ausführbare Statement bleiben. Wenn vorher bereits `$ErrorActionPreference` oder anderer Code steht, wird `param` beim Script-Aufruf als normaler Befehl interpretiert und der Bootstrap bricht sofort ab.
 
 
+[2026-03-23 20:48] self-improve: openaiDeveloperDocs-MCP-Smoke kann auf healthy fresh sessions auch nach sichtbarer Tool-Startphase noch ueber 45s brauchen; Validatoren budgetieren den Fresh-Session-Check deshalb jetzt mit 90000 ms statt 45000 ms.
+
 ## Performance & Optimierung
 _Noch keine Eintraege._
 

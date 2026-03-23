@@ -983,7 +983,7 @@ Remove-Item -Recurse -Force $TempWorkspace -ErrorAction SilentlyContinue
 if (Test-CodexMcpServer "openaiDeveloperDocs") {
     Invoke-CheckedPwshScript `
         -RelativePath "codex-setup/scripts/check-openai-docs-mcp.ps1" `
-        -Arguments @("--timeout-ms", "45000") `
+        -Arguments @("--timeout-ms", "90000") `
         -FailureMessage "openaiDeveloperDocs MCP smoke test failed."
 } else {
     Write-Host "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."

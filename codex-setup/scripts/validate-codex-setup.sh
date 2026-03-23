@@ -433,7 +433,7 @@ node -e "const data=JSON.parse(process.argv[1]); if(data.report_kind!=='bootstra
 bash "codex-setup/scripts/bootstrap-report.sh" --cli "Codex" >/dev/null
 
 if has_mcp_server "openaiDeveloperDocs"; then
-  bash "codex-setup/scripts/check-openai-docs-mcp.sh" --timeout-ms 45000 >/dev/null
+  bash "codex-setup/scripts/check-openai-docs-mcp.sh" --timeout-ms 90000 >/dev/null
 else
   echo "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
 fi
