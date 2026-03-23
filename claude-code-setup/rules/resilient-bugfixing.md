@@ -165,6 +165,8 @@ settings.json abgeschnitten und JSON unlesbar gemacht.
 | npx-Pfad | `/opt/homebrew/bin/npx` | npx via npm im PATH |
 | Executable-Endung | keine | `.exe` |
 | Symlinks | Native Unterstuetzung | Braucht Developer Mode oder Admin-Rechte |
+| `grep -P` (PCRE) | Funktioniert (UTF-8 Locale) | CRASHT! `grep -P supports only unibyte and UTF-8 locales` — immer `awk`/`sed` verwenden |
+| Default Locale | `en_US.UTF-8` | `German_Germany.1252` (kein UTF-8!) |
 
 ## Was NIEMALS passieren darf
 - ❌ Nur das Symptom fixen ohne Root Cause zu verstehen
