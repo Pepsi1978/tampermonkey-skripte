@@ -306,6 +306,35 @@
       ],
       "created_at": "2026-03-23T12:24:45.354Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-portable-bridge-path-metadata",
+      "source_cli": "Codex",
+      "category": "portability",
+      "summary": "Benutzergebundene lokale Brueckenpfade wurden durch workspace- und userprofilbasierte Vorgaben ersetzt.",
+      "context_for_other_clis": "Diese Reproduzierbarkeits-Haertung entstand waehrend eines Checks, ob die neue Cloud-Code- und Gemini-CLI-Brueckenlogik auf frischen Rechnern sofort aus dem Git-Repo heraus funktioniert. Die wichtigsten Regeln, Trigger, Bruecken und Ledger lagen bereits korrekt in codex-setup und AGENTS.md auf GitHub, aber mehrere operative Metadaten und Dokumentationspfade enthielten noch benutzergebundene Absolute wie C:/Users/barwa/GeminiCLI oder /Users/frank/Codex. Auf einem neu installierten Rechner mit anderem Benutzerpfad oder anderem Klonverzeichnis koennte ein neues Codex-Modell dadurch die korrekte Bruecken- oder Whiteboard-Quelle zwar prinzipiell haben, aber an den falschen lokalen Beispielpfaden kleben bleiben.",
+      "symptom_before_fix": "Die Bruecken- und Setup-Logik war inhaltlich vorhanden, aber nicht durchgehend rechnerneutral beschrieben. Besonders kritisch waren feste lokale Gemini-Workspace-Pfade in bridge-registry.json, bridge-JSONs, Ledgers und README sowie feste Workspace-Pfade in AGENTS.md und der Whiteboard-Kopfsektion. Zusaetzlich lieferten die Delta-Audits einen fest eingebauten Codex-Config-Zielhinweis auf C:/Users/barwa/.codex/config.toml statt den aktuell laufenden Benutzerpfad dynamisch zu bestimmen.",
+      "root_cause": "Die eigentliche Funktionslogik wurde frueh korrekt in codex-setup zentralisiert, aber mehrere Adressangaben entstanden aus dem aktuellen Maschinenkontext dieser Session und wurden danach nicht konsequent in workspace-relative oder userprofilbasierte Vorlagen normalisiert. Dadurch war die inhaltliche Bruecken-Architektur zwar GitHub-portabel, ihre lokale Pfadbeschreibung aber an einzelne Benutzerordner gekoppelt.",
+      "what_was_fixed": "Portabilitaet der Bruecken-, Ledger- und Whiteboard-Pfadmetadaten fuer frische Rechner",
+      "why_it_was_fixed": "damit neue Codex-Installationen die richtige operative Struktur direkt aus dem Repo lesen koennen, ohne an barwa/frank-spezifischen Lokalpfa­den haengen zu bleiben",
+      "exact_error_text": "Reproduzierbarkeitsproblem: benutzergebundene lokale Pfade wie C:/Users/barwa/GeminiCLI/... und /Users/frank/Codex/... standen noch in operativen Codex-Setup-Metadaten, obwohl frische Rechner dieselbe Brueckenlogik aus GitHub uebernehmen sollen.",
+      "root_cause_why_chain": "Why 1: Die Bruecken und Regeln wurden bereits repo-zentriert aufgebaut, aber einige Pfade blieben als Beispiele aus dem aktuellen Rechner stehen. Why 2: Diese Beispiele lagen nicht nur in Fliesstext, sondern auch in JSON-Metadaten und Audit-Zielhinweisen, die neue Sessions fuer operative Hinweise lesen. Why 3: Ohne Normalisierung auf <workspace> oder %USERPROFILE%-Vorlagen kann ein frisch installierter Codex die richtige Struktur besitzen, aber durch falsche lokale Beispiele auf die falsche Maschine geankert bleiben.",
+      "related_error_sources_checked": "Geprueft wurden AGENTS.md, README, global.md, german-trigger-routing, gemini-delta-sync, Self-Improve-Referenzen, bridge-registry.json, cloud/gemini bridge JSONs und MDs, implemented-intelligence-suggestions.json, register-intelligence-suggestion.mjs sowie die beiden Delta-Audits. Damit wurden sowohl Steuertexte als auch maschinenlesbare Bruecken- und Ledger-Metadaten derselben Fehlerklasse gemeinsam gehaertet.",
+      "wrong_pattern_example": "Feste lokale Beispielpfade wie C:/Users/barwa/GeminiCLI/... oder /Users/frank/Codex/... in operative Setup-Metadaten uebernehmen und davon ausgehen, dass spaetere Rechner dieselbe Benutzer- oder Klonstruktur haben.",
+      "right_pattern_example": "Workspace-relative Pfade fuer Codex selbst verwenden, typische lokale Fremdpfade als %USERPROFILE%-Vorlage dokumentieren und laufzeitabhaengige lokale Zielpfade wie ~/.codex/config.toml dynamisch aus dem aktuellen Benutzerkontext ableiten.",
+      "avoidance_rule": "Wenn Bruecken, Whiteboard-Quellen oder Ledger-Adressen fuer mehrere Rechner dokumentiert werden, dann immer workspace-relative oder benutzerprofilbasierte Vorlagen verwenden statt einen festen Maschinenpfad aus der aktuellen Session zu committen.",
+      "resilience_summary": "Der Fix ist update-resistent, weil nicht nur ein einzelner Text korrigiert wurde, sondern AGENTS, README, Regeln, Bridge-JSONs, Bridge-MDs, Ledger-Metadaten und Audit-Zielhinweise gemeinsam auf dieselbe Portabilitaetslogik gebracht wurden. Neue Sessions auf frischen Rechnern bekommen dadurch die operative Struktur direkt aus dem Repo statt aus stillen Maschinenartefakten.",
+      "fix_induced_failure_review": "Abhaengigkeiten: AGENTS, README, Bridge-Registry, Bridge-JSONs, Ledger und Audits muessen dieselben Pfadkonventionen sprechen. Fehlszenario: Wenn nur eine Schicht korrigiert wird, bleiben andere Pfade als falsche operative Beispiele stehen. Zustandsaenderung: Nur codex-setup und AGENTS wurden angepasst, keine Fremd-Workspaces. Race Conditions sind gering, weil es reine Metadaten- und Dokuhaertung ist. Rueckwaertskompatibilitaet bleibt erhalten, weil %USERPROFILE%-Vorlagen und <workspace>-Pfadlogik die bisherigen Beispiele nur verallgemeinern. Plattform-Effekte sind beruecksichtigt, weil macOS-Beispiele, Windows-Vorlagen und dynamische Codex-Config-Aufloesung gemeinsam bestehen. Update-Resistenz entsteht durch Validatoren und den neuen Whiteboard-Hinweis. Graceful Degradation bleibt erhalten, weil selbst bei fehlender Fremd-CLI nur eine Leseadresse beschrieben wird und keine operative Pflicht an fremde Pfade gekoppelt ist.",
+      "verification": "Geprueft werden danach erneut PowerShell- und Bash-Validierung fuer codex-setup sowie ein repoweiter Scan auf benutzergebundene operative Brueckenpfade. Erlaubt verbleiben nur bewusst lokale Historieneintraege im Whiteboard und der separate QuizVerse-macOS-Hinweis.",
+      "portability_notes": "Andere CLIs sollten dieselbe Fehlerklasse vermeiden: Pfadmetadaten fuer Bruecken und Ledger nie aus einer einzelnen Maschine ableiten, sondern immer in repo-relative, home-relative oder %USERPROFILE%-basierte Vorlagen uebersetzen. Wenn Audit-Skripte lokale Config-Zielhinweise ausgeben, sollten sie diese ausserdem zur Laufzeit aus dem aktuellen Benutzerkontext berechnen.",
+      "impact": "",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [],
+      "created_at": "2026-03-23T13:31:51.168Z",
+      "status": "active"
     }
   ]
 }

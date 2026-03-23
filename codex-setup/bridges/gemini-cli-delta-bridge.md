@@ -16,9 +16,9 @@ Read-only Quellen:
 
 - `Gemini-Setup/**`
 - `Gemini-Setup/agent-memory/shared/MEMORY.md`
-- `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`
+- `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md`
 - optional spaeter: `Gemini-Setup/state/implemented-intelligence-suggestions.json`
-- optional lokal spaeter: `C:\Users\barwa\GeminiCLI\state\implemented-intelligence-suggestions.json`
+- optional lokal spaeter: `%USERPROFILE%\GeminiCLI\state\implemented-intelligence-suggestions.json`
 
 ## Zielseite
 
@@ -35,7 +35,7 @@ Codex schreibt nur in seine eigene Setup-Basis:
 - Erwartete Gemini-Repo-Adresse:
   `Gemini-Setup/state/implemented-intelligence-suggestions.json`
 - Erwartete Gemini-Workspace-Adresse:
-  `C:\Users\barwa\GeminiCLI\state\implemented-intelligence-suggestions.json`
+  `%USERPROFILE%\GeminiCLI\state\implemented-intelligence-suggestions.json`
 - Erwartete Cloud-Code-Adresse fuer spaetere Fremd-Ports:
   `claude-code-setup/state/implemented-intelligence-suggestions.json`
 
@@ -50,7 +50,7 @@ Andere CLIs sollen dieselbe Dateiart im eigenen Setup anlegen und ihre Adresse i
 - Erwartete Gemini-Repo-Registry:
   `Gemini-Setup/bridges/bridge-registry.json`
 - Erwartete Gemini-Workspace-Registry:
-  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`
+  `%USERPROFILE%\GeminiCLI\bridges\bridge-registry.json`
 - Erwartete Cloud-Code-Registry:
   `claude-code-setup/bridges/bridge-registry.json`
 

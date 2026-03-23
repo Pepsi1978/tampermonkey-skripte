@@ -77,4 +77,4 @@ Die Bruecke soll bei deutschen Formulierungen wie diesen aktiviert werden:
 - Erwartete Gemini-Repo-Registry:
   `Gemini-Setup/bridges/bridge-registry.json`
 - Erwartete Gemini-Workspace-Registry:
-  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`
+  `%USERPROFILE%\GeminiCLI\bridges\bridge-registry.json`

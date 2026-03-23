@@ -30,15 +30,17 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 ## Erlaubtes Arbeitsverzeichnis
 
 - Codex arbeitet nur im Codex-Workspace.
-- macOS: `/Users/frank/Codex`
-- Windows: `C:\Users\barwa\Codex`
+- workspace-relativ: `<workspace>`
+- typisches macOS-Beispiel: `$HOME/Codex`
+- typisches Windows-Beispiel: `%USERPROFILE%\Codex`
 - Andere lokale Kopien desselben Repos sind fuer Codex tabu, ausser der Benutzer aendert das ausdruecklich.
 
 ## Verbotenes Arbeitsverzeichnis
 
 - Codex darf niemals in `proggs` arbeiten.
-- macOS: `/Users/frank/proggs`
-- Windows: `C:\Users\barwa\proggs`
+- workspace-relativ tabu: `<workspace>/../proggs`
+- typisches macOS-Beispiel: `$HOME/proggs`
+- typisches Windows-Beispiel: `%USERPROFILE%\proggs`
 - `proggs` ist ausschliesslich fuer Claude Code reserviert.
 - Codex darf Dateien dort nicht lesen, schreiben, als `workdir` verwenden oder fuer Git-Operationen benutzen.
 
@@ -157,8 +159,8 @@ Alle acht Dimensionen sollen wachsen. Einseitige Optimierung reicht nicht.
 
 - `Gemini-Setup/` in diesem Repository ist fuer Codex read-only.
 - `Gemini-Setup/agent-memory/shared/MEMORY.md` in diesem Repository ist ebenfalls read-only.
-- Der lokale Workspace `C:\Users\barwa\GeminiCLI` ist fuer Codex ebenfalls read-only.
-- `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md` ist als Gemini-Fehlerquelle ebenfalls read-only.
+- Der typische lokale Workspace `%USERPROFILE%\GeminiCLI` ist fuer Codex ebenfalls read-only.
+- `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md` ist als Gemini-Fehlerquelle ebenfalls read-only.
 - Codex darf dort lesen, aber niemals schreiben, loeschen oder diese Pfade als operative Codex-Steuerpfade benutzen.
 - Fuer Cloud Code gilt zusaetzlich: `claude-code-setup/agent-memory/shared/MEMORY.md` darf nur read-only als Vergleichsquelle fuer Umgebungsfixes gelesen werden, niemals als Codex-Whiteboard oder Codex-Steuerpfad.
 

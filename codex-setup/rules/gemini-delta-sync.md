@@ -8,7 +8,7 @@ Erlaubte Vergleichsquellen:
 
 - `Gemini-Setup/**`
 - `Gemini-Setup/agent-memory/shared/MEMORY.md`
-- `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`
+- `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md`
 
 Nicht Teil dieses Syncs:
 

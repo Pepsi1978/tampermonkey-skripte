@@ -55,7 +55,7 @@ Jeder Eintrag braucht mindestens:
 - Gemini CLI erwartet:
   `Gemini-Setup/state/implemented-intelligence-suggestions.json`
 - Lokale read-only Zusatzquelle fuer Gemini CLI:
-  `C:\Users\barwa\GeminiCLI\state\implemented-intelligence-suggestions.json`
+  `%USERPROFILE%\GeminiCLI\state\implemented-intelligence-suggestions.json`
 
 ## Bridge-Registry
 
@@ -66,7 +66,7 @@ Jeder Eintrag braucht mindestens:
 - Erwartete Gemini-Repo-Registry:
   `Gemini-Setup/bridges/bridge-registry.json`
 - Erwartete Gemini-Workspace-Registry:
-  `C:\Users\barwa\GeminiCLI\bridges\bridge-registry.json`
+  `%USERPROFILE%\GeminiCLI\bridges\bridge-registry.json`
 
 ## Triggerwoerter
 

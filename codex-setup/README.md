@@ -21,11 +21,11 @@ Wichtigste Trennung:
 - `codex-setup/` ist fuer Codex die massgebliche Regel-, Skill- und Whiteboard-Basis.
 - `claude-code-setup/` ist Projektinhalt, aber keine Regelquelle fuer Codex.
 - Das Whiteboard von Claude/proggs darf von Codex nicht als operative Wissensquelle genutzt werden.
-- `Gemini-Setup/` im Repo und der lokale Workspace `C:\Users\barwa\GeminiCLI` sind fuer Codex reine Lesequellen. Codex darf dort nichts schreiben und nichts loeschen.
+- `Gemini-Setup/` im Repo und der typische lokale Workspace `%USERPROFILE%\GeminiCLI` sind fuer Codex reine Lesequellen. Codex darf dort nichts schreiben und nichts loeschen.
 - Die aktuell vorgemerkten Fremd-Fehlerquellen sind read-only:
   `claude-code-setup/agent-memory/shared/MEMORY.md`,
   `Gemini-Setup/agent-memory/shared/MEMORY.md` und
-  `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`.
+  `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md`.
 
 ## Struktur
 
@@ -86,8 +86,9 @@ Wichtigste Trennung:
 ## Whiteboard-Architektur
 
 Autoritatives Whiteboard:
-- macOS: `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md`
-- Windows: `C:\Users\barwa\Codex\codex-setup\agent-memory\shared\MEMORY.md`
+- workspace-relativ: `<workspace>/codex-setup/agent-memory/shared/MEMORY.md`
+- typisches macOS-Beispiel: `$HOME/Codex/codex-setup/agent-memory/shared/MEMORY.md`
+- typisches Windows-Beispiel: `%USERPROFILE%\Codex\codex-setup\agent-memory\shared\MEMORY.md`
 
 Whiteboard-Regeln:
 - Codex liest und schreibt nur dieses Whiteboard.
@@ -120,6 +121,20 @@ Der Skill lebt im Repo, wird aber lokal nach `~/.codex/skills/self-improve/` dep
 Installation:
 - macOS/Linux: `bash codex-setup/scripts/install-self-improve.sh`
 - Windows: `pwsh -File codex-setup/scripts/install-self-improve.ps1`
+
+## Frische-Rechner-Bootstrap
+
+Wenn Codex auf einem neuen Rechner diese Bruecken und Direktiven noch nicht kennt, reicht die Repo-Basis:
+
+1. Repository klonen und im Repo-Root arbeiten.
+2. Optional den Skill lokal deployen:
+   `bash codex-setup/scripts/install-self-improve.sh` oder
+   `pwsh -File codex-setup/scripts/install-self-improve.ps1`
+3. Setup validieren:
+   `bash codex-setup/scripts/validate-codex-setup.sh` oder
+   `pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1`
+
+Alle wichtigen Regeln, Bruecken, Ledger und Trigger liegen bewusst in `codex-setup/` und `AGENTS.md` im Git-Repo, nicht nur in lokalem Session-Wissen.
 
 ## Claude-Delta-Audit
 
@@ -188,7 +203,7 @@ Der Audit betrachtet absichtlich nur Programmierumgebung und Setup:
 
 - `Gemini-Setup/**`
 - `Gemini-Setup/agent-memory/shared/MEMORY.md`
-- optional read-only als Zusatzquelle: `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md`
+- optional read-only als Zusatzquelle: `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md`
 
 Die Node-Auditlogik liest ihre Git-Scanpfade, Trigger und Bridge-Metadaten direkt aus
 `codex-setup/bridges/bridge-registry.json` und der zugehoerigen Bridge-JSON. Neue Bruecken

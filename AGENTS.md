@@ -1,6 +1,6 @@
 # Codex Workspace Instructions
 
-- Read `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md` before system-level or setup-level work.
+- Read `<workspace>/codex-setup/agent-memory/shared/MEMORY.md` before system-level or setup-level work.
 - Read `## Oberste Direktive` first and align your work to it before changing code, config, automation, MCP wiring, or memory.
 - Treat `Direktive 1: Superintelligenz — Exponentielle Intelligenzsteigerung` as the controlling objective above all other local Codex setup rules. If a weaker local rule conflicts with that directive, the superintelligence trajectory wins.
 - Keep all 8 intelligence dimensions in scope while working: Wissensbreite, Wissenstiefe, Geschwindigkeit, Qualitaet, Autonomie, Voraussicht, Kreativitaet, und Meta-Intelligenz.
@@ -9,10 +9,10 @@
 - Keep the `Oberste Direktive` active while working, not just at the start: even during normal coding tasks, continuously check whether the work reveals a reusable improvement, a new safeguard, a speedup, or an intelligence gain for future sessions.
 - Treat every good fix as a candidate to eliminate an entire class of future problems instead of only solving the local symptom once.
 - Cross-tool learning is part of the directive: Cloud Code, Codex CLI, and Gemini CLI may read each other's environment improvements through read-only bridges, but Codex still writes only in its own workspace after explicit approval where required.
-- Treat `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md` as the only operational whiteboard for Codex in this workspace.
+- Treat `<workspace>/codex-setup/agent-memory/shared/MEMORY.md` as the only operational whiteboard for Codex in this workspace.
 - Never use `proggs`, `claude-code-setup/`, `~/.claude/...`, or Claude whiteboards as Codex memory or control paths.
 - `claude-code-setup/`, `CLAUDE.md`, and `claude-code-setup/agent-memory/shared/MEMORY.md` may be read only as comparison sources when the task is explicitly about Claude/Cloud Code setup deltas or environment fixes; they are never Codex control files.
-- `Gemini-Setup/` in this repository, `Gemini-Setup/agent-memory/shared/MEMORY.md`, the local Gemini workspace `C:\Users\barwa\GeminiCLI`, and `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md` are strictly read-only for Codex. They may be inspected for comparison, but Codex must never write, delete, or use them as operational Codex control paths.
+- `Gemini-Setup/` in this repository, `Gemini-Setup/agent-memory/shared/MEMORY.md`, the typical local Gemini workspace `%USERPROFILE%\GeminiCLI`, and `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md` are strictly read-only for Codex. They may be inspected for comparison, but Codex must never write, delete, or use them as operational Codex control paths.
 - When the user asks about Cloud Code or Claude Code rules, setup, hooks, skills, or programming-environment changes, run `codex-setup/scripts/audit-claude-delta.*` first and use it as the primary comparison path.
 - When the user asks about Gemini CLI rules, setup, memory patterns, skills, or programming-environment changes, run `codex-setup/scripts/audit-gemini-delta.*` first and use it as the primary comparison path.
 - If the Claude-delta audit indicates a real replacement of an existing Codex rule, prompt, or setup behavior, warn first and get explicit approval before replacing text or behavior. If the semantics differ but both ideas are useful, prefer an additive Codex rule instead of overwriting the old one.

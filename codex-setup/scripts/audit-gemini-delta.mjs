@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { REPO_ROOT, loadBridgeContext } from "./bridge-registry.mjs";
@@ -77,6 +78,10 @@ function runGit(args, options = {}) {
 
 function toSlash(targetPath) {
   return targetPath.replace(/\\/g, "/");
+}
+
+function getLocalCodexConfigPath() {
+  return toSlash(path.join(os.homedir(), ".codex", "config.toml"));
 }
 
 function readJson(filePath, fallback) {
@@ -220,7 +225,7 @@ function classifyPath(sourcePath) {
     return {
       category: "environment-config",
       target_hints: [
-        "C:/Users/barwa/.codex/config.toml",
+        getLocalCodexConfigPath(),
         "AGENTS.md",
         "codex-setup/README.md",
       ],

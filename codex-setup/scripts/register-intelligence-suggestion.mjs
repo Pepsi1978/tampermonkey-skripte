@@ -173,7 +173,7 @@ function buildDefaultLedger(registry = loadSuggestionRegistry()) {
       "Gemini CLI": {
         expected_repo_path: geminiRepoPath,
         expected_local_path:
-          "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json",
+          "%USERPROFILE%/GeminiCLI/state/implemented-intelligence-suggestions.json",
         expected_github_url: deriveGithubBlobUrl(
           geminiRegistryTarget.expected_github_url,
           geminiRepoPath,

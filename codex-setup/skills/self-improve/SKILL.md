@@ -43,7 +43,7 @@ Hard rules:
 - The local deployment target is `~/.codex/skills/self-improve/`.
 - `claude-code-setup/` and `CLAUDE.md` are read-only comparison sources when the task is explicitly about Claude or Cloud Code deltas.
 - Never write, delete, or reorganize files inside Claude comparison sources from this skill.
-- `Gemini-Setup/` and `C:\Users\barwa\GeminiCLI` are read-only comparison sources for Codex. Never write or delete there from this skill.
+- `Gemini-Setup/` and the typical local Gemini workspace `%USERPROFILE%\GeminiCLI` are read-only comparison sources for Codex. Never write or delete there from this skill.
 - If a Claude delta would replace existing Codex rule text or Codex setup behavior, warn first and require explicit approval before replacing it.
 - Prefer additive Codex integration whenever a Claude idea is useful but not identical to the existing Codex rule.
 - If this run fixes a Codex environment issue, log the fix with full cross-CLI context in `codex-setup/state/environment-fixes.json`.

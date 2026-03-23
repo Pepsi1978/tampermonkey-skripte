@@ -73,7 +73,7 @@
       },
       "Gemini CLI": {
         "repo_path": "Gemini-Setup/bridges/bridge-registry.json",
-        "local_path": "C:/Users/barwa/GeminiCLI/bridges/bridge-registry.json",
+        "local_path": "%USERPROFILE%/GeminiCLI/bridges/bridge-registry.json",
         "github_url": "https://github.com/Pepsi1978/proggs/blob/main/Gemini-Setup/bridges/bridge-registry.json",
         "status": "awaiting-foreign-registration"
       }
@@ -99,7 +99,7 @@
       "gemini_expected": {
         "repo_path": "Gemini-Setup/state/implemented-intelligence-suggestions.json",
         "github_url": "https://github.com/Pepsi1978/proggs/blob/main/Gemini-Setup/state/implemented-intelligence-suggestions.json",
-        "local_path": "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json",
+        "local_path": "%USERPROFILE%/GeminiCLI/state/implemented-intelligence-suggestions.json",
         "status": "awaiting-foreign-registration"
       }
     }

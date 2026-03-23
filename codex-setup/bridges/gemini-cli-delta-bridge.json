@@ -14,9 +14,9 @@
   "read_only_sources": [
     "Gemini-Setup/**",
     "Gemini-Setup/agent-memory/shared/MEMORY.md",
-    "C:/Users/barwa/GeminiCLI/agent-memory/shared/MEMORY.md",
+    "%USERPROFILE%/GeminiCLI/agent-memory/shared/MEMORY.md",
     "Gemini-Setup/state/implemented-intelligence-suggestions.json",
-    "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json"
+    "%USERPROFILE%/GeminiCLI/state/implemented-intelligence-suggestions.json"
   ],
   "classifications": [
     "ADD",
@@ -65,7 +65,7 @@
     "peer_expected_registries": {
       "Gemini CLI": {
         "repo_path": "Gemini-Setup/bridges/bridge-registry.json",
-        "local_path": "C:/Users/barwa/GeminiCLI/bridges/bridge-registry.json",
+        "local_path": "%USERPROFILE%/GeminiCLI/bridges/bridge-registry.json",
         "github_url": "https://github.com/Pepsi1978/proggs/blob/main/Gemini-Setup/bridges/bridge-registry.json",
         "status": "awaiting-foreign-registration"
       },
@@ -83,7 +83,7 @@
       "codex": "codex-setup/state/environment-fixes.json",
       "gemini_read_only_sources": [
         "Gemini-Setup/agent-memory/shared/MEMORY.md",
-        "C:/Users/barwa/GeminiCLI/agent-memory/shared/MEMORY.md"
+        "%USERPROFILE%/GeminiCLI/agent-memory/shared/MEMORY.md"
       ]
     },
     "implemented_intelligence_suggestions": {
@@ -94,7 +94,7 @@
       "gemini_expected": {
         "repo_path": "Gemini-Setup/state/implemented-intelligence-suggestions.json",
         "github_url": "https://github.com/Pepsi1978/proggs/blob/main/Gemini-Setup/state/implemented-intelligence-suggestions.json",
-        "local_path": "C:/Users/barwa/GeminiCLI/state/implemented-intelligence-suggestions.json",
+        "local_path": "%USERPROFILE%/GeminiCLI/state/implemented-intelligence-suggestions.json",
         "status": "awaiting-foreign-registration"
       },
       "cloud_code_expected": {

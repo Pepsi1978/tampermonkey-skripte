@@ -19,8 +19,9 @@ Wichtige Trennung:
 - Das Claude-/proggs-Whiteboard ist fuer Codex tabu.
 - Findings fuer Codex gehoeren nie in `~/proggs/.../MEMORY.md`.
 
-**Autoritativ (macOS):** `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md`
-**Autoritativ (Windows):** `C:\Users\barwa\Codex\codex-setup\agent-memory\shared\MEMORY.md`
+**Autoritativ (workspace-relativ):** `<workspace>/codex-setup/agent-memory/shared/MEMORY.md`
+**Typisches macOS-Beispiel:** `$HOME/Codex/codex-setup/agent-memory/shared/MEMORY.md`
+**Typisches Windows-Beispiel:** `%USERPROFILE%\Codex\codex-setup\agent-memory\shared\MEMORY.md`
 
 **Angebundene Codex-Systeme:**
 - `codex-setup/rules/global.md`
@@ -150,7 +151,7 @@ Alle acht Dimensionen sollen wachsen, nicht nur einzelne davon.
 
 **Stand:** 2026-03-22
 
-- **Workspace:** `/Users/frank/Codex` (macOS) / `C:\Users\barwa\Codex` (Windows)
+- **Workspace:** `<workspace>`; typische Beispiele sind `$HOME/Codex` (macOS) und `%USERPROFILE%\Codex` (Windows)
 - **Regelquelle:** `codex-setup/` ist die Source-of-Truth fuer Codex
 - **Whiteboard:** eigenes Codex-Whiteboard unter `codex-setup/agent-memory/shared/MEMORY.md`
 - **Lokale Codex-Konfiguration:** `~/.codex/config.toml`
@@ -274,3 +275,5 @@ _Noch keine Eintraege._
 - **[2026-03-23 15:05] codex-setup**: Codex loggt jetzt umgesetzte Intelligenzvorschlaege in codex-setup/state/implemented-intelligence-suggestions.json, nutzt new-environment-fix.* fuer gefuehrte Umgebungsfix-Erfassung und zeigt neue Vorschlaege fuer den Benutzer im sichtbaren Format 💡 Intelligenz-Vorschlag: ... an. Cloud-Code- und Gemini-Bruecken tragen zusaetzlich bereits die erwarteten Fremd-Adressen fuer entsprechende Ledger vorab mit.
 
 - **[2026-03-23 17:05] codex-setup**: Die zentrale Bridge-Registry liegt jetzt in codex-setup/bridges/bridge-registry.json. Sichtbare Vorschlaege muessen ab jetzt immer exakt als `💡 Intelligenz-Vorschlag:` erscheinen. Umgesetzte Intelligenzvorschlaege folgen nun demselben Zukunftsstandard wie Umgebungsfixes, inklusive Resilienz-Zusammenfassung und Failure-Review, und die Cloud-Code- sowie Gemini-Bruecken tragen den Registry-Adoptionshinweis jetzt auch maschinenlesbar mit.
+
+- **[2026-03-23 17:48] codex-setup**: Fuer frische Rechner gilt jetzt explizit: operative Codex-Pfade sind workspace-relativ, und typische lokale Gemini-Pfade werden als `%USERPROFILE%\GeminiCLI\...`-Vorlage behandelt. Aeltere absolute Benutzerpfade in historischen Whiteboard-Eintraegen sind nur Sitzungskontext dieser Maschine, nicht die aktuelle operative Vorgabe.

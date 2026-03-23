@@ -8,8 +8,8 @@ Es soll nur auf Faehigkeiten zeigen, die Codex hier wirklich besitzt.
 - Wenn der Benutzer `Cloud Code` sagt, ist fuer Codex damit `Claude Code` gemeint.
 - `claude-code-setup/` und `CLAUDE.md` sind dabei nur Lese- und Vergleichsquellen.
 - `claude-code-setup/agent-memory/shared/MEMORY.md` ist die aktuell vorgemerkte read-only Cloud-Code-Fehlerquelle.
-- `Gemini-Setup/`, `Gemini-Setup/agent-memory/shared/MEMORY.md` und `C:\Users\barwa\GeminiCLI` sind fuer Codex ebenfalls nur Lesequellen.
-- `C:\Users\barwa\GeminiCLI\agent-memory\shared\MEMORY.md` ist die aktuell vorgemerkte read-only Gemini-Fehlerquelle.
+- `Gemini-Setup/`, `Gemini-Setup/agent-memory/shared/MEMORY.md` und `%USERPROFILE%\GeminiCLI` sind fuer Codex ebenfalls nur Lesequellen.
+- `%USERPROFILE%\GeminiCLI\agent-memory\shared\MEMORY.md` ist die aktuell vorgemerkte read-only Gemini-Fehlerquelle.
 - Schreibarbeit passiert nur in `codex-setup/`, `AGENTS.md` und bei Bedarf in der Codex-Validierung.
 
 ## Triggergruppen
