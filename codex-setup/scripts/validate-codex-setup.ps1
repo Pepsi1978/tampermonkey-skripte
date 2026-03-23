@@ -164,6 +164,14 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "proposal-only") {
     throw "AGENTS.md must mark bridge findings as proposal-only."
 }
 
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "8 intelligence dimensions") {
+    throw "AGENTS.md must keep the 8 intelligence dimensions in scope."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+    throw "AGENTS.md must define the intelligence proposal format."
+}
+
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape('automatically create a focused commit and push it to `origin/main`')) {
     throw "AGENTS.md must instruct Codex to auto-commit and push validated codex-setup changes."
 }
@@ -220,6 +228,18 @@ if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "GeminiCLI") {
     throw "global.md must mark Gemini comparison paths as read-only."
 }
 
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {
+    throw "global.md must define the 8 intelligence dimensions."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Cross-Tool-Lernen") {
+    throw "global.md must describe cross-tool learning."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+    throw "global.md must define the intelligence proposal format."
+}
+
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "audit-claude-delta.mjs") {
     throw "README.md must document the Claude delta audit."
 }
@@ -250,6 +270,10 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruec
 
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "GeminiCLI") {
     throw "README.md must mark Gemini comparison paths as read-only."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "8 Intelligenz-Dimensionen") {
+    throw "README.md must document the 8 intelligence dimensions."
 }
 
 $ClaudeDeltaState = Get-Content "codex-setup\state\claude-delta-state.json" -Raw | ConvertFrom-Json
@@ -286,6 +310,18 @@ foreach ($entry in $EnvironmentFixes.entries) {
     if ($entry.context_for_other_clis.Length -lt 40 -or $entry.symptom_before_fix.Length -lt 40 -or $entry.root_cause.Length -lt 30 -or $entry.verification.Length -lt 30 -or $entry.portability_notes.Length -lt 30) {
         throw "environment-fixes.json fix entries must contain detailed cross-CLI context."
     }
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {
+    throw "MEMORY.md must define the 8 intelligence dimensions."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Cross-Tool-Lernen") {
+    throw "MEMORY.md must describe cross-tool learning."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Intelligenz-Vorschlag:") {
+    throw "MEMORY.md must define the intelligence proposal format."
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json

@@ -4,6 +4,7 @@ Top-level objective for all researchers:
 - support the superintelligence trajectory of this Codex environment
 - prioritize findings that make Codex materially smarter at programming, verification,
   memory use, problem decomposition, and system-level self-improvement
+- keep all 8 intelligence dimensions in mind instead of optimizing only for one local metric
 - favor findings with session-over-session compounding effects over one-off tweaks
 - read the whiteboard section `## Oberste Direktive` first and align all findings to it
 - always surface simple next-step intelligence opportunities that the user could approve immediately

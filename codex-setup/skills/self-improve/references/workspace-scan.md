@@ -41,11 +41,12 @@ The scan must answer:
 6. Are local MCP registrations aligned with this workspace?
 7. Is the whiteboard's `## Oberste Direktive` propagated across the attached Codex control files, prompts, validation paths, and `AGENTS.md`?
 8. Is `self-observation` visible as the second directive under the `## Oberste Direktive`?
-9. Can Claude/Cloud Code setup changes be audited without writing into Claude files?
-10. Does the Claude-delta audit state cleanly track only programming-environment deltas?
-11. Does `codex-setup/bridges/` expose a reusable Cloud-Code bridge spec that other CLIs can read and mirror?
-12. Does Codex log environment-level fixes with enough context, symptom, cause, verification, and portability detail that other CLIs can understand them without session context?
-13. Can Gemini CLI setup and memory changes be audited without writing into Gemini files?
+9. Are the 8 intelligence dimensions and the compounding-superintelligence direction visible in the controlling Codex files?
+10. Can Claude/Cloud Code setup changes be audited without writing into Claude files?
+11. Does the Claude-delta audit state cleanly track only programming-environment deltas?
+12. Does `codex-setup/bridges/` expose a reusable Cloud-Code bridge spec that other CLIs can read and mirror?
+13. Does Codex log environment-level fixes with enough context, symptom, cause, verification, and portability detail that other CLIs can understand them without session context?
+14. Can Gemini CLI setup and memory changes be audited without writing into Gemini files?
 
 ## Forbidden Operational Sources
 

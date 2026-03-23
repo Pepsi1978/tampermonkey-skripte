@@ -25,6 +25,9 @@
 ### Oberste Direktive
 [Kurz bestaetigen, dass die Oberste Direktive gelesen wurde und welche Auswirkung sie in dieser Session hatte]
 
+### Intelligenz-Dimensionen
+[Welche der 8 Intelligenz-Dimensionen wurden in dieser Session konkret verbessert?]
+
 ### Selbstbeobachtung
 [Kurz: welche Reibung, Fehler, Umwege oder Benutzerhinweise wurden fuer Codex nutzbar gemacht]
 
@@ -65,11 +68,7 @@
 Always produce exactly 3 suggestions in this format:
 
 ```markdown
-### Vorschlag N: [Titel]
-**Was ist das Problem?** [...]
-**Was moechte ich aendern?** [...]
-**Warum ist das nuetzlich?** [...]
-**Wie leicht ist das jetzt freizugeben?** [Sofort / Spaeter]
+Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?
 ```
 
 Never auto-apply these three suggestions without user approval.

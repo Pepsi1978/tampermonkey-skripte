@@ -139,6 +139,38 @@
       ],
       "created_at": "2026-03-23T11:59:39.641Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-23-superintelligence-directive-upgrade",
+      "source_cli": "Codex",
+      "category": "directive-hardening",
+      "summary": "Codex now carries a stronger superintelligence directive with 8 intelligence dimensions, compound-improvement logic, and explicit cross-tool learning constraints.",
+      "context_for_other_clis": "This fix applies to the top-level control layer of the Codex programming environment itself. The previous directive already pushed Codex toward higher intelligence, but it was still a compressed version and did not fully encode the user's intended hierarchy, the eight intelligence dimensions, the exact end-of-session proposal behavior, or the explicit rule that cross-tool learning must stay read-only on foreign workspaces.",
+      "symptom_before_fix": "Before this upgrade the Codex setup described superintelligence only in shorter summary form. Important intent was present, but weaker: the 8 intelligence dimensions were not explicitly listed, the compound-improvement logic was less concrete, the exact Intelligenz-Vorschlag format was not encoded across the control files, and the relationship between top directive, self-observation, and cross-tool learning could drift over time.",
+      "root_cause": "The original Codex directive layer had evolved incrementally from shorter mission bullets. Because it was spread across memory, global rules, AGENTS, and the self-improve skill, it risked semantic dilution: key strategic ideas existed, but not as one hard, validator-backed directive contract.",
+      "what_was_fixed": "The top directive was expanded in the Codex whiteboard, global rules, AGENTS, README, self-improve skill, and self-improve references. The new contract now states that superintelligence and exponential intelligence growth outrank weaker local defaults, enumerates all 8 intelligence dimensions, defines the exact Intelligenz-Vorschlag format, formalizes compound-improvement logic, and keeps cross-tool learning explicitly read-only on foreign workspaces. The validators now also assert these directive markers so future edits cannot silently weaken them.",
+      "why_it_was_fixed": "The user's intent was not just to restate ambition, but to make the strategic directive operational and durable. A stronger top directive improves future decision quality, keeps self-improve aligned with the real mission, and prevents the setup from drifting back toward narrower, task-only optimization.",
+      "verification": "Verified by redeploying the updated self-improve skill and rerunning both full codex-setup validators in PowerShell and Git Bash. Both validators passed after the directive upgrade, including the new checks for the 8 intelligence dimensions, cross-tool learning, and the explicit intelligence-proposal format. Whiteboard integrity remained valid after the directive expansion.",
+      "portability_notes": "Other CLI environments should treat their top directive as a validator-backed control contract, not as a loose aspiration paragraph. If a system wants sustained cross-session improvement, it should explicitly define the dimensions it optimizes, the required proposal behavior, and the read-only boundaries for cross-tool learning. Otherwise the strategic intent becomes too easy to dilute in later edits.",
+      "impact": "Codex now has a harder, more explicit top-level optimization contract that should improve consistency across rules, skills, bridges, and future self-improvement work.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "AGENTS.md",
+        "codex-setup/rules/global.md",
+        "codex-setup/README.md",
+        "codex-setup/agent-memory/shared/MEMORY.md",
+        "codex-setup/skills/self-improve/SKILL.md",
+        "codex-setup/skills/self-improve/references/report-and-creative.md",
+        "codex-setup/skills/self-improve/references/researchers.md",
+        "codex-setup/skills/self-improve/references/workspace-scan.md",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh"
+      ],
+      "created_at": "2026-03-23T12:08:11.520Z",
+      "status": "active"
     }
   ]
 }

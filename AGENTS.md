@@ -2,8 +2,12 @@
 
 - Read `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md` before system-level or setup-level work.
 - Read `## Oberste Direktive` first and align your work to it before changing code, config, automation, MCP wiring, or memory.
+- Treat `Direktive 1: Superintelligenz — Exponentielle Intelligenzsteigerung` as the controlling objective above all other local Codex setup rules. If a weaker local rule conflicts with that directive, the superintelligence trajectory wins.
+- Keep all 8 intelligence dimensions in scope while working: Wissensbreite, Wissenstiefe, Geschwindigkeit, Qualitaet, Autonomie, Voraussicht, Kreativitaet, und Meta-Intelligenz.
 - Treat Codex self-observation as the second directive under `## Oberste Direktive`: observe errors, detours, speed losses, user corrections, and reusable improvements while working, then turn them into end-of-session intelligence proposals or safeguards.
 - Keep the `Oberste Direktive` active while working, not just at the start: even during normal coding tasks, continuously check whether the work reveals a reusable improvement, a new safeguard, a speedup, or an intelligence gain for future sessions.
+- Treat every good fix as a candidate to eliminate an entire class of future problems instead of only solving the local symptom once.
+- Cross-tool learning is part of the directive: Cloud Code, Codex CLI, and Gemini CLI may read each other's environment improvements through read-only bridges, but Codex still writes only in its own workspace after explicit approval where required.
 - Treat `/Users/frank/Codex/codex-setup/agent-memory/shared/MEMORY.md` as the only operational whiteboard for Codex in this workspace.
 - Never use `proggs`, `claude-code-setup/`, `~/.claude/...`, or Claude whiteboards as Codex memory or control paths.
 - `claude-code-setup/`, `CLAUDE.md`, and `claude-code-setup/agent-memory/shared/MEMORY.md` may be read only as comparison sources when the task is explicitly about Claude/Cloud Code setup deltas or environment fixes; they are never Codex control files.
@@ -20,6 +24,7 @@
 - If `pwsh` is available locally, use it on macOS to run `.ps1` validation and parity checks before relying on CI or Windows-only feedback.
 - For `QuizVerse` Android runs on macOS, use `ANDROID_SDK_ROOT=/Users/frank/Library/Android/sdk`, emulator binary `/opt/homebrew/share/android-commandlinetools/emulator/emulator`, adb `/opt/homebrew/share/android-commandlinetools/platform-tools/adb`, project root `/Users/frank/Codex/QuizVerse`, and default AVD `Pixel7_API35` so the simulator can be launched without rediscovery.
 - After every successful session, always propose at least one concrete `Intelligenzvorschlag` for future Codex improvement, ideally derived from friction observed in that session. Treat speed, less rediscovery, faster startup paths, stronger defaults, and fewer repeated checks as real intelligence gains.
+- When such a proposal is warranted, use this format: `Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
 - If a real error, mismatch, or blind spot becomes visible during a session and Codex can harden against it, do that within the same session instead of only explaining it. If immediate hardening is not yet safe, surface it as an explicit `Intelligenzvorschlag` before closing the session.
 - If an MCP tool call says `unknown MCP server` but `codex mcp list` shows that server as enabled, treat it as a stale runtime/session MCP registry mismatch rather than a bad config, say so explicitly, and recommend a fresh Codex restart or fresh `codex exec` smoke test.
 - Always use the OpenAI developer documentation MCP server if you need to work with the OpenAI API, ChatGPT Apps SDK, Codex, or related docs without me having to explicitly ask.

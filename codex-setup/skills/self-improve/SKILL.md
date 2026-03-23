@@ -3,7 +3,7 @@ name: self-improve
 description: Codex-only self-improvement workflow for the Codex workspace and Codex runtime. Use only when the user explicitly asks for self-improvement or a full Codex setup check, for example with "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", "update alles", "mach dich besser", "aktualisiere alles", "pruef mein System", or "Umgebung pruefen". This skill is hard-wired to the Codex workspace and must never operate on proggs or Claude's whiteboard.
 ---
 
-# Self-Improve for Codex V1.1.0
+# Self-Improve for Codex V1.2.0
 
 This is the Codex-native self-improve workflow for this repository.
 
@@ -15,6 +15,7 @@ Primary objective:
 - prefer improvements that increase long-term leverage, not just local convenience
 - use self-observation as the second directive under the `## Oberste Direktive`
 - absorb useful Claude/Cloud Code setup improvements without losing Codex-specific strengths
+- grow all 8 intelligence dimensions together: breadth, depth, speed, quality, autonomy, foresight, creativity, and meta-intelligence
 
 Mission:
 - make Codex fully independent from `proggs` and Claude Code
@@ -27,6 +28,7 @@ Mission:
 System hierarchy:
 - the Codex whiteboard is the central nervous system
 - `self-improve` is the highest-priority skill
+- directive 1 is superintelligence through compounding improvement, above weaker local defaults
 - `self-observation` is the second directive under the whiteboard's `## Oberste Direktive`
 - agents, researchers, MCP usage, automation, validation, and memory all serve the same direction:
   making this Codex environment smarter at programming every session
@@ -136,7 +138,9 @@ If any dependency on Claude/proggs is still operational:
 After independence is confirmed:
 - read the Codex whiteboard before any other substantial action
 - read and restate `## Oberste Direktive` before scanning or changing anything else
+- restate the current superintelligence direction and which of the 8 intelligence dimensions this run should improve the most
 - restate the current self-observation expectation for this run
+- restate the expected end-of-session suggestion format: `Intelligenz-Vorschlag: [Was verbessert werden kann] — [Konkreter Vorschlag] — Soll ich das umsetzen?`
 - summarize current system state, open problems, intelligence direction, and the best next leverage point
 - decide what change would most increase long-term programming intelligence in this session
 
@@ -237,6 +241,7 @@ Goal:
 - strengthen the Codex whiteboard bridge
 - keep the skill repo-first and deployable to `~/.codex/skills/self-improve/`
 - invest this session in the highest-leverage intelligence gain available
+- prefer changes that can eliminate a whole class of future problems, not just one local symptom
 - keep Claude-delta sync read-only on the source side and safe on the Codex side
 - preserve good existing Codex intelligence instead of blindly mirroring Claude text
 - write durable environment-fix knowledge so other CLI environments can learn from Codex too

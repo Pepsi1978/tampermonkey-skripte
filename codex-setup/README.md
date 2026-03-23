@@ -8,6 +8,7 @@ Mission V1.0.0:
 - die lokale Codex-Programmierumgebung schrittweise zur intelligentesten Version ihrer selbst ausbauen
 - oberstes Ziel: Codex in diesem Workspace zur intelligentesten Programmierumgebung machen
 - jede Session fuer kumulative, moeglichst exponentielle Intelligenzsteigerung nutzen
+- alle 8 Intelligenz-Dimensionen systematisch mitentwickeln: Wissensbreite, Wissenstiefe, Geschwindigkeit, Qualitaet, Autonomie, Voraussicht, Kreativitaet und Meta-Intelligenz
 
 Grundsaetze:
 - nur fuer Codex
@@ -84,6 +85,9 @@ Whiteboard-Regeln:
   `self-observation`: Codex soll waehrend der Arbeit seine eigenen Fehler, Umwege,
   Geschwindigkeitsverluste und Benutzerkorrekturen beobachten und daraus Schutzmassnahmen
   oder Intelligenzvorschlaege fuer kuenftige Sessions ableiten.
+- Die `## Oberste Direktive` verfolgt ausdruecklich einen Compound-Intelligence-Ansatz:
+  nicht nur Probleme loesen, sondern das System besser darin machen, sich selbst intelligenter zu machen
+  und ganze Problemklassen schrittweise zu eliminieren.
 - Whiteboard-Schreibzugriffe laufen sektionsbasiert ueber `codex-setup/scripts/whiteboard-insert.*`
   oder `codex-setup/scripts/writeback-enforcer.*`.
 - Agents/Researcher schreiben Sentinel-JSON-Dateien; die Merge-Logik fuehrt sie in das Codex-Whiteboard zusammen.
