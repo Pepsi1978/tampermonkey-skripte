@@ -3,13 +3,13 @@ name: self-improve
 description: Codex-only self-improvement workflow for the Codex workspace and Codex runtime. Use only when the user explicitly asks for self-improvement or a full Codex setup check, for example with "/self-improve", "verbessere dich", "optimiere deine Umgebung", "check dein Setup", "update alles", "mach dich besser", "aktualisiere alles", "pruef mein System", or "Umgebung pruefen". This skill is hard-wired to the Codex workspace and must never operate on proggs or Claude's whiteboard.
 ---
 
-# Self-Improve for Codex V1.3.0
+# Self-Improve for Codex V1.4.0
 
 This is the Codex-native self-improve workflow for this repository.
 
 Primary objective:
 - drive this Codex environment toward superintelligence in programming
-- make Codex the strongest possible programming environment inside its own workspace
+- make Codex the strongest possible programming environment inside its own workspace and push this workspace toward the intelligenteste Programmierumgebung der Welt
 - treat all other improvements as supporting work toward that top-level goal
 - maximize the compounding intelligence gain from session to session
 - prefer improvements that increase long-term leverage, not just local convenience
@@ -28,7 +28,7 @@ Mission:
 System hierarchy:
 - the Codex whiteboard is the central nervous system
 - `self-improve` is the highest-priority skill
-- directive 1 is superintelligence through compounding improvement, above weaker local defaults
+- directive 1 is superintelligence through compounding improvement, above weaker local defaults and below only safety rules plus explicit user instructions
 - `self-observation` is the second directive under the whiteboard's `## Oberste Direktive`
 - agents, researchers, MCP usage, automation, validation, and memory all serve the same direction:
   making this Codex environment smarter at programming every session
@@ -41,6 +41,7 @@ Hard rules:
 - The only authoritative whiteboard is `<workspace>/codex-setup/agent-memory/shared/MEMORY.md`.
 - The Git source-of-truth for this skill is `<workspace>/codex-setup/skills/self-improve/`.
 - The local deployment target is `~/.codex/skills/self-improve/`.
+- Direktive 1 must remain mirrored in both the repo whiteboard and the deployed local self-improve skill so it survives both repo churn and local runtime drift.
 - `claude-code-setup/` and `CLAUDE.md` are read-only comparison sources when the task is explicitly about Claude or Cloud Code deltas.
 - Never write, delete, or reorganize files inside Claude comparison sources from this skill.
 - `Gemini-Setup/` and the typical local Gemini workspace `%USERPROFILE%\GeminiCLI` are read-only comparison sources for Codex. Never write or delete there from this skill.
@@ -50,6 +51,7 @@ Hard rules:
 - If this run fixes a Codex environment bug, follow the resilient-bugfixing workflow instead of shipping a one-off patch.
 - If this run implements a Codex `Intelligenzvorschlag`, also log that implementation in `codex-setup/state/implemented-intelligence-suggestions.json`.
 - Implemented `Intelligenzvorschlaege` must be as durable as environment fixes: no one-off patches, check related surfaces, document resilience, and include a future-failure review.
+- Treat the user as a German-speaking Systemarchitekt rather than a klassischer Programmierer; proposals and summaries should stay concrete, short, and approval-ready.
 
 Read these files as needed:
 - [references/workspace-scan.md](references/workspace-scan.md)

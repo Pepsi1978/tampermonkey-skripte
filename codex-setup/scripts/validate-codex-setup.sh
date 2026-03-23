@@ -184,6 +184,10 @@ search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
 search_fixed "GeminiCLI" "AGENTS.md"
 search_fixed "proposal-only" "AGENTS.md"
 search_fixed "8 intelligence dimensions" "AGENTS.md"
+search_fixed "intelligenteste Programmierumgebung der Welt" "AGENTS.md"
+search_fixed "Sicherheitsregeln und explizite Benutzer-Anweisungen" "AGENTS.md"
+search_fixed "Systemarchitekt" "AGENTS.md"
+search_fixed "at least two places that survive different failure modes" "AGENTS.md"
 search_fixed "💡 Intelligenz-Vorschlag:" "AGENTS.md"
 search_fixed "implemented-intelligence-suggestions.json" "AGENTS.md"
 search_fixed "bridge-registry.json" "AGENTS.md"
@@ -224,6 +228,11 @@ search_fixed "semantischer Suche, Indexierung, Hintergrund-Reindex" "codex-setup
 search_fixed "Read-Only Fremd-Workspaces" "codex-setup/rules/global.md"
 search_fixed "GeminiCLI" "codex-setup/rules/global.md"
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/rules/global.md"
+search_fixed "intelligenteste Programmierumgebung der Welt" "codex-setup/rules/global.md"
+search_fixed "kein klassischer Programmierer" "codex-setup/rules/global.md"
+search_fixed "Sicherheitsregeln und explizite Benutzer-Anweisungen" "codex-setup/rules/global.md"
+search_fixed "mindestens 2 unabhaengigen Orten" "codex-setup/rules/global.md"
+search_fixed "Compound Intelligence Effect" "codex-setup/rules/global.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/rules/global.md"
 search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/rules/global.md"
 search_fixed "implemented-intelligence-suggestions.json" "codex-setup/rules/global.md"
@@ -265,10 +274,18 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
 }
 
 search_fixed "Die 8 Intelligenz-Dimensionen" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "intelligenteste Programmierumgebung der Welt" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "kein klassischer Programmierer" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "Sicherheitsregeln und explizite Benutzer-Anweisungen" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "mindestens 2 unabhaengigen Orten" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "Compound Intelligence Effect" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Cross-Tool-Lernen" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Effizienzverluste, Wissensluecken, wiederkehrenden Muster" "codex-setup/agent-memory/shared/MEMORY.md"
 search_fixed "Direktive 3: Resilient Bugfixing" "codex-setup/agent-memory/shared/MEMORY.md"
+search_fixed "German-speaking Systemarchitekt" "codex-setup/skills/self-improve/SKILL.md"
+search_fixed "below only safety rules plus explicit user instructions" "codex-setup/skills/self-improve/SKILL.md"
+search_fixed "Direktive 1 must remain mirrored" "codex-setup/skills/self-improve/SKILL.md"
 search_fixed "💡 Intelligenz-Vorschlag:" "codex-setup/skills/self-improve/references/report-and-creative.md"
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/cloud-code-delta-bridge.json','utf8')); if(data.source_label!=='Cloud Code') process.exit(1); if(!data.replacement_requires_confirmation) process.exit(1); if(!Array.isArray(data.trigger_phrases) || data.trigger_phrases.length<3) process.exit(1); if(!data.trigger_phrases.includes('Starte bitte die Bruecke zu Cloud Code')) process.exit(1);" || {
@@ -402,7 +419,7 @@ node -e "const data=JSON.parse(process.argv[1]); if(data.report_kind!=='bootstra
 bash "codex-setup/scripts/bootstrap-report.sh" --cli "Codex" >/dev/null
 
 if has_mcp_server "openaiDeveloperDocs"; then
-  bash "codex-setup/scripts/check-openai-docs-mcp.sh" >/dev/null
+  bash "codex-setup/scripts/check-openai-docs-mcp.sh" --timeout-ms 45000 >/dev/null
 else
   echo "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
 fi

@@ -397,6 +397,39 @@
       "created_at": "2026-03-23T18:05:20.426Z",
       "status": "active",
       "updated_at": "2026-03-23T18:06:16.808Z"
+    },
+    {
+      "id": "2026-03-23-openai-docs-validator-time-budget",
+      "source_cli": "Codex",
+      "category": "validator-hardening",
+      "summary": "The codex-setup validators now give the OpenAI-Docs MCP smoke enough time on fresh macOS sessions.",
+      "context_for_other_clis": "This fix belongs to the Codex-side validation path after the directive-1 sync. The stronger directive text itself validated correctly, but the full PowerShell validator exposed that the OpenAI-Docs MCP smoke test could still time out on a healthy runtime because the fresh Codex exec needed slightly more wall-clock time to finish the docs query and emit AVAILABLE.",
+      "symptom_before_fix": "The PowerShell validator failed even though the fresh Codex exec started both MCP servers successfully and reached the openaiDeveloperDocs.search_openai_docs tool call. Both attempts then hit the 30000 ms budget and the validator stopped with an openaiDeveloperDocs MCP smoke test failure.",
+      "root_cause": "The repo validator treated the docs-MCP smoke as if the default 30000 ms timeout was always enough for a fresh Codex exec plus MCP startup plus first docs query. On this macOS host the integration was healthy, but the bounded validation budget was too tight for an occasionally slower first response.",
+      "what_was_fixed": "validate-codex-setup.sh and validate-codex-setup.ps1 now call the docs-MCP smoke wrapper with --timeout-ms 45000 during validation, while the standalone script default stays unchanged.",
+      "why_it_was_fixed": "The directive-1 sync was already correct, but the validator still produced a false negative because the docs-MCP smoke budget was too tight for a healthy fresh session.",
+      "exact_error_text": "Exact symptom text: Fresh Codex exec did not confirm openaiDeveloperDocs availability within the bounded retry window.",
+      "root_cause_why_chain": "Why 1: the validator failed although the MCP server was up. Why 2: the smoke test budget expired before the first docs query returned AVAILABLE. Why 3: the validation wrapper reused the generic timeout without extra slack for the fresh-process startup and first MCP roundtrip.",
+      "related_error_sources_checked": "Checked the same failure surface in both validate-codex-setup.sh and validate-codex-setup.ps1 because they both invoke the same docs-MCP smoke wrapper. Also checked that the standalone smoke script itself did not need a global default change, only a more tolerant validation-time invocation.",
+      "wrong_pattern_example": "Wrong pattern: use the same strict timeout for a fresh validator-launched MCP smoke and for every ordinary manual call regardless of startup jitter.",
+      "right_pattern_example": "Right pattern: keep the smoke bounded, but give validator-triggered fresh-session checks enough timeout headroom to distinguish real outages from startup latency.",
+      "avoidance_rule": "If a validator launches a fresh MCP-backed Codex session, then tune the validation-time timeout for realistic startup latency instead of treating every timeout as a product failure.",
+      "resilience_summary": "The fix is defensive because it hardens both Bash and PowerShell validators together, narrow because it changes only the validation call site instead of all user-facing defaults, and update-resistant because future docs-MCP runs still use the same wrapper while validation gets enough headroom for fresh-session startup jitter.",
+      "fix_induced_failure_review": "Dependencies: validator wrappers, fresh codex exec startup, MCP initialization, and the docs query roundtrip were reviewed together. Failure scenario: if the MCP is really broken, validation still fails, only later and for the right reason. State changes: none beyond the normal smoke test. Race conditions remain bounded because the timeout is still finite. Backward compatibility is preserved because the wrapper interface is unchanged. Platform effects improve because slower startup on macOS no longer causes a false negative. Graceful degradation remains intact because the validator still stops on a real docs-MCP failure.",
+      "verification": "Verified by rerunning bash codex-setup/scripts/validate-codex-setup.sh and pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1 after raising the validation-time timeout to 45000 ms. Both validators completed successfully on this macOS host.",
+      "portability_notes": "Any CLI that validates a fresh MCP-backed docs query should keep the runtime smoke bounded but allow enough budget for first-process startup and first-tool latency. If a stricter timeout is desired for normal manual use, pass the longer timeout only from the validator wrapper instead of globally widening every invocation.",
+      "impact": "PowerShell and Bash validation are now less likely to report a false docs-MCP outage on healthy but slightly slower fresh sessions.",
+      "portable_to": [
+        "Cloud Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/validate-codex-setup.sh",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/check-openai-docs-mcp.mjs"
+      ],
+      "created_at": "2026-03-23T19:17:18.436Z",
+      "status": "active"
     }
   ]
 }

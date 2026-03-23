@@ -209,6 +209,22 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "8 intelligence dimensions") {
     throw "AGENTS.md must keep the 8 intelligence dimensions in scope."
 }
 
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "intelligenteste Programmierumgebung der Welt") {
+    throw "AGENTS.md must carry the world-class superintelligence target."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "Sicherheitsregeln und explizite Benutzer-Anweisungen") {
+    throw "AGENTS.md must preserve the directive-1 override exception."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "Systemarchitekt") {
+    throw "AGENTS.md must describe the user as a system architect."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch "at least two places that survive different failure modes") {
+    throw "AGENTS.md must preserve the two-location directive mirror."
+}
+
 if ((Get-Content "AGENTS.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "AGENTS.md must define the intelligence proposal format."
 }
@@ -287,6 +303,26 @@ if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "GeminiCLI") {
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {
     throw "global.md must define the 8 intelligence dimensions."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "intelligenteste Programmierumgebung der Welt") {
+    throw "global.md must carry the world-class superintelligence target."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "kein klassischer Programmierer") {
+    throw "global.md must describe the user as not being a classical programmer."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Sicherheitsregeln und explizite Benutzer-Anweisungen") {
+    throw "global.md must preserve the directive-1 override exception."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "mindestens 2 unabhaengigen Orten") {
+    throw "global.md must require the directive to live in two places."
+}
+
+if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Compound Intelligence Effect") {
+    throw "global.md must preserve the compound intelligence effect."
 }
 
 if ((Get-Content "codex-setup\rules\global.md" -Raw) -notmatch "Cross-Tool-Lernen") {
@@ -599,6 +635,26 @@ if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Di
     throw "MEMORY.md must define the 8 intelligence dimensions."
 }
 
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "intelligenteste Programmierumgebung der Welt") {
+    throw "MEMORY.md must carry the world-class superintelligence target."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "kein klassischer Programmierer") {
+    throw "MEMORY.md must describe the user as not being a classical programmer."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Sicherheitsregeln und explizite Benutzer-Anweisungen") {
+    throw "MEMORY.md must preserve the directive-1 override exception."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "mindestens 2 unabhaengigen Orten") {
+    throw "MEMORY.md must require the directive to live in two places."
+}
+
+if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Compound Intelligence Effect") {
+    throw "MEMORY.md must preserve the compound intelligence effect."
+}
+
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Cross-Tool-Lernen") {
     throw "MEMORY.md must describe cross-tool learning."
 }
@@ -613,6 +669,18 @@ if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Ef
 
 if ((Get-Content "codex-setup\skills\self-improve\references\report-and-creative.md" -Raw) -notmatch "💡 Intelligenz-Vorschlag:") {
     throw "report-and-creative.md must define the visible intelligence proposal format."
+}
+
+if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "German-speaking Systemarchitekt") {
+    throw "SKILL.md must describe the user as a German-speaking system architect."
+}
+
+if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "below only safety rules plus explicit user instructions") {
+    throw "SKILL.md must preserve the directive-1 override exception."
+}
+
+if ((Get-Content "codex-setup\skills\self-improve\SKILL.md" -Raw) -notmatch "Direktive 1 must remain mirrored") {
+    throw "SKILL.md must preserve the local directive mirror."
 }
 
 $CloudCodeBridge = Get-Content "codex-setup\bridges\cloud-code-delta-bridge.json" -Raw | ConvertFrom-Json
@@ -865,6 +933,7 @@ Remove-Item -Recurse -Force $TempWorkspace -ErrorAction SilentlyContinue
 if (Test-CodexMcpServer "openaiDeveloperDocs") {
     Invoke-CheckedPwshScript `
         -RelativePath "codex-setup/scripts/check-openai-docs-mcp.ps1" `
+        -Arguments @("--timeout-ms", "45000") `
         -FailureMessage "openaiDeveloperDocs MCP smoke test failed."
 } else {
     Write-Host "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
