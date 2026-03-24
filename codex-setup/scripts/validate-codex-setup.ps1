@@ -583,6 +583,14 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "resilient-bugfixing") 
     throw "README.md must document resilient bugfixing."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "durability-auditor") {
+    throw "README.md must document the Gemini-derived durability-auditor role."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "rules-porter") {
+    throw "README.md must document the Gemini-derived rules-porter role."
+}
+
 if ((Get-Content "codex-setup\rules\german-trigger-routing.md" -Raw) -notmatch "zeige den Bootstrap-Report") {
     throw "german-trigger-routing.md must route bootstrap-report requests."
 }

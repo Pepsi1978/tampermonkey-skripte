@@ -82,7 +82,10 @@ Wichtigste Trennung:
 
 - `skills/self-improve/`
   Der Codex-spezifische Self-Improve-Skill fuer diesen Workspace, inklusive Referenzen,
-  Researcher-Prompts und eigenen Codex-Agenten.
+  Researcher-Prompts und eigenen Codex-Agenten. Dort liegen auch die Codex-nativen Rollen fuer
+  `env-checker`, `evolution-analyst`, `intelligence-researcher`, `whiteboard-scanner`,
+  `durability-auditor`, `claude-delta-scanner`, `gemini-delta-scanner`, `rules-porter` und
+  `trigger-router`.
 
 ## Whiteboard-Architektur
 

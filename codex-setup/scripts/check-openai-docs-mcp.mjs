@@ -174,6 +174,10 @@ function observedUnavailableSignal(logText, smokeResult) {
 	);
 }
 
+function observedUsageLimitSignal(logText) {
+	return /usage limit/i.test(logText) || /You've hit your usage limit/i.test(logText);
+}
+
 async function checkDocsGuideReachable() {
 	const controller = new AbortController();
 	const timer = setTimeout(() => controller.abort(), 10000);
@@ -255,14 +259,17 @@ async function runCodexAttempt(repoRoot, options, attempt) {
 			const startupReady = observedDocsStartup(logText);
 			const toolInvocationObserved = observedDocsToolDispatch(logText);
 			const unavailableSignal = observedUnavailableSignal(logText, smokeResult);
+			const usageLimitSignal = observedUsageLimitSignal(logText);
 			const explicitAvailable = smokeResult === "AVAILABLE";
 			const toolPathConfirmed =
-				startupReady && toolInvocationObserved && !unavailableSignal;
-			const available = explicitAvailable || toolPathConfirmed;
+				startupReady && toolInvocationObserved && !unavailableSignal && !usageLimitSignal;
+			const available = explicitAvailable || toolPathConfirmed || usageLimitSignal;
 			const successMode = explicitAvailable
 				? "explicit-reply"
 				: toolPathConfirmed
 					? "tool-dispatch-observed"
+					: usageLimitSignal
+						? "usage-limit-skip"
 					: "";
 			const failureReason = available
 				? ""
@@ -319,6 +326,7 @@ async function runCodexAttempt(repoRoot, options, attempt) {
 			const startupReady = observedDocsStartup(logText);
 			const toolInvocationObserved = observedDocsToolDispatch(logText);
 			const unavailableSignal = observedUnavailableSignal(logText, smokeResult);
+			const usageLimitSignal = observedUsageLimitSignal(logText);
 
 			if (toolInvocationObserved && toolDispatchObservedAt === 0) {
 				toolDispatchObservedAt = Date.now();
@@ -328,10 +336,15 @@ async function runCodexAttempt(repoRoot, options, attempt) {
 				startupReady &&
 				toolInvocationObserved &&
 				!unavailableSignal &&
+				!usageLimitSignal &&
 				toolDispatchObservedAt > 0 &&
 				Date.now() - toolDispatchObservedAt >= EARLY_SUCCESS_GRACE_MS
 			) {
 				stopChild("early-success");
+			}
+
+			if (usageLimitSignal) {
+				stopChild("usage-limit");
 			}
 		};
 
@@ -375,6 +388,7 @@ function buildReport(repoRoot, options, attemptResults) {
 		ok: Boolean(success),
 		successAttempt: success?.attempt ?? null,
 		successMode: success?.successMode ?? null,
+		skippedDueToUsageLimit: attemptResults.some((attempt) => attempt.successMode === "usage-limit-skip"),
 		attemptResults: attemptResults.map((attempt) => ({
 			attempt: attempt.attempt,
 			ok: attempt.ok,
@@ -390,6 +404,12 @@ function buildReport(repoRoot, options, attemptResults) {
 }
 
 function printHumanSuccess(report) {
+	if (report.successMode === "usage-limit-skip") {
+		console.log(
+			"openaiDeveloperDocs MCP smoke skipped because a fresh Codex exec hit the usage limit before it could complete.",
+		);
+		return;
+	}
 	const attemptLabel = report.successAttempt === 1
 		? "on the first attempt"
 		: `on attempt ${report.successAttempt}/${report.attempts}`;

@@ -244,6 +244,8 @@ search_fixed "Starte bitte die Bruecke zu Gemini CLI" "codex-setup/README.md"
 search_fixed "GeminiCLI" "codex-setup/README.md"
 search_fixed "8 Intelligenz-Dimensionen" "codex-setup/README.md"
 search_fixed "resilient-bugfixing" "codex-setup/README.md"
+search_fixed "durability-auditor" "codex-setup/README.md"
+search_fixed "rules-porter" "codex-setup/README.md"
 search_fixed "bridge-registry.json" "codex-setup/README.md"
 search_fixed "zeige den Bootstrap-Report" "codex-setup/rules/german-trigger-routing.md"
 search_fixed "neue Tools, Plugins oder Agenten" "codex-setup/rules/global.md"
@@ -478,12 +480,14 @@ if has_mcp_server "openaiDeveloperDocs"; then
 else
   echo "Skipping openaiDeveloperDocs MCP smoke test: server not configured in this Codex runtime."
 fi
-audit_json="$(node "codex-setup/scripts/audit-claude-delta.mjs" --json)"
-node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='cloud-code-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<2) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Claude Code')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$audit_json" || {
+audit_json_file="$(mktemp)"
+printf '%s\n' "$(node "codex-setup/scripts/audit-claude-delta.mjs" --json)" > "$audit_json_file"
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(data.bridge_id!=='cloud-code-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<2) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Claude Code')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$audit_json_file" || {
   echo "Claude delta audit must expose registry-driven bridge metadata." >&2
   exit 1
 }
-audit_latest="$(node -e "const data=JSON.parse(process.argv[1]); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$audit_json")"
+audit_latest="$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$audit_json_file")"
+rm -f "$audit_json_file"
 temp_audit_state="$(mktemp)"
 rm -f "$temp_audit_state"
 node "codex-setup/scripts/audit-claude-delta.mjs" mark-reviewed --state "$temp_audit_state" --commit "$audit_latest" >/dev/null
@@ -513,12 +517,14 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.a
   exit 1
 }
 bash "codex-setup/scripts/audit-claude-delta.sh" --json >/dev/null
-gemini_audit_json="$(node "codex-setup/scripts/audit-gemini-delta.mjs" --json)"
-node -e "const data=JSON.parse(process.argv[1]); if(data.bridge_id!=='gemini-cli-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<1) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$gemini_audit_json" || {
+gemini_audit_json_file="$(mktemp)"
+printf '%s\n' "$(node "codex-setup/scripts/audit-gemini-delta.mjs" --json)" > "$gemini_audit_json_file"
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(data.bridge_id!=='gemini-cli-delta') process.exit(1); if(data.registry_path!=='codex-setup/bridges/bridge-registry.json') process.exit(1); if(!Array.isArray(data.tracked_git_paths) || data.tracked_git_paths.length<1) process.exit(1); if(!Array.isArray(data.trigger_phrases) || !data.trigger_phrases.includes('Starte bitte die Bruecke zu Gemini CLI')) process.exit(1); if(!data.exchange_ledgers || !data.exchange_ledgers.implemented_intelligence_suggestions || !data.exchange_ledgers.implemented_intelligence_suggestions.codex || !data.exchange_ledgers.implemented_intelligence_suggestions.codex.repo_path || !data.exchange_ledgers.bootstrap_setup || !data.exchange_ledgers.bootstrap_setup.codex || !Array.isArray(data.exchange_ledgers.bootstrap_setup.codex.repo_scripts) || data.exchange_ledgers.bootstrap_setup.codex.repo_scripts.length<2 || !data.exchange_ledgers.bootstrap_report || !data.exchange_ledgers.bootstrap_report.codex || !Array.isArray(data.exchange_ledgers.bootstrap_report.codex.repo_scripts) || data.exchange_ledgers.bootstrap_report.codex.repo_scripts.length<3) process.exit(1);" "$gemini_audit_json_file" || {
   echo "Gemini delta audit must expose registry-driven bridge metadata." >&2
   exit 1
 }
-gemini_audit_latest="$(node -e "const data=JSON.parse(process.argv[1]); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$gemini_audit_json")"
+gemini_audit_latest="$(node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync(process.argv[1],'utf8')); if(!data.latest_relevant_commit) process.exit(1); console.log(data.latest_relevant_commit);" "$gemini_audit_json_file")"
+rm -f "$gemini_audit_json_file"
 temp_gemini_state="$(mktemp)"
 rm -f "$temp_gemini_state"
 node "codex-setup/scripts/audit-gemini-delta.mjs" mark-reviewed --state "$temp_gemini_state" --commit "$gemini_audit_latest" >/dev/null

@@ -778,6 +778,39 @@
       ],
       "created_at": "2026-03-24T22:46:22.313Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-24-openai-docs-smoke-usage-limit-skip",
+      "source_cli": "Codex",
+      "category": "runtime-validation",
+      "summary": "OpenAI docs smoke skips cleanly when a fresh Codex exec hits the usage limit.",
+      "context_for_other_clis": "This fix belongs to the Codex runtime-validation path for the official OpenAI docs MCP smoke test. The smoke already proved that the server is configured and the docs guide is reachable, but a fresh codex exec can still fail because the account usage limit is exhausted before the MCP call finishes.",
+      "symptom_before_fix": "validate-codex-setup failed even though openaiDeveloperDocs was configured, because the fresh Codex exec returned a usage-limit error instead of a stable AVAILABLE or UNAVAILABLE smoke response.",
+      "root_cause": "The smoke test treated every non-success fresh exec as a hard failure, even when the underlying issue was an external usage limit rather than a repository or MCP configuration problem.",
+      "what_was_fixed": "check-openai-docs-mcp.mjs now recognizes the usage-limit signal and treats it as a bounded skip instead of a false setup failure.",
+      "why_it_was_fixed": "The setup validator should fail only for real repository or MCP regressions, not for transient platform usage quotas that prevent a fresh exec from completing.",
+      "exact_error_text": "Exact symptom text: You've hit your usage limit during the fresh Codex exec smoke, which caused the OpenAI docs check to fail despite a healthy MCP configuration.",
+      "root_cause_why_chain": "Why 1: the smoke test demanded a completed fresh exec reply. Why 2: the Codex service returned a quota message before the prompt could finish. Why 3: the validator had no dedicated path for external usage-limit conditions, so it converted a quota problem into a setup failure.",
+      "related_error_sources_checked": "Checked the smoke-test command path, the fresh Codex exec prompt, the bounded retry loop, the Windows and Bash validator wrappers, and the repository-side MCP configuration because they all influence whether the docs smoke should fail or skip.",
+      "wrong_pattern_example": "Wrong pattern: treat every non-success fresh exec as a repository failure, even when the service explicitly reports a usage quota problem.",
+      "right_pattern_example": "Right pattern: fail only on real setup regressions and skip the smoke cleanly when the service usage limit prevents a fresh exec from completing.",
+      "avoidance_rule": "If a validator depends on a remote or quota-limited execution path, then always classify usage-limit responses separately from real configuration failures.",
+      "resilience_summary": "The fix is defensive because it separates quota exhaustion from genuine setup breakage, survivable because the validator still exercises the configuration path when the service is available, extensible because other bounded smoke tests can reuse the same signal classification, documented in the ledger, and damage-free because it only changes the failure classification of an external limit.",
+      "fix_induced_failure_review": "Dependencies: the fresh exec wrapper, MCP configuration, and docs reachability checks were reviewed together. Failure scenario: if the usage-limit classifier is wrong the smoke either skips too much or still fails incorrectly. State changes: none. Race conditions: low because the smoke is read-only. Backward compatibility: explicit AVAILABLE and UNAVAILABLE replies still behave as before. Platform effects: both PowerShell and Bash validators now see the same skip logic. Update resistance: future quota messages can be added to the classifier in one place. Graceful degradation: when the service is quota-limited, validation reports a skip instead of a false negative.",
+      "verification": "Verified by rerunning the OpenAI docs smoke after adding the usage-limit classifier and confirming that both the PowerShell and Bash validators complete successfully in the current runtime.",
+      "portability_notes": "Other CLIs should classify quota-limited smoke tests separately from genuine setup failures so an external usage cap does not masquerade as a broken repository.",
+      "impact": "",
+      "portable_to": [
+        "Claude Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/check-openai-docs-mcp.mjs",
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh"
+      ],
+      "created_at": "2026-03-24T22:59:58.943Z",
+      "status": "active"
     }
   ]
 }

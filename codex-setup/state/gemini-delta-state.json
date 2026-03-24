@@ -6,9 +6,9 @@
   ],
   "replace_requires_confirmation": true,
   "additive_bias": true,
-  "last_reviewed_commit": null,
-  "last_applied_commit": null,
-  "last_reviewed_at": null,
-  "last_applied_at": null,
-  "notes": "Tracks only Gemini CLI setup and programming-environment deltas for Codex."
+  "last_reviewed_commit": "6ec7494dc2dfafca2c38855b0a41e403b4e2604c",
+  "last_applied_commit": "6ec7494dc2dfafca2c38855b0a41e403b4e2604c",
+  "last_reviewed_at": "2026-03-24T15:30:00+01:00",
+  "last_applied_at": "2026-03-24T15:30:00+01:00",
+  "notes": "Tracks only Gemini CLI setup and programming-environment deltas for Codex. Baseline up to Gemini commit 6ec7494dc2dfafca2c38855b0a41e403b4e2604c has been ported into Codex."
 }
