@@ -1,23 +1,36 @@
-# session-start-audit.ps1
-$RepoRoot = "C:\Users\barwa\GeminiCLI"
+# session-start-audit.ps1 (Gemini) — Automatisches Cross-CLI Audit bei Session-Start
+$RepoRoot = $env:GEMINI_WORKSPACE
+if (-not $RepoRoot) { $RepoRoot = "C:\Users\barwa\GeminiCLI" }
 cd $RepoRoot
 
-Write-Host "=== Cross-CLI Intelligenz-Audit (Start/PS7) ==="
+# Lade Whiteboard-Funktionalität
+. "$RepoRoot\Gemini-Setup\scripts\whiteboard-insert.ps1"
+
+Write-Host "=== 💡 Gemini Cross-CLI Intelligence Audit (Start/PS7) ===" -ForegroundColor Cyan
+
+function Process-DeltaAudit($CliName, $ScriptPath) {
+    Write-Host "Pruefe $CliName..."
+    $AuditOutput = node "$RepoRoot\$ScriptPath"
+    $NewCommits = $AuditOutput | Select-String "\[([a-f0-9]{7})\]"
+    
+    if ($NewCommits.Count -gt 0) {
+        $Count = $NewCommits.Count
+        Write-Host "💡 $CliName: $Count neue Commits gefunden." -ForegroundColor Yellow
+        
+        $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm"
+        $Entry = "### $Timestamp — Brücken-Audit ($CliName): $Count neue Commits seit dem letzten Checkpoint gefunden. Empfehlung: Brücke zu $CliName starten (`audit-$($CliName.ToLower().Replace(' ', '-'))-delta.mjs`)."
+        
+        # In Whiteboard unter "Offene Fehler & Probleme" oder eine neue Sektion schreiben
+        Insert-WhiteboardEntry -Section "Offene Fehler & Probleme" -Entry $Entry
+    } else {
+        Write-Host "✅ $CliName ist synchron." -ForegroundColor Green
+    }
+}
 
 # Codex Audit
-Write-Host "Prüfe Codex CLI..."
-$codexChanges = (node Gemini-Setup/scripts/audit-codex-delta.mjs | Select-String "\- A ").Count
-if ($codexChanges -gt 0) {
-    Write-Host "💡 Intelligenz-Vorschlag (Gemini): Es gibt $codexChanges neue Erweiterungen bei Codex. -> Starte bitte die Bruecke zu Codex für Details." -ForegroundColor Cyan
-} else {
-    Write-Host "✅ Codex ist synchron."
-}
+Process-DeltaAudit "Codex" "Gemini-Setup/scripts/audit-codex-delta.mjs"
 
 # Claude Audit
-Write-Host "Prüfe Claude Code..."
-$claudeChanges = (node Gemini-Setup/scripts/audit-claude-delta.mjs | Select-String "\- A ").Count
-if ($claudeChanges -gt 0) {
-    Write-Host "💡 Intelligenz-Vorschlag (Gemini): Es gibt $claudeChanges neue Erweiterungen bei Claude Code. -> Starte bitte die Bruecke zu Claude Code für Details." -ForegroundColor Cyan
-} else {
-    Write-Host "✅ Claude Code ist synchron."
-}
+Process-DeltaAudit "Claude Code" "Gemini-Setup/scripts/audit-claude-delta.mjs"
+
+Write-Host "=== Audit abgeschlossen ==="

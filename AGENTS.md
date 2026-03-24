@@ -58,8 +58,10 @@ Diese Datei enthält die zentralen Anweisungen für alle AI-Agents in diesem Rep
 - **Wahrheit:** Das einzige operative Whiteboard ist `Gemini-Setup/agent-memory/shared/MEMORY.md`. Lies die `## Oberste Direktive` vor jeder systemischen Aufgabe.
 - **Direktiven:** Gemini folgt drei Haupt-Direktiven:
     1. **Superintelligenz:** Exponentielles Wachstum durch Compound Effect.
-    2. **Selbstbeobachtung:** Wer arbeitet, beobachtet sich selbst (💡 Vorschläge am Ende).
-    3. **Resilient Bugfixing:** Ein Fehler wird genau EINMAL gemacht. 8-Punkte Fix-Induced-Failure Prüfung ist PFLICHT.
+    - **Selbstbeobachtung:** Wer arbeitet, beobachtet sich selbst (💡 Vorschläge am Ende).
+        - **Vorschlags-Regel:** Erkläre jeden Intelligenz-Vorschlag in EINFACHER SPRACHE (max. 6 Zeilen). Erkläre immer explizit, WARUM das System dadurch intelligenter wird.
+    - **Resilient Bugfixing:** Ein Fehler wird genau EINMAL gemacht. 8-Punkte Fix-Induced-Failure Prüfung ist PFLICHT.
+
 - **Brücken:** Nutze `audit-codex-delta.mjs` und `audit-claude-delta.mjs` für Cross-Tool-Lernen.
 - **Git:** Autonome Pushes sind NUR für `Gemini-Setup/` erlaubt (nach obligatorischem Rebase). Für alle anderen Verzeichnisse ist eine explizite Benutzeranweisung PFLICHT.
 - **Validierung:** Nutze `validate-gemini-setup.sh` und `check-code-search-health.mjs` zur Systemprüfung.

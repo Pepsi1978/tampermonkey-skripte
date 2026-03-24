@@ -3,9 +3,10 @@
 set -euo pipefail
 
 REPO_ROOT="C:\Users\barwa\GeminiCLI"
-SCRIPT_PATH="$REPO_ROOT/Gemini-Setup/scripts/code-search-mcp-client.mjs"
+REINDEX_SCRIPT="$REPO_ROOT/mcp-code-search/src/reindex.ts"
 
-echo "[$(date)] Starte Hintergrund-Reindex..."
-nohup node "$SCRIPT_PATH" call index_codebase --args-json "{\"directory\": \"$REPO_ROOT\"}" > /dev/null 2>&1 &
+echo "[$(date)] Starte Hintergrund-Reindex (inkrementell)..."
+# Nutze bun direkt fuer bessere Performance und Paritaet zur Windows-Version
+nohup bun "$REINDEX_SCRIPT" "$REPO_ROOT" > /dev/null 2>&1 &
 
 echo "✅ Reindex-Job im Hintergrund gestartet."

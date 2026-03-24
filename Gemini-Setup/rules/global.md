@@ -44,3 +44,4 @@ Massgeblich fuer Gemini sind:
 - Kommunikation: Strikte Anweisung auf DEUTSCH.
 - Format: GitHub Markdown (Monospace).
 - 💡 Symbole für alle Intelligenz-Vorschläge.
+- **Vorschlags-Erklärung:** Jeder Vorschlag muss in einfacher Sprache (ohne Fachchinesisch) und in max. 6 Zeilen erklärt werden. Erkläre immer den Hebel (Warum wird das System dadurch intelligenter?).

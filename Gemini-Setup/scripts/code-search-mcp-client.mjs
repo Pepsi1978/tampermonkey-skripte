@@ -173,7 +173,8 @@ function sanitizeConfigData(configPath, rawConfig) {
 function parseCodeSearchConfig(configPathInput = "") {
 	const configPath = resolve(configPathInput || join(homedir(), ".gemini", "settings.json"));
     // Simplification for Gemini: look for .mcp.json in workspace if settings.json doesn't have it
-    const mcpJsonPath = "C:\\Users\\barwa\\GeminiCLI/.mcp.json";
+    const workspaceRoot = process.env.GEMINI_WORKSPACE || process.cwd();
+    const mcpJsonPath = resolve(workspaceRoot, ".mcp.json");
     if (existsSync(mcpJsonPath)) {
         const mcpConfig = JSON.parse(readFileSync(mcpJsonPath, "utf8"));
         const server = mcpConfig.mcpServers?.["code-search"];
@@ -181,12 +182,12 @@ function parseCodeSearchConfig(configPathInput = "") {
             return sanitizeConfigData(mcpJsonPath, server);
         }
     }
-    fail("The code-search MCP server is not configured in .mcp.json.");
+    fail(`The code-search MCP server is not configured in ${mcpJsonPath}.`);
 }
 
 function resolveWorkspace(input) {
 	if (!input) {
-		return "C:\\Users\\barwa\\GeminiCLI";
+		return process.env.GEMINI_WORKSPACE || process.cwd();
 	}
 	const requested = resolve(input);
 	return requested;
