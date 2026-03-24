@@ -1,10 +1,11 @@
 # Dynamic notification for Windows: extracts the actual message from Claude Code
 # MUST run under powershell.exe (5.1), NOT pwsh 7+ — WinRT Toast API requires it
-# Note: hook-log.ps1 is sourced for error logging but uses only PS 5.1-compatible syntax.
+# ROBUSTNESS: Non-critical hook. Any failure → exit 0 silently.
 
-. "$PSScriptRoot/hook-log.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
 
-$hookInput = [Console]::In.ReadToEnd()
+try { $hookInput = [Console]::In.ReadToEnd() } catch { exit 0 }
 $msg = $null
 try {
     $json = $hookInput | ConvertFrom-Json

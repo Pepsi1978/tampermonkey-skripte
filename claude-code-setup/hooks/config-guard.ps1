@@ -1,21 +1,25 @@
 # Config Guard: Verifies protected settings after any config change
-# Hook event: PostToolUse (Edit|Write on settings.json)
+# Hook event: PostToolUse (Edit|Write on settings.json), ConfigChange, Stop
 # Platform: Windows (PowerShell 7+)
+#
+# ROBUSTNESS: Entire script wrapped in try/catch. Any failure → exit 0 (allow).
 #
 # Output: JSON for hook compatibility.
 #   Block:   {"error":"CONFIG-GUARD: BLOCKIERT — ..."}
 #   Warning: plain text (PostToolUse context)
 #   OK:      no output
 
-. "$PSScriptRoot/hook-log.ps1"
-. "$PSScriptRoot/whiteboard-insert.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
+
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
+try { . "$PSScriptRoot/whiteboard-insert.ps1" } catch { }
 
 # Read hook input from stdin to check if the edited file is settings.json
-$hookInput = [Console]::In.ReadToEnd()
 try {
-    $hookJson = $hookInput | ConvertFrom-Json
+    $hookInput = [Console]::In.ReadToEnd()
+    if (-not $hookInput -or $hookInput.Length -lt 5) { exit 0 }
+    $hookJson = $hookInput | ConvertFrom-Json -ErrorAction Stop
 } catch {
-    # Could not parse hook input — not our concern, allow
     exit 0
 }
 
@@ -60,18 +64,20 @@ if ($perms) {
     }
 }
 
-# effortLevel: MUST be "high" — BLOCK anything else (CLAUDE.md requirement)
+# effortLevel: User-controlled — only warn if set to something unexpected, never block.
+# The user can switch between "high" and "medium" freely via /effort or settings.
 $eff = $data.effortLevel
-if ($null -ne $eff -and $eff -ne '' -and $eff -ne 'high') {
-    $blocks += "effortLevel=$eff (MUSS 'high' sein — CLAUDE.md-Regel)"
+$validEfforts = @('high', 'medium', 'low')
+if ($null -ne $eff -and $eff -ne '' -and $eff -notin $validEfforts) {
+    $blocks += "effortLevel=$eff (ungueltiger Wert — erlaubt: high, medium, low)"
 }
 
 $envData = $data.env
 if ($envData) {
-    # CLAUDE_CODE_EFFORT_LEVEL in env
+    # CLAUDE_CODE_EFFORT_LEVEL in env — same as above, user-controlled
     $envEff = $envData.CLAUDE_CODE_EFFORT_LEVEL
-    if ($null -ne $envEff -and $envEff -ne '' -and $envEff -ne 'high') {
-        $blocks += "CLAUDE_CODE_EFFORT_LEVEL=$envEff (MUSS 'high' sein)"
+    if ($null -ne $envEff -and $envEff -ne '' -and $envEff -notin $validEfforts) {
+        $blocks += "CLAUDE_CODE_EFFORT_LEVEL=$envEff (ungueltiger Wert)"
     }
 
     # SUBAGENT_MODEL: BLOCK if changed from sonnet (critical for cost/quality)

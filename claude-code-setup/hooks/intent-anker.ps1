@@ -2,11 +2,10 @@
 # UserPromptSubmit hook: Turn 1 saves goal, counter tracks session length
 # Platform: Windows (PowerShell 7+)
 #
-# The goal file is used by:
-# - intent-tracking.md rule (every ~5 turns: verify alignment)
-# - PreCompact prompt hook (preserve goal during compaction)
+# ROBUSTNESS: Non-critical hook. Any failure → exit 0 silently.
 
-. "$PSScriptRoot/hook-log.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
 
 $GoalFile = Join-Path $env:TEMP "claude-session-goal.txt"
 $CounterFile = Join-Path $env:TEMP "claude-turn-counter.txt"

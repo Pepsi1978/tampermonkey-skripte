@@ -1,9 +1,11 @@
 # Disk Guard: Warns when storage is critically low
 # Hook event: SessionStart
 # Platform: Windows (PowerShell 7+)
+# ROBUSTNESS: Non-critical hook. Any failure → exit 0 silently.
 
-. "$PSScriptRoot/hook-log.ps1"
-. "$PSScriptRoot/whiteboard-insert.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
+try { . "$PSScriptRoot/whiteboard-insert.ps1" } catch { }
 
 try {
     $drive = Get-PSDrive C -ErrorAction Stop

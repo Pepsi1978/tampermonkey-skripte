@@ -7,7 +7,7 @@
 # Hook event: SessionStart (MUST be the LAST SessionStart hook group)
 # Platform: Windows
 
-$ErrorActionPreference = "Continue"
+$ErrorActionPreference = "SilentlyContinue"
 
 # --- Hook logging ---
 $logDir = "$env:USERPROFILE\.claude\logs\hooks"

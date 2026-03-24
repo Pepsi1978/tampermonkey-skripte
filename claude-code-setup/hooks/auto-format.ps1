@@ -1,10 +1,13 @@
 # Auto-format: runs the appropriate code formatter after file edits (Windows)
+# ROBUSTNESS: Non-critical async hook. Any failure → exit 0 silently.
 
-. "$PSScriptRoot/hook-log.ps1"
-. "$PSScriptRoot/whiteboard-insert.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
 
-$hookInput = [Console]::In.ReadToEnd()
-$data = $hookInput | ConvertFrom-Json -ErrorAction SilentlyContinue
+try {
+    $hookInput = [Console]::In.ReadToEnd()
+    $data = $hookInput | ConvertFrom-Json -ErrorAction Stop
+} catch { exit 0 }
 if (-not $data) { exit 0 }
 
 $filePath = $data.tool_input.file_path
@@ -45,9 +48,8 @@ switch ($ext) {
         }
     }
 }
-# Log formatter errors instead of swallowing them
+# Log formatter errors to hook log only (NOT whiteboard — too noisy for non-critical formatting failures)
 if ($formatCmd -and $LASTEXITCODE -ne 0) {
     Hook-LogWarn "formatter $formatCmd failed (exit $LASTEXITCODE) on $filePath"
-    Insert-WhiteboardEntry "Offene Fehler & Probleme" "### $(Get-Date -Format 'yyyy-MM-dd HH:mm') — Hook: auto-format.ps1 — Formatter $formatCmd fehlgeschlagen (Exit $LASTEXITCODE) bei $filePath"
 }
 exit 0

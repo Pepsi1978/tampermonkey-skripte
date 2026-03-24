@@ -1,13 +1,19 @@
 # Safety Gate: Block dangerous commands before execution
 # Hook event: PreToolUse (Bash)
 # Platform: Windows (PowerShell 7+)
+#
+# ROBUSTNESS: Entire script wrapped in try/catch. Any failure → exit 0 (allow).
+# A broken safety-gate must never block normal work.
 
-. "$PSScriptRoot/hook-log.ps1"
-. "$PSScriptRoot/whiteboard-insert.ps1"
+$ErrorActionPreference = 'SilentlyContinue'
 
-$hookInput = [Console]::In.ReadToEnd()
+try { . "$PSScriptRoot/hook-log.ps1" } catch { }
+try { . "$PSScriptRoot/whiteboard-insert.ps1" } catch { }
+
 try {
-    $json = $hookInput | ConvertFrom-Json
+    $hookInput = [Console]::In.ReadToEnd()
+    if (-not $hookInput -or $hookInput.Length -lt 5) { exit 0 }
+    $json = $hookInput | ConvertFrom-Json -ErrorAction Stop
 } catch {
     exit 0
 }
