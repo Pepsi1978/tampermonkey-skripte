@@ -130,21 +130,8 @@ function resolveCodexCommand() {
 		}
 	}
 
-	if (process.platform === "win32") {
-		const whereResult = spawnSync("where.exe", ["codex"], {
-			encoding: "utf8",
-			maxBuffer: 1024 * 1024,
-		});
-		if (whereResult.status === 0) {
-			const resolved = whereResult.stdout
-				.replace(/\r/g, "")
-				.split("\n")
-				.map((line) => line.trim())
-				.find(Boolean);
-			if (resolved) {
-				return resolved;
-			}
-		}
+	if (process.platform === "win32" && process.env.APPDATA) {
+		return join(process.env.APPDATA, "npm", "codex.cmd");
 	}
 
 	return "codex";
@@ -244,15 +231,16 @@ async function runCodexAttempt(repoRoot, options, attempt) {
 		'model_reasoning_effort="low"',
 		"-o",
 		outputPath,
-		PROMPT,
+		"-",
 	];
 
 	return await new Promise((resolveAttempt) => {
 		const startedAt = Date.now();
 		const child = spawn(CODEX_COMMAND, args, {
 			shell: process.platform === "win32" && /\.(cmd|bat)$/i.test(CODEX_COMMAND),
-			stdio: ["ignore", "pipe", "pipe"],
+			stdio: ["pipe", "pipe", "pipe"],
 		});
+		child.stdin.end(`${PROMPT}\n`);
 		let stdout = "";
 		let stderr = "";
 		let launchError = "";

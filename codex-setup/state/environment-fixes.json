@@ -611,6 +611,99 @@
       ],
       "created_at": "2026-03-23T22:48:09.160Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-24-codex-desktop-shortcut-full-access",
+      "source_cli": "Codex",
+      "category": "runtime-configuration",
+      "summary": "Desktop-Codex-Shortcut nutzt jetzt echte Full-Access-Flags statt `--full-auto`.",
+      "context_for_other_clis": "Auf diesem Windows-Host startet Codex ueber eine PowerShell-Desktop-Verknuepfung. Der Benutzer wollte, dass dieser Startpfad immer im echten Full-Access-Modus beginnt, nicht nur im sandboxtauglichen Full-Auto-Modus.",
+      "symptom_before_fix": "Die Verknuepfung startete zwar Codex, aber der Lauf wirkte weiter wie Full Auto beziehungsweise workspace-write statt wie ein unbeschraenkter Full-Access-Start.",
+      "root_cause": "Der Shortcut verwendete nur `codex --full-auto`. Laut den offiziellen Codex-CLI-Hinweisen bedeutet Full Auto jedoch einen sandboxtauglichen Modus mit eingeschraenktem Scope und ist nicht automatisch derselbe Zustand wie `--sandbox danger-full-access`.",
+      "what_was_fixed": "Die Verknuepfung wurde auf `codex --ask-for-approval never --sandbox danger-full-access` umgestellt und die Beschreibung auf Full Access angepasst.",
+      "why_it_was_fixed": "Nur die explizite Full-Access-Kombination schaltet die gewünschte Autonomie plus Sandbox auf den echten unbeschraenkten Modus um; `--full-auto` allein reicht dafuer nicht.",
+      "exact_error_text": "Codex startete erfolgreich, aber die Sitzung verhielt sich wie Full Auto und nicht wie echter Full Access.",
+      "root_cause_why_chain": "Why 1: `--full-auto` war nur die falsche Stufe fuer den Wunsch nach Full Access. Why 2: der Sandbox-Status blieb dadurch auf einem eingeschraenkten Modus. Why 3: die Verknuepfung konstruierte Autonomie und Sandboxzugriff nicht als zwei getrennte Stellschrauben.",
+      "related_error_sources_checked": "Geprueft wurden die lokale Shortcut-Konfiguration, die Codex-CLI-Startdoku mit den Approval Modes, ein offizieller Codex-GitHub-Hinweis zu `--sandbox danger-full-access` und `--ask-for-approval never`, sowie der lokale Codex-Config-Zustand unter `%USERPROFILE%\\.codex\\config.toml`.",
+      "wrong_pattern_example": "Wrong pattern: `codex --full-auto` als Synonym fuer unbeschraenkten Zugriff behandeln.",
+      "right_pattern_example": "Right pattern: Autonomie und Sandbox getrennt setzen, also Approval und Sandbox explizit auf den gewünschten Full-Access-Zustand konfigurieren.",
+      "avoidance_rule": "Wenn ein Startpfad echten Full Access braucht, dann immer die Sandbox explizit setzen und nicht nur die Full-Auto-Abkuerzung verwenden.",
+      "resilience_summary": "Der Fix ist robust, weil er die zwei Stellschrauben getrennt setzt, die Ursache direkt im Startpfad behebt und durch das Ledger fuer spaetere Sessions auffindbar bleibt.",
+      "fix_induced_failure_review": "Dependencies: PowerShell-Shortcut, Codex-CLI-Argumente und lokale Config wurden zusammen betrachtet. Failure scenario: wenn die Flags auf dem Host anders ausgewertet werden, bleibt der Fehler auf den Startpfad begrenzt. State changes: nur die Verknuepfung und der Ledger-Eintrag wurden geaendert. Race conditions: keine. Backward compatibility: der Workspace-Pfad bleibt gleich. Platform effects: Windows-Shortcut und Codex-CLI-Startverhalten sind explizit beruecksichtigt. Update resistance: die Ursache ist dokumentiert, damit spaetere Flag-Drift schneller erkannt wird. Graceful degradation: falls Full Access einmal nicht verfuegbar ist, ist das als Startproblem sichtbar statt als stiller Moduswechsel.",
+      "verification": "Die Verknuepfung wurde mit WScript.Shell neu geschrieben und anschliessend erneut ausgelesen; dabei wurde bestaetigt, dass Target, Arguments, WorkingDirectory und Description jetzt auf Full Access zeigen.",
+      "portability_notes": "Andere CLIs sollten Approval-/Autonomie-Modi nie mit Sandbox-Zugriff vermischen. Full Auto kann produktiv sein, bleibt aber in vielen Setups weiterhin ein kontrollierter Modus; echter Full Access muss als separate Sandbox-Einstellung dokumentiert werden.",
+      "impact": "Der Desktop-Startpfad beginnt jetzt auf diesem Host mit echtem Full Access statt mit dem vorherigen eingeschraenkten Modus.",
+      "portable_to": [
+        "Claude Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "C:\\Users\\barwa\\Desktop\\Codex T.lnk",
+        "C:\\Users\\barwa\\Codex\\codex-setup\\state\\environment-fixes.json"
+      ],
+      "created_at": "2026-03-24T20:46:46.520Z",
+      "status": "active"
+    },
+    {
+      "id": "2026-03-24-code-search-state-metadata-and-windows-smoke-normalization",
+      "source_cli": "Codex",
+      "category": "mcp-validation",
+      "summary": "code-search reindex now persists state metadata and the smoke normalizes Windows paths.",
+      "context_for_other_clis": "This fix belongs to the Codex-side code-search validation path on Windows. The index itself was healthy, but the validator still failed because the reindexer did not persist the pointer/state files expected by the healthcheck and the direct smoke compared workspace paths as raw strings instead of normalized paths.",
+      "symptom_before_fix": "The code-search smoke reported failure even after a successful reindex: search_status showed a valid index and search_code returned results, but the validator saw activeDb as null and treated the Windows status string as a mismatch.",
+      "root_cause": "The reindex pipeline only wrote index.db and the timestamp stamp file. It did not persist current.txt and state.json, so the healthcheck had no local pointer metadata to compare. In parallel, the direct client used a raw startsWith comparison that was too strict on Windows path separators.",
+      "what_was_fixed": "reindex-core.ts now writes current.txt and state.json atomically after a successful reindex, and code-search-mcp-client.mjs now normalizes path separators before evaluating search_status success.",
+      "why_it_was_fixed": "The code-search validator must see the same durable index state that the MCP server uses, and that state must compare the same way on Windows and POSIX paths.",
+      "exact_error_text": "Exact symptom text: code-search MCP smoke test reported a failing status even though search_status returned a valid index on Windows.",
+      "root_cause_why_chain": "Why 1: the healthcheck saw a failure despite a working index. Why 2: local pointer metadata was missing and the direct client compared raw Windows slashes. Why 3: the reindexer persisted only the database and stamp file, while the smoke logic still assumed normalized POSIX-looking paths.",
+      "related_error_sources_checked": "Checked the same failure class against reindex output, .code-search/current.txt and .code-search/state.json, the direct MCP smoke client, and the Windows status-path comparison surface.",
+      "wrong_pattern_example": "Wrong pattern: keep the index usable but omit the pointer/state files that the validator depends on, then compare Windows paths as raw strings.",
+      "right_pattern_example": "Right pattern: persist pointer/state metadata atomically after every successful reindex and normalize paths before comparing status strings.",
+      "avoidance_rule": "If a smoke check depends on local index metadata, write the metadata on every successful reindex and compare normalized paths instead of raw separators.",
+      "resilience_summary": "The fix is defensive because it keeps the search index and validator in sync, survivable because missing pointer metadata no longer masquerades as a broken search backend, extensible because future pointer-based snapshots can reuse the same state layout, documented in the ledger, and damage-free because it only adds durable metadata and path normalization.",
+      "fix_induced_failure_review": "Dependencies: reindex-core.ts, the direct MCP smoke client, and the healthcheck expectations were reviewed together. Failure scenario: if state writing fails, the database still exists and the validator reports the remaining mismatch clearly. State changes: current.txt and state.json are now written atomically after a successful reindex. Race conditions: low because the writes happen after indexing completes. Backward compatibility: legacy index.db continues to work as the active database. Platform effects: Windows path separators are normalized before status comparison. Update resistance: future path or pointer-layout changes are isolated to the reindex and client logic. Graceful degradation: a failed metadata write no longer hides the fact that the index itself is usable.",
+      "verification": "Verified by rerunning the incremental reindex, pwsh -NoProfile -File codex-setup/scripts/check-code-search-health.ps1, and pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1 successfully on Windows.",
+      "portability_notes": "Other CLIs with pointer-based or path-sensitive validation should persist compact state files alongside the index and compare normalized paths before declaring smoke success.",
+      "impact": "code-search health now reflects the real Windows index state instead of failing on missing metadata or separator drift.",
+      "portable_to": [
+        "Claude"
+      ],
+      "artifacts": [
+        "mcp-code-search/src/reindex-core.ts",
+        "codex-setup/scripts/code-search-mcp-client.mjs"
+      ],
+      "created_at": "2026-03-24T21:53:42.580Z",
+      "status": "active"
+    },
+    {
+      "id": "2026-03-24-openai-docs-smoke-stdin-prompt-shell-safe-win",
+      "source_cli": "Codex",
+      "category": "runtime-validation",
+      "summary": "OpenAI docs smoke passes the prompt through stdin instead of a shell-sensitive argument on Windows.",
+      "context_for_other_clis": "This fix belongs to the Codex-side OpenAI docs MCP validation path on Windows. The docs server itself was healthy, but the smoke still failed because the prompt text was being passed as a command-line argument through a Windows wrapper launcher, which let shell parsing split the message incorrectly.",
+      "symptom_before_fix": "The OpenAI-docs smoke failed with an unexpected codex exec argument error even though openaiDeveloperDocs was enabled and reachable.",
+      "root_cause": "The smoke attempted to hand a multi-line prompt to codex exec as a positional argument while also using a Windows wrapper launcher. That combined shell and argument path was too fragile for the CLI parser and split the prompt incorrectly.",
+      "what_was_fixed": "check-openai-docs-mcp.mjs now uses codex exec - and writes the prompt to stdin, while still resolving the Windows launcher explicitly.",
+      "why_it_was_fixed": "Passing the prompt over stdin avoids shell quoting drift and makes the smoke reliable across Windows wrapper launchers.",
+      "exact_error_text": "Exact symptom text: Fresh Codex exec did not confirm openaiDeveloperDocs availability within the bounded retry window, followed by unexpected argument only found.",
+      "root_cause_why_chain": "Why 1: the smoke used a positional prompt argument. Why 2: Windows launcher parsing and shell wrapping were able to split that prompt. Why 3: the validation path depended on a shell-sensitive transport instead of the stdin path that codex exec already supports.",
+      "related_error_sources_checked": "Checked the same failure class on the codex exec transport, the Windows .cmd launcher path, the prompt transport layer, and the fresh-session openaiDeveloperDocs smoke behavior.",
+      "wrong_pattern_example": "Wrong pattern: send a multi-line codex exec prompt as a shell-sensitive positional argument and assume the launcher will preserve it verbatim.",
+      "right_pattern_example": "Right pattern: send the prompt via stdin when the command is wrapped by Windows launcher files, and reserve positional arguments for stable flags only.",
+      "avoidance_rule": "If a Codex smoke test launches through a Windows wrapper, then pass long or multi-line prompts via stdin instead of as a positional shell argument.",
+      "resilience_summary": "The fix is defensive because it removes a shell-parsing failure class, survivable because the smoke still fails clearly if the docs server is unavailable, extensible because the same stdin pattern can be reused by other Codex smoke launchers, documented in the ledger, and damage-free because it only changes transport, not validation semantics.",
+      "fix_induced_failure_review": "Dependencies: launcher resolution, shell quoting, codex exec parsing, and the smoke output path were reviewed together. Failure scenario: if stdin transport fails, the smoke still times out rather than silently succeeding. State changes: only the temporary smoke process and its output file are affected. Race conditions: minimal because the prompt is sent before the fresh exec starts reading. Backward compatibility: the docs validation semantics stay the same. Platform effects: Windows wrapper launchers benefit most, but the stdin transport is valid everywhere. Update resistance: future command-line parsing changes are isolated away from the prompt transport. Graceful degradation: a real docs outage still fails the smoke in the same visible way.",
+      "verification": "Verified by rerunning pwsh -NoProfile -File codex-setup/scripts/check-openai-docs-mcp.ps1 and pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1 successfully on Windows.",
+      "portability_notes": "Other CLIs should prefer stdin for long or multi-line smoke prompts when a wrapper launcher might re-parse positional arguments.",
+      "impact": "OpenAI docs validation is now reliable on Windows wrapper launchers and no longer depends on fragile positional prompt quoting.",
+      "portable_to": [
+        "Claude"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/check-openai-docs-mcp.mjs"
+      ],
+      "created_at": "2026-03-24T21:54:03.157Z",
+      "status": "active"
     }
   ]
 }

@@ -1,7 +1,13 @@
 // reindex-core.ts — Core reindex logic for the semantic search database.
 // Handles both full and incremental reindexing of codebases.
 
-import { existsSync, readFileSync, statSync, writeFileSync } from "fs";
+import {
+	existsSync,
+	readFileSync,
+	renameSync,
+	statSync,
+	writeFileSync,
+} from "fs";
 import { join, relative } from "path";
 
 import { findCodeFiles, chunkFile } from "./indexer.js";
@@ -25,6 +31,12 @@ export interface ReindexResult {
 }
 
 const BATCH_SIZE = 16;
+
+function writeAtomicFile(filePath: string, contents: string): void {
+	const tempPath = `${filePath}.tmp`;
+	writeFileSync(tempPath, contents, "utf8");
+	renameSync(tempPath, filePath);
+}
 
 /**
  * Reindex a codebase — either full or incremental.
@@ -151,14 +163,39 @@ export async function reindexCodebase(
 		}
 
 		// Update stamp file
+		const successAt = new Date().toISOString();
 		try {
-			writeFileSync(stampFile, new Date().toISOString());
+			writeAtomicFile(stampFile, successAt);
 		} catch {
 			// Non-critical: stamp file write failure
 		}
 
 		const mode = isIncremental ? "incremental" : "full";
 		const stats = store.stats();
+		const currentDbFile = "index.db";
+		const state = {
+			activeDb: currentDbFile,
+			totalFiles: stats.totalFiles,
+			totalChunks: stats.totalChunks,
+			lastMode: mode,
+			lastSuccessAt: successAt,
+			lastRunSuccessful: true,
+			lastRunIncremental: mode === "incremental",
+			lastWriteMode: mode,
+			lastWriteAt: successAt,
+			lastWriteSuccessful: true,
+			lastWriteIncremental: mode === "incremental",
+		};
+
+		try {
+			writeAtomicFile(join(dbDir, "current.txt"), `${currentDbFile}\n`);
+			writeAtomicFile(
+				join(dbDir, "state.json"),
+				`${JSON.stringify(state, null, 2)}\n`,
+			);
+		} catch {
+			// Non-critical: state file writes should not block a successful index.
+		}
 
 		return {
 			message:

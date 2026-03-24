@@ -714,7 +714,11 @@ async function runCommand(options) {
 			const statusText = textFromToolResult(statusResponse);
 			const queryText = textFromToolResult(queryResponse);
 			const queryTopPath = topPathFromSearchResult(queryText);
-			const statusOk = statusText.startsWith(`Index status for ${workspace}:`);
+			const normalizedStatusText = statusText.replace(/\\/g, "/");
+			const normalizedWorkspace = workspace.replace(/\\/g, "/");
+			const statusOk = normalizedStatusText.startsWith(
+				`Index status for ${normalizedWorkspace}:`,
+			);
 			const queryOk = Boolean(queryText) && queryTopPath !== "NONE";
 
 			return {
