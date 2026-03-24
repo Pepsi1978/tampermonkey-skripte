@@ -66,6 +66,13 @@ fi
 behind=$(git rev-list --count "HEAD..@{u}" 2>/dev/null)
 write_status "Auto-Sync: $behind neue Commits auf GitHub gefunden -- aktualisiere..."
 
+# Preview: Show what's coming before pulling (ported from Codex session-start-sync)
+diff_stat=$(git diff --stat "HEAD..@{u}" 2>/dev/null)
+if [ -n "$diff_stat" ]; then
+    write_status "Auto-Sync: Eingehende Aenderungen:"
+    write_status "$diff_stat"
+fi
+
 # Stash local changes if working tree is dirty (so rebase can proceed)
 dirty=$(git status --porcelain 2>/dev/null)
 stashed=false

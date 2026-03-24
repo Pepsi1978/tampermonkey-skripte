@@ -55,6 +55,14 @@ if ($local -eq $remote) {
 $behind = git rev-list --count "HEAD..@{u}" 2>$null
 Write-Status "Auto-Sync: $behind neue Commits auf GitHub gefunden -- aktualisiere..."
 
+# Preview: Show what's coming before pulling (ported from Codex session-start-sync)
+$diffStat = git diff --stat "HEAD..@{u}" 2>$null
+$diffNames = git diff --name-status "HEAD..@{u}" 2>$null
+if ($diffStat) {
+    Write-Status "Auto-Sync: Eingehende Aenderungen:"
+    Write-Status $diffStat
+}
+
 # Stash local changes if working tree is dirty (so rebase can proceed)
 $dirty = git status --porcelain 2>$null
 $stashed = $false
