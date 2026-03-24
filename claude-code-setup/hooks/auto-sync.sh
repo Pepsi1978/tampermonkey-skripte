@@ -158,6 +158,18 @@ if [ -d "$hooks_dir" ]; then
     ps1_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ps1" | wc -l | tr -d ' ')
     ts_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ts" | wc -l | tr -d ' ')
     sh_count=$(find "$hooks_dir" -maxdepth 1 -name "*.sh" | wc -l | tr -d ' ')
+    # Guard: Warn if local hooks are newer than setup-repo versions (local fixes would be overwritten)
+    newer_local=""
+    while IFS= read -r repo_hook; do
+        local_hook="$dest_hooks/$(basename "$repo_hook")"
+        if [ -f "$local_hook" ] && [ "$local_hook" -nt "$repo_hook" ]; then
+            newer_local="$newer_local $(basename "$repo_hook")"
+        fi
+    done < <(find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) -print)
+    if [ -n "$newer_local" ]; then
+        hook_log_warn "Local hooks are NEWER than setup-repo:$newer_local — overwriting with repo version. Copy local fixes to claude-code-setup/hooks/ first!"
+        write_status "Auto-Sync: WARNUNG — Lokale Hook(s) sind neuer als im Setup-Repo und werden ueberschrieben:$newer_local"
+    fi
     # Copy all script files
     find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) -exec cp {} "$dest_hooks/" \; 2>/dev/null || true
     # Make .sh scripts executable after copying

@@ -147,6 +147,19 @@ if (Test-Path $hooksDir) {
     $ps1Hooks = @(Get-ChildItem "$hooksDir\*.ps1" -ErrorAction SilentlyContinue)
     $tsHooks = @(Get-ChildItem "$hooksDir\*.ts" -ErrorAction SilentlyContinue)
     $shHooks = @(Get-ChildItem "$hooksDir\*.sh" -ErrorAction SilentlyContinue)
+    # Guard: Warn if local hooks are newer than setup-repo versions (local fixes would be overwritten)
+    $newerLocal = @()
+    foreach ($hook in ($ps1Hooks + $tsHooks + $shHooks)) {
+        $localFile = Join-Path $destHooks $hook.Name
+        if ((Test-Path $localFile) -and (Get-Item $localFile).LastWriteTime -gt $hook.LastWriteTime) {
+            $newerLocal += $hook.Name
+        }
+    }
+    if ($newerLocal.Count -gt 0) {
+        $names = $newerLocal -join ", "
+        Hook-LogWarn "Local hooks are NEWER than setup-repo: $names — overwriting with repo version. Copy local fixes to claude-code-setup/hooks/ first!"
+        Write-Status "Auto-Sync: WARNUNG — $($newerLocal.Count) lokale Hook(s) sind neuer als im Setup-Repo und werden ueberschrieben: $names"
+    }
     foreach ($hook in ($ps1Hooks + $tsHooks + $shHooks)) {
         Copy-Item $hook.FullName $destHooks -Force
     }
