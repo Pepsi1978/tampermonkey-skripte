@@ -345,7 +345,7 @@ function insertViaWhiteboardInsert(section: string, entry: string): void {
 		// -File would only execute the script body, which contains only function definitions.
 		try {
 			execFileSync(
-				"powershell",
+				"pwsh",
 				[
 					"-NoProfile",
 					"-Command",

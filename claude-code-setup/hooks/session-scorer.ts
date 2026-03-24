@@ -323,7 +323,7 @@ function insertViaWhiteboardInsert(section: string, entry: string): void {
 		const escapedEntry = entry.replace(/'/g, "''");
 		try {
 			execFileSync(
-				"powershell",
+				"pwsh",
 				[
 					"-NoProfile",
 					"-Command",
