@@ -47,6 +47,9 @@ und am Ende der Aufgabe als Intelligenz-Vorschlag zurueckgemeldet.
 **Intelligenz-Vorschlaege am Ende jeder Aufgabe**:
 - Mindestens 1, gerne 3-5 wenn es genuegend Beobachtungen gibt
 - Format: "💡 **Intelligenz-Vorschlag N**: [Was] → [Konkreter Vorschlag] — Soll ich das umsetzen?"
+- **PFLICHT — Einfache Erklaerung** (~6 Zeilen pro Vorschlag): Jeder Vorschlag MUSS zusaetzlich
+  in einfacher Sprache erklaert werden (keine Fachbegriffe, oder wenn noetig sofort in Klammern erklaeren).
+  Erklaerung beantwortet: (1) Was ist das Problem? (2) Was wuerde sich aendern? (3) Warum wird das System dadurch schlauer?
 - NIEMALS mittendrin unterbrechen — Vorschlaege kommen NACH der Status-Meldung
 
 **Vision**: In 2-3 Monaten macht dieses System so gut wie keine Fehler mehr — weil JEDER Fehler
