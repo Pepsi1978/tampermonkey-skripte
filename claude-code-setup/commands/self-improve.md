@@ -555,4 +555,4 @@ moving average, compare to previous period. Display as: `Evolution: X.X → Y.Y 
 If < 5 entries: show "Evolution: Noch zu wenig Daten (N/5 Sessions)".
 
 ---
-<!-- Skill Version: v5.19 | Date: 2026-03-21 | Changes: v5.19 — Restructured: extracted bash scripts, added mode comparison table, consolidated rules, added workspace/timeout constraints. Previous: v5.18 — Removed all Termux references (Termux deinstalled, no longer a supported platform). -->
+<!-- Skill Version: v5.19 | Date: 2026-03-21 | Changes: v5.19 — Restructured: extracted bash scripts, added mode comparison table, consolidated rules, added workspace/timeout constraints. Previous: v5.18 — Platform coverage adjusted for the current supported environments. -->
