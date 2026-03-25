@@ -16,7 +16,8 @@ platform="macos"
 cli="claude-code"
 
 # Count PENDING entries for this platform/cli
-count=$(grep -c "APPLIED: ${platform}/${cli}=PENDING" "$LEDGER" 2>/dev/null || echo "0")
+count=$(grep -c "APPLIED: ${platform}/${cli}=PENDING" "$LEDGER" 2>/dev/null || true)
+count=${count:-0}
 
 # Only show message if there are pending entries
 if [[ "$count" -gt 0 && "$count" != "0" ]]; then

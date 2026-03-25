@@ -103,7 +103,29 @@ if [ -d "$MCP_DIR" ]; then
 fi
 
 # ============================================================================
-# CHECK 5: launchd agents (macOS only)
+# CHECK 5: Plugin hook script execute permissions (auto-repair)
+# ============================================================================
+# Some plugins install .sh hook scripts without +x permission.
+# This auto-repairs them to prevent "Permission denied" errors at SessionStart.
+PLUGIN_DIRS="$HOME/.claude/plugins/marketplaces $HOME/.claude/plugins/cache"
+for pdir in $PLUGIN_DIRS; do
+    if [ -d "$pdir" ]; then
+        repaired=0
+        while IFS= read -r -d '' sh_file; do
+            if [ ! -x "$sh_file" ]; then
+                chmod +x "$sh_file"
+                repaired=$((repaired + 1))
+                hook_log "auto-repaired +x permission: $(basename "$sh_file")"
+            fi
+        done < <(find "$pdir" -name "*.sh" -type f -print0 2>/dev/null)
+        if [ "$repaired" -gt 0 ]; then
+            hook_log "repaired $repaired plugin hook scripts with missing +x permission"
+        fi
+    fi
+done
+
+# ============================================================================
+# CHECK 6: launchd agents (macOS only)
 # ============================================================================
 if [ "$(uname)" = "Darwin" ]; then
     for plist_label in "com.claude-mem.worker" "com.parry.daemon"; do
