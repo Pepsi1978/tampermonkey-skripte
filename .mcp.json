@@ -6,8 +6,8 @@
 			"args": ["code-review-graph", "serve"]
 		},
 		"code-search": {
-			"command": "C:/Users/barwa/AppData/Roaming/npm/tsx.cmd",
-			"args": ["mcp-code-search/src/index.ts"]
+			"command": "C:/Users/barwa/.bun/bin/bun.exe",
+			"args": ["run", "mcp-code-search/src/index.ts"]
 		},
 		"think-tank": {
 			"command": "C:/Program Files/nodejs/npx.cmd",

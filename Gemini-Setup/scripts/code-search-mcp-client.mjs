@@ -438,6 +438,32 @@ async function runCommand(options) {
 		return;
 	}
 
+	if (options.command === "call") {
+		let parsedArgs = {};
+		try {
+			parsedArgs = JSON.parse(options.argsJson);
+		} catch (error) {
+			fail(
+				`Invalid --args-json payload: ${options.argsJson}`,
+				error instanceof Error ? error.message : String(error),
+			);
+		}
+
+		const result = await withClient(async (client, config) => {
+			const response = await client.callTool(options.toolName, parsedArgs);
+			return {
+				configPath: config.configPath,
+				protocolVersion: client.protocolVersion,
+				tool: options.toolName,
+				response,
+				text: textFromToolResult(response),
+			};
+		}, options);
+
+		console.log(options.json ? JSON.stringify(result, null, 2) : result.text);
+		return;
+	}
+
 	if (options.command === "smoke") {
 		const workspace = resolveWorkspace(options.workspace);
 		const result = await withClient(async (client, config) => {

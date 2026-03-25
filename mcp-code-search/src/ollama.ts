@@ -2,6 +2,8 @@
 // Calls Ollama's /api/embed endpoint to generate vector embeddings for code chunks.
 // Uses nomic-embed-text model (768 dimensions).
 
+import { spawnSync, spawn } from "child_process";
+
 const OLLAMA_URL = "http://localhost:11434";
 const EMBED_MODEL = "nomic-embed-text";
 const BATCH_SIZE = 32;
@@ -14,12 +16,76 @@ export interface EmbeddingResult {
 }
 
 /**
+ * Attempts to ensure Ollama is running and the model is pulled.
+ */
+async function ensureOllamaService(): Promise<{ ok: boolean; error?: string }> {
+	try {
+		const response = await fetch(`${OLLAMA_URL}/api/tags`, {
+			signal: AbortSignal.timeout(2000),
+		});
+		if (response.ok) return { ok: true };
+	} catch (err) {
+		// Not running, try to start it
+		console.error("Ollama not running. Attempting to start...");
+		if (process.platform === "win32") {
+			spawn("cmd.exe", ["/c", "start", "ollama", "serve"], {
+				detached: true,
+				stdio: "ignore",
+			}).unref();
+		} else {
+			spawn("ollama", ["serve"], {
+				detached: true,
+				stdio: "ignore",
+			}).unref();
+		}
+
+		// Wait for it to start (up to 10 seconds)
+		for (let i = 0; i < 10; i++) {
+			await new Promise((r) => setTimeout(r, 1000));
+			try {
+				const response = await fetch(`${OLLAMA_URL}/api/tags`, {
+					signal: AbortSignal.timeout(1000),
+				});
+				if (response.ok) return { ok: true };
+			} catch {
+				// Continue waiting
+			}
+		}
+		return { ok: false, error: "Failed to start Ollama service automatically." };
+	}
+	return { ok: true };
+}
+
+async function ensureModelAvailable(): Promise<{ ok: boolean; error?: string }> {
+	const response = await fetch(`${OLLAMA_URL}/api/tags`);
+	const data = (await response.json()) as { models?: { name: string }[] };
+	const models = data.models ?? [];
+	const hasModel = models.some(
+		(m) => m.name === EMBED_MODEL || m.name.startsWith(`${EMBED_MODEL}:`),
+	);
+
+	if (!hasModel) {
+		console.error(`Model "${EMBED_MODEL}" missing. Pulling...`);
+		const pullResult = spawnSync("ollama", ["pull", EMBED_MODEL], { encoding: "utf8" });
+		if (pullResult.status !== 0) {
+			return { ok: false, error: `Failed to pull model ${EMBED_MODEL}: ${pullResult.stderr}` };
+		}
+	}
+	return { ok: true };
+}
+
+/**
  * Generate embeddings for one or more text inputs via Ollama.
  * @param texts Array of text strings to embed
  * @returns Array of embedding vectors (each 768-dimensional)
  * @throws Error if Ollama is not running or model not found
  */
 export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
+    const health = await checkOllama();
+    if (!health.ok) {
+        throw new Error(health.error);
+    }
+    
 	const results: number[][] = [];
 
 	// Process in batches of BATCH_SIZE to avoid overloading Ollama
@@ -91,39 +157,17 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 
 /**
  * Check if Ollama is running and the embed model is available.
+ * Attempts to start Ollama and pull the model if necessary.
  */
 export async function checkOllama(): Promise<{ ok: boolean; error?: string }> {
-	let response: Response;
-	try {
-		response = await fetch(`${OLLAMA_URL}/api/tags`, {
-			signal: AbortSignal.timeout(5000),
-		});
-	} catch (err) {
-		const msg = err instanceof Error ? err.message : String(err);
-		return {
-			ok: false,
-			error: `Cannot connect to Ollama at ${OLLAMA_URL}. Is Ollama running? (${msg})`,
-		};
+	const serviceHealth = await ensureOllamaService();
+	if (!serviceHealth.ok) {
+		return serviceHealth;
 	}
 
-	if (!response.ok) {
-		return {
-			ok: false,
-			error: `Ollama /api/tags returned HTTP ${response.status}`,
-		};
-	}
-
-	const data = (await response.json()) as { models?: { name: string }[] };
-	const models = data.models ?? [];
-	const hasModel = models.some(
-		(m) => m.name === EMBED_MODEL || m.name.startsWith(`${EMBED_MODEL}:`),
-	);
-
-	if (!hasModel) {
-		return {
-			ok: false,
-			error: `Model "${EMBED_MODEL}" is not available. Run: ollama pull ${EMBED_MODEL}`,
-		};
+	const modelHealth = await ensureModelAvailable();
+	if (!modelHealth.ok) {
+		return modelHealth;
 	}
 
 	return { ok: true };
