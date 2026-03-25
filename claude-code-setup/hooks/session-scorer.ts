@@ -293,6 +293,17 @@ function analyzeTranscript(path: string): SessionMetrics {
 	const sessionId =
 		path.split(/[/\\]/).pop()?.replace(".jsonl", "") || "unknown";
 
+	// C1: IQ-Score calculation — measures session intelligence density
+	// Formula: quality * efficiency * (1 + intelligence_bonus)
+	// efficiency = tool_calls / max(total_turns, 1) — capped at 1.0
+	// intelligence_bonus = 0.5 if had suggestions, +0.3 if had self-observation
+	const efficiency = Math.min(toolCalls / Math.max(totalTurns, 1), 1.0);
+	let intelligenceBonus = 0;
+	if (hadIntelligenceSuggestion) intelligenceBonus += 0.5;
+	if (hadSelfObservation) intelligenceBonus += 0.3;
+	const rawIq = score * efficiency * (1 + intelligenceBonus);
+	const iqScore = Math.round(rawIq * 10) / 10;
+
 	return {
 		date: new Date().toISOString(),
 		session_id: sessionId,
@@ -301,7 +312,7 @@ function analyzeTranscript(path: string): SessionMetrics {
 		errors,
 		corrections,
 		quality_score: score,
-		iq_score: 0, // Filled by /self-improve, not by the scorer
+		iq_score: iqScore,
 		meta_intelligence_score: metaIntelligenceLevel,
 		had_intelligence_suggestion: hadIntelligenceSuggestion,
 		intelligence_suggestion_count: intelligenceSuggestionCount,

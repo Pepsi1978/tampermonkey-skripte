@@ -45,7 +45,14 @@ Agent 2 (code-reviewer): "Review these files for quality, security, and design: 
 Agent 3 (optimizer): "Check these files for performance and UI quality: [files]. Look for: O(n^2) algorithms, unnecessary allocations, UI polish issues. Report only actionable improvements."
 ```
 
-3. **Synthesize results**: After all 3 agents return, produce a verdict:
+3. **MAR Phase (Multi-Agent Reflexion — MANDATORY)**: After all 3 agents return, run a contradiction round:
+   - Send code-reviewer's findings TO the tester with prompt: "The code-reviewer found these issues: [issues]. Do you AGREE or DISAGREE? If you disagree, explain why with evidence from test results."
+   - Send tester's results TO the code-reviewer with prompt: "Tests passed/failed as follows: [results]. Does this change your assessment? Are there issues the tests missed?"
+   - This takes 1 extra round (~30s) but catches bugs that both agents independently missed.
+   - If both agree: proceed. If they disagree: flag the disagreement in the verdict as "CONTESTED".
+   - Technical limit: Max 1 MAR round. Track via counter, not by convergence.
+
+4. **Synthesize results**: After MAR phase completes, produce a verdict:
 
 ## Output Format
 
