@@ -6,51 +6,51 @@ effort: high
 color: cyan
 tools: ["Read", "Grep", "Glob"]
 description: >
-  Use this agent when ANY knowledge task can be offloaded to a free LLM instead of using Claude tokens.
-  Nemo is a universal knowledge worker powered by Nemotron 3 Super 120B (free via NVIDIA NIM API).
-  Claude does ALL thinking (prompt crafting, structure planning, ambiguity removal), Nemotron only generates output.
+  Nutze diesen Agenten wenn eine Wissensaufgabe kostenlos an ein LLM ausgelagert werden kann statt Claude-Tokens zu verbrauchen.
+  Nemo ist ein universeller Wissens-Worker mit Nemotron 3 Super 120B (kostenlos ueber NVIDIA NIM API).
+  Claude uebernimmt ALLES Denken (Prompt-Optimierung, Struktur, Eindeutigkeit), Nemotron generiert nur noch Output.
 
   <example>
-  Context: User wants quiz questions for QuizVerse
+  Kontext: Benutzer will Quizfragen fuer QuizVerse
   user: "Erstelle 500 Geographie-Quizfragen"
   assistant: "Ich starte Agent Nemo fuer die kostenlose Massen-Generierung."
   <commentary>
-  Bulk content generation (500 questions) is perfect for Nemo — saves massive Claude tokens.
-  Nemo uses parallel workers via nemo_quiz MCP tool.
+  Massen-Generierung (500 Fragen) ist perfekt fuer Nemo — spart enorm Claude-Tokens.
+  Nemo nutzt parallele Worker ueber das nemo_quiz MCP-Tool.
   </commentary>
   </example>
 
   <example>
-  Context: User needs research for an app feature
+  Kontext: Benutzer braucht Recherche fuer ein App-Feature
   user: "Recherchiere Outdoor-Aktivitaeten fuer eine Kotlin-App"
   assistant: "Ich nutze Agent Nemo fuer die kostenlose Recherche."
   <commentary>
-  General knowledge research that doesn't need internet. Nemo can provide structured data
-  about outdoor activities from training knowledge, saving Claude tokens.
+  Allgemeinwissen-Recherche die kein Internet braucht. Nemo liefert strukturierte Daten
+  aus Trainingswissen — spart Claude-Tokens.
   </commentary>
   </example>
 
   <example>
-  Context: User needs seed data for a database
+  Kontext: Benutzer braucht Seed-Daten fuer eine Datenbank
   user: "Generiere Beispieldaten fuer eine Rezepte-Datenbank als JSON"
   assistant: "Agent Nemo generiert die Seed-Daten kostenlos ueber Nemotron."
   <commentary>
-  Structured data generation is ideal for Nemo — exact schema given by Claude,
-  Nemotron fills in the content. Zero Claude token cost for the heavy lifting.
+  Strukturierte Daten-Generierung ist ideal fuer Nemo — Claude gibt das Schema vor,
+  Nemotron fuellt die Inhalte. Null Claude-Token-Kosten fuer die schwere Arbeit.
   </commentary>
   </example>
 
   <example>
-  Context: User wants text translated or summarized
+  Kontext: Benutzer will Text uebersetzen oder zusammenfassen
   user: "Uebersetze diese App-Beschreibung auf Englisch"
   assistant: "Ich lasse das Agent Nemo kostenlos uebersetzen."
   <commentary>
-  Simple translation task — no need to waste Claude tokens on this.
+  Einfache Uebersetzung — kein Grund dafuer Claude-Tokens zu verschwenden.
   </commentary>
   </example>
 
-  Do NOT use Nemo for: complex reasoning, code review, architecture decisions, security analysis,
-  or anything requiring internet access. These need Claude's full capabilities.
+  Nemo NICHT nutzen fuer: komplexes Reasoning, Code-Review, Architektur-Entscheidungen,
+  Sicherheitsanalyse oder Aufgaben die Internet-Zugang brauchen. Dafuer braucht es Claude.
 ---
 
 # Agent Nemo — Free Universal Knowledge Worker
