@@ -173,6 +173,14 @@ If `session-scores.jsonl` doesn't exist or has < 3 entries: skip Stufe 0 silentl
    - If format mismatch: report as ❌ DEFECT and add to fix list
 5. If plausible: proceed with trend analysis normally
 
+**M1: Old-Format-Filter (v5.21 — MANDATORY for moving average):**
+Session-scores from before 2026-03-24 use an old format with massive duplicates (78% of entries).
+When calculating the 5-session moving average:
+- ONLY use entries that have a `session_id` field (new format, introduced 2026-03-24)
+- If an entry lacks `session_id`: skip it entirely
+- Deduplicate by `session_id`: keep only the LAST entry per session_id (highest turn count)
+- This prevents inflated averages from old duplicate data
+
 ## Stufe 1: SCAN
 
 Delegate to `env-checker` agent: `mode: quick|full`, `Platform: [detected]`, `Date: [today]`.
@@ -255,6 +263,9 @@ dadurch haengenbleiben. Fuer JEDEN Researcher gilt:
 **Faustregel**: Lieber ein Researcher-Ergebnis weniger als ein komplett steckengebliebener Lauf.
 
 ### R8: Intelligence Researcher (Stufe 2 — parallel mit R1-R7)
+**M2 (v5.21): R8 laeuft im FOREGROUND** — nicht als Background-Agent. Grund: Die R8-Ergebnisse
+werden in Stufe 5C direkt gebraucht. Background-Modus verzoegert den Ablauf unnoetig (~2 Min Wartezeit),
+da Stufe 3-4 ohnehin auf R8 warten muessen. Foreground ist schneller weil kein Polling noetig ist.
 **Stufe 2 verwendet den dedizierten `intelligence-researcher` Agent** statt eines generischen
 Researcher-Prompts. Der Agent hat:
 - Findings werden in MEMORY.md unter "Forschung & Intelligence" gespeichert, mit Status pro Finding
@@ -433,8 +444,10 @@ Am Ende jedes Laufs: Berechne und zeige den **IQ-Score** (Intelligence Quotient 
 
 Zeige: `IQ-Score: XX/100 (vorher: YY → Veraenderung: +/-Z)`
 **Baseline lesen**: Den letzten `iq_score`-Wert aus `session-scores.jsonl` lesen.
-Falls kein `iq_score`-Feld vorhanden: "Erstmessung (kein Vergleichswert)".
-Speichere in `session-scores.jsonl` als neues Feld `iq_score`.
+Falls kein `iq_score`-Feld oder Wert=0 in alten Eintraegen: "Erstmessung (kein Vergleichswert)".
+**M3 (v5.21)**: Der IQ-Score wird jetzt automatisch vom Session-Scorer berechnet (nicht mehr manuell
+durch /self-improve). Formel: `quality * efficiency * (1 + intel_bonus)`. /self-improve LIEST den Score
+nur noch und vergleicht mit dem Vorgaenger — er SCHREIBT ihn nicht mehr selbst.
 
 ## Stufe 6: FEHLER-DAUERHAFTIGKEIT (PFLICHT — NIEMALS UEBERSPRINGEN)
 
