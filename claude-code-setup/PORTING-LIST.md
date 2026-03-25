@@ -1,4 +1,14 @@
-# Claude Code Porting List (Export)
+<!-- DEPRECATED: Migrated to mirror-ledger.md on 2026-03-25 -->
+<!-- This file is now READ-ONLY. All new entries go to mirror-ledger.md -->
+<!-- The export/import agents replace the old PORTING-LIST + porting-inbox system -->
+
+# Claude Code Porting List (Export) — DEPRECATED
+**ACHTUNG: Diese Datei wird NICHT MEHR aktiv gepflegt.**
+Nachfolger: `claude-code-setup/mirror-ledger.md` (Universal Mirror Bridge)
+Die folgenden Eintraege sind historisch und wurden ins mirror-ledger.md migriert.
+
+---
+
 Dieses Dokument enthaelt neue Intelligenz-Hebel, die fuer Gemini CLI und Codex bereitstehen.
 
 ## Universal Standard: The Bridge Protocol

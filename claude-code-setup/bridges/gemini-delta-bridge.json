@@ -1,10 +1,13 @@
 {
+	"_DEPRECATED": "2026-03-25: Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents). Kept for reference.",
 	"version": 1,
 	"bridge_name": "gemini-delta",
 	"source_label": "Gemini CLI",
 	"source_resolved_as": "Gemini CLI",
 	"language": "de",
-	"tracked_paths": ["Gemini-Setup/**"],
+	"tracked_paths": [
+		"Gemini-Setup/**"
+	],
 	"target_scope": "setup-and-programming-environment-only",
 	"include_fixed_errors": true,
 	"include_bugfix_logic": true,
@@ -15,7 +18,11 @@
 		"Gemini-Setup/rules/global.md",
 		"Gemini-Setup/state/implemented-intelligence-suggestions.json"
 	],
-	"classifications": ["ADD", "ADAPT", "REPLACE"],
+	"classifications": [
+		"ADD",
+		"ADAPT",
+		"REPLACE"
+	],
 	"proposal_only": true,
 	"replacement_requires_confirmation": true,
 	"additive_bias": true,

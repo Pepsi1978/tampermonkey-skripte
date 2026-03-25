@@ -1,10 +1,14 @@
 {
+	"_DEPRECATED": "2026-03-25: Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents). Kept for reference.",
 	"version": 1,
 	"bridge_name": "codex-delta",
 	"source_label": "Codex CLI",
 	"source_resolved_as": "Codex CLI",
 	"language": "de",
-	"tracked_paths": ["codex-setup/**", "AGENTS.md"],
+	"tracked_paths": [
+		"codex-setup/**",
+		"AGENTS.md"
+	],
 	"target_scope": "setup-and-programming-environment-only",
 	"include_fixed_errors": true,
 	"include_bugfix_logic": true,
@@ -17,7 +21,11 @@
 		"codex-setup/state/implemented-intelligence-suggestions.json",
 		"AGENTS.md"
 	],
-	"classifications": ["ADD", "ADAPT", "REPLACE"],
+	"classifications": [
+		"ADD",
+		"ADAPT",
+		"REPLACE"
+	],
 	"proposal_only": true,
 	"replacement_requires_confirmation": true,
 	"additive_bias": true,

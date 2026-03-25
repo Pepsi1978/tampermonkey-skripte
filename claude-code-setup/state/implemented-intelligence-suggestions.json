@@ -1,6 +1,7 @@
 {
+	"_DEPRECATED": "2026-03-25: Never populated. Replaced by mirror-ledger.md (type: directive/whiteboard). Intelligence suggestions are now tracked as ledger entries.",
 	"version": 1,
 	"source_cli": "Claude Code",
-	"description": "Log of implemented intelligence suggestions in the Claude Code programming environment. Other CLIs may read this file to learn from implemented improvements.",
+	"description": "DEPRECATED — see mirror-ledger.md",
 	"entries": []
 }

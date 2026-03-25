@@ -1,3 +1,6 @@
+<!-- DEPRECATED: 2026-03-25 — Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents) -->
+<!-- This file is kept for reference only. New cross-platform sync uses mirror-ledger.md -->
+
 # DIREKTIVE 2 VON 3: SELBSTBEOBACHTUNG (ZWEITHOECHSTE PRIORITAET)
 
 > **Diese Direktive ist die zweitwichtigste Regel im gesamten System - direkt nach

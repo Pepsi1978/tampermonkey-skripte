@@ -1,3 +1,6 @@
+<!-- DEPRECATED: 2026-03-25 — Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents) -->
+<!-- This file is kept for reference only. New cross-platform sync uses mirror-ledger.md -->
+
 # OBERSTE DIREKTIVE: SUPERINTELLIGENZ (HOECHSTE PRIORITAET)
 
 > **Diese Regel steht UEBER allen anderen Regeln im gesamten System.**

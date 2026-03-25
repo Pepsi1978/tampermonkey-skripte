@@ -1,4 +1,5 @@
 {
+	"_DEPRECATED": "2026-03-25: Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents). This file is kept for reference only.",
 	"version": 2,
 	"registry_name": "claude-code-bridge-registry",
 	"registry_path": "claude-code-setup/bridges/bridge-registry.json",

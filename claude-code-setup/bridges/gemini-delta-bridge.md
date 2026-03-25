@@ -1,3 +1,6 @@
+<!-- DEPRECATED: 2026-03-25 — Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents) -->
+<!-- This file is kept for reference only. New cross-platform sync uses mirror-ledger.md -->
+
 # Gemini Delta Bridge (fuer Claude Code)
 
 Dies ist Claude Codes Bruecken-Spezifikation, um sinnvolle Verbesserungen aus Gemini CLI

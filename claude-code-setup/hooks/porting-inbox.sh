@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# DEPRECATED: Replaced by mirror-check.sh + import agent (Universal Mirror Bridge, 2026-03-25)
+# This hook is no longer registered in settings.json.
+# Kept for reference only — remove after 2026-04-25.
+exit 0
+# --- Original code below (inactive) ---
 # porting-inbox.sh — Session-Start Hook: Reads PORTING-LIST.md from other CLIs
 # Extracts new suggestions into the whiteboard as TODOs
 # Part of the Universal Bridge Protocol (cross-CLI intelligence sharing)

@@ -1,4 +1,5 @@
 {
+	"_DEPRECATED": "2026-03-25: Replaced by Universal Mirror Bridge (mirror-ledger.md + export/import agents). Kept for reference.",
 	"version": 2,
 	"bridge_name": "implemented-intelligence-suggestion-exchange",
 	"source_label": "Implemented Intelligence Suggestions",
@@ -47,7 +48,11 @@
 			"status": "awaiting-foreign-registration"
 		}
 	},
-	"read_only_consumers": ["Codex CLI", "Gemini CLI", "other CLI environments"],
+	"read_only_consumers": [
+		"Codex CLI",
+		"Gemini CLI",
+		"other CLI environments"
+	],
 	"trigger_phrases": [
 		"welche Intelligenzvorschlaege hast du umgesetzt",
 		"wo ist deine Intelligenzvorschlag-Liste",
@@ -56,7 +61,9 @@
 		"trage diesen Intelligenzvorschlag in den Ledger ein",
 		"dokumentiere diesen umgesetzten Vorschlag"
 	],
-	"write_scope": ["claude-code-setup/ only"],
+	"write_scope": [
+		"claude-code-setup/ only"
+	],
 	"reference_implementation": [
 		"claude-code-setup/state/implemented-intelligence-suggestions.json",
 		"claude-code-setup/scripts/register-intelligence-suggestion.mjs",
