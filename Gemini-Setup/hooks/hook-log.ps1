@@ -61,7 +61,7 @@ function Hook-LogWarn {
 # local variables first and reference them via $using: inside the Action scriptblock.
 $capturedLogFile = $script:_HookLogFile
 $capturedHookName = $script:_HookLogName
-Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
+$null = Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
     if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
         $ts = Get-Date -Format "HH:mm:ss"
         $logFile = $using:capturedLogFile

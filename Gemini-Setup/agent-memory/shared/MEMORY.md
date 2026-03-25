@@ -1,4 +1,4 @@
-# Shared Knowledge Hub — Zentrales Whiteboard (Gemini CLI)
+﻿# Shared Knowledge Hub — Zentrales Whiteboard (Gemini CLI)
 
 Das zentrale Gedaechtnis fuer das Gemini CLI System. Jede Komponente (Agents, Skills, Hooks) MUSS hier lesen und schreiben, um plattformuebergreifendes Lernen (Claude/Codex/Gemini) zu ermoeglichen.
 
@@ -25,8 +25,15 @@ Das zentrale Gedaechtnis fuer das Gemini CLI System. Jede Komponente (Agents, Sk
 - **Audit-Workflow:** Bei Fragen zu anderen CLIs (Claude/Codex) muss Gemini zuerst die Brücken-Audits (`audit-claude-delta.mjs` / `audit-codex-delta.mjs`) nutzen.
 
 ## Offene Fehler & Probleme
-_Noch keine Eintraege._
+### 2026-03-25 02:09 - PORTIERUNG von Claude Code: [SUGG-2026-03-25-HOOK-STDOUT-FIX]
+- **Was:** `$null = Register-EngineEvent` in hook-log.ps1 unterdrueckt stoerende Tabellen-Ausgabe.
+- **Nutzen:** Jeder Hook der hook-log.ps1 dot-sourced hatte eine PowerShell-Job-Tabelle im Output. Fix ist eine Zeile.
+- **Portierungs-Hinweis:** Nur Windows-Hooks betroffen. macOS (hook-log.sh) hat das Problem nicht.
 
+### 2026-03-25 02:09 - PORTIERUNG von Claude Code: [SUGG-2026-03-25-PWSH-NOT-POWERSHELL]
+- **Was:** TypeScript-Hooks (session-scorer.ts, session-autopsy.ts) muessen `pwsh` statt `powershell` verwenden.
+- **Nutzen:** Windows PowerShell 5.1 kann bestimmte Funktionen (whiteboard-insert.ps1) nicht laden â€” pwsh 7+ funktioniert.
+- **Portierungs-Hinweis:** In `insertViaWhiteboardInsert()` Funktion, Zeile mit `execFileSync("powershell"` zu `execFileSync("pwsh"` aendern.
 ## Systemzustand
 - **Initiales Setup:** Gemini CLI auf Windows (win32) erfolgreich initialisiert und für Windows-Parität gehärtet (2026-03-24).
 - **Workspace:** `C:\Users\barwa\GeminiCLI` (Schreibrechte in Gemini-Setup/).

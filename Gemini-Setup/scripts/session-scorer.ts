@@ -323,7 +323,7 @@ function insertViaWhiteboardInsert(section: string, entry: string): void {
 		const escapedEntry = entry.replace(/'/g, "''");
 		try {
 			execFileSync(
-				"powershell",
+				"pwsh",
 				[
 					"-NoProfile",
 					"-Command",
@@ -334,7 +334,8 @@ function insertViaWhiteboardInsert(section: string, entry: string): void {
 		} catch {
 			// Non-fatal — stderr warning is sufficient
 		}
-	} else {
+	}
+ else {
 		const script = join(hookDir, "whiteboard-insert.sh");
 		if (!existsSync(script)) return;
 		const bashSection = section.replace(/'/g, "'\\''");

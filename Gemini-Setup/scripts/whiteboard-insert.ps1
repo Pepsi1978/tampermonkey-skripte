@@ -15,7 +15,9 @@ function Replace-WhiteboardEntry {
         [string]$Entry
     )
 
-    $memoryFile = Join-Path $env:USERPROFILE "proggs" ".Gemini" "agent-memory" "shared" "MEMORY.md"
+    $workspaceRoot = $env:GEMINI_WORKSPACE
+    if (-not $workspaceRoot) { $workspaceRoot = "C:\Users\barwa\GeminiCLI" }
+    $memoryFile = Join-Path $workspaceRoot "Gemini-Setup" "agent-memory" "shared" "MEMORY.md"
     if (-not (Test-Path $memoryFile)) { return }
 
     $mutexName = "Global\GeminiWhiteboardMutex"
@@ -96,7 +98,9 @@ function Insert-WhiteboardEntry {
         [string]$Entry
     )
 
-    $memoryFile = Join-Path $env:USERPROFILE "proggs" ".Gemini" "agent-memory" "shared" "MEMORY.md"
+    $workspaceRoot = $env:GEMINI_WORKSPACE
+    if (-not $workspaceRoot) { $workspaceRoot = "C:\Users\barwa\GeminiCLI" }
+    $memoryFile = Join-Path $workspaceRoot "Gemini-Setup" "agent-memory" "shared" "MEMORY.md"
     if (-not (Test-Path $memoryFile)) { return }
 
     # Acquire named mutex to prevent concurrent read-modify-write on MEMORY.md
