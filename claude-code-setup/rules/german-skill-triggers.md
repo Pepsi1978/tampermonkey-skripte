@@ -178,6 +178,39 @@ auf den Skill der aehnlich klingt.
 | "Reflektion" / "Reflect" | `claude-reflect:reflect` (Lernen) oder `reflexion:reflect` (Bewertung) — nachfragen! |
 | "Code Rabbit" | `coderabbit:review` |
 
+## 14. Nemo — Kostenloser Wissens-Worker (Nemotron 3 Super 120B)
+
+**Nemo ist ein universeller Wissens-Agent der NVIDIA Nemotron 3 Super 120B kostenlos
+ueber die NIM API ansteuert. Claude denkt vorher, Nemo fuehrt aus.**
+
+| Deutsche Phrase | Agent/Tool | Was es WIRKLICH tut |
+|----------------|------------|---------------------|
+| "frag Nemo", "Nemo fragen", "starte Nemo" | `nemo` Agent | Startet den Nemo-Orchestrator (Opus), der perfekte Prompts baut und an Nemotron schickt |
+| "Quizfragen generieren", "500 Fragen erstellen" | `nemo` Agent → `nemo_quiz` | Parallele Quiz-Generierung via Nemotron (QuizVerse-Format) |
+| "recherchiere mit Nemo", "Nemo soll recherchieren" | `nemo` Agent → `nemo_research` | Strukturierte Themen-Recherche via Nemotron (kostenlos) |
+| "kostenlos recherchieren", "gratis nachschlagen" | `nemo` Agent → `nemo_ask` | Wissensfrage an Nemotron statt an Claude (spart Tokens) |
+| "Seed-Daten generieren", "Beispieldaten erstellen" | `nemo` Agent → `nemo_generate` | Strukturierte Daten (JSON/Kotlin/CSV) via Nemotron |
+| "billig übersetzen", "Nemo übersetzen" | `nemo` Agent → `nemo_translate` | Uebersetzung via Nemotron (kostenlos) |
+| "Nemo zusammenfassen", "billig zusammenfassen" | `nemo` Agent → `nemo_summarize` | Textzusammenfassung via Nemotron |
+| "Outdoor-Aktivitäten recherchieren" | `nemo` Agent → `nemo_research` | Themen-Recherche fuer App-Inhalte |
+| "Content für die App generieren" | `nemo` Agent → `nemo_generate` | Inhalte/Daten fuer Apps generieren |
+
+**Wann Nemo statt Claude:**
+- **Massenproduktion** (50+ Quizfragen, Seed-Daten, Listen) → Nemo (kostenlos, parallel)
+- **Allgemeinwissen** (Fakten, Erklaerungen, Standardthemen) → Nemo (reicht aus)
+- **Einfache Uebersetzungen/Zusammenfassungen** → Nemo (spart Claude-Tokens)
+
+**Wann NICHT Nemo:**
+- Komplexes Reasoning, Architektur, Code-Review → Claude (Nemo kann das nicht)
+- Aufgaben die Internet-Zugang brauchen → Claude (Nemo hat kein Internet)
+- Sicherheitskritische Entscheidungen → Claude (Nemo ist nicht vertrauenswuerdig genug)
+
+**Whisper-Korrektur:**
+| Whisper hoert | Gemeint ist |
+|---------------|------------|
+| "Nemo" | Agent `nemo` (Nemotron-Worker) |
+| "Nimmo" / "Niemo" | Agent `nemo` |
+
 ## Proaktive Agents (kein Trigger noetig — laufen automatisch)
 
 Diese laufen automatisch nach Code-Aenderungen und sollen NICHT manuell getriggert werden:
