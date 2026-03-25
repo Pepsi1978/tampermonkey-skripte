@@ -1397,3 +1397,550 @@ SessionEnd ueberschrieben. Hooks immer nur in `~/.claude/settings.json` bearbeit
 <!-- APPLIED: windows/claude-code=PENDING -->
 <!-- APPLIED: codex=PENDING -->
 <!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-009] Export-Agent: Schritt 1.5 BASELINE-Pruefung — automatische Generierung
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T22:23:29Z -->
+<!-- TARGETS: windows/claude-code,codex,gemini -->
+<!-- TYPE: agent -->
+<!-- AFFECTS: ~/.claude/agents/export.md, ~/proggs/claude-code-setup/agents/export.md -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Der `export` Agent ist die "Schreib-Haelfte" der Universal Mirror Bridge. Er wird am Ende einer
+Session aufgerufen (Trigger: "starte den export Agenten", "exportiere", "Aenderungen spiegeln")
+und schreibt alle Session-Aenderungen als ausfuehrliche, selbsterklaerende Eintraege ins
+`mirror-ledger.md`. Andere CLIs und Plattformen lesen diese Eintraege spaeter mit dem
+`import` Agenten und koennen so alle Aenderungen nachbauen ohne die Session gesehen zu haben.
+
+Das zentrale Problem das diese Erweiterung loest: Wenn ein frisches CLI (Gemini, Codex, oder
+ein neues Claude Code auf einem anderen Rechner) den `import` Agenten startet, aber KEIN
+BASELINE-Eintrag im Ledger existiert, weiss das CLI nicht wie die Gesamtumgebung aussieht.
+Inkrementelle Eintraege allein sind nutzlos — man muss wissen von welchem Ausgangszustand
+man ausgeht. Der neue Schritt 1.5 loest das: Beim ersten Export-Lauf wird automatisch
+ein vollstaendiger BASELINE-Eintrag generiert der die KOMPLETTE Umgebung beschreibt
+(18 Agents, 52 Hooks, 21 Rules, 89 Plugins, Settings, MCP-Server, etc.).
+
+Der Export-Agent laeuft mit `model: opus`, `effort: high`, `maxTurns: 60` und hat
+Zugriff auf Read, Glob, Grep, Bash, Write, Edit Tools.
+
+### Was wurde geaendert?
+
+Ein neuer **Schritt 1.5 "BASELINE-Pruefung"** wurde nach dem bisherigen Schritt 1
+("Plattform und CLI erkennen") eingefuegt. Der Schritt:
+
+1. Prueft ob bereits ein `## [BASELINE-...]` Eintrag im Ledger existiert:
+   ```bash
+   grep -q "^\## \[BASELINE-" ~/proggs/claude-code-setup/mirror-ledger.md 2>/dev/null
+   echo $?  # 0 = existiert, 1 = fehlt
+   ```
+2. Wenn KEIN BASELINE existiert (exit code 1): Sofort einen vollstaendigen BASELINE-Eintrag
+   generieren VOR allen inkrementellen Eintraegen. Der BASELINE dokumentiert: Alle Custom
+   Agents (Name, Modell, Zweck), Alle Hooks (Name, Event, Zweck), Alle Rules (Name,
+   Prioritaet, Zweck), Alle Commands, Alle Plugins (Marketplace, Name), Settings (Modell,
+   Effort, Env-Vars, Permissions), MCP-Server Uebersicht, Security-Tools,
+   Dev-Tool-Anforderungen, Benutzer-Profil, Bootstrap-Anleitung.
+   ID-Format: `BASELINE-YYYY-MM-DD`
+3. Wenn BASELINE existiert: Weiter mit Schritt 2 (inkrementelle Aenderungen wie bisher).
+
+Ausserdem: Sentinel-Datei schreiben:
+`/tmp/agent-writeback-export.json` mit `{"agent": "export", "timestamp": "...", "findings": "N entries written"}`
+
+### Warum?
+
+Der Benutzer erkannte dass inkrementelle Ledger-Eintraege allein nicht ausreichen, wenn ein
+neues CLI den `import` Agenten zum ersten Mal ausfuehrt. Ohne BASELINE gibt es keinen
+Ausgangspunkt. Die automatische BASELINE-Generierung beim ersten Export-Lauf loest dieses
+Bootstrap-Problem vollstaendig: Egal wann und auf welcher Plattform das erste CLI ein
+Mirror-Ledger schreibt, der BASELINE wird immer vor den inkrementellen Eintraegen erstellt.
+
+### Portierung Windows/claude-code
+
+1. Lies die vollstaendige Agent-Datei aus dem "Datei-Inhalt" Abschnitt unten
+2. Schreibe sie nach `%USERPROFILE%\.claude\agents\export.md`
+3. Kopiere nach `%USERPROFILE%\proggs\claude-code-setup\agents\export.md`
+4. Kein Hook-Eintrag noetig — Agents werden nicht in settings.json registriert
+5. Test: Den `export` Agenten aufrufen und pruefen ob Schritt 1.5 erscheint
+
+### Portierung Gemini/Codex
+
+Diese Agent-Datei ist Claude-Code-spezifisch (Frontmatter-Format). Fuer andere CLIs:
+1. Lies den vollstaendigen System-Prompt (ab "You are the Export Agent...")
+2. Lege den Workflow als Wissen in der nativen CLI-Config ab:
+   - Gemini: In `GEMINI.md` einen Abschnitt "Export-Workflow" schreiben
+   - Codex: In `CODEX.md` einen Abschnitt "Export-Workflow" schreiben
+3. Wichtigste Erkenntnis: Beim ersten Schreiben ins Ledger IMMER zuerst pruefen ob
+   BASELINE existiert, und wenn nicht einen generieren
+
+### Datei-Inhalt macOS/Windows (export.md)
+
+Die vollstaendige Datei liegt unter:
+`~/proggs/claude-code-setup/agents/export.md`
+
+Frontmatter-Zusammenfassung:
+```yaml
+name: export
+model: opus
+effort: high
+maxTurns: 60
+tools: [Read, Glob, Grep, Bash, Write, Edit]
+```
+
+Schluesselerweiterung — Schritt 1.5 (neuer Block nach Schritt 1 im System-Prompt):
+```
+## Schritt 1.5: BASELINE-Pruefung (AUTOMATISCH beim ersten Export)
+
+Vor ALLEM anderen pruefen ob ein BASELINE-Eintrag im Ledger existiert:
+
+  grep -q "^## \[BASELINE-" ~/proggs/claude-code-setup/mirror-ledger.md 2>/dev/null
+  echo $?  # 0 = existiert, 1 = fehlt
+
+Wenn KEIN BASELINE existiert (exit code 1):
+1. SOFORT einen vollstaendigen BASELINE-Eintrag generieren
+2. Der BASELINE dokumentiert die GESAMTE Umgebung:
+   - Alle Custom Agents (Name, Modell, Zweck — aus ~/.claude/agents/)
+   - Alle Hooks (Name, Event, Zweck — aus ~/.claude/hooks/)
+   - Alle Rules (Name, Prioritaet, Zweck — aus ~/.claude/rules/)
+   - Alle Commands (Name, Zweck — aus ~/.claude/commands/)
+   - Alle Plugins (Marketplace, Name — aus manifest.json)
+   - Settings (Modell, Effort, Env-Vars, Permissions)
+   - MCP-Server Uebersicht
+   - Security-Tools, Dev-Tool-Anforderungen
+   - Benutzer-Profil und Praeferenzen
+   - Bootstrap-Anleitung (git clone -> setup script -> fertig)
+3. ID-Format: BASELINE-YYYY-MM-DD
+4. DANACH erst weiter mit Schritt 2
+
+Wenn BASELINE existiert: Weiter mit Schritt 2.
+```
+
+<!-- APPLIED: macos/claude-code=2026-03-25T22:23:29Z -->
+<!-- APPLIED: windows/claude-code=PENDING -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-010] Import-Agent: Prinzip "VOLLSTAENDIG SPIEGELN IM EIGENEN WORKSPACE"
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T22:23:29Z -->
+<!-- TARGETS: windows/claude-code,codex,gemini -->
+<!-- TYPE: agent -->
+<!-- AFFECTS: ~/.claude/agents/import.md, ~/proggs/claude-code-setup/agents/import.md -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Der `import` Agent ist die "Lese-Haelfte" der Universal Mirror Bridge. Er liest das
+`mirror-ledger.md`, findet Eintraege die fuer die aktuelle Plattform/CLI noch als PENDING
+markiert sind, und wendet sie an. Der Import-Agent laeuft mit `model: opus`, `effort: high`,
+`maxTurns: 80`.
+
+Das zentrale Problem das diese Erweiterung loest: Der urspruengliche Import-Agent war darauf
+ausgelegt nur Claude-Code-zu-Claude-Code Synchronisation zu beherrschen. Wenn aber ein
+ANDERES CLI (Gemini, Codex) den Import-Agenten aufruft, darf er NICHT in Claude-Code-
+Verzeichnisse schreiben. Diese CLIs haben eigene Konfigurationsverzeichnisse und eigene
+Formate. Das neue Prinzip "VOLLSTAENDIG SPIEGELN — IM EIGENEN WORKSPACE" loest das: Alles
+wird gespiegelt, aber IMMER im Workspace des ZIEL-CLIs.
+
+Das Ergebnis: Alle CLIs bekommen die volle Intelligenz der Programmierumgebung — aber jedes
+in seiner eigenen nativen Form. Gemini bekommt Hooks als Workflow-Regeln in GEMINI.md,
+Codex bekommt sie als Anweisungen in CODEX.md, und Claude Code bekommt die echten
+.sh/.ps1 Dateien installiert.
+
+### Was wurde geaendert?
+
+Der Import-Agent wurde um ein neues **oberstes Prinzip** erweitert:
+
+**VOLLSTAENDIG SPIEGELN — IM EIGENEN WORKSPACE**
+
+Konkret unterscheidet der Agent jetzt:
+
+**Gleiches CLI (Claude Code macOS<->Windows):**
+- Vollstaendig 1:1 implementieren
+- Dateien, Settings, Hooks — alles nach `~/.claude/` auf der Zielplattform
+
+**Anderes CLI (Gemini, Codex):**
+- Regeln und Direktiven -> In die native Config (GEMINI.md, CODEX.md)
+- Agents -> Agent-Dateien kopieren UND als Wissen in die CLI-Config schreiben
+- Hooks -> Wenn Hook-System vorhanden: installieren. Wenn nicht: als Workflow-Regeln
+- Plugins -> Wenn CLI-Aequivalente existieren: vorschlagen. Wenn nicht: als Wissen
+- Settings -> In natives Settings-Format uebersetzen
+- Philosophie -> IMMER vollstaendig uebernehmen
+
+Ausserdem wurden die Plattform-Adaptionsregeln erweitert:
+- `date -u '+%Y-%m-%dT%H:%M:%SZ'` -> `(Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')`
+- `2>/dev/null` -> `2>$null`
+- `| head -N` -> `| Select-Object -First N`
+- `| tail -N` -> `| Select-Object -Last N`
+- `wc -l < file` -> `(Get-Content file).Count`
+- `/opt/homebrew/bin/npx` -> `npx`
+- `set -euo pipefail` -> `$ErrorActionPreference = 'Stop'`
+
+Und ein Kommentar-Format fuer adaptierte Dateien:
+`# Adapted from {MIRROR-ID} by import agent on {DATE}`
+
+### Warum?
+
+Die Mirror Bridge soll ein UNIVERSELLES Cross-CLI System sein. Wenn Gemini oder Codex die
+Programmierumgebung nutzen sollen, muss der Import-Agent verstehen dass er NICHT in
+Claude-Code-Dateien schreiben darf. Das neue Prinzip macht die Bridge zukunftssicher fuer
+beliebige neue CLIs.
+
+### Portierung Windows/claude-code
+
+1. Lies die vollstaendige Agent-Datei: `~/proggs/claude-code-setup/agents/import.md`
+2. Schreibe sie nach `%USERPROFILE%\.claude\agents\import.md`
+3. Kein Hook-Eintrag noetig
+4. Test: Den `import` Agenten aufrufen, pruefen ob das neue Prinzip "VOLLSTAENDIG SPIEGELN"
+   in der Ausgabe erscheint
+
+### Portierung Gemini/Codex
+
+Der Import-Agent selbst ist Claude-Code-spezifisch. Fuer andere CLIs:
+1. Lies den vollstaendigen System-Prompt
+2. Verstehe das Prinzip: Import = alles spiegeln, aber im eigenen Workspace
+3. Wenn du als Gemini oder Codex Ledger-Eintraege importierst:
+   - Jeden Eintrag vollstaendig lesen (Kontext, Datei-Inhalt, Settings)
+   - Aequivalente in der eigenen nativen Config erstellen
+   - Als APPLIED markieren und pushen
+
+### Datei-Inhalt macOS/Windows (import.md)
+
+Die vollstaendige Datei liegt unter:
+`~/proggs/claude-code-setup/agents/import.md`
+
+Frontmatter-Zusammenfassung:
+```yaml
+name: import
+model: opus
+effort: high
+maxTurns: 80
+tools: [Read, Glob, Grep, Bash, Write, Edit]
+```
+
+Schluesselerweiterung — Neues Oberstes Prinzip (vor Schritt 1 im System-Prompt):
+```
+## OBERSTES PRINZIP: VOLLSTAENDIG SPIEGELN — IM EIGENEN WORKSPACE
+
+Alles wird gespiegelt — Agents, Hooks, Rules, Settings, Direktiven — aber IMMER
+im Workspace und Konfigurationsverzeichnis des ZIEL-CLIs.
+
+Gleiches CLI (Claude Code macOS<->Windows):
+  Vollstaendig 1:1 implementieren. Ziel: ~/.claude/ auf der Zielplattform.
+
+Anderes CLI (Gemini, Codex):
+  Alles spiegeln, aber ins EIGENE Format:
+  - Regeln und Direktiven -> native Config (GEMINI.md, CODEX.md)
+  - Agents -> kopieren UND als Wissen in CLI-Config schreiben
+  - Hooks -> installieren wenn Hook-System vorhanden, sonst als Workflow-Regeln
+  - Plugins -> CLI-Aequivalente vorschlagen oder als Faehigkeits-Wissen dokumentieren
+  - Settings -> in natives Format uebersetzen
+  - Philosophie -> IMMER vollstaendig uebernehmen
+```
+
+<!-- APPLIED: macos/claude-code=2026-03-25T22:23:29Z -->
+<!-- APPLIED: windows/claude-code=PENDING -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-011] Bootstrap-Prompt: Erstmalige Mirror-Bridge-Einrichtung in neuem CLI
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T22:23:29Z -->
+<!-- TARGETS: codex,gemini -->
+<!-- TYPE: skill -->
+<!-- AFFECTS: ~/proggs/claude-code-setup/bridges/mirror-bridge-bootstrap.md -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Der Bootstrap-Prompt ist ein Dokument das IN das neue CLI (Gemini, Codex, oder frisches
+Claude Code) eingefuegt wird um die Mirror Bridge zum ersten Mal einzurichten. Er ist
+kein Agent und kein Hook — er ist eine vollstaendige Anleitung die ein Benutzer kopiert
+und dem neuen CLI als erste Nachricht schickt, oder die das CLI als Systemkontext erhaelt.
+
+Das Problem das er loest: Wenn jemand anfaengt Gemini CLI zu nutzen und die
+Programmierumgebung uebernehmen will, weiss Gemini nichts von der Mirror Bridge, dem
+Ledger, den Agents, den Hooks oder den Direktiven. Der Bootstrap-Prompt erklaert dem
+neuen CLI in 6 Schritten wie es (a) das Repository klont, (b) den BASELINE liest,
+(c) alle Komponenten in seine eigene native Config uebernimmt — NICHT als Claude-Code-Klon!
+sondern als native Intelligenz — (d) die Export-Faehigkeit einrichtet, (e) inkrementelle
+Eintraege anwendet, und (f) eine Bestaetigung ausgibt.
+
+Der entscheidende Designgedanke: Das neue CLI soll NICHT einfach Claude-Code-Dateien
+kopieren. Es soll die INTELLIGENZ und FAEHIGKEITEN uebernehmen und an sein eigenes
+Format anpassen. Hooks werden zu Workflow-Regeln, Agents werden zu Faehigkeits-
+Beschreibungen — das neue CLI bekommt die volle Intelligenz in seiner eigenen Sprache.
+
+Die Datei liegt im neuen `bridges/` Unterordner des Setup-Repos der speziell fuer
+Cross-CLI Verbindungs-Infrastruktur geschaffen wurde.
+
+### Was wurde geaendert?
+
+Neue Datei erstellt: `~/proggs/claude-code-setup/bridges/mirror-bridge-bootstrap.md`
+
+Die Datei enthaelt einen kopierbaren Prompt (6 Schritte) und CLI-spezifische Hinweise:
+
+**Schritt 1:** Repository pruefen/klonen (`git clone https://github.com/Pepsi1978/proggs ~/proggs`)
+
+**Schritt 2:** Mirror-Ledger vollstaendig lesen — BASELINE zuerst lesen.
+Der BASELINE beschreibt: 18 Agents, 52 Hooks, 21 Rules, 89 Plugins, Settings, MCP, Security,
+die 3 Direktiven, Benutzer-Profil.
+
+**Schritt 3:** Intelligenz uebertragen (KEIN Klon!):
+- Direktiven aus `~/proggs/claude-code-setup/rules/superintelligence.md` etc. in native Config
+- Agents als Faehigkeits-Beschreibungen
+- Hooks als Workflow-Regeln (wenn kein Hook-System vorhanden)
+- Benutzer-Profil vollstaendig (Deutsch, Whisper, Parallelisierung, Sichtbarkeit, etc.)
+
+**Schritt 4:** Export-Faehigkeit einrichten:
+- Ledger-Pfad merken: `~/proggs/claude-code-setup/mirror-ledger.md`
+- Am Ende jeder Session: Neuen Eintrag anhaengen (Format: GEM/CDX statt MAC/WIN)
+- BASELINE pruefen wenn keiner existiert
+
+**Schritt 5:** Inkrementelle PENDING-Eintraege anwenden und als APPLIED markieren
+
+**Schritt 6:** Bestaetigung ausgeben
+
+**CLI-spezifische Hinweise:**
+- Gemini CLI: Native Config = `GEMINI.md`, kein Agent/Hook-System
+- Codex CLI: Native Config = `CODEX.md`, Sandbox-Ausfuehrung
+- Frisches Claude Code: Setup-Script nutzen, kein Bootstrap noetig
+
+### Warum?
+
+Ohne diesen Bootstrap-Prompt muss ein Benutzer der ein neues CLI einrichten will
+entweder die gesamte Mirror-Bridge-Dokumentation lesen und manuell umsetzen, oder
+mehrere Runden mit dem neuen CLI kommunizieren bis es versteht was es tun soll.
+Der Bootstrap-Prompt macht den Prozess von "erstes Mal Gemini starten" bis zu
+"volle Programmierumgebungs-Intelligenz eingerichtet" zu einem einzigen Schritt.
+
+### Portierung Gemini CLI
+
+1. `git clone https://github.com/Pepsi1978/proggs ~/proggs` (falls noch nicht geklont)
+2. `cd ~/proggs && git pull`
+3. Oeffne Gemini CLI
+4. Lese die Datei: `cat ~/proggs/claude-code-setup/bridges/mirror-bridge-bootstrap.md`
+5. Kopiere den Prompt-Block (alles nach "## Prompt (komplett kopieren und einfuegen)")
+6. Schicke diesen Block als erste Nachricht an Gemini CLI
+7. Gemini fuehrt den 6-Schritte-Prozess selbststaendig durch
+
+### Portierung Codex CLI
+
+Gleich wie Gemini, aber beachte:
+- Codex hat Sandbox-Ausfuehrung — Git-Operationen muessen explizit erlaubt sein
+- Die native Config ist `CODEX.md` im Repo-Root (nicht `~/.codex/`)
+- Agents werden als Workflow-Anweisungen in CODEX.md gespeichert
+
+### Datei-Inhalt (mirror-bridge-bootstrap.md)
+
+Die vollstaendige Datei liegt unter:
+`~/proggs/claude-code-setup/bridges/mirror-bridge-bootstrap.md`
+
+Kurzfassung des enthaltenen Prompts (vollstaendiger Text in der Datei):
+
+```
+# Schritt 1: Repository pruefen/klonen
+git clone https://github.com/Pepsi1978/proggs ~/proggs  # falls noch nicht vorhanden
+cd ~/proggs && git pull
+
+# Schritt 2: BASELINE lesen
+# Lies ~/proggs/claude-code-setup/mirror-ledger.md — BASELINE-Eintrag zuerst
+# BASELINE beschreibt: 18 Agents, 52 Hooks, 21 Rules, 89 Plugins, 3 Direktiven
+
+# Schritt 3: Intelligenz uebertragen (NICHT klonen!)
+# - Direktiven: ~/proggs/claude-code-setup/rules/ -> native Config lesen und adaptieren
+# - Agents: als Faehigkeits-Beschreibungen in native Config
+# - Hooks: als Workflow-Regeln (Logik, nicht die .sh Dateien)
+# - Benutzer-Profil: Deutsch/Whisper, Parallelisierung, Sichtbarkeit, einziges Repo
+
+# Schritt 4: Export-Faehigkeit
+# Am Sessionende: neuen MIRROR-YYYY-MM-DD-GEM/CDX-NNN Eintrag ans Ledger haengen
+
+# Schritt 5: PENDING-Eintraege anwenden und als APPLIED markieren, pushen
+
+# Schritt 6: Bestaetigung ausgeben
+```
+
+<!-- APPLIED: macos/claude-code=2026-03-25T22:23:29Z -->
+<!-- APPLIED: windows/claude-code=2026-03-25T22:23:29Z -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-012] hooks-macos.json Sync: mirror-check, PostCompact, SubagentStart, StopFailure, sync-hooks-reference
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T22:15:09Z -->
+<!-- TARGETS: windows/claude-code -->
+<!-- TYPE: settings -->
+<!-- AFFECTS: ~/proggs/claude-code-setup/hooks-macos.json -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Die Datei `hooks-macos.json` ist die **vollstaendige Hooks-Referenz fuer macOS**. Sie ist
+eine 1:1 Kopie aller Hook-Eintraege aus `~/.claude/settings.json` und dient als Dokumentation,
+Backup und Cross-Platform-Vergleichsreferenz. Sie wird vom `sync-hooks-reference.sh` Hook
+automatisch am Ende jeder Session (SessionEnd, async) regeneriert — Aenderungen an dieser
+Datei werden also beim naechsten SessionEnd ueberschrieben. Die echten Hook-Definitionen
+liegen immer in `~/.claude/settings.json`.
+
+Diese Datei liegt im Git-Repo (bei Pepsi1978/proggs) und ermoeglicht es, auf Windows
+nachzuverfolgen was auf macOS konfiguriert ist. Windows hat eine analoge `hooks-windows.json`.
+Beide Dateien dienen als Synchronisations-Referenz fuer das Cross-Platform-Team.
+
+In Commit #730 wurde die Datei auf den aktuellen Stand von settings.json gebracht, weil
+mehrere Hook-Aenderungen aus dieser Session noch nicht in der hooks-macos.json reflektiert
+waren. Nach Installation des sync-hooks-reference.sh Hooks wird das kuenftig automatisch
+am SessionEnd erledigt.
+
+### Was wurde geaendert?
+
+Die folgenden Unterschiede zwischen settings.json und hooks-macos.json wurden behoben:
+
+1. **Kommentar:** "AUTO-GENERATED by sync-hooks-reference.sh — do not edit manually" hinzugefuegt
+
+2. **SessionStart — mirror-check.sh hinzugefuegt:**
+   ```json
+   {
+     "hooks": [{
+       "type": "command",
+       "command": "bash ~/.claude/hooks/mirror-check.sh",
+       "timeout": 5
+     }]
+   }
+   ```
+
+3. **PreToolUse (Bash) — Reihenfolge korrigiert:** safety-gate.sh war falsch positioniert,
+   jetzt korrekt unter dem PreToolUse Event mit `"matcher": "Bash"`
+
+4. **PostToolUse — sync-hooks-reference.sh als async hinzugefuegt:**
+   ```json
+   {
+     "hooks": [{
+       "type": "command",
+       "command": "bash ~/.claude/hooks/sync-hooks-reference.sh",
+       "timeout": 10,
+       "async": true
+     }]
+   }
+   ```
+
+5. **SubagentStart — neuer Event-Block:**
+   ```json
+   "SubagentStart": [{
+     "hooks": [{
+       "type": "command",
+       "command": "bash ~/.claude/hooks/subagent-context.sh",
+       "timeout": 5
+     }]
+   }]
+   ```
+   (War vorher faelschlicherweise unter einem anderen Event)
+
+6. **StopFailure — neuer Event-Block:**
+   ```json
+   "StopFailure": [{
+     "hooks": [{
+       "type": "command",
+       "command": "bash ~/.claude/hooks/stopfailure-logger.sh",
+       "timeout": 5
+     }]
+   }]
+   ```
+
+7. **PostCompact — neuer Event-Block mit Prompt-Hook (kein command-Hook!):**
+   ```json
+   "PostCompact": [{
+     "hooks": [{
+       "type": "prompt",
+       "prompt": "Context was just compacted. Read /tmp/claude-session-goal.txt to recall the original user goal. Also read `~/proggs/.claude/agent-memory/shared/MEMORY.md` for project conventions and open issues. Briefly state what you were working on before compaction and what the next step should be.",
+       "timeout": 10
+     }]
+   }]
+   ```
+
+8. **WorktreeCreate:** Block entfernt (war redundant mit WorktreeRemove)
+
+9. **WorktreeRemove:** Bleibt, Befehl unveraendert: `echo 'Worktree-Hook: Worktree entfernt...'`
+
+### Warum?
+
+Die hooks-macos.json war veraltet — sie spiegelte nicht den aktuellen Stand der settings.json
+nach mehreren Tagen Weiterentwicklung. Konkret fehlten die Hooks mirror-check (neu aus MAC-002),
+sync-hooks-reference (neu aus MAC-008), sowie die Reorganisation der SubagentStart/StopFailure/
+PostCompact Events. Nach der Installation des sync-hooks-reference.sh SessionEnd-Hooks wird
+diese manuelle Synchronisation kuenftig automatisch erledigt.
+
+### Portierung Windows/claude-code
+
+Die hooks-macos.json selbst ist eine reine macOS-Referenzdatei und muss nicht auf Windows
+portiert werden. Was Windows tun muss:
+
+1. Pruefen ob in `~/.claude/settings.json` auf Windows die folgenden Hook-Events konfiguriert sind:
+   - `mirror-check.ps1` unter SessionStart
+   - `sync-hooks-reference.ps1` unter SessionEnd (async: true)
+   - `subagent-context.ps1` unter SubagentStart
+   - `stopfailure-logger.ps1` unter StopFailure
+   - PostCompact Prompt-Hook (gleicher Text, aber `$env:TEMP/claude-session-goal.txt`)
+
+2. Falls ein Hook fehlt: Die .ps1 Datei aus dem entsprechenden Ledger-Eintrag portieren
+   (mirror-check aus MAC-002, sync-hooks-reference aus MAC-008)
+
+3. `hooks-windows.json` aktualisieren falls sie veraltet ist:
+   - Entweder sync-hooks-reference.ps1 SessionEnd-Hook laufen lassen (automatisch)
+   - Oder manuell die gleichen Aenderungen in hooks-windows.json nachziehen
+
+### Settings-Registrierung
+
+Vollstaendige Hook-Konfiguration die in settings.json auf macOS aktiv sein muss:
+
+```json
+"SessionStart": [
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/auto-sync.sh", "timeout": 30 }] },
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/intent-anker.sh", "timeout": 5 }] },
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/mirror-check.sh", "timeout": 5 }] }
+],
+"PreToolUse": [
+  { "matcher": "Bash", "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/safety-gate.sh", "timeout": 5 }] }
+],
+"SubagentStart": [
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/subagent-context.sh", "timeout": 5 }] }
+],
+"StopFailure": [
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/stopfailure-logger.sh", "timeout": 5 }] }
+],
+"PostCompact": [
+  { "hooks": [{ "type": "prompt", "prompt": "Context was just compacted. Read /tmp/claude-session-goal.txt to recall the original user goal. Also read ~/proggs/.claude/agent-memory/shared/MEMORY.md for project conventions. Briefly state what you were working on before compaction and what the next step should be.", "timeout": 10 }] }
+],
+"SessionEnd": [
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/session-scorer.sh", "timeout": 25 }] },
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/session-autopsy.sh", "timeout": 10 }] },
+  { "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/sync-hooks-reference.sh", "timeout": 10, "async": true }] }
+]
+```
+
+Analoges Windows-JSON (mit pwsh statt bash, .ps1 statt .sh):
+```json
+"SessionStart": [
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/auto-sync.ps1\"", "timeout": 30 }] },
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/intent-anker.ps1\"", "timeout": 5 }] },
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/mirror-check.ps1\"", "timeout": 5 }] }
+],
+"SubagentStart": [
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/subagent-context.ps1\"", "timeout": 5 }] }
+],
+"StopFailure": [
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/stopfailure-logger.ps1\"", "timeout": 5 }] }
+],
+"PostCompact": [
+  { "hooks": [{ "type": "prompt", "prompt": "Context was just compacted. Read $env:TEMP/claude-session-goal.txt to recall the original user goal. Also read ~/proggs/.claude/agent-memory/shared/MEMORY.md for project conventions. Briefly state what you were working on before compaction and what the next step should be.", "timeout": 10 }] }
+],
+"SessionEnd": [
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/session-scorer.ps1\"", "timeout": 25 }] },
+  { "hooks": [{ "type": "command", "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/sync-hooks-reference.ps1\"", "timeout": 10, "async": true }] }
+]
+```
+
+<!-- APPLIED: macos/claude-code=2026-03-25T22:15:09Z -->
+<!-- APPLIED: windows/claude-code=PENDING -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
