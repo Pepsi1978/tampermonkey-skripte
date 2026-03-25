@@ -401,6 +401,16 @@
 						"async": true
 					}
 				]
+			},
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash ~/.claude/hooks/sync-hooks-reference.sh",
+						"timeout": 10,
+						"async": true
+					}
+				]
 			}
 		],
 		"SubagentStart": [

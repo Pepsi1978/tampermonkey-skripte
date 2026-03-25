@@ -7,6 +7,15 @@
 # This replaces naive append (Add-Content / echo >> ) which is FORBIDDEN by whiteboard rules.
 # Entries are inserted inside the correct ## Section, replacing the placeholder if present.
 
+# Pre-pull remote changes to prevent MEMORY.md merge conflicts (Intelligenz-Vorschlag #715)
+_whiteboard_safe_pull() {
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [[ -x "$script_dir/whiteboard-safe-pull.sh" ]]; then
+        "$script_dir/whiteboard-safe-pull.sh" 2>/dev/null || true
+    fi
+}
+
 # replace_whiteboard_entry — Replaces ALL lines matching a pattern within a section, then inserts the new entry.
 # Usage: replace_whiteboard_entry "Systemzustand" "Pending Admin Updates" "- **Pending Admin Updates (5):** foo,bar"
 # This prevents duplicate accumulation (e.g. pending-admin-updates hook writing a new line every session).
@@ -16,6 +25,8 @@ replace_whiteboard_entry() {
     local entry="$3"
     local memory_file="$HOME/proggs/.claude/agent-memory/shared/MEMORY.md"
     local lock_file="/tmp/claude-whiteboard.lock"
+
+    _whiteboard_safe_pull
 
     if [ ! -f "$memory_file" ]; then
         echo "[whiteboard-insert] WARNING: $memory_file does not exist" >&2
@@ -102,6 +113,8 @@ insert_whiteboard_entry() {
     local memory_file="$HOME/proggs/.claude/agent-memory/shared/MEMORY.md"
     local placeholder="_Noch keine Eintraege._"
     local lock_file="/tmp/claude-whiteboard.lock"
+
+    _whiteboard_safe_pull
 
     if [ ! -f "$memory_file" ]; then
         echo "[whiteboard-insert] WARNING: $memory_file does not exist" >&2

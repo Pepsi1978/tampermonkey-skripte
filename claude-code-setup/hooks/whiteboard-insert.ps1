@@ -5,6 +5,14 @@
 #
 # This replaces Add-Content (which appends at file-end — FORBIDDEN by whiteboard rules).
 
+# Pre-pull remote changes to prevent MEMORY.md merge conflicts (Intelligenz-Vorschlag #715)
+function Invoke-WhiteboardSafePull {
+    $safePullScript = Join-Path $PSScriptRoot "whiteboard-safe-pull.ps1"
+    if (Test-Path $safePullScript) {
+        try { & $safePullScript 2>$null } catch { }
+    }
+}
+
 # Replace-WhiteboardEntry — Removes ALL lines matching a pattern within a section, then inserts the new entry.
 # Usage: Replace-WhiteboardEntry -Section "Systemzustand" -MatchPattern "Pending Admin Updates" -Entry "- **Pending Admin Updates (5):** foo,bar"
 # This prevents duplicate accumulation (e.g. pending-admin-updates hook writing a new line every session).
@@ -14,6 +22,8 @@ function Replace-WhiteboardEntry {
         [string]$MatchPattern,
         [string]$Entry
     )
+
+    Invoke-WhiteboardSafePull
 
     $memoryFile = Join-Path $env:USERPROFILE "proggs" ".claude" "agent-memory" "shared" "MEMORY.md"
     if (-not (Test-Path $memoryFile)) { return }
@@ -95,6 +105,8 @@ function Insert-WhiteboardEntry {
         [string]$Section,
         [string]$Entry
     )
+
+    Invoke-WhiteboardSafePull
 
     $memoryFile = Join-Path $env:USERPROFILE "proggs" ".claude" "agent-memory" "shared" "MEMORY.md"
     if (-not (Test-Path $memoryFile)) { return }
