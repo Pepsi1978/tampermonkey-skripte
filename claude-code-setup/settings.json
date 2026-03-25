@@ -167,6 +167,15 @@
 						"timeout": 15
 					}
 				]
+			},
+			{
+				"hooks": [
+					{
+						"type": "prompt",
+						"prompt": "Semantic Search Health Check: Verify that mcp__code-search__search_status is available by checking if the tool exists in your tool list. If it does NOT exist or fails, tell the user IN GERMAN: 'Semantische Suche ist NICHT verfuegbar. Der MCP-Server code-search laeuft nicht. Moegliche Ursachen: tsx nicht installiert, .mcp.json falsch konfiguriert, oder better-sqlite3 nicht fuer Node.js kompiliert. Fix: npm install -g tsx && cd ~/proggs/mcp-code-search && npm install'. If it IS available, silently proceed -- do not mention it.",
+						"timeout": 10
+					}
+				]
 			}
 		],
 		"UserPromptSubmit": [
@@ -217,6 +226,16 @@
 						"async": true
 					}
 				]
+			},
+			{
+				"matcher": "Edit|Write",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash ~/.claude/hooks/config-guard.sh",
+						"timeout": 5
+					}
+				]
 			}
 		],
 		"PreToolUse": [
@@ -258,8 +277,8 @@
 				"hooks": [
 					{
 						"type": "prompt",
-						"prompt": "A tool call just failed. Briefly analyze the error (1-2 sentences). If it's a simple fix (wrong path, syntax error, missing permission), note the correction. Do NOT suggest retrying the exact same command unchanged.",
-						"timeout": 10
+						"prompt": "A tool call just failed. This could be from ANY component: a plugin, MCP server, skill, agent, or hook.\n\n1. Briefly analyze the error (1-2 sentences).\n2. If it is a RECURRING or SIGNIFICANT failure (not a trivial typo), write the error details to a sentinel file at /tmp/agent-writeback-tool-failure.json with format: {\"agent\": \"tool-failure\", \"section\": \"Offene Fehler & Probleme\", \"findings\": \"[description]\", \"timestamp\": \"[ISO date]\"}. The writeback-enforcer will merge it into ~/proggs/.claude/agent-memory/shared/MEMORY.md.\n3. If it is a simple fix (wrong path, syntax error), just note the correction without writing to the sentinel file.\n4. Do NOT retry the exact same command unchanged.",
+						"timeout": 15
 					}
 				]
 			}
@@ -313,7 +332,7 @@
 				"hooks": [
 					{
 						"type": "prompt",
-						"prompt": "A subagent just finished. In one sentence in German, summarize what it accomplished based on its output. Start with the agent name if visible.",
+						"prompt": "A subagent just finished. In one sentence in German, summarize what it accomplished.\n\nIf the subagent FAILED or returned an error:\n1. Write a sentinel file to /tmp/agent-writeback-subagent-failure.json with format: {\"agent\": \"subagent-failure\", \"section\": \"Offene Fehler & Probleme\", \"findings\": \"[description]\", \"timestamp\": \"[ISO date]\"}. The writeback-enforcer will merge it into MEMORY.md safely.\n2. The description in 'findings' must include: Agent name, what went wrong (symptom), root cause, affected files, and a concrete fix suggestion -- detailed enough for /self-improve to fix WITHOUT additional context.\n3. Failures from ANY source (custom agents, plugin agents, marketplace agents) MUST be logged.\n4. Do NOT write directly to MEMORY.md -- always use the sentinel file to avoid mutex conflicts.",
 						"timeout": 10
 					},
 					{
@@ -336,7 +355,7 @@
 				"hooks": [
 					{
 						"type": "prompt",
-						"prompt": "Context was just compacted. Read /tmp/claude-session-goal.txt to recall the original user goal. Briefly state what you were working on before compaction.",
+						"prompt": "Context was just compacted. Read /tmp/claude-session-goal.txt to recall the original user goal. Also read `~/proggs/.claude/agent-memory/shared/MEMORY.md` for project conventions and open issues. Briefly state what you were working on before compaction and what the next step should be.",
 						"timeout": 10
 					}
 				]
@@ -368,7 +387,7 @@
 					{
 						"type": "command",
 						"command": "/opt/homebrew/bin/bun run ~/.claude/hooks/session-scorer.ts",
-						"timeout": 10,
+						"timeout": 25,
 						"async": true
 					}
 				]

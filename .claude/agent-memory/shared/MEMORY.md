@@ -72,6 +72,27 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 <!-- ARCHIV (2026-03-21): reindex-codebase.ps1 — ExitCode 1 (6x, 2026-03-21 10:44–11:25) — Timeout von 180s auf 300s erhoeht als Fix; gebuendelt zu einem Eintrag. -->
 
 <!-- ARCHIV (2026-03-25, /self-improve Cleanup): StopFailure API/Rate-Limit Errors (2026-03-21 + 2026-03-24) — temporaere API-Fehler, einmalig, kein dauerhaftes Problem. safety-gate.sh duplizierte Blockierung (2x 2026-03-21) — erwartetes Verhalten, kein Fehler. Write-Back nicht erfolgt (2026-03-22 + 2026-03-25) — Einmalige Events, memory-watchdog loggt korrekt, kein systemisches Problem. -->
+
+### 2026-03-25 20:40 — StopFailure: API/Rate-Limit Error — Status: OFFEN
+**Quelle:** Hook: StopFailure (command-type, no API dependency)
+**Symptom:** Session-Turn endete durch API-Fehler
+**Details:** {"session_id":"417bedd7-16ef-4692-a390-6008722a12c5","transcript_path":"/Users/frank/.claude/projects/-Users-frank/417bedd7-16ef-4692-a390-6008722a12c5.jsonl","cwd":"/Users/frank/proggs","hook_event_name":"StopFailure","error":"unknown","last_assistant_message":"API Error: 429 {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"you (barwandt) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade\"},\"request_id\":\"req_481a6e25000bb68... (truncated)
+**Fix-Vorschlag:** Pruefen ob Rate-Limit temporaer oder dauerhaft. Bei dauerhaftem Fehler: API-Key pruefen.
+**Status:** OFFEN
+
+### 2026-03-25 20:43 — StopFailure: API/Rate-Limit Error — Status: OFFEN
+**Quelle:** Hook: StopFailure (command-type, no API dependency)
+**Symptom:** Session-Turn endete durch API-Fehler
+**Details:** {"session_id":"417bedd7-16ef-4692-a390-6008722a12c5","transcript_path":"/Users/frank/.claude/projects/-Users-frank/417bedd7-16ef-4692-a390-6008722a12c5.jsonl","cwd":"/Users/frank/proggs","hook_event_name":"StopFailure","error":"unknown","last_assistant_message":"API Error: 429 {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"you (barwandt) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade\"},\"request_id\":\"req_29ea21d6de45387... (truncated)
+**Fix-Vorschlag:** Pruefen ob Rate-Limit temporaer oder dauerhaft. Bei dauerhaftem Fehler: API-Key pruefen.
+**Status:** OFFEN
+
+### 2026-03-25 20:46 — StopFailure: API/Rate-Limit Error — Status: OFFEN
+**Quelle:** Hook: StopFailure (command-type, no API dependency)
+**Symptom:** Session-Turn endete durch API-Fehler
+**Details:** {"session_id":"417bedd7-16ef-4692-a390-6008722a12c5","transcript_path":"/Users/frank/.claude/projects/-Users-frank/417bedd7-16ef-4692-a390-6008722a12c5.jsonl","cwd":"/Users/frank/proggs","hook_event_name":"StopFailure","error":"unknown","last_assistant_message":"API Error: 429 {\"type\":\"error\",\"error\":{\"type\":\"rate_limit_error\",\"message\":\"you (barwandt) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade\"},\"request_id\":\"req_056c5419f6bca04... (truncated)
+**Fix-Vorschlag:** Pruefen ob Rate-Limit temporaer oder dauerhaft. Bei dauerhaftem Fehler: API-Key pruefen.
+**Status:** OFFEN
 ---
 
 ## Systemzustand (aktuell)
@@ -94,13 +115,16 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 - **Hook-Log:** Register-EngineEvent stdout unterdrueckt (Fix #703 vom 2026-03-24)
 - **Auto-Sync:** Mit Diff-Preview und Newer-Hooks-Guard (Fix #704 + #706 vom 2026-03-24)
 - **Preferred Patterns:** MVVM (Swift), Fluent Design (C#), strict mode (TypeScript)
-- **Self-Improve Skill:** v5.19
+- **Self-Improve Skill:** v5.19 — Restructured: bash scripts extracted, mode comparison table, workspace constraints, consolidated rules
+- **Semantic Search:** index-72.db aktiv, 5 alte DBs + 10 WAL/SHM bereinigt (2026-03-20)
 - **Git:** v2.53.0, Git Credential Manager aktiv
-- **Android:** SDK 34/35/36, 4 AVDs, ADB 1.0.41 — NDK FEHLT (blockiert native Cross-Compilation)
-- **Sicherheit:** Prompt-Injection-Defender aktiv, gitleaks und semgrep FEHLEN im PATH
-- **Speicher:** 391 GB frei (42% von 928 GB)
+- **Android (Windows):** SDK 34/35/36, 4 AVDs, ADB 1.0.41 — NDK FEHLT (blockiert native Cross-Compilation)
+- **Sicherheit:** Prompt-Injection-Defender aktiv, gitleaks und semgrep FEHLEN im PATH (Windows)
 - **Evolution-Analyst (2026-03-25):** 5-Session-Avg 8.28, Trend: PLATEAU. Meta-Intelligence-Rate 8% (KRITISCH, Schwellwert 20%). IQ-Score nie berechnet (immer 0).
 - **Cross-Tool:** Codex + Gemini Delta Bridges aktiv, 8 Intelligenz-Dimensionen im Whiteboard portiert
+- **Neue Hooks:** StopFailure (v2.1.78) — loggt API-Fehler/Rate-Limits ins Whiteboard
+- **Windows→macOS Porting (2026-03-25):** 6 Hook-Upgrades portiert (Semantic Search Check, config-guard PostToolUse, Enhanced PostToolUseFailure/SubagentStop/PostCompact, session-scorer 25s Timeout)
+- **Pending Admin Updates (17):** ada-url,biome,deno,freetype,git,gitleaks,golangci-lint,gradle,gradle-completion,harfbuzz,ktfmt,libmpc,libnghttp2,node,simdjson,svt-av1,uv,
 ---
 
 ## Erkenntnisse aus Code Reviews
@@ -196,6 +220,8 @@ _Noch keine Eintraege._
   (8) Regel-Bewaehrungsphase (5 Anwendungen), (9) Cross-Platform funktionale Paritaetspruefung.
   **Beweis:** Selbstbeobachtung erzeugt exponentielles Wachstum — jeder Fix erzeugt weitere Fixes.
 
+- **[2026-03-25] intelligence-checker**: [WARNING] Session 417bedd7 (47 Turns) hatte keinen Intelligenz-Vorschlag
+- **[2026-03-25] self-observation-checker**: [WARNING] Session 417bedd7 (47 Turns) zeigte keine Selbstbeobachtung
 ---
 
 ## Regeln & Konventionen
