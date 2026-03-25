@@ -174,38 +174,67 @@ if [ -d "$commands_dir" ]; then
 fi
 
 # Hooks (PowerShell + TypeScript + Bash scripts + subdirectories)
+# Content-based sync: only update hooks that actually changed in incoming commits.
+# Preserves local modifications that haven't been pushed to the setup-repo yet.
 hooks_dir="$SETUP_DIR/hooks"
 if [ -d "$hooks_dir" ]; then
     dest_hooks="$CLAUDE_DIR/hooks"
     mkdir -p "$dest_hooks"
-    ps1_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ps1" | wc -l | tr -d ' ')
-    ts_count=$(find "$hooks_dir" -maxdepth 1 -name "*.ts" | wc -l | tr -d ' ')
-    sh_count=$(find "$hooks_dir" -maxdepth 1 -name "*.sh" | wc -l | tr -d ' ')
-    # Guard: Warn if local hooks are newer than setup-repo versions (local fixes would be overwritten)
-    newer_local=""
+
+    # Build list of hooks that actually changed in the incoming commits
+    changed_hooks_file=$(mktemp)
+    git diff --name-only "$local_sha" "$remote_sha" -- claude-code-setup/hooks/ 2>/dev/null | \
+        while IFS= read -r f; do basename "$f"; done > "$changed_hooks_file" 2>/dev/null
+
+    hook_copied=0
+    hook_preserved=0
+    preserved_names=""
+
     while IFS= read -r repo_hook; do
-        local_hook="$dest_hooks/$(basename "$repo_hook")"
-        if [ -f "$local_hook" ] && [ "$local_hook" -nt "$repo_hook" ]; then
-            newer_local="$newer_local $(basename "$repo_hook")"
+        hook_name=$(basename "$repo_hook")
+        local_hook="$dest_hooks/$hook_name"
+
+        if [ ! -f "$local_hook" ]; then
+            # New hook — always copy
+            cp "$repo_hook" "$local_hook"
+            hook_copied=$((hook_copied + 1))
+        elif diff -q "$repo_hook" "$local_hook" > /dev/null 2>&1; then
+            # Content identical — already in sync, skip
+            :
+        elif grep -qxF "$hook_name" "$changed_hooks_file" 2>/dev/null; then
+            # Content differs AND hook changed in incoming commits — update from repo
+            cp "$repo_hook" "$local_hook"
+            hook_copied=$((hook_copied + 1))
+            hook_log "Hook updated from repo: $hook_name"
+        else
+            # Content differs but hook was NOT changed in pull — preserve local version
+            hook_preserved=$((hook_preserved + 1))
+            preserved_names="$preserved_names $hook_name"
         fi
     done < <(find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) -print)
-    if [ -n "$newer_local" ]; then
-        hook_log_warn "Local hooks are NEWER than setup-repo:$newer_local — overwriting with repo version. Copy local fixes to claude-code-setup/hooks/ first!"
-        write_status "Auto-Sync: WARNUNG — Lokale Hook(s) sind neuer als im Setup-Repo und werden ueberschrieben:$newer_local"
-    fi
-    # Copy all script files
-    find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) -exec cp {} "$dest_hooks/" \; 2>/dev/null || true
+
+    rm -f "$changed_hooks_file"
+
     # Make .sh scripts executable after copying
     find "$dest_hooks" -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+
     # Copy hook subdirectories (e.g. prompt-injection-defender/)
     hook_subdirs_count=0
     while IFS= read -r -d '' subdir; do
         cp -r "$subdir" "$dest_hooks/" 2>/dev/null || true
         hook_subdirs_count=$((hook_subdirs_count + 1))
     done < <(find "$hooks_dir" -mindepth 1 -maxdepth 1 -type d -print0)
-    hook_count=$((ps1_count + ts_count + sh_count))
-    if [ "$hook_count" -gt 0 ] || [ "$hook_subdirs_count" -gt 0 ]; then
-        synced="$synced Hooks(${hook_count}+${hook_subdirs_count} dirs)"
+
+    total_hooks=$(find "$hooks_dir" -maxdepth 1 \( -name "*.ps1" -o -name "*.ts" -o -name "*.sh" \) | wc -l | tr -d ' ')
+    if [ "$hook_copied" -gt 0 ] || [ "$hook_subdirs_count" -gt 0 ]; then
+        synced="$synced Hooks(${hook_copied}upd/${total_hooks}total+${hook_subdirs_count}dirs)"
+    else
+        synced="$synced Hooks(0upd/${total_hooks}total+${hook_subdirs_count}dirs)"
+    fi
+
+    if [ "$hook_preserved" -gt 0 ]; then
+        hook_log "Preserved $hook_preserved local hook(s) with uncommitted changes:$preserved_names"
+        write_status "Auto-Sync: $hook_preserved Hook(s) mit lokalen Aenderungen beibehalten (commit+push to sync):$preserved_names"
     fi
 fi
 

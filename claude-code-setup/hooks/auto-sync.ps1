@@ -167,37 +167,58 @@ if (Test-Path $commandsDir) {
 }
 
 # Hooks (PowerShell + TypeScript + Bash scripts + subdirectories)
+# Content-based sync: only update hooks that actually changed in incoming commits.
+# Preserves local modifications that haven't been pushed to the setup-repo yet.
 $hooksDir = Join-Path $SetupDir "hooks"
 if (Test-Path $hooksDir) {
     $destHooks = Join-Path $ClaudeDir "hooks"
     New-Item -ItemType Directory -Force -Path $destHooks | Out-Null
-    $ps1Hooks = @(Get-ChildItem "$hooksDir\*.ps1" -ErrorAction SilentlyContinue)
-    $tsHooks = @(Get-ChildItem "$hooksDir\*.ts" -ErrorAction SilentlyContinue)
-    $shHooks = @(Get-ChildItem "$hooksDir\*.sh" -ErrorAction SilentlyContinue)
-    # Guard: Warn if local hooks are newer than setup-repo versions (local fixes would be overwritten)
-    $newerLocal = @()
-    foreach ($hook in ($ps1Hooks + $tsHooks + $shHooks)) {
+
+    # Build list of hooks that actually changed in the incoming commits
+    $changedHooks = @(git diff --name-only "$local" "$remote" -- claude-code-setup/hooks/ 2>$null | ForEach-Object { Split-Path $_ -Leaf })
+
+    $hookCopied = 0
+    $hookPreserved = 0
+    $preservedNames = @()
+
+    $allHooks = @(Get-ChildItem $hooksDir -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in '.ps1','.ts','.sh' })
+    foreach ($hook in $allHooks) {
         $localFile = Join-Path $destHooks $hook.Name
-        if ((Test-Path $localFile) -and (Get-Item $localFile).LastWriteTime -gt $hook.LastWriteTime) {
-            $newerLocal += $hook.Name
+
+        if (-not (Test-Path $localFile)) {
+            # New hook — always copy
+            Copy-Item $hook.FullName $destHooks -Force
+            $hookCopied++
+        } elseif ((Get-FileHash $hook.FullName).Hash -eq (Get-FileHash $localFile).Hash) {
+            # Content identical — already in sync, skip
+        } elseif ($changedHooks -contains $hook.Name) {
+            # Content differs AND hook changed in incoming commits — update from repo
+            Copy-Item $hook.FullName $destHooks -Force
+            $hookCopied++
+            Hook-Log "Hook updated from repo: $($hook.Name)"
+        } else {
+            # Content differs but hook was NOT changed in pull — preserve local version
+            $hookPreserved++
+            $preservedNames += $hook.Name
         }
     }
-    if ($newerLocal.Count -gt 0) {
-        $names = $newerLocal -join ", "
-        Hook-LogWarn "Local hooks are NEWER than setup-repo: $names — overwriting with repo version. Copy local fixes to claude-code-setup/hooks/ first!"
-        Write-Status "Auto-Sync: WARNUNG — $($newerLocal.Count) lokale Hook(s) sind neuer als im Setup-Repo und werden ueberschrieben: $names"
-    }
-    foreach ($hook in ($ps1Hooks + $tsHooks + $shHooks)) {
-        Copy-Item $hook.FullName $destHooks -Force
-    }
+
     # Copy hook subdirectories (e.g. prompt-injection-defender/)
     $hookSubdirs = @(Get-ChildItem $hooksDir -Directory -ErrorAction SilentlyContinue)
     foreach ($subdir in $hookSubdirs) {
         Copy-Item $subdir.FullName $destHooks -Recurse -Force
     }
-    $hookCount = $ps1Hooks.Count + $tsHooks.Count + $shHooks.Count
-    if ($hookCount -gt 0 -or $hookSubdirs.Count -gt 0) {
-        $synced += "Hooks($hookCount+$($hookSubdirs.Count) dirs)"
+
+    if ($hookCopied -gt 0 -or $hookSubdirs.Count -gt 0) {
+        $synced += "Hooks(${hookCopied}upd/$($allHooks.Count)total+$($hookSubdirs.Count)dirs)"
+    } else {
+        $synced += "Hooks(0upd/$($allHooks.Count)total+$($hookSubdirs.Count)dirs)"
+    }
+
+    if ($hookPreserved -gt 0) {
+        $names = $preservedNames -join " "
+        Hook-Log "Preserved $hookPreserved local hook(s) with uncommitted changes: $names"
+        Write-Status "Auto-Sync: $hookPreserved Hook(s) mit lokalen Aenderungen beibehalten (commit+push to sync): $names"
     }
 }
 
