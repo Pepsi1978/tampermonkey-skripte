@@ -75,6 +75,14 @@ try {
     if ($process.ExitCode -eq 0) {
         $stdout = Get-Content (Join-Path $env:TEMP "reindex-stdout.log") -Raw -ErrorAction SilentlyContinue
         Write-Output "Reindex-Hook: $stdout"
+        # C1 (ported from Gemini): Write index summary to whiteboard
+        try {
+            . "$PSScriptRoot/whiteboard-insert.ps1"
+            $files = if ($stdout -match '(\d+)\s*files') { $Matches[1] } else { "?" }
+            $chunks = if ($stdout -match '(\d+)\s*chunks') { $Matches[1] } else { "?" }
+            $ts = Get-Date -Format "yyyy-MM-dd HH:mm"
+            Replace-WhiteboardEntry -Section "Performance & Optimierung" -MatchPattern "Code-Suche Index" -Entry "- **[$ts] Code-Suche Index:** $files Dateien, $chunks Chunks indexiert."
+        } catch { }
     } else {
         $stderr = Get-Content (Join-Path $env:TEMP "reindex-stderr.log") -Raw -ErrorAction SilentlyContinue
         Write-Output "Reindex-Hook: FEHLER (exit $($process.ExitCode)): $stderr"
