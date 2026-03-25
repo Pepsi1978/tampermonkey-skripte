@@ -8,7 +8,7 @@
 #   Hook-LogWarn "message"    — log warning
 #   Automatic error trapping  — uncaught errors are logged on exit
 #
-# Logs to: C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup/logs/hooks/YYYY-MM-DD.log
+# Logs to: ~/.Gemini/logs/hooks/YYYY-MM-DD.log
 # Log rotation: files older than 14 days are auto-deleted
 
 $script:_HookLogDir = Join-Path $env:USERPROFILE ".Gemini" "logs" "hooks"

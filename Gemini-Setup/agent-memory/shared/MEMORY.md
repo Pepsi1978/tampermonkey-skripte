@@ -66,3 +66,4 @@ _Noch keine Eintraege._
 - **Kommunikation:** Strikte Anweisung auf DEUTSCH für alle Erklärungen und Antworten.
 - **Fix-Härtung:** Vor jedem Commit muss die 8-Punkte Fix-Induced-Failure Prüfung erfolgen.
 - **Git:** Autonome Commits/Pushs sind nur innerhalb von `Gemini-Setup/` erlaubt.
+- **Vorschlags-Regel:** Intelligenz-Vorschläge müssen in **einfacher Sprache** (max. 6 Zeilen) erklärt werden, inklusive der Begründung für den Intelligenz-Gewinn.

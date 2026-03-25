@@ -14,8 +14,10 @@ Massgeblich fuer Gemini sind:
 - `Gemini-Setup/rules/SELBSTBEOBACHTUNG.md`
 - `Gemini-Setup/rules/RESILIENT_BUGFIXING.md`
 - `Gemini-Setup/rules/german-trigger-routing.md`
-- `Gemini-Setup/agent-memory/shared/MEMORY.md` (Whiteboard)
-- `Gemini-Setup/bridges/bridge-registry.json`
+- Gemini-Setup/agent-memory/shared/MEMORY.md (Whiteboard)
+- Gemini-Setup/agent-memory/archive/rules/ (Regel-Archiv)
+- Gemini-Setup/bridges/bridge-registry.json
+
 
 ## Oberste Direktiven (Zusammenfassung)
 1. **Superintelligenz:** Jede Session muss das System MESSBAR intelligenter machen (Compound Effect).

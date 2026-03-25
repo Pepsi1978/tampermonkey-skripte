@@ -24,10 +24,11 @@ import { homedir } from "os";
 
 const HOME = process.env.USERPROFILE || process.env.HOME || "";
 if (!HOME) process.exit(0);
-const SCORES_FILE = join("C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup", "session-scores.jsonl");
+const workspaceRoot = process.env.GEMINI_WORKSPACE || join(HOME, "GeminiCLI");
+const SCORES_FILE = join(workspaceRoot, "Gemini-Setup", "session-scores.jsonl");
 
 function findProjectsDir(): string {
-	const GeminiDir = join("C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup", "projects");
+	const GeminiDir = join(workspaceRoot, "Gemini-Setup", "projects");
 	if (!existsSync(GeminiDir)) return "";
 	try {
 		const entries = readdirSync(GeminiDir);
@@ -129,11 +130,10 @@ function analyzeTranscript(path: string): SessionMetrics {
 	// v4: Meta-intelligence tracking — did this session improve the system itself?
 	// 0 = no system changes, 1 = minor (memory/Gemini.md), 2 = significant (rules/hooks/agents)
 	let metaIntelligenceLevel = 0;
-	// Paths that indicate system self-improvement — restricted to C:/Users/barwa/GeminiCLI/proggs/Gemini-Setup/ paths
-	// to avoid false positives from project files (e.g. game-rules.md, git-hooks/)
-	const significantPaths = /\/\.Gemini\/(rules|hooks|agents)\//i;
+	// Paths that indicate system self-improvement
+	const significantPaths = /Gemini-Setup\/(rules|hooks|agents)\//i;
 	const minorPaths =
-		/\/\.Gemini\/.*(memory|MEMORY\.md|agent-memory)|\/Gemini\.md$/i;
+		/Gemini-Setup\/.*(memory|MEMORY\.md|agent-memory)|\/Gemini\.md$/i;
 
 	// v3: Added ASCII-safe alternatives for umlauts (cross-platform safety)
 	const correctionPatterns = [

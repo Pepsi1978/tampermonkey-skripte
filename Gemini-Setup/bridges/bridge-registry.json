@@ -68,6 +68,7 @@
 	"ledger_addresses": {
 		"gemini_fixes": "Gemini-Setup/state/environment-fixes.json",
 		"gemini_suggestions": "Gemini-Setup/state/implemented-intelligence-suggestions.json",
+		"gemini_rule_archive": "Gemini-Setup/agent-memory/archive/rules/",
 		"codex_fixes": "codex-setup/state/environment-fixes.json",
 		"codex_suggestions": "codex-setup/state/implemented-intelligence-suggestions.json",
 		"claude_code_fixes": "claude-code-setup/state/environment-fixes.json",

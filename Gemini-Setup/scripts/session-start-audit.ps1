@@ -33,4 +33,21 @@ Process-DeltaAudit "Codex" "Gemini-Setup/scripts/audit-codex-delta.mjs"
 # Claude Audit
 Process-DeltaAudit "Claude Code" "Gemini-Setup/scripts/audit-claude-delta.mjs"
 
+# NEU: Proaktiver Briefkasten-Check (PORTING-LIST.md)
+Write-Host "`n--- Starte Briefkasten-Check (PORTING-LIST.md) ---" -ForegroundColor Yellow
+$PortingPaths = @(
+    @{ name = "Codex"; path = "$RepoRoot\codex-setup\PORTING-LIST.md" },
+    @{ name = "Claude Code"; path = "$RepoRoot\claude-code-setup\PORTING-LIST.md" }
+)
+
+foreach ($cp in $PortingPaths) {
+    if (Test-Path $cp.path) {
+        Write-Host "📬 Neue Nachricht von $($cp.name) gefunden!" -ForegroundColor Green
+        # Starte automatische Extraktion der Details ins Whiteboard
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$RepoRoot\Gemini-Setup\scripts\read-and-extract-porting-list.ps1"
+    } else {
+        Write-Host "📭 Keine direkte Nachricht von $($cp.name)." -ForegroundColor DarkGray
+    }
+}
+
 Write-Host "=== Audit abgeschlossen ==="
