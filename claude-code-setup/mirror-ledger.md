@@ -1017,3 +1017,383 @@ Er war vorher unter dem SessionStart Event registriert. Der neue Ersatz ist `mir
 <!-- APPLIED: windows/claude-code=PENDING -->
 <!-- APPLIED: codex=PENDING -->
 <!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-007] Bugfix manifest.json: fehlende Agents nemo, export, import
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T23:00:00Z -->
+<!-- TARGETS: windows/claude-code,codex,gemini -->
+<!-- TYPE: settings -->
+<!-- AFFECTS: ~/proggs/claude-code-setup/manifest.json -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Die Datei `manifest.json` im Setup-Repo ist das zentrale Installations-Manifest. Sie
+listet ALLE Custom Agents, Plugins, Dev-Tools und Settings die auf einem neuen Rechner
+installiert werden muessen. Das Setup-Script liest diese Datei und installiert/kopiert
+alles automatisch.
+
+Das Problem: Drei neue Agents die in frueheren Sessions erstellt wurden (nemo in Session
+#717-722, export und import in Session #726) fehlten in der `custom_agents`-Liste des
+Manifests. Das bedeutet: Ein frischer Rechner oder ein anderes CLI (Gemini, Codex) das
+das Setup-Script ausfuehrt, haette diese drei Agents NICHT automatisch erhalten.
+
+Der Fix ist einfach aber kritisch — ohne ihn sind die Agents auf neuen Installationen
+nicht vorhanden und der Benutzer muesste sie manuell nachinstallieren.
+
+Die `manifest.json` befindet sich NUR im Setup-Repo (`~/proggs/claude-code-setup/`) und
+wird NICHT nach `~/.claude/` kopiert. Sie ist eine Konfigurationsdatei fuer das
+Setup-Script, nicht fuer Claude Code selbst.
+
+### Was wurde geaendert?
+
+In `~/proggs/claude-code-setup/manifest.json` wurden drei Eintraege zur `custom_agents`
+Liste hinzugefuegt (alphabetisch sortiert eingeordnet):
+
+Vor dem Fix fehlten diese drei Zeilen:
+```
+"export",
+"import",
+"nemo",
+```
+
+Nach dem Fix sieht der vollstaendige `custom_agents` Block so aus:
+```json
+"custom_agents": [
+    "architect",
+    "batch-reviewer",
+    "challenger",
+    "code-reviewer",
+    "coder",
+    "debugger",
+    "env-checker",
+    "evolution-analyst",
+    "export",
+    "import",
+    "intelligence-researcher",
+    "mar-reviewer",
+    "nemo",
+    "optimizer",
+    "quality-gate",
+    "researcher",
+    "tester",
+    "ui-polisher"
+]
+```
+
+### Warum?
+
+Root Cause: Als die Agents erstellt wurden (nemo in #717-722, export/import in #726),
+wurden die Agent-Dateien korrekt nach `~/proggs/claude-code-setup/agents/` kopiert und
+in settings.json registriert — aber niemand hat die `manifest.json` aktualisiert.
+
+Das ist ein typischer "vergessener zweiter Schritt" Fehler. Die Agent-Dateien existieren
+im Repo, aber das Setup-Script wuerde sie beim Neuaufbau nicht automatisch installieren.
+
+Dieser Fehler wurde beim Export-Agent-Lauf entdeckt: Der Benutzer will Gemini CLI
+benutzen um die Umgebung aufzubauen, und `nemo`, `export`, `import` wuerden fehlen.
+
+### Portierung Windows/Claude-Code
+
+1. Oeffne `%USERPROFILE%\proggs\claude-code-setup\manifest.json`
+2. Suche den Abschnitt `"custom_agents"`
+3. Pruefen: sind "export", "import", "nemo" darin? Falls nicht: hinzufuegen (alphabetisch)
+4. Die Agenten-Dateien selbst sind schon im Repo unter `claude-code-setup/agents/`
+5. Kopiere die fehlenden Agent-Dateien nach `%USERPROFILE%\.claude\agents\`:
+   - `claude-code-setup/agents/nemo.md` nach `%USERPROFILE%\.claude\agents\nemo.md`
+   - `claude-code-setup/agents/export.md` nach `%USERPROFILE%\.claude\agents\export.md`
+   - `claude-code-setup/agents/import.md` nach `%USERPROFILE%\.claude\agents\import.md`
+6. Validierung: `Get-ChildItem "$env:USERPROFILE\.claude\agents\" | Where-Object { $_.Name -in @('nemo.md','export.md','import.md') }`
+
+Hinweis: Die Agenten-Dateien im Repo (`claude-code-setup/agents/`) existieren bereits
+korrekt — nur das Manifest-JSON musste aktualisiert werden. Alle drei Agents sind
+plattformunabhaengig (nur Markdown) und brauchen keine plattformspezifische Anpassung.
+
+### Portierung Codex/Gemini
+
+1. Repository klonen: `git clone https://github.com/Pepsi1978/proggs ~/proggs`
+2. Die Agents-Dateien liegen in `~/proggs/claude-code-setup/agents/`
+3. Kopiere nach dem jeweiligen agents-Verzeichnis des CLIs:
+   - Gemini: `~/.gemini/agents/` oder aequivalentes Verzeichnis (je nach Gemini CLI Version)
+   - Codex: `~/.codex/agents/` oder aequivalentes Verzeichnis
+4. Die Agent-Prompts sind auf Deutsch und referenzieren
+   `~/proggs/claude-code-setup/mirror-ledger.md` als zentrales Ledger
+5. Fuer Gemini CLI speziell: Die Agent-Datei `export.md` ist der vollstaendige
+   System-Prompt des Export-Agenten — der identische Prompt der dieses Ledger
+   generiert hat. Er kann direkt als Gemini-System-Prompt verwendet werden.
+
+### Datei-Inhalt (relevanter Ausschnitt manifest.json)
+
+```json
+{
+    "custom_agents": [
+        "architect",
+        "batch-reviewer",
+        "challenger",
+        "code-reviewer",
+        "coder",
+        "debugger",
+        "env-checker",
+        "evolution-analyst",
+        "export",
+        "import",
+        "intelligence-researcher",
+        "mar-reviewer",
+        "nemo",
+        "optimizer",
+        "quality-gate",
+        "researcher",
+        "tester",
+        "ui-polisher"
+    ]
+}
+```
+
+Die vollstaendige `manifest.json` liegt unter: `~/proggs/claude-code-setup/manifest.json`
+
+### Settings-Registrierung
+
+Keine — `manifest.json` ist kein Hook und kein Settings-File. Es wird nur vom
+Setup-Script (`setup-macos.sh` / `setup-windows.ps1`) ausgewertet.
+
+<!-- APPLIED: macos/claude-code=2026-03-25T23:00:00Z -->
+<!-- APPLIED: windows/claude-code=PENDING -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
+
+---
+
+## [MIRROR-2026-03-25-MAC-008] Neuer Hook: sync-hooks-reference (SessionEnd Auto-Sync)
+<!-- SOURCE: claude-code | PLATFORM: macos | TIMESTAMP: 2026-03-25T23:00:00Z -->
+<!-- TARGETS: windows/claude-code,codex,gemini -->
+<!-- TYPE: hook -->
+<!-- AFFECTS: ~/.claude/hooks/sync-hooks-reference.sh, ~/.claude/hooks/sync-hooks-reference.ps1, ~/proggs/claude-code-setup/hooks/sync-hooks-reference.sh, ~/proggs/claude-code-setup/hooks/sync-hooks-reference.ps1, ~/proggs/claude-code-setup/hooks-macos.json -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+
+Das Setup-Repo enthaelt zwei Referenz-Dateien fuer die Hook-Konfiguration:
+- `hooks-macos.json` — enthaelt die macOS-Hook-Konfiguration (war fruehier MANUELL gepflegt)
+- `hooks-windows.json` — entsprechende Windows-Version
+
+Das Problem: Jedes Mal wenn ein Hook in `~/.claude/settings.json` hinzugefuegt oder
+geaendert wurde, musste `hooks-macos.json` MANUELL synchronisiert werden. Das wurde
+regelmaessig vergessen. Zum Beispiel wurde der `mirror-check` Hook (MAC-002) zwar
+korrekt in settings.json registriert, aber `hooks-macos.json` musste separat gepflegt
+werden.
+
+Der neue `sync-hooks-reference` Hook loest dieses Problem automatisch: Er laeuft
+beim SessionEnd-Event (asynchron) und extrahiert den kompletten `hooks`-Block aus der
+lebenden `~/.claude/settings.json` und schreibt ihn in `hooks-macos.json` (macOS)
+bzw. `hooks-windows.json` (Windows). Seitdem ist `hooks-macos.json` AUTO-GENERIERT
+und sollte NICHT mehr manuell bearbeitet werden.
+
+Fuer Gemini und Codex: `hooks-macos.json` ist nach Installation dieses Hooks immer
+der aktuelle Spiegel der echten macOS-Hook-Konfiguration. Dieses File ist der
+verlaeesslichste Weg um zu sehen welche Hooks aktiv sind und in welcher Reihenfolge
+sie laufen — ohne Zugriff auf die lebende `settings.json`.
+
+### Was wurde geaendert?
+
+Zwei neue Hook-Dateien wurden erstellt und in SessionEnd registriert:
+- `~/.claude/hooks/sync-hooks-reference.sh` (macOS/bash)
+- `~/.claude/hooks/sync-hooks-reference.ps1` (Windows/PowerShell)
+Beide auch als Kopien in `~/proggs/claude-code-setup/hooks/`.
+
+In `~/.claude/settings.json` (macOS) wurde zum SessionEnd-Event hinzugefuegt:
+```json
+{
+  "hooks": [
+    {
+      "type": "command",
+      "command": "bash ~/.claude/hooks/sync-hooks-reference.sh",
+      "timeout": 10,
+      "async": true
+    }
+  ]
+}
+```
+
+In `settings-reference.json` (Windows-Referenz) entsprechend:
+```json
+{
+  "hooks": [
+    {
+      "type": "command",
+      "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/sync-hooks-reference.ps1\"",
+      "timeout": 10,
+      "async": true
+    }
+  ]
+}
+```
+
+Der `_comment` in `hooks-macos.json` wurde um den Hinweis
+"AUTO-GENERATED by sync-hooks-reference.sh — do not edit manually" erweitert.
+
+### Warum?
+
+Intelligenz-Vorschlag aus Session #715: Die manuelle Pflege von `hooks-macos.json`
+war fehleranfaellig. Mehrfach wurden Hooks in settings.json registriert aber
+`hooks-macos.json` nicht aktualisiert, wodurch das Setup-Script veraltete Referenzen
+enthielt. Eine automatische Synchronisation beseitigt diese Fehlerquelle dauerhaft.
+
+Dies ist ein Self-Healing-Mechanismus: Sobald der Hook einmal installiert ist,
+haelt er `hooks-macos.json` automatisch aktuell — ohne manuellen Aufwand.
+
+### Portierung Windows/Claude-Code
+
+1. Erstelle `%USERPROFILE%\.claude\hooks\sync-hooks-reference.ps1` mit dem Inhalt unten
+2. Kopiere nach `%USERPROFILE%\proggs\claude-code-setup\hooks\sync-hooks-reference.ps1`
+3. Oeffne `%USERPROFILE%\.claude\settings.json`
+4. Suche den `"SessionEnd"` Block
+5. Fuege nach dem letzten bestehenden SessionEnd-Hook-Objekt einen neuen Block ein:
+   ```json
+   ,{
+     "hooks": [
+       {
+         "type": "command",
+         "command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/sync-hooks-reference.ps1\"",
+         "timeout": 10,
+         "async": true
+       }
+     ]
+   }
+   ```
+6. Validiere: `pwsh -Command "Get-Content '$env:USERPROFILE\.claude\settings.json' | ConvertFrom-Json"`
+7. Ab sofort wird `hooks-windows.json` automatisch nach jeder Session aktualisiert
+
+### Portierung Codex/Gemini
+
+Dieser Hook ist spezifisch fuer Claude Code (settings.json Extraktion). Codex und Gemini
+haben andere Konfigurationsformate. Empfehlung:
+- Den Inhalt von `hooks-macos.json` manuell lesen — es ist die aktuellste Referenz
+- Das Windows-Aequivalent steht in `hooks-windows.json`
+- Fuer Gemini/Codex: Diese Dateien als Dokumentation nutzen, nicht als direkt
+  importierbares Format (da Gemini/Codex kein identisches Hook-System haben)
+
+### Datei-Inhalt macOS (sync-hooks-reference.sh)
+
+```bash
+#!/usr/bin/env bash
+# sync-hooks-reference.sh — Extracts hooks from live settings.json into setup-repo reference file
+# Runs at SessionEnd (async). Keeps hooks-macos.json always in sync with live settings.
+# Created: 2026-03-25 by Intelligenz-Vorschlag #715
+
+set -euo pipefail
+
+SETTINGS="$HOME/.claude/settings.json"
+SETUP_DIR="$HOME/proggs/claude-code-setup"
+REF_FILE="$SETUP_DIR/hooks-macos.json"
+COMMENT="Complete hooks reference for macOS. Merge into ~/.claude/settings.json on macOS. Uses bash for command hooks. Prompt-injection-defender requires Python 3 (python3). Parry requires ~/.cargo/bin/parry. Bun at /opt/homebrew/bin/bun. AUTO-GENERATED by sync-hooks-reference.sh — do not edit manually."
+
+# Bail if settings or setup dir missing
+[[ -f "$SETTINGS" ]] || exit 0
+[[ -d "$SETUP_DIR" ]] || exit 0
+
+# Extract hooks section with python3
+TMP_FILE="$REF_FILE.tmp.$$"
+python3 -c "
+import json, sys, os
+
+settings_path = os.path.expanduser('$SETTINGS')
+with open(settings_path) as f:
+    settings = json.load(f)
+
+hooks = settings.get('hooks', {})
+if not hooks:
+    sys.exit(0)
+
+output = {
+    '_comment': '''$COMMENT''',
+    'hooks': hooks
+}
+print(json.dumps(output, indent='\t', ensure_ascii=False))
+" > "\$TMP_FILE" 2>/dev/null || { rm -f "\$TMP_FILE"; exit 0; }
+
+# Only update if content actually differs (compare JSON structure, not formatting)
+if [[ -f "\$REF_FILE" ]]; then
+    OLD_HASH=\$(python3 -c "import json; print(hash(json.dumps(json.load(open('\$REF_FILE')).get('hooks',{}), sort_keys=True)))" 2>/dev/null || echo "none")
+    NEW_HASH=\$(python3 -c "import json; print(hash(json.dumps(json.load(open('\$TMP_FILE')).get('hooks',{}), sort_keys=True)))" 2>/dev/null || echo "changed")
+    if [[ "\$OLD_HASH" == "\$NEW_HASH" ]]; then
+        rm -f "\$TMP_FILE"
+        exit 0
+    fi
+fi
+
+mv "\$TMP_FILE" "\$REF_FILE"
+echo "Hooks-Referenz aktualisiert: hooks-macos.json"
+```
+
+Vollstaendige Datei unter: `~/proggs/claude-code-setup/hooks/sync-hooks-reference.sh`
+
+### Datei-Inhalt Windows (sync-hooks-reference.ps1)
+
+```powershell
+# sync-hooks-reference.ps1 — Extracts hooks from live settings.json into setup-repo reference file
+# Runs at SessionEnd (async). Keeps hooks-windows.json always in sync with live settings.
+# Created: 2026-03-25 by Intelligenz-Vorschlag #715
+
+$ErrorActionPreference = "SilentlyContinue"
+
+$Settings = Join-Path $env:USERPROFILE ".claude\settings.json"
+$SetupDir = Join-Path $env:USERPROFILE "proggs\claude-code-setup"
+$RefFile = Join-Path $SetupDir "hooks-windows.json"
+$Comment = "Complete hooks reference for Windows. Merge into ~/.claude/settings.json on Windows. Uses pwsh (PowerShell 7). AUTO-GENERATED by sync-hooks-reference.ps1 -- do not edit manually."
+
+# Bail if settings or setup dir missing
+if (-not (Test-Path $Settings)) { exit 0 }
+if (-not (Test-Path $SetupDir)) { exit 0 }
+
+try {
+    $settingsContent = Get-Content $Settings -Raw -Encoding utf8 | ConvertFrom-Json
+    $hooks = $settingsContent.hooks
+
+    if (-not $hooks) { exit 0 }
+
+    $output = [ordered]@{
+        "_comment" = $Comment
+        "hooks" = $hooks
+    }
+
+    $newJson = $output | ConvertTo-Json -Depth 10 -Compress:$false
+
+    # Compare with existing to avoid unnecessary writes
+    if (Test-Path $RefFile) {
+        $oldJson = Get-Content $RefFile -Raw -Encoding utf8
+        $oldHooks = ($oldJson | ConvertFrom-Json).hooks | ConvertTo-Json -Depth 10 -Compress
+        $newHooks = $hooks | ConvertTo-Json -Depth 10 -Compress
+        if ($oldHooks -eq $newHooks) { exit 0 }
+    }
+
+    # Write with UTF-8 no BOM (Windows default encoding is cp1252 — must be explicit!)
+    [System.IO.File]::WriteAllText($RefFile, $newJson, [System.Text.UTF8Encoding]::new($false))
+    Write-Output "Hooks-Referenz aktualisiert: hooks-windows.json"
+}
+catch {
+    # Silent failure — do not block session end
+    exit 0
+}
+```
+
+Vollstaendige Datei unter: `~/proggs/claude-code-setup/hooks/sync-hooks-reference.ps1`
+
+### Settings-Registrierung
+
+Hook-Event: `SessionEnd`
+
+macOS-Befehl: `"command": "bash ~/.claude/hooks/sync-hooks-reference.sh", "timeout": 10, "async": true`
+
+Windows-Befehl: `"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/sync-hooks-reference.ps1\"", "timeout": 10, "async": true`
+
+`async: true` — der Hook laeuft im Hintergrund und blockiert das Session-Ende nicht.
+Er wird nach den anderen SessionEnd-Hooks ausgefuehrt (session-scorer, session-autopsy,
+session-cleanup). Kein `matcher` noetig.
+
+Wichtig nach Installation: `hooks-macos.json` (bzw. `hooks-windows.json`) ist
+AUTO-GENERIERT. Die Datei NICHT manuell bearbeiten — Aenderungen werden beim naechsten
+SessionEnd ueberschrieben. Hooks immer nur in `~/.claude/settings.json` bearbeiten.
+
+<!-- APPLIED: macos/claude-code=2026-03-25T23:00:00Z -->
+<!-- APPLIED: windows/claude-code=PENDING -->
+<!-- APPLIED: codex=PENDING -->
+<!-- APPLIED: gemini=PENDING -->
