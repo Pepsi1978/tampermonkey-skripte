@@ -531,13 +531,13 @@
 		"tech-stack@context-engineering-kit": true,
 		"mcp@context-engineering-kit": true,
 		"fpf@context-engineering-kit": true,
-		"claude-code-lsps@boostvolt": true,
+		"claude-code-lsps@boostvolt": false,
 		"xclaude-plugin@xclaude-plugin-marketplace": false,
 		"claude-reflect@claude-reflect-marketplace": true,
 		"coderabbit@claude-plugins-official": true,
-		"aikido@claude-plugins-official": true,
-		"spec-driven-development@context-engineering-kit": true,
-		"context-kit@FlineDev": true,
+		"aikido@claude-plugins-official": false,
+		"spec-driven-development@context-engineering-kit": false,
+		"context-kit@FlineDev": false,
 		"second-opinion@trailofbits": true
 	},
 	"extraKnownMarketplaces": {

@@ -474,7 +474,7 @@
 		"playwright@claude-plugins-official": true,
 		"coderabbit@claude-plugins-official": true,
 		"explanatory-output-style@claude-plugins-official": true,
-		"aikido@claude-plugins-official": true,
+		"aikido@claude-plugins-official": false,
 		"superpowers-lab@superpowers-marketplace": true,
 		"superpowers-developing-for-claude-code@superpowers-marketplace": true,
 		"elements-of-style@superpowers-marketplace": true,
@@ -538,9 +538,9 @@
 		"xclaude-plugin@xclaude-plugin-marketplace": true,
 		"apple-platform-build-tools@apple-platform-build-tools": true,
 		"claude-reflect@claude-reflect-marketplace": true,
-		"spec-driven-development@context-engineering-kit": true,
-		"claude-code-lsps@boostvolt": true,
-		"context-kit@FlineDev": true
+		"spec-driven-development@context-engineering-kit": false,
+		"claude-code-lsps@boostvolt": false,
+		"context-kit@FlineDev": false
 	},
 	"extraKnownMarketplaces": {
 		"superpowers-marketplace": {
