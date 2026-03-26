@@ -348,7 +348,9 @@ All parameters are case-insensitive.-Aufrufe, und \ leitet sein Zielverzeichnis 
 _Noch keine Eintraege._
 
 ## Forschung & Intelligence
-- **[2026-03-22 10:48] self-improve**: Die offizielle OpenAI-Dokumentation beschreibt einen oeffentlichen Docs-MCP unter `https://developers.openai.com/mcp`; die lokale Codex-Runtime registriert jetzt zusaetzlich `openaiDeveloperDocs` neben `code-search`, um OpenAI-Fragen kuenftig direkt gegen die Herstellerdoku aufloesen zu koennen.
+- **[2026-03-27] Forschungs-Hub & Forschungsagent:** Neues Verzeichnis `Forschung/` (oder Root-Datei `Forschung.md`) mit `Forschung.md` als zentraler Wissenshub für KI-Coding-Trends erstellt.
+- **Agenten-Update:** Neuer Agent `forschungsagent` in `claude-code-setup/agents/` hinzugefügt. Er scannt aktiv `Forschung.md` und schlägt System-Upgrades für Claude, Gemini und Codex vor.
+- **Forschung & Intelligence**: OpenAI-Dokumentation beschreibt Docs-MCP; lokale Codex-Runtime registriert `openaiDeveloperDocs`.
 
 
 - **[2026-03-22 11:13] self-improve**: OpenAI dokumentiert offiziell, dass Codex `AGENTS.md` vor der Arbeit liest und dass fuer den Docs-MCP die Kombination aus `~/.codex/config.toml` plus AGENTS-Snippet der zuverlaessige Weg ist. Dieses Workspace-Root hat jetzt ein `AGENTS.md`, das sowohl die `Oberste Direktive` als auch die Nutzung von `openaiDeveloperDocs` fuer OpenAI-Fragen fest verankert.

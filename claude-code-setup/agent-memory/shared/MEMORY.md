@@ -124,8 +124,8 @@ _Noch keine Eintraege._
 _Noch keine Eintraege._
 
 ## Forschung & Intelligence
-<!-- researcher, intelligence-researcher schreiben hierher -->
-
+- **[2026-03-27] Forschungs-Hub & Forschungsagent:** Neues Verzeichnis `Forschung/` (oder Root-Datei `Forschung.md`) mit `Forschung.md` als zentraler Wissenshub für KI-Coding-Trends erstellt.
+- **Agenten-Update:** Neuer Agent `forschungsagent` in `claude-code-setup/agents/` hinzugefügt. Er scannt aktiv `Forschung.md` und schlägt System-Upgrades für Claude, Gemini und Codex vor.
 - **[2026-03-20] SICA: Self-Improving Coding Agent (arxiv 2504.15228)** — Status: OFFEN | Quelle: https://arxiv.org/abs/2504.15228 | Empfehlung: JA sofort
   Agent bearbeitet seinen eigenen Code via LLM-Reflexion ohne Trainingsgradienten. +17-53% auf SWE-Bench Verified. Kein Meta-Agent/Target-Agent-Trennungskonzept noetig. Umsetzbar als /self-improve v6: Agent analysiert eigene Fehler → editiert eigene Agent-Dateien.
 
