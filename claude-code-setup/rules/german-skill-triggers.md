@@ -183,6 +183,11 @@ Agenten (erste Version). Die neuen heissen `export` und `import` (kuerzere Namen
 - **Neues CLI gestartet (Codex/Gemini)** → `import` (portiert Aenderungen von Claude Code)
 
 **Automatische Benachrichtigung:** Bei SessionStart zeigt `mirror-check` Hook an wenn Eintraege ausstehen.
+
+**Technischer Hinweis (Custom Agents starten):** Custom Agents aus `~/.claude/agents/` sind
+KEINE registrierten `subagent_type`-Werte. Sie werden mit `subagent_type: "general-purpose"`
+gestartet und der Agent-Prompt wird manuell im `prompt`-Parameter uebergeben. NIEMALS
+`subagent_type: "export"` oder `subagent_type: "import"` verwenden — das schlaegt fehl.
 <!-- Updated from MIRROR-2026-03-25-MAC-004 by import agent on 2026-03-26 -->
 
 ---
