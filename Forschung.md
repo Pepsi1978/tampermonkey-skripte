@@ -9,7 +9,10 @@ Dieses Dokument dient als zentraler Wissenshub für die Erforschung und Integrat
 - **Context Management**: Optimierung langer Kontexte (1M+) und Wissens-Graphen.
 
 ## 🧪 Neue Forschungsvorschläge & Paper
-<!-- Neue Einträge werden hier hinzugefügt (Datum - Titel - Link - Kurzzusammenfassung) -->
+- **[2026-03-27] Trae Agent: An LLM-based Agent for Software Engineering with Test-time Scaling**
+  - *Link*: [arXiv:2507.23370](https://arxiv.org/abs/2507.23370)
+  - *Zusammenfassung*: Erster Agent-basierter Ensemble-Reasoning-Ansatz für Repository-Level Issue Resolution. Nutzt modulare Agenten für Generation, Pruning und Selection. Erreichte Top-Position auf SWE-bench Verified (Pass@1: 75.20%).
+  - *Intelligenz-Potenzial*: Hoch. Die Modularisierung von Agenten für das Filtern von Lösungsvorschlägen ("Pruning") könnte unsere `quality-gate` und `mar-reviewer` Agenten drastisch verbessern.
 
 ## 💡 Abgeleitete Intelligenz-Vorschläge
 - **Vorschlag 1: Forschungs-Agent (evolution-analyst/intelligence-researcher)**
