@@ -164,6 +164,17 @@ auf den Skill der aehnlich klingt.
 
 ---
 
+## 14. Cross-Platform & Cross-CLI Sync (Universal Mirror Bridge)
+
+| Deutsche Phrase | Agent | Was der Agent WIRKLICH tut |
+|----------------|-------|---------------------------|
+| "exportiere Session", "Mirror Export", "Session spiegeln", "Aenderungen exportieren" | `mirror-export` Agent | Scannt ALLE Aenderungen der Session und schreibt sie als ausfuehrliche Eintraege ins `mirror-ledger.md`. Wird am Ende einer Session gestartet. |
+| "importiere Mirror", "Mirror Import", "synchronisiere", "was fehlt von macOS/Windows?" | `mirror-import` Agent | Liest `mirror-ledger.md`, findet ausstehende Eintraege fuer diese Plattform und baut sie vollautomatisch ein. Wird beim Start auf einer anderen Plattform gestartet. |
+
+**Entscheidungshilfe**: Session beenden → `mirror-export`. Neue Plattform starten → `mirror-import`. Beide Agenten zusammen bilden die **Universal Mirror Bridge**.
+
+---
+
 ## Whisper Speech-to-Text Korrekturen
 
 | Whisper hoert | Gemeint ist |
