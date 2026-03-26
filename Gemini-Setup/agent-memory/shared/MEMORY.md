@@ -66,6 +66,8 @@ _Noch keine Eintraege._
 - **💡 Symbole:** Intelligenz-Vorschläge werden zur besseren Sichtbarkeit immer mit einer Glühbirne (💡) gekennzeichnet.
 
 ## Forschung & Intelligence
+- **[2026-03-27] Forschungs-Hub & Forschungsagent:** Neues Verzeichnis `Forschung/` mit `Forschung.md` als zentraler Wissenshub für KI-Coding-Trends erstellt.
+- **Agenten-Update:** Neuer Agent `forschungsagent` in `claude-code-setup/agents/` hinzugefügt. Er scannt aktiv `Forschung.md` und schlägt System-Upgrades für Claude, Gemini und Codex vor.
 - **Lern-Erfolg (Delta-Bruecke):** 8 Fixes von Claude Code analysiert und adaptiert (2026-03-23).
 - **Muster-Erkennung:** Eigennamen (wie Claude Code) müssen immer vor Verwendung gegen das Filesystem geprüft werden (Vermeidung von Halluzinationen).
 
