@@ -6,6 +6,7 @@ $ErrorActionPreference = "SilentlyContinue"
 # Pfade
 $RepoDir = "C:\Users\barwa\Clawi"
 $SyncScript = Join-Path $RepoDir "clawi-setup\sync-clawi.ps1"
+$StateFile = Join-Path $RepoDir "clawi-setup\hooks\sync-state.json"
 
 Write-Host "🦖 Clawi Auto-Sync gestartet..." -ForegroundColor Cyan
 
@@ -18,6 +19,13 @@ if (Test-Path ".git") {
 # 2. Identität vom Repo-Ordner in den lokalen Workspace laden
 if (Test-Path $SyncScript) {
     powershell -NoProfile -File $SyncScript -Mode pull
+    
+    # 3. Status-Update
+    if (Test-Path $StateFile) {
+        $state = Get-Content $StateFile | ConvertFrom-Json
+        $state.last_pull_timestamp = [DateTimeOffset]::Now.ToUnixTimeSeconds()
+        $state | ConvertTo-Json | Out-File $StateFile -Encoding utf8
+    }
 }
 
 Write-Host "✅ Clawi ist auf dem neuesten Stand." -ForegroundColor Green

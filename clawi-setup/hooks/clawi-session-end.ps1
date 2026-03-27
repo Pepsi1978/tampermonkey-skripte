@@ -6,6 +6,7 @@ $ErrorActionPreference = "SilentlyContinue"
 # Pfade
 $RepoDir = "C:\Users\barwa\Clawi"
 $SyncScript = Join-Path $RepoDir "clawi-setup\sync-clawi.ps1"
+$StateFile = Join-Path $RepoDir "clawi-setup\hooks\sync-state.json"
 
 Write-Host "🦖 Clawi Auto-Backup gestartet..." -ForegroundColor Cyan
 
@@ -17,10 +18,17 @@ if (Test-Path $SyncScript) {
 # 2. Änderungen im Repo committen und pushen
 Set-Location $RepoDir
 if (Test-Path ".git") {
-    git add clawi-setup/
-    $date = Get-Date -Format "yyyy-MM-dd HH:mm"
-    git commit -m "#AUTO - Clawi Identity & Memory Sync ($date)"
+    git add clawi-setup/ Forschung/
+    $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
+    git commit -m "#AUTO - Clawi Identity & Memory Sync ($dateStr)"
     git push origin main
+    
+    # 3. Status-Update
+    if (Test-Path $StateFile) {
+        $state = Get-Content $StateFile | ConvertFrom-Json
+        $state.last_push_timestamp = [DateTimeOffset]::Now.ToUnixTimeSeconds()
+        $state | ConvertTo-Json | Out-File $StateFile -Encoding utf8
+    }
 }
 
 Write-Host "✅ Clawi Identität erfolgreich zu GitHub gesichert." -ForegroundColor Green
