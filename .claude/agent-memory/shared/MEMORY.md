@@ -94,6 +94,7 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 **Fix-Vorschlag:** Pruefen ob Rate-Limit temporaer oder dauerhaft. Bei dauerhaftem Fehler: API-Key pruefen.
 **Status:** OFFEN
 ### [2026-03-25 21:30] Agent: Write-Back nicht erfolgt (3 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
+### 2026-03-26 01:45 — Hook: memory-watchdog.ps1 — Write-Back nicht erfolgt (3 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
 ---
 
 ## Systemzustand (aktuell)
@@ -151,12 +152,20 @@ _Noch keine Eintraege._
 <!-- Writer: optimizer Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
+- **[2026-03-27 02:02] Code-Suche Index:** 18 Dateien, 51 Chunks indexiert.
 ## UI/UX-Patterns
 <!-- Writer: ui-polisher Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
 ## Forschung & Intelligence
-<!-- researcher, intelligence-researcher schreiben hierher -->
+<!-- researcher, intelligence-researcher, forschungsagent schreiben hierher -->
+<!-- PRIMAERE QUELLE: ~/proggs/Forschung.md (zentraler Forschungs-Hub, gepflegt von allen CLIs) -->
+<!-- Forschungs-Hub-Anbindung: v5.22 (2026-03-27) — self-improve liest Forschung.md in Stufe 0b -->
+<!-- Forschungsagent: ~/.claude/agents/forschungsagent.md — bewertet Paper mit 4-Kriterien-Framework -->
+<!-- Import-Agent: Schritt 6b prueft Forschung.md bei jedem Session-Start auf neue Eintraege -->
+
+- **[2026-03-27] Trae Agent: Ensemble-Reasoning fuer Repository-Level Issue Resolution (arxiv 2507.23370)** — Status: EVALUIERT | Quelle: https://arxiv.org/abs/2507.23370 | Empfehlung: JA spaeter
+  Erster Agent-basierter Ensemble-Reasoning-Ansatz. Modulare Agenten fuer Generation, Pruning und Selection. Top-Position auf SWE-bench Verified (Pass@1: 75.20%). Pruning-Konzept koennte quality-gate und mar-reviewer drastisch verbessern. Quelle: Forschung.md Forschungs-Hub.
 
 - **[2026-03-20] SICA: Self-Improving Coding Agent (arxiv 2504.15228)** — Status: UMZUSETZEN | Quelle: https://arxiv.org/abs/2504.15228 | Empfehlung: JA sofort
   Agent bearbeitet seinen eigenen Code via LLM-Reflexion ohne Trainingsgradienten. +17-53% auf SWE-Bench Verified. Kein Meta-Agent/Target-Agent-Trennungskonzept noetig. Umsetzbar als /self-improve v6: Agent analysiert eigene Fehler → editiert eigene Agent-Dateien.
@@ -197,6 +206,7 @@ _Noch keine Eintraege._
 - **[2026-03-25] Cursor OS-Level Sandboxing** — Status: EVALUIERT | Empfehlung: JA spaeter
   Praeventive Sandbox statt reaktiver Blockierung. Naechste Evolution des safety-gate als Defense-in-Depth Schicht 2.
 
+- **[2026-03-27 02:02] Cross-CLI Delta:** Codex(1), Gemini(1) neue Commits — Bruecke starten fuer Details.
 ---
 
 ## Meta-Intelligenz & Selbstverbesserung
@@ -223,6 +233,7 @@ _Noch keine Eintraege._
 
 - **[2026-03-25] intelligence-checker**: [WARNING] Session 417bedd7 (47 Turns) hatte keinen Intelligenz-Vorschlag
 - **[2026-03-25] self-observation-checker**: [WARNING] Session 417bedd7 (47 Turns) zeigte keine Selbstbeobachtung
+- **[2026-03-26] intelligence-checker**: [WARNING] Session 919451e3 (14 Turns) hatte keinen Intelligenz-Vorschlag
 ---
 
 ## Regeln & Konventionen

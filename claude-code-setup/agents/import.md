@@ -214,6 +214,23 @@ git commit -m "#${NEXT_NUM} - import: mark ${count} entries applied on ${platfor
 git push
 ```
 
+## Schritt 6b: Forschung.md-Abgleich (NEU — Forschungs-Hub-Anbindung)
+
+Nach dem Anwenden der Ledger-Eintraege: Pruefe ob `~/proggs/Forschung.md` neue Eintraege enthaelt
+die noch NICHT im Whiteboard (`.claude/agent-memory/shared/MEMORY.md`, Sektion "Forschung & Intelligence") stehen.
+
+1. **Forschung.md lesen**: Alle Paper in "Neue Forschungsvorschlaege" extrahieren
+2. **Whiteboard-Abgleich**: Fuer jedes Paper pruefen ob es bereits im Whiteboard steht
+3. **Neue Paper melden**: Wenn neue Paper gefunden werden die noch nicht im Whiteboard stehen:
+   - Dem Benutzer in der Triage-Tabelle anzeigen: `| N | [Paper-Titel] | forschung | [Quelle] | [Datum] | Neues Paper in Forschung.md |`
+   - In MEMORY.md unter "Forschung & Intelligence" eintragen mit Status EVALUIERT
+   - Hinweis: "Fuer detaillierte Bewertung den `forschungsagent` starten"
+4. **"Abgeleitete Intelligenz-Vorschlaege" pruefen**: Vorschlaege mit Status GEPLANT dem Benutzer zeigen
+
+**Warum hier:** Der Import-Agent laeuft bei jedem Session-Start. Dadurch werden neue
+Forschungsergebnisse (die von anderen CLIs/Plattformen in Forschung.md eingetragen wurden)
+automatisch erkannt und ins lokale Wissenssystem uebernommen.
+
 ## Schritt 7: Report
 
 Berichte dem Benutzer auf Deutsch:

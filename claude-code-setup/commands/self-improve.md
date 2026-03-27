@@ -137,12 +137,22 @@ Windows: Use `pwsh` for complex commands (write temp `.ps1` files).
 
 ## Stufe 0: META-CHECK (NEW v5.1)
 
-**Schritt 0: Whiteboard komplett lesen und Zusammenfassung erstellen (PFLICHT vor allem anderen).**
+**Schritt 0: Whiteboard + Forschung.md komplett lesen (PFLICHT vor allem anderen).**
+
+**0a) Whiteboard lesen:**
 Lese `.claude/agent-memory/shared/MEMORY.md` vollstaendig und erstelle eine kompakte Zusammenfassung:
 - Anzahl offener Fehler (Status: OFFEN)
 - Letzte Systemzustand-Aktualisierung
 - Wichtigste Regeln & Konventionen
 - Offene Forschungs-Findings (Status: UMZUSETZEN)
+
+**0b) Forschung.md lesen (NEU v5.22 — Forschungs-Hub-Anbindung):**
+Lese `~/proggs/Forschung.md` vollstaendig. Extrahiere:
+- Alle Paper in "Neue Forschungsvorschlaege" → Sind neue seit dem letzten Lauf dazugekommen?
+- Alle Eintraege in "Abgeleitete Intelligenz-Vorschlaege" → Welche haben Status GEPLANT?
+- Abgleich mit Whiteboard "Forschung & Intelligence": Sind Paper in Forschung.md die NICHT im Whiteboard stehen? → Muessen in Stufe 5 bewertet werden.
+- **Neue Paper als Optimierungsvektoren**: Jedes neue Paper wird als zusaetzlicher Kontext an R8 (Intelligence Researcher) und den `forschungsagent` weitergegeben.
+- **Forschung.md ist die PRIMÄRE Quelle** fuer Intelligenz-Vorschlaege — das Whiteboard ist die Umsetzungs-Dokumentation.
 - **Compound Effect Tracker (PFLICHT seit v5.20):**
   - Zaehle die Eintraege in "Compound Effect Erfolge" → als Metrik ausgeben
   - Pruefen: Wurden seit dem letzten Lauf neue Compound Effects dokumentiert?
@@ -407,17 +417,28 @@ Recherchiere und implementiere neue Denkstrategien die Claude FUNDAMENTAL schlau
 6. **Self-Play**: Gleiches Problem zweimal mit verschiedenen Ansaetzen loesen und vergleichen
 **REGEL**: Mindestens 1 neues Denkmuster pro Lauf TESTEN — nicht nur darueber reden.
 
-### 5C: Intelligence-Researcher-Ergebnisse umsetzen (PFLICHT — KEIN eigener Researcher mehr!)
+### 5C: Intelligence-Researcher-Ergebnisse + Forschung.md umsetzen (PFLICHT — KEIN eigener Researcher mehr!)
 
 **ACHTUNG v5.11**: Stufe 5C spawnt KEINEN eigenen Researcher mehr. Stattdessen nutzt sie die
 Ergebnisse von **R8 (Intelligence Researcher)**, der bereits in Stufe 2 parallel mitgelaufen ist.
 
+**NEU v5.22 — Forschung.md als Intelligenz-Vektor:**
+Zusaetzlich zu R8 werden die Ergebnisse aus Stufe 0b (Forschung.md-Scan) hier umgesetzt.
+Fuer jedes neue Paper in Forschung.md das noch NICHT im Whiteboard steht:
+- `forschungsagent` spawnen (wenn >2 neue Paper) ODER manuell bewerten (wenn <=2 Paper)
+- Bewertung mit dem 4-Kriterien-Framework: Umsetzbarkeit, Intelligenz-Hebel, Claude-Code-Fit, Haltbarkeit
+- Paper mit Score >=80% → SOFORT als Integrations-Plan in Forschung.md dokumentieren
+- Paper mit Score 50-79% → Als EVALUIERT ins Whiteboard eintragen
+- Paper mit Score <50% → Als VERWORFEN ins Whiteboard eintragen mit Begruendung
+
 1. **R8-Ergebnisse lesen**: Die 5+ Findings des Intelligence Researchers auswerten
-2. **Priorisieren**: Welche Findings sind SOFORT umsetzbar vs. langfristig?
-3. **Mindestens 1 Finding SOFORT umsetzen** — nicht "spaeter", JETZT. (z.B. neues Tool installieren, neuen Agent-Prompt verbessern, neues Denkmuster als Rule implementieren)
-4. **Die anderen Findings dem Benutzer praesentieren** und in MEMORY.md unter "Forschung & Intelligence" speichern.
+2. **Forschung.md-Vorschlaege lesen**: Alle Eintraege mit Status GEPLANT aus "Abgeleitete Intelligenz-Vorschlaege"
+3. **Priorisieren**: Welche Findings (R8 + Forschung.md) sind SOFORT umsetzbar vs. langfristig?
+4. **Mindestens 1 Finding SOFORT umsetzen** — nicht "spaeter", JETZT. (z.B. neues Tool installieren, neuen Agent-Prompt verbessern, neues Denkmuster als Rule implementieren)
+5. **Die anderen Findings dem Benutzer praesentieren** und in MEMORY.md unter "Forschung & Intelligence" speichern.
    Gueltige Status-Werte: `UMZUSETZEN` | `EVALUIERT` | `VERWORFEN` | `BESTAETIGT`. **NIEMALS `OFFEN`** in dieser Sektion.
-5. **Kompetitive Erkenntnisse** (was Konkurrenz besser macht) als Prioritaet behandeln — hier ist der groesste Hebel
+6. **Kompetitive Erkenntnisse** (was Konkurrenz besser macht) als Prioritaet behandeln — hier ist der groesste Hebel
+7. **Rueckschreiben in Forschung.md**: Status-Updates in die "Neue Forschungsvorschlaege" Sektion zurueckschreiben. Umgesetzte Paper in "Umgesetzte Intelligenz-Steigerungen" verschieben.
 
 **REGEL**: Wenn R8 abgestuerzt ist (Researcher-Resilienz, v5.9): Stufe 5C darf EINMAL einen
 Ersatz-Researcher spawnen mit kleinerem Scope (nur Dimensionen 2+3: Kognitive Werkzeuge + Kompetitive Analyse).
