@@ -67,6 +67,14 @@ Wenn die Datei nicht existiert:
 → Melde: "Mirror-Ledger noch nicht vorhanden. Bitte zuerst den export Agenten auf der anderen Plattform ausfuehren."
 → STOP.
 
+## Schritt 2.5: Forschungssynchronisation
+
+Lies `~/proggs/Forschung.md` (oder via `web_fetch` von GitHub).
+Pruefe die Sektion "💡 Abgeleitete Intelligenz-Vorschlaege":
+- Identifiziere neue Vorschlaege, die fuer dieses CLI noch nicht umgesetzt wurden.
+- Behandle diese Vorschlaege wie ausstehende Ledger-Eintraege: Erstelle einen Implementierungsplan oder ueberfuehre sie in neue Regeln/Agenten-Updates.
+- Dokumentiere die Pruefung im Whiteboard unter "Forschung & Intelligence".
+
 ## Schritt 3: Ausstehende Eintraege finden
 
 Fuer jeden Eintrag (markiert durch `## [MIRROR-...]`):

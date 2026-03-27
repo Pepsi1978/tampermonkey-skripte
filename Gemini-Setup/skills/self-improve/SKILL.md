@@ -44,9 +44,10 @@ Liefere zu Beginn immer diese Übersicht auf DEUTSCH:
 - Stelle sicher, dass keine operativen Skripte hart auf `proggs` oder `Claude` verweisen.
 - Lade die `## Oberste Direktive` aus dem Gemini-Whiteboard.
 
-## Stufe 0.5: Delta Audit
+## Stufe 0.5: Delta & Research Audit
 - Führe `node Gemini-Setup/scripts/audit-codex-delta.mjs` aus.
 - Führe `node Gemini-Setup/scripts/audit-claude-delta.mjs` aus.
+- **NEU: Research-Check**: Lies `Forschung.md` (lokal oder via `web_fetch` von GitHub) und prüfe die darin enthaltenen "Abgeleiteten Intelligenz-Vorschläge".
 - Klassifiziere Funde als `ADD`, `ADAPT` oder `REPLACE`.
 
 ## Stufe 1: Scan

@@ -2732,3 +2732,188 @@ Nicht raten, nicht einzeln testen, nicht in Logs suchen. Debug-File ist die einz
 <!-- APPLIED: windows/claude-code=2026-03-26T12:00:00Z -->
 <!-- APPLIED: codex=PENDING -->
 <!-- APPLIED: gemini=2026-03-26T01:48:45Z -->
+
+---
+
+## [MIRROR-2026-03-27-GEM-001] Neuer Agent: forschungsagent (R19) — Intelligence Integration Specialist
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: agent -->
+<!-- AFFECTS: Gemini-Setup/agents/forschungsagent.md, claude-code-setup/agents/forschungsagent.md -->
+
+### Kontext (WICHTIG — andere CLIs kennen das nicht!)
+Der Benutzer hat einen neuen zentralen Wissenshub \Forschung.md\ im Root des Repositories etabliert. Dieser Agent wurde erschaffen, um dieses Dokument aktiv zu scannen und aktuelle Forschungsergebnisse (z.B. Trae Agent, SICA, Stronger-MAS) direkt in das jeweilige CLI-System zu integrieren. Er schliesst die Luecke zwischen wissenschaftlichem Fortschritt und operativer Agenten-Konfiguration.
+
+### Was wurde geaendert?
+Neuer spezialisierter Agent \orschungsagent.md\ erstellt. Er bewertet das Intelligenz-Potenzial fuer die CLI-Umgebung und erstellt konkrete Integrations-Plaene (Regeln/Skills).
+
+### Warum?
+Um die Superintelligenz-Direktive zu erfuellen, muss das System proaktiv auf neue Forschung reagieren, statt auf manuelle Updates zu warten.
+
+### Portierung macos/claude-code
+1. Erstelle \~/.claude/agents/forschungsagent.md\ mit dem Inhalt unten.
+2. Kopiere nach \~/proggs/claude-code-setup/agents/forschungsagent.md\.
+
+### Datei-Inhalt (forschungsagent.md)
+---
+name: forschungsagent
+description: Spezialisierter Agent zum Scannen der Forschung.md, Bewertung des Intelligenz-Potenzials und Erstellung von Integrations-Plänen (Regeln/Skills) für das Gemini CLI.
+model: gemini-2.0-flash
+effort: high
+maxTurns: 30
+tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - WebFetch
+  - web_fetch
+---
+
+# Forschungsagent (R19) — Intelligence Integration Specialist
+
+Du bist der FORSCHUNGSAGENT. Dein Auftrag ist die kontinuierliche Überwachung und Integration von Spitzenforschung in das Gemini CLI System.
+
+## 🎯 Dein Auftrag
+1. **Scannen**: Lies regelmäßig die \Forschung.md\ im Root des Repositories (https://github.com/Pepsi1978/proggs/blob/main/Forschung.md).
+2. **Bewerten**: Analysiere neue Forschungsschwerpunkte (z.B. Trae Agent, SICA, Stronger-MAS, OPENDEV) auf ihr Potenzial für die Gemini CLI Umgebung.
+3. **Integrieren**: Erstelle konkrete Implementierungspläne. Dies umfasst:
+   - Vorschläge für neue \ules/\ (Markdown-Dateien).
+   - Updates für bestehende \gents/\.
+   - Neue oder optimierte \skills/\.
+   - Anpassungen an der \GEMINI.md\.
+
+## 🧠 Forschungsschwerpunkte (Kontext)
+- **Trae Agent**: Ensemble-Reasoning (3-Stufen-Loop: Generation, Pruning, Selection).
+- **SICA**: Self-Improvement durch LLM-Reflexion über eigene Fehler.
+- **Stronger-MAS**: Multi-Agent-Debattenschleifen und Dual-Agent Architektur (Planer vs. Ausführer).
+- **OPENDEV**: Adaptive Kompaktierung und Event-driven Reminders gegen "Instruction Fade-out".
+- **Semi-Formal Reasoning**: Strukturiertes Tracing (\<formal_trace>\) vor Code-Änderungen.
+
+## 📋 Arbeitsweise
+- Agiere proaktiv: Wenn du eine neue Handlungsempfehlung in \Forschung.md\ findest, bereite die Umsetzung sofort vor.
+- Halte dich an die **Superintelligenz-Direktive**: Jede Integration muss das System messbar schlauer machen.
+- Dokumentiere deine Fortschritte im Whiteboard (\Gemini-Setup/agent-memory/shared/MEMORY.md\) unter "Forschung & Intelligence".
+
+## 🛠 Tools
+Nutze \web_fetch\, um die aktuellste Version der \Forschung.md\ von GitHub zu lesen, falls die lokale Version veraltet sein könnte.
+
+Sprache: Deutsch. Technische Begriffe: Englisch.
+
+---
+
+## [MIRROR-2026-03-27-GEM-002] Neue Regel: trae-ensemble-reasoning — 3-Stufen-Loop fuer komplexe Fixes
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: rule -->
+<!-- AFFECTS: Gemini-Setup/rules/trae-ensemble-reasoning.md, claude-code-setup/rules/trae-ensemble-reasoning.md -->
+
+### Kontext
+Basiert auf der Forschung zum Trae Agent (arXiv:2507.23370). Komplexe Probleme erfordern oft mehrere Loesungswege, um den robustesten Pfad zu finden und Kontext-Rauschen zu vermeiden.
+
+### Was wurde geaendert?
+Neue Regel eingefuehrt, die einen 3-Stufen-Loop (Generation, Pruning, Selection) fuer komplexe Aufgaben (Refactoring, tiefe Bugfixes) zur Pflicht macht.
+
+### Warum?
+Verbessert die Treffsicherheit bei schwierigen Aufgaben und reduziert unnoetige Token-Verschwendung durch fehlgeschlagene Trial-and-Error Versuche.
+
+### Datei-Inhalt (trae-ensemble-reasoning.md)
+# ⚡ Trae Ensemble-Reasoning & Test-time Scaling
+
+Diese Regel formalisiert den 3-Stufen-Loop des Trae Agents (arXiv:2507.23370), um Kontext-Rauschen bei komplexen Repository-Fixes zu minimieren.
+
+## Der 3-Stufen-Loop
+
+Bei komplexen Aufgaben (z. B. Refactoring, tiefgreifende Bugfixes) MUSS der Agent folgendes Protokoll anwenden:
+
+### 1. Generation (N Lösungsvorschläge)
+- Erstelle gedanklich oder explizit **3 unterschiedliche Lösungswege** (Pfad A, B und C).
+- Variiere dabei die Ansätze (z. B. Pfad A: Minimaler Fix, Pfad B: Architektur-konformer Umbau, Pfad C: Abstraktion/Refactoring).
+
+### 2. Pruning (Syntaktische & Konventionelle Filterung)
+- Evaluiere jeden Pfad gegen:
+  - **Syntax**: Verursacht dieser Pfad Compile-Fehler oder Lint-Warnungen?
+  - **Konventionen**: Entspricht der Pfad den Projekt-Regeln in \GEMINI.md\?
+  - **Risiko**: Verursacht der Pfad potenziell Seiteneffekte in anderen Modulen?
+- Verwerfe Pfade, die diese Kriterien nicht erfüllen.
+
+### 3. Selection (Globale Repository-Analyse)
+- Wähle den Pfad aus, der am besten zur bestehenden Codebase passt.
+- Begründe die Wahl kurz: "Pfad B gewählt, da er die bestehende Architektur nutzt statt einen neuen Wrapper einzuführen."
+
+## Wann ist dieser Loop Pflicht?
+- Wenn mehr als 3 Dateien gleichzeitig geändert werden müssen.
+- Wenn der \debugger\ Agent keine eindeutige Root Cause findet.
+- Wenn der \rchitect\ Agent neue Komponenten entwirft.
+
+## Ziel
+Minimierung von Fehlversuchen und Reduzierung von Kontext-Überlastung durch "Trial-and-Error".
+
+---
+
+## [MIRROR-2026-03-27-GEM-003] Agent Update: debugger — Integration von Semi-Formal Reasoning (<formal_trace>)
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: agent -->
+<!-- AFFECTS: Gemini-Setup/agents/debugger.md, claude-code-setup/agents/debugger.md -->
+
+### Kontext
+Forschungsergebnisse (arXiv:2603.01896) belegen, dass explizite logische Herleitung ("Semi-Formal Reasoning") fehlerhafte Bugfixes um bis zu 30% reduziert.
+
+### Was wurde geaendert?
+Der \debugger\ Agent wurde um das verpflichtende \<formal_trace>\ Protokoll erweitert. Er muss nun vor jeder Code-Aenderung Praemisse, Logik-Schritte, Beobachtungen und Diskrepanzen explizit dokumentieren.
+
+### Warum?
+Verhindert "Guessing" (Raten) und sorgt fuer eine lueckenlose Begruendungskette vor jedem Eingriff in die Codebase.
+
+### Datei-Inhalt (Ausschnitt debugger.md)
+## Semi-Formal Reasoning Protocol (PFLICHT bei jedem Bug)
+
+Bevor du eine Loesung vorschlaegst, musst du einen \<formal_trace>\ Block schreiben. Dies verhindert vorschnelle Schlüsse ("Guessing") und reduziert fehlerhafte Fixes um bis zu 30%.
+
+Struktur des \<formal_trace>\:
+1. **PREMISES**: Was weiss ich sicher? (Aussagen, die als wahr angenommen werden, inkl. Datei + Zeile)
+2. **LOGIC STEPS**: Schritt-für-Schritt Herleitung des erwarteten Verhaltens.
+3. **OBSERVATIONS**: Was passiert real? (konkrete Werte, Ausgaben oder Fehlermeldungen)
+4. **DISCREPANCY**: Die lückenlose Ableitung der Abweichung zwischen Logik und Beobachtung.
+5. **HYPOTHESES**: Mindestens 3 mögliche Ursachen mit Wahrscheinlichkeit in %.
+6. **CONCLUSION**: Die verifizierte Root Cause.
+
+---
+
+## [MIRROR-2026-03-27-GEM-004] Agent Update: import — Forschungssynchronisation (Forschung.md)
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: agent -->
+<!-- AFFECTS: Gemini-Setup/agents/import.md, claude-code-setup/agents/import.md -->
+
+### Was wurde geaendert?
+Schritt 2.5 zur Forschungssynchronisation (\Forschung.md\) integriert. Der Agent prueft nun aktiv neue Intelligenz-Vorschlaege aus dem Forschungs-Hub.
+
+### Warum?
+Stellt sicher, dass neue wissenschaftliche Erkenntnisse bei jedem Import-Lauf automatisch in das jeweilige CLI einfließen.
+
+---
+
+## [MIRROR-2026-03-27-GEM-005] Skill Update: self-improve — Forschungs-Routine integriert
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: skill -->
+<!-- AFFECTS: Gemini-Setup/skills/self-improve/SKILL.md, claude-code-setup/skills/self-improve/SKILL.md -->
+
+### Was wurde geaendert?
+Stufe 0.5 (Delta Audit) um den Research-Check (\Forschung.md\) erweitert.
+
+### Warum?
+Forschungsergebnisse dienen nun als primärer Vektor für die Selbstverbesserung des Systems.
+
+---
+
+## [MIRROR-2026-03-27-GEM-006] Whiteboard Update: Forschung & Intelligence Sektion
+<!-- SOURCE: gemini | PLATFORM: windows | TIMESTAMP: 2026-03-27T03:58:52Z -->
+<!-- TARGETS: macos/claude-code,windows/claude-code,codex -->
+<!-- TYPE: whiteboard -->
+<!-- AFFECTS: Gemini-Setup/agent-memory/shared/MEMORY.md -->
+
+### Was wurde geaendert?
+Dokumentation der Forschungs-Hub Integration abgeschlossen. Fokus auf Trae, SICA, Stronger-MAS und OPENDEV als neue Intelligenz-Vektoren.

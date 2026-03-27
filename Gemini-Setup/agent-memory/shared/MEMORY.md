@@ -1,4 +1,4 @@
-﻿# Shared Knowledge Hub — Zentrales Whiteboard (Gemini CLI)
+# Shared Knowledge Hub — Zentrales Whiteboard (Gemini CLI)
 
 Das zentrale Gedaechtnis fuer das Gemini CLI System. Jede Komponente (Agents, Skills, Hooks) MUSS hier lesen und schreiben, um plattformuebergreifendes Lernen (Claude/Codex/Gemini) zu ermoeglichen.
 
@@ -66,8 +66,12 @@ _Noch keine Eintraege._
 - **💡 Symbole:** Intelligenz-Vorschläge werden zur besseren Sichtbarkeit immer mit einer Glühbirne (💡) gekennzeichnet.
 
 ## Forschung & Intelligence
-- **[2026-03-27] Forschungs-Hub & Forschungsagent:** Neues Verzeichnis `Forschung/` mit `Forschung.md` als zentraler Wissenshub für KI-Coding-Trends erstellt.
-- **Agenten-Update:** Neuer Agent `forschungsagent` in `claude-code-setup/agents/` hinzugefügt. Er scannt aktiv `Forschung.md` und schlägt System-Upgrades für Claude, Gemini und Codex vor.
+- **[2026-03-27] Forschungs-Hub & Forschungsagent:** Integration von `Forschung.md` als zentraler Wissenshub abgeschlossen.
+  - Neuer Agent: `forschungsagent.md` erstellt zur aktiven Überwachung der Forschungsschwerpunkte (Trae, SICA, Stronger-MAS, OPENDEV).
+  - `self-improve` Skill: Stufe 0.5 um Research-Check erweitert.
+  - `import` Agent: Schritt 2.5 zur automatischen Forschungssynchronisation integriert.
+  - **Fokus**: Die Superintelligenz-Direktive wird nun durch proaktive wissenschaftliche Integration vorangetrieben.
+
 - **Lern-Erfolg (Delta-Bruecke):** 8 Fixes von Claude Code analysiert und adaptiert (2026-03-23).
 - **Muster-Erkennung:** Eigennamen (wie Claude Code) müssen immer vor Verwendung gegen das Filesystem geprüft werden (Vermeidung von Halluzinationen).
 

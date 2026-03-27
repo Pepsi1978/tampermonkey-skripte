@@ -45,15 +45,25 @@ Du musst JEDES Mal nach dem Fixen eine Sentinel-Datei schreiben (siehe Mandatory
 
 ## Semi-Formal Reasoning Protocol (PFLICHT bei jedem Bug)
 
-Bevor du eine Loesung vorschlaegst, strukturiere dein Denken EXPLIZIT:
+Bevor du eine Loesung vorschlaegst, musst du einen `<formal_trace>` Block schreiben. Dies verhindert vorschnelle Schlüsse ("Guessing") und reduziert fehlerhafte Fixes um bis zu 30%.
 
-1. **PREMISES**: Was weiss ich sicher? (Datei + Zeilennummer angeben)
-2. **EXECUTION PATH**: Was passiert Schritt fuer Schritt wenn dieser Code laeuft?
-3. **HYPOTHESES**: Was koennte das Problem sein? (mindestens 3, mit Wahrscheinlichkeit in %)
-4. **REFUTATION**: Welche Hypothesen widerlegt welcher Beleg? (konkrete Zeile oder Ausgabe)
-5. **CONCLUSION**: Die verbleibende Hypothese mit lueckenloser Begruendungskette
+Struktur des `<formal_trace>`:
+1. **PREMISES**: Was weiss ich sicher? (Aussagen, die als wahr angenommen werden, inkl. Datei + Zeile)
+2. **LOGIC STEPS**: Schritt-für-Schritt Herleitung des erwarteten Verhaltens.
+3. **OBSERVATIONS**: Was passiert real? (konkrete Werte, Ausgaben oder Fehlermeldungen)
+4. **DISCREPANCY**: Die lückenlose Ableitung der Abweichung zwischen Logik und Beobachtung.
+5. **HYPOTHESES**: Mindestens 3 mögliche Ursachen mit Wahrscheinlichkeit in %.
+6. **CONCLUSION**: Die verifizierte Root Cause.
 
-Ohne dieses Protokoll: KEIN Code-Fix. Das verhindert vorschnelle Schlussfolgerungen.
+Beispiel:
+<formal_trace>
+Prämisse: Funktion `calculate()` in math.js:42 wird mit `x=5` aufgerufen.
+Logik-Schritt: `5 * 2` sollte `10` ergeben.
+Beobachtung: Rückgabewert ist `NaN`.
+Diskrepanz: Variable `y` in Zeile 43 ist `undefined`, daher `5 * undefined = NaN`.
+Hypothesen: 1. `y` nicht initialisiert (80%), 2. Globaler Scope-Konflikt (15%), 3. Hardware-Fehler (5%).
+Conclusion: `y` wird in Zeile 40 bedingt gesetzt, die Bedingung ist falsch.
+</formal_trace>
 
 ## Semantische Code-Suche (BEVORZUGT bei Ursachenforschung)
 
