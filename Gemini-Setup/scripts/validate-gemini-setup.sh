@@ -19,6 +19,8 @@ required_files=(
   "Gemini-Setup/bridges/intelligence-suggestion-exchange-bridge.json"
   "Gemini-Setup/state/environment-fixes.json"
   "Gemini-Setup/state/implemented-intelligence-suggestions.json"
+  "Gemini-Setup/agents/export.md"
+  "Gemini-Setup/agents/import.md"
   "Gemini-Setup/scripts/bridge-registry.mjs"
   "Gemini-Setup/scripts/bootstrap-report.mjs"
   "Gemini-Setup/scripts/audit-codex-delta.mjs"
