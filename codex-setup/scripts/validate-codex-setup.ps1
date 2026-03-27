@@ -11,7 +11,20 @@ function Test-CodexMcpServer {
         [string]$Name
     )
 
-    $output = & codex mcp list 2>&1
+    $codexCommand = Get-Command codex -ErrorAction SilentlyContinue
+    if (-not $codexCommand) {
+        return $false
+    }
+
+    $codexPath = $codexCommand.Path
+    if (-not $codexPath) {
+        $codexPath = $codexCommand.Source
+    }
+    if (-not $codexPath) {
+        return $false
+    }
+
+    $output = & $codexPath mcp list 2>&1
     if ($LASTEXITCODE -ne 0) {
         return $false
     }

@@ -844,6 +844,39 @@
       ],
       "created_at": "2026-03-27T19:14:45.345Z",
       "status": "active"
+    },
+    {
+      "id": "2026-03-27-windows-ci-skip-openai-docs-when-codex-missing",
+      "source_cli": "Codex",
+      "category": "ci-hardening",
+      "summary": "Windows GitHub Actions validation now skips optional MCP smoke tests when the Codex CLI is not installed.",
+      "context_for_other_clis": "This fix belongs to the Codex setup validation path on GitHub Actions windows-latest. The validator was trying to call Name         Command                Args                                             Env  Cwd  Status   Auth       \ncode-search  /opt/homebrew/bin/tsx  /Users/frank/Codex/mcp-code-search/src/index.ts  -    -    enabled  Unsupported\n\nName                 Url                                Bearer Token Env Var  Status   Auth       \nopenaiDeveloperDocs  https://developers.openai.com/mcp  -                     enabled  Unsupported directly inside PowerShell even when the hosted runner did not have the Codex CLI in PATH, which turned an optional runtime smoke into a hard CI failure.",
+      "symptom_before_fix": "The Codex Setup Validate workflow failed only on windows-latest while ubuntu-latest passed. The failing PowerShell log showed Test-CodexMcpServer calling codex mcp list and then throwing The term 'codex' is not recognized as a name of a cmdlet, function, script file, or executable program.",
+      "root_cause": "The PowerShell helper assumed that the Codex CLI was always installed on the Windows runner. That is not guaranteed on GitHub Actions, so a missing Codex command should be treated as an absent runtime capability rather than a repository failure.",
+      "what_was_fixed": "Test-CodexMcpServer now resolves codex with Get-Command and returns false when the executable is missing, so openaiDeveloperDocs and code-search runtime smoke tests are skipped cleanly on Windows runners without Codex.",
+      "why_it_was_fixed": "Repository validation should still prove the Codex setup files are healthy even when the hosted CI machine does not provide the optional Codex runtime itself.",
+      "exact_error_text": "The term 'codex' is not recognized as a name of a cmdlet, function, script file, or executable program.",
+      "root_cause_why_chain": "Why 1: the Windows job invoked codex directly. Why 2: the hosted runner did not expose a Codex executable in PATH. Why 3: the validator treated a missing runtime command as a hard failure instead of as a normal skip condition for optional live smoke tests.",
+      "related_error_sources_checked": "Checked the same failure class in the PowerShell validator, the Bash validator's existing skip behavior, the openaiDeveloperDocs smoke gate, and the code-search smoke gate because all of them depend on the same optional Codex runtime surface.",
+      "wrong_pattern_example": "Wrong pattern: require  to exist on every hosted CI runner and fail the whole validation if it is missing.",
+      "right_pattern_example": "Right pattern: detect whether Codex is installed, and skip optional MCP smoke tests when the runtime command is absent while still validating the repository-owned setup files.",
+      "avoidance_rule": "If a CI validator exercises an optional local CLI runtime, then first check whether the CLI exists and skip the smoke cleanly when it does not.",
+      "resilience_summary": "The fix is defensive because it converts a hard PowerShell command-not-found error into a deliberate skip, survivable because future Windows runners can validate the repository without needing the Codex CLI preinstalled, extensible because the same gating helper can guard more optional smokes, documented in the ledger, and damage-free because it only changes validation behavior.",
+      "fix_induced_failure_review": "Dependencies: PowerShell command discovery, optional MCP smoke gates, and the hosted Windows runner environment were reviewed together. Failure scenario: if Codex is truly installed but discovery fails, the validator now skips optional runtime smokes instead of crashing, which is safer than a false red build. State changes: none. Race conditions: none. Backward compatibility: Linux and macOS validation behavior stays unchanged. Platform effects: the skip logic specifically hardens Windows hosted runners. Update resistance: the validator now handles future runner images that do not include Codex by default. Graceful degradation: missing runtime support now yields a skip rather than a failed workflow.",
+      "verification": "Verified locally by running pwsh -NoProfile -File codex-setup/scripts/validate-codex-setup.ps1 successfully after the helper change, and the earlier GitHub Actions failure log on windows-latest now matches the corrected skip condition instead of a command-not-found crash.",
+      "portability_notes": "Other CLIs that run repository validation on hosted Windows runners should gate optional runtime smoke tests behind command discovery instead of assuming the CLI is preinstalled. That keeps CI green on generic runners and only fails when the repository-owned setup actually breaks.",
+      "impact": "Windows GitHub Actions now skips optional MCP runtime tests when Codex itself is absent instead of failing the whole Codex setup workflow.",
+      "portable_to": [
+        "Claude Code",
+        "Gemini CLI"
+      ],
+      "artifacts": [
+        "codex-setup/scripts/validate-codex-setup.ps1",
+        "codex-setup/scripts/validate-codex-setup.sh",
+        ".github/workflows/codex-setup-validate.yml"
+      ],
+      "created_at": "2026-03-27T19:36:38.185Z",
+      "status": "active"
     }
   ]
 }
