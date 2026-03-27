@@ -293,6 +293,7 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 - Fremde oder bereits vorhandene, nicht zur Aufgabe gehoerende Aenderungen duerfen nicht ungefragt mit committed werden.
 - Ausnahme: Fuer Aenderungen innerhalb von `codex-setup/` soll Codex nach erfolgreicher lokaler Validierung eigenstaendig committen und nach `origin/main` pushen.
 - Diese Ausnahme gilt nur fuer `codex-setup/`, weil dieser Ordner die plattformuebergreifende Synchronisation von Codex-Regeln zwischen macOS und Windows traegt.
+- Wenn ein Push fuer `codex-setup/` wegen `non-fast-forward` abgelehnt wird, soll Codex automatisch `git fetch` und `git rebase` gegen das Ziel-Remote ausfuehren und den Push danach erneut versuchen, sofern keine Konflikte entstehen.
 - Wenn eine `codex-setup/`-Synchronisation zusaetzlich `AGENTS.md` oder `.github/workflows/codex-setup-validate.yml` braucht, duerfen diese Dateien im selben Sync-Commit mitgefuehrt werden.
 - Fuer alle anderen Ordner im Repository gilt: `git push` nur nach ausdruecklicher Benutzeranweisung.
 - Vor einem moeglichen Push soll Codex Aenderungen bevorzugt lokal validieren.

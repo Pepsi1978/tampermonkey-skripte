@@ -237,6 +237,10 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 
 [2026-03-27] user-directives: Der Benutzer hat die drei Hauptdirektiven erneut in Langform bestaetigt; die operative Fassung bleibt unter ## Oberste Direktive, und die Langform ist als dauerhaft relevante Referenz fuer spaetere Sessions zu behandeln.
 
+[2026-03-27] push-scope: Codex darf ohne Rueckfrage in  committen und nach origin/main pushen, sobald die lokale Validierung grün ist. Fuer alle anderen Repo-Pfade bleibt ausdrueckliche Benutzerfreigabe Pflicht; das ist ein Push-Scope, keine allgemeine Push-Sperre.
+
+[2026-03-27] push-scope: Codex darf ohne Rueckfrage in codex-setup/ committen und nach origin/main pushen, sobald die lokale Validierung grün ist. Wenn ein codex-setup/ Push wegen non-fast-forward abgelehnt wird, sind git fetch und git rebase automatisch auszufuehren und der Push danach erneut zu versuchen, sofern der Rebase konfliktfrei bleibt. Fuer alle anderen Repo-Pfade bleibt ausdrueckliche Benutzerfreigabe Pflicht; das ist ein Push-Scope, keine allgemeine Push-Sperre.
+
 ---
 
 ## Erkenntnisse aus Code Reviews

@@ -38,6 +38,7 @@ Diese Datei enthält die zentralen Anweisungen für alle AI-Agents in diesem Rep
 - When writing Codex findings to the whiteboard, use `codex-setup/scripts/whiteboard-insert.*` or `codex-setup/scripts/writeback-enforcer.*`; do not append directly to `MEMORY.md`.
 - When a Codex environment fix is implemented, log it in `codex-setup/state/environment-fixes.json` via `register-environment-fix.*` or the guided helper `new-environment-fix.*`, with enough context for other CLIs to understand it without this session.
 - When a Codex intelligence suggestion is actually implemented, also log it in `codex-setup/state/implemented-intelligence-suggestions.json` via `register-intelligence-suggestion.*`, including the original proposal, the reason, the implementation path, and the bridge value for other CLIs.
+- For `codex-setup/` syncs, a `non-fast-forward` push rejection is not a stop condition: fetch, rebase against the target remote, and retry the push if the rebase is clean.
 - Treat implemented intelligence suggestions with the same durability standard as environment fixes: check related surfaces, future-proof the change, document resilience, and record a failure review so the same idea does not regress after later updates.
 - For validated `codex-setup/` changes, automatically create a focused commit and push it to `origin/main` without waiting for another user prompt.
 - If a `codex-setup/` sync also needs `AGENTS.md` or `.github/workflows/codex-setup-validate.yml`, include those files in the same Codex-setup sync commit.
