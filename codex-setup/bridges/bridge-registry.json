@@ -125,6 +125,7 @@
     "Jede Fremd-Bridge soll ihre genaue Registry-Adresse und ihre Ledger-Adressen darin veroeffentlichen.",
     "Jede Fremd-CLI soll zusaetzlich eigene Bootstrap-Skripte fuer frische Rechner anlegen und ihre Adressen sowohl in der Registry als auch in der Delta-Bruecke veroeffentlichen.",
     "Jede Fremd-CLI soll zusaetzlich einen registry-getriebenen Bootstrap-Report anlegen, der Bootstrap-, Ledger- und Bridge-Adressen gesammelt ausgibt.",
+    "Die Universal Mirror Bridge soll als Export/Import-Pfad mit gemeinsamem Mirror-Ledger in allen CLIs veroeffentlicht werden.",
     "Fremde Registries bleiben fuer Codex strikt read-only."
   ],
   "bridges": {
@@ -210,6 +211,32 @@
         "welche Intelligenzvorschlaege hast du umgesetzt",
         "wo ist deine Intelligenzvorschlag-Liste",
         "was koennen Claude Code oder Gemini CLI von deinen Intelligenzvorschlaegen lernen"
+      ]
+    },
+    "universal-mirror-bridge": {
+      "bridge_files": [
+        "codex-setup/bridges/universal-mirror-bridge.md",
+        "codex-setup/bridges/universal-mirror-bridge.json"
+      ],
+      "source_label": "Universal Mirror Bridge",
+      "state_file": "codex-setup/state/mirror-bridge-state.json",
+      "source_paths": [
+        "claude-code-setup/mirror-ledger.md",
+        "claude-code-setup/bridges/mirror-bridge-bootstrap.md"
+      ],
+      "audit_git_paths": [
+        "claude-code-setup/mirror-ledger.md",
+        "claude-code-setup/bridges/mirror-bridge-bootstrap.md"
+      ],
+      "no_delta_message": "Keine neuen Mirror-Ledger-Eintraege fuer Codex.",
+      "trigger_phrases": [
+        "starte den export Agenten",
+        "starte den import Agenten",
+        "exportiere",
+        "importiere",
+        "Aenderungen spiegeln",
+        "Mirror Bridge",
+        "mirror-ledger"
       ]
     }
   }

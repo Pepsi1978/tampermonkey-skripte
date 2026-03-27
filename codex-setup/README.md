@@ -66,8 +66,8 @@ Wichtigste Trennung:
   Wiederverwendbare Bruecken-Spezifikationen fuer andere CLI-Umgebungen.
   Hier liegen die universellen Direktiven fuer Superintelligenz und
   Selbstbeobachtung und Resilient Bugfixing, die generische Cloud-Code-Delta-Bruecke, die
-  Gemini-CLI-Delta-Bruecke sowie die Exchange-Bruecken fuer Umwelt-Fixes und
-  umgesetzte Intelligenzvorschlaege als Referenz fuer weitere Setups. Die
+  Gemini-CLI-Delta-Bruecke, die Universal Mirror Bridge sowie die Exchange-Bruecken fuer
+  Umwelt-Fixes und umgesetzte Intelligenzvorschlaege als Referenz fuer weitere Setups. Die
   zentrale Metadatenbasis dafuer ist `bridges/bridge-registry.json`.
 
 - `state/environment-fixes.json`
@@ -84,8 +84,8 @@ Wichtigste Trennung:
   Der Codex-spezifische Self-Improve-Skill fuer diesen Workspace, inklusive Referenzen,
   Researcher-Prompts und eigenen Codex-Agenten. Dort liegen auch die Codex-nativen Rollen fuer
   `env-checker`, `evolution-analyst`, `intelligence-researcher`, `whiteboard-scanner`,
-  `durability-auditor`, `claude-delta-scanner`, `gemini-delta-scanner`, `rules-porter` und
-  `trigger-router`.
+  `durability-auditor`, `claude-delta-scanner`, `gemini-delta-scanner`, `rules-porter`,
+  `trigger-router`, `export` und `import`.
 
 ## Whiteboard-Architektur
 
@@ -337,6 +337,9 @@ Die generische Bruecken-Spezifikation dafuer liegt unter:
 
 - `codex-setup/bridges/intelligence-suggestion-exchange-bridge.md`
 - `codex-setup/bridges/intelligence-suggestion-exchange-bridge.json`
+- `codex-setup/bridges/mirror-bridge-bootstrap.md`
+- `codex-setup/bridges/universal-mirror-bridge.md`
+- `codex-setup/bridges/universal-mirror-bridge.json`
 
 ## Bridge-Registry
 

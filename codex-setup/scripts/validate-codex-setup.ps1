@@ -111,6 +111,12 @@ $RequiredFiles = @(
     "codex-setup\skills\self-improve\references\gemini-delta-sync.md",
     "codex-setup\skills\self-improve\references\resilient-bugfixing.md",
     "codex-setup\skills\self-improve\references\agents\gemini-delta-scanner.md",
+    "codex-setup\skills\self-improve\references\agents\export.md",
+    "codex-setup\skills\self-improve\references\agents\import.md",
+    "codex-setup\bridges\mirror-bridge-bootstrap.md",
+    "codex-setup\bridges\universal-mirror-bridge.md",
+    "codex-setup\bridges\universal-mirror-bridge.json",
+    "codex-setup\state\mirror-bridge-state.json",
     "codex-setup\skills\self-improve\SKILL.md"
 )
 
@@ -209,6 +215,10 @@ if ((Get-Content "AGENTS.md" -Raw) -notmatch "OpenAI developer documentation MCP
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape("session-start-sync")) {
     throw "AGENTS.md must require the session-start sync helper."
+}
+
+if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape("claude-code-setup/mirror-ledger.md")) {
+    throw "AGENTS.md must define the Mirror Bridge ledger exception."
 }
 
 if ((Get-Content "AGENTS.md" -Raw) -notmatch [regex]::Escape("codex-setup/mcp-windows.json")) {
@@ -571,6 +581,14 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Starte bitte die Bruec
     throw "README.md must document the direct Gemini bridge trigger."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "Universal Mirror Bridge") {
+    throw "README.md must document the Universal Mirror Bridge."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch [regex]::Escape("mirror-bridge-bootstrap.md")) {
+    throw "README.md must document the mirror bridge bootstrap prompt."
+}
+
 if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "GeminiCLI") {
     throw "README.md must mark Gemini comparison paths as read-only."
 }
@@ -591,8 +609,24 @@ if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "rules-porter") {
     throw "README.md must document the Gemini-derived rules-porter role."
 }
 
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "export") {
+    throw "README.md must document the export agent role."
+}
+
+if ((Get-Content "codex-setup\README.md" -Raw) -notmatch "import") {
+    throw "README.md must document the import agent role."
+}
+
 if ((Get-Content "codex-setup\rules\german-trigger-routing.md" -Raw) -notmatch "zeige den Bootstrap-Report") {
     throw "german-trigger-routing.md must route bootstrap-report requests."
+}
+
+if ((Get-Content "codex-setup\rules\german-trigger-routing.md" -Raw) -notmatch "starte den export Agenten") {
+    throw "german-trigger-routing.md must route the Mirror Bridge export trigger."
+}
+
+if ((Get-Content "codex-setup\rules\german-trigger-routing.md" -Raw) -notmatch "starte den import Agenten") {
+    throw "german-trigger-routing.md must route the Mirror Bridge import trigger."
 }
 
 $ClaudeDeltaState = Get-Content "codex-setup\state\claude-delta-state.json" -Raw | ConvertFrom-Json
@@ -750,7 +784,8 @@ if (
     -not $BridgeRegistry.bridges.'cloud-code-delta' -or
     -not $BridgeRegistry.bridges.'gemini-cli-delta' -or
     -not $BridgeRegistry.bridges.'environment-fix-exchange' -or
-    -not $BridgeRegistry.bridges.'implemented-intelligence-suggestion-exchange'
+    -not $BridgeRegistry.bridges.'implemented-intelligence-suggestion-exchange' -or
+    -not $BridgeRegistry.bridges.'universal-mirror-bridge'
 ) {
     throw "bridge-registry.json must list all active Codex bridge types."
 }
@@ -763,6 +798,17 @@ if (
     [string]::IsNullOrWhiteSpace($BridgeRegistry.bridges.'gemini-cli-delta'.audit_title)
 ) {
     throw "bridge-registry.json must define audit scope, titles, and git paths for the delta bridges."
+}
+
+if (
+    -not $BridgeRegistry.bridges.'universal-mirror-bridge' -or
+    -not $BridgeRegistry.bridges.'universal-mirror-bridge'.bridge_files -or
+    $BridgeRegistry.bridges.'universal-mirror-bridge'.bridge_files.Count -lt 2 -or
+    $BridgeRegistry.bridges.'universal-mirror-bridge'.source_label -ne "Universal Mirror Bridge" -or
+    $BridgeRegistry.bridges.'universal-mirror-bridge'.trigger_phrases -notcontains "starte den export Agenten" -or
+    $BridgeRegistry.bridges.'universal-mirror-bridge'.trigger_phrases -notcontains "starte den import Agenten"
+) {
+    throw "bridge-registry.json must define the Universal Mirror Bridge metadata."
 }
 
 if ((Get-Content "codex-setup\agent-memory\shared\MEMORY.md" -Raw) -notmatch "Die 8 Intelligenz-Dimensionen") {

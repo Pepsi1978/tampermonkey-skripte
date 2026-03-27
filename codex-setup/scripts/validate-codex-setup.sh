@@ -118,6 +118,12 @@ required_files=(
   "codex-setup/skills/self-improve/references/gemini-delta-sync.md"
   "codex-setup/skills/self-improve/references/resilient-bugfixing.md"
   "codex-setup/skills/self-improve/references/agents/gemini-delta-scanner.md"
+  "codex-setup/skills/self-improve/references/agents/export.md"
+  "codex-setup/skills/self-improve/references/agents/import.md"
+  "codex-setup/bridges/mirror-bridge-bootstrap.md"
+  "codex-setup/bridges/universal-mirror-bridge.md"
+  "codex-setup/bridges/universal-mirror-bridge.json"
+  "codex-setup/state/mirror-bridge-state.json"
   "codex-setup/skills/self-improve/SKILL.md"
 )
 
@@ -192,6 +198,7 @@ done
 
 search_fixed "OpenAI developer documentation MCP server" "AGENTS.md"
 search_fixed "session-start-sync" "AGENTS.md"
+search_fixed "claude-code-setup/mirror-ledger.md" "AGENTS.md"
 search_fixed "codex-setup/mcp-windows.json" "AGENTS.md"
 search_fixed "git diff --stat" "AGENTS.md"
 search_fixed "git pull --rebase --autostash" "AGENTS.md"
@@ -219,6 +226,8 @@ search_fixed "als zweite Abschlusszeile \`Gepusht in <path>, plattformuebergreif
 search_fixed "nach erfolgreicher lokaler Validierung eigenstaendig committen und nach \`origin/main\` pushen soll" "codex-setup/README.md"
 search_fixed "check-code-search-health.sh" "codex-setup/README.md"
 search_fixed "code-search-mcp-client.sh" "codex-setup/README.md"
+search_fixed "Universal Mirror Bridge" "codex-setup/README.md"
+search_fixed "mirror-bridge-bootstrap.md" "codex-setup/README.md"
 search_fixed "Last write mode" "codex-setup/README.md"
 search_fixed "audit-claude-delta.mjs" "codex-setup/README.md"
 search_fixed "audit-gemini-delta.mjs" "codex-setup/README.md"
@@ -247,7 +256,10 @@ search_fixed "resilient-bugfixing" "codex-setup/README.md"
 search_fixed "durability-auditor" "codex-setup/README.md"
 search_fixed "rules-porter" "codex-setup/README.md"
 search_fixed "bridge-registry.json" "codex-setup/README.md"
+search_fixed "universal-mirror-bridge" "codex-setup/README.md"
 search_fixed "zeige den Bootstrap-Report" "codex-setup/rules/german-trigger-routing.md"
+search_fixed "starte den export Agenten" "codex-setup/rules/german-trigger-routing.md"
+search_fixed "starte den import Agenten" "codex-setup/rules/german-trigger-routing.md"
 search_fixed "neue Tools, Plugins oder Agenten" "codex-setup/rules/global.md"
 search_fixed "Session-Start Sync" "codex-setup/rules/global.md"
 search_fixed "codex-setup/mcp-windows.json" "codex-setup/rules/global.md"
@@ -299,13 +311,18 @@ node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-se
   exit 1
 }
 
-node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.registry_name!=='codex-bridge-registry') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.global_policies || !data.global_policies.proposal_only || !data.global_policies.replace_requires_confirmation || !data.global_policies.foreign_sources_read_only || !data.global_policies.implemented_intelligence_must_be_resilient || !data.global_policies.implemented_intelligence_resilience_rule) process.exit(1); if(!data.peer_registry_targets || !data.peer_registry_targets.Codex || !data.peer_registry_targets['Claude Code'] || !data.peer_registry_targets['Gemini CLI']) process.exit(1); if(!data.bootstrap_artifacts || !data.bootstrap_artifacts.Codex || !Array.isArray(data.bootstrap_artifacts.Codex.repo_scripts) || data.bootstrap_artifacts.Codex.repo_scripts.length<2 || !data.bootstrap_artifacts['Claude Code'] || !data.bootstrap_artifacts['Gemini CLI']) process.exit(1); if(!data.bootstrap_report_artifacts || !data.bootstrap_report_artifacts.Codex || !Array.isArray(data.bootstrap_report_artifacts.Codex.repo_scripts) || data.bootstrap_report_artifacts.Codex.repo_scripts.length<3 || !data.bootstrap_report_artifacts['Claude Code'] || !data.bootstrap_report_artifacts['Gemini CLI']) process.exit(1); if(!data.bridges || !data.bridges['cloud-code-delta'] || !data.bridges['gemini-cli-delta'] || !data.bridges['environment-fix-exchange'] || !data.bridges['implemented-intelligence-suggestion-exchange']) process.exit(1);" || {
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.registry_name!=='codex-bridge-registry') process.exit(1); if(data.proposal_prefix!=='💡 Intelligenz-Vorschlag:') process.exit(1); if(!data.global_policies || !data.global_policies.proposal_only || !data.global_policies.replace_requires_confirmation || !data.global_policies.foreign_sources_read_only || !data.global_policies.implemented_intelligence_must_be_resilient || !data.global_policies.implemented_intelligence_resilience_rule) process.exit(1); if(!data.peer_registry_targets || !data.peer_registry_targets.Codex || !data.peer_registry_targets['Claude Code'] || !data.peer_registry_targets['Gemini CLI']) process.exit(1); if(!data.bootstrap_artifacts || !data.bootstrap_artifacts.Codex || !Array.isArray(data.bootstrap_artifacts.Codex.repo_scripts) || data.bootstrap_artifacts.Codex.repo_scripts.length<2 || !data.bootstrap_artifacts['Claude Code'] || !data.bootstrap_artifacts['Gemini CLI']) process.exit(1); if(!data.bootstrap_report_artifacts || !data.bootstrap_report_artifacts.Codex || !Array.isArray(data.bootstrap_report_artifacts.Codex.repo_scripts) || data.bootstrap_report_artifacts.Codex.repo_scripts.length<3 || !data.bootstrap_report_artifacts['Claude Code'] || !data.bootstrap_report_artifacts['Gemini CLI']) process.exit(1); if(!data.bridges || !data.bridges['cloud-code-delta'] || !data.bridges['gemini-cli-delta'] || !data.bridges['environment-fix-exchange'] || !data.bridges['implemented-intelligence-suggestion-exchange'] || !data.bridges['universal-mirror-bridge']) process.exit(1);" || {
   echo "bridge-registry.json is invalid." >&2
   exit 1
 }
 
 node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); if(data.bridges['cloud-code-delta'].state_scope!=='claude-environment-only') process.exit(1); if(data.bridges['gemini-cli-delta'].state_scope!=='gemini-environment-only') process.exit(1); if(!Array.isArray(data.bridges['cloud-code-delta'].audit_git_paths) || data.bridges['cloud-code-delta'].audit_git_paths.length<2) process.exit(1); if(!Array.isArray(data.bridges['gemini-cli-delta'].audit_git_paths) || data.bridges['gemini-cli-delta'].audit_git_paths.length<1) process.exit(1); if(!data.bridges['cloud-code-delta'].audit_title || !data.bridges['gemini-cli-delta'].audit_title) process.exit(1);" || {
   echo "bridge-registry.json must define audit scope, titles, and git paths for the delta bridges." >&2
+  exit 1
+}
+
+node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('codex-setup/bridges/bridge-registry.json','utf8')); const bridge=data.bridges['universal-mirror-bridge']; if(!bridge || !Array.isArray(bridge.bridge_files) || bridge.bridge_files.length<2 || bridge.source_label!=='Universal Mirror Bridge' || !Array.isArray(bridge.trigger_phrases) || !bridge.trigger_phrases.includes('starte den export Agenten') || !bridge.trigger_phrases.includes('starte den import Agenten')) process.exit(1);" || {
+  echo "bridge-registry.json must define the Universal Mirror Bridge metadata." >&2
   exit 1
 }
 

@@ -8,6 +8,7 @@ Diese Regeln gelten fuer Codex plattformuebergreifend auf macOS und Windows.
 - `codex-setup/` ist der Synchronisierungsordner fuer Codex auf macOS und Codex auf Windows.
 - Die Regeln in `codex-setup/` sollen in beide Richtungen gelten: macOS zu Windows und Windows zu macOS.
 - `claude-code-setup/`, `CLAUDE.md` und andere Claude-Code-Dateien sind fuer Codex keine Arbeitsanweisung.
+- Ausnahme fuer den Universal Mirror Bridge: Wenn der Benutzer den Mirror-Ledger-Export oder -Import explizit verlangt, darf Codex die gemeinsame Austauschdatei `claude-code-setup/mirror-ledger.md` als read-only/write target fuer genau diesen Sync nutzen. Alle anderen `proggs`-Pfade bleiben fuer Codex tabu.
 - Wenn der Benutzer `Claude Code` sagt, ist damit `Claude Code` gemeint.
 
 ## Codex Source of Truth

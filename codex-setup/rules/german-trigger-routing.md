@@ -27,6 +27,22 @@ Aktion:
 - Whiteboard lesen
 - `## Oberste Direktive` und `self-observation` aktiv halten
 
+### Universal Mirror Bridge
+
+- "starte den export Agenten"
+- "starte den import Agenten"
+- "exportiere"
+- "importiere"
+- "Aenderungen spiegeln"
+- "Mirror Bridge"
+- "mirror-ledger"
+
+Aktion:
+- zuerst `codex-setup/bridges/mirror-bridge-bootstrap.md` als Referenz fuer den Erstaufbau lesen
+- danach `codex-setup/skills/self-improve/references/agents/export.md` oder `codex-setup/skills/self-improve/references/agents/import.md` als Codex-Workflow nutzen
+- die gemeinsame Ledger-Datei `claude-code-setup/mirror-ledger.md` nur fuer diesen Bridge-Workflow verwenden
+- bei der Bridge die Codex-Registry, die Bridge-Datei und die Trigger-Routing-Eintraege gemeinsam pflegen
+
 ### Claude-/Cloud-Code-Delta
 
 - "was ist neuer als bei dir"
