@@ -206,6 +206,8 @@ Alle acht Dimensionen muessen wachsen. Schnell schlechter Code ist nicht intelli
 **Fix:** current.txt ist jetzt der erste Kandidat; index.db ist nur noch Fallback.
 **Regel:** Bei pointer-basierten Indizes immer den Pointer zuerst lesen und Legacy-DB nur als Notfall verwenden.
 
+- **[2026-03-27T00:00:00Z] codex**: Selbstbeobachtung und Intelligenzvorschlaege wurden in dieser Session zeitweise zu wenig sichtbar nach aussen getragen. Das System muss am Ende jeder Session zwingend eine klare Selbstbeobachtung plus mindestens einen echten Intelligenzvorschlag liefern, statt nur still im Hintergrund korrekt zu arbeiten. Die lokale Runtime-Kopie des self-improve-Skills wurde getrennt vom Repo geprueft; diese Kopie muss dauerhaft mit dem Repo abgeglichen bleiben, damit alte Session-Learnings nicht still aus dem aktiven Verhalten verschwinden.
+
 ---
 
 ## Systemzustand
