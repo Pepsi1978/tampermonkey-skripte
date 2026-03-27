@@ -1,5 +1,5 @@
 # clawi-observation-collector.ps1 - Automatischer Gedächtnis-Staubsauger (v3 - Deep Context)
-# Scannt Transkripte nach "🔍 Selbstbeobachtung" und sichert User- + Assistant-Kontext.
+# Scannt Transkripte nach "Selbstbeobachtung" (mit Lupe) und sichert User- + Assistant-Kontext.
 
 $ErrorActionPreference = "SilentlyContinue"
 
@@ -10,7 +10,12 @@ $MemoryDir = Join-Path $WorkspaceDir "memory"
 $Today = Get-Date -Format "yyyy-MM-dd"
 $LogFile = Join-Path $MemoryDir "$Today.md"
 
-Write-Host "🦖 Clawi Gedächtnis-Staubsauger (v3) startet..." -ForegroundColor Cyan
+# Unicode für Lupe (U+1F50D) und Glühbirne (U+1F4A1)
+$Magnifier = [char]::ConvertFromUtf32(0x1F50D)
+$Bulb = [char]::ConvertFromUtf32(0x1F4A1)
+$Dino = [char]::ConvertFromUtf32(0x1F996)
+
+Write-Host "$Dino Clawi Gedächtnis-Staubsauger (v3) startet..." -ForegroundColor Cyan
 
 # 1. Neueste Transkript finden
 $LatestFile = Get-ChildItem $SessionsDir -Filter "*.jsonl" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -35,8 +40,9 @@ for ($i = 0; $i -lt $Entries.Count; $i++) {
     $entry = $Entries[$i]
     if ($null -eq $entry -or $entry.role -ne "assistant") { continue }
     
-    # Suche nach Selbstbeobachtung
-    if ($entry.content -match "(🔍 Selbstbeobachtung[\s\S]*?)(?=\n\n|\n💡|\n---|\z)") {
+    # Suche nach Selbstbeobachtung (Regex mit Variable für Emoji)
+    $Pattern = [regex]::Escape($Magnifier) + " Selbstbeobachtung"
+    if ($entry.content -match "($Pattern[\s\S]*?)(?=\n\n|\n$Bulb|\n---|$)") {
         $observation = $Matches[1].Trim()
         
         # Prüfen ob bereits im Log (substring match)
@@ -58,8 +64,7 @@ for ($i = 0; $i -lt $Entries.Count; $i++) {
             }
         }
         
-        # 2. Assistant-Thought/Reasoning finden (falls vorhanden)
-        # In OpenClaw ist das oft ein separater Part im Content oder Metadaten
+        # 2. Assistant-Thought/Reasoning finden
         if ($entry.thought) {
             $assistantThought = $entry.thought.Trim()
         } elseif ($entry.content -match "<think>([\s\S]*?)</think>") {
