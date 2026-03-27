@@ -1,28 +1,41 @@
-# Forschung-clawi.md - OpenClaw Specific Intelligence Research
+# Forschung-clawi.md - OpenClaw Specific Intelligence Research (Deep Context)
 
-Dieses Dokument konzentriert sich ausschließlich auf die Erforschung und Optimierung der **OpenClaw-Plattform** und meiner Rolle als **Clawi**.
-
-## ⚡ OpenClaw-spezifische Forschungsschwerpunkte
-- **Gateway-Optimierung**: Latenzreduzierung und stabilere WebSocket-Verbindungen.
-- **Hook-Infrastruktur**: Entwicklung nativer OpenClaw-Hooks zur Workflow-Automatisierung.
-- **Modell-Synergie**: Optimale Nutzung von Gemini 3 Flash innerhalb der OpenClaw-Architektur.
-- **Cross-Platform Resilience**: Spezifische Härtung für Windows (PowerShell) vs. macOS (Zsh) innerhalb von OpenClaw.
-
-## 🧪 Neue Clawi-Forschungsvorschläge
-- **[2026-03-27] Adaptive Context Compaction (aus OPENDEV)**
-  - *Nutzen für Clawi*: OpenClaw-spezifische Implementierung einer Kompaktierungs-Logik, um das 1M Fenster von Gemini effizienter zu nutzen und "Instruction Fade-out" zu verhindern.
-- **[2026-03-27] Event-driven System Reminders**
-  - *Nutzen für Clawi*: Nutzung von OpenClaw-Hooks, um mich alle 30 Minuten an die "Obersten Direktiven" und das Session-Ziel zu erinnern.
-- **[2026-03-27] Lazy Tool Discovery**
-  - *Nutzen für Clawi*: Reduzierung der Initial-Prompt-Größe in OpenClaw, indem Tools erst geladen werden, wenn sie für die Aufgabe relevant sind.
-
-## 💡 Abgeleitete Clawi-Intelligenz-Vorschläge
-- **Clawi-Vorschlag 1: "Identity-Aware" Heartbeat**
-  - *Was*: Der Heartbeat prüft nicht nur die Sync-Zeit, sondern injiziert aktiv eine Zusammenfassung der `DIREKTIVEN.md` in meinen Kontext, falls diese seit > 60 Min nicht mehr geladen wurde.
-  - *Warum*: Verhindert das Vergessen von Grundregeln in extrem langen Arbeitssitzungen.
-- **Clawi-Vorschlag 2: Log-Pattern-Match für Self-Improvement**
-  - *Was*: Der Log-Clean-Agent speist erkannte Fehlermuster direkt als "negative Beispiele" in mein tägliches Memory ein.
-  - *Warum*: Ermöglicht es mir, Fehlerarten, die ich auf diesem System häufiger mache, aktiv zu vermeiden.
+Dieses Dokument konzentriert sich auf die technologische Optimierung von **Clawi** innerhalb der OpenClaw-Plattform.
 
 ---
-*Gepflegt von Clawi (Forschungsagent-Modus).*
+
+## ⚡ OpenClaw-spezifische Forschungsschwerpunkte
+
+### 1. Gemini 1M Context Management (Adaptive Compaction)
+- **Kontext**: Gemini 3 Flash verfügt über ein massives 1M Token Fenster. Standardmäßige "naive" Kompaktierung (alles nach X Nachrichten zusammenfassen) verschwendet Reasoning-Potenzial.
+- **Theorie**: Implementierung einer "Sliding Window" Kompaktierung. Die letzten 50.000 Token bleiben 1:1 erhalten, ältere Teile werden in einen semantischen Index (Wissens-Graph) überführt.
+- **Nutzen**: Beibehaltung höchster Detailtreue bei gleichzeitigem Schutz vor "Instruction Fade-out".
+
+### 2. Event-driven Identity Recovery (OpenClaw Hooks)
+- **Kontext**: In langen Sitzungen sinkt die "Attention" auf System-Instruktionen.
+- **Theorie**: Nutzung von OpenClaw-Hooks, die bei Erkennung von Fehler-Mustern (z.B. Log-Eintrag "edit failed") automatisch eine Kurzzusammenfassung der `DIREKTIVEN.md` in den aktuellen Prompt injizieren.
+- **Nutzen**: Sofortige Rückkehr zu stabilen Verhaltensmustern bei technischem Stress.
+
+### 3. Lazy Tool Discovery (Tool-Orchestrierung)
+- **Kontext**: Das Laden von 50+ Tools bei jedem Turn bläht den Prompt unnötig auf.
+- **Theorie**: Dynamisches Einblenden von Tools basierend auf dem aktuellen Intent des Benutzers. (z.B. `git` Tools nur einblenden, wenn "commit" oder "push" im Gespräch fallen).
+- **Nutzen**: Kürzere Latenzzeiten und geringere Token-Kosten.
+
+---
+
+## 🧪 Neue Clawi-Forschungsvorschläge
+
+- **[2026-03-27] Cross-Platform Resilient Path-Resolution**
+  - *Problem*: Windows-Pfade (`C:\...`) vs. Unix-Pfade in Repositories.
+  - *Lösung*: Ein interner Pre-Processor-Dienst für Clawi, der alle Pfade in System-Befehlen automatisch an das Betriebssystem von **Supi** anpasst (Normalisierung).
+
+---
+
+## 💡 Abgeleitete Clawi-Intelligenz-Vorschläge
+
+- **Clawi-Vorschlag 1: "Identity-Aware" Heartbeat**
+  - *Status*: EVALUIERUNG
+  - *Umsetzung*: Der Heartbeat prüft den Token-Abstand zum letzten Laden der `DIREKTIVEN.md`. Bei > 100k Token Abstand erfolgt eine stille Re-Injektion der Kernregeln.
+
+---
+*Gepflegt von Clawi (Forschungsagent-Modus) - Letztes Update: 2026-03-27.*
