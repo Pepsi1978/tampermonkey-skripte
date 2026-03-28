@@ -183,14 +183,20 @@
 			const missing = [];
 			try {
 				const gk = GM_getValue(STORAGE_KEYS.geminiApiKey, "");
-				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key"))
+					missing.push("Gemini");
 			} catch {}
 			try {
 				const qk = GM_getValue("groqKey", "");
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -2172,12 +2178,115 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		micBtn.title = "Spracheingabe (Start/Stop)";
 		micBtn.onclick = toggleMic;
 
+		// Enter/Auto-Send
+		enterBtn = document.getElementById(UI_IDS.autoEnter);
+		if (!enterBtn) {
+			enterBtn = document.createElement("button");
+			enterBtn.id = UI_IDS.autoEnter;
+			styleRoundButton(enterBtn, 0, 52);
+			enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			enterBtn.onclick = () => {
+				autoSendEnabled = !autoSendEnabled;
+				updateAutoEnterBtn();
+				showToast(
+					autoSendEnabled
+						? "\u2705 Auto-Send aktiviert"
+						: "\u274c Auto-Send deaktiviert",
+					2000,
+				);
+			};
+			document.body.appendChild(enterBtn);
+		} else {
+			styleRoundButton(enterBtn, 0, 52);
+		}
+
+		// Paste
+		pasteBtn = document.getElementById(UI_IDS.paste);
+		if (!pasteBtn) {
+			pasteBtn = document.createElement("button");
+			pasteBtn.id = UI_IDS.paste;
+			styleRoundButton(pasteBtn, 0, 104);
+			pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			pasteBtn.textContent = "\uD83D\uDCCB";
+			pasteBtn.title = "Zwischenablage einf\u00fcgen";
+			pasteBtn.onclick = async () => {
+				try {
+					const text = await navigator.clipboard.readText();
+					if (text && text.trim()) {
+						const el = getUserTargetEditable();
+						if (el) {
+							const current = readPromptText(el);
+							const spacer =
+								current && !current.endsWith(" ") && !current.endsWith("\n")
+									? " "
+									: "";
+							await setViaPaste(el, current + spacer + text);
+							showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+						}
+					}
+				} catch (err) {
+					showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+				}
+			};
+			document.body.appendChild(pasteBtn);
+		} else {
+			styleRoundButton(pasteBtn, 0, 104);
+		}
+
+		// Copy
+		copyBtn = document.getElementById(UI_IDS.copy);
+		if (!copyBtn) {
+			copyBtn = document.createElement("button");
+			copyBtn.id = UI_IDS.copy;
+			styleRoundButton(copyBtn, 0, 156);
+			copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			copyBtn.textContent = "\uD83D\uDCCE";
+			copyBtn.title = "Text kopieren";
+			copyBtn.onclick = () => {
+				const sel = window.getSelection();
+				if (sel && sel.toString().trim()) {
+					navigator.clipboard.writeText(sel.toString());
+					showToast("\uD83D\uDCCB Kopiert!", 1500);
+				} else {
+					const el = getUserTargetEditable();
+					if (el) {
+						const text = readPromptText(el);
+						if (text.trim()) {
+							navigator.clipboard.writeText(text);
+							showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+						}
+					}
+				}
+			};
+			document.body.appendChild(copyBtn);
+		} else {
+			styleRoundButton(copyBtn, 0, 156);
+		}
+
+		// CLEAR
+		clearBtn = document.getElementById(UI_IDS.clear);
+		if (!clearBtn) {
+			clearBtn = document.createElement("button");
+			clearBtn.id = UI_IDS.clear;
+			styleRoundButton(clearBtn, 0, 208);
+			document.body.appendChild(clearBtn);
+		} else {
+			styleRoundButton(clearBtn, 0, 208);
+		}
+		clearBtn.textContent = "❌";
+		clearBtn.style.color = "#c40000";
+		clearBtn.title = "Sprechblase leeren";
+		clearBtn.onclick = runClearPrompt;
+
 		// GEMINI TOGGLE
 		geminiToggleBtn = document.getElementById(UI_IDS.geminiToggle);
 		if (!geminiToggleBtn) {
 			geminiToggleBtn = document.createElement("button");
 			geminiToggleBtn.id = UI_IDS.geminiToggle;
-			styleRoundButton(geminiToggleBtn, 0, 52);
+			styleRoundButton(geminiToggleBtn, 0, 260);
 			geminiToggleBtn.addEventListener("click", async () => {
 				CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 				await Promise.resolve(
@@ -2193,32 +2302,18 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			});
 			document.body.appendChild(geminiToggleBtn);
 		} else {
-			styleRoundButton(geminiToggleBtn, 0, 52);
+			styleRoundButton(geminiToggleBtn, 0, 260);
 		}
-
-		clearBtn = document.getElementById(UI_IDS.clear);
-		if (!clearBtn) {
-			clearBtn = document.createElement("button");
-			clearBtn.id = UI_IDS.clear;
-			styleRoundButton(clearBtn, 0, 104);
-			document.body.appendChild(clearBtn);
-		} else {
-			styleRoundButton(clearBtn, 0, 104);
-		}
-		clearBtn.textContent = "❌";
-		clearBtn.style.color = "#c40000";
-		clearBtn.title = "Sprechblase leeren";
-		clearBtn.onclick = runClearPrompt;
 
 		// PROMPT Frank
 		promptBtn = document.getElementById(UI_IDS.prompt);
 		if (!promptBtn) {
 			promptBtn = document.createElement("button");
 			promptBtn.id = UI_IDS.prompt;
-			styleRoundButton(promptBtn, 0, 156);
+			styleRoundButton(promptBtn, 0, 312);
 			document.body.appendChild(promptBtn);
 		} else {
-			styleRoundButton(promptBtn, 0, 156);
+			styleRoundButton(promptBtn, 0, 312);
 		}
 		promptBtn.textContent = "✨";
 		promptBtn.title = "Prompt (für Frank) einbetten";
@@ -2229,10 +2324,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		if (!promptBtn2) {
 			promptBtn2 = document.createElement("button");
 			promptBtn2.id = UI_IDS.prompt2;
-			styleRoundButton(promptBtn2, 0, 208);
+			styleRoundButton(promptBtn2, 0, 364);
 			document.body.appendChild(promptBtn2);
 		} else {
-			styleRoundButton(promptBtn2, 0, 208);
+			styleRoundButton(promptBtn2, 0, 364);
 		}
 		promptBtn2.textContent = "🪄";
 		promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
@@ -2240,12 +2335,13 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 
 		if (!silent) {
 			showToast(
-				"✅ Script aktiv. 🎙️ + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
+				"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \uD83D\uDCCE + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
 				2800,
 			);
 		}
@@ -2257,11 +2353,23 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 	// SPA / React kann DOM austauschen: UI regelmäßig sicherstellen
 	const ensureUI = () => {
 		const hasMic = !!document.getElementById(UI_IDS.mic);
+		const hasEnter = !!document.getElementById(UI_IDS.autoEnter);
+		const hasPaste = !!document.getElementById(UI_IDS.paste);
+		const hasCopy = !!document.getElementById(UI_IDS.copy);
 		const hasGT = !!document.getElementById(UI_IDS.geminiToggle);
 		const hasClear = !!document.getElementById(UI_IDS.clear);
 		const hasP1 = !!document.getElementById(UI_IDS.prompt);
 		const hasP2 = !!document.getElementById(UI_IDS.prompt2);
-		if (!hasMic || !hasGT || !hasClear || !hasP1 || !hasP2)
+		if (
+			!hasMic ||
+			!hasEnter ||
+			!hasPaste ||
+			!hasCopy ||
+			!hasGT ||
+			!hasClear ||
+			!hasP1 ||
+			!hasP2
+		)
 			boot({ silent: true });
 	};
 
