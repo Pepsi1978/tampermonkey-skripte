@@ -1,12 +1,12 @@
 {
-  "capturedAt": "2026-03-28T01:02:42Z",
+  "capturedAt": "2026-03-28T01:07:13Z",
   "dbPath": "/Users/frank/.openclaw/lcm.db",
   "dbSizeBytes": 6189056,
   "dbSha256": "c2cea8543bb6104dfae54a216deaec2b8c4e86a36e5483b0d21988f1f4263a7d",
   "counts": {
     "conversations": 1,
-    "messages": 600,
-    "summaries": 14
+    "messages": 620,
+    "summaries": 15
   },
   "pluginEntry": {
     "enabled": true,

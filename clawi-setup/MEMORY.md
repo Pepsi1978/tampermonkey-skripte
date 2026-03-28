@@ -44,6 +44,7 @@ Diese Direktiven sind nicht optional, sondern Grundlage meines Handelns.
 - Dazu gehören ausdrücklich auch wichtige Installations- und Wiederherstellungsinformationen, z. B. dass `lossless-claw` installiert und als Context Engine genutzt werden soll.
 - Auch die von `lossless-claw` gespeicherten Clawi-Daten sollen nach Möglichkeit in `clawi-setup` gesichert werden, insbesondere die LCM-Datenbank `~/.openclaw/lcm.db` samt Konfigurations-Metadaten.
 - Der Nutzer hat später ausdrücklich entschieden, dass die rohe `lcm.db` nach Entfernung des API-Key-Leaks wieder bewusst mit nach GitHub gesichert werden darf.
+- Vor jedem Auto-Push von `clawi-setup` soll ein Secret-Scanner laufen, der auch `lossless-claw/lcm.db` auf typische Schlüssel-/Token-Muster prüft und den Push bei Treffern blockiert.
 - Diese Erlaubnis gilt als dauerhaft erteilt für `clawi-setup`; für andere Repos oder externe Aktionen außerhalb dieses Rahmens gilt sie nicht automatisch.
 
 ## Gedächtnisregel

@@ -9,6 +9,7 @@ const WORKSPACE = path.join(HOME, '.openclaw', 'workspace');
 const STATE_FILE = path.join(WORKSPACE, 'hooks', 'sync-state.json');
 const LOG_FILE = path.join(WORKSPACE, 'hooks', 'runtime.log');
 const SYNC_SCRIPT = path.join(CLAWI_SETUP, 'sync-clawi.sh');
+const SECRET_REGEX = String.raw`(AIza[0-9A-Za-z_-]{35}|sk-proj-[A-Za-z0-9_-]{20,}|sk-ant-(?:api03-)?[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{30,}|github_pat_[A-Za-z0-9_]{40,}|xox[baprs]-[A-Za-z0-9-]{20,}|-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----)`;
 
 function log(message: string) {
   mkdirSync(path.dirname(LOG_FILE), { recursive: true });
@@ -46,6 +47,31 @@ function writeState(patch: Record<string, unknown>) {
   writeFileSync(STATE_FILE, JSON.stringify(next, null, 2) + '\n');
 }
 
+function secretScan() {
+  const findings: string[] = [];
+
+  try {
+    const textHits = sh('bash', ['-lc', `rg -n -I -S -P ${JSON.stringify(SECRET_REGEX)} ${JSON.stringify(CLAWI_SETUP)} --glob '!*.db' --glob '!.git' || true`]);
+    if (textHits) findings.push(...textHits.split(/\r?\n/).filter(Boolean));
+  } catch (error: any) {
+    log(`Secret scan warning (text phase): ${error?.message || String(error)}`);
+  }
+
+  const lcmDb = path.join(CLAWI_SETUP, 'lossless-claw', 'lcm.db');
+  if (existsSync(lcmDb)) {
+    try {
+      const dbHits = sh('bash', ['-lc', `strings -a ${JSON.stringify(lcmDb)} | rg -n -P ${JSON.stringify(SECRET_REGEX)} || true`]);
+      if (dbHits) {
+        findings.push(...dbHits.split(/\r?\n/).filter(Boolean).map((line) => `${lcmDb}:${line}`));
+      }
+    } catch (error: any) {
+      log(`Secret scan warning (lcm.db phase): ${error?.message || String(error)}`);
+    }
+  }
+
+  return findings;
+}
+
 export default async function handler(event: any) {
   if (event?.type !== 'command') return;
   if (!['new', 'reset', 'stop'].includes(event?.action)) return;
@@ -73,6 +99,14 @@ export default async function handler(event: any) {
     if (foreignChanges.length > 0) {
       writeState({ last_result: 'skipped-git-push-foreign-dirty' });
       log('Repo has unrelated changes; skipped auto commit/push to avoid collateral effects.');
+      return;
+    }
+
+    const findings = secretScan();
+    if (findings.length > 0) {
+      const preview = findings.slice(0, 8).join(' | ');
+      writeState({ last_result: 'skipped-git-push-secret-scan' });
+      log(`Secret scan blocked auto-push. Findings=${findings.length}. Preview: ${preview}`);
       return;
     }
 
