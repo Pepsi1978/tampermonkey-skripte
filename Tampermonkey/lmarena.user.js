@@ -388,6 +388,10 @@
 	let clearBtn = null;
 	let promptBtn = null;
 	let promptBtn2 = null;
+	let autoSendEnabled = false;
+	let enterBtn = null;
+	let copyBtn = null;
+	let pasteBtn = null;
 
 	function isRoleTextbox(el) {
 		return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
@@ -1462,6 +1466,39 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 			geminiToggleBtn.style.color = "#fff";
 			geminiToggleBtn.title = "Gemini-Korrektur AUS – Klicken zum Aktivieren";
 		}
+	}
+
+	function updateAutoEnterBtn() {
+		if (!enterBtn) return;
+		enterBtn.textContent = "\u23CE";
+		enterBtn.style.fontWeight = "bold";
+		enterBtn.style.fontSize = "18px";
+		if (autoSendEnabled) {
+			enterBtn.style.background = "#f97316";
+			enterBtn.style.color = "#fff";
+			enterBtn.title =
+				"Auto-Send AN \u2013 Spracheingabe wird automatisch abgeschickt";
+		} else {
+			enterBtn.style.background = "#ffffff";
+			enterBtn.style.color = "#333";
+			enterBtn.title = "Auto-Send AUS \u2013 Klicken zum Aktivieren";
+		}
+	}
+
+	function triggerAutoSend(el) {
+		if (!autoSendEnabled || !el) return;
+		setTimeout(() => {
+			el.dispatchEvent(
+				new KeyboardEvent("keydown", {
+					key: "Enter",
+					code: "Enter",
+					keyCode: 13,
+					which: 13,
+					bubbles: true,
+					cancelable: true,
+				}),
+			);
+		}, 300);
 	}
 
 	function setMicState(state, msg = "") {
