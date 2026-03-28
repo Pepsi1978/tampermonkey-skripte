@@ -40,22 +40,6 @@ fun ThreeDCard(
     Box(
         modifier = modifier
             .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDrag = { change, _ ->
-                        val centerX = size.width / 2f
-                        val centerY = size.height / 2f
-                        rotationY = ((change.position.x - centerX) / centerX * 8f)
-                            .coerceIn(-8f, 8f)
-                        rotationX = (-(change.position.y - centerY) / centerY * 8f)
-                            .coerceIn(-8f, 8f)
-                    },
-                    onDragEnd = {
-                        rotationX = 0f
-                        rotationY = 0f
-                    }
-                )
-            }
             .graphicsLayer {
                 this.rotationX = animatedRotationX
                 this.rotationY = animatedRotationY

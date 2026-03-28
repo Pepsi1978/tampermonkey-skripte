@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -149,18 +149,13 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
                     }
                 }
 
-                // Category cards — horizontal scroll with overscroll bounce
+                // Category cards — LazyRow for reliable horizontal scroll
                 item {
-                    val scrollState = rememberScrollState()
-                    Row(
-                        modifier = Modifier
-                            .horizontalScroll(scrollState)
-                            .padding(horizontal = 4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        // Wide spacer so even 2 items have scroll room for bounce
-                        Spacer(modifier = Modifier.width(60.dp))
-                        blocks.forEachIndexed { index, block ->
+                        itemsIndexed(blocks) { index, block ->
                             AdviceCategoryCard(
                                 block = block,
                                 isSelected = index == uiState.selectedCategoryIndex,
@@ -170,24 +165,6 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
                                 }
                             )
                         }
-                        Spacer(modifier = Modifier.width(60.dp))
-                    }
-
-                    // Auto-center: scroll to start position after composition
-                    androidx.compose.runtime.LaunchedEffect(blocks.size) {
-                        if (blocks.isNotEmpty()) {
-                            scrollState.scrollTo(40)
-                        }
-                    }
-
-                    if (blocks.size > 3) {
-                        Text(
-                            "\u2190 scrollen \u2192",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
-                        )
                     }
                 }
 
