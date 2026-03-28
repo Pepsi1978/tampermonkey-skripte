@@ -1,5 +1,6 @@
 package com.entropyjournal.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -73,13 +74,14 @@ fun AdviceCategoryCard(
         NeonCyan
     }
 
-    ThreeDCard(
-        modifier = modifier.width(100.dp),
+    GlassCard(
+        modifier = modifier
+            .width(110.dp)
+            .clickable { onClick() },
         glowColor = if (isSelected) categoryColor else categoryColor.copy(alpha = 0.3f),
-        onClick = onClick
+        contentPadding = 8.dp
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
