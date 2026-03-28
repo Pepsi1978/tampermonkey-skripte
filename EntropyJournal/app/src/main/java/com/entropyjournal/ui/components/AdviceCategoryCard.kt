@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -90,7 +91,7 @@ fun AdviceCategoryCard(
 
     GlassCard(
         modifier = modifier
-            .width(90.dp)
+            .width(110.dp)
             .height(100.dp)
             .clickable { onClick() },
         glowColor = if (isSelected) categoryColor else categoryColor.copy(alpha = 0.3f),
@@ -99,7 +100,9 @@ fun AdviceCategoryCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(horizontal = 2.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 2.dp)
         ) {
             Icon(
                 imageVector = getIconForCategory(block.categoryIcon),

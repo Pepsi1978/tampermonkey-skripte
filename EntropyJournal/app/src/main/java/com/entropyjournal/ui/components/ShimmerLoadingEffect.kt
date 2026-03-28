@@ -43,14 +43,13 @@ fun ShimmerLoadingEffect(
 
     val baseColor = MaterialTheme.colorScheme.surfaceVariant
     val highlightColor = if (isDark) {
-        MaterialTheme.colorScheme.surface
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
     } else {
-        MaterialTheme.colorScheme.background
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f)
     }
-    val shimmerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
 
     val shimmerBrush = Brush.linearGradient(
-        colors = listOf(baseColor, highlightColor, shimmerColor, highlightColor, baseColor),
+        colors = listOf(baseColor, baseColor, highlightColor, baseColor, baseColor),
         start = Offset(translateAnim - 500f, 0f),
         end = Offset(translateAnim, 0f)
     )
