@@ -226,6 +226,24 @@
 		});
 	}
 
+	// API-Key Status bei Start prüfen
+	setTimeout(async () => {
+		try {
+			const missing = [];
+			try {
+				const gk = await Promise.resolve(gmGetValue(GEMINI_KEY_STORAGE, ""));
+				if (!gk || gk === "hier") missing.push("Gemini");
+			} catch {}
+			try {
+				const qk = await Promise.resolve(gmGetValue("groqKey", ""));
+				if (!qk) missing.push("Groq");
+			} catch {}
+			if (missing.length > 0) {
+				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+			}
+		} catch {}
+	}, 2000);
+
 	// Gespeicherten Auto-Korrektur-Status laden
 	(async () => {
 		if (gmGetValue) {

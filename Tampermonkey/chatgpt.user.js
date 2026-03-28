@@ -183,6 +183,24 @@
     } catch (e) { console.debug("[TM] registerMenus error:", e); }
   })();
 
+  // API-Key Status bei Start prüfen
+  setTimeout(() => {
+    try {
+      const missing = [];
+      try {
+        const gk = _tmGetValue("geminiKey", "");
+        if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+      } catch {}
+      try {
+        const qk = _tmGetValue("groqKey", "");
+        if (!qk) missing.push("Groq");
+      } catch {}
+      if (missing.length > 0) {
+        showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+      }
+    } catch {}
+  }, 2000);
+
   const initialAutoGeminiCorrection =
     (typeof GM_getValue === "function" ? GM_getValue("autoGeminiCorrection", true) : true) !== false;
 

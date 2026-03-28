@@ -114,6 +114,16 @@
 		reg("🗑️ Groq-Key löschen", clearGroqKey);
 	})();
 
+	// API-Key Status bei Start prüfen
+	setTimeout(() => {
+		try {
+			const qk = GM_getValue("groqKey", "");
+			if (!qk) {
+				showToast("⚠️ Groq-Key nicht gesetzt.\nTampermonkey-Menü → Groq-Key setzen/ändern.", 8000);
+			}
+		} catch {}
+	}, 2000);
+
 	const supportedSpeech = !!(
 		navigator.mediaDevices && navigator.mediaDevices.getUserMedia
 	);

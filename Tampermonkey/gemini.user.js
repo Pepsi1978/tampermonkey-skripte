@@ -209,6 +209,24 @@ Speichere nur diese Punkte als dauerhafte Erinnerungen, exakt als einfache Sätz
 		});
 	})();
 
+	// API-Key Status bei Start prüfen
+	setTimeout(() => {
+		try {
+			const missing = [];
+			try {
+				const gk = GM_getValue(API_KEY_STORAGE_KEY, "");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+			} catch {}
+			try {
+				const qk = GM_getValue("groqKey", "");
+				if (!qk) missing.push("Groq");
+			} catch {}
+			if (missing.length > 0) {
+				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+			}
+		} catch {}
+	}, 2000);
+
 	// ============================================================
 	// DOMÄNEN-FINDER TUNING
 	// ============================================================
