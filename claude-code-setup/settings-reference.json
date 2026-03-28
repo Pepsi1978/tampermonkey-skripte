@@ -95,6 +95,7 @@
 			"mcp__plugin_episodic-memory_episodic-memory__read",
 			"mcp__plugin_episodic-memory_episodic-memory__search",
 			"mcp__plugin_superpowers-chrome_chrome__use_browser",
+			"mcp__sequential-thinking__sequentialthinking",
 			"mcp__claude_ai_Gmail__gmail_create_draft",
 			"mcp__claude_ai_Gmail__gmail_get_profile",
 			"mcp__claude_ai_Gmail__gmail_list_drafts",
@@ -175,26 +176,8 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/semantic-search-check.ps1\"",
+						"command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/semantic-search-check.ps1\"",
 						"timeout": 10
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/mirror-check.ps1\"",
-						"timeout": 5
-					}
-				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/doctor-lite.ps1\"",
-						"timeout": 5
 					}
 				]
 			}
@@ -262,17 +245,6 @@
 						"type": "command",
 						"command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/config-guard.ps1\"",
 						"timeout": 5
-					}
-				]
-			},
-			{
-				"matcher": "Bash",
-				"hooks": [
-					{
-						"type": "command",
-						"command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"$USERPROFILE/.claude/hooks/graph-reindex-on-push.ps1\"",
-						"timeout": 10,
-						"async": true
 					}
 				]
 			}
@@ -450,16 +422,6 @@
 						"async": true
 					}
 				]
-			},
-			{
-				"hooks": [
-					{
-						"type": "command",
-						"command": "pwsh -NoProfile -File \"$USERPROFILE/.claude/hooks/sync-hooks-reference.ps1\"",
-						"timeout": 10,
-						"async": true
-					}
-				]
 			}
 		]
 	},
@@ -489,7 +451,7 @@
 		"superpowers-chrome@superpowers-marketplace": true,
 		"claude-session-driver@superpowers-marketplace": true,
 		"code-review@claude-plugins-official": true,
-		"playwright@claude-plugins-official": false,
+		"playwright@claude-plugins-official": true,
 		"explanatory-output-style@claude-plugins-official": true,
 		"superpowers-lab@superpowers-marketplace": true,
 		"superpowers-developing-for-claude-code@superpowers-marketplace": true,
@@ -550,10 +512,14 @@
 		"tech-stack@context-engineering-kit": true,
 		"mcp@context-engineering-kit": true,
 		"fpf@context-engineering-kit": true,
+		"claude-code-lsps@boostvolt": false,
 		"xclaude-plugin@xclaude-plugin-marketplace": false,
 		"claude-reflect@claude-reflect-marketplace": true,
 		"coderabbit@claude-plugins-official": true,
-		"second-opinion@trailofbits": true
+		"aikido@claude-plugins-official": true,
+		"spec-driven-development@context-engineering-kit": false,
+		"context-kit@FlineDev": false,
+		"second-opinion@trailofbits": false
 	},
 	"extraKnownMarketplaces": {
 		"superpowers-marketplace": {
@@ -593,12 +559,7 @@
 				"repo": "NeoLabHQ/context-engineering-kit"
 			}
 		},
-		"boostvolt": {
-			"source": {
-				"source": "github",
-				"repo": "boostvolt/claude-code-lsps"
-			}
-		},
+		"_comment_boostvolt": "Removed: boostvolt/claude-code-lsps plugin not found (2026-03-28)",
 		"xclaude-plugin-marketplace": {
 			"source": {
 				"source": "github",
@@ -623,12 +584,7 @@
 				"repo": "trailofbits/skills-curated"
 			}
 		},
-		"FlineDev": {
-			"source": {
-				"source": "github",
-				"repo": "FlineDev/context-kit"
-			}
-		}
+		"_comment_FlineDev": "Removed: FlineDev/context-kit repo cannot be cloned (2026-03-28)"
 	},
 	"language": "de",
 	"alwaysThinkingEnabled": true,

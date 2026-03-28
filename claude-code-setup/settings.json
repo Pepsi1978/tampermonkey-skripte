@@ -529,7 +529,7 @@
 		"testing-handbook-skills@trailofbits": true,
 		"variant-analysis@trailofbits": true,
 		"insecure-defaults@trailofbits": true,
-		"second-opinion@trailofbits": true,
+		"second-opinion@trailofbits": false,
 		"yara-authoring@trailofbits": true,
 		"git-cleanup@trailofbits": true,
 		"workflow-skill-design@trailofbits": true,
@@ -614,24 +614,14 @@
 				"repo": "BayramAnnakov/claude-reflect"
 			}
 		},
-		"boostvolt": {
-			"source": {
-				"source": "github",
-				"repo": "boostvolt/claude-code-lsps"
-			}
-		},
+		"_comment_boostvolt": "Removed: boostvolt/claude-code-lsps plugin not found (2026-03-28)",
 		"trailofbits/skills-curated": {
 			"source": {
 				"source": "github",
 				"repo": "trailofbits/skills-curated"
 			}
 		},
-		"FlineDev": {
-			"source": {
-				"source": "github",
-				"repo": "FlineDev/context-kit"
-			}
-		}
+		"_comment_FlineDev": "Removed: FlineDev/context-kit repo cannot be cloned (2026-03-28)"
 	},
 	"language": "de",
 	"alwaysThinkingEnabled": true,
