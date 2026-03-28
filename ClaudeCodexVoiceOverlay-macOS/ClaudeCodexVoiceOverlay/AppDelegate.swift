@@ -71,6 +71,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panel.onWClicked = { [weak self] in self?.whisperUndo() }
         panel.onGClicked = { [weak self] in self?.toggleGemini() }
         panel.onBtwClicked = { [weak self] in self?.toggleBtwRecording() }
+        panel.onCopyClicked = { [weak self] in
+            InputController.copySelection()
+            self?.panel.flashCopyButton()
+        }
+        panel.onPasteClicked = { [weak self] in
+            guard let self = self else { return }
+            InputController.pasteClipboard()
+            self.panel.flashPasteButton()
+            self.hasPastedText = true
+            if self.autoEnterEnabled {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    InputController.pressReturn()
+                    self.hasPastedText = false
+                }
+            }
+        }
         panel.onEnterClicked = { [weak self] in self?.handleEnterClick() }
 
         // Setup menu bar icon
@@ -261,10 +277,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         isProcessing = false
 
         if wasBtw {
-            panel.setBtwMicState(.idle)
+            panel.setBtwMicState(.success)
         } else {
-            panel.setMicState(.idle)
+            panel.setMicState(.success)
         }
+        scheduleReset(wasBtw: wasBtw)
         #if DEBUG
         NSLog("Text eingefuegt")
         #endif

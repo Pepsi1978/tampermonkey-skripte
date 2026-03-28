@@ -52,6 +52,27 @@ final class InputController {
         }
     }
 
+    /// Copies the current selection in the target app via Cmd+C
+    static func copySelection() {
+        activateTargetApp()
+        usleep(50_000) // 50ms
+        sendKeyCombo(keyCode: 0x08, flags: .maskCommand) // Cmd+C
+    }
+
+    /// Pastes clipboard content in the target app via Cmd+V
+    static func pasteClipboard() {
+        activateTargetApp()
+        usleep(50_000) // 50ms
+        sendKeyCombo(keyCode: 0x09, flags: .maskCommand) // Cmd+V
+    }
+
+    /// Sends Return key to the target app
+    static func pressReturn() {
+        activateTargetApp()
+        usleep(100_000) // 100ms
+        sendKeyCombo(keyCode: 0x24, flags: []) // Return
+    }
+
     /// Tracks the last active target app so we activate the correct one
     static var lastActiveTargetBundleID: String?
 
