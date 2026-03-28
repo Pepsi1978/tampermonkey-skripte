@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude V.1.3.5
+// @name         Claude V.1.3.6
 // @namespace    https://claude.ai/
-// @version      1.3.5
+// @version      1.3.6
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze). Fix: strengere Prompt-Feld-Erkennung (kein Seitentext mehr).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -278,10 +278,24 @@
 
 	function readPromptText(el) {
 		if (!el) return "";
-		let v = "";
-		if (isTextInput(el)) v = el.value || "";
-		// Für ProseMirror ist innerText oft der verlässlichste Weg, Newlines zu bekommen
-		if (!v) v = el.innerText || "";
+		if (isTextInput(el)) return cleanText(el.value || "");
+
+		// ProseMirror: nur echte <p>-Absätze lesen, Placeholder/Chips/Greeting ignorieren
+		const pm = getProseMirrorRoot(el);
+		if (pm) {
+			const paragraphs = pm.querySelectorAll(":scope > p");
+			if (paragraphs.length > 0) {
+				const text = Array.from(paragraphs)
+					.map((p) => p.innerText || "")
+					.join("\n");
+				const cleaned = cleanText(text);
+				if (cleaned) return cleaned;
+			}
+			return "";
+		}
+
+		// Fallback für andere contenteditable-Elemente
+		let v = el.innerText || "";
 		if (!v) v = el.textContent || "";
 		return cleanText(v);
 	}
