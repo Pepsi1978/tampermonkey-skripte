@@ -15,6 +15,8 @@ private extension NSColor {
     static let btnX = NSColor(hex: "#E53935")
     static let btnXPressed = NSColor(hex: "#FF6666")
     static let btnMicIdle = NSColor(hex: "#2A5DA8")
+    static let btnCopy = NSColor(red: 0x29/255.0, green: 0xB6/255.0, blue: 0xF6/255.0, alpha: 1) // #29B6F6 sky blue
+    static let btnPaste = NSColor(red: 0xAB/255.0, green: 0x47/255.0, blue: 0xBC/255.0, alpha: 1) // #AB47BC purple
 
     convenience init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
@@ -134,6 +136,8 @@ final class OverlayPanel: NSPanel {
     let wButton: RoundButton
     let gButton: RoundButton
     let enterButton: RoundButton
+    let copyButton: RoundButton
+    let pasteButton: RoundButton
     private var pulseTimer: Timer?
     private var btwPulseTimer: Timer?
     private var xButtonCooldown = false
@@ -152,19 +156,22 @@ final class OverlayPanel: NSPanel {
     var onWClicked: (() -> Void)?
     var onGClicked: (() -> Void)?
     var onEnterClicked: (() -> Void)?
+    var onCopyClicked: (() -> Void)?
+    var onPasteClicked: (() -> Void)?
 
     init() {
         let btnSize: CGFloat = 40
         let micSize: CGFloat = 52
         let gap: CGFloat = 8
         let panelWidth: CGFloat = micSize + 20
-        // Height: 4 small buttons + 2 large mic buttons + 5 gaps + padding (16 top + 16 bottom)
-        let panelHeight: CGFloat = btnSize * 4 + micSize * 2 + gap * 5 + 32
+        // Height: 6 small buttons + 2 large mic buttons + 7 gaps + padding (16 top + 16 bottom)
+        // = 40*6 + 52*2 + 8*7 + 32 = 240 + 104 + 56 + 32 = 432
+        let panelHeight: CGFloat = btnSize * 6 + micSize * 2 + gap * 7 + 32
 
         // Create buttons
         xButton = RoundButton(label: "X", color: .btnX)
-        btwButton = RoundButton(label: "", color: .btnBtwIdle)
-        btwButton.symbolImage = NSImage(systemSymbolName: "mic.fill", accessibilityDescription: "BTW Microphone")
+        btwButton = RoundButton(label: "BTW", color: .btnBtwIdle)
+        btwButton.labelFont = .boldSystemFont(ofSize: 11)
         btwButton.useSquareShape = true
         micButton = RoundButton(label: "", color: .btnMicIdle)
         micButton.symbolImage = NSImage(systemSymbolName: "mic.fill", accessibilityDescription: "Microphone")
@@ -172,6 +179,10 @@ final class OverlayPanel: NSPanel {
         wButton = RoundButton(label: "W", color: .btnIdle)
         gButton = RoundButton(label: "G", color: .toggleOff)
         enterButton = RoundButton(label: "\u{23CE}", color: .toggleOff)
+        copyButton = RoundButton(label: "", color: .btnCopy)
+        copyButton.symbolImage = NSImage(systemSymbolName: "doc.on.doc", accessibilityDescription: "Copy")
+        pasteButton = RoundButton(label: "", color: .btnPaste)
+        pasteButton.symbolImage = NSImage(systemSymbolName: "doc.on.clipboard", accessibilityDescription: "Paste")
 
         // Calculate screen position (right edge, vertically centered)
         let screenFrame = NSScreen.main?.visibleFrame ?? NSRect(x: 0, y: 0, width: 1920, height: 1080)
@@ -211,27 +222,34 @@ final class OverlayPanel: NSPanel {
         self.contentView?.layer?.backgroundColor = NSColor(white: 0.12, alpha: 0.9).cgColor
 
         // Layout buttons vertically (in AppKit, y=0 is bottom)
-        // Bottom to top: Enter, G, Mic(big), BTW-Mic(big), W, X
+        // Visual order top→bottom: Mic(big) → BTW(big) → W → G → X → Copy → Paste → Enter
+        // AppKit order bottom→top: Enter → Paste → Copy → X → G → W → BTW(big) → Mic(big)
         let smallInset = (panelWidth - btnSize) / 2
         let micInset = (panelWidth - micSize) / 2
         var yPos: CGFloat = 16
         enterButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
         yPos += btnSize + gap
-        gButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
+        pasteButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
         yPos += btnSize + gap
-        micButton.frame = NSRect(x: micInset, y: yPos, width: micSize, height: micSize)
-        yPos += micSize + gap
-        btwButton.frame = NSRect(x: micInset, y: yPos, width: micSize, height: micSize)
-        yPos += micSize + gap
-        wButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
+        copyButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
         yPos += btnSize + gap
         xButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
+        yPos += btnSize + gap
+        gButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
+        yPos += btnSize + gap
+        wButton.frame = NSRect(x: smallInset, y: yPos, width: btnSize, height: btnSize)
+        yPos += btnSize + gap
+        btwButton.frame = NSRect(x: micInset, y: yPos, width: micSize, height: micSize)
+        yPos += micSize + gap
+        micButton.frame = NSRect(x: micInset, y: yPos, width: micSize, height: micSize)
 
-        self.contentView?.addSubview(xButton)
-        self.contentView?.addSubview(btwButton)
         self.contentView?.addSubview(micButton)
+        self.contentView?.addSubview(btwButton)
         self.contentView?.addSubview(wButton)
         self.contentView?.addSubview(gButton)
+        self.contentView?.addSubview(xButton)
+        self.contentView?.addSubview(copyButton)
+        self.contentView?.addSubview(pasteButton)
         self.contentView?.addSubview(enterButton)
 
         xButton.onClick = { [weak self] in self?.onXClicked?() }
@@ -240,6 +258,8 @@ final class OverlayPanel: NSPanel {
         wButton.onClick = { [weak self] in self?.onWClicked?() }
         gButton.onClick = { [weak self] in self?.onGClicked?() }
         enterButton.onClick = { [weak self] in self?.onEnterClicked?() }
+        copyButton.onClick = { [weak self] in self?.onCopyClicked?() }
+        pasteButton.onClick = { [weak self] in self?.onPasteClicked?() }
 
         setupDragMonitors()
     }
@@ -310,6 +330,26 @@ final class OverlayPanel: NSPanel {
             }
         }
         return true
+    }
+
+    func flashCopyButton() {
+        copyButton.buttonColor = .btnIdle
+        copyButton.needsDisplay = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self = self else { return }
+            self.copyButton.buttonColor = .btnCopy
+            self.copyButton.needsDisplay = true
+        }
+    }
+
+    func flashPasteButton() {
+        pasteButton.buttonColor = .btnIdle
+        pasteButton.needsDisplay = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self = self else { return }
+            self.pasteButton.buttonColor = .btnPaste
+            self.pasteButton.needsDisplay = true
+        }
     }
 
     func setAutoEnterEnabled(_ enabled: Bool) {

@@ -54,6 +54,27 @@ final class TerminalController {
         }
     }
 
+    /// Copies the current selection in the terminal via Cmd+C
+    static func copySelection() {
+        activateTerminal()
+        usleep(50_000) // 50ms
+        sendKeyCombo(keyCode: 0x08, flags: .maskCommand) // Cmd+C
+    }
+
+    /// Pastes clipboard content into the terminal via Cmd+V
+    static func pasteClipboard() {
+        activateTerminal()
+        usleep(50_000) // 50ms
+        sendKeyCombo(keyCode: 0x09, flags: .maskCommand) // Cmd+V
+    }
+
+    /// Sends Return (Enter) to the terminal
+    static func pressReturn() {
+        activateTerminal()
+        usleep(100_000) // 100ms
+        sendKeyCombo(keyCode: 0x24, flags: []) // Return
+    }
+
     /// Brings the last active terminal app to the front so CGEvent reaches it
     static func activateTerminal() {
         // Prefer the terminal that was last in focus

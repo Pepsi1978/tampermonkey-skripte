@@ -70,6 +70,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panel.onBtwClicked = { [weak self] in self?.toggleBtwRecording() }
         panel.onEnterClicked = { [weak self] in self?.handleEnterClick() }
 
+        panel.onCopyClicked = { [weak self] in
+            TerminalController.copySelection()
+            self?.panel.flashCopyButton()
+        }
+
+        panel.onPasteClicked = { [weak self] in
+            guard let self = self else { return }
+            TerminalController.pasteClipboard()
+            self.panel.flashPasteButton()
+            self.hasPastedText = true
+            if self.autoEnterEnabled {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                    guard let self = self else { return }
+                    TerminalController.pressReturn()
+                    self.hasPastedText = false
+                }
+            }
+        }
+
         setupStatusItem()
 
         // Setup app watcher
