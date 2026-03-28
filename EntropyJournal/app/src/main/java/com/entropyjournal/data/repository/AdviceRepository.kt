@@ -48,6 +48,8 @@ GESAMTANALYSE (8–12 Sätze):
 - Wenn 3 Einträge vorliegen (z.B. Schlaf, Arbeit, KI-Projekte), müssen ALLE 3
   Themen in der Gesamtanalyse UND als eigene Kategorien mit Ratschlägen erscheinen.
 - Sei empathisch, direkt und konkret — keine Allgemeinplätze.
+- Schreibe in einfacher, klarer Sprache. Kurze Sätze. Keine Fremdwörter.
+  Jeder soll den Text sofort verstehen können, ohne nachzudenken.
 
 RATSCHLÄGE — FÜR JEDE KATEGORIE AUS JEDEM EINTRAG:
 - Jede Kategorie muss Ratschläge enthalten die sich auf KONKRETE Aussagen
@@ -115,7 +117,7 @@ JSON-Schema:
 }
 
 Regeln:
-- Schreibe auf Deutsch, klar und direkt, ohne Floskeln.
+- Schreibe auf Deutsch, einfach und direkt, ohne Floskeln und ohne Fremdwörter.
 - Jeder Ratschlag muss sich auf konkrete Muster aus den Einträgen beziehen.
 - Mindestens 3 Ratschläge pro Kategorie, gerne mehr (5–8) wenn die Datenlage es hergibt.
 - Erstelle für JEDES erkannte Thema eine eigene Kategorie — auch wenn nur EIN Eintrag davon handelt.
