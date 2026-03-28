@@ -2460,6 +2460,21 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		enterBtn.onclick = () => {
 			autoSendEnabled = !autoSendEnabled;
 			updateAutoEnterBtn();
+			if (autoSendEnabled) {
+				const el = getUserTargetEditable ? getUserTargetEditable() : null;
+				if (el) {
+					const txt = typeof readPromptText === "function" ? readPromptText(el) : (el.value || el.textContent || "");
+					if (txt && txt.trim()) {
+						setTimeout(() => {
+							el.focus();
+							el.dispatchEvent(new KeyboardEvent("keydown", {
+								key: "Enter", code: "Enter", keyCode: 13, which: 13,
+								bubbles: true, cancelable: true
+							}));
+						}, 200);
+					}
+				}
+			}
 			showToast(
 				autoSendEnabled
 					? "\u2705 Auto-Send aktiviert"
@@ -2482,6 +2497,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 				if (text && text.trim()) {
 					const el = getUserTargetEditable();
 					if (el) {
+						el.focus();
 						const current = readPromptText(el);
 						const spacer =
 							current && !current.endsWith(" ") && !current.endsWith("\n")
