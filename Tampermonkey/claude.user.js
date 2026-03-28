@@ -2281,14 +2281,23 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 			if (autoSendEnabled) {
 				const el = getUserTargetEditable ? getUserTargetEditable() : null;
 				if (el) {
-					const txt = typeof readPromptText === "function" ? readPromptText(el) : (el.value || el.textContent || "");
+					const txt =
+						typeof readPromptText === "function"
+							? readPromptText(el)
+							: el.value || el.textContent || "";
 					if (txt && txt.trim()) {
 						setTimeout(() => {
 							el.focus();
-							el.dispatchEvent(new KeyboardEvent("keydown", {
-								key: "Enter", code: "Enter", keyCode: 13, which: 13,
-								bubbles: true, cancelable: true
-							}));
+							el.dispatchEvent(
+								new KeyboardEvent("keydown", {
+									key: "Enter",
+									code: "Enter",
+									keyCode: 13,
+									which: 13,
+									bubbles: true,
+									cancelable: true,
+								}),
+							);
 						}, 200);
 					}
 				}
@@ -2314,9 +2323,14 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 			try {
 				const text = await navigator.clipboard.readText();
 				if (text && text.trim()) {
-					const el = getUserTargetEditable();
+					const el = findPrompt() || getUserTargetEditable();
 					if (el) {
-						el.focus();
+						// ProseMirror needs click simulation, not just focus()
+						const pm = getProseMirrorRoot(el) || el;
+						pm.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+						pm.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+						pm.focus();
+						await new Promise((r) => setTimeout(r, 80));
 						const current = readPromptText(el);
 						const spacer =
 							current && !current.endsWith(" ") && !current.endsWith("\n")
@@ -2345,9 +2359,14 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 			if (sel && sel.toString().trim()) {
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
-				// Focus input field so Paste works next
+				// Focus input field so Paste works next (ProseMirror needs click simulation)
 				const _inputEl = findPrompt() || getUserTargetEditable();
-				if (_inputEl) _inputEl.focus();
+				if (_inputEl) {
+					const _pm = getProseMirrorRoot(_inputEl) || _inputEl;
+					_pm.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+					_pm.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+					_pm.focus();
+				}
 			} else {
 				const el = getUserTargetEditable();
 				if (el) {
