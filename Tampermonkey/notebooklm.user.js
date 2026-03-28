@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Notebook LM V.1.4.6
+// @name         Notebook LM V.1.5.0
 // @namespace    https://www.notebooklm.google.com/
-// @version      1.4.6
+// @version      1.5.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten links. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://notebooklm.google.com/*
 // @run-at       document-idle
@@ -174,14 +174,20 @@
 			const missing = [];
 			try {
 				const gk = GM_getValue(GEMINI_API_KEY_STORAGE, "");
-				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key"))
+					missing.push("Gemini");
 			} catch {}
 			try {
 				const qk = GM_getValue("groqKey", "");
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -1880,6 +1886,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 				removeLivePreview();
 				if (ok) {
 					setMicState("idle");
+					triggerAutoSend(el);
 					const preview = text.length > 80 ? text.slice(0, 80) + "…" : text;
 					showToast(
 						corrected ? "✨ Korrigiert & eingefügt" : "✅ " + preview,
@@ -2193,7 +2200,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		if (!micBtn.isConnected) document.body.appendChild(micBtn);
 
 		geminiToggleBtn = getOrCreateButton(UI_IDS.geminiToggle);
-		styleRoundButton(geminiToggleBtn, 0, 52);
+		styleRoundButton(geminiToggleBtn, 0, 260);
 		geminiToggleBtn.addEventListener("click", async () => {
 			CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 			await Promise.resolve(
@@ -2220,8 +2227,78 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		if (!geminiToggleBtn.isConnected)
 			document.body.appendChild(geminiToggleBtn);
 
+		// Enter/Auto-Send
+		enterBtn = getOrCreateButton(UI_IDS.autoEnter);
+		styleRoundButton(enterBtn, 0, 52);
+		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		enterBtn.onclick = () => {
+			autoSendEnabled = !autoSendEnabled;
+			updateAutoEnterBtn();
+			showToast(
+				autoSendEnabled
+					? "\u2705 Auto-Send aktiviert"
+					: "\u274c Auto-Send deaktiviert",
+				2000,
+			);
+		};
+		if (!enterBtn.isConnected) document.body.appendChild(enterBtn);
+
+		// Paste
+		pasteBtn = getOrCreateButton(UI_IDS.paste);
+		styleRoundButton(pasteBtn, 0, 104);
+		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		pasteBtn.textContent = pasteBtn.textContent || "\uD83D\uDCCB";
+		pasteBtn.title = "Zwischenablage einf\u00fcgen";
+		pasteBtn.onclick = async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				if (text && text.trim()) {
+					const el = getUserTargetEditable();
+					if (el) {
+						const current = readPromptText(el);
+						const spacer =
+							current && !current.endsWith(" ") && !current.endsWith("\n")
+								? " "
+								: "";
+						await setViaPaste(el, current + spacer + text);
+						showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+					}
+				}
+			} catch (err) {
+				showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+			}
+		};
+		if (!pasteBtn.isConnected) document.body.appendChild(pasteBtn);
+
+		// Copy
+		copyBtn = getOrCreateButton(UI_IDS.copy);
+		styleRoundButton(copyBtn, 0, 156);
+		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		copyBtn.textContent = copyBtn.textContent || "\uD83D\uDCCE";
+		copyBtn.title = "Text kopieren";
+		copyBtn.onclick = () => {
+			const sel = window.getSelection();
+			if (sel && sel.toString().trim()) {
+				navigator.clipboard.writeText(sel.toString());
+				showToast("\uD83D\uDCCB Kopiert!", 1500);
+			} else {
+				const el = getUserTargetEditable();
+				if (el) {
+					const text = readPromptText(el);
+					if (text.trim()) {
+						navigator.clipboard.writeText(text);
+						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+					}
+				}
+			}
+		};
+		if (!copyBtn.isConnected) document.body.appendChild(copyBtn);
+
 		clearBtn = getOrCreateButton(UI_IDS.clear);
-		styleRoundButton(clearBtn, 0, 104);
+		styleRoundButton(clearBtn, 0, 208);
 		clearBtn.textContent = clearBtn.textContent || "\u274C";
 		setUiStyle(clearBtn, "color", "#c40000");
 		clearBtn.title = "Sprechblase leeren";
@@ -2231,7 +2308,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
 		promptBtn = getOrCreateButton(UI_IDS.promptFrank);
-		styleRoundButton(promptBtn, 0, 156);
+		styleRoundButton(promptBtn, 0, 312);
 		promptBtn.textContent = promptBtn.textContent || "\u2728";
 		promptBtn.title = "Prompt (f\u00fcr Frank) einbetten";
 		promptBtn.onclick = runPromptBuilder;
@@ -2240,7 +2317,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		if (!promptBtn.isConnected) document.body.appendChild(promptBtn);
 
 		promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
-		styleRoundButton(promptBtn2, 0, 208);
+		styleRoundButton(promptBtn2, 0, 364);
 		promptBtn2.textContent = promptBtn2.textContent || "\uD83E\uDEA7";
 		promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
 		promptBtn2.onclick = runPromptBuilderGeneral;
@@ -2250,6 +2327,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 	}
@@ -2278,7 +2356,10 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 					!document.getElementById("tm-notebooklm-gemini-toggle") ||
 					!document.getElementById("tm-notebooklm-clear") ||
 					!document.getElementById("tm-notebooklm-prompt") ||
-					!document.getElementById("tm-notebooklm-prompt2")
+					!document.getElementById("tm-notebooklm-prompt2") ||
+					!document.getElementById("tm_notebooklm_btn_auto_enter") ||
+					!document.getElementById("tm_notebooklm_btn_copy") ||
+					!document.getElementById("tm_notebooklm_btn_paste")
 				)
 					scheduleEnsureUI();
 			});
@@ -2317,7 +2398,10 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 				!document.getElementById("tm-notebooklm-gemini-toggle") ||
 				!document.getElementById("tm-notebooklm-clear") ||
 				!document.getElementById("tm-notebooklm-prompt") ||
-				!document.getElementById("tm-notebooklm-prompt2")
+				!document.getElementById("tm-notebooklm-prompt2") ||
+				!document.getElementById("tm_notebooklm_btn_auto_enter") ||
+				!document.getElementById("tm_notebooklm_btn_copy") ||
+				!document.getElementById("tm_notebooklm_btn_paste")
 			)
 				scheduleEnsureUI();
 		}, 3000);

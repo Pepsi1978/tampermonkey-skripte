@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Grok V.1.3.7
+// @name         Grok V.1.4.0
 // @namespace    https://grok.com/
-// @version      1.3.7
+// @version      1.4.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) + Prompt-Builder. Mic/Buttons unten rechts. Mit Output-Preview.
 // @match        https://grok.com/*
 // @run-at       document-idle
@@ -168,14 +168,20 @@
 			const missing = [];
 			try {
 				const gk = GM_getValue(GEMINI_KEY_STORAGE, "");
-				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key"))
+					missing.push("Gemini");
 			} catch {}
 			try {
 				const qk = GM_getValue("groqKey", "");
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -507,7 +513,10 @@
 			el === geminiToggleBtn ||
 			el === clearBtn ||
 			el === promptBtn ||
-			el === promptBtn2
+			el === promptBtn2 ||
+			el === enterBtn ||
+			el === copyBtn ||
+			el === pasteBtn
 		)
 			return false;
 
@@ -1890,6 +1899,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 						corrected ? "✨ Korrigiert & eingefügt" : "✅ " + preview,
 						3000,
 					);
+					triggerAutoSend(el);
 				} else {
 					setMicState("error", "Text nicht übernommen");
 					showToast("❌ Eingabefeld hat Text nicht übernommen.", 5000);
@@ -2184,12 +2194,100 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			micBtn = micExisting;
 		}
 
+		// Enter/Auto-Send (über Mic)
+		const existingEnter = document.getElementById(UI_IDS.autoEnter);
+		if (!existingEnter) {
+			enterBtn = document.createElement("button");
+			enterBtn.id = UI_IDS.autoEnter;
+			styleRoundButton(enterBtn, 0, 52);
+			enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			enterBtn.addEventListener("click", () => {
+				autoSendEnabled = !autoSendEnabled;
+				updateAutoEnterBtn();
+				showToast(
+					autoSendEnabled
+						? "\u2705 Auto-Send aktiviert"
+						: "\u274c Auto-Send deaktiviert",
+					2000,
+				);
+			});
+			uiRoot.appendChild(enterBtn);
+		} else {
+			enterBtn = existingEnter;
+		}
+
+		// Paste (über Enter)
+		const existingPaste = document.getElementById(UI_IDS.paste);
+		if (!existingPaste) {
+			pasteBtn = document.createElement("button");
+			pasteBtn.id = UI_IDS.paste;
+			styleRoundButton(pasteBtn, 0, 104);
+			pasteBtn.textContent = "\uD83D\uDCCB";
+			pasteBtn.title = "Zwischenablage einf\u00fcgen";
+			pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			pasteBtn.addEventListener("click", async () => {
+				try {
+					const text = await navigator.clipboard.readText();
+					if (text && text.trim()) {
+						const el = getUserTargetEditable();
+						if (el) {
+							const current = readPromptText(el);
+							const spacer =
+								current && !current.endsWith(" ") && !current.endsWith("\n")
+									? " "
+									: "";
+							await setViaPaste(el, current + spacer + text);
+							showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+						}
+					}
+				} catch (err) {
+					showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+				}
+			});
+			uiRoot.appendChild(pasteBtn);
+		} else {
+			pasteBtn = existingPaste;
+		}
+
+		// Copy (über Paste)
+		const existingCopy = document.getElementById(UI_IDS.copy);
+		if (!existingCopy) {
+			copyBtn = document.createElement("button");
+			copyBtn.id = UI_IDS.copy;
+			styleRoundButton(copyBtn, 0, 156);
+			copyBtn.textContent = "\uD83D\uDCCE";
+			copyBtn.title = "Text kopieren";
+			copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+			copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+			copyBtn.addEventListener("click", () => {
+				const sel = window.getSelection();
+				if (sel && sel.toString().trim()) {
+					navigator.clipboard.writeText(sel.toString());
+					showToast("\uD83D\uDCCB Kopiert!", 1500);
+				} else {
+					const el = getUserTargetEditable();
+					if (el) {
+						const text = readPromptText(el);
+						if (text.trim()) {
+							navigator.clipboard.writeText(text);
+							showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+						}
+					}
+				}
+			});
+			uiRoot.appendChild(copyBtn);
+		} else {
+			copyBtn = existingCopy;
+		}
+
 		// Gemini Toggle
 		const existingGT = document.getElementById(UI_IDS.geminiToggle);
 		if (!existingGT) {
 			geminiToggleBtn = document.createElement("button");
 			geminiToggleBtn.id = UI_IDS.geminiToggle;
-			styleRoundButton(geminiToggleBtn, 0, 52);
+			styleRoundButton(geminiToggleBtn, 0, 260);
 			geminiToggleBtn.addEventListener("click", async () => {
 				CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 				await Promise.resolve(
@@ -2208,12 +2306,12 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			geminiToggleBtn = existingGT;
 		}
 
-		// Close (über Mic)
+		// Close (über Copy)
 		const clearExisting = document.getElementById(UI_IDS.clear);
 		if (!clearExisting) {
 			clearBtn = document.createElement("button");
 			clearBtn.id = UI_IDS.clear;
-			styleRoundButton(clearBtn, 0, 104);
+			styleRoundButton(clearBtn, 0, 208);
 			clearBtn.textContent = "❌";
 			clearBtn.style.color = "#c40000";
 			clearBtn.title = "Sprechblase leeren";
@@ -2221,7 +2319,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			uiRoot.appendChild(clearBtn);
 		} else {
 			clearBtn = clearExisting;
-			styleRoundButton(clearBtn, 0, 104);
+			styleRoundButton(clearBtn, 0, 208);
 		}
 
 		// Prompt (Frank)
@@ -2229,7 +2327,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		if (!p1Existing) {
 			promptBtn = document.createElement("button");
 			promptBtn.id = UI_IDS.prompt;
-			styleRoundButton(promptBtn, 0, 156);
+			styleRoundButton(promptBtn, 0, 312);
 			promptBtn.textContent = "✨";
 			promptBtn.title = "Prompt (für Frank) einbetten";
 			promptBtn.addEventListener("click", runPromptBuilder);
@@ -2243,7 +2341,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		if (!p2Existing) {
 			promptBtn2 = document.createElement("button");
 			promptBtn2.id = UI_IDS.prompt2;
-			styleRoundButton(promptBtn2, 0, 208);
+			styleRoundButton(promptBtn2, 0, 364);
 			promptBtn2.textContent = "🪄";
 			promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
 			promptBtn2.addEventListener("click", runPromptBuilderGeneral);
@@ -2254,6 +2352,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 	}
@@ -2297,7 +2396,11 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			const p1 = document.getElementById(UI_IDS.prompt);
 			const p2 = document.getElementById(UI_IDS.prompt2);
 			const t = document.getElementById(UI_IDS.toast);
-			if (!mic || !gt || !clear || !p1 || !p2 || !t) scheduleEnsureUI();
+			const ae = document.getElementById(UI_IDS.autoEnter);
+			const cp = document.getElementById(UI_IDS.copy);
+			const pa = document.getElementById(UI_IDS.paste);
+			if (!mic || !gt || !clear || !p1 || !p2 || !t || !ae || !cp || !pa)
+				scheduleEnsureUI();
 		});
 		_domObserver.observe(document.documentElement, {
 			childList: true,

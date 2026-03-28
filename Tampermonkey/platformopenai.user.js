@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Platform OAI V.1.3.8
+// @name         Platform OAI V.1.4.0
 // @namespace    https://www.platform.openai.com/
-// @version      1.3.8
+// @version      1.4.0
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf Google Search. Mic-Button fest unten rechts. Kein stilles Fallback. Mit Output-Preview.
 // @match        https://platform.openai.com/chat/*
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/platformopenai.user.js
@@ -44,6 +44,9 @@
 
 	const UI_IDS = {
 		mic: "tm-platformopenai-mic",
+		autoEnter: "tm_platformopenai_btn_auto_enter",
+		copy: "tm_platformopenai_btn_copy",
+		paste: "tm_platformopenai_btn_paste",
 		geminiToggle: "tm-platformopenai-gemini-toggle",
 		clear: "tm-platformopenai-clear",
 		promptFrank: "tm-platformopenai-prompt",
@@ -178,14 +181,20 @@
 			const missing = [];
 			try {
 				const gk = GM_getValue(STORAGE_KEYS.geminiApiKey, "");
-				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key"))
+					missing.push("Gemini");
 			} catch {}
 			try {
 				const qk = GM_getValue("groqKey", "");
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -381,6 +390,10 @@
 	let clearBtn = null;
 	let promptBtn = null;
 	let promptBtn2 = null;
+	let autoSendEnabled = false;
+	let enterBtn = null;
+	let copyBtn = null;
+	let pasteBtn = null;
 
 	function isRoleTextbox(el) {
 		return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
@@ -413,7 +426,10 @@
 			(typeof geminiToggleBtn !== "undefined" && el === geminiToggleBtn) ||
 			(typeof clearBtn !== "undefined" && el === clearBtn) ||
 			(typeof promptBtn !== "undefined" && el === promptBtn) ||
-			(typeof promptBtn2 !== "undefined" && el === promptBtn2)
+			(typeof promptBtn2 !== "undefined" && el === promptBtn2) ||
+			(typeof enterBtn !== "undefined" && el === enterBtn) ||
+			(typeof copyBtn !== "undefined" && el === copyBtn) ||
+			(typeof pasteBtn !== "undefined" && el === pasteBtn)
 		)
 			return false;
 
@@ -1453,6 +1469,39 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		}
 	}
 
+	function updateAutoEnterBtn() {
+		if (!enterBtn) return;
+		enterBtn.textContent = "\u23CE";
+		enterBtn.style.fontWeight = "bold";
+		enterBtn.style.fontSize = "18px";
+		if (autoSendEnabled) {
+			enterBtn.style.background = "#f97316";
+			enterBtn.style.color = "#fff";
+			enterBtn.title =
+				"Auto-Send AN \u2013 Spracheingabe wird automatisch abgeschickt";
+		} else {
+			enterBtn.style.background = "#ffffff";
+			enterBtn.style.color = "#333";
+			enterBtn.title = "Auto-Send AUS \u2013 Klicken zum Aktivieren";
+		}
+	}
+
+	function triggerAutoSend(el) {
+		if (!autoSendEnabled || !el) return;
+		setTimeout(() => {
+			el.dispatchEvent(
+				new KeyboardEvent("keydown", {
+					key: "Enter",
+					code: "Enter",
+					keyCode: 13,
+					which: 13,
+					bubbles: true,
+					cancelable: true,
+				}),
+			);
+		}, 300);
+	}
+
 	function setMicState(state, msg = "") {
 		if (!micBtn) return;
 		if (!micBtn.classList.contains("stt-mic-btn"))
@@ -1763,6 +1812,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 						corrected ? "✨ Korrigiert & eingefügt" : "✅ " + preview,
 						3000,
 					);
+					triggerAutoSend(el);
 				} else {
 					setMicState("error", "Text nicht übernommen");
 					showToast("❌ Eingabefeld hat Text nicht übernommen.", 5000);
@@ -2069,9 +2119,82 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		micBtn.addEventListener("click", toggleMic);
 		document.body.appendChild(micBtn);
 
+		// Enter/Auto-Send (über Mic)
+		enterBtn = document.createElement("button");
+		enterBtn.id = UI_IDS.autoEnter;
+		styleRoundButton(enterBtn, 0, 52);
+		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("click", () => {
+			autoSendEnabled = !autoSendEnabled;
+			updateAutoEnterBtn();
+			showToast(
+				autoSendEnabled
+					? "\u2705 Auto-Send aktiviert"
+					: "\u274c Auto-Send deaktiviert",
+				2000,
+			);
+		});
+		document.body.appendChild(enterBtn);
+
+		// Paste (über Enter)
+		pasteBtn = document.createElement("button");
+		pasteBtn.id = UI_IDS.paste;
+		styleRoundButton(pasteBtn, 0, 104);
+		pasteBtn.textContent = "\uD83D\uDCCB";
+		pasteBtn.title = "Zwischenablage einf\u00fcgen";
+		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("click", async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				if (text && text.trim()) {
+					const el = getUserTargetEditable();
+					if (el) {
+						const current = readPromptText(el);
+						const spacer =
+							current && !current.endsWith(" ") && !current.endsWith("\n")
+								? " "
+								: "";
+						await setViaPaste(el, current + spacer + text);
+						showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+					}
+				}
+			} catch (err) {
+				showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+			}
+		});
+		document.body.appendChild(pasteBtn);
+
+		// Copy (über Paste)
+		copyBtn = document.createElement("button");
+		copyBtn.id = UI_IDS.copy;
+		styleRoundButton(copyBtn, 0, 156);
+		copyBtn.textContent = "\uD83D\uDCCE";
+		copyBtn.title = "Text kopieren";
+		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("click", () => {
+			const sel = window.getSelection();
+			if (sel && sel.toString().trim()) {
+				navigator.clipboard.writeText(sel.toString());
+				showToast("\uD83D\uDCCB Kopiert!", 1500);
+			} else {
+				const el = getUserTargetEditable();
+				if (el) {
+					const text = readPromptText(el);
+					if (text.trim()) {
+						navigator.clipboard.writeText(text);
+						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+					}
+				}
+			}
+		});
+		document.body.appendChild(copyBtn);
+
 		geminiToggleBtn = document.createElement("button");
 		geminiToggleBtn.id = UI_IDS.geminiToggle;
-		styleRoundButton(geminiToggleBtn, 0, 52);
+		styleRoundButton(geminiToggleBtn, 0, 260);
 		geminiToggleBtn.addEventListener("click", async () => {
 			CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 			await Promise.resolve(
@@ -2089,7 +2212,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		clearBtn = document.createElement("button");
 		clearBtn.id = UI_IDS.clear;
-		styleRoundButton(clearBtn, 0, 104);
+		styleRoundButton(clearBtn, 0, 208);
 		clearBtn.textContent = "❌";
 		clearBtn.style.color = "#c40000";
 		clearBtn.title = "Sprechblase leeren";
@@ -2098,7 +2221,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		promptBtn = document.createElement("button");
 		promptBtn.id = UI_IDS.promptFrank;
-		styleRoundButton(promptBtn, 0, 156);
+		styleRoundButton(promptBtn, 0, 312);
 		promptBtn.textContent = "✨";
 		promptBtn.title = "Prompt (für Frank) einbetten";
 		promptBtn.addEventListener("click", runPromptBuilder);
@@ -2106,7 +2229,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		promptBtn2 = document.createElement("button");
 		promptBtn2.id = UI_IDS.promptGeneral;
-		styleRoundButton(promptBtn2, 0, 208);
+		styleRoundButton(promptBtn2, 0, 364);
 		promptBtn2.textContent = "🪄";
 		promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
 		promptBtn2.addEventListener("click", runPromptBuilderGeneral);
@@ -2114,6 +2237,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 		showToast(

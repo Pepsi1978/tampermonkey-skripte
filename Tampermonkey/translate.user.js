@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Translate V.1.4.6
+// @name         Translate V.1.5.0
 // @namespace    https://translate.google.com/
-// @version      1.4.6
+// @version      1.5.0
 // @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/translate.user.js
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/translate.user.js
 // @description  Speech-to-Text (DE) auf Google Translate. Mic-Button unten rechts. Kein stilles Fallback. Mit Output-Preview. API-Key wird in Tampermonkey gespeichert.
@@ -119,7 +119,10 @@
 		try {
 			const qk = GM_getValue("groqKey", "");
 			if (!qk) {
-				showToast("⚠️ Groq-Key nicht gesetzt.\nTampermonkey-Menü → Groq-Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ Groq-Key nicht gesetzt.\nTampermonkey-Menü → Groq-Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -307,6 +310,10 @@
 	// UI Button
 	let micBtn = null;
 	let clearBtn = null;
+	let autoSendEnabled = false;
+	let enterBtn = null;
+	let copyBtn = null;
+	let pasteBtn = null;
 
 	function isRoleTextbox(el) {
 		return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
@@ -735,7 +742,13 @@
 	// UI Button (BOTTOM RIGHT)
 	// ============================================================
 	// ── Button IDs (Watchdog) ──
-	const UI_IDS = { mic: "tm-translate-mic", clear: "tm-translate-clear" };
+	const UI_IDS = {
+		mic: "tm-translate-mic",
+		clear: "tm-translate-clear",
+		autoEnter: "tm-translate-auto-enter",
+		copy: "tm-translate-copy",
+		paste: "tm-translate-paste",
+	};
 
 	function getOrCreateButton(id) {
 		let b = document.getElementById(id);
@@ -861,6 +874,39 @@
 			} catch (e) {}
 			_sttAnim = null;
 		}
+	}
+
+	function updateAutoEnterBtn() {
+		if (!enterBtn) return;
+		enterBtn.textContent = "\u23CE";
+		enterBtn.style.fontWeight = "bold";
+		enterBtn.style.fontSize = "18px";
+		if (autoSendEnabled) {
+			enterBtn.style.background = "#f97316";
+			enterBtn.style.color = "#fff";
+			enterBtn.title =
+				"Auto-Send AN \u2013 Spracheingabe wird automatisch abgeschickt";
+		} else {
+			enterBtn.style.background = "#ffffff";
+			enterBtn.style.color = "#333";
+			enterBtn.title = "Auto-Send AUS \u2013 Klicken zum Aktivieren";
+		}
+	}
+
+	function triggerAutoSend(el) {
+		if (!autoSendEnabled || !el) return;
+		setTimeout(() => {
+			el.dispatchEvent(
+				new KeyboardEvent("keydown", {
+					key: "Enter",
+					code: "Enter",
+					keyCode: 13,
+					which: 13,
+					bubbles: true,
+					cancelable: true,
+				}),
+			);
+		}, 300);
 	}
 
 	function setMicState(state, msg = "") {
@@ -1116,6 +1162,7 @@
 				removeLivePreview();
 				if (ok) {
 					setMicState("idle");
+					triggerAutoSend(el);
 					const preview = text.length > 80 ? text.slice(0, 80) + "…" : text;
 					showToast("✅ " + preview, 3000);
 				} else {
@@ -1285,8 +1332,84 @@
 		micBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
 		if (!micBtn.isConnected) document.body.appendChild(micBtn);
 
+		// Enter/Auto-Send
+		enterBtn = getOrCreateButton(UI_IDS.autoEnter);
+		styleRoundButton(enterBtn, 0, 52);
+		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		enterBtn.onclick = () => {
+			autoSendEnabled = !autoSendEnabled;
+			updateAutoEnterBtn();
+			showToast(
+				autoSendEnabled
+					? "\u2705 Auto-Send aktiviert"
+					: "\u274c Auto-Send deaktiviert",
+				2000,
+			);
+		};
+		if (!enterBtn.isConnected) document.body.appendChild(enterBtn);
+
+		// Paste
+		pasteBtn = getOrCreateButton(UI_IDS.paste);
+		styleRoundButton(pasteBtn, 0, 104);
+		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		pasteBtn.textContent = pasteBtn.textContent || "\uD83D\uDCCB";
+		pasteBtn.title = "Zwischenablage einf\u00fcgen";
+		pasteBtn.onclick = async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				if (text && text.trim()) {
+					const el = getUserTargetEditable();
+					if (el) {
+						const current = readPromptText(el);
+						const spacer =
+							current && !current.endsWith(" ") && !current.endsWith("\n")
+								? " "
+								: "";
+						const ok = await setViaPaste(el, current + spacer + text);
+						if (ok) {
+							showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+						} else {
+							showToast("\u26a0\ufe0f Text nicht \u00fcbernommen.", 2000);
+						}
+					} else {
+						showToast("\u26a0\ufe0f Kein Eingabefeld gefunden.", 2000);
+					}
+				}
+			} catch (err) {
+				showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+			}
+		};
+		if (!pasteBtn.isConnected) document.body.appendChild(pasteBtn);
+
+		// Copy
+		copyBtn = getOrCreateButton(UI_IDS.copy);
+		styleRoundButton(copyBtn, 0, 156);
+		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		copyBtn.textContent = copyBtn.textContent || "\uD83D\uDCCE";
+		copyBtn.title = "Text kopieren";
+		copyBtn.onclick = () => {
+			const sel = window.getSelection();
+			if (sel && sel.toString().trim()) {
+				navigator.clipboard.writeText(sel.toString());
+				showToast("\uD83D\uDCCB Kopiert!", 1500);
+			} else {
+				const el = getUserTargetEditable();
+				if (el) {
+					const text = readPromptText(el);
+					if (text.trim()) {
+						navigator.clipboard.writeText(text);
+						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+					}
+				}
+			}
+		};
+		if (!copyBtn.isConnected) document.body.appendChild(copyBtn);
+
 		clearBtn = getOrCreateButton(UI_IDS.clear);
-		styleRoundButton(clearBtn, 0, 52);
+		styleRoundButton(clearBtn, 0, 208);
 		clearBtn.textContent = clearBtn.textContent || "\u274C";
 		setUiStyle(clearBtn, "color", "#c40000");
 		clearBtn.title = "Sprechblase leeren";
@@ -1296,6 +1419,7 @@
 		if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
 		setMicState("idle");
+		updateAutoEnterBtn();
 	}
 	// ── UI Watchdog: Buttons nach SPA-Navigation wiederherstellen ──
 	let ensureScheduled = false;
@@ -1319,7 +1443,10 @@
 			_domObserver = new MutationObserver(() => {
 				if (
 					!document.getElementById("tm-translate-mic") ||
-					!document.getElementById("tm-translate-clear")
+					!document.getElementById("tm-translate-clear") ||
+					!document.getElementById("tm-translate-auto-enter") ||
+					!document.getElementById("tm-translate-copy") ||
+					!document.getElementById("tm-translate-paste")
 				)
 					scheduleEnsureUI();
 			});
@@ -1355,7 +1482,10 @@
 		_uiInterval = setInterval(() => {
 			if (
 				!document.getElementById("tm-translate-mic") ||
-				!document.getElementById("tm-translate-clear")
+				!document.getElementById("tm-translate-clear") ||
+				!document.getElementById("tm-translate-auto-enter") ||
+				!document.getElementById("tm-translate-copy") ||
+				!document.getElementById("tm-translate-paste")
 			)
 				scheduleEnsureUI();
 		}, 3000);
@@ -1364,7 +1494,6 @@
 		if (!supportedSpeech) {
 			showToast("SpeechRecognition nicht verf\u00fcgbar (Chrome/Edge).", 7000);
 		}
-
 
 		try {
 			mountOrRepairUI();

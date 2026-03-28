@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Claude V.1.3.8
+// @name         Claude V.1.4.0
 // @namespace    https://claude.ai/
-// @version      1.3.8
+// @version      1.4.0
 // @description  Speech-to-Text + Gemini-„Diktat-Bereinigung“ (DE) auf Claude: entfernt Kauderwelsch/Doubletten + setzt Satzbau/Zeichensetzung. Dazu 2 Prompt-Builder Buttons. ProseMirror-kompatible Textübernahme + UI-Reinject (Buttons verschwinden nicht mehr). Debounced Observer (verhindert Lade-Freeze). Fix: strengere Prompt-Feld-Erkennung (kein Seitentext mehr).
 // @match        https://claude.ai/*
 // @match        https://www.claude.ai/*
@@ -80,6 +80,9 @@
 	// IDs, damit wir UI wiederfinden / neu injizieren können
 	const UI_IDS = {
 		mic: "tm_claude_mic_btn",
+		autoEnter: "tm_claude_btn_auto_enter",
+		copy: "tm_claude_btn_copy",
+		paste: "tm_claude_btn_paste",
 		geminiToggle: "tm_claude_gemini_toggle",
 		prompt1: "tm_claude_prompt_btn",
 		clear: "tm_claude_clear_btn",
@@ -239,7 +242,12 @@
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -457,6 +465,10 @@
 	let clearBtn = null;
 	let promptBtn = null;
 	let promptBtn2 = null;
+	let autoSendEnabled = false;
+	let enterBtn = null;
+	let copyBtn = null;
+	let pasteBtn = null;
 
 	function isEditableTarget(el) {
 		if (!el) return false;
@@ -468,7 +480,10 @@
 			el === geminiToggleBtn ||
 			el === clearBtn ||
 			el === promptBtn ||
-			el === promptBtn2
+			el === promptBtn2 ||
+			el === enterBtn ||
+			el === copyBtn ||
+			el === pasteBtn
 		)
 			return false;
 
@@ -1527,6 +1542,39 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		}
 	}
 
+	function updateAutoEnterBtn() {
+		if (!enterBtn) return;
+		enterBtn.textContent = "\u23CE";
+		enterBtn.style.fontWeight = "bold";
+		enterBtn.style.fontSize = "18px";
+		if (autoSendEnabled) {
+			enterBtn.style.background = "#f97316";
+			enterBtn.style.color = "#fff";
+			enterBtn.title =
+				"Auto-Send AN \u2013 Spracheingabe wird automatisch abgeschickt";
+		} else {
+			enterBtn.style.background = "#ffffff";
+			enterBtn.style.color = "#333";
+			enterBtn.title = "Auto-Send AUS \u2013 Klicken zum Aktivieren";
+		}
+	}
+
+	function triggerAutoSend(el) {
+		if (!autoSendEnabled || !el) return;
+		setTimeout(() => {
+			el.dispatchEvent(
+				new KeyboardEvent("keydown", {
+					key: "Enter",
+					code: "Enter",
+					keyCode: 13,
+					which: 13,
+					bubbles: true,
+					cancelable: true,
+				}),
+			);
+		}, 300);
+	}
+
 	function setMicState(state, msg = "") {
 		if (!micBtn) return;
 		if (!micBtn.classList.contains("stt-mic-btn"))
@@ -1842,6 +1890,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 						corrected ? "✨ Korrigiert & eingefügt" : "✅ " + preview,
 						3000,
 					);
+					triggerAutoSend(el);
 				} else {
 					setMicState("error", "Text nicht übernommen");
 					showToast("❌ Eingabefeld hat Text nicht übernommen.", 5000);
@@ -2144,28 +2193,41 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		const existingClear = document.getElementById(UI_IDS.clear);
 		const existingP1 = document.getElementById(UI_IDS.prompt1);
 		const existingP2 = document.getElementById(UI_IDS.prompt2);
+		const existingEnter = document.getElementById(UI_IDS.autoEnter);
+		const existingCopy = document.getElementById(UI_IDS.copy);
+		const existingPaste = document.getElementById(UI_IDS.paste);
 
 		if (
 			existingMic &&
 			existingGT &&
 			existingClear &&
 			existingP1 &&
-			existingP2
+			existingP2 &&
+			existingEnter &&
+			existingCopy &&
+			existingPaste
 		) {
 			micBtn = existingMic;
 			geminiToggleBtn = existingGT;
 			clearBtn = existingClear;
 			promptBtn = existingP1;
 			promptBtn2 = existingP2;
+			enterBtn = existingEnter;
+			copyBtn = existingCopy;
+			pasteBtn = existingPaste;
 
 			styleRoundButton(micBtn, 0, 0);
-			styleRoundButton(geminiToggleBtn, 0, 52);
-			styleRoundButton(clearBtn, 0, 104);
-			styleRoundButton(promptBtn, 0, 156);
-			styleRoundButton(promptBtn2, 0, 208);
+			styleRoundButton(enterBtn, 0, 52);
+			styleRoundButton(pasteBtn, 0, 104);
+			styleRoundButton(copyBtn, 0, 156);
+			styleRoundButton(geminiToggleBtn, 0, 260);
+			styleRoundButton(clearBtn, 0, 208);
+			styleRoundButton(promptBtn, 0, 312);
+			styleRoundButton(promptBtn2, 0, 364);
 
 			setMicState("idle");
 			updateGeminiToggleBtn();
+			updateAutoEnterBtn();
 			setPromptBtnState("idle");
 			setPromptBtn2State("idle");
 			return;
@@ -2187,6 +2249,15 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		try {
 			existingP2?.remove();
 		} catch {}
+		try {
+			existingEnter?.remove();
+		} catch {}
+		try {
+			existingCopy?.remove();
+		} catch {}
+		try {
+			existingPaste?.remove();
+		} catch {}
 
 		micBtn = document.createElement("button");
 		micBtn.id = UI_IDS.mic;
@@ -2198,9 +2269,82 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		micBtn.addEventListener("click", toggleMic);
 		document.body.appendChild(micBtn);
 
+		// Enter/Auto-Send (über Mic)
+		enterBtn = document.createElement("button");
+		enterBtn.id = UI_IDS.autoEnter;
+		styleRoundButton(enterBtn, 0, 52);
+		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("click", () => {
+			autoSendEnabled = !autoSendEnabled;
+			updateAutoEnterBtn();
+			showToast(
+				autoSendEnabled
+					? "\u2705 Auto-Send aktiviert"
+					: "\u274c Auto-Send deaktiviert",
+				2000,
+			);
+		});
+		document.body.appendChild(enterBtn);
+
+		// Paste (über Enter)
+		pasteBtn = document.createElement("button");
+		pasteBtn.id = UI_IDS.paste;
+		styleRoundButton(pasteBtn, 0, 104);
+		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		pasteBtn.textContent = "\uD83D\uDCCB";
+		pasteBtn.title = "Zwischenablage einf\u00fcgen";
+		pasteBtn.addEventListener("click", async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				if (text && text.trim()) {
+					const el = getUserTargetEditable();
+					if (el) {
+						const current = readPromptText(el);
+						const spacer =
+							current && !current.endsWith(" ") && !current.endsWith("\n")
+								? " "
+								: "";
+						await setViaPaste(el, current + spacer + text);
+						showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+					}
+				}
+			} catch (err) {
+				showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+			}
+		});
+		document.body.appendChild(pasteBtn);
+
+		// Copy (über Paste)
+		copyBtn = document.createElement("button");
+		copyBtn.id = UI_IDS.copy;
+		styleRoundButton(copyBtn, 0, 156);
+		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		copyBtn.textContent = "\uD83D\uDCCE";
+		copyBtn.title = "Text kopieren";
+		copyBtn.addEventListener("click", () => {
+			const sel = window.getSelection();
+			if (sel && sel.toString().trim()) {
+				navigator.clipboard.writeText(sel.toString());
+				showToast("\uD83D\uDCCB Kopiert!", 1500);
+			} else {
+				const el = getUserTargetEditable();
+				if (el) {
+					const text = readPromptText(el);
+					if (text.trim()) {
+						navigator.clipboard.writeText(text);
+						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+					}
+				}
+			}
+		});
+		document.body.appendChild(copyBtn);
+
 		geminiToggleBtn = document.createElement("button");
 		geminiToggleBtn.id = UI_IDS.geminiToggle;
-		styleRoundButton(geminiToggleBtn, 0, 52);
+		styleRoundButton(geminiToggleBtn, 0, 260);
 		geminiToggleBtn.addEventListener("click", async () => {
 			CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 			await Promise.resolve(
@@ -2218,7 +2362,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
 		clearBtn = document.createElement("button");
 		clearBtn.id = UI_IDS.clear;
-		styleRoundButton(clearBtn, 0, 104);
+		styleRoundButton(clearBtn, 0, 208);
 		clearBtn.textContent = "❌";
 		clearBtn.style.color = "#c40000";
 		clearBtn.title = "Sprechblase leeren";
@@ -2227,7 +2371,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
 		promptBtn = document.createElement("button");
 		promptBtn.id = UI_IDS.prompt1;
-		styleRoundButton(promptBtn, 0, 156);
+		styleRoundButton(promptBtn, 0, 312);
 		promptBtn.textContent = "✨";
 		promptBtn.title = "Prompt (für Frank) einbetten";
 		promptBtn.addEventListener("click", runPromptBuilder);
@@ -2235,7 +2379,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
 		promptBtn2 = document.createElement("button");
 		promptBtn2.id = UI_IDS.prompt2;
-		styleRoundButton(promptBtn2, 0, 208);
+		styleRoundButton(promptBtn2, 0, 364);
 		promptBtn2.textContent = "🪄";
 		promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
 		promptBtn2.addEventListener("click", runPromptBuilderGeneral);
@@ -2243,10 +2387,11 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 		showToast(
-			"✅ Script aktiv. 🎙️ + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button.",
+			"✅ Script aktiv. 🎙️ + \u23CE + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann Button.",
 			2800,
 		);
 	}
@@ -2254,6 +2399,9 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 	function uiIsMissing() {
 		return (
 			!document.getElementById(UI_IDS.mic) ||
+			!document.getElementById(UI_IDS.autoEnter) ||
+			!document.getElementById(UI_IDS.copy) ||
+			!document.getElementById(UI_IDS.paste) ||
 			!document.getElementById(UI_IDS.geminiToggle) ||
 			!document.getElementById(UI_IDS.clear) ||
 			!document.getElementById(UI_IDS.prompt1) ||
