@@ -28,7 +28,7 @@ fun BottomNavBar(
     currentRoute: String?,
     onItemClick: (BottomNavItem) -> Unit
 ) {
-    val items = listOf(BottomNavItem.Journal, BottomNavItem.Dashboard, BottomNavItem.Settings)
+    val items = listOf(BottomNavItem.Dashboard, BottomNavItem.Journal, BottomNavItem.Settings)
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),

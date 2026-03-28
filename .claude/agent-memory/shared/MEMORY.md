@@ -161,7 +161,7 @@ _Noch keine Eintraege._
 <!-- Writer: optimizer Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
-- **[2026-03-28 21:51] Code-Suche Index:** ? Dateien, ? Chunks indexiert.
+- **[2026-03-29 00:09] Code-Suche Index:** 3 Dateien, 28 Chunks indexiert.
 ## UI/UX-Patterns
 <!-- Writer: ui-polisher Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
