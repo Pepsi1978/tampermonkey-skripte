@@ -149,7 +149,7 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
                     }
                 }
 
-                // Category cards — tight spacing, horizontal scroll with bounce
+                // Category cards — horizontal scroll with overscroll bounce
                 item {
                     val scrollState = rememberScrollState()
                     Row(
@@ -158,8 +158,8 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
                             .padding(horizontal = 4.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        // Invisible spacer at start for bounce feel
-                        Spacer(modifier = Modifier.width(2.dp))
+                        // Wide spacer so even 2 items have scroll room for bounce
+                        Spacer(modifier = Modifier.width(60.dp))
                         blocks.forEachIndexed { index, block ->
                             AdviceCategoryCard(
                                 block = block,
@@ -170,10 +170,16 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
                                 }
                             )
                         }
-                        // Invisible spacer at end for bounce feel
-                        Spacer(modifier = Modifier.width(2.dp))
+                        Spacer(modifier = Modifier.width(60.dp))
                     }
-                    // Scroll hint indicator
+
+                    // Auto-center: scroll to start position after composition
+                    androidx.compose.runtime.LaunchedEffect(blocks.size) {
+                        if (blocks.isNotEmpty()) {
+                            scrollState.scrollTo(40)
+                        }
+                    }
+
                     if (blocks.size > 3) {
                         Text(
                             "\u2190 scrollen \u2192",
