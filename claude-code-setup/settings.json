@@ -180,6 +180,16 @@
 				"hooks": [
 					{
 						"type": "command",
+						"command": "bash ~/.claude/hooks/mcp-auth-check.sh",
+						"timeout": 30,
+						"async": true
+					}
+				]
+			},
+			{
+				"hooks": [
+					{
+						"type": "command",
 						"command": "bash ~/.claude/hooks/mirror-check.sh",
 						"timeout": 5
 					}
