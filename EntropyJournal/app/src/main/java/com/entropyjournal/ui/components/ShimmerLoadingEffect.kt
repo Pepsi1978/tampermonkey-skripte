@@ -53,11 +53,10 @@ fun ShimmerLoadingEffect(
     val shimmerBrush = Brush.linearGradient(
         colorStops = arrayOf(
             0.0f to baseColor,
-            0.35f to baseColor,
-            0.45f to highlightColor,
-            0.50f to highlightColor,
-            0.55f to highlightColor,
-            0.65f to baseColor,
+            0.42f to baseColor,
+            0.48f to highlightColor,
+            0.52f to highlightColor,
+            0.58f to baseColor,
             1.0f to baseColor
         ),
         start = Offset(translateAnim - 800f, 0f),
