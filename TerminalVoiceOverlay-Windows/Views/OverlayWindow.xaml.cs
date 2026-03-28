@@ -555,7 +555,8 @@ namespace TerminalVoiceOverlay.Views
             Console.WriteLine("Copy: Ctrl+C sent to terminal");
         }
 
-        /// <summary>P button — paste clipboard content into command line via Ctrl+V.</summary>
+        /// <summary>P button — paste clipboard content into command line via Ctrl+V.
+        /// If auto-enter is enabled, sends Enter after paste.</summary>
         private void BtnPaste_Click(object sender, RoutedEventArgs e)
         {
             var hwnd = _terminalWatcher.ActiveTerminalHwnd;
@@ -566,13 +567,27 @@ namespace TerminalVoiceOverlay.Views
             TerminalController.PasteClipboard(hwnd);
             hasPastedText = true;
 
+            if (autoEnterEnabled)
+            {
+                // Small delay then send Enter
+                _ = Task.Run(() =>
+                {
+                    System.Threading.Thread.Sleep(300);
+                    TerminalController.PressReturn(hwnd);
+                });
+                hasPastedText = false;
+                Console.WriteLine("Paste+Enter: Ctrl+V → Return sent to terminal");
+            }
+            else
+            {
+                Console.WriteLine("Paste: Ctrl+V sent to terminal");
+            }
+
             _ = Task.Run(async () =>
             {
                 await Task.Delay(2000);
                 Dispatcher.Invoke(() => PasteButton.Background = BtnPaste);
             });
-
-            Console.WriteLine("Paste: Ctrl+V sent to terminal");
         }
 
         // ── Mic state helpers ──

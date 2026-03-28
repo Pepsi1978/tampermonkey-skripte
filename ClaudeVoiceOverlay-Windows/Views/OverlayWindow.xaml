@@ -71,9 +71,27 @@
                     HorizontalAlignment="Center"
                     Margin="0,16">
 
-            <!-- X Button (clear input) — top -->
+            <!-- Mic Button (main mic — rounded square) — top -->
+            <Button x:Name="MicButton"
+                    Style="{StaticResource MicButton}"
+                    Click="BtnMic_Click"
+                    ToolTip="Start / stop recording">
+                <TextBlock Text="&#x1F3A4;" FontSize="20" Foreground="White"/>
+            </Button>
+
+            <!-- BTW Button (BTW mic — rounded square, blue tint set in code-behind) -->
+            <Button x:Name="BtwButton"
+                    Style="{StaticResource MicButton}"
+                    Margin="0,8,0,0"
+                    Click="BtnBtw_Click"
+                    ToolTip="BTW voice input">
+                <TextBlock Text="&#x1F3A4;" FontSize="20" Foreground="White"/>
+            </Button>
+
+            <!-- X Button (clear input) -->
             <Button x:Name="XButton"
                     Style="{StaticResource CircleButton}"
+                    Margin="0,8,0,0"
                     Click="BtnClear_Click"
                     ToolTip="Clear input">
                 <TextBlock Text="X" FontWeight="Bold" FontSize="16" Foreground="White"/>
@@ -88,24 +106,6 @@
                 <TextBlock Text="W" FontWeight="Bold" FontSize="16" Foreground="White"/>
             </Button>
 
-            <!-- BTW Button (BTW mic — rounded square, blue tint set in code-behind) -->
-            <Button x:Name="BtwButton"
-                    Style="{StaticResource MicButton}"
-                    Margin="0,8,0,0"
-                    Click="BtnBtw_Click"
-                    ToolTip="BTW voice input">
-                <TextBlock Text="&#x1F3A4;" FontSize="20" Foreground="White"/>
-            </Button>
-
-            <!-- Mic Button (main mic — rounded square) -->
-            <Button x:Name="MicButton"
-                    Style="{StaticResource MicButton}"
-                    Margin="0,8,0,0"
-                    Click="BtnMic_Click"
-                    ToolTip="Start / stop recording">
-                <TextBlock Text="&#x1F3A4;" FontSize="20" Foreground="White"/>
-            </Button>
-
             <!-- G Button (Gemini toggle) -->
             <Button x:Name="GButton"
                     Style="{StaticResource CircleButton}"
@@ -113,15 +113,6 @@
                     Click="BtnGemini_Click"
                     ToolTip="Toggle Gemini">
                 <TextBlock Text="G" FontWeight="Bold" FontSize="16" Foreground="White"/>
-            </Button>
-
-            <!-- Enter Button (auto-enter toggle) -->
-            <Button x:Name="EnterButton"
-                    Style="{StaticResource CircleButton}"
-                    Margin="0,8,0,0"
-                    Click="BtnAutoEnter_Click"
-                    ToolTip="Toggle auto-enter">
-                <TextBlock Text="&#x23CE;" FontSize="18" Foreground="White"/>
             </Button>
 
             <!-- C Button (copy selected text) -->
@@ -133,13 +124,22 @@
                 <TextBlock Text="C" FontWeight="Bold" FontSize="16" Foreground="White"/>
             </Button>
 
-            <!-- P Button (paste clipboard into command line) — bottom -->
+            <!-- P Button (paste clipboard into command line) -->
             <Button x:Name="PasteButton"
                     Style="{StaticResource CircleButton}"
                     Margin="0,8,0,0"
                     Click="BtnPaste_Click"
                     ToolTip="Paste into command line">
                 <TextBlock Text="P" FontWeight="Bold" FontSize="16" Foreground="White"/>
+            </Button>
+
+            <!-- Enter Button (auto-enter toggle) — bottom -->
+            <Button x:Name="EnterButton"
+                    Style="{StaticResource CircleButton}"
+                    Margin="0,8,0,0"
+                    Click="BtnAutoEnter_Click"
+                    ToolTip="Toggle auto-enter">
+                <TextBlock Text="&#x23CE;" FontSize="18" Foreground="White"/>
             </Button>
 
         </StackPanel>

@@ -509,7 +509,8 @@ namespace ClaudeVoiceOverlay.Views
             Console.WriteLine("Copy: Ctrl+C sent to app");
         }
 
-        /// <summary>P button — paste clipboard content into input field via Ctrl+V.</summary>
+        /// <summary>P button — paste clipboard content into input field via Ctrl+V.
+        /// If auto-enter is enabled, sends Enter after paste.</summary>
         private void BtnPaste_Click(object sender, RoutedEventArgs e)
         {
             var hwnd = _appWatcher.ActiveAppHwnd;
@@ -520,13 +521,27 @@ namespace ClaudeVoiceOverlay.Views
             AppController.PasteClipboard(hwnd);
             hasPastedText = true;
 
+            if (autoEnterEnabled)
+            {
+                // Small delay then send Enter
+                _ = Task.Run(() =>
+                {
+                    System.Threading.Thread.Sleep(300);
+                    AppController.PressReturn(hwnd);
+                });
+                hasPastedText = false;
+                Console.WriteLine("Paste+Enter: Ctrl+V → Return sent to app");
+            }
+            else
+            {
+                Console.WriteLine("Paste: Ctrl+V sent to app");
+            }
+
             _ = Task.Run(async () =>
             {
                 await Task.Delay(2000);
                 Dispatcher.Invoke(() => PasteButton.Background = BtnPaste);
             });
-
-            Console.WriteLine("Paste: Ctrl+V sent to app");
         }
 
         // ── Mic state helpers ──
