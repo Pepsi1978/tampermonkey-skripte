@@ -2528,7 +2528,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			try {
 				const text = await navigator.clipboard.readText();
 				if (text && text.trim()) {
-					const el = getUserTargetEditable();
+					const el = findComposerPrompt() || findPrompt();
 					if (el) {
 						el.focus();
 						const current = readPromptText(el);
@@ -2559,7 +2559,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
 				// Focus input field so Paste works next
-				const _inputEl = typeof getUserTargetEditable === "function" ? getUserTargetEditable() : null;
+				const _inputEl = findComposerPrompt() || findPrompt();
 				if (_inputEl) _inputEl.focus();
 			} else {
 				const el = getUserTargetEditable();

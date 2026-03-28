@@ -1332,41 +1332,9 @@
 		micBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
 		if (!micBtn.isConnected) document.body.appendChild(micBtn);
 
-		// Enter/Auto-Send
-		enterBtn = getOrCreateButton(UI_IDS.autoEnter);
-		styleRoundButton(enterBtn, 0, 52);
-		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
-		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		enterBtn.onclick = () => {
-			autoSendEnabled = !autoSendEnabled;
-			updateAutoEnterBtn();
-			if (autoSendEnabled) {
-				const el = getUserTargetEditable ? getUserTargetEditable() : null;
-				if (el) {
-					const txt = typeof readPromptText === "function" ? readPromptText(el) : (el.value || el.textContent || "");
-					if (txt && txt.trim()) {
-						setTimeout(() => {
-							el.focus();
-							el.dispatchEvent(new KeyboardEvent("keydown", {
-								key: "Enter", code: "Enter", keyCode: 13, which: 13,
-								bubbles: true, cancelable: true
-							}));
-						}, 200);
-					}
-				}
-			}
-			showToast(
-				autoSendEnabled
-					? "\u2705 Auto-Send aktiviert"
-					: "\u274c Auto-Send deaktiviert",
-				2000,
-			);
-		};
-		if (!enterBtn.isConnected) document.body.appendChild(enterBtn);
-
 		// Paste
 		pasteBtn = getOrCreateButton(UI_IDS.paste);
-		styleRoundButton(pasteBtn, 0, 104);
+		styleRoundButton(pasteBtn, 0, 52);
 		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
 		pasteBtn.textContent = pasteBtn.textContent || "\uD83D\uDCCB";
@@ -1401,7 +1369,7 @@
 
 		// Copy
 		copyBtn = getOrCreateButton(UI_IDS.copy);
-		styleRoundButton(copyBtn, 0, 156);
+		styleRoundButton(copyBtn, 0, 104);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
 		copyBtn.textContent = copyBtn.textContent || "📎";
@@ -1412,7 +1380,10 @@
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
 				// Focus input field so Paste works next
-				const _inputEl = typeof getUserTargetEditable === "function" ? getUserTargetEditable() : null;
+				const _inputEl =
+					typeof getUserTargetEditable === "function"
+						? getUserTargetEditable()
+						: null;
 				if (_inputEl) _inputEl.focus();
 			} else {
 				const el = getUserTargetEditable();
@@ -1429,7 +1400,7 @@
 		if (!copyBtn.isConnected) document.body.appendChild(copyBtn);
 
 		clearBtn = getOrCreateButton(UI_IDS.clear);
-		styleRoundButton(clearBtn, 0, 208);
+		styleRoundButton(clearBtn, 0, 156);
 		clearBtn.textContent = clearBtn.textContent || "\u274C";
 		setUiStyle(clearBtn, "color", "#c40000");
 		clearBtn.title = "Sprechblase leeren";
@@ -1439,7 +1410,6 @@
 		if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
 		setMicState("idle");
-		updateAutoEnterBtn();
 	}
 	// ── UI Watchdog: Buttons nach SPA-Navigation wiederherstellen ──
 	let ensureScheduled = false;

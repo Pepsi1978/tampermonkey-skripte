@@ -2346,7 +2346,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
 				// Focus input field so Paste works next
-				const _inputEl = typeof getUserTargetEditable === "function" ? getUserTargetEditable() : null;
+				const _inputEl = findPrompt() || getUserTargetEditable();
 				if (_inputEl) _inputEl.focus();
 			} else {
 				const el = getUserTargetEditable();
