@@ -169,7 +169,7 @@ Regeln:
         }
     }
 
-    suspend fun analyzeEntropy(allEntriesText: String, entryCount: Int): Result<Unit> {
+    suspend fun analyzeEntropy(allEntriesText: String, entryCount: Int, freshAnalysis: Boolean = false): Result<Unit> {
         return try {
             val apiKey = encryptedPrefs.getString(Constants.PREF_GEMINI_API_KEY, "") ?: ""
             if (apiKey.isBlank()) return Result.failure(IllegalStateException("Gemini API-Key nicht konfiguriert"))
@@ -180,8 +180,8 @@ Regeln:
                 previousBlocks = existingBlocks
             }
 
-            // Read existing analysis for context continuity
-            val previousContext = buildPreviousContext(existingBlocks)
+            // Only use previous context for automatic updates, NOT for manual refresh
+            val previousContext = if (freshAnalysis) "" else buildPreviousContext(existingBlocks)
 
             val userText = buildUserText(allEntriesText, previousContext, entryCount)
 
@@ -237,6 +237,9 @@ Regeln:
         val sb = StringBuilder()
         if (previousContext.isNotBlank()) {
             sb.appendLine(previousContext)
+        } else {
+            sb.appendLine("=== FRISCHE ANALYSE — Erstelle eine komplett neue, eigenständige Analyse. ===")
+            sb.appendLine()
         }
         sb.appendLine("=== ALLE $entryCount TAGEBUCHEINTRÄGE (JEDEN EINZELNEN ANALYSIEREN!) ===")
         sb.appendLine(allEntriesText)

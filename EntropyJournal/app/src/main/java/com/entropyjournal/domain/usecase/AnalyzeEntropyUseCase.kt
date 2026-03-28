@@ -9,7 +9,7 @@ class AnalyzeEntropyUseCase @Inject constructor(
     private val journalRepository: JournalRepository,
     private val adviceRepository: AdviceRepository
 ) {
-    suspend operator fun invoke(): Result<Unit> {
+    suspend operator fun invoke(freshAnalysis: Boolean = false): Result<Unit> {
         val entries = journalRepository.getAllEntries().first()
         if (entries.isEmpty()) return Result.failure(Exception("Keine Tagebucheinträge vorhanden"))
 
@@ -18,6 +18,6 @@ class AnalyzeEntropyUseCase @Inject constructor(
             "=== EINTRAG ${index + 1} von $total (${com.entropyjournal.util.DateTimeFormatter.formatFull(entry.timestamp)}) ===\n${entry.displayText}"
         }.joinToString("\n\n")
 
-        return adviceRepository.analyzeEntropy(allText, entries.size)
+        return adviceRepository.analyzeEntropy(allText, entries.size, freshAnalysis)
     }
 }

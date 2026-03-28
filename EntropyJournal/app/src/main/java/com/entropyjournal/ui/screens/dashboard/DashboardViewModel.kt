@@ -40,7 +40,7 @@ class DashboardViewModel @Inject constructor(
     fun refreshDashboard() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            analyzeEntropyUseCase()
+            analyzeEntropyUseCase(freshAnalysis = true)
                 .onSuccess {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
