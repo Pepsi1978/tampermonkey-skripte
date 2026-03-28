@@ -2463,14 +2463,23 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			if (autoSendEnabled) {
 				const el = getUserTargetEditable ? getUserTargetEditable() : null;
 				if (el) {
-					const txt = typeof readPromptText === "function" ? readPromptText(el) : (el.value || el.textContent || "");
+					const txt =
+						typeof readPromptText === "function"
+							? readPromptText(el)
+							: el.value || el.textContent || "";
 					if (txt && txt.trim()) {
 						setTimeout(() => {
 							el.focus();
-							el.dispatchEvent(new KeyboardEvent("keydown", {
-								key: "Enter", code: "Enter", keyCode: 13, which: 13,
-								bubbles: true, cancelable: true
-							}));
+							el.dispatchEvent(
+								new KeyboardEvent("keydown", {
+									key: "Enter",
+									code: "Enter",
+									keyCode: 13,
+									which: 13,
+									bubbles: true,
+									cancelable: true,
+								}),
+							);
 						}, 200);
 					}
 				}
@@ -2526,7 +2535,10 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
 				// Focus input field so Paste works next
-				const _inputEl = typeof getUserTargetEditable === "function" ? getUserTargetEditable() : null;
+				const _inputEl =
+					typeof getUserTargetEditable === "function"
+						? getUserTargetEditable()
+						: null;
 				if (_inputEl) _inputEl.focus();
 			} else {
 				const el = getUserTargetEditable();
@@ -2566,16 +2578,6 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 				2000,
 			);
 		});
-		geminiToggleBtn.addEventListener(
-			"pointerdown",
-			(e) => e.preventDefault(),
-			true,
-		);
-		geminiToggleBtn.addEventListener(
-			"mousedown",
-			(e) => e.preventDefault(),
-			true,
-		);
 		if (!geminiToggleBtn.isConnected) mountNode.appendChild(geminiToggleBtn);
 
 		promptBtn = getOrCreateButton(UI_IDS.promptFrank);
