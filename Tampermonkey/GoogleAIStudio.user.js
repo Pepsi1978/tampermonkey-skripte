@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         AI Studio V.1.5.2
+// @name         AI Studio V.1.6.0
 // @namespace    https://aistudio.google.com/prompts/new_chat
-// @version      1.5.2
+// @version      1.6.0
 // @updateURL    https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/GoogleAIStudio.user.js
 // @downloadURL  https://raw.githubusercontent.com/Pepsi1978/proggs/main/Tampermonkey/GoogleAIStudio.user.js
 // @description  Speech-to-Text + Gemini-Korrektur (DE) auf ChatGPT. Mic-Button unten links. Zwei Prompt-Builder Buttons (Frank + für jedermann) über dem Mic. Kein stilles Fallback. Mit Output-Preview.
@@ -182,14 +182,20 @@
 			const missing = [];
 			try {
 				const gk = GM_getValue(API_KEY_STORAGE_KEY, "");
-				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key")) missing.push("Gemini");
+				if (!gk || gk === "hier" || gk.toLowerCase().includes("paste_your_key"))
+					missing.push("Gemini");
 			} catch {}
 			try {
 				const qk = GM_getValue("groqKey", "");
 				if (!qk) missing.push("Groq");
 			} catch {}
 			if (missing.length > 0) {
-				showToast("⚠️ " + missing.join(" + ") + "-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.", 8000);
+				showToast(
+					"⚠️ " +
+						missing.join(" + ") +
+						"-Key nicht gesetzt.\nTampermonkey-Menü → Key setzen/ändern.",
+					8000,
+				);
 			}
 		} catch {}
 	}, 2000);
@@ -455,6 +461,10 @@
 	let clearBtn = null;
 	let promptBtn = null;
 	let promptBtn2 = null;
+	let autoSendEnabled = false;
+	let enterBtn = null;
+	let copyBtn = null;
+	let pasteBtn = null;
 
 	function isRoleTextbox(el) {
 		return (el?.getAttribute?.("role") || "").toLowerCase() === "textbox";
@@ -487,7 +497,10 @@
 			(typeof geminiToggleBtn !== "undefined" && el === geminiToggleBtn) ||
 			(typeof clearBtn !== "undefined" && el === clearBtn) ||
 			(typeof promptBtn !== "undefined" && el === promptBtn) ||
-			(typeof promptBtn2 !== "undefined" && el === promptBtn2)
+			(typeof promptBtn2 !== "undefined" && el === promptBtn2) ||
+			(typeof enterBtn !== "undefined" && el === enterBtn) ||
+			(typeof copyBtn !== "undefined" && el === copyBtn) ||
+			(typeof pasteBtn !== "undefined" && el === pasteBtn)
 		)
 			return false;
 
@@ -1464,6 +1477,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 	// ── Button IDs (Watchdog) ──
 	const UI_IDS = {
 		mic: "tm-aistudio-mic",
+		autoEnter: "tm_googleaistudio_btn_auto_enter",
+		copy: "tm_googleaistudio_btn_copy",
+		paste: "tm_googleaistudio_btn_paste",
 		geminiToggle: "tm-aistudio-gemini-toggle",
 		clear: "tm-aistudio-clear",
 		promptFrank: "tm-aistudio-prompt",
@@ -1613,6 +1629,39 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			geminiToggleBtn.style.color = "#fff";
 			geminiToggleBtn.title = "Gemini-Korrektur AUS – Klicken zum Aktivieren";
 		}
+	}
+
+	function updateAutoEnterBtn() {
+		if (!enterBtn) return;
+		enterBtn.textContent = "\u23CE";
+		enterBtn.style.fontWeight = "bold";
+		enterBtn.style.fontSize = "18px";
+		if (autoSendEnabled) {
+			enterBtn.style.background = "#f97316";
+			enterBtn.style.color = "#fff";
+			enterBtn.title =
+				"Auto-Send AN \u2013 Spracheingabe wird automatisch abgeschickt";
+		} else {
+			enterBtn.style.background = "#ffffff";
+			enterBtn.style.color = "#333";
+			enterBtn.title = "Auto-Send AUS \u2013 Klicken zum Aktivieren";
+		}
+	}
+
+	function triggerAutoSend(el) {
+		if (!autoSendEnabled || !el) return;
+		setTimeout(() => {
+			el.dispatchEvent(
+				new KeyboardEvent("keydown", {
+					key: "Enter",
+					code: "Enter",
+					keyCode: 13,
+					which: 13,
+					bubbles: true,
+					cancelable: true,
+				}),
+			);
+		}, 300);
 	}
 
 	function setMicState(state, msg = "") {
@@ -1896,6 +1945,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 						corrected ? "✨ Korrigiert & eingefügt" : "✅ " + preview,
 						3000,
 					);
+					triggerAutoSend(el);
 				} else {
 					setMicState("error", "Text nicht übernommen");
 					showToast("❌ Eingabefeld hat Text nicht übernommen.", 5000);
@@ -2203,9 +2253,79 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		micBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
 		if (!micBtn.isConnected) document.body.appendChild(micBtn);
 
+		// Enter/Auto-Send
+		enterBtn = getOrCreateButton(UI_IDS.autoEnter);
+		styleRoundButton(enterBtn, 0, 52);
+		enterBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		enterBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		enterBtn.onclick = () => {
+			autoSendEnabled = !autoSendEnabled;
+			updateAutoEnterBtn();
+			showToast(
+				autoSendEnabled
+					? "\u2705 Auto-Send aktiviert"
+					: "\u274c Auto-Send deaktiviert",
+				2000,
+			);
+		};
+		if (!enterBtn.isConnected) document.body.appendChild(enterBtn);
+
+		// Paste
+		pasteBtn = getOrCreateButton(UI_IDS.paste);
+		styleRoundButton(pasteBtn, 0, 104);
+		pasteBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		pasteBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		pasteBtn.textContent = pasteBtn.textContent || "\uD83D\uDCCB";
+		pasteBtn.title = "Zwischenablage einf\u00fcgen";
+		pasteBtn.onclick = async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				if (text && text.trim()) {
+					const el = getUserTargetEditable();
+					if (el) {
+						const current = readPromptText(el);
+						const spacer =
+							current && !current.endsWith(" ") && !current.endsWith("\n")
+								? " "
+								: "";
+						await setViaPaste(el, current + spacer + text);
+						showToast("\uD83D\uDCCB Eingef\u00fcgt!", 1500);
+					}
+				}
+			} catch (err) {
+				showToast("\u26a0\ufe0f Kein Zugriff auf Zwischenablage", 2000);
+			}
+		};
+		if (!pasteBtn.isConnected) document.body.appendChild(pasteBtn);
+
+		// Copy
+		copyBtn = getOrCreateButton(UI_IDS.copy);
+		styleRoundButton(copyBtn, 0, 156);
+		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
+		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
+		copyBtn.textContent = copyBtn.textContent || "\uD83D\uDCCE";
+		copyBtn.title = "Text kopieren";
+		copyBtn.onclick = () => {
+			const sel = window.getSelection();
+			if (sel && sel.toString().trim()) {
+				navigator.clipboard.writeText(sel.toString());
+				showToast("\uD83D\uDCCB Kopiert!", 1500);
+			} else {
+				const el = getUserTargetEditable();
+				if (el) {
+					const text = readPromptText(el);
+					if (text.trim()) {
+						navigator.clipboard.writeText(text);
+						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+					}
+				}
+			}
+		};
+		if (!copyBtn.isConnected) document.body.appendChild(copyBtn);
+
 		// GEMINI TOGGLE
 		geminiToggleBtn = getOrCreateButton(UI_IDS.geminiToggle);
-		styleRoundButton(geminiToggleBtn, 0, 52);
+		styleRoundButton(geminiToggleBtn, 0, 260);
 		geminiToggleBtn.addEventListener("click", async () => {
 			CFG.autoGeminiCorrection = !CFG.autoGeminiCorrection;
 			await Promise.resolve(
@@ -2223,7 +2343,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			document.body.appendChild(geminiToggleBtn);
 
 		clearBtn = getOrCreateButton(UI_IDS.clear);
-		styleRoundButton(clearBtn, 0, 104);
+		styleRoundButton(clearBtn, 0, 208);
 		clearBtn.textContent = clearBtn.textContent || "\u274C";
 		setUiStyle(clearBtn, "color", "#c40000");
 		clearBtn.title = "Sprechblase leeren";
@@ -2233,7 +2353,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		if (!clearBtn.isConnected) document.body.appendChild(clearBtn);
 
 		promptBtn = getOrCreateButton(UI_IDS.promptFrank);
-		styleRoundButton(promptBtn, 0, 156);
+		styleRoundButton(promptBtn, 0, 312);
 		promptBtn.textContent = promptBtn.textContent || "\u2728";
 		promptBtn.title = "Prompt (f\u00fcr Frank) einbetten";
 		promptBtn.onclick = runPromptBuilder;
@@ -2242,7 +2362,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		if (!promptBtn.isConnected) document.body.appendChild(promptBtn);
 
 		promptBtn2 = getOrCreateButton(UI_IDS.promptGeneral);
-		styleRoundButton(promptBtn2, 0, 208);
+		styleRoundButton(promptBtn2, 0, 364);
 		promptBtn2.textContent = promptBtn2.textContent || "\uD83E\uDE84";
 		promptBtn2.title = "Prompt (allgemein / 12. Klasse) einbetten";
 		promptBtn2.onclick = runPromptBuilderGeneral;
@@ -2252,6 +2372,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		setMicState("idle");
 		updateGeminiToggleBtn();
+		updateAutoEnterBtn();
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 	}
@@ -2277,6 +2398,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			_domObserver = new MutationObserver(() => {
 				if (
 					!document.getElementById("tm-aistudio-mic") ||
+					!document.getElementById(UI_IDS.autoEnter) ||
+					!document.getElementById(UI_IDS.paste) ||
+					!document.getElementById(UI_IDS.copy) ||
 					!document.getElementById("tm-aistudio-gemini-toggle") ||
 					!document.getElementById("tm-aistudio-clear") ||
 					!document.getElementById("tm-aistudio-prompt") ||
@@ -2316,6 +2440,9 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		_uiInterval = setInterval(() => {
 			if (
 				!document.getElementById("tm-aistudio-mic") ||
+				!document.getElementById(UI_IDS.autoEnter) ||
+				!document.getElementById(UI_IDS.paste) ||
+				!document.getElementById(UI_IDS.copy) ||
 				!document.getElementById("tm-aistudio-gemini-toggle") ||
 				!document.getElementById("tm-aistudio-clear") ||
 				!document.getElementById("tm-aistudio-prompt") ||
