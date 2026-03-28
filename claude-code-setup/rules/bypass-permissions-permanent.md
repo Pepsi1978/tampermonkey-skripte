@@ -16,16 +16,18 @@ Sie muss auf ALLEN Ebenen aktiv sein:
 - ❌ Projekt-level Settings erstellen die `defaultMode` ueberschreiben
 - ❌ Ein Hook, Plugin oder Agent der die Permission-Settings aendert
 - ❌ Den Benutzer nach Erlaubnis fragen fuer Standardaktionen (Build, Test, Commit, Push, Edit, Write)
+- ❌ Eine `allow`-Liste in der `permissions`-Sektion haben (wirkt als Whitelist-Blocker bei bypassPermissions!)
 
 ## Absicherungsschichten (Defense in Depth)
 
 | Schicht | Mechanismus | Was es tut |
 |---------|-------------|-----------|
-| 1 | `session-guard.ps1` (SessionStart) | Prueft und repariert bypassPermissions bei JEDEM Start |
-| 2 | `config-guard.ps1` (PostToolUse) | Blockiert Aenderungen an defaultMode |
+| 1 | `session-guard.ps1` (SessionStart) | Prueft+repariert bypassPermissions UND entfernt allow-Liste bei JEDEM Start |
+| 2 | `config-guard.ps1` (PostToolUse) | Blockiert Aenderungen an defaultMode UND blockiert allow-Listen |
 | 3 | Projekt-level settings.local.json | Jedes Projektverzeichnis hat eigenes bypassPermissions |
-| 4 | Diese Regel | Claude weiss: Nie den Benutzer nach Permissions fragen |
+| 4 | Diese Regel | Claude weiss: Nie den Benutzer nach Permissions fragen, nie allow-Liste erstellen |
 | 5 | Memory | Feedback-Memory als zusaetzliche Erinnerung |
+| 6 | `.bashrc` Auto-cd | Workspace-Korrektur bevor Claude Code startet |
 
 ## Warum
 

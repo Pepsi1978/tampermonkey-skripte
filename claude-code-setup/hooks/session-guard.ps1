@@ -123,17 +123,34 @@ try {
 }
 
 # ================================================
-# CHECK 2: Workspace Directory — MUST be ~/proggs/
+# CHECK 2: Remove allow list — bypassPermissions handles everything
+# ================================================
+# An explicit allow list acts as whitelist and BLOCKS tools not on it,
+# even with bypassPermissions. Remove it on every start to prevent this.
+
+try {
+    if (Test-Path $settingsPath) {
+        $rawJson = Get-Content $settingsPath -Raw -Encoding UTF8
+        $settingsData = $rawJson | ConvertFrom-Json
+        if ($null -ne $settingsData.permissions.allow) {
+            $hashData = $rawJson | ConvertFrom-Json -AsHashtable
+            $hashData["permissions"].Remove("allow")
+            $tmpFile = "$settingsPath.tmp"
+            ($hashData | ConvertTo-Json -Depth 20) | Out-File -FilePath $tmpFile -Encoding UTF8 -NoNewline
+            Move-Item -Path $tmpFile -Destination $settingsPath -Force
+            $fixes += "allow-Liste entfernt (blockiert Tools bei bypassPermissions)"
+            Hook-Log "AUTO-FIX: removed allow list from permissions (incompatible with bypassPermissions)"
+        }
+    }
+} catch {
+    Hook-LogWarn "allow list cleanup failed: $_"
+}
+
+# ================================================
+# CHECK 3: Workspace Directory — MUST be ~/proggs/
 # ================================================
 
-# Claude Code sets CWD before hooks run. We can check it via the process.
-# However, hooks run in their own process. We check via environment hints.
-# The most reliable check: Does ~/proggs/.git exist? (Always true)
-# The session goal file tracks the actual CWD.
-$goalFile = Join-Path $env:TEMP "claude-session-goal.txt"
 $expectedDir = Join-Path $env:USERPROFILE "proggs"
-
-# Write a CWD check marker that the AI can read
 $cwdCheckFile = Join-Path $env:TEMP "claude-cwd-check.txt"
 "EXPECTED_CWD=$expectedDir" | Out-File -FilePath $cwdCheckFile -Encoding UTF8 -NoNewline
 

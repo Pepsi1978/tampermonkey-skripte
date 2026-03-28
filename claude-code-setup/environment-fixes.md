@@ -23,6 +23,42 @@ Hintergrund, Code-Beispielen und konkreten Regeln.
 
 ---
 
+## 2026-03-28 — bypassPermissions ignored due to allow-list acting as whitelist (Windows + macOS)
+
+**Plattform:** Beide (Windows + macOS)
+**Kontext:** Benutzer hat `defaultMode: bypassPermissions` in settings.json. Trotzdem wird
+bei manchen Tool-Aufrufen nach Erlaubnis gefragt. Das Problem tritt bei MCP-Tools auf die
+von neu installierten Plugins kommen (Hugging Face, code-review-graph, claude-mem, etc.).
+**Symptom:** Claude Code fragt "Darf ich dieses Tool nutzen?" obwohl bypassPermissions aktiv
+ist. Der Benutzer muss bestaetigen — genau das was bypassPermissions verhindern soll.
+**Root Cause:** Die `permissions`-Sektion hatte GLEICHZEITIG `defaultMode: bypassPermissions`
+UND eine explizite `allow`-Liste mit 105 Eintraegen. Die `allow`-Liste wirkt als **Whitelist**:
+Tools die NICHT auf der Liste stehen werden blockiert, SELBST bei bypassPermissions. Da neue
+Plugins neue MCP-Tools hinzufuegen die nicht auf der Liste stehen (31 fehlende Tools gefunden),
+werden diese Tools blockiert. Bei jedem Plugin-Update oder neuen Plugin waechst die Luecke.
+**Fix:** Die `allow`-Liste komplett entfernen. Bei `bypassPermissions` ist sie redundant und
+kontraproduktiv. Drei Absicherungsschichten:
+1. Session-Guard Hook: Entfernt die `allow`-Liste bei JEDEM Session-Start automatisch
+2. Config-Guard Hook: BLOCKIERT das Hinzufuegen einer `allow`-Liste per PostToolUse
+3. Regel in bypass-permissions-permanent.md: Claude darf nie eine allow-Liste erstellen
+```json
+// FALSCH — allow-Liste blockiert ungelistete Tools:
+"permissions": {
+  "allow": ["Bash", "Read", "Edit", ...105 Eintraege...],
+  "defaultMode": "bypassPermissions"
+}
+
+// RICHTIG — nur defaultMode, keine allow-Liste:
+"permissions": {
+  "defaultMode": "bypassPermissions"
+}
+```
+**Vermeidungsregel:** Wenn `defaultMode: bypassPermissions` gesetzt ist, NIEMALS eine
+`allow`-Liste in der `permissions`-Sektion haben. Die `allow`-Liste ist NUR fuer den
+`default`-Modus gedacht. Bei bypassPermissions wirkt sie als Whitelist-Blocker.
+
+---
+
 ## 2026-03-28 — Claude Code starts in home directory instead of ~/proggs/ (Windows + macOS)
 
 **Plattform:** Beide (Windows + macOS)

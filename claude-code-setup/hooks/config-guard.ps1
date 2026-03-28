@@ -62,6 +62,10 @@ if ($perms) {
     if ($null -ne $defMode -and $defMode -ne '' -and $defMode -ne 'bypassPermissions') {
         $blocks += "defaultMode=$defMode (MUSS 'bypassPermissions' sein — Benutzer-Regel)"
     }
+    # allow list: MUST NOT exist with bypassPermissions — it acts as whitelist and blocks tools
+    if ($null -ne $perms.allow) {
+        $blocks += "allow-Liste vorhanden (inkompatibel mit bypassPermissions — blockiert ungelistete Tools)"
+    }
 }
 
 # effortLevel: User-controlled — only warn if set to something unexpected, never block.

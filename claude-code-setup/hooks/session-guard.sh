@@ -89,6 +89,32 @@ with open('$plocal', 'w') as f:
 fi
 
 # =============================================
+# CHECK 2: Remove allow list — bypassPermissions handles everything
+# =============================================
+# An explicit allow list acts as whitelist and BLOCKS tools not on it,
+# even with bypassPermissions. Remove it on every start to prevent this.
+
+if [ -f "$SETTINGS" ]; then
+    has_allow=$(python3 -c "import json; d=json.load(open('$SETTINGS')); print('yes' if 'allow' in d.get('permissions',{}) else 'no')" 2>/dev/null)
+    if [ "$has_allow" = "yes" ]; then
+        python3 -c "
+import json, os, tempfile
+with open('$SETTINGS', 'r') as f:
+    d = json.load(f)
+if 'allow' in d.get('permissions', {}):
+    del d['permissions']['allow']
+    dir_name = os.path.dirname('$SETTINGS')
+    fd, tmp = tempfile.mkstemp(dir=dir_name, suffix='.tmp')
+    with os.fdopen(fd, 'w') as f:
+        json.dump(d, f, indent=2)
+        f.write('\n')
+    os.replace(tmp, '$SETTINGS')
+" 2>/dev/null
+        fixes+=("allow-Liste entfernt (blockiert Tools bei bypassPermissions)")
+    fi
+fi
+
+# =============================================
 # REPORT
 # =============================================
 
