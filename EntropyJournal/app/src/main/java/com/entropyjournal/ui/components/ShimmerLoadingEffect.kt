@@ -45,9 +45,9 @@ fun ShimmerLoadingEffect(
     val baseColor = MaterialTheme.colorScheme.surfaceVariant
     // Opaque highlight: slightly lighter/darker blend of base — no transparency artifacts
     val highlightColor = if (isDark) {
-        lerp(baseColor, Color.White, 0.15f)
+        lerp(baseColor, Color.White, 0.35f)
     } else {
-        lerp(baseColor, Color.White, 0.5f)
+        lerp(baseColor, Color.Black, 0.15f)
     }
 
     val shimmerBrush = Brush.linearGradient(
