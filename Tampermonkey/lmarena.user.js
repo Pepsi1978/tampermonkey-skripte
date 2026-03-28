@@ -2174,7 +2174,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		styleRoundButton(copyBtn, 0, 156);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		copyBtn.textContent = "\u29C9";
+		copyBtn.textContent = "📎";
 		copyBtn.title = "Text kopieren";
 		copyBtn.onclick = () => {
 			const sel = window.getSelection();
@@ -2245,7 +2245,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 		showToast(
-			"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \u29C9 + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
+			"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + 📎 + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
 			2800,
 		);
 	}

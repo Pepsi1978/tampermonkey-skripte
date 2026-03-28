@@ -2535,7 +2535,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		copyBtn = getOrCreateButton(UI_IDS.copy);
 		styleRoundButton(copyBtn, 0, 156);
 		preventFocusSteal(copyBtn);
-		copyBtn.textContent = copyBtn.textContent || "\u29C9";
+		copyBtn.textContent = copyBtn.textContent || "📎";
 		copyBtn.title = "Text kopieren";
 		copyBtn.onclick = () => {
 			const sel = window.getSelection();

@@ -2322,7 +2322,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		styleRoundButton(copyBtn, 0, 156);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		copyBtn.textContent = "\u29C9";
+		copyBtn.textContent = "📎";
 		copyBtn.title = "Text kopieren";
 		copyBtn.addEventListener("click", () => {
 			const sel = window.getSelection();
