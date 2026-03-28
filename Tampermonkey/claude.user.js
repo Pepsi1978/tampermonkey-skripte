@@ -296,7 +296,7 @@
 		if (!el) return false;
 		if (el.isContentEditable) return true;
 		const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-		if (ce === "true" || ce === "") return true;
+		if (ce === "true" || ce === "" || ce === "plaintext-only") return true;
 		const role = (el.getAttribute?.("role") || "").toLowerCase();
 		if (role === "textbox") return true;
 		return false;
@@ -416,14 +416,24 @@
 	}
 
 	function findPrompt() {
+		// Helper: check any contenteditable value (true, plaintext-only, etc.)
+		function isCE(el) {
+			if (!el) return false;
+			const ce = el.getAttribute?.("contenteditable");
+			return ce !== null && ce !== "false";
+		}
+
 		const direct = [
 			document.querySelector("textarea#prompt-textarea"),
 			document.querySelector("textarea[data-testid='prompt-textarea']"),
-			document.querySelector("div#prompt-textarea[contenteditable='true']"),
+			document.querySelector("div#prompt-textarea[contenteditable]"),
 			document.querySelector(
-				"div[data-testid='prompt-textarea'][contenteditable='true']",
+				"div[data-testid='prompt-textarea'][contenteditable]",
 			),
 			document.querySelector(".ProseMirror[contenteditable='true']"),
+			document.querySelector(".ProseMirror[contenteditable='plaintext-only']"),
+			document.querySelector(".ProseMirror[contenteditable]"),
+			document.querySelector("fieldset [contenteditable]"),
 			document.querySelector("form textarea#prompt-textarea"),
 			document.querySelector("form textarea[data-testid='prompt-textarea']"),
 		]
@@ -432,11 +442,13 @@
 
 		if (direct) return direct;
 
+		// Broad search: all editable elements
 		const candidates = [
 			...document.querySelectorAll("textarea"),
 			...document.querySelectorAll("input[type='text']"),
 			...document.querySelectorAll("input:not([type])"),
 			...document.querySelectorAll("[contenteditable='true']"),
+			...document.querySelectorAll("[contenteditable='plaintext-only']"),
 			...document.querySelectorAll("[role='textbox']"),
 		].filter(
 			(el) =>
@@ -445,13 +457,29 @@
 				isLikelyClaudePromptInput(el),
 		);
 
-		if (!candidates.length) return null;
+		if (!candidates.length) {
+			// Last resort: find ANY editable element in the bottom half of the viewport
+			const bottomHalf = [
+				...document.querySelectorAll(".ProseMirror[contenteditable]"),
+				...document.querySelectorAll("[contenteditable='true']"),
+				...document.querySelectorAll("[contenteditable='plaintext-only']"),
+				...document.querySelectorAll("[role='textbox']"),
+			].filter((el) => {
+				if (!isVisible(el)) return false;
+				const r = el.getBoundingClientRect();
+				return (
+					r.top > window.innerHeight * 0.4 && r.width > 100 && r.height > 15
+				);
+			});
+			if (bottomHalf.length) return bottomHalf[0];
+			return null;
+		}
 
 		candidates.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
 
 		const top = candidates[0];
-		const inner = top.querySelector?.("[contenteditable='true']");
-		return inner && isVisible(inner) ? inner : top;
+		const inner = top.querySelector?.("[contenteditable]");
+		return inner && isVisible(inner) && isCE(inner) ? inner : top;
 	}
 
 	// ============================================================
@@ -507,7 +535,7 @@
 
 		if (el.isContentEditable) return true;
 		const ce = (el.getAttribute?.("contenteditable") || "").toLowerCase();
-		if (ce === "true" || ce === "") return true;
+		if (ce === "true" || ce === "" || ce === "plaintext-only") return true;
 
 		const role = (el.getAttribute?.("role") || "").toLowerCase();
 		if (role === "textbox") return true;
