@@ -153,6 +153,7 @@ _Noch keine Eintraege._
 <!-- Writer: optimizer Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
+- **[2026-03-28 14:20] Code-Suche Index:** 105 Dateien, 253 Chunks indexiert.
 ## UI/UX-Patterns
 <!-- Writer: ui-polisher Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
@@ -199,6 +200,7 @@ _Noch keine Eintraege._
 - **[2026-03-25] Cursor OS-Level Sandboxing** — Status: EVALUIERT | Empfehlung: JA spaeter
   Praeventive Sandbox statt reaktiver Blockierung. Naechste Evolution des safety-gate als Defense-in-Depth Schicht 2.
 
+- **[2026-03-28 14:17] Cross-CLI Delta:** Codex(11), Gemini(5) neue Commits — Bruecke starten fuer Details.
 ---
 
 ## Meta-Intelligenz & Selbstverbesserung
