@@ -50,6 +50,9 @@
 	const UI_POS = { rightPx: 27, bottomPx: 124 };
 	const UI_IDS = {
 		mic: "tm-lmarena-mic",
+		autoEnter: "tm-lmarena-auto-enter",
+		paste: "tm-lmarena-paste",
+		copy: "tm-lmarena-copy",
 		geminiToggle: "tm-lmarena-gemini-toggle",
 		clear: "tm-lmarena-clear",
 		prompt: "tm-lmarena-prompt",
@@ -2171,7 +2174,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		styleRoundButton(copyBtn, 0, 156);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		copyBtn.textContent = "\uD83D\uDCCE";
+		copyBtn.textContent = "\u29C9";
 		copyBtn.title = "Text kopieren";
 		copyBtn.onclick = () => {
 			const sel = window.getSelection();
@@ -2242,7 +2245,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		setPromptBtnState("idle");
 		setPromptBtn2State("idle");
 		showToast(
-			"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \uD83D\uDCCE + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
+			"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \u29C9 + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
 			2800,
 		);
 	}

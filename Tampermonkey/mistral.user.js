@@ -39,6 +39,9 @@
 	const UI_IDS = {
 		toast: "tm-mistral-toast",
 		mic: "tm-mistral-mic",
+		autoEnter: "tm-mistral-auto-enter",
+		paste: "tm-mistral-paste",
+		copy: "tm-mistral-copy",
 		geminiToggle: "tm-mistral-gemini-toggle",
 		clear: "tm-mistral-clear",
 		prompt: "tm-mistral-prompt",
@@ -2280,7 +2283,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			styleRoundButton(copyBtn, 0, 156);
 			copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 			copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-			copyBtn.textContent = "\uD83D\uDCCE";
+			copyBtn.textContent = "\u29C9";
 			copyBtn.title = "Text kopieren";
 			copyBtn.onclick = () => {
 				const sel = window.getSelection();
@@ -2378,7 +2381,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 
 		if (!silent) {
 			showToast(
-				"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \uD83D\uDCCE + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
+				"✅ Script aktiv. 🎙️ + \u23CE + \uD83D\uDCCB + \u29C9 + G + ❌ + ✨ + 🪄 unten rechts.\nTipp: erst ins Ziel-Eingabefeld klicken, dann 🎙️.",
 				2800,
 			);
 		}

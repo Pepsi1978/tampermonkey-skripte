@@ -2502,7 +2502,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 		styleRoundButton(copyBtn, 0, 156);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		copyBtn.textContent = copyBtn.textContent || "\uD83D\uDCCE";
+		copyBtn.textContent = copyBtn.textContent || "\u29C9";
 		copyBtn.title = "Text kopieren";
 		copyBtn.onclick = () => {
 			const sel = window.getSelection();

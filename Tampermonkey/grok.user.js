@@ -202,6 +202,9 @@
 		root: "tm-grok-ui-root",
 		toast: "tm-grok-toast",
 		mic: "tm-grok-mic",
+		autoEnter: "tm-grok-auto-enter",
+		paste: "tm-grok-paste",
+		copy: "tm-grok-copy",
 		geminiToggle: "tm-grok-gemini-toggle",
 		clear: "tm-grok-clear",
 		prompt: "tm-grok-prompt",
@@ -2294,7 +2297,7 @@ Zielgruppe, Kontext, Format und Ton dürfen niemals abweichen.
 			copyBtn = document.createElement("button");
 			copyBtn.id = UI_IDS.copy;
 			styleRoundButton(copyBtn, 0, 156);
-			copyBtn.textContent = "\uD83D\uDCCE";
+			copyBtn.textContent = "\u29C9";
 			copyBtn.title = "Text kopieren";
 			copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 			copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);

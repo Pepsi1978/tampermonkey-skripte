@@ -1420,6 +1420,9 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 	// ── Button IDs (Watchdog) ──
 	const UI_IDS = {
 		mic: "tm-notebooklm-mic",
+		autoEnter: "tm-notebooklm-auto-enter",
+		paste: "tm-notebooklm-paste",
+		copy: "tm-notebooklm-copy",
 		geminiToggle: "tm-notebooklm-gemini-toggle",
 		clear: "tm-notebooklm-clear",
 		promptFrank: "tm-notebooklm-prompt",
@@ -2314,7 +2317,7 @@ Die Aufgabe wird immer 1:1 übernommen, ohne Umformulierung oder Ergänzung.
 		styleRoundButton(copyBtn, 0, 156);
 		copyBtn.addEventListener("pointerdown", (e) => e.preventDefault(), true);
 		copyBtn.addEventListener("mousedown", (e) => e.preventDefault(), true);
-		copyBtn.textContent = copyBtn.textContent || "\uD83D\uDCCE";
+		copyBtn.textContent = copyBtn.textContent || "\u29C9";
 		copyBtn.title = "Text kopieren";
 		copyBtn.onclick = () => {
 			const sel = window.getSelection();
