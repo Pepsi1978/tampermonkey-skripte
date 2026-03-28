@@ -1411,6 +1411,9 @@
 			if (sel && sel.toString().trim()) {
 				navigator.clipboard.writeText(sel.toString());
 				showToast("\uD83D\uDCCB Kopiert!", 1500);
+				// Focus input field so Paste works next
+				const _inputEl = typeof getUserTargetEditable === "function" ? getUserTargetEditable() : null;
+				if (_inputEl) _inputEl.focus();
 			} else {
 				const el = getUserTargetEditable();
 				if (el) {
@@ -1418,6 +1421,7 @@
 					if (text.trim()) {
 						navigator.clipboard.writeText(text);
 						showToast("\uD83D\uDCCB Eingabefeld kopiert!", 1500);
+						el.focus();
 					}
 				}
 			}
