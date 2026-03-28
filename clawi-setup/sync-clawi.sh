@@ -107,8 +107,8 @@ manifest = {
   'counts': counts,
   'pluginEntry': plugin,
   'pluginInstall': install,
-  'rawDatabaseBackedUpToGit': False,
-  'note': 'Only sanitized lossless-claw metadata is backed up to Git. Raw lcm.db is intentionally excluded because it may contain sensitive conversation/config data.'
+  'rawDatabaseBackedUpToGit': True,
+  'note': 'Raw lcm.db is intentionally backed up to GitHub by explicit user decision.'
 }
 out_path.write_text(json.dumps(manifest, indent=2) + '\n')
 PY
@@ -123,6 +123,9 @@ case "$MODE" in
     for dir in "${DIRS_TO_SYNC[@]}"; do
       copy_dir_if_exists "$REPO_DIR/$dir" "$WORKSPACE_DIR/$dir"
     done
+    if [[ -f "$LCM_BACKUP_DIR/lcm.db" ]]; then
+      copy_file_if_exists "$LCM_BACKUP_DIR/lcm.db" "$LCM_DB"
+    fi
     if [[ -f "$LCM_BACKUP_DIR/manifest.json" ]]; then
       copy_file_if_exists "$LCM_BACKUP_DIR/manifest.json" "$OPENCLAW_HOME/lcm.manifest.json"
       copy_file_if_exists "$LCM_BACKUP_DIR/README.md" "$WORKSPACE_DIR/lossless-claw-README.md"
@@ -139,9 +142,10 @@ case "$MODE" in
     done
     if [[ -f "$LCM_DB" ]]; then
       mkdir -p "$LCM_BACKUP_DIR"
+      copy_file_if_exists "$LCM_DB" "$LCM_BACKUP_DIR/lcm.db"
       export LCM_MANIFEST_OUT="$LCM_BACKUP_DIR/manifest.json"
       write_lcm_manifest
-      echo "  Synced lossless-claw metadata/"
+      echo "  Synced lossless-claw/"
     fi
     echo "Clawi's full baseline is now backed up in the repository!"
     ;;

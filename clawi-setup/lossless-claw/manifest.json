@@ -1,21 +1,21 @@
 {
-  "capturedAt": "2026-03-28T00:30:37Z",
+  "capturedAt": "2026-03-28T01:02:42Z",
   "dbPath": "/Users/frank/.openclaw/lcm.db",
-  "dbSizeBytes": 5468160,
-  "dbSha256": "69c53d56b72b708f406c1763b87cee4b8d606ded94a61e61cdf017027af6ea4b",
+  "dbSizeBytes": 6189056,
+  "dbSha256": "c2cea8543bb6104dfae54a216deaec2b8c4e86a36e5483b0d21988f1f4263a7d",
   "counts": {
     "conversations": 1,
-    "messages": 527,
-    "summaries": 9
+    "messages": 600,
+    "summaries": 14
   },
   "pluginEntry": {
     "enabled": true,
     "config": {
-      "freshTailCount": 48,
       "contextThreshold": 0.75,
+      "expansionModel": "openai-codex/gpt-5.4",
+      "freshTailCount": 48,
       "incrementalMaxDepth": -1,
-      "summaryModel": "openai-codex/gpt-5.4",
-      "expansionModel": "openai-codex/gpt-5.4"
+      "summaryModel": "openai-codex/gpt-5.4"
     }
   },
   "pluginInstall": {
@@ -31,5 +31,6 @@
     "resolvedAt": "2026-03-27T23:36:43.296Z",
     "installedAt": "2026-03-27T23:37:03.804Z"
   },
-  "note": "Backed up LCM data and lossless-claw config for Clawi recovery."
+  "rawDatabaseBackedUpToGit": true,
+  "note": "Raw lcm.db is intentionally backed up to GitHub by explicit user decision."
 }

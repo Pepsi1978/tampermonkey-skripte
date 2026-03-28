@@ -93,8 +93,8 @@ function Write-LcmManifest {
         counts = @{}
         pluginEntry = $pluginEntry
         pluginInstall = $pluginInstall
-        rawDatabaseBackedUpToGit = $false
-        note = 'Only sanitized lossless-claw metadata is backed up to Git. Raw lcm.db is intentionally excluded because it may contain sensitive conversation/config data.'
+        rawDatabaseBackedUpToGit = $true
+        note = 'Raw lcm.db is intentionally backed up to GitHub by explicit user decision.'
     }
     $manifest | ConvertTo-Json -Depth 10 | Out-File $OutputPath -Encoding utf8
 }
@@ -106,6 +106,9 @@ if ($Mode -eq "pull") {
     }
     foreach ($dir in $DirsToSync) {
         Copy-DirIfExists (Join-Path $RepoDir $dir) (Join-Path $WorkspaceDir $dir)
+    }
+    if (Test-Path (Join-Path $LcmBackupDir "lcm.db")) {
+        Copy-IfExists (Join-Path $LcmBackupDir "lcm.db") $LcmDb
     }
     if (Test-Path (Join-Path $LcmBackupDir "manifest.json")) {
         Copy-IfExists (Join-Path $LcmBackupDir "manifest.json") (Join-Path $OpenClawHome "lcm.manifest.json")
@@ -122,8 +125,9 @@ elseif ($Mode -eq "push") {
     }
     if (Test-Path $LcmDb) {
         if (-not (Test-Path $LcmBackupDir)) { New-Item -ItemType Directory -Path $LcmBackupDir -Force | Out-Null }
+        Copy-IfExists $LcmDb (Join-Path $LcmBackupDir "lcm.db")
         Write-LcmManifest (Join-Path $LcmBackupDir "manifest.json")
-        Write-Host "  Synced lossless-claw metadata/"
+        Write-Host "  Synced lossless-claw/"
     }
     Write-Host "Clawi's full baseline is now backed up in the repository!" -ForegroundColor Green
 }
