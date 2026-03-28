@@ -23,6 +23,43 @@ Hintergrund, Code-Beispielen und konkreten Regeln.
 
 ---
 
+## 2026-03-28 — Claude Code starts in home directory instead of ~/proggs/ (Windows + macOS)
+
+**Plattform:** Beide (Windows + macOS)
+**Kontext:** Claude Code startet manchmal im Home-Verzeichnis (~/) statt im Workspace
+(~/proggs/). Das passiert wenn Claude Code nicht ueber Windows Terminal gestartet wird
+(z.B. Desktop-App, VS Code Extension, andere Launcher). Der SessionStart-Hook kann
+das Verzeichnis nicht aendern, weil Hooks in Subprozessen laufen.
+**Symptom:** `pwd` zeigt `/c/Users/barwa` (Windows) oder `/Users/barwa` (macOS) statt
+`/c/Users/barwa/proggs` bzw. `/Users/barwa/proggs`. Alle Git-Befehle schlagen fehl
+weil im Home-Verzeichnis kein Repository liegt.
+**Root Cause:** SessionStart-Hooks (session-guard.ps1/.sh) laufen in einem eigenen
+Subprozess. Sie koennten `cd` ausfuehren, aber das aendert nur IHREN Prozess — Claude
+Codes Hauptprozess bleibt im Home-Verzeichnis. Windows Terminal `startingDirectory`
+greift nur bei Terminal-Profilen, nicht bei der Desktop-App oder VS Code.
+**Fix:** Auto-cd in `.bashrc` (Git Bash) bzw. `.zshrc` (macOS) — die Shell-RC-Datei
+laeuft BEVOR Claude Code seinen Shell-Zustand bekommt. Nur wenn das aktuelle
+Verzeichnis das Home-Verzeichnis ist, wird nach ~/proggs/ gewechselt:
+```bash
+# FALSCH — kein Auto-cd, Session-Guard warnt nur (wirkungslos):
+# (nichts in .bashrc)
+
+# RICHTIG — Auto-cd in .bashrc/.zshrc:
+if [[ "$PWD" == "$HOME" || "$PWD" == "/c/Users/barwa" || "$PWD" == "C:\\Users\\barwa" ]]; then
+    cd "$HOME/proggs" 2>/dev/null || true
+fi
+```
+Drei Absicherungsschichten:
+1. `.bashrc`/`.zshrc` Auto-cd (aendert das Verzeichnis TATSAECHLICH)
+2. Windows Terminal `startingDirectory` (Backup fuer Terminal-Starts)
+3. SessionStart-Hook Warnung (letzte Sicherung falls beides versagt)
+
+**Vermeidungsregel:** Wenn eine Shell-Umgebung falsch startet, NIEMALS nur in Hooks
+warnen — Hooks koennen das CWD des Hauptprozesses nicht aendern. Stattdessen die
+Shell-RC-Datei (.bashrc/.zshrc) verwenden, die VOR dem CLI-Tool laeuft.
+
+---
+
 ## 2026-03-24 — Missing standalone Kotlin/Gradle/pipx after PowerShell 7.6 upgrade (Windows)
 
 **Plattform:** Windows

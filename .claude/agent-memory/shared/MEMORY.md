@@ -96,6 +96,7 @@ und maschinenspezifisch (session-scores, cache, etc. — werden NICHT ueber Git 
 ### [2026-03-25 21:30] Agent: Write-Back nicht erfolgt (3 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
 ### [2026-03-25 22:20] Agent: Write-Back nicht erfolgt (3 aufeinanderfolgende Agents) — Status: AUTO-LOGGED
 ### 2026-03-27 18:29 — Hook: disk-guard.sh — Speicherplatz KRITISCH bei 95%
+### 2026-03-28 16:51 — Hook: session-guard.ps1 — Auto-Reparatur: Projekt C--Users-barwa--claude-double-shot-latte settings.local.json erstellt; Projekt C--Users-barwa--claude-mem-observer-sessions settings.local.json erstellt — Status: AUTO-GEFIXT
 ---
 
 ## Systemzustand (aktuell)
@@ -153,7 +154,7 @@ _Noch keine Eintraege._
 <!-- Writer: optimizer Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
 
-- **[2026-03-28 14:20] Code-Suche Index:** 105 Dateien, 253 Chunks indexiert.
+- **[2026-03-28 16:53] Code-Suche Index:** ? Dateien, ? Chunks indexiert.
 ## UI/UX-Patterns
 <!-- Writer: ui-polisher Agent | Leser: alle Agents, /self-improve -->
 _Noch keine Eintraege._
