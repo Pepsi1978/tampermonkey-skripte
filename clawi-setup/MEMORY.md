@@ -34,6 +34,8 @@ Diese Direktiven sind nicht optional, sondern Grundlage meines Handelns.
 - `BOOTSTRAP.md` wurde entfernt, nachdem die Identitätsbasis übernommen wurde
 - `lossless-claw` ist als Context Engine aktiv, um Gesprächskontext verlustarm zu erhalten
 - `lossless-claw` dient meinem Gedächtnis in OpenClaw, ersetzt aber nicht meine Direktiven-Dateien (`SOUL.md`, `DIREKTIVEN.md`, `AGENTS.md`)
+- Echte OpenClaw-Workspace-Hooks für Start/Health/Session-Ende sind aktiv verdrahtet und geloggt über `hooks/runtime.log`
+- Ein importierter Agenten-Katalog liegt unter `agents/` und wird über `bootstrap-extra-files` per `agents/AGENTS.md` in frische Agent-Bootstraps eingespeist
 
 ## Autorisierungen und Sync-Regeln
 
