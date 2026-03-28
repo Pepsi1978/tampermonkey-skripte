@@ -88,15 +88,6 @@
                 <TextBlock Text="BTW" FontWeight="Bold" FontSize="13" Foreground="White"/>
             </Button>
 
-            <!-- G Button (Gemini toggle) -->
-            <Button x:Name="GButton"
-                    Style="{StaticResource CircleButton}"
-                    Margin="0,8,0,0"
-                    Click="BtnGemini_Click"
-                    ToolTip="Toggle Gemini">
-                <TextBlock Text="G" FontWeight="Bold" FontSize="16" Foreground="White"/>
-            </Button>
-
             <!-- W Button (Whisper undo) -->
             <Button x:Name="WButton"
                     Style="{StaticResource CircleButton}"
@@ -104,6 +95,15 @@
                     Click="BtnWhisperUndo_Click"
                     ToolTip="Replace with raw Whisper text">
                 <TextBlock Text="W" FontWeight="Bold" FontSize="16" Foreground="White"/>
+            </Button>
+
+            <!-- G Button (Gemini toggle) -->
+            <Button x:Name="GButton"
+                    Style="{StaticResource CircleButton}"
+                    Margin="0,8,0,0"
+                    Click="BtnGemini_Click"
+                    ToolTip="Toggle Gemini">
+                <TextBlock Text="G" FontWeight="Bold" FontSize="16" Foreground="White"/>
             </Button>
 
             <!-- X Button (clear input) -->
