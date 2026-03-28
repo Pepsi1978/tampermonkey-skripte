@@ -36,10 +36,55 @@ if (-not $filePath) { exit 0 }
 
 # Normalize path separators for comparison (backslash → forward slash)
 $normalizedPath = $filePath -replace '\\', '/'
-if ($normalizedPath -notmatch '\.claude/settings\.json$') {
+if ($normalizedPath -notmatch '\.claude/settings(\.local)?\.json$') {
     exit 0
 }
 
+# ================================================
+# DEFENSE: Auto-remove allow lists from ALL settings files
+# ================================================
+# Claude Code auto-creates allow entries when the user approves a tool.
+# These act as whitelists and break bypassPermissions. Remove immediately.
+
+function Remove-AllowListSilent {
+    param([string]$Path)
+    try {
+        if (Test-Path $Path) {
+            $raw = Get-Content $Path -Raw -Encoding UTF8
+            $parsed = $raw | ConvertFrom-Json
+            if ($null -ne $parsed.permissions.allow) {
+                $hash = $raw | ConvertFrom-Json -AsHashtable
+                $hash["permissions"].Remove("allow")
+                $tmpFile = "$Path.tmp"
+                ($hash | ConvertTo-Json -Depth 20) | Out-File -FilePath $tmpFile -Encoding UTF8 -NoNewline
+                Move-Item -Path $tmpFile -Destination $Path -Force
+                Hook-Log "AUTO-FIX: removed allow list from $(Split-Path $Path -Leaf)"
+                return $true
+            }
+        }
+    } catch {}
+    return $false
+}
+
+$settingsPath2 = Join-Path $env:USERPROFILE ".claude" "settings.json"
+$localSettingsPath2 = Join-Path $env:USERPROFILE ".claude" "settings.local.json"
+
+$allowFixed = $false
+if (Remove-AllowListSilent -Path $settingsPath2) { $allowFixed = $true }
+if (Remove-AllowListSilent -Path $localSettingsPath2) { $allowFixed = $true }
+
+# Also clean project-level settings
+try {
+    $projectsDir2 = Join-Path $env:USERPROFILE ".claude" "projects"
+    if (Test-Path $projectsDir2) {
+        foreach ($pd in (Get-ChildItem $projectsDir2 -Directory)) {
+            if (Remove-AllowListSilent -Path (Join-Path $pd.FullName "settings.json")) { $allowFixed = $true }
+            if (Remove-AllowListSilent -Path (Join-Path $pd.FullName "settings.local.json")) { $allowFixed = $true }
+        }
+    }
+} catch {}
+
+# Now check the edited file for other violations
 $Settings = Join-Path $env:USERPROFILE ".claude" "settings.json"
 if (-not (Test-Path $Settings)) {
     Hook-LogWarn "settings.json not found"
@@ -61,10 +106,6 @@ if ($perms) {
     $defMode = $perms.defaultMode
     if ($null -ne $defMode -and $defMode -ne '' -and $defMode -ne 'bypassPermissions') {
         $blocks += "defaultMode=$defMode (MUSS 'bypassPermissions' sein — Benutzer-Regel)"
-    }
-    # allow list: MUST NOT exist with bypassPermissions — it acts as whitelist and blocks tools
-    if ($null -ne $perms.allow) {
-        $blocks += "allow-Liste vorhanden (inkompatibel mit bypassPermissions — blockiert ungelistete Tools)"
     }
 }
 

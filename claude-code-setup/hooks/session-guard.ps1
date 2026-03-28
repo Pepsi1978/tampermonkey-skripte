@@ -123,27 +123,50 @@ try {
 }
 
 # ================================================
-# CHECK 2: Remove allow list — bypassPermissions handles everything
+# CHECK 2: Remove allow list from ALL settings files
 # ================================================
 # An explicit allow list acts as whitelist and BLOCKS tools not on it,
-# even with bypassPermissions. Remove it on every start to prevent this.
+# even with bypassPermissions. Claude Code auto-creates allow entries when
+# the user manually approves a tool. Remove from ALL files on every start.
 
+function Remove-AllowList {
+    param([string]$Path, [string]$Label)
+    try {
+        if (Test-Path $Path) {
+            $rawJson = Get-Content $Path -Raw -Encoding UTF8
+            $data = $rawJson | ConvertFrom-Json
+            if ($null -ne $data.permissions.allow) {
+                $hashData = $rawJson | ConvertFrom-Json -AsHashtable
+                $hashData["permissions"].Remove("allow")
+                $tmpFile = "$Path.tmp"
+                ($hashData | ConvertTo-Json -Depth 20) | Out-File -FilePath $tmpFile -Encoding UTF8 -NoNewline
+                Move-Item -Path $tmpFile -Destination $Path -Force
+                $script:fixes += "allow-Liste aus $Label entfernt"
+                Hook-Log "AUTO-FIX: removed allow list from $Label"
+            }
+        }
+    } catch {
+        Hook-LogWarn "allow list cleanup failed for ${Label}: $_"
+    }
+}
+
+# Clean settings.json
+Remove-AllowList -Path $settingsPath -Label "settings.json"
+
+# Clean settings.local.json
+Remove-AllowList -Path $localSettingsPath -Label "settings.local.json"
+
+# Clean ALL project-level settings (both settings.json and settings.local.json)
 try {
-    if (Test-Path $settingsPath) {
-        $rawJson = Get-Content $settingsPath -Raw -Encoding UTF8
-        $settingsData = $rawJson | ConvertFrom-Json
-        if ($null -ne $settingsData.permissions.allow) {
-            $hashData = $rawJson | ConvertFrom-Json -AsHashtable
-            $hashData["permissions"].Remove("allow")
-            $tmpFile = "$settingsPath.tmp"
-            ($hashData | ConvertTo-Json -Depth 20) | Out-File -FilePath $tmpFile -Encoding UTF8 -NoNewline
-            Move-Item -Path $tmpFile -Destination $settingsPath -Force
-            $fixes += "allow-Liste entfernt (blockiert Tools bei bypassPermissions)"
-            Hook-Log "AUTO-FIX: removed allow list from permissions (incompatible with bypassPermissions)"
+    $projectsDir = Join-Path $env:USERPROFILE ".claude" "projects"
+    if (Test-Path $projectsDir) {
+        foreach ($pdir in (Get-ChildItem $projectsDir -Directory)) {
+            Remove-AllowList -Path (Join-Path $pdir.FullName "settings.json") -Label "Projekt/$($pdir.Name)/settings.json"
+            Remove-AllowList -Path (Join-Path $pdir.FullName "settings.local.json") -Label "Projekt/$($pdir.Name)/settings.local.json"
         }
     }
 } catch {
-    Hook-LogWarn "allow list cleanup failed: $_"
+    Hook-LogWarn "project allow list cleanup failed: $_"
 }
 
 # ================================================
