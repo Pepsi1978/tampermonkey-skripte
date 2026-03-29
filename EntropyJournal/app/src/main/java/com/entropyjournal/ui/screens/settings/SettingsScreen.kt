@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -67,6 +68,7 @@ fun SettingsScreen(
     onSignOut: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     // Google Drive consent launcher
     val consentLauncher = rememberLauncherForActivityResult(
@@ -319,7 +321,7 @@ fun SettingsScreen(
             title = { Text("Abmelden?", color = MaterialTheme.colorScheme.onSurface) },
             text = { Text("M\u00f6chtest du dich wirklich abmelden?", color = MaterialTheme.colorScheme.onSurfaceVariant) },
             confirmButton = {
-                Button(onClick = { viewModel.signOut(); onSignOut() }, colors = ButtonDefaults.buttonColors(containerColor = NeonRed)) { Text("Abmelden") }
+                Button(onClick = { val ctx = context; viewModel.signOut(ctx); onSignOut() }, colors = ButtonDefaults.buttonColors(containerColor = NeonRed)) { Text("Abmelden") }
             },
             dismissButton = {
                 OutlinedButton(onClick = { viewModel.showLogoutDialog(false) }) { Text("Abbrechen", color = MaterialTheme.colorScheme.onSurfaceVariant) }

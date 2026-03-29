@@ -156,8 +156,10 @@ class SettingsViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(consentIntent = null)
     }
 
-    fun signOut() {
+    fun signOut(context: android.content.Context) {
         signInUseCase.signOut()
+        // Delete local database — data belongs to the account
+        context.deleteDatabase("entropy_journal_db")
         _uiState.value = _uiState.value.copy(userProfile = null, showLogoutDialog = false)
     }
 }
