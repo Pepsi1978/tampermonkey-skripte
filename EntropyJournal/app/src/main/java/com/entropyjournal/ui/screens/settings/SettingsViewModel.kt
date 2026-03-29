@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import android.content.Intent
+import com.entropyjournal.data.remote.googledrive.NeedConsentException
+
 data class SettingsUiState(
     val userProfile: UserProfile? = null,
     val groqApiKey: String = "",
@@ -25,7 +28,8 @@ data class SettingsUiState(
     val lastSyncTimestamp: Long? = null,
     val isSyncing: Boolean = false,
     val syncMessage: String? = null,
-    val showLogoutDialog: Boolean = false
+    val showLogoutDialog: Boolean = false,
+    val consentIntent: Intent? = null
 )
 
 @HiltViewModel
@@ -103,16 +107,27 @@ class SettingsViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    _uiState.value = _uiState.value.copy(
-                        isSyncing = false,
-                        syncMessage = "Fehler: ${error.message}"
-                    )
+                    if (error is NeedConsentException) {
+                        _uiState.value = _uiState.value.copy(
+                            isSyncing = false,
+                            consentIntent = error.consentIntent
+                        )
+                    } else {
+                        _uiState.value = _uiState.value.copy(
+                            isSyncing = false,
+                            syncMessage = "Fehler: ${error.message}"
+                        )
+                    }
                 }
         }
     }
 
     fun showLogoutDialog(show: Boolean) {
         _uiState.value = _uiState.value.copy(showLogoutDialog = show)
+    }
+
+    fun clearConsentIntent() {
+        _uiState.value = _uiState.value.copy(consentIntent = null)
     }
 
     fun signOut() {

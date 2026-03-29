@@ -1,5 +1,7 @@
 package com.entropyjournal.ui.screens.settings
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,6 +67,22 @@ fun SettingsScreen(
     onSignOut: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Google Drive consent launcher
+    val consentLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { _ ->
+        // After consent, retry sync
+        viewModel.syncNow()
+    }
+
+    // Launch consent if needed
+    uiState.consentIntent?.let { intent ->
+        androidx.compose.runtime.LaunchedEffect(intent) {
+            consentLauncher.launch(intent)
+            viewModel.clearConsentIntent()
+        }
+    }
 
     Column(
         modifier = Modifier
