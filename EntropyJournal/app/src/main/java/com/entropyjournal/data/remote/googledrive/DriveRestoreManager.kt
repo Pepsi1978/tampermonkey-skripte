@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.entropyjournal.util.Constants
 import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
@@ -79,6 +80,8 @@ class DriveRestoreManager @Inject constructor(
             }
 
             Result.success(Unit)
+        } catch (e: UserRecoverableAuthException) {
+            Result.failure(NeedConsentException(e.intent ?: android.content.Intent()))
         } catch (e: Exception) {
             Result.failure(e)
         }

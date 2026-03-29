@@ -122,6 +122,32 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun restoreFromCloud() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSyncing = true, syncMessage = null)
+            syncUseCase.restore()
+                .onSuccess {
+                    _uiState.value = _uiState.value.copy(
+                        isSyncing = false,
+                        syncMessage = "Wiederherstellung erfolgreich! Bitte App neu starten."
+                    )
+                }
+                .onFailure { error ->
+                    if (error is NeedConsentException) {
+                        _uiState.value = _uiState.value.copy(
+                            isSyncing = false,
+                            consentIntent = error.consentIntent
+                        )
+                    } else {
+                        _uiState.value = _uiState.value.copy(
+                            isSyncing = false,
+                            syncMessage = "Fehler: ${error.message}"
+                        )
+                    }
+                }
+        }
+    }
+
     fun showLogoutDialog(show: Boolean) {
         _uiState.value = _uiState.value.copy(showLogoutDialog = show)
     }

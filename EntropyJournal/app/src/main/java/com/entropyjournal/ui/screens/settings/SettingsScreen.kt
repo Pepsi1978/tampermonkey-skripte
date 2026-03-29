@@ -235,7 +235,14 @@ fun SettingsScreen(
                             onClick = { viewModel.syncNow() },
                             enabled = !uiState.isSyncing,
                             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary)
-                        ) { Text(if (uiState.isSyncing) "Synchronisiere..." else "Jetzt synchronisieren") }
+                        ) { Text(if (uiState.isSyncing) "..." else "Sichern") }
+                        OutlinedButton(
+                            onClick = { viewModel.restoreFromCloud() },
+                            enabled = !uiState.isSyncing,
+                        ) { Text("Wiederherstellen") }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         OutlinedButton(
                             onClick = { viewModel.showLogoutDialog(true) },
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = NeonRed)
@@ -295,7 +302,7 @@ fun SettingsScreen(
             Column {
                 Text("\u00dcber die App", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Entropy Journal v0.3.3", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("Entropy Journal v0.3.4", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text("Dein pers\u00f6nliches KI-Tagebuch", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text("\u00a9 Frank Barwandt", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.outline)
