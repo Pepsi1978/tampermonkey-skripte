@@ -1,5 +1,6 @@
 package de.frank.claudekompass.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -95,6 +96,14 @@ fun KompassApp(
     var zeigeEinstellungen by rememberSaveable { mutableStateOf(false) }
     var zeigeSuche by rememberSaveable { mutableStateOf(false) }
 
+    val schliesseEinstellungen = {
+        bereich = Bereich.SLASH.id
+        zeigeEinstellungen = false
+    }
+    BackHandler(enabled = zeigeEinstellungen || zeigeSuche) {
+        if (zeigeEinstellungen) schliesseEinstellungen() else zeigeSuche = false
+    }
+
     val lauf by referenz.lauf.collectAsStateWithLifecycle()
     val letzterErfolg by referenz.letzterErfolg.collectAsStateWithLifecycle()
 
@@ -126,7 +135,7 @@ fun KompassApp(
                 titel = "Einstellungen",
                 themeModus = themeModus,
                 beiTheme = beiThemeWechsel,
-                beiZurueck = { zeigeEinstellungen = false },
+                beiZurueck = schliesseEinstellungen,
             )
             Trennlinie()
             EinstellungenScreen(
