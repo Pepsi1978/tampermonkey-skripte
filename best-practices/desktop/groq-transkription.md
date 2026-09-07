@@ -60,6 +60,8 @@ Gegenstueck (Fehlermodi jeder Schicht): [`bugs/desktop/groq-transkription.md`](.
 
 ## 1. Aufnahme & Audio-Preprocessing (Client) — die wirksamste Schicht
 
+**Lokale Ergänzung 07.09.2026 (TVO/CVO Windows, keine Webrecherche):** Die einmal berechnete Voiced-Timeline sowohl für den Vorfilter als auch für die Nachfilter und Transport-Retries verwenden. Nicht als Performance-Fix Schwellen verändern oder Filter entfernen. Bei begrenzten curl-Multipart-Uploads kann ein leerer `Expect:`-Header eine vorgeschaltete Continue-Wartephase vermeiden; bei früher Ablehnung fallen dafür eventuell zusätzliche Uploadbytes an. Beide Prozessausgabepipes parallel leeren. Siehe Bug-Almanach §3.7; Beschleunigung noch nicht separat gemessen.
+
 - **16 kHz mono PCM16** direkt aufnehmen (Groq + Whisper downsamplen ohnehin darauf; hoehere Rate/
   Bittiefe bringt KEINE bessere Genauigkeit, nur groessere Dateien). `offiziell`
 - **Sprachgehalt messen, nicht nur Dauer:** Aufnahme-Trigger ≠ Sprache. Beim Finalisieren die

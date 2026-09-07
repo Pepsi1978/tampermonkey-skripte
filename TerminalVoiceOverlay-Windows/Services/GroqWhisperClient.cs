@@ -157,7 +157,8 @@ namespace TerminalVoiceOverlay.Services
             // Floskel halluziniert. Werfen statt leer zurueckgeben -> der Aufrufer-catch behandelt es
             // wie die bisherige "leere Antwort" und tippt NICHTS (kein einsames " ; ").
             var prefilterSw = Stopwatch.StartNew();
-            if (!HasSpeechContent(fileBytes))
+            var voiced = BuildVoicedTimeline(fileBytes);
+            if (!HasSpeechContent(voiced))
             {
                 DiagLog.Warn("Groq", "prefilter_rejected", ("ms", prefilterSw.ElapsedMilliseconds), ("bytes", fileBytes.Length));
                 throw new Exception("Aufnahme ohne erkennbaren Sprachinhalt — nicht an Groq gesendet (Stille-Schutz)");
@@ -169,7 +170,7 @@ namespace TerminalVoiceOverlay.Services
                 // MaxUploadBytes) — sie werden in Teile geschnitten und einzeln gesendet.
                 var text = fileBytes.Length > MaxUploadBytes
                     ? await TranscribeInChunksAsync(fileBytes).ConfigureAwait(false)
-                    : await TranscribeWithRetry(fileBytes, 0).ConfigureAwait(false);
+                    : await TranscribeWithRetry(fileBytes, 0, voiced).ConfigureAwait(false);
                 DiagLog.Perf("Groq", "transcribe_total", totalSw, ("chars", text.Length));
                 return text;
             }
@@ -180,14 +181,14 @@ namespace TerminalVoiceOverlay.Services
             }
         }
 
-        private async Task<string> TranscribeWithRetry(byte[] fileBytes, int attempt)
+        private async Task<string> TranscribeWithRetry(byte[] fileBytes, int attempt, bool[]? voiced = null)
         {
+            voiced ??= BuildVoicedTimeline(fileBytes);
             if (PreferCurlTransport)
             {
                 try
                 {
                     var json = await SendWithCurlAsync(fileBytes).ConfigureAwait(false);
-                    bool[]? voiced = BuildVoicedTimeline(fileBytes);
                     var text = FilterTranscription(json, voiced);
                     DiagLog.Write("Groq", "filter_done", ("jsonChars", json.Length), ("textChars", text.Length), ("transport", "curl"));
                     if (!string.IsNullOrEmpty(text))
@@ -203,7 +204,7 @@ namespace TerminalVoiceOverlay.Services
                 }
             }
 
-            return await TranscribeWithHttpClientAsync(fileBytes, attempt).ConfigureAwait(false);
+            return await TranscribeWithHttpClientAsync(fileBytes, attempt, voiced).ConfigureAwait(false);
         }
 
         private async Task<string> SendWithCurlAsync(byte[] fileBytes)
@@ -243,8 +244,11 @@ namespace TerminalVoiceOverlay.Services
                 }
                 await process.StandardInput.WriteAsync(BuildCurlConfig(wavPath)).ConfigureAwait(false);
                 process.StandardInput.Close();
-                string stdout = await process.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
-                string stderr = await process.StandardError.ReadToEndAsync().ConfigureAwait(false);
+                var stdoutTask = process.StandardOutput.ReadToEndAsync();
+                var stderrTask = process.StandardError.ReadToEndAsync();
+                await Task.WhenAll(stdoutTask, stderrTask).ConfigureAwait(false);
+                string stdout = await stdoutTask.ConfigureAwait(false);
+                string stderr = await stderrTask.ConfigureAwait(false);
                 await process.WaitForExitAsync().ConfigureAwait(false);
                 DiagLog.Perf("Groq", "http_response", curlSw,
                     ("attempt", 0),
@@ -276,6 +280,8 @@ namespace TerminalVoiceOverlay.Services
             var sb = new StringBuilder();
             sb.Append("url = ").Append(CurlQuote(_url)).Append('\n');
             sb.Append("request = \"POST\"\n");
+            // Send the bounded audio upload immediately, without a 100-continue roundtrip.
+            sb.Append("header = \"Expect:\"\n");
             sb.Append("header = ").Append(CurlQuote("Authorization: Bearer " + _apiKey)).Append('\n');
             sb.Append("form = ").Append(CurlQuote("file=@" + wavPath + ";type=audio/wav")).Append('\n');
             sb.Append("form = ").Append(CurlQuote("model=" + _model)).Append('\n');
@@ -307,7 +313,7 @@ namespace TerminalVoiceOverlay.Services
             }
         }
 
-        private async Task<string> TranscribeWithHttpClientAsync(byte[] fileBytes, int attempt)
+        private async Task<string> TranscribeWithHttpClientAsync(byte[] fileBytes, int attempt, bool[]? voiced)
         {
             using var content = new MultipartFormDataContent();
 
@@ -357,9 +363,7 @@ namespace TerminalVoiceOverlay.Services
 
             if (isSuccessStatusCode)
             {
-                // Schicht 3: Voiced-Timeline aus dem aufgenommenen PCM bauen (16-bit mono WAV), damit
-                // FilterTranscription jedes Segment gegen die echte Lautstaerke abgleichen kann.
-                bool[]? voiced = BuildVoicedTimeline(fileBytes);
+                // Reuse the recording's timeline, including across transport fallback and retries.
                 // Confidence-Gate (Schicht 2) + Audio-Abgleich (Schicht 3) anwenden. Bleibt Text uebrig
                 // -> zurueck. Alles Stille/halluziniert -> leer: wie bisher die "leere Antwort"
                 // (gleiche Exception, gleicher Aufrufer-catch) — funktionserhaltend.
@@ -375,7 +379,7 @@ namespace TerminalVoiceOverlay.Services
                 Console.WriteLine($"Groq {statusCode} - Versuch {attempt + 1}/{MaxRetries}, warte {DelaysMs[attempt]}ms...");
                 DiagLog.Warn("Groq", "retry_scheduled", ("status", statusCode), ("attempt", attempt), ("delayMs", DelaysMs[attempt]));
                 await Task.Delay(DelaysMs[attempt]).ConfigureAwait(false);
-                return await TranscribeWithRetry(fileBytes, attempt + 1).ConfigureAwait(false);
+                return await TranscribeWithRetry(fileBytes, attempt + 1, voiced).ConfigureAwait(false);
             }
 
             DiagLog.Warn("Groq", "http_error", ("status", statusCode), ("body", Truncate(responseBody, 500)));
@@ -827,28 +831,12 @@ namespace TerminalVoiceOverlay.Services
         /// echte kurze Aussagen ueberschreiten <see cref="MinSpeechMs"/>, reine Stille nicht. Liest die
         /// Sample-Rate aus dem WAV-Header (Bytes 24-27); nimmt mono 16-bit an (so nimmt der AudioRecorder auf).
         /// </summary>
-        private static bool HasSpeechContent(byte[] wav)
+        private static bool HasSpeechContent(bool[]? voiced)
         {
-            const int headerSize = 44;
-            if (wav.Length <= headerSize + 4) return false;   // kein/zu wenig Audio
-            int sampleRate = wav[24] | (wav[25] << 8) | (wav[26] << 16) | (wav[27] << 24);
-            if (sampleRate <= 0) sampleRate = 16000;
-            int frameSamples = Math.Max(1, sampleRate * 20 / 1000);   // 20-ms-Frames
-            int frameBytes = frameSamples * 2;
+            if (voiced == null) return false;
             double voicedMs = 0;
-            for (int i = headerSize; i + frameBytes <= wav.Length; i += frameBytes)
-            {
-                double sumSq = 0;
-                for (int s = 0; s < frameSamples; s++)
-                {
-                    int idx = i + s * 2;
-                    short sample = (short)(wav[idx] | (wav[idx + 1] << 8));
-                    double f = sample / 32768.0;
-                    sumSq += f * f;
-                }
-                double rms = Math.Sqrt(sumSq / frameSamples);
-                if (rms > SpeechRmsThreshold) voicedMs += 20;
-            }
+            foreach (bool frame in voiced)
+                if (frame) voicedMs += FrameMs;
             Console.WriteLine($"Groq-Vorfilter: laute Zeit {voicedMs:F0} ms (Schwelle {MinSpeechMs} ms) -> {(voicedMs >= MinSpeechMs ? "senden" : "verworfen")}.");
             DiagLog.Write("Groq", "prefilter_measure", ("voicedMs", voicedMs.ToString("F0")), ("thresholdMs", MinSpeechMs), ("ok", voicedMs >= MinSpeechMs));
             return voicedMs >= MinSpeechMs;

@@ -228,10 +228,16 @@ namespace TerminalVoiceOverlay.Services
                 {
                     try
                     {
-                        await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "done", CancellationToken.None)
+                        using var closeCts = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+                        // The transcript is complete; send Close without waiting for the peer's reply.
+                        await ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "done", closeCts.Token)
                             .ConfigureAwait(false);
                     }
-                    catch { /* Schliessen darf das Ergebnis nicht kippen */ }
+                    catch (Exception ex)
+                    {
+                        DiagLog.Warn("GeminiSTT", "close_failed", ("error", ex.Message));
+                        ws.Abort();
+                    }
                 }
             }
 

@@ -3666,8 +3666,9 @@ namespace ClaudeVoiceOverlay.Views
             if (_promptPanel is null) return;
 
             PositionPromptPanel();
+            bool wasVisible = _promptPanel.IsVisible;
             _promptPanel.Show();
-            _ = _promptPanel.RefreshAsync();
+            if (wasVisible) _ = _promptPanel.RefreshAsync(); // Otherwise IsVisibleChanged refreshes it.
         }
 
         /// <summary>
@@ -3682,11 +3683,6 @@ namespace ClaudeVoiceOverlay.Views
             EnsurePromptPanelInstance();
             if (_promptPanel is null) return;
 
-            // Daten frisch laden, auch wenn das Panel nicht sichtbar ist —
-            // sonst ist der erste Tab-Klick im spaeter eingeblendeten
-            // Promtboard ohne Inhalt.
-            _ = _promptPanel.RefreshAsync();
-
             // Board sichtbar machen + positionieren (im Horizontal-Modus OBEN,
             // im Vertikal-Modus LINKS), damit die Eingabe links ANS BOARD
             // andocken kann statt ans Overlay.
@@ -3694,6 +3690,7 @@ namespace ClaudeVoiceOverlay.Views
             UltrathinkStar.Fill = StarGold;
             PositionPromptPanel();
             if (!_promptPanel.IsVisible) _promptPanel.Show();
+            else _ = _promptPanel.RefreshAsync();
 
             _promptPanel.EnsureInputWindowOpen();
             var input = _promptPanel.InputWindow;

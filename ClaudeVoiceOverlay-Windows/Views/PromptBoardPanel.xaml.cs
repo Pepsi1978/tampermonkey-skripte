@@ -278,7 +278,7 @@ public partial class PromptBoardPanel : Window
         };
         // Beim Schliessen das Eingabefenster mitnehmen, sonst bleibt ein
         // verwaistes Fenster ohne Trigger zurueck.
-        Closed += (_, _) => { CloseInputWindow(); CloseHistoryWindow(); };
+        Closed += (_, _) => { _closed = true; CloseInputWindow(); CloseHistoryWindow(); };
 
         // Window-wide drop tracking so the floating drag preview updates
         // its position over the entire panel area — not just over the
@@ -1063,34 +1063,54 @@ public partial class PromptBoardPanel : Window
     /// </summary>
     private readonly Dictionary<Guid, SolidColorBrush> _rowBrushCache = new();
 
-    public async Task RefreshAsync()
+    private Task? _refreshTask;
+    private bool _refreshRequested;
+    private bool _closed;
+
+    public Task RefreshAsync()
+    {
+        if (_closed) return Task.CompletedTask;
+        _refreshRequested = true;
+        if (_refreshTask == null || _refreshTask.IsCompleted)
+            _refreshTask = RefreshPendingAsync();
+        return _refreshTask;
+    }
+
+    private async Task RefreshPendingAsync()
+    {
+        do
+        {
+            _refreshRequested = false;
+            await RefreshCoreAsync();
+        } while (_refreshRequested && !_closed);
+    }
+
+    private async Task RefreshCoreAsync()
     {
         _allPromptsCacheStaleDueToError = false;
         try
         {
-            using var scope = PromptBoardHost.Services.CreateScope();
-            var categoryRepo = scope.ServiceProvider.GetRequiredService<ICategoryRepository>();
-            // Summary-Variante (ohne Prompts-Include) — RefreshAsync laedt
-            // direkt darunter eh _allPromptsCache via promptRepo.GetAllAsync,
-            // also waere der Categories-JOIN ueber Prompts doppelte Arbeit.
-            _categories = (await categoryRepo.GetAllSummaryAsync())
-                .OrderBy(c => c.SortOrder).ThenBy(c => c.Name)
-                .ToList();
-            // Einmalige Migration: Jede Kategorie ohne Palette-Hex bekommt
-            // einen zugewiesen, sodass die Farben kuenftig stabil sind.
-            await EnsureCategoryColorsPersistedAsync(categoryRepo);
-
-            // Alle Prompts in EINEM Roundtrip laden — vorher wurden bis zu
-            // 3*N Queries pro Render abgesetzt (AlwaysOn-Scan,
-            // RenderPrompts pro Kategorie, HotkeyRegistry pro Kategorie).
-            // Bei 8 Kategorien sparte das vorher bis zu 24 DB-Roundtrips
-            // pro Tab-Klick.
-            var promptRepo = scope.ServiceProvider.GetRequiredService<IPromptRepository>();
-            _allPromptsCache = (await promptRepo.GetAllAsync()).ToList();
+            // SQLite's async APIs still perform blocking work. Keep the entire
+            // DbContext lifetime off the Dispatcher and publish only complete snapshots.
+            var snapshot = await Task.Run(async () =>
+            {
+                using var scope = PromptBoardHost.Services.CreateScope();
+                var categoryRepo = scope.ServiceProvider.GetRequiredService<ICategoryRepository>();
+                var categories = (await categoryRepo.GetAllSummaryAsync())
+                    .OrderBy(c => c.SortOrder).ThenBy(c => c.Name).ToList();
+                await EnsureCategoryColorsPersistedAsync(categoryRepo, categories);
+                var promptRepo = scope.ServiceProvider.GetRequiredService<IPromptRepository>();
+                var prompts = (await promptRepo.GetAllAsync()).ToList();
+                return (categories, prompts);
+            });
+            if (_closed || _refreshRequested) return;
+            _categories = snapshot.categories;
+            _allPromptsCache = snapshot.prompts;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"PromptBoardPanel refresh failed: {ex.Message}");
+            if (_closed || _refreshRequested) return;
             _categories = new List<Category>();
             _allPromptsCache = new List<Prompt>();
             _allPromptsCacheStaleDueToError = true;
@@ -1117,15 +1137,9 @@ public partial class PromptBoardPanel : Window
         // Cache — keine zusaetzliche DB-Roundtrip mehr.
         if (_alwaysOnFilterMode)
         {
-            foreach (var cat in _categories)
-            {
-                bool hasAlwaysOn = false;
-                foreach (var p in _allPromptsCache)
-                {
-                    if (p.CategoryId == cat.Id && p.IsAlwaysOn) { hasAlwaysOn = true; break; }
-                }
-                if (hasAlwaysOn) _activeCategoryIds.Add(cat.Id);
-            }
+            _activeCategoryIds.UnionWith(_allPromptsCache
+                .Where(p => p.IsAlwaysOn && known.Contains(p.CategoryId))
+                .Select(p => p.CategoryId));
         }
 
         RenderCategoryTabs();
@@ -1173,11 +1187,11 @@ public partial class PromptBoardPanel : Window
     /// Listenposition (so erinnert die Migration an die alten Farben).
     /// Nach der Migration sind die Farben stabil ueber Reorder hinweg.
     /// </summary>
-    private async Task EnsureCategoryColorsPersistedAsync(ICategoryRepository repo)
+    private static async Task EnsureCategoryColorsPersistedAsync(ICategoryRepository repo, List<Category> categories)
     {
-        for (int i = 0; i < _categories.Count; i++)
+        for (int i = 0; i < categories.Count; i++)
         {
-            var cat = _categories[i];
+            var cat = categories[i];
             bool alreadyPalette = Array.FindIndex(CategoryPaletteHex,
                 h => string.Equals(h, cat.BackgroundColorHex, StringComparison.OrdinalIgnoreCase)) >= 0;
             if (alreadyPalette) continue;
@@ -1270,7 +1284,7 @@ public partial class PromptBoardPanel : Window
                     else
                         _activeCategoryIds.Add(cat.Id);
                 }
-                RenderCategoryTabs();
+                UpdateCategoryTabSelection();
                 await RenderPromptsAsync();
             };
             btn.ContextMenu = BuildCategoryContextMenu(cat);
@@ -1602,6 +1616,25 @@ public partial class PromptBoardPanel : Window
     }
 
     // ──────────────── Rendering: prompts ────────────────
+
+    private void UpdateCategoryTabSelection()
+    {
+        foreach (var btn in CategoryTabs.Children.OfType<Button>())
+        {
+            if (btn.Tag is not Guid id) continue;
+            if (_activeCategoryIds.Contains(id))
+            {
+                var color = ColorForCategory(id);
+                btn.Background = FrozenBrush(color.R, color.G, color.B);
+                btn.FontWeight = FontWeights.Bold;
+            }
+            else
+            {
+                btn.ClearValue(Control.BackgroundProperty);
+                btn.ClearValue(Control.FontWeightProperty);
+            }
+        }
+    }
 
     private async Task RenderPromptsAsync()
     {

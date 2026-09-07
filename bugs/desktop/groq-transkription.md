@@ -15,6 +15,8 @@
 
 > **Update 2026-07-02:** Keine belegten neuen Groq-Whisper-Halluzinations-/Rate-Limit-/Parameteraenderungen seit 2026-06-08 gefunden. Bestehende Abwehrkette bleibt massgeblich: VAD/Sprachgehalt vor Request, `verbose_json`, UND-Confidence-Gate, Blocklist nur bei Stille-Kontext.
 
+> **Lokale Ergänzung 07.09.2026:** Windows-Overlay-Latenz, siehe §3.7. Keine neue Webrecherche oder gemessene Beschleunigungszusage.
+
 ---
 
 ## ⚡ Kurzcheck (Stufe A — vor der Arbeit lesen)
@@ -37,6 +39,7 @@
 | 10 | Extra-Parameter senden | Nur dokumentierte Groq-Felder (sonst 400) | §3.6 |
 | 11 | 429 Rate-Limit | `retry-after`-Header lesen; 413/422 NICHT retryen | §4.2, §4.5 |
 | 12 | Viele kurze Clips | Min-Abrechnung 10 s/Clip — buendeln/Vorfilter | §4.1 |
+| 13 | Windows-Diktat wartet vor/nach Upload | Voiced-Timeline einmal berechnen; curl-Expect-Wartephase vermeiden, Ausgabepipes gleichzeitig lesen | §3.7 |
 
 ---
 
@@ -239,6 +242,16 @@ sich bei Groq NICHT setzen → Filterung client-seitig ueber `verbose_json` (§2
 **Quelle:** [litellm #11402](https://github.com/BerriAI/litellm/issues/11402)
 
 ---
+
+### 3.7 Lokale Windows-Pipeline: redundante Arbeit und Upload-Wartephase
+
+**Befund 07.09.2026:** TVO/CVO berechneten vor dem Request den Sprachanteil und nach der Antwort dieselbe RMS-Timeline erneut. curl konnte bei größeren Multipart-Uploads zusätzlich `Expect: 100-continue` setzen. Die vorhandenen TVO-Logs zeigen den Netzaufruf als größten Anteil; sie belegen nicht separat, ob eine konkrete Anfrage auf `100 Continue` wartete.
+
+**Änderung:** Dieselbe Timeline an Vorfilter, Nachfilter, Transport-Fallback und Wiederholungen weiterreichen. `header = "Expect:"` in der curl-Konfiguration startet den bereits größenbegrenzten Upload ohne vorgeschaltetes Continue-Warten; Status-/Fehlerauswertung bleibt erhalten. stdout und stderr gleichzeitig leeren, damit eine volle Fehlerpipe nicht den anderen Datenstrom blockieren kann.
+
+**Invarianten:** Modell, Audiodaten, unterschiedliche bestehende RMS-Schwellen je Overlay, Mindestsprachdauer, alle vier Filter, Chunking, Wiederholungen und .NET-Fallback unverändert. Keine zusätzliche kostenpflichtige Anfrage. Der schnellere Uploadbeginn kann bei früher Serverablehnung mehr Uploadbytes übertragen; die Größenbegrenzung bleibt aktiv.
+
+**Praxisabnahme:** Im Schnellmodus keine neuen Tests oder Benchmarks. Alte Laufzeitwerte sind keine Messung der Änderung. Gegenstück: `best-practices/desktop/groq-transkription.md`, lokale Ergänzung.
 
 ## 4. Rate-Limits, Kosten, Fehlercodes
 
