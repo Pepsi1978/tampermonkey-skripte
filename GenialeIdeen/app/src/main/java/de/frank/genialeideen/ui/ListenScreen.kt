@@ -36,7 +36,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.MenuOpen
@@ -331,12 +330,6 @@ fun ListenScreen(
                     aufTipp = aufNeueIdee,
                 )
             }
-
-            // Der Seitenschalter: ein schmaler Griff am linken Rand holt die Kategorien herein.
-            SeitenGriff(
-                modifier = Modifier.align(Alignment.CenterStart),
-                aufTipp = { bereichsraum.launch { schublade.open() } },
-            )
         }
     }
 
@@ -493,32 +486,6 @@ private fun SuchFenster(
 /** Zählt, wie viele Ideen in jeder Kategorie liegen. */
 private fun alleZaehlung(ideen: List<IdeeEntity>): Map<Long, Int> =
     ideen.mapNotNull { it.kategorieId }.groupingBy { it }.eachCount()
-
-/** Der Griff am linken Rand, der die Seitenleiste hereinholt (Baustein P). */
-@Composable
-private fun SeitenGriff(modifier: Modifier = Modifier, aufTipp: () -> Unit) {
-    val gold = LocalGold.current
-    Box(
-        modifier = modifier
-            .padding(start = 0.dp)
-            .size(width = 22.dp, height = 82.dp)
-            .druckEffekt(aufTipp)
-            .clip(RoundedCornerShape(topEnd = 14.dp, bottomEnd = 14.dp))
-            .background(
-                Brush.horizontalGradient(
-                    listOf(gold.primaer.copy(alpha = 0.85f), gold.primaerGedaempft.copy(alpha = 0.55f)),
-                ),
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        Icon(
-            Icons.Default.ChevronRight,
-            contentDescription = "Kategorien einblenden",
-            tint = gold.aufPrimaer,
-            modifier = Modifier.size(18.dp),
-        )
-    }
-}
 
 /** Die Seitenleiste mit allen Kategorien (Baustein P). */
 @Composable
