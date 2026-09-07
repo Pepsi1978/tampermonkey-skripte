@@ -53,6 +53,7 @@ import de.frank.claudekompass.ui.components.FehlerStreifen
 import de.frank.claudekompass.ui.components.GoldKnopf
 import de.frank.claudekompass.ui.components.HinweisStreifen
 import de.frank.claudekompass.ui.components.KompassKopfleiste
+import de.frank.claudekompass.ui.components.ThemeKnopf
 import de.frank.claudekompass.ui.components.Trennlinie
 import de.frank.claudekompass.ui.screens.ChatScreen
 import de.frank.claudekompass.ui.screens.EinstellungenScreen
@@ -121,7 +122,12 @@ fun KompassApp(
 
     if (zeigeEinstellungen) {
         Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-            UnterseiteKopf(titel = "Einstellungen", beiZurueck = { zeigeEinstellungen = false })
+            UnterseiteKopf(
+                titel = "Einstellungen",
+                themeModus = themeModus,
+                beiTheme = beiThemeWechsel,
+                beiZurueck = { zeigeEinstellungen = false },
+            )
             Trennlinie()
             EinstellungenScreen(
                 viewModel = einstellungen,
@@ -204,7 +210,12 @@ fun KompassApp(
 }
 
 @Composable
-private fun UnterseiteKopf(titel: String, beiZurueck: () -> Unit) {
+private fun UnterseiteKopf(
+    titel: String,
+    themeModus: ThemeModus,
+    beiTheme: () -> Unit,
+    beiZurueck: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -223,7 +234,9 @@ private fun UnterseiteKopf(titel: String, beiZurueck: () -> Unit) {
             text = titel,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.weight(1f),
         )
+        ThemeKnopf(themeModus = themeModus, beiKlick = beiTheme)
     }
 }
 
