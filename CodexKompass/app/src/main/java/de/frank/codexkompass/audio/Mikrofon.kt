@@ -36,7 +36,12 @@ class Mikrofon(context: Context) {
     private val appContext = context.applicationContext
     private val lebenszyklusSperre = Any()
     private val pufferSperre = Any()
-    private val pcmPuffer = ByteArrayOutputStream()
+    private val pcmPuffer = object : ByteArrayOutputStream() {
+        // Nur unter pufferSperre aufrufen: direkt in die fertige WAV kopieren,
+        // statt zuerst eine zweite vollstaendige PCM-Kopie anzulegen.
+        fun alsWav(rate: Int): ByteArray? =
+            if (count == 0) null else pcmZuWav(buf, count, rate)
+    }
     private val nimmtAuf = AtomicBoolean(false)
 
     @Volatile private var aufnehmer: AudioRecord? = null
@@ -161,14 +166,17 @@ class Mikrofon(context: Context) {
         } ?: false
         if (!fertig) KompassLog.warn("Mikrofon", "stoppe", "Lese-Job kam nicht rechtzeitig zum Ende")
 
-        val pcm = synchronized(pufferSperre) { pcmPuffer.toByteArray().also { pcmPuffer.reset() } }
+        val wav = synchronized(pufferSperre) {
+            pcmPuffer.alsWav(aktiveRate).also { pcmPuffer.reset() }
+        }
         KompassLog.info(
             "Mikrofon",
             "stoppe",
             "Aufnahme beendet",
-            mapOf("bytes" to pcm.size, "dauerMs" to (System.currentTimeMillis() - begonnenUm)),
+            mapOf("bytes" to (wav?.let { it.size - WAV_KOPF_BYTES } ?: 0),
+                "dauerMs" to (System.currentTimeMillis() - begonnenUm)),
         )
-        return pcm.takeIf { it.isNotEmpty() }?.let(::pcmZuWav)
+        return wav
     }
 
     fun nimmtGeradeAuf(): Boolean = nimmtAuf.get()
@@ -194,12 +202,11 @@ class Mikrofon(context: Context) {
         runCatching { aufnehmer?.release() }
     }
 
-    private fun pcmZuWav(pcm: ByteArray): ByteArray {
-        val rate = aktiveRate
+    private fun pcmZuWav(pcm: ByteArray, pcmBytes: Int, rate: Int): ByteArray {
         val byteRate = rate * KANAELE * BITS_PRO_WERT / 8
-        val kopf = ByteBuffer.allocate(WAV_KOPF_BYTES).order(ByteOrder.LITTLE_ENDIAN).apply {
+        return ByteBuffer.allocate(WAV_KOPF_BYTES + pcmBytes).order(ByteOrder.LITTLE_ENDIAN).apply {
             put("RIFF".toByteArray(Charsets.US_ASCII))
-            putInt(pcm.size + 36)
+            putInt(pcmBytes + 36)
             put("WAVE".toByteArray(Charsets.US_ASCII))
             put("fmt ".toByteArray(Charsets.US_ASCII))
             putInt(16)
@@ -210,9 +217,9 @@ class Mikrofon(context: Context) {
             putShort((KANAELE * BITS_PRO_WERT / 8).toShort())
             putShort(BITS_PRO_WERT.toShort())
             put("data".toByteArray(Charsets.US_ASCII))
-            putInt(pcm.size)
+            putInt(pcmBytes)
+            put(pcm, 0, pcmBytes)
         }.array()
-        return kopf + pcm
     }
 
     companion object {

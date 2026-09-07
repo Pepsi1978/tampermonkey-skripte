@@ -14,8 +14,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -49,11 +51,13 @@ class ChatViewModel(private val container: KompassContainer) : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     val nachrichten: StateFlow<List<ChatNachrichtEntity>> = _zustand
-        .flatMapLatest { zustand ->
-            if (zustand.aktiveSitzung == 0L) {
+        .map { it.aktiveSitzung }
+        .distinctUntilChanged()
+        .flatMapLatest { sitzungId ->
+            if (sitzungId == 0L) {
                 flowOf(emptyList())
             } else {
-                repository.beobachteNachrichten(zustand.aktiveSitzung)
+                repository.beobachteNachrichten(sitzungId)
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())

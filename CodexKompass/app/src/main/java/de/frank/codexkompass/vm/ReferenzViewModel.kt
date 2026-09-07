@@ -13,6 +13,7 @@ import de.frank.codexkompass.observability.probe
 import de.frank.codexkompass.tts.VorleseZustand
 import de.frank.codexkompass.update.LaufFortschritt
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -169,15 +171,12 @@ class ReferenzViewModel(private val container: KompassContainer) : ViewModel() {
             "baueZustand",
             mapOf("bereich" to bereich.id, "anzahl" to anzahl),
         )
-        return combine(
+        val listen = combine(
             repository.beobachteAktive(bereich),
             repository.beobachteEntfernte(bereich),
             fragenAlle,
             historieAnzahlen,
-            combine(ausgeklappt, fragenOffen, arbeitetAn, meldungen, fehler) { a, f, w, m, e ->
-                Bedienzustand(a, f, w, m, e)
-            },
-        ) { aktive, entfernte, fragen, anzahlen, bedien ->
+        ) { aktive, entfernte, fragen, anzahlen ->
             val nachEintrag = fragen.groupBy { it.eintragId }
             ReferenzZustand(
                 laedt = false,
@@ -187,6 +186,17 @@ class ReferenzViewModel(private val container: KompassContainer) : ViewModel() {
                 entfernte = entfernte.map {
                     ListenEintrag(it, nachEintrag[it.id].orEmpty(), (anzahlen[it.id] ?: 0) > 0)
                 },
+            )
+        }.flowOn(Dispatchers.Default)
+
+        // Bedienaktionen verwenden die vorhandenen Listen; nur neue Daten bauen sie neu.
+        return combine(
+            listen,
+            combine(ausgeklappt, fragenOffen, arbeitetAn, meldungen, fehler) { a, f, w, m, e ->
+                Bedienzustand(a, f, w, m, e)
+            },
+        ) { daten, bedien ->
+            daten.copy(
                 ausgeklappt = bedien.ausgeklappt,
                 fragenOffen = bedien.fragenOffen,
                 arbeitetAn = bedien.arbeitetAn,

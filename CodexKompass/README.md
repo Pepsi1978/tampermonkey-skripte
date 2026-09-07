@@ -40,3 +40,13 @@ Zielgerät wie bei Claude Kompass: Galaxy Z Fold 8 (SM-F971B). Eine Installation
 Die Offline-Daten werden mit `python tools/baue_assets.py` erzeugt. Der Generator nutzt die offiziellen Quellen und `tools/erklaerungen.txt`. Fehlt für einen neuen Befehl die deutsche Erklärung, bricht er ab, statt eine unvollständige Auslieferung zu schreiben. Alternativ kann `--quellen` auf einen lokalen Ordner mit `commands.md` und `changelog.html` zeigen.
 
 Die Versionslinie wird aus der Vorlage 0.4.2 fortgeführt. Version und VERSION_BUMPED_AT stehen gemeinsam in app/build.gradle.kts und werden im Einstellungsbildschirm angezeigt.
+
+## Performance ab 0.4.6
+
+Die funktionserhaltenden Overlay-Optimierungen sind auf die Android-Pfade übertragen:
+
+- Der Chat-Nachrichtenfluss wechselt nur bei einer anderen Sitzung. Tippen, Menüwechsel und Statusmeldungen starten keine neue Room-Beobachtung derselben Sitzung mehr.
+- Referenzlisten werden nur bei Datenänderungen neu aufbereitet, außerhalb des UI-Threads. Auf-/Zuklappen und andere Bedienaktionen verwenden die vorhandenen Listen weiter. Room-Aktualisierungen, Bereichs-Cache und die bestehende Lebenszyklussteuerung bleiben erhalten.
+- Nach Aufnahmeende entsteht die WAV direkt aus dem geschützten PCM-Puffer in einer einzigen Ergebnis-Allokation. Eine vollständige zusätzliche PCM-Kopie entfällt; Header, Sample-Rate, Audiodaten, Puffergrenze und Stop-Schutz bleiben unverändert. Das gilt auch für die Referenzaufnahme der eigenen Stimme.
+
+Bereits vorhanden und unverändert: gemeinsame Audioanalyse für Vor-/Nachfilter, langlebiger OkHttp-Verbindungspool, Hintergrund-Transkription, vier Halluzinationsfilter und Größenaufteilung. Die Windows-spezifischen curl-, Clipboard- und Gemini-Live-Abbaupfade existieren hier nicht. Keine Modell-/Qualitätsänderung oder zusätzlichen Transkriptionsanfragen. Im Schnellmodus keine neuen Funktionstests oder Benchmarks; keine gemessene End-to-End-Beschleunigung zugesagt.
