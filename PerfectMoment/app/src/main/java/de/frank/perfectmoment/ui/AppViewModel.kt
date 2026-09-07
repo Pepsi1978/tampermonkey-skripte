@@ -875,12 +875,13 @@ class AppViewModel(
     fun updateModel(value: CodexModel) {
         model = value
         settings.model = value.apiId
+        reasoning = ReasoningEffort.fromLabel(settings.reasoning)
         sheet = null
     }
 
     fun updateReasoning(value: ReasoningEffort) {
-        reasoning = value
         settings.reasoning = value.apiValue
+        reasoning = ReasoningEffort.fromLabel(settings.reasoning)
         sheet = null
     }
 

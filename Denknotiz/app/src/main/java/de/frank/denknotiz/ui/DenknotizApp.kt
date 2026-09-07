@@ -1212,7 +1212,7 @@ private fun SettingsScreen(
                     }
                 }
                 StyledDropdownChoice("Modell", state.settings.model, CodexModel.entries.toList(), { it.label }, vm::setModel)
-                StyledDropdownChoice("Reasoning", state.settings.reasoning, ReasoningEffort.entries.toList(), { it.label }, vm::setReasoning)
+                StyledDropdownChoice("Reasoning", state.settings.reasoning, state.settings.model.supportedEfforts, { it.label }, vm::setReasoning)
             }
             SettingsCard("Analyseprofile") {
                 StyledDropdownChoice(

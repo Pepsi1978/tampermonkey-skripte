@@ -22,9 +22,20 @@ enum class TtsProvider(val id: String, val label: String) {
 }
 
 enum class CodexModel(val apiId: String, val label: String) {
+    ASTRA("gpt-6-astra", "GPT-6 Astra"),
     SOL("gpt-5.6-sol", "GPT 5.6 Sol"),
     TERRA("gpt-5.6-terra", "GPT 5.6 Terra"),
     LUNA("gpt-5.6-luna", "GPT 5.6 Luna"),
+    ;
+
+    val supportedEfforts: List<ReasoningEffort>
+        get() = when (this) {
+            ASTRA, SOL, TERRA -> ReasoningEffort.entries.toList()
+            LUNA -> ReasoningEffort.entries.filter { it != ReasoningEffort.ULTRA }
+        }
+
+    fun normalizeEffort(effort: ReasoningEffort): ReasoningEffort =
+        effort.takeIf { it in supportedEfforts } ?: ReasoningEffort.MEDIUM
 }
 
 enum class ReasoningEffort(val apiValue: String, val label: String) {
@@ -33,6 +44,7 @@ enum class ReasoningEffort(val apiValue: String, val label: String) {
     HIGH("high", "Hoch"),
     XHIGH("xhigh", "Sehr hoch"),
     MAX("max", "Maximal"),
+    ULTRA("ultra", "Ultra"),
 }
 
 data class SettingsSnapshot(
@@ -68,7 +80,7 @@ class SecureSettings(context: Context) {
     val state: StateFlow<SettingsSnapshot> = _state.asStateFlow()
 
     fun update(transform: (SettingsSnapshot) -> SettingsSnapshot) {
-        val next = transform(_state.value)
+        val next = transform(_state.value).let { it.copy(reasoning = it.model.normalizeEffort(it.reasoning)) }
         _state.value = next
         preferences.edit()
             .putString("groq", next.groqKey.trim())
@@ -96,14 +108,15 @@ class SecureSettings(context: Context) {
         val profileNames = readStringMap("profile_names")
         val profileInstructions = readStringMap("profile_instructions", keepBlank = true)
         val storedProfile = preferences.getString("profile", "normal").orEmpty()
+        val model = CodexModel.entries.firstOrNull { it.apiId == preferences.getString("model", "") } ?: CodexModel.TERRA
         return SettingsSnapshot(
             groqKey = preferences.getString("groq", "").orEmpty(),
             googleKey = preferences.getString("google", "").orEmpty(),
             qwenKey = preferences.getString("qwen", "").orEmpty(),
             theme = AppTheme.entries.firstOrNull { it.id == preferences.getString("theme", "") } ?: AppTheme.GOLD_DARK,
-            model = CodexModel.entries.firstOrNull { it.apiId == preferences.getString("model", "") } ?: CodexModel.TERRA,
-            reasoning = ReasoningEffort.entries.firstOrNull { it.apiValue == preferences.getString("reasoning", "") }
-                ?: ReasoningEffort.MEDIUM,
+            model = model,
+            reasoning = model.normalizeEffort(ReasoningEffort.entries.firstOrNull { it.apiValue == preferences.getString("reasoning", "") }
+                ?: ReasoningEffort.MEDIUM),
             profileId = if (storedProfile in setOf("short", "normal", "detailed", "custom1", "custom2", "custom3")) storedProfile else "normal",
             profileNames = profileNames,
             profileInstructions = profileInstructions,

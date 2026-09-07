@@ -43,6 +43,7 @@ import de.frank.karteikartenlernen.audio.SoundEffect
 import de.frank.karteikartenlernen.audio.TtsVoiceRegistry
 import de.frank.karteikartenlernen.model.AppSettings
 import de.frank.karteikartenlernen.model.AppUiState
+import de.frank.karteikartenlernen.model.reasoningLevels
 import de.frank.karteikartenlernen.model.StudySession
 import de.frank.karteikartenlernen.ui.theme.LocalAppPalette
 import de.frank.karteikartenlernen.ui.theme.Newsreader
@@ -126,10 +127,12 @@ fun SettingsScreen(
     Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp)) {
         SettingsSection("GPT-MODELL") {
             SettingRow("Aktives Modell", "${state.model}") {
-                SegmentedControl(listOf("Sol", "Terra", "Luna"), state.model.substringAfterLast(' '), onSelect = { onModel("GPT 5.6 $it") })
+                SegmentedControl(listOf("Astra", "Sol", "Terra", "Luna"), state.model.substringAfterLast(' '), onSelect = { onModel(if (it == "Astra") "GPT 6 Astra" else "GPT 5.6 $it") })
             }
             SettingRow("Reasoning-Stufe") {
-                SegmentedControl(listOf("Niedrig", "Mittel", "Hoch"), state.reasoning, onReasoning)
+                reasoningLevels(state.model).keys.chunked(3).forEach { levels ->
+                    SegmentedControl(levels, state.reasoning, onReasoning)
+                }
             }
             SettingRow("Karten pro Recherche", "Automatisch nach Inhalt") {
                 Text("30–70", color = c.accent, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)

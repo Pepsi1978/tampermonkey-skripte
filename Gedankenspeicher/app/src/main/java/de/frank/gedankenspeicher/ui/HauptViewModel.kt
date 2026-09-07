@@ -1294,22 +1294,24 @@ class HauptViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setzeModell(apiId: String) {
         einstellungen.codexModell = apiId
-        _codexModell.value = apiId
+        _codexModell.value = einstellungen.codexModell
+        _codexEffort.value = einstellungen.codexEffort
     }
 
     fun setzeEffort(apiValue: String) {
         einstellungen.codexEffort = apiValue
-        _codexEffort.value = apiValue
+        _codexEffort.value = einstellungen.codexEffort
     }
 
     fun setzeVerbesserungModell(apiId: String) {
         einstellungen.verbesserungModell = apiId
-        _verbesserungModell.value = apiId
+        _verbesserungModell.value = einstellungen.verbesserungModell
+        _verbesserungEffort.value = einstellungen.verbesserungEffort
     }
 
     fun setzeVerbesserungEffort(apiValue: String) {
         einstellungen.verbesserungEffort = apiValue
-        _verbesserungEffort.value = apiValue
+        _verbesserungEffort.value = einstellungen.verbesserungEffort
     }
 
     fun setzeVerbesserungPrompt(text: String) {

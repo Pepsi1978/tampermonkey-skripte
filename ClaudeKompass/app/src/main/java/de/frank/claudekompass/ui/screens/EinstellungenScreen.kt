@@ -496,7 +496,7 @@ fun EinstellungenScreen(
                 Spacer(Modifier.height(Mass.abstandKlein))
                 Klappauswahl(
                     beschriftung = "Denktiefe",
-                    punkte = Denktiefe.entries.map {
+                    punkte = Denktiefe.fuerModell(zustand.modellId).map {
                         AuswahlPunkt(it, it.label, denktiefeHinweis(it))
                     },
                     gewaehlt = zustand.denktiefe,
@@ -588,6 +588,7 @@ private fun denktiefeHinweis(tiefe: Denktiefe): String = when (tiefe) {
     Denktiefe.HIGH -> "gr\u00fcndlicher, dauert l\u00e4nger"
     Denktiefe.XHIGH -> "f\u00fcr knifflige Fragen"
     Denktiefe.MAX -> "die tiefste Stufe, entsprechend langsam"
+    Denktiefe.ULTRA -> "maximale Denktiefe mit automatischer Aufgabenverteilung"
 }
 
 private fun themeHinweis(modus: ThemeModus): String = when (modus) {

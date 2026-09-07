@@ -1,5 +1,7 @@
 package de.frank.stacklabor.werftstudio.ui.screens
 
+import de.frank.stacklabor.werftstudio.service.codex.CodexModel
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.BorderStroke
@@ -442,8 +444,10 @@ private fun settingSelection(state: StackLaborUiState, id: String?): SettingSele
     )
     "tts-pause" -> SettingSelection(id, "Pause zwischen Absätzen", state.ttsPauseLabel, listOf("Kurz", "Mittel", "Lang"))
     "tts-timeout" -> SettingSelection(id, "Automatische Abschaltung", state.ttsTimeoutLabel, listOf("15 Min.", "30 Min.", "60 Min."))
-    "codex-model" -> SettingSelection(id, "Modell", state.codexModelLabel, listOf("Sol", "Terra", "Luna"))
-    "codex-reasoning" -> SettingSelection(id, "Denkstufe", state.codexReasoningLabel, listOf("Niedrig", "Mittel", "Hoch", "Sehr hoch", "Maximal"))
+    "codex-model" -> SettingSelection(id, "Modell", state.codexModelLabel, CodexModel.entries.map { it.label })
+    "codex-reasoning" -> SettingSelection(id, "Denkstufe", state.codexReasoningLabel,
+        (CodexModel.entries.firstOrNull { it.label == state.codexModelLabel } ?: CodexModel.TERRA)
+            .reasoningEfforts.map { it.label })
     else -> null
 }
 

@@ -8,6 +8,21 @@ enum class CardStatus { NEW, KNOWN, UNKNOWN }
 internal fun normalizeModelName(value: String): String =
     if (value == "GPT 5.6 Soul") "GPT 5.6 Sol" else value
 
+internal fun reasoningLevels(model: String): Map<String, String> = linkedMapOf(
+    "Niedrig" to "low", "Mittel" to "medium", "Hoch" to "high",
+).apply {
+    if (model == "GPT 6 Astra" || model == "gpt-6-astra") {
+        put("Sehr hoch", "xhigh")
+        put("Maximal", "max")
+        put("Ultra", "ultra")
+    }
+}
+
+internal fun normalizeReasoningLabel(model: String, value: String): String =
+    reasoningLevels(model).entries.firstOrNull {
+        it.key.equals(value.trim(), ignoreCase = true) || it.value.equals(value.trim(), ignoreCase = true)
+    }?.key ?: "Mittel"
+
 data class Flashcard(
     val id: Long,
     val question: String,

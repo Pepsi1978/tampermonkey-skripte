@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import de.frank.gedankenspeicher.auth.CodexModel
+import de.frank.gedankenspeicher.auth.ReasoningEffort
 import de.frank.gedankenspeicher.auth.VERBESSERUNG_AUFTRAG
 import de.frank.gedankenspeicher.auth.VERBESSERUNG_AUFTRAG_ALT
 import de.frank.gedankenspeicher.tts.TtsProvider
@@ -44,11 +46,20 @@ class Einstellungen(ctx: Context) {
     // --- F-11: Codex ---------------------------------------------------------------------
     var codexModell: String
         get() = p.getString(CODEX_MODELL, "gpt-5.6-luna")!!
-        set(v) { p.edit().putString(CODEX_MODELL, v).commit() }
+        set(v) {
+            val model = CodexModel.fromLabel(v)
+            val effort = model.normalizeEffort(ReasoningEffort.fromLabel(codexEffort))
+            p.edit().putString(CODEX_MODELL, model.apiId)
+                .putString(CODEX_EFFORT, effort.apiValue).commit()
+        }
 
     var codexEffort: String
-        get() = p.getString(CODEX_EFFORT, "medium")!!
-        set(v) { p.edit().putString(CODEX_EFFORT, v).commit() }
+        get() = CodexModel.fromLabel(codexModell)
+            .normalizeEffort(ReasoningEffort.fromLabel(p.getString(CODEX_EFFORT, "medium")!!)).apiValue
+        set(v) {
+            val effort = CodexModel.fromLabel(codexModell).normalizeEffort(ReasoningEffort.fromLabel(v))
+            p.edit().putString(CODEX_EFFORT, effort.apiValue).commit()
+        }
 
     // --- F-07: Textverbesserung ------------------------------------------------------------
     /**
@@ -58,11 +69,22 @@ class Einstellungen(ctx: Context) {
      */
     var verbesserungModell: String
         get() = p.getString(VERBESSERUNG_MODELL, "gpt-5.6-luna")!!
-        set(v) { p.edit().putString(VERBESSERUNG_MODELL, v).commit() }
+        set(v) {
+            val model = CodexModel.fromLabel(v)
+            val effort = model.normalizeEffort(ReasoningEffort.fromLabel(verbesserungEffort), ReasoningEffort.LOW)
+            p.edit().putString(VERBESSERUNG_MODELL, model.apiId)
+                .putString(VERBESSERUNG_EFFORT, effort.apiValue).commit()
+        }
 
     var verbesserungEffort: String
-        get() = p.getString(VERBESSERUNG_EFFORT, "low")!!
-        set(v) { p.edit().putString(VERBESSERUNG_EFFORT, v).commit() }
+        get() = CodexModel.fromLabel(verbesserungModell).normalizeEffort(
+            ReasoningEffort.fromLabel(p.getString(VERBESSERUNG_EFFORT, "low")!!), ReasoningEffort.LOW,
+        ).apiValue
+        set(v) {
+            val effort = CodexModel.fromLabel(verbesserungModell)
+                .normalizeEffort(ReasoningEffort.fromLabel(v), ReasoningEffort.LOW)
+            p.edit().putString(VERBESSERUNG_EFFORT, effort.apiValue).commit()
+        }
 
     /**
      * Der Auftrag, mit dem die Textverbesserung arbeitet — von Hand änderbar (B-04).

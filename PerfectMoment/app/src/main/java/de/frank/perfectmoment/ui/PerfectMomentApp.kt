@@ -306,7 +306,7 @@ private fun AppBottomSheet(
                     )
                     AppSheet.REASONING -> OptionSheet(
                         "Denkstärke",
-                        ReasoningEffort.entries.map { value ->
+                        viewModel.model.supportedEfforts.map { value ->
                             OptionRow(value.label, viewModel.reasoning == value) { viewModel.updateReasoning(value) }
                         },
                     )

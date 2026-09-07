@@ -33,7 +33,7 @@ data class Stimme(
     val geschlecht: Geschlecht,
 )
 
-/** Ein Modell, das die Fragen beantwortet. Codex kennt die Namen Sol, Terra und Luna. */
+/** Ein Modell, das die Fragen beantwortet. Codex kennt Astra, Sol, Terra und Luna. */
 data class KiModell(
     val label: String,
     val apiId: String,
@@ -48,6 +48,7 @@ data class KiModell(
             KiModell("GPT 5.6 Sol", "gpt-5.6-sol"),
             KiModell("GPT 5.6 Terra", "gpt-5.6-terra"),
             KiModell("GPT 5.6 Luna", "gpt-5.6-luna"),
+            KiModell("GPT-6 Astra", "gpt-6-astra"),
         )
         val standard = bekannt[1]
     }
@@ -59,10 +60,17 @@ enum class Denktiefe(val label: String, val apiValue: String) {
     HIGH("Hoch", "high"),
     XHIGH("Sehr hoch", "xhigh"),
     MAX("Maximal", "max"),
+    ULTRA("Ultra", "ultra"),
     ;
 
     companion object {
-        fun fromValue(value: String): Denktiefe =
-            entries.firstOrNull { it.apiValue.equals(value.trim(), ignoreCase = true) } ?: MEDIUM
+        // Lokaler Codex-Modellkatalog vom 07.09.2026; eigene Modelle behalten die bisherigen Stufen.
+        fun fuerModell(modellId: String): List<Denktiefe> = when (modellId) {
+            "gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-terra" -> entries
+            else -> entries.filter { it != ULTRA }
+        }
+
+        fun fromValue(value: String, modellId: String): Denktiefe =
+            fuerModell(modellId).firstOrNull { it.apiValue.equals(value.trim(), ignoreCase = true) } ?: MEDIUM
     }
 }

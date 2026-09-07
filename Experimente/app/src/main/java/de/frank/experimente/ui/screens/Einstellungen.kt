@@ -49,6 +49,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.frank.experimente.auth.CodexModell
 import de.frank.experimente.tts.TtsCatalog
 import de.frank.experimente.tts.TtsProvider
 import de.frank.experimente.ui.AppViewModel
@@ -73,10 +74,7 @@ import de.frank.experimente.ui.theme.Symbole
 import de.frank.experimente.ui.theme.dauer
 import de.frank.experimente.ui.theme.lichtsaum
 
-private val MODELLE = listOf("gpt-5.6-sol" to "GPT 5.6 Sol", "gpt-5.6-terra" to "GPT 5.6 Terra", "gpt-5.6-luna" to "GPT 5.6 Luna")
-private val EFFORT = listOf(
-    "low" to "Niedrig", "medium" to "Mittel", "high" to "Hoch", "xhigh" to "Sehr hoch", "max" to "Maximal",
-)
+private val MODELLE = CodexModell.entries.map { it.apiId to it.bezeichnung }
 /**
  * Anbieter und Stimmen kommen **ausschliesslich** aus `TtsCatalog` — derselben Quelle, aus
  * der auch `Vorleser` liest.
@@ -190,8 +188,9 @@ fun Einstellungen(modell: AppViewModel) {
                         Auswahl("Modell", MODELLE, modellExp, Modifier.weight(1f)) {
                             modellExp = it
                             einstellungen.modellExperimente = it
+                            effortExp = einstellungen.effortExperimente
                         }
-                        Auswahl("Effort", EFFORT, effortExp, Modifier.weight(1f)) {
+                        Auswahl("Effort", CodexModell.aus(modellExp).unterstuetzteEfforts.map { it.apiWert to it.bezeichnung }, effortExp, Modifier.weight(1f)) {
                             effortExp = it
                             einstellungen.effortExperimente = it
                         }
@@ -202,8 +201,9 @@ fun Einstellungen(modell: AppViewModel) {
                         Auswahl("Modell", MODELLE, modellLog, Modifier.weight(1f)) {
                             modellLog = it
                             einstellungen.modellLogbuch = it
+                            effortLog = einstellungen.effortLogbuch
                         }
-                        Auswahl("Effort", EFFORT, effortLog, Modifier.weight(1f)) {
+                        Auswahl("Effort", CodexModell.aus(modellLog).unterstuetzteEfforts.map { it.apiWert to it.bezeichnung }, effortLog, Modifier.weight(1f)) {
                             effortLog = it
                             einstellungen.effortLogbuch = it
                         }

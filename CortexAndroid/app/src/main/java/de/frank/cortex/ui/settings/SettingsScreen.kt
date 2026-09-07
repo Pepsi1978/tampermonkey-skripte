@@ -47,7 +47,9 @@ import de.frank.cortex.data.TtsUsage
 import de.frank.cortex.data.TtsUsageStore
 import de.frank.cortex.data.model.*
 import de.frank.cortex.network.ApiClient
-import de.frank.cortex.network.CODEX_GPT56_MODELS
+import de.frank.cortex.network.CODEX_MODELS
+import de.frank.cortex.network.modelReasoningOptions
+import de.frank.cortex.network.normalizeModelReasoning
 import de.frank.cortex.observability.CortexLog
 import de.frank.cortex.tts.QwenVoiceDirectory
 import de.frank.cortex.ui.theme.*
@@ -88,7 +90,7 @@ fun SettingsScreen(
     var wgConfig by remember { mutableStateOf(SettingsStore.wgConfig) }
     val screenScope = rememberCoroutineScope()
     var agentModelOptions by remember {
-        mutableStateOf(listOf("gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3-flash-preview", "gemini-2.5-flash", "minimax/minimax-m3") + CODEX_GPT56_MODELS)
+        mutableStateOf(listOf("gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-3-flash-preview", "gemini-2.5-flash", "minimax/minimax-m3") + CODEX_MODELS)
     }
     var hauptModel by remember { mutableStateOf(agentModelOptions.first()) }
     var speicherModel by remember { mutableStateOf(agentModelOptions.first()) }
@@ -100,6 +102,16 @@ fun SettingsScreen(
     // Router (Schritt 1 = Einordnung der Nachricht): eigenes Modell/Thinking, ROUTER_AUTO = wie Hauptagent.
     var routerModel by remember { mutableStateOf(ROUTER_AUTO) }
     var routerReasoning by remember { mutableStateOf(ROUTER_AUTO) }
+    fun normalizeReasoningSelections() {
+        hauptReasoning = normalizeModelReasoning(hauptModel, hauptReasoning, reasoningOptions)
+        speicherReasoning = normalizeModelReasoning(speicherModel, speicherReasoning, reasoningOptions)
+        abfrageReasoning = normalizeModelReasoning(abfrageModel, abfrageReasoning, reasoningOptions)
+        if (routerReasoning != ROUTER_AUTO) {
+            routerReasoning = normalizeModelReasoning(
+                if (routerModel == ROUTER_AUTO) hauptModel else routerModel, routerReasoning, reasoningOptions
+            )
+        }
+    }
     var tavilyEnabled by remember { mutableStateOf(true) }
     var memoryWebInfluence by remember { mutableStateOf("normal") }
     var memoryWebInfluenceSaving by remember { mutableStateOf(false) }
@@ -234,6 +246,7 @@ fun SettingsScreen(
         abfrageReasoning = reasoning["abfrage"] ?: "medium"
         routerModel = config.router_model.ifBlank { ROUTER_AUTO }
         routerReasoning = config.router_reasoning.ifBlank { ROUTER_AUTO }
+        normalizeReasoningSelections()
         tavilyEnabled = config.tavily_enabled
         memoryWebInfluence = config.memory_web_influence.takeIf { it in setOf("light", "normal", "strong") } ?: "normal"
         // Prompts nur vom FRISCHEN Server-Stand uebernehmen und nur, wenn keine lokale
@@ -1087,9 +1100,9 @@ fun SettingsScreen(
                     }
                 }
 
-                AgentModelDropdown("Hauptagent", hauptModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { hauptModel = it; configEditGeneration++ }
+                AgentModelDropdown("Hauptagent", hauptModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { hauptModel = it; normalizeReasoningSelections(); configEditGeneration++ }
                 if (modelSupportsReasoning(hauptModel)) {
-                    AgentModelDropdown("Thinking", hauptReasoning, reasoningOptions, isDark) { hauptReasoning = it; configEditGeneration++ }
+                    AgentModelDropdown("Thinking", hauptReasoning, modelReasoningOptions(hauptModel, reasoningOptions), isDark) { hauptReasoning = it; configEditGeneration++ }
                 }
                 // Router (Schritt 1): darf ein eigenes (schnelles) Modell + eigenes Thinking nutzen;
                 // "auto (wie Hauptagent)" = exakt bisheriges Verhalten. Die Antwort (Schritt 2)
@@ -1097,18 +1110,18 @@ fun SettingsScreen(
                 AgentModelDropdown(
                     "Router", routerModel, listOf(ROUTER_AUTO) + agentModelOptions, isDark,
                     priceLabels = modelPriceLabels + (ROUTER_AUTO to "übernimmt Modell + Thinking vom Hauptagenten")
-                ) { routerModel = it; configEditGeneration++ }
+                ) { routerModel = it; normalizeReasoningSelections(); configEditGeneration++ }
                 val effectiveRouterModel = if (routerModel == ROUTER_AUTO) hauptModel else routerModel
                 if (routerModel != ROUTER_AUTO && modelSupportsReasoning(effectiveRouterModel)) {
-                    AgentModelDropdown("Thinking", routerReasoning, listOf(ROUTER_AUTO) + reasoningOptions, isDark) { routerReasoning = it; configEditGeneration++ }
+                    AgentModelDropdown("Thinking", routerReasoning, listOf(ROUTER_AUTO) + modelReasoningOptions(effectiveRouterModel, reasoningOptions), isDark) { routerReasoning = it; configEditGeneration++ }
                 }
-                AgentModelDropdown("Speicheragent", speicherModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { speicherModel = it; configEditGeneration++ }
+                AgentModelDropdown("Speicheragent", speicherModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { speicherModel = it; normalizeReasoningSelections(); configEditGeneration++ }
                 if (modelSupportsReasoning(speicherModel)) {
-                    AgentModelDropdown("Thinking", speicherReasoning, reasoningOptions, isDark) { speicherReasoning = it; configEditGeneration++ }
+                    AgentModelDropdown("Thinking", speicherReasoning, modelReasoningOptions(speicherModel, reasoningOptions), isDark) { speicherReasoning = it; configEditGeneration++ }
                 }
-                AgentModelDropdown("Abfrageagent", abfrageModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { abfrageModel = it; configEditGeneration++ }
+                AgentModelDropdown("Abfrageagent", abfrageModel, agentModelOptions, isDark, priceLabels = modelPriceLabels) { abfrageModel = it; normalizeReasoningSelections(); configEditGeneration++ }
                 if (modelSupportsReasoning(abfrageModel)) {
-                    AgentModelDropdown("Thinking", abfrageReasoning, reasoningOptions, isDark) { abfrageReasoning = it; configEditGeneration++ }
+                    AgentModelDropdown("Thinking", abfrageReasoning, modelReasoningOptions(abfrageModel, reasoningOptions), isDark) { abfrageReasoning = it; configEditGeneration++ }
                 }
 
                 Row(
@@ -1210,11 +1223,11 @@ fun SettingsScreen(
                                                 haupt_model = hauptModel,
                                                 speicher_model = speicherModel,
                                                 abfrage_model = abfrageModel,
-                                                haupt_reasoning = hauptReasoning,
-                                                speicher_reasoning = speicherReasoning,
-                                                abfrage_reasoning = abfrageReasoning,
+                                                haupt_reasoning = normalizeModelReasoning(hauptModel, hauptReasoning, reasoningOptions),
+                                                speicher_reasoning = normalizeModelReasoning(speicherModel, speicherReasoning, reasoningOptions),
+                                                abfrage_reasoning = normalizeModelReasoning(abfrageModel, abfrageReasoning, reasoningOptions),
                                                 router_model = if (routerModel == ROUTER_AUTO) "auto" else routerModel,
-                                                router_reasoning = if (routerReasoning == ROUTER_AUTO) "auto" else routerReasoning,
+                                                router_reasoning = if (routerReasoning == ROUTER_AUTO) "auto" else normalizeModelReasoning(effectiveRouterModel, routerReasoning, reasoningOptions),
                                                 tavily_enabled = tavilyEnabled
                                             )
                                         )

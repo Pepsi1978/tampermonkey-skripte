@@ -2,10 +2,20 @@ package com.entropyjournal.data.remote.codex
 
 /** Die auswaehlbaren ChatGPT-/Codex-Modelle. */
 enum class CodexModel(val label: String, val apiId: String) {
+    ASTRA("GPT-6 Astra", "gpt-6-astra"),
     SOL("GPT 5.6 Sol", "gpt-5.6-sol"),
     TERRA("GPT 5.6 Terra", "gpt-5.6-terra"),
     LUNA("GPT 5.6 Luna", "gpt-5.6-luna"),
     ;
+
+    val supportedEfforts: List<ReasoningEffort>
+        get() = when (this) {
+            ASTRA, SOL, TERRA -> ReasoningEffort.entries
+            LUNA -> ReasoningEffort.entries.filter { it != ReasoningEffort.ULTRA }
+        }
+
+    fun normalizeEffort(effort: ReasoningEffort): ReasoningEffort =
+        effort.takeIf { it in supportedEfforts } ?: ReasoningEffort.DEFAULT
 
     companion object {
         val DEFAULT = TERRA
@@ -23,6 +33,8 @@ enum class ReasoningEffort(val label: String, val apiValue: String) {
     MEDIUM("Mittel", "medium"),
     HIGH("Hoch", "high"),
     XHIGH("Sehr hoch", "xhigh"),
+    MAX("Maximal", "max"),
+    ULTRA("Ultra", "ultra"),
     ;
 
     companion object {

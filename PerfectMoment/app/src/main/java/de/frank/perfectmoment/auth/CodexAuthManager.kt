@@ -114,7 +114,7 @@ internal fun codexQuestionsPayload(request: CodexQuestionRequest): JSONObject {
                     .put("content", codexQuestionInput(request)),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", request.reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", request.model.normalizeEffort(request.reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -170,7 +170,7 @@ internal fun codexPerspectiveRewritePayload(
                     .put("content", "Umzuformulierende Fragen:\n${JSONArray(questions).toString()}"),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -240,7 +240,7 @@ internal fun codexSessionPromptPayload(
                     .put("content", "Zu klassifizierender Text:\n${prompt.trim()}"),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -285,7 +285,7 @@ internal fun codexSummaryPayload(
                     .put("content", "Zusammenzufassender Text:\n${topic.trim()}"),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -337,7 +337,7 @@ internal fun codexEmojiPayload(
                     .put("content", "Frage:\n${question.trim()}"),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -409,7 +409,7 @@ internal fun codexImproveWishPayload(
                     .put("content", "Text:\n${wish.trim()}"),
             ),
         )
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
         .put(
             "text",
             JSONObject().put(

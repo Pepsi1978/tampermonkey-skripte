@@ -1,5 +1,8 @@
 package de.frank.stacklabor.werftstudio
 
+import de.frank.stacklabor.werftstudio.service.codex.CodexModel
+import de.frank.stacklabor.werftstudio.service.codex.ReasoningEffort
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -1401,8 +1404,16 @@ class StackLaborViewModel(private val container: AppContainer) : ViewModel() {
             "tts-pause" -> container.settings.setzeAbsatzpause(settings.absatzpause.next())
             "tts-timeout" -> container.settings.setzeAbschaltzeitMinuten(when (settings.abschaltzeitMinuten) { 15 -> 30; 30 -> 60; else -> 15 })
             "tts-usage" -> message("Verbrauch ${mutableState.value.ttsUsageLabel}")
-            "codex-model" -> container.settings.setzeCodexModell(when (settings.codexModell) { "gpt-5.6-sol" -> "gpt-5.6-terra"; "gpt-5.6-terra" -> "gpt-5.6-luna"; else -> "gpt-5.6-sol" })
-            "codex-reasoning" -> container.settings.setzeCodexDenkstufe(when (settings.codexDenkstufe) { "low" -> "medium"; "medium" -> "high"; "high" -> "xhigh"; "xhigh" -> "max"; else -> "low" })
+            "codex-model" -> {
+                val current = CodexModel.fromApiId(settings.codexModell)
+                container.settings.setzeCodexModell(CodexModel.entries[(current.ordinal + 1) % CodexModel.entries.size].apiId)
+            }
+            "codex-reasoning" -> {
+                val model = CodexModel.fromApiId(settings.codexModell)
+                val levels = model.reasoningEfforts
+                val current = levels.indexOf(model.normalizeReasoning(settings.codexDenkstufe))
+                container.settings.setzeCodexDenkstufe(levels[(current + 1) % levels.size].apiValue)
+            }
             "reduced-motion" -> container.settings.setzeBewegungReduziert(!settings.bewegungReduziert)
         }
     }
@@ -1444,14 +1455,8 @@ class StackLaborViewModel(private val container: AppContainer) : ViewModel() {
                 else -> Absatzpause.KURZ
             })
             "tts-timeout" -> container.settings.setzeAbschaltzeitMinuten(value.substringBefore(' ').toInt())
-            "codex-model" -> container.settings.setzeCodexModell("gpt-5.6-${value.lowercase()}")
-            "codex-reasoning" -> container.settings.setzeCodexDenkstufe(when (value) {
-                "Niedrig" -> "low"
-                "Mittel" -> "medium"
-                "Sehr hoch" -> "xhigh"
-                "Maximal" -> "max"
-                else -> "high"
-            })
+            "codex-model" -> container.settings.setzeCodexModell(CodexModel.entries.first { it.label == value }.apiId)
+            "codex-reasoning" -> container.settings.setzeCodexDenkstufe(ReasoningEffort.entries.first { it.label == value }.apiValue)
         }
     }
 
@@ -1863,13 +1868,7 @@ private fun keyLabel(own: String, baked: String): String = when {
     else -> "Nicht hinterlegt"
 }
 
-private fun String.reasoningLabel(): String = when (this) {
-    "low" -> "Niedrig"
-    "medium" -> "Mittel"
-    "xhigh" -> "Sehr hoch"
-    "max" -> "Maximal"
-    else -> "Hoch"
-}
+private fun String.reasoningLabel(): String = ReasoningEffort.entries.firstOrNull { it.apiValue == this }?.label ?: "Hoch"
 
 fun TtsAnbieter.label(): String = when (this) {
     TtsAnbieter.EDGE -> "Microsoft Edge"

@@ -347,6 +347,7 @@ internal class ThrottledAnswerEmitter(
 }
 
 internal val RESEARCH_MODELS = mapOf(
+    "GPT 6 Astra" to "gpt-6-astra",
     "GPT 5.6 Sol" to "gpt-5.6-sol",
     "GPT 5.6 Terra" to "gpt-5.6-terra",
     "GPT 5.6 Luna" to "gpt-5.6-luna",
@@ -354,11 +355,10 @@ internal val RESEARCH_MODELS = mapOf(
 
 internal fun codexModelId(label: String): String = RESEARCH_MODELS[label] ?: RESEARCH_MODELS.getValue("GPT 5.6 Terra")
 
-internal fun codexReasoningEffort(label: String): String = when (label.trim().lowercase()) {
-    "niedrig", "low" -> "low"
-    "hoch", "high" -> "high"
-    else -> "medium"
-}
+internal fun codexReasoningEffort(label: String, model: String = "gpt-5.6-terra"): String =
+    de.frank.karteikartenlernen.model.reasoningLevels(model).getValue(
+        de.frank.karteikartenlernen.model.normalizeReasoningLabel(model, label),
+    )
 
 internal fun researchInstructions(): String = """
     Nutze die Websuche aktiv. Beantworte die Frage nur mit fachlich zuverlässigen und möglichst aktuellen Informationen.
@@ -419,7 +419,7 @@ internal fun codexResearchPayload(
     put("store", false)
     put("instructions", researchInstructions())
     put("input", codexInput(researchInput(question, sessions)))
-    put("reasoning", JSONObject().put("effort", codexReasoningEffort(reasoning)))
+    put("reasoning", JSONObject().put("effort", codexReasoningEffort(reasoning, model)))
     put("tools", JSONArray().put(JSONObject().put("type", "web_search")))
     put("tool_choice", "auto")
     put("text", structuredResearchOutputFormat())
@@ -574,7 +574,7 @@ class CodexAuthManager(context: Context) {
                 },
             )
             val accumulator = CodexSseAccumulator(answerEmitter::accept)
-            Log.i(PERF_TAG, "request_start model=$model effort=${codexReasoningEffort(reasoning)} sessions=${sessions.size} payload_bytes=${payloadText.toByteArray().size}")
+            Log.i(PERF_TAG, "request_start model=$model effort=${codexReasoningEffort(reasoning, model)} sessions=${sessions.size} payload_bytes=${payloadText.toByteArray().size}")
             RESEARCH_HTTP_CLIENT.newCall(request).consumeSse(startedAt, model, accumulator)
             answerEmitter.finish()
             val output = accumulator.result().trim().removePrefix("```json").removePrefix("```").removeSuffix("```").trim()

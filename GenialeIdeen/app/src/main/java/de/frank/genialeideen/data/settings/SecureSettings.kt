@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import de.frank.genialeideen.auth.CodexModel
+import de.frank.genialeideen.auth.ReasoningEffort
 import java.io.Closeable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -163,11 +165,17 @@ class SecureSettings(context: Context) : Closeable {
 
     var model: String
         get() = readString(Keys.MODEL, Defaults.MODEL)
-        set(value) = writeString(Keys.MODEL, value)
+        set(value) {
+            val effort = CodexModel.fromLabel(value).normalizeEffort(ReasoningEffort.fromLabel(reasoning))
+            preferences?.edit()?.putString(Keys.MODEL, value)?.putString(Keys.REASONING, effort.apiValue)?.apply()
+        }
 
     var reasoning: String
-        get() = readString(Keys.REASONING, Defaults.REASONING)
-        set(value) = writeString(Keys.REASONING, value)
+        get() = CodexModel.fromLabel(model).normalizeEffort(
+            ReasoningEffort.fromLabel(readString(Keys.REASONING, Defaults.REASONING)),
+        ).apiValue
+        set(value) = writeString(Keys.REASONING,
+            CodexModel.fromLabel(model).normalizeEffort(ReasoningEffort.fromLabel(value)).apiValue)
 
     var chatGptConnectedAt: Long
         get() = preferences?.getLong(Keys.CHAT_GPT_CONNECTED_AT, 0L) ?: 0L

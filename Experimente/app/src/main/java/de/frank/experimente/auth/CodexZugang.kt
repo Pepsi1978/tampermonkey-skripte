@@ -228,7 +228,7 @@ class CodexZugang(context: Context) {
                 "input",
                 JSONArray().put(JSONObject().put("role", "user").put("content", eingabe)),
             )
-            .put("reasoning", JSONObject().put("effort", effort.apiWert))
+            .put("reasoning", JSONObject().put("effort", modell.normalisiereEffort(effort).apiWert))
         if (schema != null) {
             anfrage.put(
                 "text",

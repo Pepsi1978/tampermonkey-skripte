@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import de.frank.claudekompass.data.model.Denktiefe
 import de.frank.claudekompass.network.awaitAntwort
 import de.frank.claudekompass.observability.KompassLog
 import java.io.BufferedReader
@@ -302,7 +303,7 @@ class CodexClient(context: Context) {
                 "input",
                 JSONArray().put(JSONObject().put("role", "user").put("content", eingabe)),
             )
-            .put("reasoning", JSONObject().put("effort", denktiefe))
+            .put("reasoning", JSONObject().put("effort", Denktiefe.fromValue(denktiefe, modellId).apiValue))
         return if (versuch == 0) nutzlast.put("service_tier", "priority") else nutzlast
     }
 

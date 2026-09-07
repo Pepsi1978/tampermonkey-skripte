@@ -573,8 +573,9 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun closeCross() = _uiState.update { it.copy(showCrossSheet = false) }
 
     fun updateSettings(transform: (AppSettings) -> AppSettings) {
-        val value = transform(_uiState.value.settings)
-        _uiState.update { it.copy(settings = value) }
+        val updated = transform(_uiState.value.settings)
+        val value = updated.copy(reasoning = de.frank.karteikartenlernen.model.normalizeReasoningLabel(updated.model, updated.reasoning))
+        _uiState.update { it.copy(settings = value, model = value.model, reasoning = value.reasoning) }
         viewModelScope.launch { settingsStore.save(value) }
     }
 

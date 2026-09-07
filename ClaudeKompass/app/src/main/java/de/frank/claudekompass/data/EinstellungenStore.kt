@@ -129,15 +129,23 @@ class EinstellungenStore(context: Context) {
 
     var modellId: String
         get() = offen.getString(SCHL_MODELL, KiModell.standard.apiId) ?: KiModell.standard.apiId
-        set(wert) = offen.edit().putString(SCHL_MODELL, wert).apply()
+        set(wert) {
+            val tiefe = Denktiefe.fromValue(denktiefe.apiValue, wert)
+            offen.edit().putString(SCHL_MODELL, wert)
+                .putString(SCHL_DENKTIEFE, tiefe.apiValue).apply()
+        }
 
     var modellLabel: String
         get() = offen.getString(SCHL_MODELL_LABEL, KiModell.standard.label) ?: KiModell.standard.label
         set(wert) = offen.edit().putString(SCHL_MODELL_LABEL, wert).apply()
 
     var denktiefe: Denktiefe
-        get() = Denktiefe.fromValue(offen.getString(SCHL_DENKTIEFE, Denktiefe.MEDIUM.apiValue).orEmpty())
-        set(wert) = offen.edit().putString(SCHL_DENKTIEFE, wert.apiValue).apply()
+        get() = Denktiefe.fromValue(
+            offen.getString(SCHL_DENKTIEFE, Denktiefe.MEDIUM.apiValue).orEmpty(), modellId,
+        )
+        set(wert) = offen.edit().putString(
+            SCHL_DENKTIEFE, Denktiefe.fromValue(wert.apiValue, modellId).apiValue,
+        ).apply()
 
     /** Zusätzlich eingetragene Modelle, damit spätere Modelle ohne App-Update nutzbar sind. */
     var eigeneModelle: Set<String>

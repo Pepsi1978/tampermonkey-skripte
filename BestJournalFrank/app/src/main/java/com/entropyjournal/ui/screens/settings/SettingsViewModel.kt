@@ -300,9 +300,10 @@ constructor(
                     CodexModel.fromId(encryptedPrefs.getString(Constants.PREF_CODEX_MODEL, null))
                         .apiId,
                 codexEffort =
-                    ReasoningEffort.fromValue(
+                    CodexModel.fromId(encryptedPrefs.getString(Constants.PREF_CODEX_MODEL, null))
+                        .normalizeEffort(ReasoningEffort.fromValue(
                             encryptedPrefs.getString(Constants.PREF_CODEX_EFFORT, null)
-                        )
+                        ))
                         .apiValue,
                 codexConnected = codexAuthManager.isConnected,
                 codexEmail = codexAuthManager.email,
@@ -1266,13 +1267,20 @@ constructor(
     }
 
     fun updateCodexModel(apiId: String) {
-        encryptedPrefs.edit().putString(Constants.PREF_CODEX_MODEL, apiId).apply()
-        _uiState.value = _uiState.value.copy(codexModel = apiId)
+        val model = CodexModel.fromId(apiId)
+        val effort = model.normalizeEffort(ReasoningEffort.fromValue(_uiState.value.codexEffort))
+        encryptedPrefs.edit()
+            .putString(Constants.PREF_CODEX_MODEL, model.apiId)
+            .putString(Constants.PREF_CODEX_EFFORT, effort.apiValue)
+            .apply()
+        _uiState.value = _uiState.value.copy(codexModel = model.apiId, codexEffort = effort.apiValue)
     }
 
     fun updateCodexEffort(apiValue: String) {
-        encryptedPrefs.edit().putString(Constants.PREF_CODEX_EFFORT, apiValue).apply()
-        _uiState.value = _uiState.value.copy(codexEffort = apiValue)
+        val effort = CodexModel.fromId(_uiState.value.codexModel)
+            .normalizeEffort(ReasoningEffort.fromValue(apiValue))
+        encryptedPrefs.edit().putString(Constants.PREF_CODEX_EFFORT, effort.apiValue).apply()
+        _uiState.value = _uiState.value.copy(codexEffort = effort.apiValue)
     }
 
     /**

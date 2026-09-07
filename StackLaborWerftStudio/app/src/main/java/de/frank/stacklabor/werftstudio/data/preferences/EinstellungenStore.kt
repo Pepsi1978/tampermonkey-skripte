@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import de.frank.stacklabor.werftstudio.domain.model.DosisVariante
+import de.frank.stacklabor.werftstudio.service.codex.CodexModel
+import de.frank.stacklabor.werftstudio.service.codex.ReasoningEffort
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -90,11 +92,18 @@ class EinstellungenStore(
 
     suspend fun setzeCodexModell(value: String) {
         require(value in CODEX_MODELLE) { "Unbekanntes Codex-Modell: $value" }
-        schreibe(CODEX_MODELL, value)
+        dataStore.edit { preferences ->
+            preferences[CODEX_MODELL] = value
+            preferences[CODEX_DENKSTUFE] = CodexModel.fromApiId(value)
+                .normalizeReasoning(preferences[CODEX_DENKSTUFE]).apiValue
+        }
     }
     suspend fun setzeCodexDenkstufe(value: String) {
         require(value in DENKSTUFEN) { "Unbekannte Denkstufe: $value" }
-        schreibe(CODEX_DENKSTUFE, value)
+        dataStore.edit { preferences ->
+            preferences[CODEX_DENKSTUFE] = CodexModel.fromApiId(preferences[CODEX_MODELL])
+                .normalizeReasoning(value).apiValue
+        }
     }
     suspend fun setzeBewegungReduziert(value: Boolean): Unit = schreibe(BEWEGUNG_REDUZIERT, value)
     suspend fun setzeFingerabdruckAktiv(value: Boolean): Unit = schreibe(FINGERABDRUCK_AKTIV, value)
@@ -113,8 +122,9 @@ class EinstellungenStore(
         qwenStimmenId = preferences[QWEN_STIMMEN_ID].orEmpty(),
         groqApiKey = preferences[GROQ_API_KEY].orEmpty(),
         loeslichkeitFettZuerst = preferences[LOESLICHKEIT_FETT_ZUERST] ?: true,
-        codexModell = preferences[CODEX_MODELL] ?: "gpt-5.6-terra",
-        codexDenkstufe = preferences[CODEX_DENKSTUFE] ?: "high",
+        codexModell = CodexModel.fromApiId(preferences[CODEX_MODELL]).apiId,
+        codexDenkstufe = CodexModel.fromApiId(preferences[CODEX_MODELL])
+            .normalizeReasoning(preferences[CODEX_DENKSTUFE]).apiValue,
         bewegungReduziert = preferences[BEWEGUNG_REDUZIERT] ?: systemBewegungReduziert,
         fingerabdruckAktiv = preferences[FINGERABDRUCK_AKTIV] ?: false,
     )
@@ -146,7 +156,7 @@ class EinstellungenStore(
         val BEWEGUNG_REDUZIERT = booleanPreferencesKey("bewegung_reduziert")
         val FINGERABDRUCK_AKTIV = booleanPreferencesKey("fingerabdruck_aktiv")
 
-        val CODEX_MODELLE = setOf("gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna")
-        val DENKSTUFEN = setOf("low", "medium", "high", "xhigh", "max")
+        val CODEX_MODELLE = CodexModel.entries.map { it.apiId }.toSet()
+        val DENKSTUFEN = ReasoningEffort.entries.map { it.apiValue }.toSet()
     }
 }

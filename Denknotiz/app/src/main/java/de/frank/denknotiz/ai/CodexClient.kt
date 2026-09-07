@@ -165,7 +165,7 @@ class CodexClient(context: Context) {
             .put("store", false)
             .put("instructions", instructions)
             .put("input", JSONArray().put(JSONObject().put("role", "user").put("content", input)))
-            .put("reasoning", JSONObject().put("effort", reasoning.apiValue))
+            .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoning).apiValue))
         if (web) payload.put("tools", JSONArray().put(JSONObject().put("type", "web_search")))
         val http = Request.Builder()
             .url(RESPONSES_URL)

@@ -408,6 +408,7 @@ fun EinstellungenScreen(
                             id = eintrag.apiId,
                             name = eintrag.label,
                             zusatz = when (eintrag) {
+                                CodexModel.ASTRA -> "für komplexe Aufgaben"
                                 CodexModel.SOL -> "gründlich"
                                 CodexModel.TERRA -> "ausgewogen"
                                 CodexModel.LUNA -> "schnell"
@@ -418,6 +419,7 @@ fun EinstellungenScreen(
                     aufWahl = {
                         modell = it
                         settings.model = it
+                        denktiefe = settings.reasoning
                     },
                 )
 
@@ -425,7 +427,7 @@ fun EinstellungenScreen(
 
                 Klappmenue(
                     beschriftung = "Denktiefe",
-                    eintraege = ReasoningEffort.entries.map { eintrag ->
+                    eintraege = CodexModel.fromLabel(modell).supportedEfforts.map { eintrag ->
                         KlappEintrag(
                             id = eintrag.apiValue,
                             name = eintrag.label,
@@ -435,6 +437,7 @@ fun EinstellungenScreen(
                                 ReasoningEffort.HIGH -> "denkt länger nach"
                                 ReasoningEffort.XHIGH -> "für harte Nüsse"
                                 ReasoningEffort.MAX -> "dauert am längsten"
+                                ReasoningEffort.ULTRA -> "mit automatischer Aufgabenteilung"
                             },
                         )
                     },

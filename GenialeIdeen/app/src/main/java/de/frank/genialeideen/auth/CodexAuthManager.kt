@@ -78,7 +78,7 @@ internal fun codexChatPayload(
         .put("store", false)
         .put("instructions", instructions.trim() + "\n\n" + UMLAUT_HINWEIS)
         .put("input", input)
-        .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
 }
 
 /**

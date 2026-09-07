@@ -166,7 +166,7 @@ private fun CodexSettings(
     var modelExpanded by remember { mutableStateOf(false) }
     var effortExpanded by remember { mutableStateOf(false) }
     val selectedModel = CodexModel.fromId(uiState.codexModel)
-    val selectedEffort = ReasoningEffort.fromValue(uiState.codexEffort)
+    val selectedEffort = selectedModel.normalizeEffort(ReasoningEffort.fromValue(uiState.codexEffort))
 
     // Anmeldung
     if (uiState.codexConnected) {
@@ -283,7 +283,7 @@ private fun CodexSettings(
     )
     if (effortExpanded) {
         Column(modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
-            ReasoningEffort.entries.forEach { effort ->
+            selectedModel.supportedEfforts.forEach { effort ->
                 Text(
                     effort.label,
                     style = MaterialTheme.typography.bodyLarge,

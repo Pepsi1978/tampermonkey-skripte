@@ -30,6 +30,10 @@ class CodexResponsesClient(
         allowNetworkRetry: Boolean = true,
         onEvent: suspend (CodexStreamEvent) -> Unit = {},
     ): String {
+        val model = CodexModel.fromApiId(payload.optString("model"))
+        val reasoning = payload.optJSONObject("reasoning") ?: JSONObject()
+        payload.put("model", model.apiId)
+            .put("reasoning", reasoning.put("effort", model.normalizeReasoning(reasoning.optString("effort")).apiValue))
         var attempt = 0
         while (true) {
             try {

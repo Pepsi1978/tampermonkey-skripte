@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import de.frank.experimente.auth.CodexModell
+import de.frank.experimente.auth.Effort
 import de.frank.experimente.tts.TtsProvider
 import org.json.JSONArray
 import org.json.JSONObject
@@ -32,19 +34,31 @@ class Einstellungen(ctx: Context) {
     // --- F-22: Modell und Effort, getrennt für Experimente und Logbuch ------------------
     var modellExperimente: String
         get() = p.getString(MODEL_EXPERIMENTS, "gpt-5.6-terra")!!
-        set(v) { p.edit().putString(MODEL_EXPERIMENTS, v).commit() }
+        set(v) {
+            val effort = CodexModell.aus(v).normalisiereEffort(Effort.aus(effortExperimente), Effort.HOCH)
+            p.edit().putString(MODEL_EXPERIMENTS, v).putString(EFFORT_EXPERIMENTS, effort.apiWert).commit()
+        }
 
     var effortExperimente: String
-        get() = p.getString(EFFORT_EXPERIMENTS, "high")!!
-        set(v) { p.edit().putString(EFFORT_EXPERIMENTS, v).commit() }
+        get() = CodexModell.aus(modellExperimente).normalisiereEffort(
+            Effort.aus(p.getString(EFFORT_EXPERIMENTS, "high")!!), Effort.HOCH,
+        ).apiWert
+        set(v) { p.edit().putString(EFFORT_EXPERIMENTS,
+            CodexModell.aus(modellExperimente).normalisiereEffort(Effort.aus(v), Effort.HOCH).apiWert).commit() }
 
     var modellLogbuch: String
         get() = p.getString(MODEL_LOGBOOK, "gpt-5.6-luna")!!
-        set(v) { p.edit().putString(MODEL_LOGBOOK, v).commit() }
+        set(v) {
+            val effort = CodexModell.aus(v).normalisiereEffort(Effort.aus(effortLogbuch))
+            p.edit().putString(MODEL_LOGBOOK, v).putString(EFFORT_LOGBOOK, effort.apiWert).commit()
+        }
 
     var effortLogbuch: String
-        get() = p.getString(EFFORT_LOGBOOK, "medium")!!
-        set(v) { p.edit().putString(EFFORT_LOGBOOK, v).commit() }
+        get() = CodexModell.aus(modellLogbuch).normalisiereEffort(
+            Effort.aus(p.getString(EFFORT_LOGBOOK, "medium")!!),
+        ).apiWert
+        set(v) { p.edit().putString(EFFORT_LOGBOOK,
+            CodexModell.aus(modellLogbuch).normalisiereEffort(Effort.aus(v)).apiWert).commit() }
 
     // --- F-23: Stimme und Vorlesen ------------------------------------------------------
     /**

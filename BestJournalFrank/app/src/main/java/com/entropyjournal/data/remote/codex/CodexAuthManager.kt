@@ -76,7 +76,7 @@ internal fun codexTextPayload(
                 .put("content", input),
         ),
     )
-    .put("reasoning", JSONObject().put("effort", reasoningEffort.apiValue))
+    .put("reasoning", JSONObject().put("effort", model.normalizeEffort(reasoningEffort).apiValue))
 
 /**
  * Ordnet eine HTTP-Antwort einer Fehlerart zu. Voruebergehende Stoerungen (Zeitueberschreitung,

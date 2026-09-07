@@ -1,17 +1,31 @@
 package de.frank.stacklabor.werftstudio.service.codex
 
 enum class CodexModel(val apiId: String) {
+    ASTRA("gpt-6-astra"),
     SOL("gpt-5.6-sol"),
     TERRA("gpt-5.6-terra"),
-    LUNA("gpt-5.6-luna"),
+    LUNA("gpt-5.6-luna");
+
+    val label: String get() = apiId.substringAfterLast('-').replaceFirstChar(Char::uppercase)
+    val reasoningEfforts: List<ReasoningEffort>
+        get() = if (this == ASTRA) ReasoningEffort.entries else ReasoningEffort.entries.filter { it != ReasoningEffort.ULTRA }
+
+    fun normalizeReasoning(value: String?): ReasoningEffort =
+        reasoningEfforts.firstOrNull { it.apiValue == value }
+            ?: if (this == ASTRA) ReasoningEffort.MEDIUM else ReasoningEffort.HIGH
+
+    companion object {
+        fun fromApiId(value: String?): CodexModel = entries.firstOrNull { it.apiId == value } ?: TERRA
+    }
 }
 
-enum class ReasoningEffort(val apiValue: String) {
-    LOW("low"),
-    MEDIUM("medium"),
-    HIGH("high"),
-    XHIGH("xhigh"),
-    MAX("max"),
+enum class ReasoningEffort(val apiValue: String, val label: String) {
+    LOW("low", "Niedrig"),
+    MEDIUM("medium", "Mittel"),
+    HIGH("high", "Hoch"),
+    XHIGH("xhigh", "Sehr hoch"),
+    MAX("max", "Maximal"),
+    ULTRA("ultra", "Ultra"),
 }
 
 enum class CodexErrorKind { REAUTH, QUOTA, NETWORK }

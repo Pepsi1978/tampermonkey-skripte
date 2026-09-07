@@ -209,7 +209,7 @@ fun EinstellungenBildschirm(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    ReasoningEffort.entries.forEach { e ->
+                    CodexModel.fromLabel(codexModell).supportedEfforts.forEach { e ->
                         Wahlfeld(e.label, e.apiValue == codexEffort) { beiEffort(e.apiValue) }
                     }
                 }
@@ -330,7 +330,7 @@ fun EinstellungenBildschirm(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    ReasoningEffort.entries.forEach { e ->
+                    CodexModel.fromLabel(verbesserungModell).supportedEfforts.forEach { e ->
                         Wahlfeld(e.label, e.apiValue == verbesserungEffort) { beiVerbesserungEffort(e.apiValue) }
                     }
                 }

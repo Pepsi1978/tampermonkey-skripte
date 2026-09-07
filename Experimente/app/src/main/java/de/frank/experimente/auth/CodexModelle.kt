@@ -7,10 +7,20 @@ package de.frank.experimente.auth
  * verlangt das ausdrücklich, damit dieselbe Anmeldung dieselben Modelle anspricht.
  */
 enum class CodexModell(val bezeichnung: String, val apiId: String) {
+    ASTRA("GPT-6 Astra", "gpt-6-astra"),
     SOL("GPT 5.6 Sol", "gpt-5.6-sol"),
     TERRA("GPT 5.6 Terra", "gpt-5.6-terra"),
     LUNA("GPT 5.6 Luna", "gpt-5.6-luna"),
     ;
+
+    val unterstuetzteEfforts: List<Effort>
+        get() = when (this) {
+            ASTRA, SOL, TERRA -> Effort.entries.toList()
+            LUNA -> Effort.entries.filter { it != Effort.ULTRA }
+        }
+
+    fun normalisiereEffort(effort: Effort, fallback: Effort = Effort.MITTEL): Effort =
+        effort.takeIf { it in unterstuetzteEfforts } ?: fallback
 
     companion object {
         fun aus(wert: String): CodexModell = entries.firstOrNull {
@@ -25,6 +35,7 @@ enum class Effort(val bezeichnung: String, val apiWert: String) {
     HOCH("Hoch", "high"),
     SEHR_HOCH("Sehr hoch", "xhigh"),
     MAXIMAL("Maximal", "max"),
+    ULTRA("Ultra", "ultra"),
     ;
 
     companion object {

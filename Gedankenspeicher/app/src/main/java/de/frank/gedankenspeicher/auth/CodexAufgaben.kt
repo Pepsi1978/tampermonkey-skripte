@@ -272,7 +272,7 @@ internal fun kurztextPayload(
             "input",
             JSONArray().put(JSONObject().put("role", "user").put("content", text.trim())),
         )
-        .put("reasoning", JSONObject().put("effort", effort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(effort).apiValue))
         .put(
             "text",
             JSONObject().put(
@@ -311,7 +311,7 @@ internal fun verbesserungsPayload(
     .put("store", false)
     .put("instructions", auftrag)
     .put("input", JSONArray().put(JSONObject().put("role", "user").put("content", text.trim())))
-    .put("reasoning", JSONObject().put("effort", effort.apiValue))
+    .put("reasoning", JSONObject().put("effort", model.normalizeEffort(effort, ReasoningEffort.LOW).apiValue))
 
 /**
  * F-09, zweiter Schritt.
@@ -351,7 +351,7 @@ internal fun auswertungsPayload(
         .put("store", false)
         .put("instructions", auftrag)
         .put("input", JSONArray().put(JSONObject().put("role", "user").put("content", eingabe)))
-        .put("reasoning", JSONObject().put("effort", effort.apiValue))
+        .put("reasoning", JSONObject().put("effort", model.normalizeEffort(effort).apiValue))
     if (websuche) {
         payload.put("tools", JSONArray().put(JSONObject().put("type", "web_search")))
     }

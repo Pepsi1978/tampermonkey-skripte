@@ -42,6 +42,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.frank.karteikartenlernen.model.AppUiState
+import de.frank.karteikartenlernen.model.reasoningLevels
+import de.frank.karteikartenlernen.auth.RESEARCH_MODELS
 import de.frank.karteikartenlernen.ui.theme.LocalAppPalette
 
 @Composable
@@ -51,7 +53,7 @@ fun ModelSheet(state: AppUiState, onClose: () -> Unit, onModel: (String) -> Unit
         Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp)) {
             SheetLabel("MODELL")
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                listOf("GPT 5.6 Sol", "GPT 5.6 Terra", "GPT 5.6 Luna").forEach { model ->
+                RESEARCH_MODELS.keys.forEach { model ->
                     Row(
                         Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(if (state.model == model) c.chip else Color.Transparent).border(1.dp, if (state.model == model) c.accent else c.border, RoundedCornerShape(14.dp)).clickable { onModel(model) }.padding(horizontal = 16.dp, vertical = 13.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -63,7 +65,9 @@ fun ModelSheet(state: AppUiState, onClose: () -> Unit, onModel: (String) -> Unit
                 }
             }
             SheetLabel("REASONING", Modifier.padding(top = 20.dp))
-            SegmentedControl(listOf("Niedrig", "Mittel", "Hoch"), state.reasoning, onReasoning, Modifier.fillMaxWidth())
+            reasoningLevels(state.model).keys.chunked(3).forEach { levels ->
+                SegmentedControl(levels, state.reasoning, onReasoning, Modifier.fillMaxWidth())
+            }
             Spacer(Modifier.padding(bottom = 26.dp))
         }
     }

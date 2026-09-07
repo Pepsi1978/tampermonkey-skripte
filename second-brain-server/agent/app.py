@@ -271,7 +271,7 @@ CODEX_FAST_MODEL_ALIASES = {
     "gpt-5.6-terra-fast": "gpt-5.6-terra",
     "gpt-5.6-luna-fast": "gpt-5.6-luna",
 }
-CODEX_MODELS_FALLBACK = CODEX_GPT56_MODELS + ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex", "gpt-5.3-codex-spark"]
+CODEX_MODELS_FALLBACK = ["gpt-6-astra"] + CODEX_GPT56_MODELS + ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex", "gpt-5.3-codex-spark"]
 CODEX_OAUTH_CLIENT_ID = os.getenv("CODEX_OAUTH_CLIENT_ID", "app_EMoamEEZ73f0CkXaXp7hrann")
 CODEX_AUTH_ISSUER = os.getenv("CODEX_AUTH_ISSUER", "https://auth.openai.com").rstrip("/")
 CODEX_TOKEN_URL = os.getenv("CODEX_TOKEN_URL", "https://auth.openai.com/oauth/token")
@@ -279,7 +279,7 @@ CODEX_BASE_URL = os.getenv("CODEX_BASE_URL", "https://chatgpt.com/backend-api/co
 # web_search ZUERST: gpt-5.5 lehnt web_search_preview ab ("Unsupported tool type") -> das war ein
 # fehlschlagender erster Versuch pro Internet-Frage. web_search funktioniert -> spart den Fehlversuch.
 CODEX_WEB_TOOL_TYPES = [x.strip() for x in os.getenv("CODEX_WEB_TOOL_TYPES", "web_search,web_search_preview").split(",") if x.strip()]
-VALID_REASONING_EFFORTS = {"none", "minimal", "low", "medium", "high", "xhigh"}
+VALID_REASONING_EFFORTS = {"none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"}
 # gpt-5.5 (und die aktuellen gpt-5.x-Codex-Modelle) kennen KEIN 'minimal' — nur none/low/medium/high/xhigh.
 # Quelle: OpenAI-Backend-Fehlertext 2026-07-01 ("Unsupported value: 'minimal' is not supported with the
 # 'gpt-5.5' model. Supported values are: 'none','low','medium','high','xhigh'."). Ein 'minimal' an gpt-5.5
@@ -287,17 +287,21 @@ VALID_REASONING_EFFORTS = {"none", "minimal", "low", "medium", "high", "xhigh"}
 _CODEX_REASONING_BY_PREFIX = {
     "gpt-5": {"none", "low", "medium", "high", "xhigh"},  # KEIN 'minimal' (crasht bei gpt-5.5)
 }
-# Fuer die Dashboard-Auswahl (App /config): nur Werte, die die genutzten Codex-Modelle akzeptieren
-# -> 'minimal' NICHT anbieten (crasht bei gpt-5.5; 'low' deckt den Bedarf ab).
-REASONING_AVAILABLE = ["none", "low", "medium", "high", "xhigh"]
+# Vereinigte Auswahl; vor dem Codex-Request immer modellabhaengig normalisieren.
+REASONING_AVAILABLE = ["none", "low", "medium", "high", "xhigh", "max", "ultra"]
 
 
 def _valid_reasoning_for_model(model: str) -> set[str]:
-    slug = (model or "").strip().lower()
+    slug = _codex_model_request_fields((model or "").strip().lower())["model"]
+    # Lokaler Codex-Modellkatalog vom 07.09.2026; Fast-Aliase nutzen dieselben Efforts.
+    if slug in {"gpt-6-astra", "gpt-5.6-sol", "gpt-5.6-terra"}:
+        return {"low", "medium", "high", "xhigh", "max", "ultra"}
+    if slug == "gpt-5.6-luna":
+        return {"low", "medium", "high", "xhigh", "max"}
     for prefix, allowed in _CODEX_REASONING_BY_PREFIX.items():
         if slug.startswith(prefix):
             return allowed
-    return VALID_REASONING_EFFORTS
+    return VALID_REASONING_EFFORTS - {"max", "ultra"}
 
 
 def _sanitize_reasoning_effort(effort: str, model: str) -> str:
