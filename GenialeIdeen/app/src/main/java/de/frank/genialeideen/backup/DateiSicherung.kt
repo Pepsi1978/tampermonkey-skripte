@@ -8,6 +8,7 @@ import de.frank.genialeideen.observability.IdeenLog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -75,7 +76,7 @@ class DateiSicherung(private val context: Context) {
      */
     suspend fun schreibe(json: String): Sicherungsdatei = withContext(Dispatchers.IO) {
         val baum = ordner ?: error("Es ist noch kein Sicherungsordner gewählt.")
-        val eltern = kinderUri(baum)
+        val bisherige = listeAuf(baum)
         val name = neuerName()
         val datei = DocumentsContract.createDocument(
             context.contentResolver,
@@ -84,12 +85,25 @@ class DateiSicherung(private val context: Context) {
             name,
         ) ?: error("Im Sicherungsordner liess sich keine Datei anlegen. Wähl ihn neu aus.")
 
-        // "wt" schneidet die Datei ab; ohne das bliebe bei kürzerem Inhalt alter Text stehen.
-        context.contentResolver.openOutputStream(datei, "wt")?.use { strom ->
-            strom.write(json.toByteArray(Charsets.UTF_8))
-        } ?: error("Die Sicherung liess sich nicht schreiben. Wähl den Ordner neu aus.")
+        check(bisherige.none {
+            DocumentsContract.getDocumentId(it.uri) == DocumentsContract.getDocumentId(datei)
+        }) { "Der Speicheranbieter hat keine neue Datei angelegt. Die bestehende Sicherung bleibt unverändert." }
 
-        raeumeAuf(eltern, behalte = datei)
+        try {
+            context.contentResolver.openOutputStream(datei, "wt")?.use { strom ->
+                strom.write(json.toByteArray(Charsets.UTF_8))
+            } ?: error("Die Sicherung ließ sich nicht schreiben. Wähl den Ordner neu aus.")
+        } catch (fehler: Exception) {
+            runCatching {
+                check(DocumentsContract.deleteDocument(context.contentResolver, datei))
+            }.onFailure {
+                IdeenLog.warn("DateiSicherung", "schreibe", "Unvollständige Datei blieb liegen",
+                    mapOf("art" to it.javaClass.simpleName))
+            }
+            throw fehler
+        }
+
+        raeumeAuf(bisherige)
         BackupStatus.markBackedUp(context)
         Sicherungsdatei(datei, name, System.currentTimeMillis())
     }
@@ -114,8 +128,7 @@ class DateiSicherung(private val context: Context) {
     /** Nur die eigenen Sicherungen zählen — fremde Dateien im Ordner bleiben unangetastet. */
     private fun listeAuf(baum: Uri): List<Sicherungsdatei> {
         val gefunden = mutableListOf<Sicherungsdatei>()
-        runCatching {
-            context.contentResolver.query(
+        context.contentResolver.query(
                 kinderUri(baum),
                 arrayOf(
                     DocumentsContract.Document.COLUMN_DOCUMENT_ID,
@@ -135,21 +148,24 @@ class DateiSicherung(private val context: Context) {
                         geaendertAm = zeiger.getLong(2),
                     )
                 }
-            }
-        }
+            } ?: error("Der Sicherungsordner konnte nicht aufgelistet werden. Bestehende Sicherungen bleiben erhalten.")
         // Der Name trägt den Zeitstempel und sortiert damit von selbst richtig; die Änderungszeit
         // ist der Rückfall, falls ein Anbieter sie nicht liefert.
         return gefunden.sortedWith(
-            compareByDescending<Sicherungsdatei> { it.name }.thenByDescending { it.geaendertAm },
+            compareByDescending<Sicherungsdatei> { it.name.removeSuffix(".json") }
+                .thenByDescending { it.geaendertAm },
         )
     }
 
-    private fun raeumeAuf(baum: Uri, behalte: Uri) {
-        val uebrige = listeAuf(baum).filter { it.uri != behalte }
+    private fun raeumeAuf(bisherige: List<Sicherungsdatei>) {
         // Die frisch geschriebene zählt schon als eine der beiden — vom Rest bleibt genau eine.
-        val zuLoeschen = uebrige.drop(BEHALTEN - 1)
+        val zuLoeschen = bisherige.drop(BEHALTEN - 1)
         zuLoeschen.forEach { datei ->
-            runCatching { DocumentsContract.deleteDocument(context.contentResolver, datei.uri) }
+            runCatching {
+                check(DocumentsContract.deleteDocument(context.contentResolver, datei.uri)) {
+                    "Die ältere Sicherung konnte nicht gelöscht werden. Die neue Datei ist gespeichert, aber es liegen noch mehr als zwei Sicherungen im Ordner."
+                }
+            }
                 .onFailure {
                     IdeenLog.warn(
                         "DateiSicherung",
@@ -158,6 +174,7 @@ class DateiSicherung(private val context: Context) {
                         mapOf("art" to it.javaClass.simpleName),
                     )
                 }
+                .getOrThrow()
         }
         if (zuLoeschen.isNotEmpty()) {
             IdeenLog.info(
@@ -175,7 +192,8 @@ class DateiSicherung(private val context: Context) {
         }
     }.getOrNull()
 
-    private fun neuerName(): String = "$PRAEFIX${ZEIT.format(Date())}.json"
+    private fun neuerName(): String =
+        "$PRAEFIX${SimpleDateFormat("yyyy-MM-dd-HHmmss-SSS", Locale.GERMANY).format(Date())}-${UUID.randomUUID()}.json"
 
     companion object {
         /** Die aktuelle Sicherung und die eine davor — mehr sammelt sich nie an. */
@@ -184,6 +202,5 @@ class DateiSicherung(private val context: Context) {
         private const val PREFS = "pm_backup_status"
         private const val KEY_ORDNER = "sicherungs_ordner"
         private const val PRAEFIX = "geniale-ideen-"
-        private val ZEIT = SimpleDateFormat("yyyy-MM-dd-HHmm", Locale.GERMANY)
     }
 }

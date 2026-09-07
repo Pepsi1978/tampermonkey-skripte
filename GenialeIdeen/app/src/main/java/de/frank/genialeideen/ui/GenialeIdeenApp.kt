@@ -36,6 +36,7 @@ fun GenialeIdeenApp(
     aufMikrofonFragen: () -> Unit,
     aufAnmelden: () -> Unit,
     aufOrdnerWaehlen: () -> Unit,
+    aufSicherungWaehlen: () -> Unit,
     aufAppSperreUmschalten: (Boolean) -> Unit,
     aufSeiteOeffnen: (String?) -> Unit,
 ) {
@@ -124,6 +125,7 @@ fun GenialeIdeenApp(
                     aufEigeneStimme = { bildschirm = Bildschirm.STIMME },
                     aufAnmelden = aufAnmelden,
                     aufOrdnerWaehlen = aufOrdnerWaehlen,
+                    aufSicherungWaehlen = aufSicherungWaehlen,
                     aufAppSperreUmschalten = aufAppSperreUmschalten,
                     aufSeiteOeffnen = aufSeiteOeffnen,
                 )

@@ -76,6 +76,7 @@ fun EinstellungenScreen(
     aufEigeneStimme: () -> Unit,
     aufAnmelden: () -> Unit,
     aufOrdnerWaehlen: () -> Unit,
+    aufSicherungWaehlen: () -> Unit,
     aufAppSperreUmschalten: (Boolean) -> Unit,
     aufSeiteOeffnen: (String?) -> Unit,
 ) {
@@ -516,7 +517,7 @@ fun EinstellungenScreen(
                         viewModel.sichereJetzt(aufOrdnerWaehlen)
                     }
                     Auswahlchip("Wiederherstellen", false) {
-                        viewModel.stelleWiederHer(aufOrdnerWaehlen)
+                        aufSicherungWaehlen()
                     }
                 }
                 Spacer(Modifier.height(10.dp))

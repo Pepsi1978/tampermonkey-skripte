@@ -1053,29 +1053,10 @@ class IdeenViewModel(
         }
     }
 
-    /**
-     * Holt die jüngste Sicherung aus dem gemerkten Ordner zurück. Vor dem Einspielen wird
-     * gezeigt, was drinsteckt — erst der zweite Tipp schreibt wirklich in den Bestand.
-     */
-    fun stelleWiederHer(ordnerWaehlen: () -> Unit) {
-        if (sicherung.sicherungsOrdner == null) {
-            zeige(Meldung("Wähl zuerst den Ordner aus, in dem die Sicherung liegt."))
-            waehleSicherungsOrdner(ordnerWaehlen)
-            return
-        }
+    /** Erst die ausdrücklich gewählte Datei prüfen, danach das Einspielen bestätigen lassen. */
+    fun stelleWiederHer(quelle: Uri) {
         viewModelScope.launch {
-            val neueste = runCatching { sicherung.neuesteSicherung() }.getOrNull()
-            if (neueste == null) {
-                zeige(
-                    Meldung(
-                        "In diesem Ordner liegt noch keine Sicherung dieser App.",
-                        istFehler = true,
-                        wiederholen = ordnerWaehlen,
-                    ),
-                )
-                return@launch
-            }
-            zeigeVorschau(neueste.uri, neueste.name)
+            zeigeVorschau(quelle, "Gewählte Sicherung")
         }
     }
 
