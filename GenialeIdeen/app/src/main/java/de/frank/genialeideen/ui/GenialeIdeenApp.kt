@@ -108,7 +108,6 @@ fun GenialeIdeenApp(
                     mikrofonErlaubt = mikrofonErlaubt,
                     aufMikrofonFragen = aufMikrofonFragen,
                     aufZurueck = { bildschirm = Bildschirm.LISTE },
-                    aufEinstellungen = { bildschirm = Bildschirm.EINSTELLUNGEN },
                 )
                 Bildschirm.DETAIL -> DetailScreen(
                     viewModel = viewModel,
@@ -116,7 +115,6 @@ fun GenialeIdeenApp(
                         viewModel.oeffne(null)
                         bildschirm = Bildschirm.LISTE
                     },
-                    aufEinstellungen = { bildschirm = Bildschirm.EINSTELLUNGEN },
                 )
                 Bildschirm.EINSTELLUNGEN -> EinstellungenScreen(
                     viewModel = viewModel,

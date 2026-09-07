@@ -84,7 +84,6 @@ import de.frank.genialeideen.ui.theme.Semantisch
 fun DetailScreen(
     viewModel: IdeenViewModel,
     aufZurueck: () -> Unit,
-    aufEinstellungen: () -> Unit,
 ) {
     val gold = LocalGold.current
     val idee by viewModel.aktuelleIdee.collectAsState()
@@ -129,7 +128,6 @@ fun DetailScreen(
         IdeeBearbeiten(
             idee = aktuelle,
             themeWahl = theme,
-            aufEinstellungen = aufEinstellungen,
             aufSpeichern = { neuerTitel, neuerText ->
                 viewModel.aendere(aktuelle, neuerTitel, neuerText)
                 bearbeiten = false
@@ -148,7 +146,6 @@ fun DetailScreen(
         IdeenKopfleiste(
             titel = aktuelle.titel,
             themeWahl = theme,
-            aufEinstellungen = aufEinstellungen,
             voran = {
                 Box(
                     modifier = Modifier.size(38.dp).druckEffekt(aufZurueck),
@@ -320,7 +317,6 @@ fun DetailScreen(
 private fun IdeeBearbeiten(
     idee: IdeeEntity,
     themeWahl: String,
-    aufEinstellungen: () -> Unit,
     aufSpeichern: (String, String) -> Unit,
     aufVerwerfen: () -> Unit,
 ) {
@@ -346,7 +342,6 @@ private fun IdeeBearbeiten(
             IdeenKopfleiste(
                 titel = "Idee ändern",
                 themeWahl = themeWahl,
-                aufEinstellungen = aufEinstellungen,
                 voran = {
                     Box(
                         modifier = Modifier.size(38.dp).druckEffekt {

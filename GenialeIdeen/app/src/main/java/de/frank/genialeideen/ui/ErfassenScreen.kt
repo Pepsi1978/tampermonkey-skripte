@@ -83,7 +83,6 @@ fun ErfassenScreen(
     mikrofonErlaubt: Boolean,
     aufMikrofonFragen: () -> Unit,
     aufZurueck: () -> Unit,
-    aufEinstellungen: () -> Unit,
 ) {
     val gold = LocalGold.current
     val theme by viewModel.theme.collectAsState()
@@ -154,7 +153,6 @@ fun ErfassenScreen(
             IdeenKopfleiste(
                 titel = "Neue Idee",
                 themeWahl = theme,
-                aufEinstellungen = aufEinstellungen,
                 voran = {
                     KopfKnopf(
                         beschreibung = "Zurück — Halbfertiges landet in den Entwürfen",
