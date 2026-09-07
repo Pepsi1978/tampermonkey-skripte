@@ -492,8 +492,8 @@ fun EinstellungenScreen(
             // ---- Sicherung ----
             Klappblock("Sicherung", "Eine Datei in deinem Ordner") {
                 Text(
-                    "Wähl einmal einen Ordner — zum Beispiel einen in Google Drive. Danach " +
-                        "schreibt die App ohne Rückfrage dorthin. Es liegen immer nur zwei " +
+                    "„Jetzt sichern“ öffnet die Ordnerauswahl am zuletzt gewählten Ordner. " +
+                        "Bestätige den Ordner, um alle Ideen zu sichern. Es liegen immer nur zwei " +
                         "Sicherungen dort: die aktuelle und die davor.",
                     style = MaterialTheme.typography.bodySmall,
                     color = gold.textGedaempft,

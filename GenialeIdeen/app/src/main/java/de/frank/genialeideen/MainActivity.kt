@@ -140,7 +140,17 @@ class MainActivity : FragmentActivity() {
                         mikrofonErlaubt = mikrofonErlaubt,
                         aufMikrofonFragen = { mikrofonAnfrage.launch(Manifest.permission.RECORD_AUDIO) },
                         aufAnmelden = { viewModel.meldeAn(this@MainActivity) },
-                        aufOrdnerWaehlen = { runCatching { ordnerWahl.launch(null) } },
+                        aufOrdnerWaehlen = {
+                            runCatching { ordnerWahl.launch(viewModel.sicherungsOrdnerUri) }
+                                .onFailure {
+                                    viewModel.zeige(
+                                        Meldung(
+                                            "Die Ordnerauswahl ließ sich nicht öffnen: ${it.message}",
+                                            istFehler = true,
+                                        ),
+                                    )
+                                }
+                        },
                         aufAppSperreUmschalten = ::schalteAppSperre,
                         aufSeiteOeffnen = ::oeffneSeite,
                     )

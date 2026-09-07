@@ -975,39 +975,22 @@ class IdeenViewModel(
     private val _sicherungsOrdner = MutableStateFlow(sicherung.ordnerName())
     val sicherungsOrdner: StateFlow<String?> = _sicherungsOrdner.asStateFlow()
 
-    /**
-     * Sichert in den gemerkten Ordner. Fehlt einer, öffnet [ordnerWaehlen] den Ordnerwähler —
-     * es passiert nie stillschweigend nichts.
-     */
+    val sicherungsOrdnerUri: Uri? get() = sicherung.sicherungsOrdner
+
+    /** Nach der Ordnerbestätigung übernimmt merkeOrdnerUndSichere die Sicherung. */
     fun sichereJetzt(ordnerWaehlen: () -> Unit) {
-        if (sicherung.sicherungsOrdner == null) {
-            zeige(Meldung("Wähl zuerst den Ordner aus, in den gesichert werden soll."))
-            ordnerWaehlen()
-            return
-        }
-        viewModelScope.launch {
-            runCatching { sicherung.sichere() }
-                .onSuccess { stand ->
-                    zeige(Meldung("Gesichert. $stand"))
-                }
-                .onFailure { fehler ->
-                    zeige(
-                        Meldung(
-                            "Die Sicherung ging nicht: ${fehler.message}",
-                            istFehler = true,
-                            wiederholen = ordnerWaehlen,
-                        ),
-                    )
-                }
-        }
+        ordnerWaehlen()
     }
 
     /** Der frisch gewählte Ordner wird gemerkt und sofort beschrieben. */
     fun merkeOrdnerUndSichere(ordner: Uri) {
-        sicherung.merkeOrdner(ordner)
-        _sicherungsOrdner.value = sicherung.ordnerName()
         viewModelScope.launch {
-            runCatching { sicherung.sichere() }
+            runCatching {
+                sicherung.merkeOrdner(ordner)
+                _sicherungsOrdner.value = sicherung.ordnerName()
+                zeige(Meldung("Alle Ideen werden gesichert …"))
+                sicherung.sichere()
+            }
                 .onSuccess { stand -> zeige(Meldung("Gesichert. $stand")) }
                 .onFailure { fehler ->
                     zeige(

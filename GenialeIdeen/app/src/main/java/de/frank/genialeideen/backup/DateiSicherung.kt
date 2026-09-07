@@ -40,12 +40,10 @@ class DateiSicherung(private val context: Context) {
 
     /** Ordner merken und die Schreibberechtigung über Neustarts hinweg behalten. */
     fun merkeOrdner(uri: Uri) {
-        runCatching {
-            context.contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
-            )
-        }
+        context.contentResolver.takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+        )
         prefs.edit().putString(KEY_ORDNER, uri.toString()).apply()
     }
 
