@@ -77,7 +77,7 @@ class Vorleser(
     /** Wurde wegen eines Anrufs pausiert — danach wird von allein fortgesetzt. */
     private var pausiertDurchFokus = false
 
-    fun sprich(quelle: String, titel: String, rohText: String) {
+    fun sprich(quelle: String, titel: String, rohText: String, wiederholen: Boolean = false) {
         if (_stand.value.quelle == quelle && _stand.value.zustand != VorleseZustand.AUS) {
             stopp()
             return
@@ -109,7 +109,11 @@ class Vorleser(
         val meinLauf = laufNummer.incrementAndGet()
         laufenderJob = bereich.launch {
             try {
-                if (synthese.kannVorausschauen()) pipelineMitVorausschau(absaetze) else reihum(absaetze)
+                do {
+                    if (synthese.kannVorausschauen()) pipelineMitVorausschau(absaetze) else reihum(absaetze)
+                    // Derselbe abbrechbare Auftrag bleibt samt Dienst über alle Runden aktiv.
+                    if (wiederholen) delay(ABSATZ_PAUSE_MS)
+                } while (wiederholen)
                 _stand.value = _stand.value.copy(zustand = VorleseZustand.AUS, quelle = null)
             } catch (abbruch: CancellationException) {
                 throw abbruch

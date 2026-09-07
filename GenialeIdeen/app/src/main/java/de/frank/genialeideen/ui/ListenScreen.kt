@@ -95,6 +95,7 @@ import de.frank.genialeideen.ui.theme.IdeenSchriftDick
 import de.frank.genialeideen.ui.theme.LocalGold
 import de.frank.genialeideen.ui.theme.Motion
 import de.frank.genialeideen.ui.theme.Semantisch
+import de.frank.genialeideen.ui.theme.schwebend
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -318,17 +319,51 @@ fun ListenScreen(
                 }
             }
 
-            run {
+            Row(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 28.dp)
+                    .navigationBarsPadding(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 AufnahmeKnopfMitPegel(
                     laeuft = aufnahme.laeuft,
                     pegel = aufnahme.pegel,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 28.dp)
-                        .navigationBarsPadding(),
                     groesse = 68.dp,
-                    aufTipp = aufNeueIdee,
+                    aufTipp = {
+                        viewModel.vorlesenStoppen()
+                        aufNeueIdee()
+                    },
                 )
+                val liestAlle = vorlese.quelle == "alle-ideen"
+                Box(Modifier.size(90.dp), contentAlignment = Alignment.Center) {
+                    RundKnopf3D(
+                        beschreibung = if (liestAlle) "Alle Ideen: Vorlesen stoppen" else "Alle Ideen endlos vorlesen",
+                        aufTipp = viewModel::liesAlleIdeen,
+                        modifier = Modifier.schwebend(aktiv = !liestAlle),
+                        groesse = 68.dp,
+                        grundfarbe = Color(0xFFFF8A24),
+                        hauptKnopf = true,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.VolumeUp,
+                            contentDescription = null,
+                            tint = Color(0xFF291300),
+                            modifier = Modifier.size(26.dp),
+                        )
+                        if (liestAlle) {
+                            Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomEnd) {
+                                Icon(
+                                    imageVector = Icons.Default.Stop,
+                                    contentDescription = null,
+                                    tint = Color(0xFF291300),
+                                    modifier = Modifier.size(14.dp),
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }

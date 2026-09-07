@@ -436,6 +436,24 @@ class IdeenViewModel(
 
     fun lies(quelle: String, titel: String, text: String) = vorleser.sprich(quelle, titel, text)
 
+    fun liesAlleIdeen() {
+        if (vorleseStand.value.quelle == "alle-ideen") {
+            vorleser.stopp()
+            return
+        }
+        val ideen = alleIdeen.value
+        if (ideen.isEmpty()) {
+            zeige(Meldung("Es sind noch keine Ideen zum Vorlesen vorhanden."))
+            return
+        }
+        vorleser.sprich(
+            quelle = "alle-ideen",
+            titel = "Alle Ideen",
+            rohText = ideen.joinToString("\n\n") { "${it.titel}.\n\n${it.text}" },
+            wiederholen = true,
+        )
+    }
+
     fun vorlesenStoppen() = vorleser.stopp()
 
     fun vorlesenFehlerGelesen() = vorleser.fehlerGelesen()
