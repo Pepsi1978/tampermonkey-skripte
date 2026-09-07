@@ -18,7 +18,6 @@ public static class OpenCodeVariantCatalog
         {
             "openai" => GetOpenAiLevels(slug),
             "opencode" => GetOpenCodeZenLevels(slug),
-            "opencode-go" => GetOpenCodeGoLevels(slug),
             "nvidia" => GetNvidiaLevels(slug),
             "anthropic" => GetAnthropicLevels(slug),
             "openrouter" => GetOpenRouterLevels(slug, KnownOpenRouterReasoning(slug)),
@@ -106,23 +105,10 @@ public static class OpenCodeVariantCatalog
         return [];
     }
 
-    private static IReadOnlyList<string> GetOpenCodeGoLevels(string slug)
-    {
-        if (slug.StartsWith("deepseek-v4-", StringComparison.Ordinal)) return ["low", "medium", "high", "max"];
-        if (slug == "glm-5.2") return ["high", "max"];
-        if (slug.StartsWith("glm-", StringComparison.Ordinal)) return [];
-        if (slug.StartsWith("kimi-", StringComparison.Ordinal)) return [];
-        if (slug.StartsWith("mimo-v2.5", StringComparison.Ordinal)) return WidelySupported;
-        if (slug == "minimax-m3") return ["none", "thinking"];
-        if (slug.StartsWith("minimax-", StringComparison.Ordinal)) return [];
-        if (slug.StartsWith("qwen", StringComparison.Ordinal)) return [];
-        return [];
-    }
-
     /// <summary>
     /// Stufen der kostenlosen NVIDIA-NIM-Modelle, 1:1 aus deren reasoning_options in models.dev:
     /// "effort" liefert die Stufenliste unveraendert, "toggle" kennt nur Denken an/aus (gleiche
-    /// Abbildung wie minimax-m3 im OpenCode-Go-Katalog), ohne reasoning_options gibt es keine Wahl.
+    /// Abbildung fuer Modelle mit einfachem Thinking-Schalter), ohne reasoning_options gibt es keine Wahl.
     /// Modelle ohne Reasoning fallen ueber den Default auf eine leere Liste.
     /// </summary>
     private static IReadOnlyList<string> GetNvidiaLevels(string slug) => slug switch

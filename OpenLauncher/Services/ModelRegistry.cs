@@ -597,22 +597,6 @@ public sealed class ModelRegistry
             Model(Gpt56LunaSlug, "GPT-5.6 Luna", "openai", "OpenAI"),
             Model(Gpt56LunaFastSlug, "GPT-5.6 Luna Fast", "openai", "OpenAI"),
         }),
-        CreateGroup("opencode-go", "OpenCode-Go", "opencode-go", "OpenCode-Go", new[]
-        {
-            Model("deepseek-v4-flash", "DeepSeek V4 Flash", "opencode-go", "OpenCode-Go"),
-            Model("deepseek-v4-pro", "DeepSeek V4 Pro", "opencode-go", "OpenCode-Go"),
-            Model("glm-5.1", "GLM 5.1", "opencode-go", "OpenCode-Go"),
-            Model("glm-5.2", "GLM 5.2", "opencode-go", "OpenCode-Go"),
-            Model("kimi-k2.6", "Kimi K2.6", "opencode-go", "OpenCode-Go"),
-            Model("kimi-k2.7-code", "Kimi K2.7 Code", "opencode-go", "OpenCode-Go"),
-            Model("mimo-v2.5", "MiMo V2.5", "opencode-go", "OpenCode-Go"),
-            Model("mimo-v2.5-pro", "MiMo V2.5 Pro", "opencode-go", "OpenCode-Go"),
-            Model("minimax-m2.7", "MiniMax M2.7", "opencode-go", "OpenCode-Go"),
-            Model("minimax-m3", "MiniMax M3", "opencode-go", "OpenCode-Go"),
-            Model("qwen3.6-plus", "Qwen3.6 Plus", "opencode-go", "OpenCode-Go"),
-            Model("qwen3.7-max", "Qwen3.7 Max", "opencode-go", "OpenCode-Go"),
-            Model("qwen3.7-plus", "Qwen3.7 Plus", "opencode-go", "OpenCode-Go"),
-        }),
         CreateGroup("nvidia", "NVIDIA", NvidiaProviderId, NvidiaProviderName, NvidiaFreeModels),
         // Lokale LM-Studio-Modelle. Die Liste kommt beim Start live vom lokalen Server
         // (SyncLmStudioModels); die Vorgabe hier ist nur der Platzhalter, damit der Reiter

@@ -346,7 +346,7 @@ public sealed class CodexResearchService
         var domain = provider.ToLowerInvariant() switch
         {
             "openai" or "codex" => "openai.com", "anthropic" => "anthropic.com",
-            "openrouter" => "openrouter.ai", "opencode" or "opencode-go" => "opencode.ai", "nvidia" => "nvidia.com",
+            "openrouter" => "openrouter.ai", "opencode" => "opencode.ai", "nvidia" => "nvidia.com",
             "google" => "ai.google.dev", _ => ""
         };
         return domain.Length > 0 && (uri.Host == domain || uri.Host.EndsWith("." + domain, StringComparison.Ordinal));
