@@ -1,5 +1,6 @@
 package de.frank.codexkompass.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -53,6 +54,7 @@ import de.frank.codexkompass.ui.components.FehlerStreifen
 import de.frank.codexkompass.ui.components.GoldKnopf
 import de.frank.codexkompass.ui.components.HinweisStreifen
 import de.frank.codexkompass.ui.components.KompassKopfleiste
+import de.frank.codexkompass.ui.components.ThemeKnopf
 import de.frank.codexkompass.ui.components.Trennlinie
 import de.frank.codexkompass.ui.screens.ChatScreen
 import de.frank.codexkompass.ui.screens.EinstellungenScreen
@@ -94,6 +96,14 @@ fun KompassApp(
     var zeigeEinstellungen by rememberSaveable { mutableStateOf(false) }
     var zeigeSuche by rememberSaveable { mutableStateOf(false) }
 
+    val schliesseEinstellungen = {
+        bereich = Bereich.SLASH.id
+        zeigeEinstellungen = false
+    }
+    BackHandler(enabled = zeigeEinstellungen || zeigeSuche) {
+        if (zeigeEinstellungen) schliesseEinstellungen() else zeigeSuche = false
+    }
+
     val lauf by referenz.lauf.collectAsStateWithLifecycle()
     val letzterErfolg by referenz.letzterErfolg.collectAsStateWithLifecycle()
 
@@ -121,7 +131,12 @@ fun KompassApp(
 
     if (zeigeEinstellungen) {
         Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-            UnterseiteKopf(titel = "Einstellungen", beiZurueck = { zeigeEinstellungen = false })
+            UnterseiteKopf(
+                titel = "Einstellungen",
+                themeModus = themeModus,
+                beiTheme = beiThemeWechsel,
+                beiZurueck = schliesseEinstellungen,
+            )
             Trennlinie()
             EinstellungenScreen(
                 viewModel = einstellungen,
@@ -204,7 +219,12 @@ fun KompassApp(
 }
 
 @Composable
-private fun UnterseiteKopf(titel: String, beiZurueck: () -> Unit) {
+private fun UnterseiteKopf(
+    titel: String,
+    themeModus: ThemeModus,
+    beiTheme: () -> Unit,
+    beiZurueck: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -223,7 +243,9 @@ private fun UnterseiteKopf(titel: String, beiZurueck: () -> Unit) {
             text = titel,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.weight(1f),
         )
+        ThemeKnopf(themeModus = themeModus, beiKlick = beiTheme)
     }
 }
 

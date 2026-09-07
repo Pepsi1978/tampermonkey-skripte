@@ -107,6 +107,21 @@ fun GoldKnopf(
     }
 }
 
+@Composable
+fun ThemeKnopf(
+    themeModus: ThemeModus,
+    beiKlick: () -> Unit,
+) {
+    GoldKnopf(
+        symbol = when (themeModus) {
+            ThemeModus.HELL -> Icons.Default.LightMode
+            ThemeModus.DUNKEL -> Icons.Default.DarkMode
+        },
+        beschreibung = "Erscheinungsbild: ${themeModus.label}. Tippen wechselt.",
+        beiKlick = beiKlick,
+    )
+}
+
 /**
  * Die Kopfleiste des Hauptbildschirms (Referenz, Baustein C).
  *
@@ -159,14 +174,7 @@ fun KompassKopfleiste(
                 beiKlick = beiAktualisieren,
                 laedt = aktualisierungLaeuft,
             )
-            GoldKnopf(
-                symbol = when (themeModus) {
-                    ThemeModus.HELL -> Icons.Default.LightMode
-                    ThemeModus.DUNKEL -> Icons.Default.DarkMode
-                },
-                beschreibung = "Erscheinungsbild: ${themeModus.label}. Tippen wechselt.",
-                beiKlick = beiTheme,
-            )
+            ThemeKnopf(themeModus = themeModus, beiKlick = beiTheme)
             GoldKnopf(
                 symbol = Icons.Default.Settings,
                 beschreibung = "Einstellungen",
