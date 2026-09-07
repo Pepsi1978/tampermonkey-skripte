@@ -31,9 +31,9 @@ android {
         applicationId = "de.frank.karteikartenlernen"
         minSdk = 26
         targetSdk = 35
-        versionCode = 41
-        versionName = "0.1.40"
-        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 13:05 Uhr\"")
+        versionCode = 42
+        versionName = "0.1.41"
+        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 14:18 Uhr\"")
         buildConfigField("String", "GROQ_API_KEY", groqApiKey.asBuildConfigString())
         buildConfigField("String", "GROQ_TRANSCRIPTION_MODEL", "\"whisper-large-v3-turbo\"")
         buildConfigField("String", "GEMINI_API_KEY", geminiApiKey.asBuildConfigString())

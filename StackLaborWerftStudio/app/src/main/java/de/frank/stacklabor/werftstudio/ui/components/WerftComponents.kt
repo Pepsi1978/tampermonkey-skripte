@@ -208,25 +208,28 @@ fun AnimatedGradientHeader(
 ) {
     val progress = if (animationsEnabled) {
         val transition = rememberInfiniteTransition(label = "headGradient")
-        val value by transition.animateFloat(
+        val value = transition.animateFloat(
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = infiniteRepeatable(tween(30_000), RepeatMode.Restart),
             label = "headGradientProgress",
         )
         value
-    } else 0f
+    } else null
     Box(
         Modifier
             .fillMaxWidth()
             .depthShadow(RoundedCornerShape(0.dp), 18.dp, strength = 1.3f)
-            .background(
-                Brush.linearGradient(
-                    listOf(Color(0xFF6F4813), Color(0xFFD8AE55), Color(0xFF8B5E1A)),
-                    start = Offset(progress * 600f - 300f, 0f),
-                    end = Offset(progress * 600f + 300f, 0f),
-                ),
-            )
+            .drawBehind {
+                val p = progress?.value ?: 0f
+                drawRect(
+                    Brush.linearGradient(
+                        listOf(Color(0xFF6F4813), Color(0xFFD8AE55), Color(0xFF8B5E1A)),
+                        start = Offset(p * 600f - 300f, 0f),
+                        end = Offset(p * 600f + 300f, 0f),
+                    ),
+                )
+            }
             // Curved metal look: light collects along the top, the lower third falls away.
             .drawBehind {
                 drawRect(
@@ -437,20 +440,21 @@ fun StackCard(
     val colors = StackLaborTheme.colors
     val aura = if (animationsEnabled && stack.signal == SignalState.Red) {
         val transition = rememberInfiniteTransition(label = "redAura")
-        val alpha by transition.animateFloat(
+        val alpha = transition.animateFloat(
             0.22f,
             0.08f,
             infiniteRepeatable(tween(1_200), RepeatMode.Reverse),
             label = "redAuraAlpha",
         )
         alpha
-    } else 0f
+    } else null
     RaisedPanel(
         modifier = modifier
             .fillMaxWidth()
             .height(StackLaborTheme.dimens.stackHeight)
             .drawBehind {
-                if (aura > 0f) drawCircle(colors.red.copy(alpha = aura), radius = size.maxDimension * 0.65f, center = center)
+                val alpha = aura?.value ?: 0f
+                if (alpha > 0f) drawCircle(colors.red.copy(alpha = alpha), radius = size.maxDimension * 0.65f, center = center)
             },
         elevation = 16.dp,
         rimWidth = 1.5.dp,
@@ -679,11 +683,15 @@ fun SectionTitle(title: String, modifier: Modifier = Modifier) {
 fun BreathingFab(description: String, animationsEnabled: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val scale = if (animationsEnabled) {
         val transition = rememberInfiniteTransition(label = "fabBreathing")
-        val value by transition.animateFloat(1f, 1.02f, infiniteRepeatable(tween(3_200), RepeatMode.Reverse), label = "fabScale")
+        val value = transition.animateFloat(1f, 1.02f, infiniteRepeatable(tween(3_200), RepeatMode.Reverse), label = "fabScale")
         value
-    } else 1f
+    } else null
     GoldSurface(
-        modifier = modifier.size(56.dp).graphicsLayer { scaleX = scale; scaleY = scale }
+        modifier = modifier.size(56.dp).graphicsLayer {
+            val value = scale?.value ?: 1f
+            scaleX = value
+            scaleY = value
+        }
             .semantics { contentDescription = description },
         shape = RoundedCornerShape(28.dp),
         elevation = 18.dp,
@@ -722,7 +730,7 @@ fun BottomSheetFrame(
     Box(Modifier.fillMaxSize()) {
         underlay()
         Box(
-            Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.32f * progress))
+            Modifier.fillMaxSize().drawBehind { drawRect(Color.Black.copy(alpha = 0.32f * progress)) }
                 .clickable(enabled = !dismissRequested) { dismissRequested = true },
         )
         Box(

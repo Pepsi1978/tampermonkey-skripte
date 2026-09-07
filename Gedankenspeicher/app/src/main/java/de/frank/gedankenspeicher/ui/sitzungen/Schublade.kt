@@ -105,23 +105,27 @@ fun Schublade(
 
     // „Alle Notizen" heißt alle: geschützte sind mitgezählt und mit aufgelistet, nur ihr
     // Inhalt bleibt bis zum Fingerabdruck zu. Draußen ist einzig, was im Papierkorb liegt.
-    val alle = sitzungen.filter { it.geloeschtAm == null }
-    val favoriten = alle.filter { it.favorit }
-    val geschuetzte = alle.filter { it.geschuetzt }
-    val papierkorb = sitzungen.filter { it.geloeschtAm != null }
+    val alle = remember(sitzungen) { sitzungen.filter { it.geloeschtAm == null } }
+    val favoriten = remember(alle) { alle.filter { it.favorit } }
+    val geschuetzte = remember(alle) { alle.filter { it.geschuetzt } }
+    val papierkorb = remember(sitzungen) { sitzungen.filter { it.geloeschtAm != null } }
+    val anzahlJeOrdner = remember(alle) { alle.groupingBy { it.ordnerId }.eachCount() }
+    val ordnerNachId = remember(ordner) { ordner.associateBy { it.id } }
     val offenerOrdner = ordner.firstOrNull { it.id == gewaehlterOrdner }
     var kategorieart by rememberSaveable { mutableStateOf(Kategorieart.MENTAL) }
     LaunchedEffect(offenerOrdner?.art) {
         offenerOrdner?.let { kategorieart = it.art }
     }
-    val sichtbareKategorien = ordner.filter { it.art == kategorieart }
+    val sichtbareKategorien = remember(ordner, kategorieart) { ordner.filter { it.art == kategorieart } }
 
-    val liste = when (ansicht) {
-        Schubladenansicht.ALLE -> alle
-        Schubladenansicht.FAVORITEN -> favoriten
-        Schubladenansicht.GESCHUETZT -> geschuetzte
-        Schubladenansicht.PAPIERKORB -> papierkorb
-        Schubladenansicht.ORDNER -> alle.filter { it.ordnerId == offenerOrdner?.id }
+    val liste = remember(sitzungen, ansicht, offenerOrdner?.id) {
+        when (ansicht) {
+            Schubladenansicht.ALLE -> alle
+            Schubladenansicht.FAVORITEN -> favoriten
+            Schubladenansicht.GESCHUETZT -> geschuetzte
+            Schubladenansicht.PAPIERKORB -> papierkorb
+            Schubladenansicht.ORDNER -> alle.filter { it.ordnerId == offenerOrdner?.id }
+        }
     }
 
     val ueberschrift = when (ansicht) {
@@ -254,7 +258,7 @@ fun Schublade(
                     Reiter(
                         symbol = Icons.Outlined.FolderOpen,
                         beschriftung = einer.name,
-                        anzahl = alle.count { it.ordnerId == einer.id },
+                        anzahl = anzahlJeOrdner[einer.id] ?: 0,
                         gewaehlt = ansicht == Schubladenansicht.ORDNER && offenerOrdner?.id == einer.id,
                     ) { beiOrdnerwahl(einer.id) }
                 }
@@ -298,7 +302,7 @@ fun Schublade(
                     sitzung = sitzung,
                     letzteAktivitaet = letzteAktivitaet[sitzung.id],
                     offen = sitzung.id == offeneSitzung,
-                    ordnername = ordner.firstOrNull { it.id == sitzung.ordnerId }?.name,
+                    ordnername = ordnerNachId[sitzung.ordnerId]?.name,
                     zugesperrt = sitzung.geschuetzt && sitzung.id != freigegebeneSitzung,
                     // Aus dem Papierkorb wird nichts geöffnet — dort führt nur der lange
                     // Druck weiter, zum Wiederherstellen oder endgültigen Löschen.

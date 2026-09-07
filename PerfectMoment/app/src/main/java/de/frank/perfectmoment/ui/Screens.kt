@@ -88,6 +88,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -98,6 +99,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.shadow
@@ -459,6 +461,7 @@ fun SessionScreen(
         tween(if (reduced) 200 else if (dimmed) 4_000 else 300),
         label = "Bildschirmdimmung",
     )
+    val dimVisible by remember { derivedStateOf { dimAlpha > 0.001f } }
     LaunchedEffect(interactionTick, state?.phase, viewModel.introVisible) {
         if (!viewModel.introVisible && state?.phase != Phase.ENDED) {
             delay(30_000)
@@ -571,9 +574,9 @@ fun SessionScreen(
                 }
             }
         }
-        if (dimAlpha > 0.001f && state?.phase != Phase.ENDED) {
+        if (dimVisible && state?.phase != Phase.ENDED) {
             Box(
-                Modifier.fillMaxSize().background(Color.Black.copy(alpha = dimAlpha))
+                Modifier.fillMaxSize().drawBehind { drawRect(Color.Black.copy(alpha = dimAlpha)) }
                     .pmClickable {
                         dimmed = false
                         interactionTick++

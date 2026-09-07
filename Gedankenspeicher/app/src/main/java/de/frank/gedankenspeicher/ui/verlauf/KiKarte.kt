@@ -40,7 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import de.frank.gedankenspeicher.data.KiAntwort
@@ -217,7 +217,7 @@ private fun Aufklappbar(rueckfrage: String, antwort: String) {
             Icon(
                 Icons.Outlined.ExpandMore,
                 if (offen) "Zuklappen" else "Aufklappen",
-                Modifier.size(20.dp).rotate(drehung),
+                Modifier.size(20.dp).graphicsLayer { rotationZ = drehung },
                 tint = farben.textMittel,
             )
         }

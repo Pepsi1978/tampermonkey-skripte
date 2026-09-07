@@ -76,7 +76,9 @@ fun TriggerConfigDialog(
     var newCron by remember { mutableStateOf("") }
     var chainAfterId by remember { mutableStateOf<String?>(null) }
     var chainDropdownExpanded by remember { mutableStateOf(false) }
-    val chainCandidates = allPrompts.filter { it.id != promptId }
+    val chainCandidates = remember(allPrompts, promptId) {
+        allPrompts.filter { it.id != promptId }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,

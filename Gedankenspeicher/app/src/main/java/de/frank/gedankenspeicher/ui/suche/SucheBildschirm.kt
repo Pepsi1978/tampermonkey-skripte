@@ -62,6 +62,7 @@ fun SucheBildschirm(
     val farben = Farben
     val schrift = Schriften
     val fokus = remember { FocusRequester() }
+    val gruppen = remember(zustand.treffer) { zustand.treffer.groupBy { it.sitzungstitel } }
 
     // Das Suchfeld bekommt den Fokus sofort — sonst kostet jede Suche einen Extra-Tipp.
     LaunchedEffect(Unit) { runCatching { fokus.requestFocus() } }
@@ -117,8 +118,8 @@ fun SucheBildschirm(
             ) {
                 // Nach Sitzung gruppiert, damit man sieht, aus welchem Zusammenhang ein
                 // Treffer stammt (`02-UI-SPEC.md` B-07).
-                zustand.treffer.groupBy { it.sitzungstitel }.forEach { (titel, treffer) ->
-                    item(key = "kopf-$titel") {
+                gruppen.forEach { (titel, treffer) ->
+                    item(key = "kopf-$titel", contentType = "kopf") {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 6.dp),
                             verticalAlignment = Alignment.CenterVertically,
@@ -132,7 +133,7 @@ fun SucheBildschirm(
                             )
                         }
                     }
-                    items(treffer, key = { "${it.istKiAntwort}-${it.notizId}" }) { t ->
+                    items(treffer, key = { "${it.istKiAntwort}-${it.notizId}" }, contentType = { "treffer" }) { t ->
                         Trefferzeile(t, zustand.begriff.trim()) { beiTreffer(t) }
                     }
                 }
@@ -174,7 +175,9 @@ private fun Trefferzeile(treffer: Suchtreffer, begriff: String, beiDruck: () -> 
         }
         Spacer(Modifier.height(4.dp))
         Text(
-            text = ausschnittMitHervorhebung(treffer.text, begriff, farben.akzentGedeckt, farben.akzent),
+            text = remember(treffer.text, begriff, farben.akzentGedeckt, farben.akzent) {
+                ausschnittMitHervorhebung(treffer.text, begriff, farben.akzentGedeckt, farben.akzent)
+            },
             style = schrift.einstellungErklaerung,
             color = farben.textSchwach,
             maxLines = 3,

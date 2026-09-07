@@ -59,11 +59,11 @@ fun String.toEinheitOrNull(): Einheit? {
     return Einheit.entries.firstOrNull { it.name.equals(wert, true) || it.anzeige().equals(trim(), true) }
 }
 
-fun String.mitDeutschenUmlauten(): String = TECHNISCHE_SCHREIBWEISEN.entries.fold(this) { text, (alt, neu) ->
-    text.replace(Regex("\\b${Regex.escape(alt)}\\b"), neu)
+fun String.mitDeutschenUmlauten(): String = TECHNISCHE_SCHREIBWEISEN.fold(this) { text, (muster, neu) ->
+    text.replace(muster, neu)
 }
 
-private val TECHNISCHE_SCHREIBWEISEN: Map<String, String> = linkedMapOf(
+private val TECHNISCHE_SCHREIBWEISEN = linkedMapOf(
     "LOEFFEL" to "Löffel",
     "Loeffel" to "Löffel",
     "loeffel" to "löffel",
@@ -82,4 +82,4 @@ private val TECHNISCHE_SCHREIBWEISEN: Map<String, String> = linkedMapOf(
     "LOESLICHKEIT" to "Löslichkeit",
     "Loeslichkeit" to "Löslichkeit",
     "loeslichkeit" to "löslichkeit",
-)
+).map { (alt, neu) -> Regex("\\b${Regex.escape(alt)}\\b") to neu }

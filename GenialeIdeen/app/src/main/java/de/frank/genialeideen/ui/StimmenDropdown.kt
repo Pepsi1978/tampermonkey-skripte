@@ -81,7 +81,8 @@ fun StimmenDropdown(
 
     val aktuell = eintraege.firstOrNull { it.id == gewaehlt && it.gruppe != Stimmenliste.GRUPPE_FAVORITEN }
     // Die Gruppen in der Reihenfolge, in der die Liste sie liefert (Kapitel 4.6).
-    val gruppen = remember(eintraege) { eintraege.map(StimmenEintrag::gruppe).distinct() }
+    val gruppenZahlen = remember(eintraege) { eintraege.groupingBy(StimmenEintrag::gruppe).eachCount() }
+    val gruppen = remember(eintraege) { gruppenZahlen.keys.toList() }
 
     // Die Gruppe folgt der gewählten Stimme, lässt sich aber frei durchblättern.
     var gruppe by remember(aktuell?.gruppe, gruppen) {
@@ -92,10 +93,9 @@ fun StimmenDropdown(
     var suche by remember { mutableStateOf("") }
 
     val inGruppe = remember(eintraege, gruppe) { eintraege.filter { it.gruppe == gruppe } }
-    val gefiltert = if (suche.isBlank()) {
-        inGruppe
-    } else {
-        inGruppe.filter { it.name.contains(suche, ignoreCase = true) }
+    val gefiltert = remember(inGruppe, suche) {
+        if (suche.isBlank()) inGruppe
+        else inGruppe.filter { it.name.contains(suche, ignoreCase = true) }
     }
 
     Column(modifier) {
@@ -129,7 +129,7 @@ fun StimmenDropdown(
                     .heightIn(max = 420.dp),
             ) {
                 gruppen.forEach { name ->
-                    val anzahl = eintraege.count { it.gruppe == name }
+                    val anzahl = gruppenZahlen[name] ?: 0
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

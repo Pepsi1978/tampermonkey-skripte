@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -191,8 +192,8 @@ fun Heute(modell: AppViewModel) {
                         )
                     }
                 }
-                items(vorschlaege, key = { "v${it.id}" }) { vorschlag ->
-                    Einflug(vorschlaege.indexOf(vorschlag)) {
+                itemsIndexed(vorschlaege, key = { _, vorschlag -> "v${vorschlag.id}" }, contentType = { _, _ -> "vorschlag" }) { nr, vorschlag ->
+                    Einflug(nr) {
                         Vorschlagskarte(vorschlag, modell, istVoll)
                     }
                 }
@@ -220,7 +221,7 @@ fun Heute(modell: AppViewModel) {
                         color = farben.gedaempft,
                     )
                 }
-                items(laufende, key = { "ab${it.id}" }) { experiment ->
+                items(laufende, key = { "ab${it.id}" }, contentType = { "abend" }) { experiment ->
                     Abendkarte(experiment, modell)
                 }
             }
@@ -309,6 +310,7 @@ private fun Vorschlagskarte(vorschlag: Suggestion, modell: AppViewModel, istVoll
     val stufe = LocalEffektstufe.current
     val dichte = LocalDensity.current
     var wischweg by remember { mutableFloatStateOf(0f) }
+    val wischrichtung by remember { derivedStateOf { if (wischweg > 0f) 1 else if (wischweg < 0f) -1 else 0 } }
     var gemerkt by remember { mutableStateOf(false) }
     val schwelle = with(dichte) { 100.dp.toPx() }
 
@@ -336,25 +338,24 @@ private fun Vorschlagskarte(vorschlag: Suggestion, modell: AppViewModel, istVoll
                 }
             ),
     ) {
-        if (wischweg != 0f) {
-            val anteil = (kotlin.math.abs(wischweg) / schwelle).coerceIn(0f, 1f)
+        if (wischrichtung != 0) {
             Box(
                 Modifier
                     .matchParentSize()
-                    .alpha(anteil)
+                    .graphicsLayer { alpha = (kotlin.math.abs(wischweg) / schwelle).coerceIn(0f, 1f); clip = true }
                     .background(
-                        if (wischweg >= 0) farben.aktion.copy(alpha = 0.18f)
+                        if (wischrichtung > 0) farben.aktion.copy(alpha = 0.18f)
                         else farben.warnung.copy(alpha = 0.16f),
                     ),
             )
             Text(
-                text = if (wischweg >= 0) "IN DEN MONITOR" else "VERWORFEN",
+                text = if (wischrichtung > 0) "IN DEN MONITOR" else "VERWORFEN",
                 style = schriften.zwischenueberschrift,
-                color = if (wischweg >= 0) farben.aktion else farben.warnung,
-                textAlign = if (wischweg >= 0) TextAlign.End else TextAlign.Start,
+                color = if (wischrichtung > 0) farben.aktion else farben.warnung,
+                textAlign = if (wischrichtung > 0) TextAlign.End else TextAlign.Start,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .alpha(anteil)
+                    .graphicsLayer { alpha = (kotlin.math.abs(wischweg) / schwelle).coerceIn(0f, 1f); clip = true }
                     .padding(top = 18.dp, start = 18.dp, end = 18.dp),
             )
         }

@@ -240,7 +240,9 @@ private fun AppGlow(modifier: Modifier = Modifier) {
     Canvas(
         modifier = modifier
             .size(300.dp)
-            .offset(x = 80.dp, y = (-90f + floatOffset).dp)
+            .offset {
+                androidx.compose.ui.unit.IntOffset(80.dp.roundToPx(), (-90f + floatOffset).dp.roundToPx())
+            }
             .blur(50.dp),
     ) {
         drawCircle(

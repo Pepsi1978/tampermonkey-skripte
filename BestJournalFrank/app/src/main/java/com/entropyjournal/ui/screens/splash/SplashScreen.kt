@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -187,8 +188,8 @@ fun SplashScreen(onSplashFinished: () -> Unit, viewModel: SplashViewModel) {
                     Modifier.width(72.dp)
                         .height(2.dp)
                         .clip(RoundedCornerShape(1.dp))
-                        .background(
-                            Brush.linearGradient(
+                        .drawBehind {
+                            drawRect(brush = Brush.linearGradient(
                                 colors =
                                     listOf(
                                         Color.Transparent,
@@ -199,8 +200,8 @@ fun SplashScreen(onSplashFinished: () -> Unit, viewModel: SplashViewModel) {
                                     ),
                                 start = Offset((shimmerProgress * 280f) - 140f, 0f),
                                 end = Offset((shimmerProgress * 280f) + 140f, 0f),
-                            )
-                        )
+                            ))
+                        }
             )
 
             Spacer(Modifier.height(16.dp))
@@ -219,9 +220,9 @@ fun SplashScreen(onSplashFinished: () -> Unit, viewModel: SplashViewModel) {
                 Box(
                     modifier =
                         Modifier.matchParentSize()
-                            .blur(24.dp, BlurredEdgeTreatment.Unbounded)
-                            .clip(RoundedCornerShape(50))
-                            .background(SplashGold.copy(alpha = glowAlpha))
+                             .blur(24.dp, BlurredEdgeTreatment.Unbounded)
+                             .clip(RoundedCornerShape(50))
+                             .drawBehind { drawRect(SplashGold.copy(alpha = glowAlpha)) }
                 )
                 Row(
                     modifier =

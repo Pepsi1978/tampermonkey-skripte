@@ -75,10 +75,20 @@ internal fun RestorativeSleepGraphCard(
     val cosmos = LocalCosmos.current
     val accent = LocalCosmos.current.accent
 
+    val baseline = if (precomputed == null) {
+        remember(history, ZoneId.systemDefault()) { restorativeSleepDerived(null, history) }
+    } else null
     val derived =
         precomputed
-            ?: remember(selectedSnapshot, history) {
-                restorativeSleepDerived(selectedSnapshot = selectedSnapshot, history = history)
+            ?: remember(selectedSnapshot, baseline) {
+                val base = requireNotNull(baseline)
+                val current = selectedSnapshot?.restorativePercent() ?: base.currentPercent
+                base.copy(
+                    currentPercent = current,
+                    deltaVsAvg = if (current != null && base.avg30Percent != null) {
+                        current - base.avg30Percent
+                    } else null,
+                )
             }
 
     val headerColor = derived.currentPercent?.let { restorativeSleepBarColor(it) } ?: accent

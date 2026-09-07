@@ -227,7 +227,7 @@ fun Auswertung(modell: AppViewModel) {
 
                     // E-21 — der gerade gesprochene Abschnitt wird hervorgehoben.
                     Text(
-                        text = buildAnnotatedString {
+                        text = remember(abschnitte, mitlese, farben.aktion) { buildAnnotatedString {
                             abschnitte.forEachIndexed { nr, teil ->
                                 if (nr == mitlese) {
                                     withStyle(
@@ -237,7 +237,7 @@ fun Auswertung(modell: AppViewModel) {
                                     append(teil)
                                 }
                             }
-                        },
+                        } },
                         style = schriften.fliesstext,
                         color = farben.text,
                         modifier = Modifier.padding(top = 6.dp),
@@ -331,7 +331,7 @@ fun Auswertung(modell: AppViewModel) {
                     modifier = Modifier.padding(top = 24.dp),
                 )
             }
-            items(vergangene, key = { "aus${it.id}" }) { eintrag ->
+            items(vergangene, key = { "aus${it.id}" }, contentType = { "auswertung" }) { eintrag ->
                 Auswertungsklappe(
                     eintrag = eintrag,
                     offen = eintrag.id in offeneEintraege,

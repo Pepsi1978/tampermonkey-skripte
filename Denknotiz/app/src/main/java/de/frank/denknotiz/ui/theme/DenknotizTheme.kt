@@ -49,6 +49,14 @@ private val DenkTypography = Typography(
     labelSmall = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 11.sp, letterSpacing = 0.6.sp),
 )
 
+private val DenkShapes = Shapes(
+    extraSmall = RoundedCornerShape(10.dp),
+    small = RoundedCornerShape(16.dp),
+    medium = RoundedCornerShape(22.dp),
+    large = RoundedCornerShape(28.dp),
+    extraLarge = RoundedCornerShape(32.dp),
+)
+
 @Composable
 fun DenknotizTheme(theme: AppTheme, content: @Composable () -> Unit) {
     val colors = when (theme) {
@@ -60,13 +68,7 @@ fun DenknotizTheme(theme: AppTheme, content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = colors,
         typography = DenkTypography,
-        shapes = Shapes(
-            extraSmall = RoundedCornerShape(10.dp),
-            small = RoundedCornerShape(16.dp),
-            medium = RoundedCornerShape(22.dp),
-            large = RoundedCornerShape(28.dp),
-            extraLarge = RoundedCornerShape(32.dp),
-        ),
+        shapes = DenkShapes,
         content = content,
     )
 }

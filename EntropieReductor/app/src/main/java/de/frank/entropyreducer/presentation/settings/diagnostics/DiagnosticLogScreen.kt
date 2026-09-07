@@ -160,6 +160,9 @@ private fun LogEntryCard(entry: DiagnosticLogEntry) {
     val area = DiagnosticArea.fromNameOrNull(entry.area)?.displayName ?: entry.area
     val accent = levelColor(level)
     var expanded by remember { mutableStateOf(false) }
+    val timestampText = remember(entry.timestampMs, java.util.TimeZone.getDefault()) {
+        formatTime(entry.timestampMs)
+    }
 
     GlassCard(
         modifier =
@@ -178,7 +181,7 @@ private fun LogEntryCard(entry: DiagnosticLogEntry) {
                     Text(area, style = MaterialTheme.typography.labelLarge, color = accent)
                     Spacer(Modifier.weight(1f))
                     Text(
-                        formatTime(entry.timestampMs),
+                        timestampText,
                         style = MaterialTheme.typography.labelSmall,
                         color = cosmos.textSecondary,
                     )

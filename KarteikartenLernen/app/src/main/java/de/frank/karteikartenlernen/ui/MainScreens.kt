@@ -52,6 +52,9 @@ import de.frank.karteikartenlernen.ui.theme.SchibstedGrotesk
 @Composable
 fun ProfilesScreen(state: AppUiState, onSearch: (String) -> Unit, onSession: (StudySession) -> Unit) {
     val c = LocalAppPalette.current
+    val sessions = remember(state.sessions, state.search) {
+        state.sessions.filter { it.title.contains(state.search, true) }
+    }
     ScreenTitle("Profile")
     Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 2.dp)) {
         Row(
@@ -71,7 +74,7 @@ fun ProfilesScreen(state: AppUiState, onSearch: (String) -> Unit, onSession: (St
             )
         }
         Spacer(Modifier.height(14.dp))
-        state.sessions.filter { it.title.contains(state.search, true) }.forEach { session ->
+        sessions.forEach { session ->
             SessionCard(session, onSession)
             Spacer(Modifier.height(10.dp))
         }

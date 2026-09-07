@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -83,7 +84,7 @@ fun KarteikartenTheme(
     content: @Composable () -> Unit,
 ) {
     val palette = appPalette(dark, profile)
-    val scheme = if (dark) {
+    val scheme = remember(palette) { if (dark) {
         darkColorScheme(
             primary = palette.accent,
             secondary = palette.accent2,
@@ -103,14 +104,15 @@ fun KarteikartenTheme(
             onBackground = palette.text,
             onSurface = palette.text,
         )
-    }
-    val typography = MaterialTheme.typography.copy(
+    } }
+    val baseTypography = MaterialTheme.typography
+    val typography = remember(baseTypography) { baseTypography.copy(
         bodyLarge = TextStyle(fontFamily = SchibstedGrotesk, fontSize = 16.sp),
         bodyMedium = TextStyle(fontFamily = SchibstedGrotesk, fontSize = 14.sp),
         labelLarge = TextStyle(fontFamily = SchibstedGrotesk, fontWeight = FontWeight.SemiBold, fontSize = 14.sp),
         titleLarge = TextStyle(fontFamily = Newsreader, fontWeight = FontWeight.SemiBold, fontSize = 24.sp),
         headlineMedium = TextStyle(fontFamily = Newsreader, fontWeight = FontWeight.SemiBold, fontSize = 28.sp),
-    )
+    ) }
     androidx.compose.runtime.CompositionLocalProvider(LocalAppPalette provides palette) {
         MaterialTheme(colorScheme = scheme, typography = typography, content = content)
     }

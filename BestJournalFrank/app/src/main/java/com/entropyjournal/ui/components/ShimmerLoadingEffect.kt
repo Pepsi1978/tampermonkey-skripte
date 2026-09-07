@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -50,24 +50,26 @@ fun ShimmerLoadingEffect(
         lerp(baseColor, Color.Black, 0.15f)
     }
 
-    val shimmerBrush = Brush.linearGradient(
-        colorStops = arrayOf(
-            0.0f to baseColor,
-            0.42f to baseColor,
-            0.48f to highlightColor,
-            0.52f to highlightColor,
-            0.58f to baseColor,
-            1.0f to baseColor
-        ),
-        start = Offset(translateAnim - 800f, 0f),
-        end = Offset(translateAnim + 800f, 0f)
-    )
-
     Spacer(
         modifier = modifier
             .fillMaxWidth()
             .height(height)
             .clip(RoundedCornerShape(cornerRadius))
-            .background(shimmerBrush)
+            .drawBehind {
+                drawRect(
+                    brush = Brush.linearGradient(
+                        colorStops = arrayOf(
+                            0.0f to baseColor,
+                            0.42f to baseColor,
+                            0.48f to highlightColor,
+                            0.52f to highlightColor,
+                            0.58f to baseColor,
+                            1.0f to baseColor
+                        ),
+                        start = Offset(translateAnim - 800f, 0f),
+                        end = Offset(translateAnim + 800f, 0f)
+                    )
+                )
+            }
     )
 }

@@ -113,13 +113,13 @@ fun DashboardScreen(vm: DashboardViewModel = viewModel()) {
         // verlor mitten im Tippen den Fokus (Tastatur klappte zu).
         // Fehler-Banner (Löschen/Speichern/Refresh fehlgeschlagen) — war vorher unsichtbar.
         uiState.error?.let { message ->
-            item(key = "error") {
+        item(key = "error", contentType = "error") {
                 ErrorBanner(message = message, onDismiss = vm::clearError)
             }
         }
 
         // Spectrum Card (exakt wie Design)
-        item(key = "spectrum") {
+        item(key = "spectrum", contentType = "spectrum") {
             SpectrumCard(
                 totalEntries = uiState.totalEntries,
                 categoryCounts = uiState.categoryCounts,
@@ -135,13 +135,13 @@ fun DashboardScreen(vm: DashboardViewModel = viewModel()) {
 
         // Vitals 2x2 Grid
         uiState.overview?.let { overview ->
-            item(key = "vitals") {
+        item(key = "vitals", contentType = "vitals") {
                 VitalsGrid(overview = overview)
             }
         }
 
         // Search Bar
-        item(key = "search") {
+        item(key = "search", contentType = "search") {
             SearchBar(
                 query = uiState.searchQuery,
                 onQueryChange = { vm.updateSearchQuery(it); vm.search(it) },
@@ -159,7 +159,7 @@ fun DashboardScreen(vm: DashboardViewModel = viewModel()) {
         if (displayItems.isEmpty() && uiState.error == null &&
             (uiState.searchQuery.isNotBlank() || uiState.selectedCategory != null)
         ) {
-            item(key = "empty") {
+            item(key = "empty", contentType = "empty") {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 30.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -174,7 +174,7 @@ fun DashboardScreen(vm: DashboardViewModel = viewModel()) {
             }
         }
 
-        items(displayItems, key = { it.doc_id }) { entry ->
+        items(displayItems, key = { it.doc_id }, contentType = { "entry" }) { entry ->
             EntryCard(entry = entry, onClick = { vm.selectEntry(entry) })
         }
     }

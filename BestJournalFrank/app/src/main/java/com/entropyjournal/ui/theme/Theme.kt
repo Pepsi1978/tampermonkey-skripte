@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -220,7 +221,9 @@ fun EntropyJournalTheme(
     val colorScheme =
         when (appTheme) {
             AppTheme.GoldenThread -> if (darkTheme) GoldenThreadDarkScheme else GoldenThreadLightScheme
-            AppTheme.Profile -> profileColorScheme(profileAccent(profileIndex), darkTheme)
+            AppTheme.Profile -> remember(profileIndex, darkTheme) {
+                profileColorScheme(profileAccent(profileIndex), darkTheme)
+            }
             AppTheme.Solarized -> if (darkTheme) SolarizedDarkScheme else SolarizedLightScheme
             AppTheme.Dracula -> if (darkTheme) DraculaDarkScheme else DraculaLightScheme
             AppTheme.OneDark -> if (darkTheme) OneDarkScheme else OneLightScheme
@@ -235,7 +238,12 @@ fun EntropyJournalTheme(
             AppTheme.SunEmber -> if (darkTheme) SunEmberDarkScheme else SunEmberLightScheme
         }
 
-    val designTokens = journalDesignTokens(appTheme, darkTheme, colorScheme)
+    val designTokens = remember(appTheme, darkTheme, colorScheme) {
+        journalDesignTokens(appTheme, darkTheme, colorScheme)
+    }
+    val typography = remember(headingFont, bodyFont, headingScale, bodyScale) {
+        appTypography(headingFont, bodyFont, headingScale, bodyScale)
+    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -259,7 +267,7 @@ fun EntropyJournalTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = appTypography(headingFont, bodyFont, headingScale, bodyScale),
+            typography = typography,
             shapes = AppShapes,
             content = {
                 Box(modifier = Modifier.fillMaxSize().background(designTokens.backgroundBrush)) {

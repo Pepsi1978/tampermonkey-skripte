@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
@@ -221,8 +222,8 @@ fun Modifier.glasschatten(
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
         this.shadow(weichheit / 2, form, clip = false, ambientColor = farbe, spotColor = farbe)
     } else {
-        this.drawBehind {
-            val pfad = Path().apply { addOutline(form.createOutline(size, layoutDirection, this@drawBehind)) }
+        this.drawWithCache {
+            val pfad = Path().apply { addOutline(form.createOutline(size, layoutDirection, this@drawWithCache)) }
             val streuung = weichheit.toPx() / 2f
             val radius = ((streuung - 0.5f) / 0.57735f).coerceAtLeast(0.1f)
             val stift = android.graphics.Paint().apply {
@@ -230,13 +231,15 @@ fun Modifier.glasschatten(
                 color = farbe.toArgb()
                 maskFilter = BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL)
             }
-            drawIntoCanvas { leinwand ->
-                leinwand.save()
-                // Ausstanzen: gezeichnet wird nur, was außerhalb der Fläche liegt.
-                leinwand.clipPath(pfad, ClipOp.Difference)
-                leinwand.translate(0f, versatzY.toPx())
-                leinwand.nativeCanvas.drawPath(pfad.asAndroidPath(), stift)
-                leinwand.restore()
+            onDrawBehind {
+                drawIntoCanvas { leinwand ->
+                    leinwand.save()
+                    // Ausstanzen: gezeichnet wird nur, was außerhalb der Fläche liegt.
+                    leinwand.clipPath(pfad, ClipOp.Difference)
+                    leinwand.translate(0f, versatzY.toPx())
+                    leinwand.nativeCanvas.drawPath(pfad.asAndroidPath(), stift)
+                    leinwand.restore()
+                }
             }
         }
     }

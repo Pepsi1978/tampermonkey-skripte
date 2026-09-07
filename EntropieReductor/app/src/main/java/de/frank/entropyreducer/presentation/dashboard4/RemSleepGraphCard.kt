@@ -82,10 +82,20 @@ internal fun RemSleepGraphCard(
     val cosmos = LocalCosmos.current
     val accent = SleepStageColors.Rem
 
+    val baseline = if (precomputed == null) {
+        remember(history, ZoneId.systemDefault()) { remSleepDerived(null, history) }
+    } else null
     val derived =
         precomputed
-            ?: remember(selectedSnapshot, history) {
-                remSleepDerived(selectedSnapshot = selectedSnapshot, history = history)
+            ?: remember(selectedSnapshot, baseline) {
+                val base = requireNotNull(baseline)
+                val current = selectedSnapshot?.remPercent() ?: base.currentPercent
+                base.copy(
+                    currentPercent = current,
+                    deltaVsAvg = if (current != null && base.avg30Percent != null) {
+                        current - base.avg30Percent
+                    } else null,
+                )
             }
 
     // Header-Zahl bekommt die gleiche Ampel-Farbe wie der aktuelle Tagesbalken.

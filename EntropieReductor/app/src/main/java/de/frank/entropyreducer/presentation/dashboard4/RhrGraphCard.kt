@@ -56,9 +56,18 @@ internal fun RhrGraphCard(
     val cosmos = LocalCosmos.current
     val accent = LocalCosmos.current.accent
 
+    val baseline = remember(history, ZoneId.systemDefault()) {
+        rhrDerived(selectedSnapshot = null, history = history)
+    }
     val derived =
-        remember(selectedSnapshot, history) {
-            rhrDerived(selectedSnapshot = selectedSnapshot, history = history)
+        remember(selectedSnapshot, baseline) {
+            val current = selectedSnapshot?.restingHeartRate ?: baseline.currentBpm
+            baseline.copy(
+                currentBpm = current,
+                deltaVsAvg = if (current != null && baseline.avgAllBpm != null) {
+                    current.toDouble() - baseline.avgAllBpm
+                } else null,
+            )
         }
 
     GlassCard(modifier = Modifier.fillMaxWidth().clickable { onClick() }) {

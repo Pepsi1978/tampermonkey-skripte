@@ -148,7 +148,7 @@ fun NotificationSettingsScreen(
             }
 
             AppNotification.byGroup().forEach { (group, notifications) ->
-                item(key = "header_${group.name}") {
+                item(key = "header_${group.name}", contentType = "notification-header") {
                     Text(
                         text = group.label,
                         style = MaterialTheme.typography.titleSmall,
@@ -157,7 +157,7 @@ fun NotificationSettingsScreen(
                     )
                 }
                 notifications.forEach { kind ->
-                    item(key = kind.key) {
+                    item(key = kind.key, contentType = "notification-toggle") {
                         val toggle = vm.toggleFor(kind)
                         val checked by toggle.collectAsStateWithLifecycle()
                         NotificationToggleCard(

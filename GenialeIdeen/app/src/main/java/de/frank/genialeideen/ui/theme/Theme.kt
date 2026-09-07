@@ -9,6 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -105,7 +106,7 @@ fun GenialeIdeenTheme(
         istDunkel = ziel.istDunkel,
     )
 
-    val schema = if (dunkel) {
+    val schema = remember(dunkel, palette) { if (dunkel) {
         darkColorScheme(
             primary = palette.primaer,
             onPrimary = palette.aufPrimaer,
@@ -138,13 +139,15 @@ fun GenialeIdeenTheme(
             error = Semantisch.fehler,
         )
     }
+    }
+    val schrift = remember(schriftSkalierung) { typografie(schriftSkalierung) }
     CompositionLocalProvider(
         LocalGold provides palette,
         LocalBewegungReduziert provides reduziert,
     ) {
         MaterialTheme(
             colorScheme = schema,
-            typography = typografie(schriftSkalierung),
+            typography = schrift,
             content = content,
         )
     }

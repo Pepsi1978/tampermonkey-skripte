@@ -44,6 +44,9 @@ import java.time.format.DateTimeFormatter
 fun StackScreen(state: MainUiState, modifier: Modifier = Modifier) {
     val colors = LocalAppColors.current
     val blocked = state.blockActive
+    val groupedItems = remember(state.stackItems) { state.stackItems.groupBy { it.category } }
+    val safeItems = groupedItems[StackCategory.UNPROBLEMATISCH].orEmpty()
+    val safeGroups = remember(safeItems) { safeItems.partition { it.isMedication } }
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = 18.dp),
@@ -66,23 +69,22 @@ fun StackScreen(state: MainUiState, modifier: Modifier = Modifier) {
             }
         }
 
-        val hardItems = state.stackItems.filter { it.category == StackCategory.HARTE_SPERRE }
+        val hardItems = groupedItems[StackCategory.HARTE_SPERRE].orEmpty()
         if (hardItems.isNotEmpty()) {
             item { StackSectionTitle(if (blocked) "Harte Sperre" else "Jetzt wieder erlaubt") }
-            items(hardItems, key = { it.id }) { StackStatusCard(it, blocked) }
+            items(hardItems, key = { it.id }, contentType = { "stack-status" }) { StackStatusCard(it, blocked) }
         }
 
-        val cautionItems = state.stackItems.filter { it.category == StackCategory.GRENZFALL }
+        val cautionItems = groupedItems[StackCategory.GRENZFALL].orEmpty()
         if (cautionItems.isNotEmpty()) {
             item { StackSectionTitle("Grenzfälle", topPadding = 6.dp) }
-            items(cautionItems, key = { it.id }) { StackStatusCard(it, blocked) }
+            items(cautionItems, key = { it.id }, contentType = { "stack-status" }) { StackStatusCard(it, blocked) }
         }
 
-        val safeItems = state.stackItems.filter { it.category == StackCategory.UNPROBLEMATISCH }
         if (safeItems.isNotEmpty()) {
             item { StackSectionTitle("Unproblematisch", topPadding = 6.dp) }
-            items(safeItems.filter { it.isMedication }, key = { it.id }) { StackStatusCard(it, blocked = false) }
-            item { SafeItemChips(safeItems.filterNot { it.isMedication }) }
+            items(safeGroups.first, key = { it.id }, contentType = { "stack-status" }) { StackStatusCard(it, blocked = false) }
+            item { SafeItemChips(safeGroups.second) }
             item {
                 Text(
                     "Alle unproblematischen Substanzen: wie im Morgen-Stack einnehmen.",
@@ -179,7 +181,7 @@ fun HistoryScreen(
         if (state.history.isEmpty()) {
             item { Text("Noch keine Kur gespeichert.", color = colors.sub, fontSize = 13.5.sp) }
         }
-        items(state.history, key = { it.cure.id }) { cure ->
+        items(state.history, key = { it.cure.id }, contentType = { "cure-history" }) { cure ->
             HistoryCard(cure, onUpdateNote, onCancelCure)
         }
     }

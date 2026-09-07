@@ -117,7 +117,7 @@ fun StackLaborTheme(
     reducedMotion: Boolean,
     content: @Composable () -> Unit,
 ) {
-    val target = if (darkTheme) darkPalette() else lightPalette()
+    val target = remember(darkTheme) { if (darkTheme) darkPalette() else lightPalette() }
     val duration = if (reducedMotion) 0 else 420
     val palette = StackLaborColors(
         background = target.background.animated(duration),
@@ -139,30 +139,32 @@ fun StackLaborTheme(
         disabled = target.disabled.animated(duration),
         glass = target.glass.animated(duration),
     )
-    val scheme = if (darkTheme) {
-        darkColorScheme(
-            primary = palette.accent,
-            onPrimary = palette.onAccent,
-            background = palette.background,
-            onBackground = palette.textStrong,
-            surface = palette.surface,
-            onSurface = palette.textStrong,
-            outline = palette.border,
-        )
-    } else {
-        lightColorScheme(
-            primary = palette.accent,
-            onPrimary = palette.onAccent,
-            background = palette.background,
-            onBackground = palette.textStrong,
-            surface = palette.surface,
-            onSurface = palette.textStrong,
-            outline = palette.border,
-        )
+    val scheme = remember(darkTheme, palette) {
+        if (darkTheme) {
+            darkColorScheme(
+                primary = palette.accent,
+                onPrimary = palette.onAccent,
+                background = palette.background,
+                onBackground = palette.textStrong,
+                surface = palette.surface,
+                onSurface = palette.textStrong,
+                outline = palette.border,
+            )
+        } else {
+            lightColorScheme(
+                primary = palette.accent,
+                onPrimary = palette.onAccent,
+                background = palette.background,
+                onBackground = palette.textStrong,
+                surface = palette.surface,
+                onSurface = palette.textStrong,
+                outline = palette.border,
+            )
+        }
     }
     androidx.compose.runtime.CompositionLocalProvider(
         LocalStackLaborColors provides palette,
-        LocalStackLaborDimens provides StackLaborDimens(),
+        LocalStackLaborDimens provides remember { StackLaborDimens() },
         LocalStackLaborMotionEnabled provides !reducedMotion,
         LocalStackLaborDark provides darkTheme,
     ) {
@@ -176,18 +178,21 @@ fun GoldDarkContent(content: @Composable () -> Unit) {
         content()
         return
     }
-    val palette = goldDarkPalette()
+    val palette = remember { goldDarkPalette() }
+    val scheme = remember(palette) {
+        darkColorScheme(
+            primary = palette.accent,
+            onPrimary = palette.onAccent,
+            background = palette.background,
+            onBackground = palette.textStrong,
+            surface = palette.surface,
+            onSurface = palette.textStrong,
+            outline = palette.border,
+        )
+    }
     androidx.compose.runtime.CompositionLocalProvider(LocalStackLaborColors provides palette) {
         MaterialTheme(
-            colorScheme = darkColorScheme(
-                primary = palette.accent,
-                onPrimary = palette.onAccent,
-                background = palette.background,
-                onBackground = palette.textStrong,
-                surface = palette.surface,
-                onSurface = palette.textStrong,
-                outline = palette.border,
-            ),
+            colorScheme = scheme,
             typography = StackLaborTypography,
             content = content,
         )

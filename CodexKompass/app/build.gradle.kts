@@ -13,10 +13,10 @@ android {
         applicationId = "de.frank.codexkompass"
         minSdk = 26
         targetSdk = 36
-        versionCode = 13
-        versionName = "0.4.8"
+        versionCode = 14
+        versionName = "0.4.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 13:21 Uhr\"")
+        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 14:18 Uhr\"")
         // Stand der mitgelieferten Wissensbasis. Der Aktualisieren-Knopf hebt den in der
         // Datenbank gespeicherten Stand an; dieser Wert bleibt der Auslieferungsstand.
         buildConfigField("String", "SEEDED_CLI_VERSION", "\"0.153.3\"")

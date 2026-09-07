@@ -63,6 +63,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -123,20 +124,22 @@ fun SettingsScreen(
                 .padding(bottom = 30.dp)
     ) {
         if (targetOpen) {
+            val germanWords = remember(state.words) { state.words.filter { it.lang == WakeLang.DE } }
+            val englishWords = remember(state.words) { state.words.filter { it.lang == WakeLang.EN } }
             // --- Detail-Untermenue fuer das Ziel "ChatGPT Voice" ---
             TargetDetailHeader(title = "ChatGPT Voice", onBack = { targetOpen = false })
             ServiceCard(state, onToggleService, onRetryModels)
             Spacer(Modifier.height(8.dp))
             WordSection(
                 lang = WakeLang.DE,
-                words = state.words.filter { it.lang == WakeLang.DE },
+                words = germanWords,
                 onToggleFavorit = onToggleFavorit,
                 onEdit = { sheetMode = SheetMode.Edit(it) },
                 onAdd = { sheetMode = SheetMode.Add(WakeLang.DE) },
             )
             WordSection(
                 lang = WakeLang.EN,
-                words = state.words.filter { it.lang == WakeLang.EN },
+                words = englishWords,
                 onToggleFavorit = onToggleFavorit,
                 onEdit = { sheetMode = SheetMode.Edit(it) },
                 onAdd = { sheetMode = SheetMode.Add(WakeLang.EN) },
@@ -338,14 +341,14 @@ private fun HeroCard(
 @Composable
 private fun PulsingOrb() {
     val transition = rememberInfiniteTransition(label = "orb")
-    val ring1 by
+    val ring1 =
         transition.animateFloat(
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = infiniteRepeatable(tween(2400, easing = LinearEasing)),
             label = "ring1",
         )
-    val ring2 by
+    val ring2 =
         transition.animateFloat(
             initialValue = 0f,
             targetValue = 1f,
@@ -358,16 +361,15 @@ private fun PulsingOrb() {
         )
 
     Box(Modifier.size(74.dp), contentAlignment = Alignment.Center) {
-        listOf(ring1, ring2).forEach { value ->
-            val p = (value / 0.7f).coerceAtMost(1f)
-            val scale = 0.78f + (1.25f - 0.78f) * p
-            val alpha = 0.9f * (1f - p)
+        listOf(ring1, ring2).forEach { ring ->
             Box(
                 Modifier.fillMaxSize()
                     .graphicsLayer {
+                        val p = (ring.value / 0.7f).coerceAtMost(1f)
+                        val scale = 0.78f + (1.25f - 0.78f) * p
                         scaleX = scale
                         scaleY = scale
-                        this.alpha = alpha
+                        alpha = 0.9f * (1f - p)
                     }
                     .border(2.dp, VK.Primary.copy(alpha = 0.5f), CircleShape)
             )
@@ -708,7 +710,7 @@ private fun HintCard() {
 @Composable
 fun VersionFooter() {
     Text(
-        "VoiceKey v${BuildConfig.VERSION_NAME} · Build ${BuildConfig.VERSION_CODE}",
+        "VoiceKey v${BuildConfig.VERSION_NAME} · Build ${BuildConfig.VERSION_CODE}\n${BuildConfig.VERSION_BUMPED_AT}",
         modifier = Modifier.fillMaxWidth().padding(top = 14.dp),
         textAlign = TextAlign.Center,
         fontSize = 11.sp,

@@ -87,10 +87,10 @@ fun ProfileBildschirm(
             contentPadding = androidx.compose.foundation.layout.PaddingValues(Masse.seitenrand),
             verticalArrangement = Arrangement.spacedBy(Masse.kartenAbstand),
         ) {
-            item(key = "ohne-profil") {
+            item(key = "ohne-profil", contentType = "ohne-profil") {
                 OhneProfilZeile(gesetzt = profile.none { it.istAktiv }, beiDruck = beiOhneProfil)
             }
-            items(profile, key = { it.nummer }) { profil ->
+            items(profile, key = { it.nummer }, contentType = { "profil" }) { profil ->
                 Profilzeile(
                     profil = profil,
                     // Ein zweiter Druck auf das gesetzte Häkchen nimmt es wieder weg —

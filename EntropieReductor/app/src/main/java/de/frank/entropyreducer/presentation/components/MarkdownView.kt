@@ -59,13 +59,13 @@ fun MarkdownView(
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                 )
                 is MdBlock.Bullet -> Text(
-                    text = renderInline(block.text, cosmos.textPrimary.toString()),
+                    text = remember(block.text) { renderInline(block.text) },
                     color = cosmos.textPrimary,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 8.dp),
                 )
                 is MdBlock.Paragraph -> Text(
-                    text = renderInline(block.text, cosmos.textPrimary.toString()),
+                    text = remember(block.text) { renderInline(block.text) },
                     color = cosmos.textPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 22.sp),
                 )
@@ -119,10 +119,9 @@ private fun parse(src: String): List<MdBlock> {
 
 /**
  * Rendert Inline-Markup `**fett**` und `*kursiv*` zu AnnotatedString.
- * Der Farbe-Parameter ist nur ein Marker — die tatsaechliche Farbe kommt vom
- * `color`-Parameter des Text-Composable.
+ * Die Farbe kommt vom `color`-Parameter des Text-Composable.
  */
-private fun renderInline(text: String, @Suppress("UNUSED_PARAMETER") color: String): AnnotatedString =
+private fun renderInline(text: String): AnnotatedString =
     buildAnnotatedString {
         var i = 0
         while (i < text.length) {

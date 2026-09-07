@@ -175,12 +175,15 @@ fun TimelineItem(
                 }
 
                 if (!entry.adviceCategoryTags.isNullOrBlank()) {
+                    val tags = remember(entry.adviceCategoryTags) {
+                        entry.adviceCategoryTags.split(",").map { it.trim() }.filter { it.isNotBlank() }
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        entry.adviceCategoryTags.split(",").map { it.trim() }.filter { it.isNotBlank() }.forEach { tag ->
+                        tags.forEach { tag ->
                             Surface(
                                 shape = RoundedCornerShape(50),
                                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),

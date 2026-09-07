@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.graphicsLayer
@@ -150,7 +149,7 @@ fun AccentGradientButton(
     content: @Composable RowScope.() -> Unit,
 ) {
     val colors = LocalAppColors.current
-    val alpha by animateFloatAsState(
+    val opacity = animateFloatAsState(
         targetValue = if (enabled) 1f else 0.45f,
         label = "accent-button-alpha",
     )
@@ -184,7 +183,10 @@ fun AccentGradientButton(
                     indication = null,
                     onClick = onClick,
                 )
-                .alpha(alpha)
+                .graphicsLayer {
+                    alpha = opacity.value
+                    clip = opacity.value != 1f
+                }
                 .padding(contentPadding),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,

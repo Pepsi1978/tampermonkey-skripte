@@ -39,7 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -127,7 +127,7 @@ fun Gespraech(modell: AppViewModel) {
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(nachrichten, key = { it.id }) { runde ->
+            items(nachrichten, key = { it.id }, contentType = { it.role }) { runde ->
                 val eigen = runde.role == Rolle.ICH
                 Row(
                     Modifier.fillMaxWidth(),
@@ -179,7 +179,7 @@ fun Gespraech(modell: AppViewModel) {
                 }
             }
             if (denkt != null) {
-                item("denkt") { Denkpunkte() }
+                item("denkt", contentType = "denkt") { Denkpunkte() }
             }
             // **Auswertungen stehen hier nicht mehr als Blase.** Sie liefen früher mit,
             // weil sie im selben Faden liegen — im Gespräch verdrängten sie aber genau das,
@@ -302,7 +302,7 @@ private fun Denkpunkte() {
             Box(
                 Modifier
                     .size(6.dp)
-                    .alpha(deckkraft)
+                    .graphicsLayer { alpha = deckkraft; clip = true }
                     .clip(RoundedCornerShape(percent = 50))
                     .background(farben.gedaempft),
             )

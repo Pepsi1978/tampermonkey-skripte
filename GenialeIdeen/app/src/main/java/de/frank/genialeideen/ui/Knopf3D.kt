@@ -22,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -93,7 +93,7 @@ fun Knopf3D(
 
     Box(
         modifier = modifier
-            .scale(skalierung)
+            .graphicsLayer { scaleX = skalierung; scaleY = skalierung }
             .then(
                 if (hauptKnopf && aktiviert) {
                     Modifier.pulsierenderSchein(grund, form)
@@ -216,7 +216,7 @@ fun StillerKnopf(
 
     Box(
         modifier = modifier
-            .scale(skalierung)
+            .graphicsLayer { scaleX = skalierung; scaleY = skalierung }
             .then(
                 if (hervorgehoben) {
                     Modifier.tiefenSchatten(gold.primaer, Hoehe.karte, form)

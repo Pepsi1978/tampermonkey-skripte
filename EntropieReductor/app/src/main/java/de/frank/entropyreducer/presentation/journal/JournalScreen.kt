@@ -133,7 +133,7 @@ fun JournalScreen(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
                     grouped.forEach { section ->
-                        item(key = "header-${section.label}") {
+                        item(key = "header-${section.label}", contentType = "journal-header") {
                             SectionHeader(label = section.label)
                         }
                         val lastIndex = section.entries.lastIndex
@@ -145,7 +145,7 @@ fun JournalScreen(
                                     index == lastIndex -> TimelinePosition.LAST
                                     else -> TimelinePosition.MIDDLE
                                 }
-                            item(key = e.sourceId) {
+                            item(key = e.sourceId, contentType = "journal-entry") {
                                 TimelineEntryRow(
                                     entry = e,
                                     position = position,

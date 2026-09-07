@@ -23,6 +23,7 @@
 > **Ergaenzt 2026-07-02:** §6.8 (`weight(0f)`-Crash aus dynamischen Daten) und §9.6
 > (unbedingt erzeugte InfiniteTransition tickt in jedem Zustand — Energie) — CortexAndroid-Funde.
 > **Ergaenzt 2026-07-20:** §8.8 (gewichteter Langtext-Editor kollabiert bei `adjustResize` + IME).
+> **Ergänzt 2026-09-07:** §10.10 (wiederholter Aufbau von Schattenpfad, Paint und BlurMaskFilter beim Zeichnen; statischer Fund in Experimente).
 >
 > **Versions-Horizont (Re-Recherche 2026-06-24):** BOM ist inzwischen bei **2026.06.00** (2026-06-17):
 > Compose UI/foundation/animation/runtime **1.11.3**, **Material3 1.4.0** (stabil), **1.12.0-beta01** in
@@ -75,6 +76,7 @@ Dieser Almanach ist die **tiefe, vollstaendige** Quelle fuer **Compose-UI-Bugs**
 | 19 | Pager-Swipe/Interaktion ruckelt, alle Seiten recomposen | `staticCompositionLocalOf`-Wert stabil remembern (State-backed Holder) — neue Instanz pro Recomposition invalidiert den GESAMTEN Subtree | §1.7 |
 | 20 | Chart-Scrubbing/Drag ruckelt trotz `remember` | `remember`-Key zu breit: hochfrequenter State (selectedX) im Key invalidiert die teure Berechnung pro Frame — Heavy/Finalize-Split (`remember(data)` + `remember(selected, heavy)`) | §10.9 |
 | 21 | Helles Rechteck mit harten Kanten in einer Glas-/Milchglas-Flaeche | Kein `Modifier.shadow` auf halbtransparenter Flaeche — Schatten selbst zeichnen und die Flaeche ausstanzen | §5.5 |
+| 22 | Eigener Schatten erzeugt Pfad/Paint/BlurMaskFilter pro Draw | Größenabhängige Zeichenobjekte in `drawWithCache` vorbereiten, unverändert in `onDrawBehind` zeichnen; Ausstanzen erhalten | §10.10 |
 
 ---
 
@@ -750,6 +752,13 @@ SearchBar-Modell (`SearchBarState` + `ExpandedFullScreenSearchBar`).
 **Quelle:** eigener Vorfall EntropieReductor #47449 · developer.android.com/develop/ui/compose/performance (remember-Guidance)
 
 ---
+
+### 10.10 Zeichenobjekte im Schatten-Hotpath immer neu aufgebaut
+**Symptom:** Zusätzlicher Allokations- und GC-Druck beim wiederholten Zeichnen gemeinsam genutzter Glasflächen; statisch gefunden, keine Frame-Messung.
+**Ursache:** `glasschatten` erzeugte in `drawBehind` jedes Mal `Path`, `android.graphics.Paint` und `BlurMaskFilter`, obwohl Form, Größe, Dichte und Schattenparameter unverändert waren.
+**Fix:** Aufbau nach `drawWithCache` verschieben; Zeichnung in `onDrawBehind`. Der Cache wird bei Größen-/Dichte-/Layout-Richtungsänderungen sowie geänderten Modifier-Eingaben erneuert. `ClipOp.Difference`, Versatz, Blur-Radius, Zeichenreihenfolge und API-Fallback bleiben erhalten. Keine Schatten entfernen oder durch transparente Elevation-Schatten ersetzen (§5.5).
+**Grenze:** Animierte Eingaben nicht versehentlich einfrieren; hochfrequente Reads möglichst im Zeichenblock belassen. Caching ist keine Erlaubnis, Clipping oder Alpha-Komposition zu verändern.
+**Quelle:** Eigener statischer Fund, `Experimente/ui/theme/Effekte.kt`, 07.09.2026; Build und Update auf SM_F971B erfolgreich, keine visuelle oder Performance-Verifikation. Prävention: Best Practices §11.
 
 ## 11. Fix-Status — was belegt behoben ist und was offen bleibt
 

@@ -135,12 +135,17 @@ fun Modifier.pulsierenderSchein(
         animationSpec = infiniteRepeatable(tween(Motion.ATEM_MS), RepeatMode.Reverse),
         label = "atemwert",
     )
-    shadow(
-        elevation = hoehe,
-        shape = form,
-        ambientColor = farbe.copy(alpha = atem),
-        spotColor = farbe.copy(alpha = atem),
-    )
+    if (hoehe > 0.dp) {
+        graphicsLayer {
+            shadowElevation = hoehe.toPx()
+            shape = form
+            clip = true
+            ambientShadowColor = farbe.copy(alpha = atem)
+            spotShadowColor = farbe.copy(alpha = atem)
+        }
+    } else {
+        this
+    }
 }
 
 /** Schwebt langsam 2 bis 3 dp auf und ab — für den Aktionsknopf und Abzeichen (N.7). */

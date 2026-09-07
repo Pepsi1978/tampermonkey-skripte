@@ -200,7 +200,7 @@ fun EinstellungenScreen(
                             beschriftung = "Stimme",
                             // Lieblinge nach oben, danach nach Geschlecht: So findet man seine
                             // Stimme wieder, ohne durch dreißig Namen zu suchen.
-                            punkte = stimmen
+                            punkte = remember(stimmen, zustand.lieblingsStimmen) { stimmen
                                 .sortedWith(
                                     compareByDescending<Stimme> { it.id in zustand.lieblingsStimmen }
                                         .thenBy { it.geschlecht }
@@ -217,7 +217,7 @@ fun EinstellungenScreen(
                                             "männlich"
                                         },
                                     )
-                                },
+                                } },
                             gewaehlt = gewaehlte,
                             beiWahl = { viewModel.setzeStimme(zustand.ttsAnbieter, it) },
                             beiProbe = { viewModel.probeAbspielen(zustand.ttsAnbieter, gewaehlte) },

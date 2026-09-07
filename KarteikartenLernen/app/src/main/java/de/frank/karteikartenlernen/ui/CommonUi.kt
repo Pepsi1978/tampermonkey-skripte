@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -47,6 +46,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.frank.karteikartenlernen.model.AppTab
@@ -73,7 +73,7 @@ fun AuroraBackground() {
     Box(Modifier.fillMaxSize()) {
         Box(
             Modifier
-                .offset((-70).dp + driftA.dp, (-80).dp + (driftA / 2).dp)
+                .offset { IntOffset(((-70).dp + driftA.dp).roundToPx(), ((-80).dp + (driftA / 2).dp).roundToPx()) }
                 .size(310.dp)
                 .blur(60.dp)
                 .background(c.blobA, CircleShape),
@@ -81,7 +81,7 @@ fun AuroraBackground() {
         Box(
             Modifier
                 .align(Alignment.CenterEnd)
-                .offset(90.dp + driftB.dp, driftB.dp)
+                .offset { IntOffset((90.dp + driftB.dp).roundToPx(), driftB.dp.roundToPx()) }
                 .size(285.dp)
                 .blur(60.dp)
                 .background(c.blobB, CircleShape),
@@ -89,7 +89,7 @@ fun AuroraBackground() {
         Box(
             Modifier
                 .align(Alignment.BottomStart)
-                .offset((-80).dp + (driftB / 2).dp, 70.dp)
+                .offset { IntOffset(((-80).dp + (driftB / 2).dp).roundToPx(), 70.dp.roundToPx()) }
                 .size(260.dp)
                 .blur(60.dp)
                 .background(c.blobC, CircleShape),
@@ -169,7 +169,7 @@ fun MicButton(state: MicState, seconds: Int, onClick: () -> Unit) {
             Box(
                 Modifier
                     .size(172.dp)
-                    .scale(breathe)
+                    .graphicsLayer { scaleX = breathe; scaleY = breathe }
                     .blur(14.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
                     .background(c.accent.copy(alpha = if (c.dark) 0.47f else 0.35f), CircleShape),
             )
@@ -217,13 +217,13 @@ private fun PulseRing(delay: Int) {
         infiniteRepeatable(tween(2400, delayMillis = delay), RepeatMode.Restart),
         label = "scale",
     )
-    val alpha by transition.animateFloat(
+    val ringAlpha by transition.animateFloat(
         0.55f,
         0f,
         infiniteRepeatable(tween(1700, delayMillis = delay), RepeatMode.Restart),
         label = "alpha",
     )
-    Box(Modifier.size(134.dp).scale(scale).border(2.dp, c.accent.copy(alpha = alpha), CircleShape))
+    Box(Modifier.size(134.dp).graphicsLayer { scaleX = scale; scaleY = scale; alpha = ringAlpha }.border(2.dp, c.accent, CircleShape))
 }
 
 @Composable
@@ -237,7 +237,7 @@ private fun WaveBars() {
                 infiniteRepeatable(tween(600 + (index * 70) % 500, delayMillis = (index % 5) * 80), RepeatMode.Reverse),
                 label = "height",
             )
-            Box(Modifier.size(5.dp, 34.dp).scale(scaleY = scale, scaleX = 1f).background(Color.White, RoundedCornerShape(3.dp)))
+            Box(Modifier.size(5.dp, 34.dp).graphicsLayer { scaleY = scale }.background(Color.White, RoundedCornerShape(3.dp)))
         }
     }
 }

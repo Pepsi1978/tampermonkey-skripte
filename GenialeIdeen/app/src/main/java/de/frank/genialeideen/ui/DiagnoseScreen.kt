@@ -57,7 +57,7 @@ fun DiagnoseScreen(
     var stufe by remember { mutableStateOf<LogStufe?>(null) }
     val berichte = remember { viewModel.absturzberichte() }
 
-    val gefiltert = zeilen.filter { stufe == null || it.stufe == stufe }
+    val gefiltert = remember(zeilen, stufe) { zeilen.filter { stufe == null || it.stufe == stufe } }
     val datei = IdeenLog.logDatei()
 
     Column(

@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -70,13 +69,6 @@ fun MicButton(
             label = "recordingPulse",
         )
 
-    val targetScale =
-        when (state) {
-            MicState.IDLE -> idleScale
-            MicState.RECORDING -> 1.05f
-            MicState.PROCESSING -> 1f
-        }
-
     // Mic-Tint pro Tab (Frank-Wunsch 2026-05-17): Bottom-Bar gibt ueber
     // [accentColor] die aktive Tab-Farbe vor. Ohne Override fallen wir auf den
     // Cosmos-Primaer-Akzent zurueck.
@@ -88,12 +80,12 @@ fun MicButton(
     Box(modifier = modifier.size(size + 32.dp), contentAlignment = Alignment.Center) {
         // Pulsierende Ringe bei Aufnahme
         if (state == MicState.RECORDING) {
-            val ringScale = 1f + recordingPulse * 0.6f
-            val ringAlpha = (1f - recordingPulse).coerceIn(0f, 1f)
             Box(
                 modifier =
                     Modifier.size(size)
                         .graphicsLayer {
+                            val ringScale = 1f + recordingPulse * 0.6f
+                            val ringAlpha = (1f - recordingPulse).coerceIn(0f, 1f)
                             scaleX = ringScale
                             scaleY = ringScale
                             alpha = ringAlpha * 0.5f
@@ -107,7 +99,15 @@ fun MicButton(
         Box(
             modifier =
                 Modifier.size(size)
-                    .scale(targetScale)
+                    .graphicsLayer {
+                        val targetScale = when (state) {
+                            MicState.IDLE -> idleScale
+                            MicState.RECORDING -> 1.05f
+                            MicState.PROCESSING -> 1f
+                        }
+                        scaleX = targetScale
+                        scaleY = targetScale
+                    }
                     .clip(CircleShape)
                     .background(accentBrush)
                     .clickable { onClick() },

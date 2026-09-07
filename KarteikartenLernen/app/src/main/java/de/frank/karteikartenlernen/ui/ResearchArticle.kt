@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
@@ -20,8 +21,9 @@ import de.frank.karteikartenlernen.ui.theme.Newsreader
 fun ResearchArticle(answer: String, paragraphColor: Color = LocalAppPalette.current.muted) {
     val c = LocalAppPalette.current
     val uriHandler = LocalUriHandler.current
+    val blocks = remember(answer) { parseResearchArticle(answer) }
     Column {
-        parseResearchArticle(answer).forEach { block ->
+        blocks.forEach { block ->
             when (block) {
                 is ArticleBlock.Heading -> Text(
                     text = block.text,

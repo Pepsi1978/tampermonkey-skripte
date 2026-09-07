@@ -10,6 +10,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -410,9 +411,10 @@ fun FisetinTheme(
     content: @Composable () -> Unit,
 ) {
     val colors = appColors(variant, mode)
+    val scheme = remember(colors, mode) { materialColorScheme(colors, mode) }
     CompositionLocalProvider(LocalAppColors provides colors) {
         MaterialTheme(
-            colorScheme = materialColorScheme(colors, mode),
+            colorScheme = scheme,
             typography = FisetinTypography,
             shapes = FisetinShapes,
         ) {

@@ -172,26 +172,28 @@ fun PerfectMomentTheme(
             ) == 0f
         }.getOrDefault(false)
     }
-    val scheme = if (isDark) {
-        darkColorScheme(
-            primary = colors.gold,
-            onPrimary = colors.background,
-            background = colors.background,
-            onBackground = colors.text1,
-            surface = colors.surface,
-            onSurface = colors.text1,
-            error = colors.warning,
-        )
-    } else {
-        lightColorScheme(
-            primary = colors.gold,
-            onPrimary = colors.background,
-            background = colors.background,
-            onBackground = colors.text1,
-            surface = colors.surface,
-            onSurface = colors.text1,
-            error = colors.warning,
-        )
+    val scheme = remember(isDark) {
+        if (isDark) {
+            darkColorScheme(
+                primary = colors.gold,
+                onPrimary = colors.background,
+                background = colors.background,
+                onBackground = colors.text1,
+                surface = colors.surface,
+                onSurface = colors.text1,
+                error = colors.warning,
+            )
+        } else {
+            lightColorScheme(
+                primary = colors.gold,
+                onPrimary = colors.background,
+                background = colors.background,
+                onBackground = colors.text1,
+                surface = colors.surface,
+                onSurface = colors.text1,
+                error = colors.warning,
+            )
+        }
     }
     CompositionLocalProvider(
         LocalPmColors provides colors,

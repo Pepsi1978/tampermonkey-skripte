@@ -1,7 +1,7 @@
 package de.frank.gedankenspeicher.ui.theme
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -116,4 +116,5 @@ enum class Erscheinung(val id: String, val label: String, val farben: Farbrollen
     }
 }
 
-val LocalFarben = staticCompositionLocalOf { GoldDunkel }
+// Die animierten Farbrollen sollen nur ihre Leser invalidieren, nicht den ganzen Baum.
+val LocalFarben = compositionLocalOf { GoldDunkel }

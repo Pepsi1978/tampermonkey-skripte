@@ -45,9 +45,9 @@ android {
         applicationId = "com.entropyjournal"
         minSdk = 26
         targetSdk = 35
-        versionCode = 156
-        versionName = "0.23.2"
-        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 13:06 Uhr\"")
+        versionCode = 157
+        versionName = "0.23.3"
+        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 14:18 Uhr\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

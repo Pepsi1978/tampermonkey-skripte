@@ -117,7 +117,7 @@ fun TokenStatsScreen(onBack: () -> Unit, vm: TokenStatsViewModel = hiltViewModel
                             color = cosmos.textSecondary,
                         )
                     }
-                    items(rows, key = { it.prompt.id }) { row ->
+                    items(rows, key = { it.prompt.id }, contentType = { "token-stats" }) { row ->
                         val expanded = expandedPromptId == row.prompt.id
                         TokenRowCard(
                             row = row,

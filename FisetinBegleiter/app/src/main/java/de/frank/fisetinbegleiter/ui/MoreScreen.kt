@@ -44,6 +44,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.sp
 import de.frank.fisetinbegleiter.BuildConfig
 import de.frank.fisetinbegleiter.data.IngredientEntity
@@ -68,6 +69,7 @@ fun MoreScreen(
     var protocol by remember(state.protocol) { mutableStateOf(state.protocol) }
     var editedIngredient by remember { mutableStateOf<IngredientEntity?>(null) }
     var ingredientDialog by remember { mutableStateOf(false) }
+    val ingredientsByPhase = remember(state.ingredients) { state.ingredients.groupBy { it.phase } }
 
     LazyColumn(
         modifier = modifier,
@@ -147,7 +149,7 @@ fun MoreScreen(
         }
         item { Text("Zutaten", modifier = Modifier.padding(top = 8.dp), color = colors.text, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         IngredientPhase.entries.forEach { phase ->
-            val phaseItems = state.ingredients.filter { it.phase == phase }
+            val phaseItems = ingredientsByPhase[phase].orEmpty()
             if (phaseItems.isNotEmpty()) {
                 item {
                     Text(
@@ -159,7 +161,7 @@ fun MoreScreen(
                         letterSpacing = 0.6.sp,
                     )
                 }
-                items(phaseItems, key = { ingredientListKey(it.id) }) { ingredient ->
+                items(phaseItems, key = { ingredientListKey(it.id) }, contentType = { "ingredient" }) { ingredient ->
                     IngredientRow(
                         ingredient = ingredient,
                         canEdit = !locked,
@@ -298,7 +300,7 @@ private fun DesignToggle(checked: Boolean, enabled: Boolean, onCheckedChange: (B
         contentAlignment = Alignment.CenterStart,
     ) {
         Box(
-            Modifier.offset(x = thumbOffset).size(22.dp).shadow(3.dp, CircleShape, ambientColor = colors.shadow.color, spotColor = colors.shadow.color).clip(CircleShape).background(Color.White),
+            Modifier.offset { IntOffset(thumbOffset.roundToPx(), 0) }.size(22.dp).shadow(3.dp, CircleShape, ambientColor = colors.shadow.color, spotColor = colors.shadow.color).clip(CircleShape).background(Color.White),
         )
     }
 }

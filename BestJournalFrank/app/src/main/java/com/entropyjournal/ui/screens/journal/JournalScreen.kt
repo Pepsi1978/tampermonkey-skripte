@@ -119,8 +119,10 @@ import kotlinx.coroutines.delay
 fun JournalScreen(viewModel: JournalViewModel, onEntryClick: (Long, String) -> Unit) {
     val allEntries by viewModel.entries.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val searchResults by
-        viewModel.searchEntries(uiState.searchQuery).collectAsStateWithLifecycle(initialValue = emptyList())
+    val searchFlow = remember(viewModel, uiState.searchQuery) {
+        viewModel.searchEntries(uiState.searchQuery)
+    }
+    val searchResults by searchFlow.collectAsStateWithLifecycle(initialValue = emptyList())
     val entries =
         if (uiState.isSearchActive && uiState.searchQuery.isNotBlank()) {
             searchResults

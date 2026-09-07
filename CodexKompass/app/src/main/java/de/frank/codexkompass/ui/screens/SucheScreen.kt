@@ -256,14 +256,14 @@ private fun VerlaufsListe(
 @Composable
 private fun TrefferListe(treffer: List<SuchTreffer>, beiTreffer: (Bereich, String) -> Unit) {
     val farben = LocalKompassFarben.current
-    val gruppiert = treffer.groupBy { it.quelleArt }
+    val gruppiert = remember(treffer) { treffer.groupBy { it.quelleArt } }
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(Mass.randSchmal),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         gruppiert.forEach { (art, liste) ->
-            item(key = "kopf-$art") {
+            item(key = "kopf-$art", contentType = "such-kopf") {
                 Text(
                     text = when (art) {
                         KompassRepository.ART_EINTRAG -> "Einträge (${liste.size})"
@@ -275,7 +275,7 @@ private fun TrefferListe(treffer: List<SuchTreffer>, beiTreffer: (Bereich, Strin
                     modifier = Modifier.padding(top = Mass.abstandKlein, bottom = 4.dp),
                 )
             }
-            items(liste, key = { "${it.quelleArt}-${it.quelleId}" }) { einzel ->
+            items(liste, key = { "${it.quelleArt}-${it.quelleId}" }, contentType = { "such-treffer" }) { einzel ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

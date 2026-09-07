@@ -36,7 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -116,7 +116,7 @@ fun BriefingPanel(
                     contentDescription =
                         if (panelExpanded) "Briefing zuklappen" else "Briefing aufklappen",
                     tint = cosmos.textSecondary,
-                    modifier = Modifier.size(22.dp).rotate(rootArrowRotation),
+                    modifier = Modifier.size(22.dp).graphicsLayer { rotationZ = rootArrowRotation },
                 )
             }
 
@@ -283,7 +283,7 @@ private fun CollapsibleSection(
                 imageVector = Icons.Outlined.ExpandMore,
                 contentDescription = if (expanded) "Zuklappen" else "Aufklappen",
                 tint = cosmos.textSecondary,
-                modifier = Modifier.size(20.dp).rotate(arrowRotation),
+                modifier = Modifier.size(20.dp).graphicsLayer { rotationZ = arrowRotation },
             )
         }
         AnimatedVisibility(visible = expanded) {

@@ -237,7 +237,7 @@ fun AmazfitTrainingsScreen(
                     }
                 }
             } else {
-                items(state.filtered, key = { it.trackId }) { w ->
+                items(state.filtered, key = { it.trackId }, contentType = { "training" }) { w ->
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
                         // Performance (Tiefen-Debugging 2026-07-04, Almanach compose §10.5):
                         // RestingHr-Suche memoiziert — lief vorher pro sichtbarem Item bei

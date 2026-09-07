@@ -160,16 +160,15 @@ fun ListenScreen(
         ListenBereich.ENTWURF -> entwuerfe
         ListenBereich.UMGESETZT -> umgesetzte
     }
-    val liste = if (gewaehlteKategorie == null) {
-        roheListe
-    } else {
-        roheListe.filter { it.kategorieId == gewaehlteKategorie }
+    val liste = remember(roheListe, gewaehlteKategorie) {
+        if (gewaehlteKategorie == null) roheListe
+        else roheListe.filter { it.kategorieId == gewaehlteKategorie }
     }
     // Die gezogene Reihenfolge lebt lokal, bis der Finger losgelassen wird.
     var reihenfolge by remember(liste) { mutableStateOf(liste.map(IdeeEntity::id)) }
     LaunchedEffect(liste) { reihenfolge = liste.map(IdeeEntity::id) }
-    val nachId = liste.associateBy(IdeeEntity::id)
-    val sortiert = reihenfolge.mapNotNull(nachId::get)
+    val nachId = remember(liste) { liste.associateBy(IdeeEntity::id) }
+    val sortiert = remember(reihenfolge, nachId) { reihenfolge.mapNotNull(nachId::get) }
 
     val zustand = rememberReorderState()
     val listState = rememberLazyListState()

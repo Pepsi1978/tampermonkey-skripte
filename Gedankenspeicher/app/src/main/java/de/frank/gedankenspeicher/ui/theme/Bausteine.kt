@@ -17,12 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -160,7 +160,10 @@ fun Modifier.sinktEin(
         animationSpec = tween(dauer(Dauern.KURZ), easing = Kurven.kurz),
         label = "druck",
     )
-    return this.scale(wert)
+    return this.graphicsLayer {
+        scaleX = wert
+        scaleY = wert
+    }
 }
 
 /** Kurzform für einen Interaktionsquell, den man nur für den Druckzustand braucht. */
@@ -193,7 +196,11 @@ fun PulsierenderRing(
     )
     Box(
         modifier = Modifier
-            .scale(if (aktiv && !reduziert) atem else 1f)
+            .graphicsLayer {
+                val faktor = if (aktiv && !reduziert) atem else 1f
+                scaleX = faktor
+                scaleY = faktor
+            }
             .aura(farbe, staerke),
         content = inhalt,
     )

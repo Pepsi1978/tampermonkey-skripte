@@ -47,13 +47,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
@@ -61,6 +61,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.frank.karteikartenlernen.model.AppUiState
@@ -307,16 +308,17 @@ fun LearningOverlay(
 @Composable
 private fun LearningCard(card: Flashcard, flipped: Boolean, entering: Boolean, rating: Boolean?, fontSize: Int, onFlip: () -> Unit) {
     val c = LocalAppPalette.current
-    val rotation by animateFloatAsState(if (flipped) 180f else 0f, tween(500, easing = FastOutSlowInEasing), label = "flip")
+    val rotation = animateFloatAsState(if (flipped) 180f else 0f, tween(500, easing = FastOutSlowInEasing), label = "flip")
+    val showFront by remember(rotation) { derivedStateOf { rotation.value <= 90f } }
     val flight by animateFloatAsState(if (rating != null) 1f else 0f, tween(if (rating == true) 520 else 560), label = "flight")
     val modifier = Modifier
         .fillMaxWidth()
         .widthIn(max = 330.dp)
         .height(432.dp)
-        .alpha(if (entering) 0f else 1f - flight)
+        .graphicsLayer { alpha = if (entering) 0f else 1f - flight; clip = alpha != 1f }
         .scale(if (entering) 0.86f else 1f)
         .graphicsLayer {
-            rotationY = rotation
+            rotationY = rotation.value
             cameraDistance = 14f * density
             translationX = when (rating) { true -> size.width * flight; false -> -size.width * flight; null -> 0f }
             translationY = when (rating) { true -> -size.height * 0.6f * flight; false -> size.height * 0.3f * flight; null -> 0f }
@@ -326,7 +328,7 @@ private fun LearningCard(card: Flashcard, flipped: Boolean, entering: Boolean, r
         .border(1.dp, c.borderHigh, RoundedCornerShape(28.dp))
         .clickable(enabled = !flipped, onClick = onFlip)
     Box(modifier) {
-        if (rotation <= 90f) CardFront(card, fontSize) else Box(Modifier.fillMaxSize().graphicsLayer { rotationY = 180f }) { CardBack(card, fontSize) }
+        if (showFront) CardFront(card, fontSize) else Box(Modifier.fillMaxSize().graphicsLayer { rotationY = 180f }) { CardBack(card, fontSize) }
     }
 }
 
@@ -390,7 +392,7 @@ private fun CompletionView(known: Int, repeated: Int, total: Int, onRestart: () 
         Column(Modifier.fillMaxWidth().safeDrawingPadding().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             val transition = rememberInfiniteTransition(label = "success")
             val scale by transition.animateFloat(1f, 1.06f, infiniteRepeatable(tween(1000), RepeatMode.Reverse), label = "scale")
-            Box(Modifier.size(118.dp).scale(scale).background(Brush.linearGradient(listOf(c.green, c.accent2)), CircleShape), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(118.dp).graphicsLayer { scaleX = scale; scaleY = scale }.background(Brush.linearGradient(listOf(c.green, c.accent2)), CircleShape), contentAlignment = Alignment.Center) {
                 Icon(Icons.Outlined.Check, null, tint = Color.White, modifier = Modifier.size(60.dp))
             }
             Text("Runde geschafft!", color = c.text, fontFamily = Newsreader, fontSize = 28.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 24.dp))
@@ -417,10 +419,10 @@ private fun Confetti(index: Int) {
         Modifier
             .size(9.dp, 14.dp)
             .graphicsLayer { rotationZ = (index * 47 % 360) * fall }
-            .alpha(1f - fall)
+            .graphicsLayer { alpha = 1f - fall; clip = alpha != 1f }
             .background(colors[index % colors.size], RoundedCornerShape(2.dp))
             .then(Modifier)
-            .offset(x = ((6 + index * 83) % 88).dp, y = (fall * 580).dp),
+            .offset { IntOffset(((6 + index * 83) % 88).dp.roundToPx(), (fall * 580).dp.roundToPx()) },
     )
 }
 

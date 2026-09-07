@@ -24,12 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.entropyjournal.ui.theme.LocalJournalDesignTokens
 
@@ -65,7 +65,11 @@ fun AnimatedMicButton(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.size(76.dp).scale(if (isRecording) 1f else breathScale),
+        modifier = modifier.size(76.dp).graphicsLayer {
+            val scale = if (isRecording) 1f else breathScale
+            scaleX = scale
+            scaleY = scale
+        },
     ) {
         if (isRecording) {
             Canvas(modifier = Modifier.fillMaxSize()) {

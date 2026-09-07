@@ -77,7 +77,7 @@ fun KiTriggersScreen(
             }
             if (state.pending.isNotEmpty()) {
                 item { SectionHeader("Vorgeschlagen", state.pending.size, LocalCosmos.current.accentForscher) }
-                items(state.pending, key = { "p-${it.id}" }) { t ->
+                items(state.pending, key = { "p-${it.id}" }, contentType = { "pending-trigger" }) { t ->
                     PendingTriggerCard(
                         trigger = t,
                         onApprove = { vm.approve(t) },
@@ -87,7 +87,7 @@ fun KiTriggersScreen(
             }
             if (state.active.isNotEmpty()) {
                 item { SectionHeader("Aktiv", state.active.size, LocalCosmos.current.accent) }
-                items(state.active, key = { "a-${it.id}" }) { t ->
+                items(state.active, key = { "a-${it.id}" }, contentType = { "active-trigger" }) { t ->
                     ActiveTriggerCard(
                         trigger = t,
                         onDeactivate = { vm.deactivate(t) },

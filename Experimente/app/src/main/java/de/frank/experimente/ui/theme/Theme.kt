@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 
 /**
  * Die drei Möglichkeiten aus F-26. Gespeichert wird der **Modus**, nicht die gerade
@@ -46,7 +47,7 @@ fun ExperimenteTheme(
 
     // Material 3 wird nur mitversorgt, damit eingebaute Bauteile (Textfeld-Cursor,
     // Auswahlgriffe) nicht aus dem Rahmen fallen. Gezeichnet wird aus `LocalFarben`.
-    val schema = if (dunkel) {
+    val schema = remember(dunkel, farben) { if (dunkel) {
         darkColorScheme(
             primary = farben.aktion,
             onPrimary = farben.text,
@@ -74,9 +75,11 @@ fun ExperimenteTheme(
         )
     }
 
+    }
+    val schriften = remember { Schriften() }
     CompositionLocalProvider(
         LocalFarben provides farben,
-        LocalSchriften provides Schriften(),
+        LocalSchriften provides schriften,
         // A-30: „Bewegung reduzieren" und der Energiesparmodus erzwingen mindestens *Gedämpft*.
         LocalEffektstufe provides geltendeStufe(effektstufe),
     ) {

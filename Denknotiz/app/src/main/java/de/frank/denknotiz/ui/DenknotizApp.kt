@@ -290,20 +290,24 @@ private fun NoteLibrary(
     val view = state.interaction.drawerView
     // „Alle Notizen“ heißt alle: geschützte sind mitgezählt und mit aufgelistet, nur ihr
     // Inhalt bleibt bis zum Fingerabdruck zu. Draußen ist einzig, was im Papierkorb liegt.
-    val alleNotizen = state.sessions.filter { it.deletedAt == null }
-    val favoriten = alleNotizen.filter { it.favorite }
-    val geschuetzte = alleNotizen.filter { it.secured }
-    val papierkorb = state.sessions.filter { it.deletedAt != null }
+    val alleNotizen = remember(state.sessions) { state.sessions.filter { it.deletedAt == null } }
+    val favoriten = remember(alleNotizen) { alleNotizen.filter { it.favorite } }
+    val geschuetzte = remember(alleNotizen) { alleNotizen.filter { it.secured } }
+    val papierkorb = remember(state.sessions) { state.sessions.filter { it.deletedAt != null } }
     val ordner = state.folders
     val gewaehlterOrdner = ordner.firstOrNull { it.id == state.interaction.selectedFolderId }
+    val ordnerZahlen = remember(alleNotizen) { alleNotizen.groupingBy { it.folderId }.eachCount() }
+    val ordnerNachId = remember(ordner) { ordner.associateBy { it.id } }
 
-    val liste = when (view) {
-        DrawerView.ALL -> alleNotizen
-        DrawerView.FAVORITES -> favoriten
-        DrawerView.SECURED -> geschuetzte
-        DrawerView.TRASH -> papierkorb
-        DrawerView.FOLDER -> alleNotizen.filter { it.folderId == gewaehlterOrdner?.id }
-    }.filter { search.isBlank() || it.title.contains(search, true) }
+    val liste = remember(state.sessions, view, gewaehlterOrdner?.id, search) {
+        when (view) {
+            DrawerView.ALL -> alleNotizen
+            DrawerView.FAVORITES -> favoriten
+            DrawerView.SECURED -> geschuetzte
+            DrawerView.TRASH -> papierkorb
+            DrawerView.FOLDER -> alleNotizen.filter { it.folderId == gewaehlterOrdner?.id }
+        }.filter { search.isBlank() || it.title.contains(search, true) }
+    }
 
     val ueberschrift = when (view) {
         DrawerView.ALL -> "Alle Notizen"
@@ -382,7 +386,7 @@ private fun NoteLibrary(
                     LibraryTab(
                         icon = Icons.Default.FolderOpen,
                         label = folder.name,
-                        count = alleNotizen.count { it.folderId == folder.id },
+                        count = ordnerZahlen[folder.id] ?: 0,
                         selected = view == DrawerView.FOLDER && gewaehlterOrdner?.id == folder.id,
                     ) { vm.selectFolder(folder.id) }
                 }
@@ -412,7 +416,7 @@ private fun NoteLibrary(
                         selected = state.interaction.selectedSessionId == session.id,
                         expanded = true,
                         inTrash = view == DrawerView.TRASH,
-                        folderName = state.folders.firstOrNull { it.id == session.folderId }?.name,
+                        folderName = ordnerNachId[session.folderId]?.name,
                         locked = session.secured && session.id != state.interaction.unlockedSessionId,
                         onClick = {
                             // Eine geschützte Notiz öffnet sich erst nach dem Fingerabdruck —

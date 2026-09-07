@@ -43,8 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
@@ -189,7 +188,7 @@ fun Modifier.druckEffekt(aufTipp: () -> Unit): Modifier {
         label = "druck",
     )
     return this
-        .scale(faktor)
+        .graphicsLayer { scaleX = faktor; scaleY = faktor }
         .clickable(interactionSource = quelle, indication = null, onClick = aufTipp)
 }
 
@@ -288,8 +287,8 @@ fun SchimmerGeruest(zeilen: Int = 3, modifier: Modifier = Modifier) {
                     .height(72.dp)
                     .tiefenSchatten(gold.primaer, Hoehe.karte, RoundedCornerShape(20.dp))
                     .clip(RoundedCornerShape(20.dp))
-                    .background(
-                        Brush.linearGradient(
+                    .drawBehind {
+                        drawRect(Brush.linearGradient(
                             colors = listOf(
                                 gold.flaeche,
                                 gold.flaeche.mischeMit(gold.primaer, 0.14f),
@@ -297,8 +296,8 @@ fun SchimmerGeruest(zeilen: Int = 3, modifier: Modifier = Modifier) {
                             ),
                             start = Offset(versatz * 1200f - 400f + index * 40f, 0f),
                             end = Offset(versatz * 1200f + index * 40f, 300f),
-                        ),
-                    )
+                        ))
+                    }
                     .border(1.dp, lichtKante(staerke = 0.20f), RoundedCornerShape(20.dp)),
             )
         }
@@ -315,11 +314,11 @@ fun BewegterHintergrund(modifier: Modifier = Modifier) {
     val reduziert = LocalBewegungReduziert.current
     // Bei reduzierter Bewegung läuft gar keine Animation: Eine Endlos-Animation mit
     // gleichem Start- und Zielwert zeichnet den Vollbild-Hintergrund trotzdem jedes Bild neu.
-    val phase = if (reduziert) {
-        0f
+    val phaseState = if (reduziert) {
+        null
     } else {
         val uebergang = rememberInfiniteTransition(label = "hintergrund")
-        val wert by uebergang.animateFloat(
+        val wert = uebergang.animateFloat(
             initialValue = 0f,
             targetValue = (2 * Math.PI).toFloat(),
             animationSpec = infiniteRepeatable(tween(Motion.HINTERGRUND_MS), RepeatMode.Restart),
@@ -330,6 +329,7 @@ fun BewegterHintergrund(modifier: Modifier = Modifier) {
     // Eigene Zeichenebene: Der wandernde Schein zieht so nur sich selbst neu, nicht die
     // Liste darüber.
     Canvas(modifier = modifier.fillMaxSize().graphicsLayer()) {
+        val phase = phaseState?.value ?: 0f
         val breite = size.width
         val hoehe = size.height
         drawCircle(
@@ -400,7 +400,7 @@ fun Leerzustand(
         Box(
             modifier = Modifier
                 .size(112.dp)
-                .scale(atem)
+                .graphicsLayer { scaleX = atem; scaleY = atem }
                 .clip(RoundedCornerShape(32.dp))
                 .background(
                     Brush.radialGradient(
@@ -409,7 +409,7 @@ fun Leerzustand(
                 ),
             contentAlignment = Alignment.Center,
         ) {
-            Text(symbol, fontSize = 44.sp, modifier = Modifier.rotate(dreh))
+            Text(symbol, fontSize = 44.sp, modifier = Modifier.graphicsLayer { rotationZ = dreh })
         }
         Spacer(Modifier.height(20.dp))
         Text(

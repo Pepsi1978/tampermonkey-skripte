@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import de.frank.experimente.ui.theme.LocalEffektstufe
@@ -117,8 +117,8 @@ private fun Pulsring(versatz: Int) {
     Box(
         Modifier
             .size(88.dp)
-            .scale(1f + 0.9f * fortschritt)
-            .alpha(0.5f * (1f - fortschritt))
+            .graphicsLayer { scaleX = 1f + 0.9f * fortschritt; scaleY = scaleX }
+            .graphicsLayer { alpha = 0.5f * (1f - fortschritt); clip = true }
             .clip(Vollrund)
             .border(2.dp, farben.aktion, Vollrund),
     )

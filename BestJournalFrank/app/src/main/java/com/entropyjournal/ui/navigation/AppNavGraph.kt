@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -70,6 +72,7 @@ fun AppNavGraph(navController: NavHostController = rememberNavController(), init
         ) {
             // Dark curtain that fades away — content appears from darkness
             val curtainAlpha = remember { Animatable(1f) }
+            val showCurtain by remember { derivedStateOf { curtainAlpha.value > 0.01f } }
             LaunchedEffect(Unit) {
                 curtainAlpha.animateTo(0f, tween(600, easing = FastOutSlowInEasing))
             }
@@ -114,7 +117,7 @@ fun AppNavGraph(navController: NavHostController = rememberNavController(), init
                 }
             }
             // Black curtain ON TOP — fades from opaque to invisible
-            if (curtainAlpha.value > 0.01f) {
+            if (showCurtain) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

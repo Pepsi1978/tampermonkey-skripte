@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -89,12 +90,16 @@ class ReorderState<T : Any> internal constructor(
 
     fun isDragged(item: T): Boolean = draggedKey == keyOf(item)
 
+    private val draggedIndex by derivedStateOf {
+        items.indexOfFirst { keyOf(it) == draggedKey }
+    }
+
     /** Hebt die gezogene Zeile optisch heraus. */
     fun liftModifier(item: T): Modifier = if (!isDragged(item)) {
         Modifier
     } else {
         Modifier.graphicsLayer {
-            val index = items.indexOfFirst { keyOf(it) == draggedKey }
+            val index = draggedIndex
             translationY = when (index) {
                 0 -> offsetY.coerceAtLeast(0f)
                 items.lastIndex -> offsetY.coerceAtMost(0f)

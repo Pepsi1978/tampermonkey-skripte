@@ -36,16 +36,15 @@ fun GoldenDustOverlay(modifier: Modifier = Modifier, color: Color = MaterialThem
     val alpha4 by alpha(3600, 0.18f)
     val alpha5 by alpha(4800, 0.38f)
     Canvas(modifier = modifier) {
-        val points =
-            listOf(
-                Triple(Offset(size.width * 0.14f, size.height * 0.12f), 2f, alpha1),
-                Triple(Offset(size.width * 0.82f, size.height * 0.24f), 2f, alpha2),
-                Triple(Offset(size.width * 0.08f, size.height * 0.55f), 1.5f, alpha3),
-                Triple(Offset(size.width * 0.88f, size.height * 0.70f), 1.5f, alpha4),
-                Triple(Offset(size.width * 0.40f, size.height * 0.86f), 2f, alpha5),
-            )
-        points.forEach { (center, radius, pointAlpha) ->
-            drawCircle(color = color.copy(alpha = pointAlpha), radius = radius, center = center)
-        }
+        drawCircle(color = color.copy(alpha = alpha1), radius = 2f,
+            center = Offset(size.width * 0.14f, size.height * 0.12f))
+        drawCircle(color = color.copy(alpha = alpha2), radius = 2f,
+            center = Offset(size.width * 0.82f, size.height * 0.24f))
+        drawCircle(color = color.copy(alpha = alpha3), radius = 1.5f,
+            center = Offset(size.width * 0.08f, size.height * 0.55f))
+        drawCircle(color = color.copy(alpha = alpha4), radius = 1.5f,
+            center = Offset(size.width * 0.88f, size.height * 0.70f))
+        drawCircle(color = color.copy(alpha = alpha5), radius = 2f,
+            center = Offset(size.width * 0.40f, size.height * 0.86f))
     }
 }

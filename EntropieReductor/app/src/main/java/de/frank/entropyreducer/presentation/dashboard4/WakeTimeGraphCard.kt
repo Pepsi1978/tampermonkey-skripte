@@ -80,10 +80,20 @@ internal fun WakeTimeGraphCard(
     val cosmos = LocalCosmos.current
     val accent = SleepStageColors.Awake
 
+    val baseline = if (precomputed == null) {
+        remember(history, ZoneId.systemDefault()) { wakeTimeDerived(null, history) }
+    } else null
     val derived =
         precomputed
-            ?: remember(selectedSnapshot, history) {
-                wakeTimeDerived(selectedSnapshot = selectedSnapshot, history = history)
+            ?: remember(selectedSnapshot, baseline) {
+                val base = requireNotNull(baseline)
+                val current = selectedSnapshot?.wakePercent() ?: base.currentPercent
+                base.copy(
+                    currentPercent = current,
+                    deltaVsAvg = if (current != null && base.avg30Percent != null) {
+                        current - base.avg30Percent
+                    } else null,
+                )
             }
 
     // Frank-Wunsch 2026-05-17: Header-Zahl bekommt die gleiche Ampel-Farbe wie
