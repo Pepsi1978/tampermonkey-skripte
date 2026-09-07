@@ -10,6 +10,8 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,7 @@ fun GenialeIdeenApp(
     val gold = LocalGold.current
     val reduziert = LocalBewegungReduziert.current
     val vorlese by viewModel.vorleseStand.collectAsState()
+    val meldung by viewModel.meldung.collectAsState()
 
     var bildschirm by remember { mutableStateOf(Bildschirm.LISTE) }
 
@@ -58,8 +61,9 @@ fun GenialeIdeenApp(
         }
     }
 
-    Box(Modifier.fillMaxSize().background(gold.hintergrund)) {
+    Column(Modifier.fillMaxSize().background(gold.hintergrund)) {
         AnimatedContent(
+            modifier = Modifier.weight(1f),
             targetState = bildschirm,
             transitionSpec = {
                 if (reduziert) {
@@ -135,6 +139,13 @@ fun GenialeIdeenApp(
                 )
             }
         }
-
+        meldung?.let {
+            MeldungsStreifen(
+                meldung = it,
+                aufSchliessen = viewModel::meldungGelesen,
+                aufEinstellungen = { bildschirm = Bildschirm.EINSTELLUNGEN },
+                modifier = Modifier.navigationBarsPadding(),
+            )
+        }
     }
 }

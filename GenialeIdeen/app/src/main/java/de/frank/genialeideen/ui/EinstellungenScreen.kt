@@ -101,6 +101,7 @@ fun EinstellungenScreen(
     // Kommt aus dem ViewModel, damit die Anzeige sofort steht, nachdem der Systemwähler
     // einen Ordner geliefert hat.
     val ordnerAnzeige by viewModel.sicherungsOrdner.collectAsState()
+    val sicherungsStatus by viewModel.sicherungsStatus.collectAsState()
     var sperreAn by remember { mutableStateOf(settings.appLockEnabled) }
     var sperreVerzoegerung by remember { mutableStateOf(settings.appLockDelayMinutes) }
     var kiZugang by remember { mutableStateOf(settings.kiZugang) }
@@ -492,8 +493,8 @@ fun EinstellungenScreen(
             // ---- Sicherung ----
             Klappblock("Sicherung", "Eine Datei in deinem Ordner") {
                 Text(
-                    "„Jetzt sichern“ öffnet die Ordnerauswahl am zuletzt gewählten Ordner. " +
-                        "Bestätige den Ordner, um alle Ideen zu sichern. Es liegen immer nur zwei " +
+                    "Wähle einmal einen Ordner und erlaube den Zugriff. „Jetzt sichern“ schreibt " +
+                        "danach alle Ideen direkt dorthin, ohne erneute Ordnerfreigabe. Es liegen immer nur zwei " +
                         "Sicherungen dort: die aktuelle und die davor.",
                     style = MaterialTheme.typography.bodySmall,
                     color = gold.textGedaempft,
@@ -505,9 +506,9 @@ fun EinstellungenScreen(
                     color = if (ordnerAnzeige == null) gold.textGedaempft else gold.primaer,
                 )
                 Text(
-                    viewModel.sicherungsStand(),
+                    sicherungsStatus?.text ?: viewModel.sicherungsStand(),
                     style = MaterialTheme.typography.labelSmall,
-                    color = gold.textGedaempft,
+                    color = if (sicherungsStatus?.istFehler == true) Semantisch.fehler else gold.textGedaempft,
                 )
                 Spacer(Modifier.height(12.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -521,7 +522,7 @@ fun EinstellungenScreen(
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Auswahlchip("Ordner wählen", false) {
-                        aufOrdnerWaehlen()
+                        viewModel.waehleSicherungsOrdner(aufOrdnerWaehlen)
                     }
                     if (ordnerAnzeige != null) {
                         Auswahlchip("Ordner vergessen", false) {

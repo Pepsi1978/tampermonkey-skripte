@@ -129,7 +129,7 @@ class MainActivity : FragmentActivity() {
                 // Sicherung stehen lassen und alles Ältere selbst wegräumen.
                 val ordnerWahl = rememberLauncherForActivityResult(
                     ActivityResultContracts.OpenDocumentTree(),
-                ) { ordner: Uri? -> ordner?.let(viewModel::merkeOrdnerUndSichere) }
+                ) { ordner: Uri? -> viewModel.sicherungsOrdnerGewaehlt(ordner) }
 
                 if (gesperrt) {
                     SperrBildschirm(aufEntsperren = ::frageSperreAb)

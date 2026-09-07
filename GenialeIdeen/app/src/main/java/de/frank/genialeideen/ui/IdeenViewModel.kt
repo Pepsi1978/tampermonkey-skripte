@@ -32,6 +32,9 @@ import de.frank.genialeideen.tts.QwenVoiceEnrollment
 import de.frank.genialeideen.tts.TtsProvider
 import java.io.File
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -976,29 +979,76 @@ class IdeenViewModel(
     val sicherungsOrdner: StateFlow<String?> = _sicherungsOrdner.asStateFlow()
 
     val sicherungsOrdnerUri: Uri? get() = sicherung.sicherungsOrdner
+    private val _sicherungsStatus = MutableStateFlow<Meldung?>(null)
+    val sicherungsStatus: StateFlow<Meldung?> = _sicherungsStatus.asStateFlow()
+    private var nachOrdnerWahlSichern = false
+    private var sicherungLaeuft = false
 
-    /** Nach der Ordnerbestätigung übernimmt merkeOrdnerUndSichere die Sicherung. */
+    /** Die gespeicherte Freigabe reicht aus; nur beim ersten Mal einen Ordner wählen. */
     fun sichereJetzt(ordnerWaehlen: () -> Unit) {
+        if (sicherungLaeuft) return
+        if (sicherung.sicherungsOrdner == null) {
+            nachOrdnerWahlSichern = true
+            ordnerWaehlen()
+            return
+        }
+        sicherungLaeuft = true
+        _sicherungsStatus.value = Meldung("Alle Ideen werden gesichert …")
+        viewModelScope.launch {
+            try {
+                val stand = sicherung.sichere()
+                val meldung = Meldung("Sicherung erfolgt. Alle Ideen wurden gesichert. $stand")
+                _sicherungsStatus.value = meldung
+                zeige(meldung)
+            } catch (fehler: CancellationException) {
+                throw fehler
+            } catch (fehler: Exception) {
+                val meldung = Meldung(
+                    "Sicherung fehlgeschlagen: ${fehler.message}. Wähle bei fehlendem Zugriff den Ordner erneut.",
+                    istFehler = true,
+                )
+                _sicherungsStatus.value = meldung
+                zeige(meldung)
+                IdeenLog.warn("Sicherung", "sichereJetzt", "Sicherung fehlgeschlagen",
+                    mapOf("art" to fehler.javaClass.simpleName))
+            } finally {
+                sicherungLaeuft = false
+            }
+        }
+    }
+
+    fun waehleSicherungsOrdner(ordnerWaehlen: () -> Unit) {
+        if (sicherungLaeuft) return
+        nachOrdnerWahlSichern = false
         ordnerWaehlen()
     }
 
-    /** Der frisch gewählte Ordner wird gemerkt und sofort beschrieben. */
-    fun merkeOrdnerUndSichere(ordner: Uri) {
+    /** Reine Ordnerwahl schreibt keine Sicherung, insbesondere nicht vor einem Restore. */
+    fun sicherungsOrdnerGewaehlt(ordner: Uri?) {
+        val danachSichern = nachOrdnerWahlSichern
+        nachOrdnerWahlSichern = false
+        if (ordner == null) return
         viewModelScope.launch {
             runCatching {
-                sicherung.merkeOrdner(ordner)
-                _sicherungsOrdner.value = sicherung.ordnerName()
-                zeige(Meldung("Alle Ideen werden gesichert …"))
-                sicherung.sichere()
+                withContext(Dispatchers.IO) {
+                    sicherung.merkeOrdner(ordner)
+                    sicherung.ordnerName()
+                }
             }
-                .onSuccess { stand -> zeige(Meldung("Gesichert. $stand")) }
+                .onSuccess { name ->
+                    _sicherungsOrdner.value = name
+                    val meldung = Meldung("Ordner gespeichert. Mit „Jetzt sichern“ sicherst du alle Ideen.")
+                    _sicherungsStatus.value = meldung
+                    if (danachSichern) sichereJetzt {} else zeige(meldung)
+                }
                 .onFailure { fehler ->
-                    zeige(
-                        Meldung(
-                            "In diesen Ordner liess sich nicht schreiben: ${fehler.message}",
-                            istFehler = true,
-                        ),
+                    if (fehler is CancellationException) throw fehler
+                    val meldung = Meldung(
+                        "Der Ordner konnte nicht dauerhaft freigegeben werden: ${fehler.message}",
+                        istFehler = true,
                     )
+                    _sicherungsStatus.value = meldung
+                    zeige(meldung)
                 }
         }
     }
@@ -1010,7 +1060,7 @@ class IdeenViewModel(
     fun stelleWiederHer(ordnerWaehlen: () -> Unit) {
         if (sicherung.sicherungsOrdner == null) {
             zeige(Meldung("Wähl zuerst den Ordner aus, in dem die Sicherung liegt."))
-            ordnerWaehlen()
+            waehleSicherungsOrdner(ordnerWaehlen)
             return
         }
         viewModelScope.launch {
@@ -1063,8 +1113,10 @@ class IdeenViewModel(
 
     /** Trennt den gemerkten Ordner — die Sicherungen darin bleiben liegen. */
     fun vergissSicherungsOrdner() {
+        if (sicherungLaeuft) return
         sicherung.vergissOrdner()
         _sicherungsOrdner.value = null
+        _sicherungsStatus.value = null
         zeige(Meldung("Der Sicherungsordner ist vergessen. Die Dateien bleiben liegen."))
     }
 
