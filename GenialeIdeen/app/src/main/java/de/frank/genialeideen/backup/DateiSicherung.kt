@@ -8,7 +8,6 @@ import de.frank.genialeideen.observability.IdeenLog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -77,7 +76,7 @@ class DateiSicherung(private val context: Context) {
     suspend fun schreibe(json: String): Sicherungsdatei = withContext(Dispatchers.IO) {
         val baum = ordner ?: error("Es ist noch kein Sicherungsordner gewählt.")
         val bisherige = listeAuf(baum)
-        val name = neuerName()
+        val name = neuerName(bisherige)
         val datei = DocumentsContract.createDocument(
             context.contentResolver,
             DocumentsContract.buildDocumentUriUsingTree(baum, DocumentsContract.getTreeDocumentId(baum)),
@@ -149,10 +148,13 @@ class DateiSicherung(private val context: Context) {
                     )
                 }
             } ?: error("Der Sicherungsordner konnte nicht aufgelistet werden. Bestehende Sicherungen bleiben erhalten.")
-        // Der Name trägt den Zeitstempel und sortiert damit von selbst richtig; die Änderungszeit
-        // ist der Rückfall, falls ein Anbieter sie nicht liefert.
+        // Alte Namen enthalten zusätzlich "sicherung-". Nur den Zeitstempel vergleichen,
+        // sonst gewinnt die alte Datei alphabetisch gegen jede neue Sicherung.
         return gefunden.sortedWith(
-            compareByDescending<Sicherungsdatei> { it.name.removeSuffix(".json") }
+            compareByDescending<Sicherungsdatei> {
+                ZEIT_IM_NAMEN.find(it.name)?.value?.replace("-", "")?.padEnd(17, '0')
+                    ?: SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.GERMANY).format(Date(it.geaendertAm))
+            }
                 .thenByDescending { it.geaendertAm },
         )
     }
@@ -192,8 +194,14 @@ class DateiSicherung(private val context: Context) {
         }
     }.getOrNull()
 
-    private fun neuerName(): String =
-        "$PRAEFIX${SimpleDateFormat("yyyy-MM-dd-HHmmss-SSS", Locale.GERMANY).format(Date())}-${UUID.randomUUID()}.json"
+    private fun neuerName(bisherige: List<Sicherungsdatei>): String {
+        val basis = "$PRAEFIX${SimpleDateFormat("yyyy-MM-dd-HHmm", Locale.GERMANY).format(Date())}"
+        val namen = bisherige.map { it.name }.toSet()
+        var name = "$basis.json"
+        var nummer = 2
+        while (name in namen) name = "$basis (${nummer++}).json"
+        return name
+    }
 
     companion object {
         /** Die aktuelle Sicherung und die eine davor — mehr sammelt sich nie an. */
@@ -202,5 +210,6 @@ class DateiSicherung(private val context: Context) {
         private const val PREFS = "pm_backup_status"
         private const val KEY_ORDNER = "sicherungs_ordner"
         private const val PRAEFIX = "geniale-ideen-"
+        private val ZEIT_IM_NAMEN = Regex("\\d{4}-\\d{2}-\\d{2}-\\d{4}(?:\\d{2}-\\d{3})?")
     }
 }
