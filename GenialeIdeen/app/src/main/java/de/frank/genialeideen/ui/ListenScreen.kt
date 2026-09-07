@@ -12,6 +12,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -74,6 +78,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -132,6 +137,7 @@ fun ListenScreen(
     var suchOffen by remember { mutableStateOf(false) }
 
     val schublade = rememberDrawerState(DrawerValue.Closed)
+    var oeffnungsWischAktiv by remember { mutableStateOf(false) }
     val bereichsraum = rememberCoroutineScope()
     val kategorieName = kategorien.firstOrNull { it.id == gewaehlteKategorie }?.name
 
@@ -171,6 +177,27 @@ fun ListenScreen(
 
     ModalNavigationDrawer(
         drawerState = schublade,
+        gesturesEnabled = schublade.isOpen && !oeffnungsWischAktiv,
+        modifier = Modifier.pointerInput(schublade) {
+            awaitEachGesture {
+                val down = awaitFirstDown(requireUnconsumed = false)
+                if (!schublade.isClosed || schublade.isAnimationRunning) return@awaitEachGesture
+                val drag = awaitHorizontalTouchSlopOrCancellation(down.id) { change, weg ->
+                    if (weg > 0f) change.consume()
+                } ?: return@awaitEachGesture
+
+                // Rechtswischen startet denselben durchgehenden Lauf wie der goldene Knopf.
+                // Kein Wechsel vom Finger-Offset zur Einrastanimation mitten in der Bewegung.
+                oeffnungsWischAktiv = true
+                bereichsraum.launch { schublade.open() }
+                try {
+                    horizontalDrag(drag.id) { it.consume() }
+                } finally {
+                    // Der normale Drawer-Drag darf erst die nächste Geste übernehmen.
+                    oeffnungsWischAktiv = false
+                }
+            }
+        },
         drawerContent = {
             KategorienLeiste(
                 kategorien = sortierteKategorien,
