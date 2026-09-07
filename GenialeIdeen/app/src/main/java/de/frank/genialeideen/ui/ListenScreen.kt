@@ -14,8 +14,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
-import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,6 +76,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -104,6 +104,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.unit.DpSize
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 enum class ListenBereich(val titel: String) {
     OFFEN("Offen"),
@@ -137,7 +138,6 @@ fun ListenScreen(
     var suchOffen by remember { mutableStateOf(false) }
 
     val schublade = rememberDrawerState(DrawerValue.Closed)
-    var oeffnungsWischAktiv by remember { mutableStateOf(false) }
     val bereichsraum = rememberCoroutineScope()
     val kategorieName = kategorien.firstOrNull { it.id == gewaehlteKategorie }?.name
 
@@ -177,24 +177,40 @@ fun ListenScreen(
 
     ModalNavigationDrawer(
         drawerState = schublade,
-        gesturesEnabled = schublade.isOpen && !oeffnungsWischAktiv,
+        gesturesEnabled = schublade.isOpen && !schublade.isAnimationRunning,
         modifier = Modifier.pointerInput(schublade) {
             awaitEachGesture {
-                val down = awaitFirstDown(requireUnconsumed = false)
-                if (!schublade.isClosed || schublade.isAnimationRunning) return@awaitEachGesture
-                val drag = awaitHorizontalTouchSlopOrCancellation(down.id) { change, weg ->
-                    if (weg > 0f) change.consume()
-                } ?: return@awaitEachGesture
-
-                // Rechtswischen startet denselben durchgehenden Lauf wie der goldene Knopf.
-                // Kein Wechsel vom Finger-Offset zur Einrastanimation mitten in der Bewegung.
-                oeffnungsWischAktiv = true
-                bereichsraum.launch { schublade.open() }
-                try {
-                    horizontalDrag(drag.id) { it.consume() }
-                } finally {
-                    // Der normale Drawer-Drag darf erst die nächste Geste übernehmen.
-                    oeffnungsWischAktiv = false
+                val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                if (schublade.isAnimationRunning) return@awaitEachGesture
+                val schliessen = schublade.isOpen
+                var weg = Offset.Zero
+                var erkannt = false
+                while (true) {
+                    // Vor dem nativen Drawer-Drag übernehmen, damit auch beim Schließen
+                    // kein Finger-Offset vor die durchgehende Animation geschaltet wird.
+                    val event = awaitPointerEvent(PointerEventPass.Initial)
+                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                    if (erkannt) {
+                        change.consume()
+                        if (!change.pressed) break
+                        continue
+                    }
+                    if (!change.pressed || change.isConsumed) break
+                    weg += change.position - change.previousPosition
+                    if (abs(weg.y) > viewConfiguration.touchSlop && abs(weg.y) >= abs(weg.x)) break
+                    if (abs(weg.x) > viewConfiguration.touchSlop) {
+                        if ((schliessen && weg.x >= 0f) || (!schliessen && weg.x <= 0f)) break
+                        if (schublade.isAnimationRunning) break
+                        erkannt = true
+                        change.consume()
+                        bereichsraum.launch {
+                            if (schliessen) schublade.close() else schublade.open()
+                        }
+                    } else {
+                        // Bereits von einer scrollenden Liste übernommene Gesten nicht stehlen.
+                        val finalEvent = awaitPointerEvent(PointerEventPass.Final)
+                        if (finalEvent.changes.any { it.id == down.id && it.isConsumed }) break
+                    }
                 }
             }
         },

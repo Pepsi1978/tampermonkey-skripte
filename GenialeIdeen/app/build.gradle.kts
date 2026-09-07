@@ -13,10 +13,10 @@ android {
         applicationId = "de.frank.genialeideen"
         minSdk = 26
         targetSdk = 36
-        versionCode = 20
-        versionName = "1.5.3"
+        versionCode = 21
+        versionName = "1.5.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 11:45 Uhr\"")
+        buildConfigField("String", "VERSION_BUMPED_AT", "\"07.09.2026, 11:50 Uhr\"")
         ksp { arg("room.schemaLocation", "$projectDir/schemas") }
     }
 
