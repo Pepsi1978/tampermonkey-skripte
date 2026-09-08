@@ -552,7 +552,7 @@ private fun ToolsRow(state: StackLaborUiState, searchOpen: Boolean, onSearch: ()
 }
 
 /** Höhe einer Mittel-Zeile samt Abstand — Maß für das Umsortieren per Ziehen. */
-private val MedicineRowHeight = 64.dp
+private val MedicineRowHeight = 88.dp
 
 @Composable
 private fun MedicineList(
@@ -716,14 +716,14 @@ private fun SwipeToDeleteRow(
     Box(
         modifier
             .fillMaxWidth()
-            .height(64.dp)
+            .height(MedicineRowHeight)
             .onSizeChanged { onWidth(it.width.toFloat()) },
     ) {
         if (anteil > 0.01f) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
+                    .height(MedicineRowHeight - 8.dp)
                     .align(Alignment.TopCenter)
                     .clip(shape)
                     .background(
@@ -774,9 +774,9 @@ private fun StackMedicineRow(
 ) {
     val colors = StackLaborTheme.colors
     val opacity = if (medicine.active) 1f else 0.38f
-    Box(modifier.fillMaxWidth().height(64.dp)) {
+    Box(modifier.fillMaxWidth().height(MedicineRowHeight)) {
         RaisedPanel(
-            Modifier.fillMaxWidth().height(56.dp),
+            Modifier.fillMaxWidth().height(MedicineRowHeight - 8.dp),
             elevation = if (medicine.active) 12.dp else 4.dp,
             rimAlpha = if (medicine.active) 0.7f else 0.3f,
             bevelStrength = if (medicine.active) 1f else 0.35f,
@@ -812,12 +812,14 @@ private fun StackMedicineRow(
                                 Text("!", color = colors.red, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                             }
                             Spacer(Modifier.width(8.dp))
-                            IconButton(onClick = onCopy, modifier = Modifier.size(28.dp)) {
-                                Icon(Icons.Default.ContentCopy, "${medicine.name} kopieren", Modifier.size(18.dp), tint = colors.accent)
+                            IconButton(onClick = onCopy, modifier = Modifier.size(48.dp)) {
+                                Icon(Icons.Default.ContentCopy, "${medicine.name} kopieren", Modifier.size(24.dp), tint = colors.accent)
                             }
-                            IconButton(onClick = onMove, modifier = Modifier.size(28.dp)) {
-                                Icon(Icons.AutoMirrored.Filled.DriveFileMove, "${medicine.name} verschieben", Modifier.size(18.dp), tint = colors.accent)
+                            Spacer(Modifier.width(12.dp))
+                            IconButton(onClick = onMove, modifier = Modifier.size(48.dp)) {
+                                Icon(Icons.AutoMirrored.Filled.DriveFileMove, "${medicine.name} verschieben", Modifier.size(24.dp), tint = colors.accent)
                             }
+                            Spacer(Modifier.width(16.dp))
                             SolubilityLabel(medicine.solubility)
                         }
                         Text(medicine.dose, Modifier.fillMaxWidth(), style = androidx.compose.material3.MaterialTheme.typography.bodySmall, color = colors.textMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)
