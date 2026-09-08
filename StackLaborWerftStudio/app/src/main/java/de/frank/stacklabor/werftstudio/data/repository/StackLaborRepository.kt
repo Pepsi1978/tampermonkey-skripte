@@ -79,6 +79,7 @@ interface StackLaborRepository {
     suspend fun setzeStackGesperrt(stackId: String, gesperrt: Boolean)
     suspend fun speichereEintrag(eintrag: StackEintrag)
     suspend fun loescheEintrag(eintragId: String)
+    suspend fun uebertrageMittel(quellStackId: String, zielStackId: String, mittelId: String, verschieben: Boolean)
     suspend fun setzeEintragAktiv(eintragId: String, aktiv: Boolean)
     suspend fun setzeOffenenHinweis(eintragId: String, hinweis: String?)
     suspend fun speichereZiel(ziel: Ziel)
@@ -272,6 +273,30 @@ class RoomStackLaborRepository(
             val eintrag = stackDao.holeEintragEntity(eintragId) ?: return@withTransaction
             bewertungDao.loescheZellenFuerStackMittel(eintrag.stackId, eintrag.mittelId)
             stackDao.loescheEintrag(eintrag)
+        }
+    }
+
+    override suspend fun uebertrageMittel(quellStackId: String, zielStackId: String, mittelId: String, verschieben: Boolean) {
+        database.withTransaction {
+            require(quellStackId != zielStackId) { "Bitte einen anderen Stack auswählen." }
+            val quelle = checkNotNull(stackDao.holeStack(quellStackId)) { "Der Quellstack fehlt." }
+            val ziel = checkNotNull(stackDao.holeStack(zielStackId)) { "Der Zielstack fehlt." }
+            check(!ziel.gesperrt && (!verschieben || !quelle.gesperrt)) { "Der Stack ist gesperrt." }
+            val eintrag = checkNotNull(stackDao.holeEintraege(quellStackId).firstOrNull { it.eintrag.mittelId == mittelId }) {
+                "Das Mittel ist nicht mehr im Quellstack enthalten."
+            }.toDomain()
+            val zieleintraege = stackDao.holeEintraege(zielStackId)
+            check(zieleintraege.none { it.eintrag.mittelId == mittelId }) { "Das Mittel ist bereits im Zielstack enthalten." }
+            val id = if (verschieben) eintrag.id else neueId()
+            speichereEintrag(eintrag.copy(
+                id = id,
+                stackId = zielStackId,
+                reihenfolge = (zieleintraege.maxOfOrNull { it.eintrag.reihenfolge } ?: 0) + 1,
+                gruppeId = null,
+                offenerHinweis = null,
+                dosen = eintrag.dosen.map { it.copy(stackEintragId = id) },
+            ))
+            if (verschieben) bewertungDao.loescheZellenFuerStackMittel(quellStackId, mittelId)
         }
     }
 

@@ -32,6 +32,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.automirrored.filled.DriveFileMove
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandMore
@@ -323,6 +327,15 @@ fun StackDetailScreen(stackId: String, state: StackLaborUiState, animationsEnabl
     var menuOpen by rememberSaveable { mutableStateOf(false) }
     var searchOpen by rememberSaveable { mutableStateOf(false) }
     var deleteCandidateId by rememberSaveable { mutableStateOf<String?>(null) }
+    var transferMedicineId by rememberSaveable(stackId) { mutableStateOf<String?>(null) }
+    var transferMove by rememberSaveable(stackId) { mutableStateOf(false) }
+    val requestTransfer: (MedicineUi, Boolean) -> Unit = { medicine, move ->
+        if (move && state.stackLocked) callbacks.onEvent(StackLaborEvent.ReportStackLocked)
+        else {
+            transferMedicineId = medicine.id
+            transferMove = move
+        }
+    }
     val filtered = state.medicines.filter { it.name.contains(state.searchQuery, ignoreCase = true) }
     val deleteCandidate = deleteCandidateId?.let { id -> state.medicines.firstOrNull { it.id == id } }
     WerftScreen {
@@ -344,7 +357,7 @@ fun StackDetailScreen(stackId: String, state: StackLaborUiState, animationsEnabl
             AdaptiveSplit(
                 narrow = {
                     Box(Modifier.fillMaxSize()) {
-                        MedicineList(stackId = stackId, filtered = filtered, sortMode = state.sortMode, fatFirst = state.solubilityFatFirst, evaluationId = state.latestEvaluationId, evaluationMeta = state.evaluationMeta, locked = state.stackLocked, callbacks = callbacks, onRequestDelete = { deleteCandidateId = it.id }, modifier = Modifier.fillMaxSize().padding(bottom = if (state.evaluationState == EvaluationState.Running) 148.dp else 52.dp))
+                        MedicineList(stackId = stackId, filtered = filtered, sortMode = state.sortMode, fatFirst = state.solubilityFatFirst, evaluationId = state.latestEvaluationId, evaluationMeta = state.evaluationMeta, locked = state.stackLocked, callbacks = callbacks, onRequestDelete = { deleteCandidateId = it.id }, modifier = Modifier.fillMaxSize().padding(bottom = if (state.evaluationState == EvaluationState.Running) 148.dp else 52.dp), onRequestTransfer = requestTransfer)
                         EvaluateFooter(
                             callbacks = callbacks,
                             running = state.evaluationState == EvaluationState.Running,
@@ -357,7 +370,7 @@ fun StackDetailScreen(stackId: String, state: StackLaborUiState, animationsEnabl
                 },
                 primary = {
                     Box(Modifier.fillMaxSize()) {
-                        MedicineList(stackId, filtered, state.sortMode, state.solubilityFatFirst, state.latestEvaluationId, state.evaluationMeta, state.stackLocked, callbacks, { deleteCandidateId = it.id }, Modifier.fillMaxSize().padding(bottom = 68.dp))
+                        MedicineList(stackId, filtered, state.sortMode, state.solubilityFatFirst, state.latestEvaluationId, state.evaluationMeta, state.stackLocked, callbacks, { deleteCandidateId = it.id }, Modifier.fillMaxSize().padding(bottom = 68.dp), requestTransfer)
                         BreathingFab("Mittel hinzufügen", animationsEnabled, { if (state.stackLocked) callbacks.onEvent(StackLaborEvent.ReportStackLocked) else callbacks.onNavigate(StackLaborRoute.MedicineCatalog(stackId, Origin.StackDetail)) }, Modifier.align(Alignment.BottomEnd).padding(12.dp))
                     }
                 },
@@ -402,6 +415,39 @@ fun StackDetailScreen(stackId: String, state: StackLaborUiState, animationsEnabl
                 MenuTrenner()
                 MenuItem("Historie") { menuOpen = false; callbacks.onNavigate(StackLaborRoute.History(stackId, Origin.StackDetail)) }
             }
+        }
+        transferMedicineId?.let { medicineId ->
+            AlertDialog(
+                onDismissRequest = { transferMedicineId = null },
+                containerColor = StackLaborTheme.colors.surface,
+                title = { Text(if (transferMove) "Mittel verschieben" else "Mittel kopieren") },
+                text = {
+                    Column {
+                        Text(state.medicines.firstOrNull { it.id == medicineId }?.name.orEmpty())
+                        Spacer(Modifier.height(8.dp))
+                        LazyColumn(Modifier.heightIn(max = 400.dp)) {
+                            items(state.stacks, key = { it.id }) { stack ->
+                                TextButton(
+                                    enabled = stack.id != stackId && !stack.locked,
+                                    onClick = {
+                                        callbacks.onEvent(StackLaborEvent.TransferMedicine(stackId, stack.id, medicineId, transferMove))
+                                        transferMedicineId = null
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(stack.name + when {
+                                        stack.id == stackId -> " (aktueller Stack)"
+                                        stack.locked -> " (gesperrt)"
+                                        else -> ""
+                                    }, Modifier.fillMaxWidth())
+                                }
+                            }
+                        }
+                    }
+                },
+                confirmButton = {},
+                dismissButton = { TextButton(onClick = { transferMedicineId = null }) { Text("Abbrechen") } },
+            )
         }
         if (deleteCandidate != null) {
             DeleteMedicineDialog(
@@ -520,6 +566,7 @@ private fun MedicineList(
     callbacks: StackLaborCallbacks,
     onRequestDelete: (MedicineUi) -> Unit,
     modifier: Modifier,
+    onRequestTransfer: (MedicineUi, Boolean) -> Unit,
 ) {
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
     val reorder = rememberReorder(
@@ -597,6 +644,8 @@ private fun MedicineList(
                     },
                     onSignal = { callbacks.onNavigate(StackLaborRoute.Breakdown(stackId, medicine.id, Origin.StackDetail)) },
                     onToggle = { callbacks.onEvent(StackLaborEvent.ToggleMedicine(stackId, medicine.id)) },
+                    onCopy = { onRequestTransfer(medicine, false) },
+                    onMove = { onRequestTransfer(medicine, true) },
                 )
             }
         }
@@ -719,6 +768,8 @@ private fun StackMedicineRow(
     onOpen: () -> Unit,
     onSignal: () -> Unit,
     onToggle: () -> Unit,
+    onCopy: () -> Unit,
+    onMove: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = StackLaborTheme.colors
@@ -761,6 +812,12 @@ private fun StackMedicineRow(
                                 Text("!", color = colors.red, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                             }
                             Spacer(Modifier.width(8.dp))
+                            IconButton(onClick = onCopy, modifier = Modifier.size(28.dp)) {
+                                Icon(Icons.Default.ContentCopy, "${medicine.name} kopieren", Modifier.size(18.dp), tint = colors.accent)
+                            }
+                            IconButton(onClick = onMove, modifier = Modifier.size(28.dp)) {
+                                Icon(Icons.AutoMirrored.Filled.DriveFileMove, "${medicine.name} verschieben", Modifier.size(18.dp), tint = colors.accent)
+                            }
                             SolubilityLabel(medicine.solubility)
                         }
                         Text(medicine.dose, Modifier.fillMaxWidth(), style = androidx.compose.material3.MaterialTheme.typography.bodySmall, color = colors.textMuted, maxLines = 1, overflow = TextOverflow.Ellipsis)

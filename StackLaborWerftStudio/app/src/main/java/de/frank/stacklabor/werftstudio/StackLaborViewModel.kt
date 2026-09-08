@@ -193,6 +193,9 @@ class StackLaborViewModel(private val container: AppContainer) : ViewModel() {
                 }
             }
             is StackLaborEvent.RemoveMedicineFromStack -> if (!gesperrtGemeldet(event.stackId)) removeMedicineFromStack(event.stackId, event.medicineId)
+            is StackLaborEvent.TransferMedicine -> launchAction(if (event.move) "Mittel verschoben" else "Mittel kopiert") {
+                repository.uebertrageMittel(event.stackId, event.targetStackId, event.medicineId, event.move)
+            }
             is StackLaborEvent.ReorderMedicine -> if (!gesperrtGemeldet(event.stackId)) reorderMedicine(event.stackId, event.medicineId, event.targetIndex)
             is StackLaborEvent.ApplyMedicineOrder -> if (!gesperrtGemeldet(event.stackId)) applyMedicineOrder(event.stackId, event.medicineIds)
             is StackLaborEvent.ApplyStackOrder -> launchAction { repository.sortiereStacks(event.stackIds) }
